@@ -1,0 +1,2 @@
+rootProject.name = "VGS Checkout Demo"
+include ':app'
