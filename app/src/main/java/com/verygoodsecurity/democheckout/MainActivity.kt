@@ -12,7 +12,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         findViewById<TextView>(R.id.tvWelcome).setOnClickListener {
-            VGSCheckoutForm.Builder("some_tenant").build().start(this)
+            VGSCheckoutForm.Builder("some_tenant")
+                .build()
+                .start(this)
         }
     }
 }

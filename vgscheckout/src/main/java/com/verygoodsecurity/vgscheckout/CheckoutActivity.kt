@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import com.verygoodsecurity.vgscheckout.view.CheckoutView
 
 internal class CheckoutActivity : AppCompatActivity(R.layout.checkout_activity) {
 
@@ -18,6 +19,14 @@ internal class CheckoutActivity : AppCompatActivity(R.layout.checkout_activity) 
             CheckoutActivity::class.java.simpleName,
             "CheckoutActivity::onCreate, tenantID = ${formConfig.tenantID}"
         )
+
+        with(findViewById<CheckoutView>(R.id.cvForm)) {
+            applyConfig(formConfig.uiConfig.cardNumberConfig)
+            applyConfig(formConfig.uiConfig.cardHolderConfig)
+            applyConfig(formConfig.uiConfig.cardVerificationCodeConfig)
+            applyConfig(formConfig.uiConfig.expirationDateConfig)
+            applyConfig(formConfig.uiConfig.postalCodeConfig)
+        }
     }
 
     companion object {
