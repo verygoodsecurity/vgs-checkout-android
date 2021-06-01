@@ -11,8 +11,11 @@ import com.verygoodsecurity.vgscheckout.VGSCheckoutForm
 import com.verygoodsecurity.vgscheckout.config.networking.VGSMultiplexingRouteConfig
 import com.verygoodsecurity.vgscheckout.config.networking.VGSVaultRouteConfig
 import com.verygoodsecurity.vgscheckout.util.CollectProvider
+import com.verygoodsecurity.vgscheckout.util.toCollectHTTPMethod
+import com.verygoodsecurity.vgscheckout.util.toCollectMergePolicy
 import com.verygoodsecurity.vgscheckout.view.CheckoutView
 import com.verygoodsecurity.vgscollect.core.VGSCollect
+import com.verygoodsecurity.vgscollect.core.model.network.VGSRequest
 
 internal class CheckoutActivity : AppCompatActivity(R.layout.checkout_activity) {
 
@@ -38,12 +41,27 @@ internal class CheckoutActivity : AppCompatActivity(R.layout.checkout_activity) 
             }
         }
 
-        with(findViewById<CheckoutView>(R.id.cvForm)) {
-            applyConfig(formConfig.uiConfig.cardNumberConfig)
-            applyConfig(formConfig.uiConfig.cardHolderConfig)
-            applyConfig(formConfig.uiConfig.cardVerificationCodeConfig)
-            applyConfig(formConfig.uiConfig.expirationDateConfig)
-            applyConfig(formConfig.uiConfig.postalCodeConfig)
+        findViewById<CheckoutView>(R.id.cvForm)?.run {
+            with(formConfig.uiConfig) {
+                applyConfig(cardNumberConfig)
+                applyConfig(cardHolderConfig)
+                applyConfig(cardVerificationCodeConfig)
+                applyConfig(expirationDateConfig)
+                applyConfig(postalCodeConfig)
+            }
+        }
+    }
+
+    private fun asyncSubmit() {
+        with(formConfig.routeConfig.requestConfig) {
+            collect.asyncSubmit(
+                VGSRequest.VGSRequestBuilder()
+                    .setPath(path)
+                    .setCustomData(extraData)
+                    .setFieldNameMappingPolicy(mergePolicy.toCollectMergePolicy())
+                    .setMethod(httpMethod.toCollectHTTPMethod())
+                    .build()
+            )
         }
     }
 

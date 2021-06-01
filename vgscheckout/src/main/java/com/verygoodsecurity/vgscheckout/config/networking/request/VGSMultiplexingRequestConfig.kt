@@ -11,8 +11,8 @@ import kotlinx.parcelize.RawValue
 class VGSMultiplexingRequestConfig private constructor(
     override val path: String = "",
     override val httpMethod: VGSCheckoutHTTPMethod = VGSCheckoutHTTPMethod.POST,
-    override val extraData: Map<String, @RawValue Any?> = emptyMap(),
-    override val mergePolicy: VGSCheckoutDataMergePolicy = VGSCheckoutDataMergePolicy.FLAT
+    override val extraData: Map<String, @RawValue Any> = emptyMap(),
+    override val mergePolicy: VGSCheckoutDataMergePolicy = VGSCheckoutDataMergePolicy.NESTED_JSON
 ) : RequestConfig() {
 
 

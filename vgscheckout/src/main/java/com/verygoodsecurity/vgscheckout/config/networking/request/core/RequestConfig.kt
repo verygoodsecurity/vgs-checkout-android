@@ -1,7 +1,6 @@
 package com.verygoodsecurity.vgscheckout.config.networking.request.core
 
 import android.os.Parcelable
-import kotlinx.parcelize.RawValue
 
 abstract class RequestConfig internal constructor() : Parcelable {
 
@@ -9,7 +8,7 @@ abstract class RequestConfig internal constructor() : Parcelable {
 
     abstract val httpMethod: VGSCheckoutHTTPMethod
 
-    abstract val extraData: Map<String, @RawValue Any?>
+    abstract val extraData: Map<String, Any>
 
     abstract val mergePolicy: VGSCheckoutDataMergePolicy
 }
