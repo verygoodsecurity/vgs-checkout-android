@@ -10,11 +10,15 @@ import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.VGSCheckoutForm
 import com.verygoodsecurity.vgscheckout.config.networking.VGSMultiplexingRouteConfig
 import com.verygoodsecurity.vgscheckout.config.networking.VGSVaultRouteConfig
+import com.verygoodsecurity.vgscheckout.util.CollectProvider
 import com.verygoodsecurity.vgscheckout.view.CheckoutView
+import com.verygoodsecurity.vgscollect.core.VGSCollect
 
 internal class CheckoutActivity : AppCompatActivity(R.layout.checkout_activity) {
 
     private val formConfig: VGSCheckoutForm by lazy { requireExtra(EXTRA_KEY) }
+
+    private val collect: VGSCollect by lazy { CollectProvider().get(this, formConfig) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
