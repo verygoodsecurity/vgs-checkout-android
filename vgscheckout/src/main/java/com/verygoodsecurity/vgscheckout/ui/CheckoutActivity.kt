@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscheckout
+package com.verygoodsecurity.vgscheckout.ui
 
 import android.app.Activity
 import android.content.Context
@@ -6,6 +6,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import com.verygoodsecurity.vgscheckout.R
+import com.verygoodsecurity.vgscheckout.VGSCheckoutForm
+import com.verygoodsecurity.vgscheckout.config.networking.VGSMultiplexingRouteConfig
+import com.verygoodsecurity.vgscheckout.config.networking.VGSVaultRouteConfig
 import com.verygoodsecurity.vgscheckout.view.CheckoutView
 
 internal class CheckoutActivity : AppCompatActivity(R.layout.checkout_activity) {
@@ -19,6 +23,16 @@ internal class CheckoutActivity : AppCompatActivity(R.layout.checkout_activity) 
             CheckoutActivity::class.java.simpleName,
             "CheckoutActivity::onCreate, tenantID = ${formConfig.tenantID}"
         )
+
+        when (val config = formConfig.routeConfig) {
+            is VGSVaultRouteConfig -> {
+                Log.d("Test", "config is vault, build collect instance")
+                Log.d("Test", "extra data = ${config.requestConfig.extraData}")
+            }
+            is VGSMultiplexingRouteConfig -> {
+                Log.d("Test", "config is multiplexing, build collect instance")
+            }
+        }
 
         with(findViewById<CheckoutView>(R.id.cvForm)) {
             applyConfig(formConfig.uiConfig.cardNumberConfig)

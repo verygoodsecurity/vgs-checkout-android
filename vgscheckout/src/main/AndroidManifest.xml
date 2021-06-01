@@ -4,6 +4,6 @@
 
     <application>
 
-        <activity android:name=".CheckoutActivity" />
+        <activity android:name=".ui.CheckoutActivity" />
     </application>
 </manifest>
