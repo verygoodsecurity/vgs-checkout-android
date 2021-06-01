@@ -1,5 +1,6 @@
 package com.verygoodsecurity.vgscheckout.config.networking.request.core
 
+// TODO: Add comments
 enum class VGSCheckoutDataMergePolicy {
 
     FLAT,
