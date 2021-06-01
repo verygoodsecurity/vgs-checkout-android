@@ -7,16 +7,16 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 class VGSVaultRouteConfig private constructor(
-    override val environment: Environment,
+    override val environment: String,
     override val requestConfig: VGSVaultRequestConfig
 ) : RouteConfig<VGSVaultRequestConfig>() {
 
     class Builder {
 
-        private var environment = Environment.SANDBOX
+        private var environment = Environment.SANDBOX.rawValue
         private var requestConfig = VGSVaultRequestConfig.Builder().build()
 
-        fun setEnvironment(environment: Environment) = this.apply {
+        fun setEnvironment(environment: String) = this.apply {
             this.environment = environment
         }
 

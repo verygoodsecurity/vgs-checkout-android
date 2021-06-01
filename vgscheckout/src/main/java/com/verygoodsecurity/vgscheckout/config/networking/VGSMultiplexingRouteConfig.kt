@@ -7,13 +7,13 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 class VGSMultiplexingRouteConfig private constructor(
-    override val environment: Environment,
+    override val environment: String,
     override val requestConfig: VGSMultiplexingRequestConfig
 ) : RouteConfig<VGSMultiplexingRequestConfig>() {
 
     class Builder {
 
-        private val environment = Environment.SANDBOX
+        private val environment = Environment.SANDBOX.rawValue
         private val requestConfig = VGSMultiplexingRequestConfig.Builder().build()
 
         fun build() = VGSMultiplexingRouteConfig(environment, requestConfig)
