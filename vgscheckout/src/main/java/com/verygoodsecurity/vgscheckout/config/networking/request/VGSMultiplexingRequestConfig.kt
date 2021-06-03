@@ -6,7 +6,6 @@ import com.verygoodsecurity.vgscheckout.config.networking.request.core.VGSChecko
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 
-@Suppress("PARCELABLE_PRIMARY_CONSTRUCTOR_IS_EMPTY")
 @Parcelize
 class VGSMultiplexingRequestConfig private constructor(
     override val path: String = "",
