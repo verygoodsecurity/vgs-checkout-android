@@ -1,7 +1,8 @@
 package com.verygoodsecurity.vgscheckout.util
 
 import android.content.Context
-import com.verygoodsecurity.vgscheckout.VGSCheckoutForm
+import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfiguration
+import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutVaultRouteConfiguration
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 
 /**
@@ -9,9 +10,14 @@ import com.verygoodsecurity.vgscollect.core.VGSCollect
  */
 internal class CollectProvider {
 
-    fun get(context: Context, config: VGSCheckoutForm): VGSCollect {
-        return VGSCollect.Builder(context, config.tenantID)
-            .setEnvironment(config.routeConfig.environment)
+    fun get(
+        context: Context,
+        vaultID: String,
+        environment: String,
+        config: CheckoutConfiguration
+    ): VGSCollect {
+        return VGSCollect.Builder(context, vaultID)
+            .setEnvironment(environment)
             .create()
     }
 }

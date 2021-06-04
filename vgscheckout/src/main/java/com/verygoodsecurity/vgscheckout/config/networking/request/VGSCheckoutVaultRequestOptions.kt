@@ -1,18 +1,18 @@
 package com.verygoodsecurity.vgscheckout.config.networking.request
 
-import com.verygoodsecurity.vgscheckout.config.networking.request.core.RequestConfig
+import android.os.Parcelable
 import com.verygoodsecurity.vgscheckout.config.networking.request.core.VGSCheckoutDataMergePolicy
 import com.verygoodsecurity.vgscheckout.config.networking.request.core.VGSCheckoutHTTPMethod
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 
 @Parcelize
-class VGSVaultRequestConfig private constructor(
-    override val path: String,
-    override val httpMethod: VGSCheckoutHTTPMethod,
-    override val extraData: Map<String, @RawValue Any>,
-    override val mergePolicy: VGSCheckoutDataMergePolicy
-) : RequestConfig() {
+class VGSCheckoutVaultRequestOptions private constructor(
+    val path: String,
+    val httpMethod: VGSCheckoutHTTPMethod,
+    val extraData: Map<String, @RawValue Any>,
+    val mergePolicy: VGSCheckoutDataMergePolicy
+) : Parcelable {
 
     class Builder {
 
@@ -37,6 +37,6 @@ class VGSVaultRequestConfig private constructor(
             this.mergePolicy = policy
         }
 
-        fun build() = VGSVaultRequestConfig(path, httpMethod, extraData, mergePolicy)
+        fun build() = VGSCheckoutVaultRequestOptions(path, httpMethod, extraData, mergePolicy)
     }
 }

@@ -1,65 +1,46 @@
 package com.verygoodsecurity.vgscheckout.ui
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.verygoodsecurity.vgscheckout.R
-import com.verygoodsecurity.vgscheckout.VGSCheckoutForm
-import com.verygoodsecurity.vgscheckout.config.networking.VGSMultiplexingRouteConfig
-import com.verygoodsecurity.vgscheckout.config.networking.VGSVaultRouteConfig
+import com.verygoodsecurity.vgscheckout.config.VGSCheckoutVaultConfiguration
 import com.verygoodsecurity.vgscheckout.util.CollectProvider
 import com.verygoodsecurity.vgscheckout.util.toCollectHTTPMethod
 import com.verygoodsecurity.vgscheckout.util.toCollectMergePolicy
 import com.verygoodsecurity.vgscheckout.view.CheckoutView
-import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.model.network.VGSRequest
 
 internal class CheckoutActivity : AppCompatActivity(R.layout.checkout_activity) {
 
-    private val formConfig: VGSCheckoutForm by lazy { requireExtra(EXTRA_KEY) }
-
-    private val collect: VGSCollect by lazy { CollectProvider().get(this, formConfig) }
+    private val vaultID: String by lazy { requireExtra(EXTRA_KEY_VAULT_ID) }
+    private val environment: String by lazy { requireExtra(EXTRA_KEY_ENVIRONMENT) }
+    private val config: VGSCheckoutVaultConfiguration by lazy { requireExtra(EXTRA_KEY_CONFIG) }
+    private val collect by lazy { CollectProvider().get(this, vaultID, environment, config) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         Log.d(
             CheckoutActivity::class.java.simpleName,
-            "CheckoutActivity::onCreate, tenantID = ${formConfig.tenantID}"
+            "CheckoutActivity::onCreate, vaultID = $vaultID"
         )
 
-        when (val config = formConfig.routeConfig) {
-            is VGSVaultRouteConfig -> {
-                Log.d("Test", "config is vault, build collect instance")
-                Log.d("Test", "extra data = ${config.requestConfig.extraData}")
-            }
-            is VGSMultiplexingRouteConfig -> {
-                Log.d("Test", "config is multiplexing, build collect instance")
-            }
-        }
-
         findViewById<CheckoutView>(R.id.cvForm)?.run {
-            with(formConfig.uiConfig) {
-                applyConfig(cardNumberConfig)
-                applyConfig(cardHolderConfig)
-                applyConfig(cardVerificationCodeConfig)
-                applyConfig(expirationDateConfig)
-                applyConfig(postalCodeConfig)
-            }
+
         }
     }
 
     private fun asyncSubmit() {
-        with(formConfig.routeConfig.requestConfig) {
+        with(config.routeConfig) {
             collect.asyncSubmit(
                 VGSRequest.VGSRequestBuilder()
-                    .setPath(path)
-                    .setCustomData(extraData)
-                    .setFieldNameMappingPolicy(mergePolicy.toCollectMergePolicy())
-                    .setMethod(httpMethod.toCollectHTTPMethod())
+                    .setPath(requestOptions.path)
+                    .setCustomData(requestOptions.extraData)
+                    .setFieldNameMappingPolicy(requestOptions.mergePolicy.toCollectMergePolicy())
+                    .setMethod(requestOptions.httpMethod.toCollectHTTPMethod())
                     .build()
             )
         }
@@ -67,17 +48,21 @@ internal class CheckoutActivity : AppCompatActivity(R.layout.checkout_activity) 
 
     companion object {
 
-        private const val EXTRA_KEY = "extra_checkout_config"
+        private const val EXTRA_KEY_VAULT_ID = "extra_checkout_vault_id"
+        private const val EXTRA_KEY_ENVIRONMENT = "extra_checkout_environment"
+        private const val EXTRA_KEY_CONFIG = "extra_checkout_config"
 
-        internal fun start(context: Context, formConfig: VGSCheckoutForm) {
-            context.startActivity(Intent(context, CheckoutActivity::class.java).apply {
-                putExtra(EXTRA_KEY, formConfig)
-            })
-        }
-
-        internal fun startForResult(activity: Activity, code: Int, formConfig: VGSCheckoutForm) {
+        internal fun startForResult(
+            activity: Activity,
+            code: Int,
+            vaultID: String,
+            environment: String,
+            config: VGSCheckoutVaultConfiguration
+        ) {
             activity.startActivityForResult(Intent(activity, CheckoutActivity::class.java).apply {
-                putExtra(EXTRA_KEY, formConfig)
+                putExtra(EXTRA_KEY_VAULT_ID, vaultID)
+                putExtra(EXTRA_KEY_ENVIRONMENT, environment)
+                putExtra(EXTRA_KEY_CONFIG, config)
             }, code)
         }
     }

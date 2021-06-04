@@ -3,9 +3,8 @@ package com.verygoodsecurity.democheckout
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.verygoodsecurity.vgscheckout.VGSCheckoutForm
-import com.verygoodsecurity.vgscheckout.config.networking.VGSVaultRouteConfig
-import com.verygoodsecurity.vgscheckout.config.networking.request.VGSVaultRequestConfig
+import com.verygoodsecurity.vgscheckout.VGSCheckout
+import com.verygoodsecurity.vgscheckout.config.VGSCheckoutVaultConfiguration
 
 class MainActivity : AppCompatActivity() {
 
@@ -14,16 +13,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         findViewById<TextView>(R.id.tvWelcome).setOnClickListener {
-            VGSCheckoutForm.Builder("some_tenant")
-                .setRouteConfig(
-                    VGSVaultRouteConfig.Builder()
-                        .setRequestConfig(
-                            VGSVaultRequestConfig.Builder().build()
-                        )
-                        .build()
-                )
-                .build()
-                .start(this)
+            VGSCheckout("some_tenant").present(
+                this,
+                1,
+                VGSCheckoutVaultConfiguration.Builder().build()
+            )
         }
     }
 }
