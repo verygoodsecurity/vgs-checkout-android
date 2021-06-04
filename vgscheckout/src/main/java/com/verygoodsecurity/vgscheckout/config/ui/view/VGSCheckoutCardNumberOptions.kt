@@ -4,7 +4,7 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.core.ViewConfig
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-class VGSPostalCodeConfig(override val contentPath: String) : ViewConfig() {
+class VGSCheckoutCardNumberOptions(override val contentPath: String) : ViewConfig() {
 
     class Builder {
 
@@ -14,6 +14,6 @@ class VGSPostalCodeConfig(override val contentPath: String) : ViewConfig() {
             this.contentPath = contentPath
         }
 
-        fun build() = VGSPostalCodeConfig(contentPath)
+        fun build() = VGSCheckoutCardNumberOptions(contentPath)
     }
 }

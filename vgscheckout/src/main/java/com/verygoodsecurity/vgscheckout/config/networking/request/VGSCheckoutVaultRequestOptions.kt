@@ -8,7 +8,6 @@ import kotlinx.parcelize.RawValue
 
 @Parcelize
 class VGSCheckoutVaultRequestOptions private constructor(
-    val path: String,
     val httpMethod: VGSCheckoutHTTPMethod,
     val extraData: Map<String, @RawValue Any>,
     val mergePolicy: VGSCheckoutDataMergePolicy
@@ -16,14 +15,9 @@ class VGSCheckoutVaultRequestOptions private constructor(
 
     class Builder {
 
-        private var path = ""
         private var httpMethod = VGSCheckoutHTTPMethod.POST
         private var extraData = emptyMap<String, Any>()
         private var mergePolicy = VGSCheckoutDataMergePolicy.NESTED_JSON
-
-        fun setPath(path: String) = apply {
-            this.path = path
-        }
 
         fun setHTTPMethod(method: VGSCheckoutHTTPMethod) = apply {
             this.httpMethod = method
@@ -37,6 +31,6 @@ class VGSCheckoutVaultRequestOptions private constructor(
             this.mergePolicy = policy
         }
 
-        fun build() = VGSCheckoutVaultRequestOptions(path, httpMethod, extraData, mergePolicy)
+        fun build() = VGSCheckoutVaultRequestOptions(httpMethod, extraData, mergePolicy)
     }
 }

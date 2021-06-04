@@ -28,9 +28,7 @@ internal class CheckoutActivity : AppCompatActivity(R.layout.checkout_activity) 
             "CheckoutActivity::onCreate, vaultID = $vaultID"
         )
 
-        findViewById<CheckoutView>(R.id.cvForm)?.run {
-
-        }
+        findViewById<CheckoutView>(R.id.cvForm)?.applyConfig(config.formConfig)
     }
 
     private fun asyncSubmit() {

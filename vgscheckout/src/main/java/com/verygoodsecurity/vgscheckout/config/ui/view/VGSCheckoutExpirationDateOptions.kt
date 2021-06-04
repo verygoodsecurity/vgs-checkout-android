@@ -4,7 +4,7 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.core.ViewConfig
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-class VGSExpirationDateConfig (override val contentPath: String) : ViewConfig() {
+class VGSCheckoutExpirationDateOptions (override val contentPath: String) : ViewConfig() {
 
     class Builder {
 
@@ -14,6 +14,6 @@ class VGSExpirationDateConfig (override val contentPath: String) : ViewConfig() 
             this.contentPath = contentPath
         }
 
-        fun build() = VGSExpirationDateConfig(contentPath)
+        fun build() = VGSCheckoutExpirationDateOptions(contentPath)
     }
 }
