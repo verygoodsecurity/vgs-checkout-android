@@ -7,7 +7,6 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.LinearLayout
-import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.core.content.ContextCompat
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutVaultFormConfiguration
@@ -35,6 +34,19 @@ class CheckoutView @JvmOverloads constructor(
     private val cvcLL: LinearLayout by lazy { findViewById(R.id.llCVC) }
     private val cvcEt: CardVerificationCodeEditText by lazy { findViewById(R.id.vgsEtCVC) }
 
+    private val defaultStrokeWidth by lazy { resources.getDimensionPixelSize(R.dimen.stoke_width) }
+
+    // Stroke colors
+    private val defaultStrokeColor by lazy {
+        ContextCompat.getColor(context, R.color.vgs_stroke_default_color)
+    }
+    private val highlightedStrokeColor by lazy {
+        ContextCompat.getColor(context, R.color.vgs_stroke_highlighted_color)
+    }
+    private val errorStrokeColor by lazy {
+        ContextCompat.getColor(context, R.color.vgs_stroke_error_color)
+    }
+
     init {
         inflate(context, R.layout.checkout_layout, this)
         initListeners()
@@ -48,14 +60,11 @@ class CheckoutView @JvmOverloads constructor(
     }
 
     override fun onFocusChange(v: View?, hasFocus: Boolean) {
-        val color = if (hasFocus) Color.BLUE else Color.TRANSPARENT
+        val color = if (hasFocus) highlightedStrokeColor else Color.TRANSPARENT
         when (v?.id) {
             R.id.vgsEtCardHolder -> applyStokeColor(
                 cardHolderLL,
-                if (hasFocus) Color.BLUE else ContextCompat.getColor(
-                    context,
-                    R.color.vgs_border_default_color
-                )
+                if (hasFocus) highlightedStrokeColor else defaultStrokeColor
             )
             R.id.vgsEtCardNumber -> applyStokeColor(cardNumberLL, color)
             R.id.vgsEtExpirationDate -> applyStokeColor(expireDateLL, color)
@@ -75,8 +84,6 @@ class CheckoutView @JvmOverloads constructor(
     }
 
     private fun applyStokeColor(target: View, color: Int) {
-        (target.background as? GradientDrawable)?.run {
-            setStroke(resources.getDimensionPixelSize(R.dimen.stoke_width), color)
-        }
+        (target.background as? GradientDrawable)?.setStroke(defaultStrokeWidth, color)
     }
 }

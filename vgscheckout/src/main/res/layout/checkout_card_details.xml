@@ -1,4 +1,4 @@
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/llCardDetails"
     android:layout_width="match_parent"
@@ -61,7 +61,7 @@
             android:id="@+id/viewDividerHorizontal"
             android:layout_width="0dp"
             android:layout_height="1dp"
-            android:background="@color/vgs_border_default_color"
+            android:background="@color/vgs_stroke_default_color"
             app:layout_constraintBottom_toBottomOf="@+id/guidelineHorizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -86,7 +86,7 @@
                 android:id="@+id/viewDividerVertical"
                 android:layout_width="@dimen/divider_size"
                 android:layout_height="0dp"
-                android:background="@color/vgs_border_default_color"
+                android:background="@color/vgs_stroke_default_color"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/guidelineVertical"
                 app:layout_constraintStart_toStartOf="@+id/guidelineVertical"
@@ -196,4 +196,4 @@
                 app:numberDivider=" " />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.appcompat.widget.LinearLayoutCompat>
+</LinearLayout>

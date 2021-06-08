@@ -4,5 +4,7 @@
     <color name="vgs_text_color">#40545F</color>
     <color name="vgs_text_hint">#C8D0DB</color>
 
-    <color name="vgs_border_default_color">#C8D0DB</color>
+    <color name="vgs_stroke_default_color">#C8D0DB</color>
+    <color name="vgs_stroke_highlighted_color">#579EFF</color>
+    <color name="vgs_stroke_error_color">#40CC0000</color>
 </resources>
