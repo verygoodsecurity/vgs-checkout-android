@@ -4,6 +4,8 @@
 
     <application>
 
-        <activity android:name=".ui.CheckoutActivity" />
+        <activity
+            android:name=".ui.CheckoutActivity"
+            android:theme="@style/VGSCheckout" />
     </application>
 </manifest>

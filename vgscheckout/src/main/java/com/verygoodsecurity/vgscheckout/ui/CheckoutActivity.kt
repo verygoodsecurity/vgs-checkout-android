@@ -28,14 +28,17 @@ internal class CheckoutActivity : AppCompatActivity(R.layout.checkout_activity) 
             "CheckoutActivity::onCreate, vaultID = $vaultID"
         )
 
-        findViewById<CheckoutView>(R.id.cvForm)?.applyConfig(config.formConfig)
+        findViewById<CheckoutView>(R.id.cvForm)?.let {
+            it.applyConfig(config.formConfig)
+            it.bindViews(collect)
+        }
     }
 
     private fun asyncSubmit() {
         with(config.routeConfig) {
             collect.asyncSubmit(
                 VGSRequest.VGSRequestBuilder()
-                    .setPath(requestOptions.path)
+                    .setPath(path)
                     .setCustomData(requestOptions.extraData)
                     .setFieldNameMappingPolicy(requestOptions.mergePolicy.toCollectMergePolicy())
                     .setMethod(requestOptions.httpMethod.toCollectHTTPMethod())

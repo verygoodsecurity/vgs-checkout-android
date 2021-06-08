@@ -1,0 +1,21 @@
+<resources>
+
+    <style name="VGSCheckout" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+
+        <item name="colorSecondary">@color/vgs_color_secondary</item>
+
+        <item name="android:textColorSecondary">@color/vgs_text_secondary</item>
+
+        <item name="textAppearanceCaption">@style/VGSCheckout.TextAppearance.Caption</item>
+        <item name="textAppearanceSubtitle1">@style/VGSCheckout.TextAppearance.Subtitle1</item>
+    </style>
+
+    <!--    Text styles-->
+    <style name="VGSCheckout.TextAppearance.Caption" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="fontFamily">@font/inter_semi_bold</item>
+    </style>
+
+    <style name="VGSCheckout.TextAppearance.Subtitle1" parent="TextAppearance.MaterialComponents.Subtitle1">
+        <item name="fontFamily">@font/inter_semi_bold</item>
+    </style>
+</resources>
