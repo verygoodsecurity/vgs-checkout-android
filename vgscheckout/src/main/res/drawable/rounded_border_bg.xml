@@ -6,5 +6,5 @@
 
     <stroke
         android:width="@dimen/stoke_width"
-        android:color="@color/vgs_stroke_default_color" />
+        android:color="@color/vgs_checkout_stroke_default_color" />
 </shape>

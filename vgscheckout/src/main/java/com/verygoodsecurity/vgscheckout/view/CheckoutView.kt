@@ -38,13 +38,13 @@ class CheckoutView @JvmOverloads constructor(
 
     // Stroke colors
     private val defaultStrokeColor by lazy {
-        ContextCompat.getColor(context, R.color.vgs_stroke_default_color)
+        ContextCompat.getColor(context, R.color.vgs_checkout_stroke_default_color)
     }
     private val highlightedStrokeColor by lazy {
-        ContextCompat.getColor(context, R.color.vgs_stroke_highlighted_color)
+        ContextCompat.getColor(context, R.color.vgs_checkout_stroke_highlighted_color)
     }
     private val errorStrokeColor by lazy {
-        ContextCompat.getColor(context, R.color.vgs_stroke_error_color)
+        ContextCompat.getColor(context, R.color.vgs_checkout_stroke_error_color)
     }
 
     init {

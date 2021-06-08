@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="vgs_color_secondary">#40545F</color>
-    <color name="vgs_text_color">#40545F</color>
-    <color name="vgs_text_hint">#C8D0DB</color>
+    <color name="vgs_checkout_color_primary">#145FF5</color>
+    <color name="vgs_checkout_color_secondary">#40545F</color>
+    <color name="vgs_checkout_color_accent">#40545F</color>
 
-    <color name="vgs_stroke_default_color">#C8D0DB</color>
-    <color name="vgs_stroke_highlighted_color">#579EFF</color>
-    <color name="vgs_stroke_error_color">#40CC0000</color>
+    <color name="vgs_checkout_text_color">#40545F</color>
+    <color name="vgs_checkout_text_hint">#C8D0DB</color>
+
+    <color name="vgs_checkout_stroke_default_color">#C8D0DB</color>
+    <color name="vgs_checkout_stroke_highlighted_color">#579EFF</color>
+    <color name="vgs_checkout_stroke_error_color">#40CC0000</color>
+
+    <color name="vgs_checkout_pay_enabled_background">#145FF5</color>
+    <color name="vgs_checkout_pay_disabled_background">#88aff9</color>
 </resources>

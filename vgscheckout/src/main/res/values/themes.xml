@@ -2,10 +2,12 @@
 
     <style name="VGSCheckout" parent="Theme.MaterialComponents.DayNight.NoActionBar">
 
-        <item name="colorSecondary">@color/vgs_color_secondary</item>
+        <item name="colorPrimary">@color/vgs_checkout_color_primary</item>
+        <item name="colorSecondary">@color/vgs_checkout_color_secondary</item>
+        <item name="colorAccent">@color/vgs_checkout_color_accent</item>
 
-        <item name="android:textColorPrimary">@color/vgs_text_color</item>
-        <item name="android:textColorSecondary">@color/vgs_text_color</item>
+        <item name="android:textColorPrimary">@color/vgs_checkout_text_color</item>
+        <item name="android:textColorSecondary">@color/vgs_checkout_text_color</item>
 
         <item name="textAppearanceCaption">@style/VGSCheckout.TextAppearance.Caption</item>
         <item name="textAppearanceSubtitle1">@style/VGSCheckout.TextAppearance.Subtitle1</item>
@@ -24,8 +26,8 @@
 
     <!--    VGS Input Fields Styles-->
     <style name="VGSCheckout.InputField" parent="VGSCheckout.TextAppearance.Subtitle1">
-        <item name="textColor">@color/vgs_text_color</item>
-        <item name="android:textColor">@color/vgs_text_color</item>
+        <item name="textColor">@color/vgs_checkout_text_color</item>
+        <item name="android:textColor">@color/vgs_checkout_text_color</item>
         <item name="textAppearance">?attr/textAppearanceSubtitle1</item>
     </style>
 </resources>

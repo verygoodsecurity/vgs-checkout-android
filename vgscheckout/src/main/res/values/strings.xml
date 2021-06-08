@@ -14,4 +14,6 @@
 
     <string name="vgs_checkout_card_cvc_subtitle">Security code</string>
     <string name="vgs_checkout_card_cvc_hint">CVC</string>
+
+    <string name="vgs_checkout_pay_button_title">Pay</string>
 </resources>
