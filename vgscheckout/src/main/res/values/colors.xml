@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="vgs_color_secondary">#145FF5</color>
-    <color name="vgs_text_secondary">#40545F</color>
+    <color name="vgs_color_secondary">#40545F</color>
+    <color name="vgs_text_color">#40545F</color>
     <color name="vgs_text_hint">#C8D0DB</color>
 
     <color name="vgs_border_default_color">#C8D0DB</color>

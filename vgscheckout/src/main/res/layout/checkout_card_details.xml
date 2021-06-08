@@ -10,6 +10,7 @@
     <com.google.android.material.textview.MaterialTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/inter_semi_bold"
         android:text="@string/vgs_checkout_card_details_title"
         android:textAppearance="?attr/textAppearanceSubtitle1" />
 
@@ -25,16 +26,18 @@
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_semi_bold"
             android:text="@string/vgs_checkout_card_holder_subtitle"
             android:textAllCaps="true"
             android:textAppearance="?attr/textAppearanceCaption" />
 
         <com.verygoodsecurity.vgscollect.widget.PersonNameEditText
             android:id="@+id/vgsEtCardHolder"
+            style="@style/VGSCheckout.InputField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
-            android:nextFocusForward="@id/vgsEtCardNumber"
+            android:nextFocusDown="@id/vgsEtCardNumber"
             android:padding="0dp"
             app:hint="@string/vgs_checkout_card_holder_hint"
             app:imeOptions="actionNext" />
@@ -104,12 +107,14 @@
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter_semi_bold"
                     android:text="@string/vgs_checkout_card_date_subtitle"
                     android:textAllCaps="true"
                     android:textAppearance="?attr/textAppearanceCaption" />
 
                 <com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
                     android:id="@+id/vgsEtExpirationDate"
+                    style="@style/VGSCheckout.InputField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
@@ -137,18 +142,22 @@
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter_semi_bold"
                     android:text="@string/vgs_checkout_card_cvc_subtitle"
                     android:textAllCaps="true"
                     android:textAppearance="?attr/textAppearanceCaption" />
 
                 <com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
                     android:id="@+id/vgsEtCVC"
+                    style="@style/VGSCheckout.InputField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
                     android:padding="0dp"
                     app:hint="@string/vgs_checkout_card_cvc_hint"
-                    app:imeOptions="actionDone" />
+                    app:imeOptions="actionDone"
+                    app:previewIconGravity="end"
+                    app:previewIconVisibility="always" />
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -168,19 +177,23 @@
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_semi_bold"
                 android:text="@string/vgs_checkout_card_number_subtitle"
                 android:textAllCaps="true"
                 android:textAppearance="?attr/textAppearanceCaption" />
 
             <com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
                 android:id="@+id/vgsEtCardNumber"
+                style="@style/VGSCheckout.InputField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
-                android:nextFocusLeft="@+id/vgsEtExpirationDate"
+                android:nextFocusDown="@+id/vgsEtExpirationDate"
                 android:padding="0dp"
+                app:cardBrandIconGravity="end"
                 app:hint="@string/vgs_checkout_card_number_hint"
-                app:imeOptions="actionNext" />
+                app:imeOptions="actionNext"
+                app:numberDivider=" " />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.appcompat.widget.LinearLayoutCompat>

@@ -4,7 +4,8 @@
 
         <item name="colorSecondary">@color/vgs_color_secondary</item>
 
-        <item name="android:textColorSecondary">@color/vgs_text_secondary</item>
+        <item name="android:textColorPrimary">@color/vgs_text_color</item>
+        <item name="android:textColorSecondary">@color/vgs_text_color</item>
 
         <item name="textAppearanceCaption">@style/VGSCheckout.TextAppearance.Caption</item>
         <item name="textAppearanceSubtitle1">@style/VGSCheckout.TextAppearance.Subtitle1</item>
@@ -12,10 +13,19 @@
 
     <!--    Text styles-->
     <style name="VGSCheckout.TextAppearance.Caption" parent="TextAppearance.MaterialComponents.Caption">
-        <item name="fontFamily">@font/inter_semi_bold</item>
+        <item name="fontFamily">@font/inter_regular</item>
+        <item name="android:fontFamily">@font/inter_regular</item>
     </style>
 
     <style name="VGSCheckout.TextAppearance.Subtitle1" parent="TextAppearance.MaterialComponents.Subtitle1">
-        <item name="fontFamily">@font/inter_semi_bold</item>
+        <item name="fontFamily">@font/inter_regular</item>
+        <item name="android:fontFamily">@font/inter_regular</item>
+    </style>
+
+    <!--    VGS Input Fields Styles-->
+    <style name="VGSCheckout.InputField" parent="VGSCheckout.TextAppearance.Subtitle1">
+        <item name="textColor">@color/vgs_text_color</item>
+        <item name="android:textColor">@color/vgs_text_color</item>
+        <item name="textAppearance">?attr/textAppearanceSubtitle1</item>
     </style>
 </resources>
