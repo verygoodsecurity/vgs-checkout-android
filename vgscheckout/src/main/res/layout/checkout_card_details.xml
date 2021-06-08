@@ -115,7 +115,7 @@
                     android:background="@android:color/transparent"
                     android:nextFocusDown="@id/vgsEtCVC"
                     android:padding="0dp"
-                    app:datePattern="MM/YY"
+                    app:datePattern="MM/yy"
                     app:datePickerModes="input"
                     app:hint="@string/vgs_checkout_card_date_hint"
                     app:imeOptions="actionNext"
