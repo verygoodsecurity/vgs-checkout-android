@@ -1,8 +1,6 @@
 package com.verygoodsecurity.vgscheckout.view
 
 import android.content.Context
-import android.graphics.Color
-import android.graphics.drawable.GradientDrawable
 import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
@@ -11,6 +9,8 @@ import androidx.core.content.ContextCompat
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutVaultFormConfiguration
 import com.verygoodsecurity.vgscollect.core.VGSCollect
+import com.verygoodsecurity.vgscollect.core.model.state.FieldState
+import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
 import com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
 import com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
 import com.verygoodsecurity.vgscollect.widget.PersonNameEditText
@@ -20,7 +20,8 @@ class CheckoutView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : FrameLayout(context, attrs, defStyleAttr), View.OnFocusChangeListener {
+) : FrameLayout(context, attrs, defStyleAttr), View.OnFocusChangeListener,
+    OnFieldStateChangeListener {
 
     private val cardHolderLL: LinearLayout by lazy { findViewById(R.id.llCardHolder) }
     private val cardHolderEt: PersonNameEditText by lazy { findViewById(R.id.vgsEtCardHolder) }
@@ -57,19 +58,19 @@ class CheckoutView @JvmOverloads constructor(
         cardNumberEt.onFocusChangeListener = this
         expireDateEt.onFocusChangeListener = this
         cvcEt.onFocusChangeListener = this
+
+        cardHolderEt.setOnFieldStateChangeListener(this)
+        cardNumberEt.setOnFieldStateChangeListener(this)
+        expireDateEt.setOnFieldStateChangeListener(this)
+        cvcEt.setOnFieldStateChangeListener(this)
     }
 
     override fun onFocusChange(v: View?, hasFocus: Boolean) {
-        val color = if (hasFocus) highlightedStrokeColor else Color.TRANSPARENT
-        when (v?.id) {
-            R.id.vgsEtCardHolder -> applyStokeColor(
-                cardHolderLL,
-                if (hasFocus) highlightedStrokeColor else defaultStrokeColor
-            )
-            R.id.vgsEtCardNumber -> applyStokeColor(cardNumberLL, color)
-            R.id.vgsEtExpirationDate -> applyStokeColor(expireDateLL, color)
-            R.id.vgsEtCVC -> applyStokeColor(cvcLL, color)
-        }
+
+    }
+
+    override fun onStateChange(state: FieldState) {
+
     }
 
     fun applyConfig(config: VGSCheckoutVaultFormConfiguration) {
@@ -81,9 +82,5 @@ class CheckoutView @JvmOverloads constructor(
         collect.bindView(cardNumberEt)
         collect.bindView(expireDateEt)
         collect.bindView(cvcEt)
-    }
-
-    private fun applyStokeColor(target: View, color: Int) {
-        (target.background as? GradientDrawable)?.setStroke(defaultStrokeWidth, color)
     }
 }

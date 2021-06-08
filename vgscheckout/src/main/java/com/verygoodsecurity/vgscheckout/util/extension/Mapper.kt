@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscheckout.util
+package com.verygoodsecurity.vgscheckout.util.extension
 
 import com.verygoodsecurity.vgscheckout.config.networking.request.core.VGSCheckoutDataMergePolicy
 import com.verygoodsecurity.vgscheckout.config.networking.request.core.VGSCheckoutHTTPMethod

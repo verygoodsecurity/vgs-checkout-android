@@ -8,8 +8,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutVaultConfiguration
 import com.verygoodsecurity.vgscheckout.util.CollectProvider
-import com.verygoodsecurity.vgscheckout.util.toCollectHTTPMethod
-import com.verygoodsecurity.vgscheckout.util.toCollectMergePolicy
+import com.verygoodsecurity.vgscheckout.util.extension.toCollectHTTPMethod
+import com.verygoodsecurity.vgscheckout.util.extension.toCollectMergePolicy
 import com.verygoodsecurity.vgscheckout.view.CheckoutView
 import com.verygoodsecurity.vgscollect.core.model.network.VGSRequest
 
