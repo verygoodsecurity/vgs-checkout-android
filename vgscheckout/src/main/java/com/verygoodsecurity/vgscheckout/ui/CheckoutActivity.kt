@@ -3,6 +3,7 @@ package com.verygoodsecurity.vgscheckout.ui
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutVaultConfiguration
@@ -23,11 +24,19 @@ internal class CheckoutActivity : AppCompatActivity(R.layout.checkout_activity),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        disableScreenshots()
         initView()
     }
 
     override fun onPayClicked() {
         asyncSubmit()
+    }
+
+    private fun disableScreenshots() {
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_SECURE,
+            WindowManager.LayoutParams.FLAG_SECURE
+        )
     }
 
     private fun initView() {
