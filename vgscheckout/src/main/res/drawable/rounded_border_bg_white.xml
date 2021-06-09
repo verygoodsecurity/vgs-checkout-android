@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <solid android:color="@color/vgs_checkout_input_field_enabled_background" />
+
+    <corners android:radius="@dimen/margin_padding_size_small" />
+
+    <stroke
+        android:width="@dimen/stoke_width"
+        android:color="@color/vgs_checkout_stroke_default" />
+</shape>

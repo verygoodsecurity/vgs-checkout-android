@@ -11,6 +11,7 @@ import com.google.android.material.button.MaterialButton
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutVaultFormConfiguration
 import com.verygoodsecurity.vgscheckout.util.extension.applyStokeColor
+import com.verygoodsecurity.vgscheckout.util.extension.disable
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState.CardHolderNameState
@@ -47,13 +48,13 @@ class CheckoutView @JvmOverloads constructor(
 
     // Stroke colors
     private val defaultStrokeColor by lazy {
-        ContextCompat.getColor(context, R.color.vgs_checkout_stroke_default_color)
+        ContextCompat.getColor(context, R.color.vgs_checkout_stroke_default)
     }
     private val highlightedStrokeColor by lazy {
-        ContextCompat.getColor(context, R.color.vgs_checkout_stroke_highlighted_color)
+        ContextCompat.getColor(context, R.color.vgs_checkout_stroke_highlighted)
     }
     private val errorStrokeColor by lazy {
-        ContextCompat.getColor(context, R.color.vgs_checkout_stroke_error_color)
+        ContextCompat.getColor(context, R.color.vgs_checkout_stroke_error)
     }
 
     init {
@@ -111,10 +112,8 @@ class CheckoutView @JvmOverloads constructor(
     private fun updatePayButtonState() {
         payMB.isEnabled = isAllInputValid()
         payMB.setOnClickListener {
-            cardHolderEt.isEnabled = false
-            cardNumberEt.isEnabled = false
-            expireDateEt.isEnabled = false
-            cvcEt.isEnabled = false
+            cardHolderLL.disable()
+            cardDetailsCL.disable()
             onPayListener?.onPayClicked()
         }
     }

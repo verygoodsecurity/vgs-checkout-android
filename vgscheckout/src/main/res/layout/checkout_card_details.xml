@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:animateLayoutChanges="true"
-    android:background="@drawable/rounded_border_bg"
+    android:background="@drawable/rounded_border_bg_white"
     android:clipToPadding="false"
     android:orientation="vertical"
     android:padding="@dimen/margin_padding_size_medium">
@@ -22,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_padding_size_xsmall"
-        android:background="@drawable/rounded_border_bg"
+        android:background="@drawable/input_field_background_state_list"
         android:orientation="vertical"
         android:padding="@dimen/margin_padding_size_small">
 
@@ -43,7 +43,8 @@
             android:nextFocusDown="@id/vgsEtCardNumber"
             android:padding="0dp"
             app:hint="@string/vgs_checkout_card_holder_hint"
-            app:imeOptions="actionNext" />
+            app:imeOptions="actionNext"
+            app:text="Dmytro" />
     </LinearLayout>
 
     <!--   NOTE: order of items inside this layout is IMPORTANT.-->
@@ -52,7 +53,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_padding_size_small"
-        android:background="@drawable/rounded_border_bg">
+        android:background="@drawable/input_field_background_state_list">
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guidelineHorizontal"
@@ -65,7 +66,7 @@
             android:id="@+id/viewDividerHorizontal"
             android:layout_width="0dp"
             android:layout_height="1dp"
-            android:background="@color/vgs_checkout_stroke_default_color"
+            android:background="@color/vgs_checkout_stroke_default"
             app:layout_constraintBottom_toBottomOf="@+id/guidelineHorizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -90,7 +91,7 @@
                 android:id="@+id/viewDividerVertical"
                 android:layout_width="@dimen/divider_size"
                 android:layout_height="0dp"
-                android:background="@color/vgs_checkout_stroke_default_color"
+                android:background="@color/vgs_checkout_stroke_default"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/guidelineVertical"
                 app:layout_constraintStart_toStartOf="@+id/guidelineVertical"
@@ -159,7 +160,8 @@
                     app:hint="@string/vgs_checkout_card_cvc_hint"
                     app:imeOptions="actionDone"
                     app:previewIconGravity="end"
-                    app:previewIconVisibility="always" />
+                    app:previewIconVisibility="always"
+                    app:text="111" />
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -194,7 +196,8 @@
                 app:cardBrandIconGravity="end"
                 app:hint="@string/vgs_checkout_card_number_hint"
                 app:imeOptions="actionNext"
-                app:numberDivider=" " />
+                app:numberDivider=" "
+                app:text="4111111111111111" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -204,7 +207,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_padding_size_micro"
         android:textAppearance="?textAppearanceBody2"
-        android:textColor="@color/vgs_checkout_error_text_color"
+        android:textColor="@color/vgs_checkout_error_text"
         android:visibility="gone"
         tools:text="@string/vgs_checkout_card_cvc_error"
         tools:visibility="visible" />
@@ -219,7 +222,7 @@
         android:enabled="false"
         android:text="@string/vgs_checkout_pay_button_title"
         android:textColor="@android:color/white"
-        app:backgroundTint="@color/pay_button_background"
+        app:backgroundTint="@color/pay_button_background_state_list"
         app:icon="@drawable/ic_lock_white_10dp"
         app:iconGravity="textStart"
         app:iconPadding="@dimen/margin_padding_size_small"
