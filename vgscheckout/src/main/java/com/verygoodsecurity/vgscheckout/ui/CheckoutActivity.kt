@@ -3,7 +3,6 @@ package com.verygoodsecurity.vgscheckout.ui
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutVaultConfiguration
@@ -11,9 +10,11 @@ import com.verygoodsecurity.vgscheckout.util.CollectProvider
 import com.verygoodsecurity.vgscheckout.util.extension.toCollectHTTPMethod
 import com.verygoodsecurity.vgscheckout.util.extension.toCollectMergePolicy
 import com.verygoodsecurity.vgscheckout.view.CheckoutView
+import com.verygoodsecurity.vgscheckout.view.OnPayClickListener
 import com.verygoodsecurity.vgscollect.core.model.network.VGSRequest
 
-internal class CheckoutActivity : AppCompatActivity(R.layout.checkout_activity) {
+internal class CheckoutActivity : AppCompatActivity(R.layout.checkout_activity),
+    OnPayClickListener {
 
     private val vaultID: String by lazy { requireExtra(EXTRA_KEY_VAULT_ID) }
     private val environment: String by lazy { requireExtra(EXTRA_KEY_ENVIRONMENT) }
@@ -22,15 +23,18 @@ internal class CheckoutActivity : AppCompatActivity(R.layout.checkout_activity) 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        initView()
+    }
 
-        Log.d(
-            CheckoutActivity::class.java.simpleName,
-            "CheckoutActivity::onCreate, vaultID = $vaultID"
-        )
+    override fun onPayClicked() {
+        asyncSubmit()
+    }
 
+    private fun initView() {
         findViewById<CheckoutView>(R.id.cvForm)?.let {
             it.applyConfig(config.formConfig)
             it.bindViews(collect)
+            it.onPayListener = this
         }
     }
 

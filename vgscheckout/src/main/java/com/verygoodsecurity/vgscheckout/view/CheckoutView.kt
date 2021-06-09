@@ -7,6 +7,7 @@ import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import com.google.android.material.button.MaterialButton
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutVaultFormConfiguration
 import com.verygoodsecurity.vgscheckout.util.extension.applyStokeColor
@@ -23,7 +24,8 @@ class CheckoutView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : FrameLayout(context, attrs, defStyleAttr), OnFieldStateChangeListener {
+) : FrameLayout(context, attrs, defStyleAttr), OnFieldStateChangeListener,
+    View.OnFocusChangeListener {
 
     // Root layouts that holds border
     private val cardHolderLL: LinearLayout by lazy { findViewById(R.id.llCardHolder) }
@@ -37,7 +39,11 @@ class CheckoutView @JvmOverloads constructor(
     private val expireDateEt: ExpirationDateEditText by lazy { findViewById(R.id.vgsEtExpirationDate) }
     private val cvcEt: CardVerificationCodeEditText by lazy { findViewById(R.id.vgsEtCVC) }
 
+    private val payMB: MaterialButton by lazy { findViewById(R.id.mbPay) }
+
     private val defaultStrokeWidth by lazy { resources.getDimensionPixelSize(R.dimen.stoke_width) }
+
+    internal var onPayListener: OnPayClickListener? = null
 
     // Stroke colors
     private val defaultStrokeColor by lazy {
@@ -63,10 +69,15 @@ class CheckoutView @JvmOverloads constructor(
     }
 
     override fun onStateChange(state: FieldState) {
+        updatePayButtonState()
         when (state) {
             is CardHolderNameState -> handleCardHolderStateChange(state)
             else -> handleCardDetailsStateChanged()
         }
+    }
+
+    override fun onFocusChange(v: View?, hasFocus: Boolean) {
+
     }
 
     fun applyConfig(@Suppress("UNUSED_PARAMETER") config: VGSCheckoutVaultFormConfiguration) {
@@ -86,6 +97,7 @@ class CheckoutView @JvmOverloads constructor(
 
     private fun handleCardDetailsStateChanged() {
         updateCardDetailsBorderColor()
+        // TODO: Handle error message
     }
 
     private fun updateCardDetailsBorderColor() {
@@ -96,9 +108,31 @@ class CheckoutView @JvmOverloads constructor(
         }
     }
 
+    private fun updatePayButtonState() {
+        payMB.isEnabled = isAllInputValid()
+        payMB.setOnClickListener {
+            cardHolderEt.isEnabled = false
+            cardNumberEt.isEnabled = false
+            expireDateEt.isEnabled = false
+            cvcEt.isEnabled = false
+            onPayListener?.onPayClicked()
+        }
+    }
+
     private fun getStrokeColor(vararg state: FieldState?): Int = when {
         state.any { it?.isValid == false && !it.isEmpty && !it.hasFocus } -> errorStrokeColor
         state.any { it?.hasFocus == true } -> highlightedStrokeColor
         else -> defaultStrokeColor
     }
+
+    private fun isAllInputValid(): Boolean {
+        return isInputValid(
+            cardHolderEt.getState(),
+            cardNumberEt.getState(),
+            expireDateEt.getState(),
+            cvcEt.getState()
+        )
+    }
+
+    private fun isInputValid(vararg state: FieldState?): Boolean = state.all { it?.isValid == true }
 }
