@@ -1,8 +1,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/llCardDetails"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:animateLayoutChanges="true"
     android:background="@drawable/rounded_border_bg"
     android:clipToPadding="false"
     android:orientation="vertical"
@@ -46,6 +48,7 @@
 
     <!--   NOTE: order of items inside this layout is IMPORTANT.-->
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clCardDetails"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_padding_size_small"
@@ -194,6 +197,17 @@
                 app:numberDivider=" " />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tvCardDetailsError"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_padding_size_micro"
+        android:textAppearance="?textAppearanceBody2"
+        android:textColor="@color/vgs_checkout_error_text_color"
+        android:visibility="gone"
+        tools:text="@string/vgs_checkout_card_cvc_error"
+        tools:visibility="visible" />
 
     <!--    We can add style to allow developers to override it if needed-->
     <com.google.android.material.button.MaterialButton

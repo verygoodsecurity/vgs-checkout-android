@@ -5,6 +5,7 @@
     <color name="vgs_checkout_color_accent">#40545F</color>
 
     <color name="vgs_checkout_text_color">#40545F</color>
+    <color name="vgs_checkout_error_text_color">#CC0000</color>
     <color name="vgs_checkout_text_hint">#C8D0DB</color>
 
     <color name="vgs_checkout_stroke_default_color">#C8D0DB</color>

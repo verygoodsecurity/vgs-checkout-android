@@ -10,11 +10,17 @@
         <item name="android:textColorSecondary">@color/vgs_checkout_text_color</item>
 
         <item name="textAppearanceCaption">@style/VGSCheckout.TextAppearance.Caption</item>
+        <item name="textAppearanceBody2">@style/VGSCheckout.TextAppearance.Body2</item>
         <item name="textAppearanceSubtitle1">@style/VGSCheckout.TextAppearance.Subtitle1</item>
     </style>
 
     <!--    Text styles-->
     <style name="VGSCheckout.TextAppearance.Caption" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="fontFamily">@font/inter_regular</item>
+        <item name="android:fontFamily">@font/inter_regular</item>
+    </style>
+
+    <style name="VGSCheckout.TextAppearance.Body2" parent="TextAppearance.MaterialComponents.Body2">
         <item name="fontFamily">@font/inter_regular</item>
         <item name="android:fontFamily">@font/inter_regular</item>
     </style>

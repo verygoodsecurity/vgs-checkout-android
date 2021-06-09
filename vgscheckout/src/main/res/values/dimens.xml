@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <dimen name="margin_padding_size_micro">4dp</dimen>
     <dimen name="margin_padding_size_small">8dp</dimen>
     <dimen name="margin_padding_size_xsmall">12dp</dimen>
     <dimen name="margin_padding_size_medium">16dp</dimen>
