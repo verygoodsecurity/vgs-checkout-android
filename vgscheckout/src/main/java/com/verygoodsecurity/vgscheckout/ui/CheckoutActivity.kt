@@ -3,6 +3,7 @@ package com.verygoodsecurity.vgscheckout.ui
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.verygoodsecurity.vgscheckout.R
@@ -12,10 +13,13 @@ import com.verygoodsecurity.vgscheckout.util.extension.toCollectHTTPMethod
 import com.verygoodsecurity.vgscheckout.util.extension.toCollectMergePolicy
 import com.verygoodsecurity.vgscheckout.view.CheckoutView
 import com.verygoodsecurity.vgscheckout.view.OnPayClickListener
+import com.verygoodsecurity.vgscollect.VGSCollectLogger
+import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
 import com.verygoodsecurity.vgscollect.core.model.network.VGSRequest
+import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse
 
 internal class CheckoutActivity : AppCompatActivity(R.layout.checkout_activity),
-    OnPayClickListener {
+    OnPayClickListener, VgsCollectResponseListener {
 
     private val vaultID: String by lazy { requireExtra(EXTRA_KEY_VAULT_ID) }
     private val environment: String by lazy { requireExtra(EXTRA_KEY_ENVIRONMENT) }
@@ -25,6 +29,7 @@ internal class CheckoutActivity : AppCompatActivity(R.layout.checkout_activity),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         disableScreenshots()
+        setupCollect()
         initView()
     }
 
@@ -32,11 +37,21 @@ internal class CheckoutActivity : AppCompatActivity(R.layout.checkout_activity),
         asyncSubmit()
     }
 
+    override fun onResponse(response: VGSResponse?) {
+        Log.d("CheckoutActivity", response.toString())
+    }
+
     private fun disableScreenshots() {
         window.setFlags(
             WindowManager.LayoutParams.FLAG_SECURE,
             WindowManager.LayoutParams.FLAG_SECURE
         )
+    }
+
+    private fun setupCollect() {
+        VGSCollectLogger.isEnabled = true
+        VGSCollectLogger.logLevel = VGSCollectLogger.Level.DEBUG
+        collect.addOnResponseListeners(this)
     }
 
     private fun initView() {
@@ -52,9 +67,9 @@ internal class CheckoutActivity : AppCompatActivity(R.layout.checkout_activity),
             collect.asyncSubmit(
                 VGSRequest.VGSRequestBuilder()
                     .setPath(path)
+                    .setMethod(requestOptions.httpMethod.toCollectHTTPMethod())
                     .setCustomData(requestOptions.extraData)
                     .setFieldNameMappingPolicy(requestOptions.mergePolicy.toCollectMergePolicy())
-                    .setMethod(requestOptions.httpMethod.toCollectHTTPMethod())
                     .build()
             )
         }

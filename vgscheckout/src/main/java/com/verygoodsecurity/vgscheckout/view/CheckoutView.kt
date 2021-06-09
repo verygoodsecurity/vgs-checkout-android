@@ -25,8 +25,7 @@ class CheckoutView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : FrameLayout(context, attrs, defStyleAttr), OnFieldStateChangeListener,
-    View.OnFocusChangeListener {
+) : FrameLayout(context, attrs, defStyleAttr), OnFieldStateChangeListener {
 
     // Root layouts that holds border
     private val cardHolderLL: LinearLayout by lazy { findViewById(R.id.llCardHolder) }
@@ -77,12 +76,11 @@ class CheckoutView @JvmOverloads constructor(
         }
     }
 
-    override fun onFocusChange(v: View?, hasFocus: Boolean) {
-
-    }
-
-    fun applyConfig(@Suppress("UNUSED_PARAMETER") config: VGSCheckoutVaultFormConfiguration) {
-
+    fun applyConfig(config: VGSCheckoutVaultFormConfiguration) {
+        cardHolderEt.setFieldName(config.cardHolderOptions.contentPath)
+        cardNumberEt.setFieldName(config.cardNumberOptions.contentPath)
+        expireDateEt.setFieldName(config.expirationDateOptions.contentPath)
+        cvcEt.setFieldName(config.cvcOptions.contentPath)
     }
 
     fun bindViews(collect: VGSCollect) {

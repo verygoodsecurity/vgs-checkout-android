@@ -4,7 +4,7 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.core.ViewConfig
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-class VGSCheckoutCVCOptions(override val contentPath: String) : ViewConfig() {
+class VGSCheckoutCVCOptions private constructor(override val contentPath: String) : ViewConfig() {
 
     class Builder {
 
