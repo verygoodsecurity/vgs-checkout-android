@@ -1,7 +1,11 @@
 package com.verygoodsecurity.vgscheckout.config.ui
 
 import android.os.Parcelable
-import com.verygoodsecurity.vgscheckout.config.ui.view.*
+import com.verygoodsecurity.vgscheckout.config.ui.view.cardholder.VGSCheckoutCardHolderOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.cardnumber.VGSCheckoutCardNumberOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.cvc.VGSCheckoutCVCOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.expiration.VGSCheckoutExpirationDateOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.postalcode.VGSCheckoutPostalCodeOptions
 import kotlinx.parcelize.Parcelize
 
 @Parcelize

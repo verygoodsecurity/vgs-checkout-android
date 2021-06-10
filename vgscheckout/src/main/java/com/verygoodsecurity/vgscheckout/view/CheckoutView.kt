@@ -81,9 +81,19 @@ class CheckoutView @JvmOverloads constructor(
     }
 
     fun applyConfig(config: VGSCheckoutVaultFormConfiguration) {
+        // Apply card holder config
         cardHolderEt.setFieldName(config.cardHolderOptions.fieldName)
+
+        // Apply card number config
         cardNumberEt.setFieldName(config.cardNumberOptions.fieldName)
+        config.cardNumberOptions.validCardBrands.let {
+            // TODO: set valid brands
+        }
+
+        // Apply expiration date config
         expireDateEt.setFieldName(config.expirationDateOptions.fieldName)
+
+        // Apply cvc config
         cvcEt.setFieldName(config.cvcOptions.fieldName)
     }
 
@@ -98,7 +108,8 @@ class CheckoutView @JvmOverloads constructor(
         cardHolderLL.disable()
         cardDetailsCL.disable()
         payMB.text = resources.getString(R.string.vgs_checkout_pay_button_processing_title)
-        payMB.icon = ContextCompat.getDrawable(context, R.drawable.animated_ic_progress_circle_white_16dp)
+        payMB.icon =
+            ContextCompat.getDrawable(context, R.drawable.animated_ic_progress_circle_white_16dp)
         (payMB.icon as Animatable).start()
         onPayListener?.onPayClicked()
     }
