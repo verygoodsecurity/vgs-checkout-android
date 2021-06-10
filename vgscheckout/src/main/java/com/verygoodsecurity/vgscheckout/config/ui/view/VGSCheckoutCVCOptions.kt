@@ -4,16 +4,16 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.core.ViewConfig
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-class VGSCheckoutCVCOptions private constructor(override val contentPath: String) : ViewConfig() {
+class VGSCheckoutCVCOptions private constructor(override val fieldName: String) : ViewConfig() {
 
     class Builder {
 
-        private var contentPath: String = ""
+        private var fieldName: String = ""
 
-        fun setContentPath(contentPath: String) = this.apply {
-            this.contentPath = contentPath
+        fun setFieldName(fieldName: String) = this.apply {
+            this.fieldName = fieldName
         }
 
-        fun build() = VGSCheckoutCVCOptions(contentPath)
+        fun build() = VGSCheckoutCVCOptions(fieldName)
     }
 }

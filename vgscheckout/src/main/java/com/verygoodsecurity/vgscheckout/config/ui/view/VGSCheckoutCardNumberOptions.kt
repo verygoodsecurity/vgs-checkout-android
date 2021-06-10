@@ -5,17 +5,17 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 class VGSCheckoutCardNumberOptions private constructor(
-    override val contentPath: String
+    override val fieldName: String
 ) : ViewConfig() {
 
     class Builder {
 
-        private var contentPath: String = ""
+        private var fieldName: String = ""
 
-        fun setContentPath(contentPath: String) = this.apply {
-            this.contentPath = contentPath
+        fun setFieldName(fieldName: String) = this.apply {
+            this.fieldName = fieldName
         }
 
-        fun build() = VGSCheckoutCardNumberOptions(contentPath)
+        fun build() = VGSCheckoutCardNumberOptions(fieldName)
     }
 }

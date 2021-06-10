@@ -81,10 +81,10 @@ class CheckoutView @JvmOverloads constructor(
     }
 
     fun applyConfig(config: VGSCheckoutVaultFormConfiguration) {
-        cardHolderEt.setFieldName(config.cardHolderOptions.contentPath)
-        cardNumberEt.setFieldName(config.cardNumberOptions.contentPath)
-        expireDateEt.setFieldName(config.expirationDateOptions.contentPath)
-        cvcEt.setFieldName(config.cvcOptions.contentPath)
+        cardHolderEt.setFieldName(config.cardHolderOptions.fieldName)
+        cardNumberEt.setFieldName(config.cardNumberOptions.fieldName)
+        expireDateEt.setFieldName(config.expirationDateOptions.fieldName)
+        cvcEt.setFieldName(config.cvcOptions.fieldName)
     }
 
     fun bindViews(collect: VGSCollect) {

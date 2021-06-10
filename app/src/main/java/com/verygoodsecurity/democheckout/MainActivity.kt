@@ -31,22 +31,22 @@ class MainActivity : AppCompatActivity() {
         val formConfig = VGSCheckoutVaultFormConfiguration.Builder()
             .setCardHolderOptions(
                 VGSCheckoutCardHolderOptions.Builder()
-                    .setContentPath("card_data.personal_data.cardHolder")
+                    .setFieldName("card_data.personal_data.cardHolder")
                     .build()
             )
             .setCardNumberOptions(
                 VGSCheckoutCardNumberOptions.Builder()
-                    .setContentPath("cardNumber")
+                    .setFieldName("cardNumber")
                     .build()
             )
             .setExpirationDateOptions(
                 VGSCheckoutExpirationDateOptions.Builder()
-                    .setContentPath("ard_data.personal_data.secret.expDate")
+                    .setFieldName("ard_data.personal_data.secret.expDate")
                     .build()
             )
             .setCVCOptions(
                 VGSCheckoutCVCOptions.Builder()
-                    .setContentPath("card_data.cardCvc")
+                    .setFieldName("card_data.cardCvc")
                     .build()
             )
             .build()

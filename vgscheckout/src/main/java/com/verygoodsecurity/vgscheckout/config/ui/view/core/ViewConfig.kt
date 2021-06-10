@@ -4,5 +4,5 @@ import android.os.Parcelable
 
 abstract class ViewConfig: Parcelable {
 
-    abstract val contentPath: String
+    abstract val fieldName: String
 }
