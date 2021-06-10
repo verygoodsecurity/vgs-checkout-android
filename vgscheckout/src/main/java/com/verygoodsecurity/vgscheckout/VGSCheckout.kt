@@ -4,6 +4,8 @@ import android.app.Activity
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutVaultConfiguration
 import com.verygoodsecurity.vgscheckout.ui.CheckoutActivity
 
+const val CHECKOUT_RESULT_EXTRA_KEY = "checkout_result_extra_key"
+
 private const val DEFAULT_ENVIRONMENT = "sandbox"
 
 class VGSCheckout constructor(

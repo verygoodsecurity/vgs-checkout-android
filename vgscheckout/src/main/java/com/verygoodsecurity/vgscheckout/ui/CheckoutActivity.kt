@@ -3,11 +3,12 @@ package com.verygoodsecurity.vgscheckout.ui
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import com.verygoodsecurity.vgscheckout.CHECKOUT_RESULT_EXTRA_KEY
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutVaultConfiguration
+import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 import com.verygoodsecurity.vgscheckout.util.CollectProvider
 import com.verygoodsecurity.vgscheckout.util.extension.toCollectHTTPMethod
 import com.verygoodsecurity.vgscheckout.util.extension.toCollectMergePolicy
@@ -33,12 +34,19 @@ internal class CheckoutActivity : AppCompatActivity(R.layout.checkout_activity),
         initView()
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        setResult(Activity.RESULT_CANCELED)
+    }
+
     override fun onPayClicked() {
         asyncSubmit()
     }
 
     override fun onResponse(response: VGSResponse?) {
-        Log.d("CheckoutActivity", response.toString())
+        setResult(Activity.RESULT_OK, Intent().apply {
+            putExtra(CHECKOUT_RESULT_EXTRA_KEY, VGSCheckoutResult(response?.code, response?.body))
+        })
         finish()
     }
 
