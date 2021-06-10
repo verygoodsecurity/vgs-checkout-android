@@ -39,6 +39,7 @@ internal class CheckoutActivity : AppCompatActivity(R.layout.checkout_activity),
 
     override fun onResponse(response: VGSResponse?) {
         Log.d("CheckoutActivity", response.toString())
+        finish()
     }
 
     private fun disableScreenshots() {

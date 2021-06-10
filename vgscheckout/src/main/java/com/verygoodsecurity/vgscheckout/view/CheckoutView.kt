@@ -1,6 +1,7 @@
 package com.verygoodsecurity.vgscheckout.view
 
 import android.content.Context
+import android.graphics.drawable.Animatable
 import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
@@ -66,6 +67,9 @@ class CheckoutView @JvmOverloads constructor(
         cardNumberEt.setOnFieldStateChangeListener(this)
         expireDateEt.setOnFieldStateChangeListener(this)
         cvcEt.setOnFieldStateChangeListener(this)
+
+        // Init pay button click listener
+        payMB.setOnClickListener { handlePayClicked() }
     }
 
     override fun onStateChange(state: FieldState) {
@@ -90,6 +94,15 @@ class CheckoutView @JvmOverloads constructor(
         collect.bindView(cvcEt)
     }
 
+    private fun handlePayClicked() {
+        cardHolderLL.disable()
+        cardDetailsCL.disable()
+        payMB.text = resources.getString(R.string.vgs_checkout_pay_button_processing_title)
+        payMB.icon = ContextCompat.getDrawable(context, R.drawable.animated_ic_progress_circle_white_16dp)
+        (payMB.icon as Animatable).start()
+        onPayListener?.onPayClicked()
+    }
+
     private fun handleCardHolderStateChange(state: CardHolderNameState) {
         cardHolderLL.applyStokeColor(defaultStrokeWidth, getStrokeColor(state))
     }
@@ -109,11 +122,6 @@ class CheckoutView @JvmOverloads constructor(
 
     private fun updatePayButtonState() {
         payMB.isEnabled = isAllInputValid()
-        payMB.setOnClickListener {
-            cardHolderLL.disable()
-            cardDetailsCL.disable()
-            onPayListener?.onPayClicked()
-        }
     }
 
     private fun getStrokeColor(vararg state: FieldState?): Int = when {
