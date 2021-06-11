@@ -26,8 +26,8 @@ internal fun VGSCheckoutHTTPMethod.toCollectHTTPMethod() = when (this) {
 
 internal fun VGSCheckoutDataMergePolicy.toCollectMergePolicy() = when (this) {
     VGSCheckoutDataMergePolicy.NESTED_JSON -> VGSCollectFieldNameMappingPolicy.NESTED_JSON
-    VGSCheckoutDataMergePolicy.NESTED_JSON_WITH_ARRAY_OVERWRITE -> VGSCollectFieldNameMappingPolicy.NESTED_JSON_WITH_ARRAYS_OVERWRITE
-    VGSCheckoutDataMergePolicy.NESTED_JSON_WITH_ARRAY_MERGE -> VGSCollectFieldNameMappingPolicy.NESTED_JSON_WITH_ARRAYS_MERGE
+    VGSCheckoutDataMergePolicy.NESTED_JSON_WITH_ARRAYS_OVERWRITE -> VGSCollectFieldNameMappingPolicy.NESTED_JSON_WITH_ARRAYS_OVERWRITE
+    VGSCheckoutDataMergePolicy.NESTED_JSON_WITH_ARRAYS_MERGE -> VGSCollectFieldNameMappingPolicy.NESTED_JSON_WITH_ARRAYS_MERGE
 }
 //endregion
 
