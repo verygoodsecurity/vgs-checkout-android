@@ -8,6 +8,7 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.cardnumber.model.VGSCheck
 import com.verygoodsecurity.vgscheckout.config.ui.view.cardnumber.model.VGSCheckoutChecksumAlgorithm
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.model.VGSCollectFieldNameMappingPolicy
+import com.verygoodsecurity.vgscollect.util.extension.toCardBrand
 import com.verygoodsecurity.vgscollect.view.card.BrandParams
 import com.verygoodsecurity.vgscollect.view.card.CardBrand
 import com.verygoodsecurity.vgscollect.view.card.CardType
@@ -61,10 +62,15 @@ internal fun VGSCheckoutBrandParams.toCollectBrandParams() = BrandParams(
     rangeCVV
 )
 
-internal fun VGSCheckoutCardBrand.toCollectCardBrand() = CardBrand(
-    regex,
-    cardBrandName,
-    drawableResId,
-    params.toCollectBrandParams()
-)
+internal fun VGSCheckoutCardBrand.toCollectCardBrand(): CardBrand {
+    if (cardType != VGSCheckoutCardType.UNKNOWN) {
+        return cardType.toCollectCardType().toCardBrand()
+    }
+    return CardBrand(
+        regex,
+        cardBrandName,
+        drawableResId,
+        params.toCollectBrandParams()
+    )
+}
 //endregion

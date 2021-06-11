@@ -7,20 +7,20 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 class VGSCheckoutCardNumberOptions private constructor(
     override val fieldName: String,
-    val validCardBrands: List<VGSCheckoutCardBrand>?
+    val validCardBrands: Array<VGSCheckoutCardBrand>?
 ) : ViewConfig() {
 
     class Builder {
 
         private var fieldName: String = ""
-        private var validCardBrands: List<VGSCheckoutCardBrand>? = null
+        private var validCardBrands: Array<VGSCheckoutCardBrand>? = null
 
         fun setFieldName(fieldName: String) = this.apply {
             this.fieldName = fieldName
         }
 
         fun setValidCardBrands(vararg brand: VGSCheckoutCardBrand) = this.apply {
-            this.validCardBrands = brand.toList()
+            this.validCardBrands = arrayOf(*brand)
         }
 
         fun build() = VGSCheckoutCardNumberOptions(fieldName, validCardBrands)

@@ -13,6 +13,7 @@ import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutVaultFormConfiguration
 import com.verygoodsecurity.vgscheckout.util.extension.applyStokeColor
 import com.verygoodsecurity.vgscheckout.util.extension.disable
+import com.verygoodsecurity.vgscheckout.util.extension.toCollectCardBrand
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState.CardHolderNameState
@@ -86,8 +87,8 @@ class CheckoutView @JvmOverloads constructor(
 
         // Apply card number config
         cardNumberEt.setFieldName(config.cardNumberOptions.fieldName)
-        config.cardNumberOptions.validCardBrands.let {
-            // TODO: set valid brands
+        config.cardNumberOptions.validCardBrands?.let { brands ->
+            cardNumberEt.setValidCardBrands(*brands.map { it.toCollectCardBrand() }.toTypedArray())
         }
 
         // Apply expiration date config
