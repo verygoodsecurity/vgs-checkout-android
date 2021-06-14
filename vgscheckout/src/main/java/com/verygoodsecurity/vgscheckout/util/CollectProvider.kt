@@ -9,6 +9,7 @@ import com.verygoodsecurity.vgscollect.core.VGSCollect
  */
 internal class CollectProvider {
 
+    // TODO: Generate different setups, depend on config(CNAME, Satellite etc.)
     fun get(
         context: Context,
         vaultID: String,
