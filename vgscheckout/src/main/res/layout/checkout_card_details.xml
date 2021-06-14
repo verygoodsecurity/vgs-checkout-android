@@ -128,7 +128,8 @@
                     app:datePickerModes="input"
                     app:hint="@string/vgs_checkout_card_date_hint"
                     app:imeOptions="actionNext"
-                    app:inputType="date" />
+                    app:inputType="date"
+                    app:text="12/21"/>
             </LinearLayout>
 
             <LinearLayout
