@@ -16,6 +16,7 @@
 
     <string name="vgs_checkout_card_cvc_subtitle">Security code</string>
     <string name="vgs_checkout_card_cvc_hint">CVC</string>
+    <string name="vgs_checkout_card_cvv_hint">CVV</string>
     <string name="vgs_checkout_card_cvc_error">Enter a valid card verification code</string>
 
     <string name="vgs_checkout_pay_button_title">Pay</string>
