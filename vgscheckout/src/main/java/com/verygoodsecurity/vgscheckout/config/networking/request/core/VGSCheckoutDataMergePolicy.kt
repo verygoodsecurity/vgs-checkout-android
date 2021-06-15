@@ -26,11 +26,11 @@ enum class VGSCheckoutDataMergePolicy {
      * Map fieldName to JSON with arrays if index is specified. Also merge extra data array with
      * collect array data at the same nested level if possible.
      */
-    NESTED_JSON_WITH_ARRAY_OVERWRITE,
+    NESTED_JSON_WITH_ARRAYS_OVERWRITE,
 
     /**
      * Map fieldName to JSON with arrays if index is specified. Completely overwrite extra data
      * array with collect array data.
      */
-    NESTED_JSON_WITH_ARRAY_MERGE,
+    NESTED_JSON_WITH_ARRAYS_MERGE,
 }

@@ -20,6 +20,7 @@ class MapperKtTest {
 
     @Test
     fun toCollectHTTPMethod_mappedCorrectly() {
+        // Assert
         assertEquals(VGSCheckoutHTTPMethod.POST.toCollectHTTPMethod(), HTTPMethod.POST)
         assertEquals(VGSCheckoutHTTPMethod.DELETE.toCollectHTTPMethod(), HTTPMethod.DELETE)
         assertEquals(VGSCheckoutHTTPMethod.GET.toCollectHTTPMethod(), HTTPMethod.GET)
@@ -29,6 +30,11 @@ class MapperKtTest {
 
     @Test
     fun toCollectMergePolicy_mappedCorrectly() {
+        // Assert
+        assertEquals(
+            VGSCheckoutDataMergePolicy.FLAT_JSON.toCollectMergePolicy(),
+            VGSCollectFieldNameMappingPolicy.FLAT_JSON
+        )
         assertEquals(
             VGSCheckoutDataMergePolicy.NESTED_JSON.toCollectMergePolicy(),
             VGSCollectFieldNameMappingPolicy.NESTED_JSON
@@ -45,6 +51,7 @@ class MapperKtTest {
 
     @Test
     fun toCollectChecksumAlgorithm_mappedCorrectly() {
+        // Assert
         assertEquals(
             VGSCheckoutChecksumAlgorithm.ANY.toCollectChecksumAlgorithm(),
             ChecksumAlgorithm.ANY
@@ -61,6 +68,7 @@ class MapperKtTest {
 
     @Test
     fun toCollectCardType_mappedCorrectly() {
+        // Assert
         assertEquals(VGSCheckoutCardType.ELO.toCollectCardType(), CardType.ELO)
         assertEquals(VGSCheckoutCardType.VISA_ELECTRON.toCollectCardType(), CardType.VISA_ELECTRON)
         assertEquals(VGSCheckoutCardType.MAESTRO.toCollectCardType(), CardType.MAESTRO)
