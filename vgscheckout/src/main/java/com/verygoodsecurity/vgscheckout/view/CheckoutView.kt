@@ -78,15 +78,26 @@ class CheckoutView @JvmOverloads constructor(
 
         // Apply card number config
         cardNumberEt.setFieldName(config.cardNumberOptions.fieldName)
-        config.cardNumberOptions.validCardBrands?.let { brands ->
-            cardNumberEt.setValidCardBrands(*brands.map { it.toCollectCardBrand() }.toTypedArray())
-        }
+        applyValidCardBrands(config)
 
         // Apply expiration date config
         expireDateEt.setFieldName(config.expirationDateOptions.fieldName)
 
         // Apply cvc config
         cvcEt.setFieldName(config.cvcOptions.fieldName)
+    }
+
+    private fun applyValidCardBrands(config: VGSCheckoutVaultFormConfiguration) {
+        //version 1
+        config.cardNumberOptions.validCardBrands?.let { brands ->
+            cardNumberEt.setValidCardBrands(*brands.map { it.toCollectCardBrand() }.toTypedArray())
+            cardNumberEt.setValidCardBrands(*brands.map { it.toCollectCardBrand() }.toTypedArray())
+        }
+        //version 2
+        config.cardNumberOptions.new_validCardBrands?.let { brands ->
+            cardNumberEt.setValidCardBrands(*brands.map { it.toCollectCardBrand() }.toTypedArray())
+            cardNumberEt.setValidCardBrands(*brands.map { it.toCollectCardBrand() }.toTypedArray())
+        }
     }
 
     fun bindViews(collect: VGSCollect) {

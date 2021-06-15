@@ -12,6 +12,7 @@ import com.verygoodsecurity.vgscollect.R
  * @param rangeNumber The array of the card's number which a brand supported.
  * @param rangeCVV The array of the card's CVC number which a brand supported.
  */
+//we remove this class from checkout
 @Suppress("MemberVisibilityCanBePrivate", "SpellCheckingInspection", "unused")
 enum class VGSCheckoutCardType(val regex:String,
                                val resId:Int,

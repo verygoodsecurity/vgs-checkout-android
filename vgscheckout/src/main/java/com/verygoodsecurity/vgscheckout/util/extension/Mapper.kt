@@ -1,5 +1,6 @@
 package com.verygoodsecurity.vgscheckout.util.extension
 
+import com.verygoodsecurity.vgscheckout.PaymentCardBrand
 import com.verygoodsecurity.vgscheckout.config.networking.request.core.VGSCheckoutDataMergePolicy
 import com.verygoodsecurity.vgscheckout.config.networking.request.core.VGSCheckoutHTTPMethod
 import com.verygoodsecurity.vgscheckout.config.ui.view.cardnumber.model.VGSCheckoutBrandParams
@@ -74,3 +75,11 @@ internal fun VGSCheckoutCardBrand.toCollectCardBrand(): CardBrand {
     )
 }
 //endregion
+
+
+//new approach
+internal fun PaymentCardBrand.toCollectBrandParams(): BrandParams = BrandParams(mask)
+
+internal fun PaymentCardBrand.toCollectCardBrand(): CardBrand {
+    return CardBrand(regex, "", 0, toCollectBrandParams())
+}

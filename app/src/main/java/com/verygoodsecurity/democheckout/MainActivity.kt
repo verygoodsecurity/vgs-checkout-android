@@ -6,8 +6,7 @@ import android.os.Bundle
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.verygoodsecurity.vgscheckout.CHECKOUT_RESULT_EXTRA_KEY
-import com.verygoodsecurity.vgscheckout.VGSCheckout
+import com.verygoodsecurity.vgscheckout.*
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutVaultConfiguration
 import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutVaultRouteConfiguration
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutVaultFormConfiguration
@@ -39,7 +38,16 @@ class MainActivity : AppCompatActivity() {
             .setCardNumberOptions(
                 VGSCheckoutCardNumberOptions.Builder()
                     .setFieldName("cardNumber")
+                    //version 1
                     .setValidCardBrands(VGSCheckoutCardType.VISA.toCardBrand())
+                    //version 2
+                    .setValidCardBrands(VISA(), AMEX(), MasterCard())
+                    //or
+                    .setValidCardBrands(
+                        PaymentCardBrand.Visa(),
+                        PaymentCardBrand.AmericanExpress(),
+                        PaymentCardBrand.Mastercard()
+                    )
                     .build()
             )
             .setExpirationDateOptions(
