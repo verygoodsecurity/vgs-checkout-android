@@ -21,7 +21,6 @@ import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 
 class MainActivity : AppCompatActivity() {
 
-    // TODO: Ask about contentPath vs fieldName (IMPORTANT)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
