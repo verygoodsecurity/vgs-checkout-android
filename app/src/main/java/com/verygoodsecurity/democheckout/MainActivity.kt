@@ -13,9 +13,6 @@ import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutVaultFormConfigurat
 import com.verygoodsecurity.vgscheckout.config.ui.view.cvc.VGSCheckoutCVCOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.cardholder.VGSCheckoutCardHolderOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.cardnumber.VGSCheckoutCardNumberOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.cardnumber.extension.toCardBrand
-import com.verygoodsecurity.vgscheckout.config.ui.view.cardnumber.model.VGSCheckoutCardType
-import com.verygoodsecurity.vgscheckout.config.ui.view.cardnumber.model.VGSCheckoutChecksumAlgorithm
 import com.verygoodsecurity.vgscheckout.config.ui.view.expiration.VGSCheckoutExpirationDateOptions
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 
@@ -38,17 +35,6 @@ class MainActivity : AppCompatActivity() {
             .setCardNumberOptions(
                 VGSCheckoutCardNumberOptions.Builder()
                     .setFieldName("cardNumber")
-                    //version 1
-                    .setValidCardBrands(VGSCheckoutCardType.VISA.toCardBrand())
-                    //version 2
-                    .setValidCardBrands(
-                        PaymentCardBrand.AmericanExpress(),
-                        PaymentCardBrand.Custom(
-                            "^0000",
-                            "# # # #",
-                            VGSCheckoutChecksumAlgorithm.LUHN
-                        )
-                    )
                     .build()
             )
             .setExpirationDateOptions(

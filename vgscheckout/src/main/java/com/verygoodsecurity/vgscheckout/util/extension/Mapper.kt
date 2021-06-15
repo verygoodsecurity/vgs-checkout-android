@@ -1,11 +1,8 @@
 package com.verygoodsecurity.vgscheckout.util.extension
 
-import com.verygoodsecurity.vgscheckout.PaymentCardBrand
 import com.verygoodsecurity.vgscheckout.config.networking.request.core.VGSCheckoutDataMergePolicy
 import com.verygoodsecurity.vgscheckout.config.networking.request.core.VGSCheckoutHTTPMethod
-import com.verygoodsecurity.vgscheckout.config.ui.view.cardnumber.model.VGSCheckoutBrandParams
 import com.verygoodsecurity.vgscheckout.config.ui.view.cardnumber.model.VGSCheckoutCardBrand
-import com.verygoodsecurity.vgscheckout.config.ui.view.cardnumber.model.VGSCheckoutCardType
 import com.verygoodsecurity.vgscheckout.config.ui.view.cardnumber.model.VGSCheckoutChecksumAlgorithm
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.model.VGSCollectFieldNameMappingPolicy
@@ -14,7 +11,6 @@ import com.verygoodsecurity.vgscollect.view.card.BrandParams
 import com.verygoodsecurity.vgscollect.view.card.CardBrand
 import com.verygoodsecurity.vgscollect.view.card.CardType
 import com.verygoodsecurity.vgscollect.view.card.validation.payment.ChecksumAlgorithm
-
 
 //region Networking
 internal fun VGSCheckoutHTTPMethod.toCollectHTTPMethod() = when (this) {
@@ -40,47 +36,38 @@ internal fun VGSCheckoutChecksumAlgorithm.toCollectChecksumAlgorithm() = when (t
     VGSCheckoutChecksumAlgorithm.NONE -> ChecksumAlgorithm.NONE
 }
 
-internal fun VGSCheckoutCardType.toCollectCardType() = when (this) {
-    VGSCheckoutCardType.ELO -> CardType.ELO
-    VGSCheckoutCardType.VISA_ELECTRON -> CardType.VISA_ELECTRON
-    VGSCheckoutCardType.MAESTRO -> CardType.MAESTRO
-    VGSCheckoutCardType.FORBRUGSFORENINGEN -> CardType.FORBRUGSFORENINGEN
-    VGSCheckoutCardType.DANKORT -> CardType.DANKORT
-    VGSCheckoutCardType.VISA -> CardType.VISA
-    VGSCheckoutCardType.MASTERCARD -> CardType.MASTERCARD
-    VGSCheckoutCardType.AMERICAN_EXPRESS -> CardType.AMERICAN_EXPRESS
-    VGSCheckoutCardType.HIPERCARD -> CardType.HIPERCARD
-    VGSCheckoutCardType.DINCLUB -> CardType.DINCLUB
-    VGSCheckoutCardType.DISCOVER -> CardType.DISCOVER
-    VGSCheckoutCardType.UNIONPAY -> CardType.UNIONPAY
-    VGSCheckoutCardType.JCB -> CardType.JCB
-    VGSCheckoutCardType.UNKNOWN -> CardType.UNKNOWN
+internal fun ChecksumAlgorithm.toCheckoutChecksumAlgorithm() = when (this) {
+    ChecksumAlgorithm.ANY -> VGSCheckoutChecksumAlgorithm.ANY
+    ChecksumAlgorithm.LUHN -> VGSCheckoutChecksumAlgorithm.LUHN
+    ChecksumAlgorithm.NONE -> VGSCheckoutChecksumAlgorithm.NONE
 }
 
-internal fun VGSCheckoutBrandParams.toCollectBrandParams() = BrandParams(
+internal fun VGSCheckoutCardBrand.toCollectCardType() = when(this) {
+    is VGSCheckoutCardBrand.Elo -> CardType.ELO
+    is VGSCheckoutCardBrand.VisaElectron -> CardType.VISA_ELECTRON
+    is VGSCheckoutCardBrand.Maestro -> CardType.MAESTRO
+    is VGSCheckoutCardBrand.Forbtugsforeningen -> CardType.FORBRUGSFORENINGEN
+    is VGSCheckoutCardBrand.Dankort -> CardType.DANKORT
+    is VGSCheckoutCardBrand.Visa -> CardType.VISA
+    is VGSCheckoutCardBrand.Mastercard -> CardType.MASTERCARD
+    is VGSCheckoutCardBrand.AmericanExpress -> CardType.AMERICAN_EXPRESS
+    is VGSCheckoutCardBrand.Hypercard -> CardType.HIPERCARD
+    is VGSCheckoutCardBrand.Dinclub -> CardType.DINCLUB
+    is VGSCheckoutCardBrand.Discover -> CardType.DISCOVER
+    is VGSCheckoutCardBrand.Unipay -> CardType.UNIONPAY
+    is VGSCheckoutCardBrand.JCB -> CardType.JCB
+    else-> CardType.UNKNOWN
+}
+
+internal fun VGSCheckoutCardBrand.toCollectCardBrand() = when(this) {
+    is VGSCheckoutCardBrand.Custom -> CardBrand(regex, name, icon, toCollectBrandParams())
+    else -> toCollectCardType().toCardBrand()
+}
+
+internal fun VGSCheckoutCardBrand.toCollectBrandParams(): BrandParams = BrandParams(
     mask,
     algorithm.toCollectChecksumAlgorithm(),
-    rangeNumber,
-    rangeCVV
+    cardNumberLength,
+    securityCodeLength
 )
-
-internal fun VGSCheckoutCardBrand.toCollectCardBrand(): CardBrand {
-    if (cardType != VGSCheckoutCardType.UNKNOWN) {
-        return cardType.toCollectCardType().toCardBrand()
-    }
-    return CardBrand(
-        regex,
-        cardBrandName,
-        drawableResId,
-        params.toCollectBrandParams()
-    )
-}
 //endregion
-
-
-//new approach
-internal fun PaymentCardBrand.toCollectBrandParams(): BrandParams = BrandParams(mask)
-
-internal fun PaymentCardBrand.toCollectCardBrand(): CardBrand {
-    return CardBrand(regex, "", 0, toCollectBrandParams())
-}

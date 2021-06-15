@@ -88,14 +88,7 @@ class CheckoutView @JvmOverloads constructor(
     }
 
     private fun applyValidCardBrands(config: VGSCheckoutVaultFormConfiguration) {
-        //version 1
         config.cardNumberOptions.validCardBrands?.let { brands ->
-            cardNumberEt.setValidCardBrands(*brands.map { it.toCollectCardBrand() }.toTypedArray())
-            cardNumberEt.setValidCardBrands(*brands.map { it.toCollectCardBrand() }.toTypedArray())
-        }
-        //version 2
-        config.cardNumberOptions.new_validCardBrands?.let { brands ->
-            cardNumberEt.setValidCardBrands(*brands.map { it.toCollectCardBrand() }.toTypedArray())
             cardNumberEt.setValidCardBrands(*brands.map { it.toCollectCardBrand() }.toTypedArray())
         }
     }
