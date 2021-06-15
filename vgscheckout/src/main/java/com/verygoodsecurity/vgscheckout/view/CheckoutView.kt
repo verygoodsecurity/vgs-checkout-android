@@ -7,13 +7,10 @@ import android.view.View
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
 import com.google.android.material.button.MaterialButton
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutVaultFormConfiguration
-import com.verygoodsecurity.vgscheckout.util.extension.applyStokeColor
-import com.verygoodsecurity.vgscheckout.util.extension.disable
-import com.verygoodsecurity.vgscheckout.util.extension.toCollectCardBrand
+import com.verygoodsecurity.vgscheckout.util.extension.*
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState.CardHolderNameState
@@ -48,15 +45,9 @@ class CheckoutView @JvmOverloads constructor(
     internal var onPayListener: OnPayClickListener? = null
 
     // Stroke colors
-    private val defaultStrokeColor by lazy {
-        ContextCompat.getColor(context, R.color.vgs_checkout_stroke_default)
-    }
-    private val highlightedStrokeColor by lazy {
-        ContextCompat.getColor(context, R.color.vgs_checkout_stroke_highlighted)
-    }
-    private val errorStrokeColor by lazy {
-        ContextCompat.getColor(context, R.color.vgs_checkout_stroke_error)
-    }
+    private val defaultStrokeColor by lazy { getColor(R.color.vgs_checkout_stroke_default) }
+    private val highlightedStrokeColor by lazy { getColor(R.color.vgs_checkout_stroke_highlighted) }
+    private val errorStrokeColor by lazy { getColor(R.color.vgs_checkout_stroke_error) }
 
     init {
         inflate(context, R.layout.checkout_layout, this)
@@ -108,9 +99,8 @@ class CheckoutView @JvmOverloads constructor(
     private fun handlePayClicked() {
         cardHolderLL.disable()
         cardDetailsCL.disable()
-        payMB.text = resources.getString(R.string.vgs_checkout_pay_button_processing_title)
-        payMB.icon =
-            ContextCompat.getDrawable(context, R.drawable.animated_ic_progress_circle_white_16dp)
+        payMB.text = getString(R.string.vgs_checkout_pay_button_processing_title)
+        payMB.icon = getDrawable(R.drawable.animated_ic_progress_circle_white_16dp)
         (payMB.icon as Animatable).start()
         onPayListener?.onPayClicked()
     }
@@ -121,6 +111,7 @@ class CheckoutView @JvmOverloads constructor(
 
     private fun handleCardDetailsStateChanged() {
         updateCardDetailsBorderColor()
+        updateSecurityCodeHint()
         // TODO: Handle error message
     }
 
@@ -130,6 +121,18 @@ class CheckoutView @JvmOverloads constructor(
             dividerHorizontal.setBackgroundColor(this)
             dividerVertical.setBackgroundColor(this)
         }
+    }
+
+    private fun updateSecurityCodeHint() {
+        cvcEt.setHint(
+            getString(
+                if (cardNumberEt.isAmericanExpress()) {
+                    R.string.vgs_checkout_card_cvv_hint
+                } else {
+                    R.string.vgs_checkout_card_cvc_hint
+                }
+            )
+        )
     }
 
     private fun updatePayButtonState() {
