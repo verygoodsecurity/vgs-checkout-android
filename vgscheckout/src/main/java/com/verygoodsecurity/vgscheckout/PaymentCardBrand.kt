@@ -14,6 +14,9 @@ sealed class PaymentCardBrand : Parcelable {
 
     abstract val algorithm: VGSCheckoutChecksumAlgorithm
 
+    // Note: Does not use "data class" as this will broke private constructors restriction, just implement
+    // hashCode and equals using abstract fields)
+
     /**
      * Primary constructor is private so only AmericanExpress express can change it internal state.
      */
@@ -38,7 +41,7 @@ sealed class PaymentCardBrand : Parcelable {
      * Constructor require to specify behavior of this card brand
      */
     @Parcelize
-    class Custom(
+    class Custom constructor(
         override val regex: String,
         override val mask: String,
         override val algorithm: VGSCheckoutChecksumAlgorithm
