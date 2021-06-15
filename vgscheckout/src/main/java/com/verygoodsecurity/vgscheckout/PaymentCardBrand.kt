@@ -1,37 +1,46 @@
 package com.verygoodsecurity.vgscheckout
 
 import android.os.Parcelable
+import com.verygoodsecurity.vgscheckout.config.ui.view.cardnumber.model.VGSCheckoutChecksumAlgorithm
 import kotlinx.parcelize.Parcelize
 
-sealed class PaymentCardBrand(
-    open val regex: String,
-    open val mask: String,
-    //etc...
-) : Parcelable {
-    @Parcelize
-    data class AmericanExpress(
-        override val regex: String = "regex_amex",
-        override val mask: String = "mask_amex"
-    ) :
-        PaymentCardBrand(regex, mask)
+// TODO: Add drawableId, range, cvc, etc.
+// TODO: (PaymentCardBrand or PaymentCardType?) (VGSCheckoutCardBrand or VGSCheckoutCardType?)
+sealed class PaymentCardBrand : Parcelable {
 
-    @Parcelize
-    data class Visa(
-        override val regex: String = "regex_visa",
-        override val mask: String = "mask_visa"
-    ) :
-        PaymentCardBrand(regex, mask)
+    abstract val regex: String
 
+    abstract val mask: String
+
+    abstract val algorithm: VGSCheckoutChecksumAlgorithm
+
+    /**
+     * Primary constructor is private so only AmericanExpress express can change it internal state.
+     */
     @Parcelize
-    data class Mastercard(
-        override val regex: String = "regex_master",
-        override val mask: String = "mask_mastercard"
-    ) :
-        PaymentCardBrand(regex, mask)
+    class AmericanExpress private constructor(
+        override val regex: String,
+        override val mask: String,
+        override val algorithm: VGSCheckoutChecksumAlgorithm
+    ) : PaymentCardBrand() {
+
+        /**
+         * Public constructor does not allow override behavior that cannot change
+         */
+        constructor() : this(
+            "american_express_regex",
+            "american_express_mask",
+            VGSCheckoutChecksumAlgorithm.LUHN
+        )
+    }
+
+    /**
+     * Constructor require to specify behavior of this card brand
+     */
+    @Parcelize
+    class Custom(
+        override val regex: String,
+        override val mask: String,
+        override val algorithm: VGSCheckoutChecksumAlgorithm
+    ) : PaymentCardBrand()
 }
-
-typealias VISA = PaymentCardBrand.Visa
-typealias AMEX = PaymentCardBrand.AmericanExpress
-typealias MasterCard = PaymentCardBrand.Mastercard
-
-
