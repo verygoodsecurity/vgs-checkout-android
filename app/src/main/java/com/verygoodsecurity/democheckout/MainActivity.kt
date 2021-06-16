@@ -15,7 +15,6 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.cardholder.VGSCheckoutCar
 import com.verygoodsecurity.vgscheckout.config.ui.view.cardnumber.VGSCheckoutCardNumberOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.cardnumber.model.VGSCheckoutCardBrand
 import com.verygoodsecurity.vgscheckout.config.ui.view.cardnumber.model.VGSCheckoutChecksumAlgorithm
-import com.verygoodsecurity.vgscheckout.config.ui.view.cardnumber.model.VGSSetCardBrandsMode
 import com.verygoodsecurity.vgscheckout.config.ui.view.cvc.VGSCheckoutCVCOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.expiration.VGSCheckoutExpirationDateOptions
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
