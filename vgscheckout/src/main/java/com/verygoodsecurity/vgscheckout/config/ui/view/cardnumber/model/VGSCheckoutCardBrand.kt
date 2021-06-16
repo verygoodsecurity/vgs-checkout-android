@@ -10,28 +10,19 @@ import kotlinx.parcelize.Parcelize
 sealed class VGSCheckoutCardBrand : Parcelable {
 
     //region Fields
-    protected abstract val type: CardType
+    abstract val name: String
 
-    open val name: String
-        get() = type.name
+    abstract val icon: Int
 
-    open val icon: Int
-        get() = type.resId
+    abstract val regex: String
 
-    open val regex: String
-        get() = type.regex
+    abstract val mask: String
 
-    open val mask: String
-        get() = type.mask
+    abstract val cardNumberLength: Array<Int>
 
-    open val cardNumberLength: Array<Int>
-        get() = type.rangeNumber
+    abstract val securityCodeLength: Array<Int>
 
-    open val securityCodeLength: Array<Int>
-        get() = type.rangeCVV
-
-    open val algorithm: VGSCheckoutChecksumAlgorithm
-        get() = type.algorithm.toCheckoutChecksumAlgorithm()
+    abstract val algorithm: VGSCheckoutChecksumAlgorithm
     //endregion
 
     //region Object
@@ -42,119 +33,41 @@ sealed class VGSCheckoutCardBrand : Parcelable {
         other as VGSCheckoutCardBrand
 
         if (name != other.name) return false
-        if (icon != other.icon) return false
-        if (regex != other.regex) return false
-        if (mask != other.mask) return false
-        if (!cardNumberLength.contentEquals(other.cardNumberLength)) return false
-        if (!securityCodeLength.contentEquals(other.securityCodeLength)) return false
-        if (algorithm != other.algorithm) return false
 
         return true
     }
 
     override fun hashCode(): Int {
-        var result = name.hashCode()
-        result = 31 * result + icon
-        result = 31 * result + regex.hashCode()
-        result = 31 * result + mask.hashCode()
-        result = 31 * result + cardNumberLength.contentHashCode()
-        result = 31 * result + securityCodeLength.contentHashCode()
-        result = 31 * result + algorithm.hashCode()
-        return result
+        return name.hashCode()
+    }
+
+    override fun toString(): String {
+        return "VGSCheckoutCardBrand(name='$name', icon=$icon, regex='$regex', mask='$mask', cardNumberLength=${cardNumberLength.contentToString()}, securityCodeLength=${securityCodeLength.contentToString()}, algorithm=$algorithm)"
     }
     //endregion
 
     //region Utility Structures
-    @Parcelize
-    class Elo private constructor(override val type: CardType) : VGSCheckoutCardBrand() {
+    companion object {
 
-        constructor() : this(CardType.ELO)
+        val BRANDS = setOf(
+            Elo(),
+            VisaElectron(),
+            Maestro(),
+            Forbtugsforeningen(),
+            Dankort(),
+            Visa(),
+            AmericanExpress(),
+            Hipercard(),
+            Dinclub(),
+            Discover(),
+            Unionpay(),
+            JCB(),
+            Unknown(),
+        )
     }
 
     @Parcelize
-    class VisaElectron private constructor(override val type: CardType) : VGSCheckoutCardBrand() {
-
-        constructor() : this(CardType.VISA_ELECTRON)
-    }
-
-
-    @Parcelize
-    class Maestro private constructor(override val type: CardType) : VGSCheckoutCardBrand() {
-
-        constructor() : this(CardType.MAESTRO)
-    }
-
-    @Parcelize
-    class Forbtugsforeningen private constructor(override val type: CardType) :
-        VGSCheckoutCardBrand() {
-
-        constructor() : this(CardType.FORBRUGSFORENINGEN)
-    }
-
-    @Parcelize
-    class Dankort private constructor(override val type: CardType) : VGSCheckoutCardBrand() {
-
-        constructor() : this(CardType.DANKORT)
-    }
-
-    @Parcelize
-    class Visa private constructor(override val type: CardType) : VGSCheckoutCardBrand() {
-
-        constructor() : this(CardType.VISA)
-    }
-
-    @Parcelize
-    class Mastercard private constructor(override val type: CardType) : VGSCheckoutCardBrand() {
-
-        constructor() : this(CardType.MASTERCARD)
-    }
-
-    @Parcelize
-    class AmericanExpress private constructor(override val type: CardType) :
-        VGSCheckoutCardBrand() {
-
-        constructor() : this(CardType.AMERICAN_EXPRESS)
-    }
-
-    @Parcelize
-    class Hypercard private constructor(override val type: CardType) : VGSCheckoutCardBrand() {
-
-        constructor() : this(CardType.HIPERCARD)
-    }
-
-    @Parcelize
-    class Dinclub private constructor(override val type: CardType) : VGSCheckoutCardBrand() {
-
-        constructor() : this(CardType.DINCLUB)
-    }
-
-    @Parcelize
-    class Discover private constructor(override val type: CardType) : VGSCheckoutCardBrand() {
-
-        constructor() : this(CardType.DISCOVER)
-    }
-
-    @Parcelize
-    class Unipay private constructor(override val type: CardType) : VGSCheckoutCardBrand() {
-
-        constructor() : this(CardType.UNIONPAY)
-    }
-
-    @Parcelize
-    class JCB private constructor(override val type: CardType) : VGSCheckoutCardBrand() {
-
-        constructor() : this(CardType.JCB)
-    }
-
-    @Parcelize
-    class Unknown private constructor(override val type: CardType) : VGSCheckoutCardBrand() {
-
-        constructor() : this(CardType.UNKNOWN)
-    }
-
-    @Parcelize
-    class Custom private constructor(
-        override val type: CardType,
+    class Elo private constructor(
         override val name: String,
         @DrawableRes override val icon: Int,
         override val regex: String,
@@ -165,23 +78,353 @@ sealed class VGSCheckoutCardBrand : Parcelable {
     ) : VGSCheckoutCardBrand() {
 
         constructor(
-            name: String,
-            @DrawableRes icon: Int,
-            regex: String,
-            mask: String,
-            cardNumberLength: Array<Int>,
-            securityCodeLength: Array<Int>,
-            algorithm: VGSCheckoutChecksumAlgorithm
+            @DrawableRes icon: Int = CardType.ELO.resId,
+            mask: String = CardType.ELO.mask
         ) : this(
-            CardType.UNKNOWN,
-            name,
+            CardType.ELO.name,
             icon,
-            regex,
+            CardType.ELO.regex,
             mask,
-            cardNumberLength,
-            securityCodeLength,
-            algorithm
+            CardType.ELO.rangeNumber,
+            CardType.ELO.rangeCVV,
+            CardType.ELO.algorithm.toCheckoutChecksumAlgorithm(),
         )
     }
+
+    @Parcelize
+    class VisaElectron private constructor(
+        override val name: String,
+        @DrawableRes override val icon: Int,
+        override val regex: String,
+        override val mask: String,
+        override val cardNumberLength: Array<Int>,
+        override val securityCodeLength: Array<Int>,
+        override val algorithm: VGSCheckoutChecksumAlgorithm
+    ) : VGSCheckoutCardBrand() {
+
+        constructor(
+            @DrawableRes icon: Int = CardType.VISA_ELECTRON.resId,
+            mask: String = CardType.VISA_ELECTRON.mask
+        ) : this(
+            CardType.VISA_ELECTRON.name,
+            icon,
+            CardType.VISA_ELECTRON.regex,
+            mask,
+            CardType.VISA_ELECTRON.rangeNumber,
+            CardType.VISA_ELECTRON.rangeCVV,
+            CardType.VISA_ELECTRON.algorithm.toCheckoutChecksumAlgorithm(),
+        )
+    }
+
+    @Parcelize
+    class Maestro private constructor(
+        override val name: String,
+        @DrawableRes override val icon: Int,
+        override val regex: String,
+        override val mask: String,
+        override val cardNumberLength: Array<Int>,
+        override val securityCodeLength: Array<Int>,
+        override val algorithm: VGSCheckoutChecksumAlgorithm
+    ) : VGSCheckoutCardBrand() {
+
+        constructor(
+            @DrawableRes icon: Int = CardType.MASTERCARD.resId,
+            mask: String = CardType.MASTERCARD.mask
+        ) : this(
+            CardType.MASTERCARD.name,
+            icon,
+            CardType.MASTERCARD.regex,
+            mask,
+            CardType.MASTERCARD.rangeNumber,
+            CardType.MASTERCARD.rangeCVV,
+            CardType.MASTERCARD.algorithm.toCheckoutChecksumAlgorithm(),
+        )
+    }
+
+    @Parcelize
+    class Forbtugsforeningen private constructor(
+        override val name: String,
+        @DrawableRes override val icon: Int,
+        override val regex: String,
+        override val mask: String,
+        override val cardNumberLength: Array<Int>,
+        override val securityCodeLength: Array<Int>,
+        override val algorithm: VGSCheckoutChecksumAlgorithm
+    ) : VGSCheckoutCardBrand() {
+
+        constructor(
+            @DrawableRes icon: Int = CardType.FORBRUGSFORENINGEN.resId,
+            mask: String = CardType.FORBRUGSFORENINGEN.mask
+        ) : this(
+            CardType.FORBRUGSFORENINGEN.name,
+            icon,
+            CardType.FORBRUGSFORENINGEN.regex,
+            mask,
+            CardType.FORBRUGSFORENINGEN.rangeNumber,
+            CardType.FORBRUGSFORENINGEN.rangeCVV,
+            CardType.FORBRUGSFORENINGEN.algorithm.toCheckoutChecksumAlgorithm(),
+        )
+    }
+
+    @Parcelize
+    class Dankort private constructor(
+        override val name: String,
+        @DrawableRes override val icon: Int,
+        override val regex: String,
+        override val mask: String,
+        override val cardNumberLength: Array<Int>,
+        override val securityCodeLength: Array<Int>,
+        override val algorithm: VGSCheckoutChecksumAlgorithm
+    ) : VGSCheckoutCardBrand() {
+
+        constructor(
+            @DrawableRes icon: Int = CardType.DANKORT.resId,
+            mask: String = CardType.DANKORT.mask
+        ) : this(
+            CardType.DANKORT.name,
+            icon,
+            CardType.DANKORT.regex,
+            mask,
+            CardType.DANKORT.rangeNumber,
+            CardType.DANKORT.rangeCVV,
+            CardType.DANKORT.algorithm.toCheckoutChecksumAlgorithm(),
+        )
+    }
+
+    @Parcelize
+    class Visa private constructor(
+        override val name: String,
+        @DrawableRes override val icon: Int,
+        override val regex: String,
+        override val mask: String,
+        override val cardNumberLength: Array<Int>,
+        override val securityCodeLength: Array<Int>,
+        override val algorithm: VGSCheckoutChecksumAlgorithm
+    ) : VGSCheckoutCardBrand() {
+
+        constructor(
+            @DrawableRes icon: Int = CardType.VISA.resId,
+            mask: String = CardType.VISA.mask
+        ) : this(
+            CardType.VISA.name,
+            icon,
+            CardType.VISA.regex,
+            mask,
+            CardType.VISA.rangeNumber,
+            CardType.VISA.rangeCVV,
+            CardType.VISA.algorithm.toCheckoutChecksumAlgorithm(),
+        )
+    }
+
+    @Parcelize
+    class Mastercard private constructor(
+        override val name: String,
+        @DrawableRes override val icon: Int,
+        override val regex: String,
+        override val mask: String,
+        override val cardNumberLength: Array<Int>,
+        override val securityCodeLength: Array<Int>,
+        override val algorithm: VGSCheckoutChecksumAlgorithm
+    ) : VGSCheckoutCardBrand() {
+
+        constructor(
+            @DrawableRes icon: Int = CardType.MASTERCARD.resId,
+            mask: String = CardType.MASTERCARD.mask
+        ) : this(
+            CardType.MASTERCARD.name,
+            icon,
+            CardType.MASTERCARD.regex,
+            mask,
+            CardType.MASTERCARD.rangeNumber,
+            CardType.MASTERCARD.rangeCVV,
+            CardType.MASTERCARD.algorithm.toCheckoutChecksumAlgorithm(),
+        )
+    }
+
+    @Parcelize
+    class AmericanExpress private constructor(
+        override val name: String,
+        @DrawableRes override val icon: Int,
+        override val regex: String,
+        override val mask: String,
+        override val cardNumberLength: Array<Int>,
+        override val securityCodeLength: Array<Int>,
+        override val algorithm: VGSCheckoutChecksumAlgorithm
+    ) : VGSCheckoutCardBrand() {
+
+        constructor(
+            @DrawableRes icon: Int = CardType.AMERICAN_EXPRESS.resId,
+            mask: String = CardType.AMERICAN_EXPRESS.mask
+        ) : this(
+            CardType.AMERICAN_EXPRESS.name,
+            icon,
+            CardType.AMERICAN_EXPRESS.regex,
+            mask,
+            CardType.AMERICAN_EXPRESS.rangeNumber,
+            CardType.AMERICAN_EXPRESS.rangeCVV,
+            CardType.AMERICAN_EXPRESS.algorithm.toCheckoutChecksumAlgorithm(),
+        )
+    }
+
+    @Parcelize
+    class Hipercard private constructor(
+        override val name: String,
+        @DrawableRes override val icon: Int,
+        override val regex: String,
+        override val mask: String,
+        override val cardNumberLength: Array<Int>,
+        override val securityCodeLength: Array<Int>,
+        override val algorithm: VGSCheckoutChecksumAlgorithm
+    ) : VGSCheckoutCardBrand() {
+
+        constructor(
+            @DrawableRes icon: Int = CardType.HIPERCARD.resId,
+            mask: String = CardType.HIPERCARD.mask
+        ) : this(
+            CardType.HIPERCARD.name,
+            icon,
+            CardType.HIPERCARD.regex,
+            mask,
+            CardType.HIPERCARD.rangeNumber,
+            CardType.HIPERCARD.rangeCVV,
+            CardType.HIPERCARD.algorithm.toCheckoutChecksumAlgorithm(),
+        )
+    }
+
+    @Parcelize
+    class Dinclub private constructor(
+        override val name: String,
+        @DrawableRes override val icon: Int,
+        override val regex: String,
+        override val mask: String,
+        override val cardNumberLength: Array<Int>,
+        override val securityCodeLength: Array<Int>,
+        override val algorithm: VGSCheckoutChecksumAlgorithm
+    ) : VGSCheckoutCardBrand() {
+
+        constructor(
+            @DrawableRes icon: Int = CardType.DINCLUB.resId,
+            mask: String = CardType.DINCLUB.mask
+        ) : this(
+            CardType.DINCLUB.name,
+            icon,
+            CardType.DINCLUB.regex,
+            mask,
+            CardType.DINCLUB.rangeNumber,
+            CardType.DINCLUB.rangeCVV,
+            CardType.DINCLUB.algorithm.toCheckoutChecksumAlgorithm(),
+        )
+    }
+
+    @Parcelize
+    class Discover private constructor(
+        override val name: String,
+        @DrawableRes override val icon: Int,
+        override val regex: String,
+        override val mask: String,
+        override val cardNumberLength: Array<Int>,
+        override val securityCodeLength: Array<Int>,
+        override val algorithm: VGSCheckoutChecksumAlgorithm
+    ) : VGSCheckoutCardBrand() {
+
+        constructor(
+            @DrawableRes icon: Int = CardType.DISCOVER.resId,
+            mask: String = CardType.DISCOVER.mask
+        ) : this(
+            CardType.DISCOVER.name,
+            icon,
+            CardType.DISCOVER.regex,
+            mask,
+            CardType.DISCOVER.rangeNumber,
+            CardType.DISCOVER.rangeCVV,
+            CardType.DISCOVER.algorithm.toCheckoutChecksumAlgorithm(),
+        )
+    }
+
+    @Parcelize
+    class Unionpay private constructor(
+        override val name: String,
+        @DrawableRes override val icon: Int,
+        override val regex: String,
+        override val mask: String,
+        override val cardNumberLength: Array<Int>,
+        override val securityCodeLength: Array<Int>,
+        override val algorithm: VGSCheckoutChecksumAlgorithm
+    ) : VGSCheckoutCardBrand() {
+
+        constructor(
+            @DrawableRes icon: Int = CardType.UNIONPAY.resId,
+            mask: String = CardType.UNIONPAY.mask
+        ) : this(
+            CardType.UNIONPAY.name,
+            icon,
+            CardType.UNIONPAY.regex,
+            mask,
+            CardType.UNIONPAY.rangeNumber,
+            CardType.UNIONPAY.rangeCVV,
+            CardType.UNIONPAY.algorithm.toCheckoutChecksumAlgorithm(),
+        )
+    }
+
+    @Parcelize
+    class JCB private constructor(
+        override val name: String,
+        @DrawableRes override val icon: Int,
+        override val regex: String,
+        override val mask: String,
+        override val cardNumberLength: Array<Int>,
+        override val securityCodeLength: Array<Int>,
+        override val algorithm: VGSCheckoutChecksumAlgorithm
+    ) : VGSCheckoutCardBrand() {
+
+        constructor(
+            @DrawableRes icon: Int = CardType.JCB.resId,
+            mask: String = CardType.JCB.mask
+        ) : this(
+            CardType.JCB.name,
+            icon,
+            CardType.JCB.regex,
+            mask,
+            CardType.JCB.rangeNumber,
+            CardType.JCB.rangeCVV,
+            CardType.JCB.algorithm.toCheckoutChecksumAlgorithm(),
+        )
+    }
+
+    @Parcelize
+    class Unknown private constructor(
+        override val name: String,
+        @DrawableRes override val icon: Int,
+        override val regex: String,
+        override val mask: String,
+        override val cardNumberLength: Array<Int>,
+        override val securityCodeLength: Array<Int>,
+        override val algorithm: VGSCheckoutChecksumAlgorithm
+    ) : VGSCheckoutCardBrand() {
+
+        constructor(
+            @DrawableRes icon: Int = CardType.UNKNOWN.resId,
+            mask: String = CardType.UNKNOWN.mask
+        ) : this(
+            CardType.UNKNOWN.name,
+            icon,
+            CardType.UNKNOWN.regex,
+            mask,
+            CardType.UNKNOWN.rangeNumber,
+            CardType.UNKNOWN.rangeCVV,
+            CardType.UNKNOWN.algorithm.toCheckoutChecksumAlgorithm(),
+        )
+    }
+
+    @Parcelize
+    class Custom constructor(
+        override val name: String,
+        @DrawableRes override val icon: Int,
+        override val regex: String,
+        override val mask: String,
+        override val cardNumberLength: Array<Int>,
+        override val securityCodeLength: Array<Int>,
+        override val algorithm: VGSCheckoutChecksumAlgorithm
+    ) : VGSCheckoutCardBrand()
     //endregion
 }

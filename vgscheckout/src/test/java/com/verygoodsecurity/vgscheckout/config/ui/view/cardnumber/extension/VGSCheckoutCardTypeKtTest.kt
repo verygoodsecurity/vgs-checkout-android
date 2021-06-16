@@ -1,8 +1,6 @@
 package com.verygoodsecurity.vgscheckout.config.ui.view.cardnumber.extension
 
 import com.verygoodsecurity.vgscheckout.config.ui.view.cardnumber.model.VGSCheckoutBrandParams
-import com.verygoodsecurity.vgscheckout.config.ui.view.cardnumber.model.VGSCheckoutCardBrand
-import com.verygoodsecurity.vgscheckout.config.ui.view.cardnumber.model.VGSCheckoutCardType
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

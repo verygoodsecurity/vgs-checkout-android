@@ -51,10 +51,10 @@ internal fun VGSCheckoutCardBrand.toCollectCardType() = when(this) {
     is VGSCheckoutCardBrand.Visa -> CardType.VISA
     is VGSCheckoutCardBrand.Mastercard -> CardType.MASTERCARD
     is VGSCheckoutCardBrand.AmericanExpress -> CardType.AMERICAN_EXPRESS
-    is VGSCheckoutCardBrand.Hypercard -> CardType.HIPERCARD
+    is VGSCheckoutCardBrand.Hipercard -> CardType.HIPERCARD
     is VGSCheckoutCardBrand.Dinclub -> CardType.DINCLUB
     is VGSCheckoutCardBrand.Discover -> CardType.DISCOVER
-    is VGSCheckoutCardBrand.Unipay -> CardType.UNIONPAY
+    is VGSCheckoutCardBrand.Unionpay -> CardType.UNIONPAY
     is VGSCheckoutCardBrand.JCB -> CardType.JCB
     else-> CardType.UNKNOWN
 }
