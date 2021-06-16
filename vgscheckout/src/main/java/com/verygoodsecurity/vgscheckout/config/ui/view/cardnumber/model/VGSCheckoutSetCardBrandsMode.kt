@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgscheckout.config.ui.view.cardnumber.model
 
-enum class VGSSetCardBrandsMode {
+enum class VGSCheckoutSetCardBrandsMode {
 
     /** Modify current card brands or/and add custom. */
     MODIFY,

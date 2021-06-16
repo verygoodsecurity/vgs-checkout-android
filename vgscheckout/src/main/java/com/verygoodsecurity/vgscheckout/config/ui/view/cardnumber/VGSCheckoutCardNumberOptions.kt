@@ -1,7 +1,7 @@
 package com.verygoodsecurity.vgscheckout.config.ui.view.cardnumber
 
 import com.verygoodsecurity.vgscheckout.config.ui.view.cardnumber.model.VGSCheckoutCardBrand
-import com.verygoodsecurity.vgscheckout.config.ui.view.cardnumber.model.VGSSetCardBrandsMode
+import com.verygoodsecurity.vgscheckout.config.ui.view.cardnumber.model.VGSCheckoutSetCardBrandsMode
 import com.verygoodsecurity.vgscheckout.config.ui.view.core.ViewConfig
 import com.verygoodsecurity.vgscheckout.util.extension.addAllWithReplace
 import kotlinx.parcelize.Parcelize
@@ -23,11 +23,11 @@ class VGSCheckoutCardNumberOptions private constructor(
 
         fun setCardBrands(
             vararg brand: VGSCheckoutCardBrand,
-            mode: VGSSetCardBrandsMode = VGSSetCardBrandsMode.MODIFY
+            mode: VGSCheckoutSetCardBrandsMode = VGSCheckoutSetCardBrandsMode.MODIFY
         ) = this.apply {
             this.cardBrands = when (mode) {
-                VGSSetCardBrandsMode.MODIFY -> cardBrands.addAllWithReplace(*brand)
-                VGSSetCardBrandsMode.REPLACE -> setOf(*brand)
+                VGSCheckoutSetCardBrandsMode.MODIFY -> cardBrands.addAllWithReplace(*brand)
+                VGSCheckoutSetCardBrandsMode.REPLACE -> setOf(*brand)
             }
         }
 
