@@ -2,7 +2,7 @@ package com.verygoodsecurity.vgscheckout.util.extension
 
 import com.verygoodsecurity.vgscheckout.config.networking.request.core.VGSCheckoutDataMergePolicy
 import com.verygoodsecurity.vgscheckout.config.networking.request.core.VGSCheckoutHTTPMethod
-import com.verygoodsecurity.vgscheckout.config.ui.view.cardnumber.model.VGSCheckoutBrandParams
+import com.verygoodsecurity.vgscheckout.config.ui.view.cardnumber.model.VGSCheckoutCardBrand
 import com.verygoodsecurity.vgscheckout.config.ui.view.cardnumber.model.VGSCheckoutChecksumAlgorithm
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.model.VGSCollectFieldNameMappingPolicy
@@ -67,26 +67,26 @@ class MapperKtTest {
     @Test
     fun toCollectCardType_mappedCorrectly() {
         // Assert
-        assertEquals(VGSCheckoutCardType.ELO.toCollectCardType(), CardType.ELO)
-        assertEquals(VGSCheckoutCardType.VISA_ELECTRON.toCollectCardType(), CardType.VISA_ELECTRON)
-        assertEquals(VGSCheckoutCardType.MAESTRO.toCollectCardType(), CardType.MAESTRO)
+        assertEquals(VGSCheckoutCardBrand.Elo().toCollectCardType(), CardType.ELO)
+        assertEquals(VGSCheckoutCardBrand.VisaElectron().toCollectCardType(), CardType.VISA_ELECTRON)
+        assertEquals(VGSCheckoutCardBrand.Maestro().toCollectCardType(), CardType.MAESTRO)
         assertEquals(
-            VGSCheckoutCardType.FORBRUGSFORENINGEN.toCollectCardType(),
+            VGSCheckoutCardBrand.Forbtugsforeningen().toCollectCardType(),
             CardType.FORBRUGSFORENINGEN
         )
-        assertEquals(VGSCheckoutCardType.DANKORT.toCollectCardType(), CardType.DANKORT)
-        assertEquals(VGSCheckoutCardType.VISA.toCollectCardType(), CardType.VISA)
-        assertEquals(VGSCheckoutCardType.MASTERCARD.toCollectCardType(), CardType.MASTERCARD)
+        assertEquals(VGSCheckoutCardBrand.Dankort().toCollectCardType(), CardType.DANKORT)
+        assertEquals(VGSCheckoutCardBrand.Visa().toCollectCardType(), CardType.VISA)
+        assertEquals(VGSCheckoutCardBrand.Mastercard().toCollectCardType(), CardType.MASTERCARD)
         assertEquals(
-            VGSCheckoutCardType.AMERICAN_EXPRESS.toCollectCardType(),
+            VGSCheckoutCardBrand.AmericanExpress().toCollectCardType(),
             CardType.AMERICAN_EXPRESS
         )
-        assertEquals(VGSCheckoutCardType.HIPERCARD.toCollectCardType(), CardType.HIPERCARD)
-        assertEquals(VGSCheckoutCardType.DINCLUB.toCollectCardType(), CardType.DINCLUB)
-        assertEquals(VGSCheckoutCardType.DISCOVER.toCollectCardType(), CardType.DISCOVER)
-        assertEquals(VGSCheckoutCardType.UNIONPAY.toCollectCardType(), CardType.UNIONPAY)
-        assertEquals(VGSCheckoutCardType.JCB.toCollectCardType(), CardType.JCB)
-        assertEquals(VGSCheckoutCardType.UNKNOWN.toCollectCardType(), CardType.UNKNOWN)
+        assertEquals(VGSCheckoutCardBrand.Hipercard().toCollectCardType(), CardType.HIPERCARD)
+        assertEquals(VGSCheckoutCardBrand.Dinclub().toCollectCardType(), CardType.DINCLUB)
+        assertEquals(VGSCheckoutCardBrand.Discover().toCollectCardType(), CardType.DISCOVER)
+        assertEquals(VGSCheckoutCardBrand.Unionpay().toCollectCardType(), CardType.UNIONPAY)
+        assertEquals(VGSCheckoutCardBrand.JCB().toCollectCardType(), CardType.JCB)
+        assertEquals(VGSCheckoutCardBrand.Unknown().toCollectCardType(), CardType.UNKNOWN)
     }
 
     @Test
@@ -98,11 +98,14 @@ class MapperKtTest {
             arrayOf(8),
             arrayOf(3)
         )
-        val brand = VGSCheckoutBrandParams(
+        val brand = VGSCheckoutCardBrand.Custom(
+            "",
+            0,
+            "",
             "## ## ## ##",
-            VGSCheckoutChecksumAlgorithm.NONE,
             arrayOf(8),
-            arrayOf(3)
+            arrayOf(3),
+            VGSCheckoutChecksumAlgorithm.NONE
         )
         // Act
         val result = brand.toCollectBrandParams()
@@ -119,11 +122,14 @@ class MapperKtTest {
             arrayOf(8),
             arrayOf(3)
         )
-        val brand = VGSCheckoutBrandParams(
+        val brand = VGSCheckoutCardBrand.Custom(
+            "",
+            0,
+            "",
             "## ## ##",
-            VGSCheckoutChecksumAlgorithm.NONE,
             arrayOf(8),
-            arrayOf(3)
+            arrayOf(3),
+            VGSCheckoutChecksumAlgorithm.NONE
         )
         // Act
         val result = brand.toCollectBrandParams()
@@ -146,42 +152,18 @@ class MapperKtTest {
             )
         )
 
-        val checkoutBrand = VGSCheckoutCardBrand(
-            "^111",
+        val checkoutBrand = VGSCheckoutCardBrand.Custom(
             "Test",
             10,
-            VGSCheckoutBrandParams(
-                "## ## ## ##",
-                VGSCheckoutChecksumAlgorithm.NONE,
-                arrayOf(8),
-                arrayOf(3)
-            )
+            "^111",
+            "## ## ## ##",
+            arrayOf(8),
+            arrayOf(3),
+            VGSCheckoutChecksumAlgorithm.NONE
         )
         // Act
         val result = checkoutBrand.toCollectCardBrand()
         // Assert
         assertEquals(result, expectedResult)
-    }
-
-    @Test
-    fun toCollectCardBrand_invalidParams_mappedCorrectly() {
-        // Arrange
-        val expectedResult = CardBrand(
-            "^111",
-            "Test",
-            10,
-            BrandParams(
-                "## ## ## ##",
-                ChecksumAlgorithm.NONE,
-                arrayOf(8),
-                arrayOf(3)
-            )
-        )
-
-        val checkoutBrand = VGSCheckoutCardBrand("^111", "Test", 10)
-        // Act
-        val result = checkoutBrand.toCollectCardBrand()
-        // Assert
-        assertNotEquals(result, expectedResult)
     }
 }
