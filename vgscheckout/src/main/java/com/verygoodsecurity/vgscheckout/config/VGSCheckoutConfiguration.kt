@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgscheckout.config
 
-import android.os.Parcelable
+import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfiguration
 import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutRouteConfiguration
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutFormConfiguration
 import kotlinx.parcelize.Parcelize
@@ -9,7 +9,7 @@ import kotlinx.parcelize.Parcelize
 class VGSCheckoutConfiguration private constructor(
     val routeConfig: VGSCheckoutRouteConfiguration,
     val formConfig: VGSCheckoutFormConfiguration,
-) : Parcelable {
+) : CheckoutConfiguration() {
 
     class Builder {
 
