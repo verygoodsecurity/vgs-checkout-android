@@ -18,11 +18,8 @@ internal class CheckoutActivity : BaseCheckoutActivity<VGSCheckoutConfiguration>
     override fun resolveCollect() = CollectProvider().get(this, config)
 
     override fun initView(savedInstanceState: Bundle?) {
-        findViewById<CheckoutView>(R.id.cvForm)?.let {
-            it.applyConfig(config.formConfig)
-            it.bindViews(collect)
-            it.onPayListener = this
-        }
+        super.initView(savedInstanceState)
+        findViewById<CheckoutView>(R.id.cvForm)?.applyConfig(config.formConfig)
     }
 
     override fun onPayClicked() {

@@ -3,6 +3,7 @@ package com.verygoodsecurity.vgscheckout.ui.core
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
 import com.verygoodsecurity.vgscheckout.CHECKOUT_RESULT_EXTRA_KEY
 import com.verygoodsecurity.vgscheckout.R
@@ -13,6 +14,7 @@ import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 import com.verygoodsecurity.vgscheckout.ui.CheckoutActivity
 import com.verygoodsecurity.vgscheckout.ui.CheckoutMultiplexingActivity
 import com.verygoodsecurity.vgscheckout.util.extension.disableScreenshots
+import com.verygoodsecurity.vgscheckout.view.CheckoutView
 import com.verygoodsecurity.vgscheckout.view.OnPayClickListener
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
@@ -20,17 +22,19 @@ import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse
 
 @Suppress("MemberVisibilityCanBePrivate")
 internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
-    AppCompatActivity(R.layout.checkout_layout), OnPayClickListener, VgsCollectResponseListener {
+    AppCompatActivity(R.layout.checkout_layout), VgsCollectResponseListener, OnPayClickListener {
 
     protected val config: C by lazy { resolveConfig(EXTRA_KEY_CONFIG) }
 
-    protected val collect by lazy { resolveCollect() }
+    protected val collect by lazy {
+        resolveCollect().apply {
+            addOnResponseListeners(this@BaseCheckoutActivity)
+        }
+    }
 
     abstract fun resolveConfig(key: String): C
 
     abstract fun resolveCollect(): VGSCollect
-
-    abstract fun initView(savedInstanceState: Bundle?)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +52,14 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
             putExtra(CHECKOUT_RESULT_EXTRA_KEY, VGSCheckoutResult(response?.code, response?.body))
         })
         finish()
+    }
+
+    @CallSuper
+    protected open fun initView(savedInstanceState: Bundle?) {
+        findViewById<CheckoutView>(R.id.cvForm)?.let {
+            it.bindViews(collect)
+            it.onPayListener = this
+        }
     }
 
     companion object {
