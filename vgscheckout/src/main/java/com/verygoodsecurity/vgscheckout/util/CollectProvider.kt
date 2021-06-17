@@ -1,7 +1,7 @@
 package com.verygoodsecurity.vgscheckout.util
 
 import android.content.Context
-import com.verygoodsecurity.vgscheckout.config.VGSCheckoutVaultConfiguration
+import com.verygoodsecurity.vgscheckout.config.VGSCheckoutConfiguration
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 
 /**
@@ -13,7 +13,7 @@ internal class CollectProvider {
         context: Context,
         vaultID: String,
         environment: String,
-        config: VGSCheckoutVaultConfiguration
+        config: VGSCheckoutConfiguration
     ): VGSCollect {
         return VGSCollect.Builder(context, vaultID)
             .setEnvironment(environment)

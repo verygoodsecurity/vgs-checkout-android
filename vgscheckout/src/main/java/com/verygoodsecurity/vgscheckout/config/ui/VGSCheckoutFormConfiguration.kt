@@ -9,7 +9,7 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.postalcode.VGSCheckoutPos
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-class VGSCheckoutVaultFormConfiguration private constructor(
+class VGSCheckoutFormConfiguration private constructor(
     val cardNumberOptions: VGSCheckoutCardNumberOptions,
     val cardHolderOptions: VGSCheckoutCardHolderOptions,
     val cvcOptions: VGSCheckoutCVCOptions,
@@ -45,7 +45,7 @@ class VGSCheckoutVaultFormConfiguration private constructor(
             this.postalCodeOptions = options
         }
 
-        fun build(): VGSCheckoutVaultFormConfiguration = VGSCheckoutVaultFormConfiguration(
+        fun build(): VGSCheckoutFormConfiguration = VGSCheckoutFormConfiguration(
             cardNumberOptions,
             cardHolderOptions,
             cvcOptions,

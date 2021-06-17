@@ -8,9 +8,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.verygoodsecurity.vgscheckout.CHECKOUT_RESULT_EXTRA_KEY
 import com.verygoodsecurity.vgscheckout.VGSCheckout
-import com.verygoodsecurity.vgscheckout.config.VGSCheckoutVaultConfiguration
-import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutVaultRouteConfiguration
-import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutVaultFormConfiguration
+import com.verygoodsecurity.vgscheckout.config.VGSCheckoutConfiguration
+import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutRouteConfiguration
+import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutFormConfiguration
 import com.verygoodsecurity.vgscheckout.config.ui.view.cardholder.VGSCheckoutCardHolderOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.cardnumber.VGSCheckoutCardNumberOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.cardnumber.model.VGSCheckoutCardBrand
@@ -25,11 +25,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val routeConfig = VGSCheckoutVaultRouteConfiguration.Builder()
+        val routeConfig = VGSCheckoutRouteConfiguration.Builder()
             .setPath("post")
             .build()
 
-        val formConfig = VGSCheckoutVaultFormConfiguration.Builder()
+        val formConfig = VGSCheckoutFormConfiguration.Builder()
             .setCardHolderOptions(
                 VGSCheckoutCardHolderOptions.Builder()
                     .setFieldName("card_data.personal_data.cardHolder")
@@ -67,7 +67,7 @@ class MainActivity : AppCompatActivity() {
             )
             .build()
 
-        val config = VGSCheckoutVaultConfiguration.Builder()
+        val config = VGSCheckoutConfiguration.Builder()
             .setRouteConfig(routeConfig)
             .setFormConfig(formConfig)
             .build()

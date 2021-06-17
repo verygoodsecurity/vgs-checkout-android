@@ -7,7 +7,7 @@ import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.verygoodsecurity.vgscheckout.CHECKOUT_RESULT_EXTRA_KEY
 import com.verygoodsecurity.vgscheckout.R
-import com.verygoodsecurity.vgscheckout.config.VGSCheckoutVaultConfiguration
+import com.verygoodsecurity.vgscheckout.config.VGSCheckoutConfiguration
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 import com.verygoodsecurity.vgscheckout.util.CollectProvider
 import com.verygoodsecurity.vgscheckout.util.extension.toCollectHTTPMethod
@@ -24,7 +24,7 @@ internal class CheckoutActivity : AppCompatActivity(R.layout.checkout_activity),
 
     private val vaultID: String by lazy { requireExtra(EXTRA_KEY_VAULT_ID) }
     private val environment: String by lazy { requireExtra(EXTRA_KEY_ENVIRONMENT) }
-    private val config: VGSCheckoutVaultConfiguration by lazy { requireExtra(EXTRA_KEY_CONFIG) }
+    private val config: VGSCheckoutConfiguration by lazy { requireExtra(EXTRA_KEY_CONFIG) }
     private val collect by lazy { CollectProvider().get(this, vaultID, environment, config) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -95,7 +95,7 @@ internal class CheckoutActivity : AppCompatActivity(R.layout.checkout_activity),
             code: Int,
             vaultID: String,
             environment: String,
-            config: VGSCheckoutVaultConfiguration
+            config: VGSCheckoutConfiguration
         ) {
             activity.startActivityForResult(Intent(activity, CheckoutActivity::class.java).apply {
                 putExtra(EXTRA_KEY_VAULT_ID, vaultID)
