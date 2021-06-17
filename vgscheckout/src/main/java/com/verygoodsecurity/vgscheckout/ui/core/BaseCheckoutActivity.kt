@@ -48,9 +48,10 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
     }
 
     override fun onResponse(response: VGSResponse?) {
-        setResult(Activity.RESULT_OK, Intent().apply {
+        with(Intent()) {
             putExtra(CHECKOUT_RESULT_EXTRA_KEY, VGSCheckoutResult(response?.code, response?.body))
-        })
+            setResult(Activity.RESULT_OK, this)
+        }
         finish()
     }
 
