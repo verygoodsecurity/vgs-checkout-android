@@ -1,17 +1,23 @@
 package com.verygoodsecurity.vgscheckout.config
 
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfiguration
+import com.verygoodsecurity.vgscheckout.config.core.DEFAULT_ENVIRONMENT
 import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutRouteConfiguration
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutFormConfiguration
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 class VGSCheckoutConfiguration private constructor(
+    override val vaultID: String,
+    override val environment: String,
     val routeConfig: VGSCheckoutRouteConfiguration,
     val formConfig: VGSCheckoutFormConfiguration,
 ) : CheckoutConfiguration() {
 
-    class Builder {
+    class Builder constructor(
+        private val vaultID: String,
+        private val environment: String = DEFAULT_ENVIRONMENT,
+    ) {
 
         private var routeConfig = VGSCheckoutRouteConfiguration.Builder().build()
         private var formConfig = VGSCheckoutFormConfiguration.Builder().build()
@@ -24,6 +30,6 @@ class VGSCheckoutConfiguration private constructor(
             this.formConfig = config
         }
 
-        fun build() = VGSCheckoutConfiguration(routeConfig, formConfig)
+        fun build() = VGSCheckoutConfiguration(vaultID, environment, routeConfig, formConfig)
     }
 }

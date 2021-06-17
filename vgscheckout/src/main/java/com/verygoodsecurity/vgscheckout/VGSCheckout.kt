@@ -6,14 +6,9 @@ import com.verygoodsecurity.vgscheckout.ui.core.BaseCheckoutActivity
 
 const val CHECKOUT_RESULT_EXTRA_KEY = "checkout_result_extra_key"
 
-private const val DEFAULT_ENVIRONMENT = "sandbox"
-
-class VGSCheckout constructor(
-    private val vaultID: String,
-    private val environment: String = DEFAULT_ENVIRONMENT,
-) {
+class VGSCheckout {
 
     fun present(activity: Activity, requestCode: Int, config: VGSCheckoutConfiguration) {
-        BaseCheckoutActivity.startForResult(activity, requestCode, vaultID, environment, config)
+        BaseCheckoutActivity.startForResult(activity, requestCode, config)
     }
 }

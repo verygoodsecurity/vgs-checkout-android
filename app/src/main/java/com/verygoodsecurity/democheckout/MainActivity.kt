@@ -67,13 +67,13 @@ class MainActivity : AppCompatActivity() {
             )
             .build()
 
-        val config = VGSCheckoutConfiguration.Builder()
+        val config = VGSCheckoutConfiguration.Builder("tntpszqgikn")
             .setRouteConfig(routeConfig)
             .setFormConfig(formConfig)
             .build()
 
         findViewById<TextView>(R.id.tvWelcome).setOnClickListener {
-            VGSCheckout("tntpszqgikn").present(this, 1, config)
+            VGSCheckout().present(this, 1, config)
         }
     }
 
