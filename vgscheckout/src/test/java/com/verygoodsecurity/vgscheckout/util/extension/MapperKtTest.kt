@@ -86,7 +86,6 @@ class MapperKtTest {
         assertEquals(VGSCheckoutCardBrand.Discover().toCollectCardType(), CardType.DISCOVER)
         assertEquals(VGSCheckoutCardBrand.Unionpay().toCollectCardType(), CardType.UNIONPAY)
         assertEquals(VGSCheckoutCardBrand.JCB().toCollectCardType(), CardType.JCB)
-        assertEquals(VGSCheckoutCardBrand.Unknown().toCollectCardType(), CardType.UNKNOWN)
     }
 
     @Test
