@@ -71,7 +71,7 @@ class MapperKtTest {
         assertEquals(VGSCheckoutCardBrand.VisaElectron().toCollectCardType(), CardType.VISA_ELECTRON)
         assertEquals(VGSCheckoutCardBrand.Maestro().toCollectCardType(), CardType.MAESTRO)
         assertEquals(
-            VGSCheckoutCardBrand.Forbtugsforeningen().toCollectCardType(),
+            VGSCheckoutCardBrand.Forbrugsforeningen().toCollectCardType(),
             CardType.FORBRUGSFORENINGEN
         )
         assertEquals(VGSCheckoutCardBrand.Dankort().toCollectCardType(), CardType.DANKORT)

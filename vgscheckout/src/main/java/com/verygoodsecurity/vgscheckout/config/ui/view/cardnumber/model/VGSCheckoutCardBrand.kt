@@ -53,7 +53,7 @@ sealed class VGSCheckoutCardBrand : Parcelable {
             Elo(),
             VisaElectron(),
             Maestro(),
-            Forbtugsforeningen(),
+            Forbrugsforeningen(),
             Dankort(),
             Visa(),
             AmericanExpress(),
@@ -61,8 +61,7 @@ sealed class VGSCheckoutCardBrand : Parcelable {
             Dinclub(),
             Discover(),
             Unionpay(),
-            JCB(),
-            Unknown(),
+            JCB()
         )
     }
 
@@ -142,7 +141,7 @@ sealed class VGSCheckoutCardBrand : Parcelable {
     }
 
     @Parcelize
-    class Forbtugsforeningen private constructor(
+    class Forbrugsforeningen private constructor(
         override val name: String,
         @DrawableRes override val icon: Int,
         override val regex: String,
@@ -388,31 +387,6 @@ sealed class VGSCheckoutCardBrand : Parcelable {
             CardType.JCB.rangeNumber,
             CardType.JCB.rangeCVV,
             CardType.JCB.algorithm.toCheckoutChecksumAlgorithm(),
-        )
-    }
-
-    @Parcelize
-    class Unknown private constructor(
-        override val name: String,
-        @DrawableRes override val icon: Int,
-        override val regex: String,
-        override val mask: String,
-        override val cardNumberLength: Array<Int>,
-        override val securityCodeLength: Array<Int>,
-        override val algorithm: VGSCheckoutChecksumAlgorithm
-    ) : VGSCheckoutCardBrand() {
-
-        constructor(
-            @DrawableRes icon: Int = CardType.UNKNOWN.resId,
-            mask: String = CardType.UNKNOWN.mask
-        ) : this(
-            CardType.UNKNOWN.name,
-            icon,
-            CardType.UNKNOWN.regex,
-            mask,
-            CardType.UNKNOWN.rangeNumber,
-            CardType.UNKNOWN.rangeCVV,
-            CardType.UNKNOWN.algorithm.toCheckoutChecksumAlgorithm(),
         )
     }
 
