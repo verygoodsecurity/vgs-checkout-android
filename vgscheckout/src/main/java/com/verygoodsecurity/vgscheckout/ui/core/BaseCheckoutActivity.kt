@@ -21,7 +21,7 @@ import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
 import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse
 
 internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
-    AppCompatActivity(R.layout.checkout_layout), VgsCollectResponseListener, OnPayClickListener {
+    AppCompatActivity(R.layout.checkout_activity), VgsCollectResponseListener, OnPayClickListener {
 
     protected val config: C by lazy { resolveConfig(EXTRA_KEY_CONFIG) }
 

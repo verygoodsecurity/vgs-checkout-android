@@ -1,5 +1,6 @@
 package com.verygoodsecurity.vgscheckout.ui
 
+import android.app.Activity
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingConfiguration
 import com.verygoodsecurity.vgscheckout.ui.core.BaseCheckoutActivity
 import com.verygoodsecurity.vgscheckout.util.CollectProvider
@@ -13,5 +14,9 @@ internal class CheckoutMultiplexingActivity :
 
     override fun resolveCollect() = CollectProvider().get(this, config)
 
-    override fun onPayClicked() {}
+    override fun onPayClicked() {
+        // TODO: Start multiplexing requests
+        setResult(Activity.RESULT_OK, null)
+        finish()
+    }
 }
