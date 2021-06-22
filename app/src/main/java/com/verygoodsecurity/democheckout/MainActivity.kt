@@ -44,12 +44,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
 
         when (v?.id) {
-            R.id.mbBasicFlow -> {
-                VGSCheckout().present(this, 1, getCheckoutConfig())
-            }
-            R.id.mbMultiplexingFlow -> {
-                VGSCheckout().present(this, 1, getMultiplexingConfig())
-            }
+            R.id.mbBasicFlow -> VGSCheckout().present(this, 1, getCheckoutConfig())
+            R.id.mbMultiplexingFlow -> VGSCheckout().present(this, 1, getMultiplexingConfig())
         }
     }
 
