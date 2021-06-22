@@ -10,8 +10,8 @@ import kotlinx.parcelize.Parcelize
 class VGSCheckoutConfiguration private constructor(
     override val vaultID: String,
     override val environment: String,
-    val routeConfig: VGSCheckoutRouteConfiguration,
-    val formConfig: VGSCheckoutFormConfiguration,
+    override val routeConfig: VGSCheckoutRouteConfiguration,
+    override val formConfig: VGSCheckoutFormConfiguration,
 ) : CheckoutConfiguration() {
 
     class Builder constructor(

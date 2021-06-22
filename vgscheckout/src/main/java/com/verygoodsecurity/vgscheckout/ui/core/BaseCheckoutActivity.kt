@@ -20,7 +20,6 @@ import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
 import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse
 
-@Suppress("MemberVisibilityCanBePrivate")
 internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
     AppCompatActivity(R.layout.checkout_layout), VgsCollectResponseListener, OnPayClickListener {
 
@@ -58,6 +57,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
     @CallSuper
     protected open fun initView(savedInstanceState: Bundle?) {
         findViewById<CheckoutView>(R.id.cvForm)?.let {
+            it.applyConfig(config.formConfig)
             it.bindViews(collect)
             it.onPayListener = this
         }
