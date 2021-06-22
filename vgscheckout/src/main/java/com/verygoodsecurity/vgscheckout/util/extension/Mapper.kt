@@ -46,7 +46,7 @@ internal fun VGSCheckoutCardBrand.toCollectCardType() = when(this) {
     is VGSCheckoutCardBrand.Elo -> CardType.ELO
     is VGSCheckoutCardBrand.VisaElectron -> CardType.VISA_ELECTRON
     is VGSCheckoutCardBrand.Maestro -> CardType.MAESTRO
-    is VGSCheckoutCardBrand.Forbtugsforeningen -> CardType.FORBRUGSFORENINGEN
+    is VGSCheckoutCardBrand.Forbrugsforeningen -> CardType.FORBRUGSFORENINGEN
     is VGSCheckoutCardBrand.Dankort -> CardType.DANKORT
     is VGSCheckoutCardBrand.Visa -> CardType.VISA
     is VGSCheckoutCardBrand.Mastercard -> CardType.MASTERCARD
