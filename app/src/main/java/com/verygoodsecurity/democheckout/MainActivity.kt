@@ -11,10 +11,12 @@ import com.verygoodsecurity.vgscheckout.VGSCheckout
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutVaultConfiguration
 import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutVaultRouteConfiguration
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutVaultFormConfiguration
-import com.verygoodsecurity.vgscheckout.config.ui.view.VGSCheckoutCVCOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.VGSCheckoutCardHolderOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.VGSCheckoutCardNumberOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.VGSCheckoutExpirationDateOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.cardholder.VGSCheckoutCardHolderOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.cardnumber.VGSCheckoutCardNumberOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.cardnumber.model.VGSCheckoutCardBrand
+import com.verygoodsecurity.vgscheckout.config.ui.view.cardnumber.model.VGSCheckoutChecksumAlgorithm
+import com.verygoodsecurity.vgscheckout.config.ui.view.cvc.VGSCheckoutCVCOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.expiration.VGSCheckoutExpirationDateOptions
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 
 class MainActivity : AppCompatActivity() {
@@ -36,6 +38,21 @@ class MainActivity : AppCompatActivity() {
             .setCardNumberOptions(
                 VGSCheckoutCardNumberOptions.Builder()
                     .setFieldName("cardNumber")
+                    .setCardBrands(
+                        VGSCheckoutCardBrand.Elo(
+                            icon = R.drawable.ic_amex_light,
+                            mask = "# # # # # # # # # # # # # # # #"
+                        ),
+                        VGSCheckoutCardBrand.Custom(
+                            "Custom brand",
+                            R.drawable.ic_amex_dark,
+                            "^001",
+                            "## ## ## ## ## ## ## ##",
+                            arrayOf(16),
+                            arrayOf(3),
+                            VGSCheckoutChecksumAlgorithm.LUHN
+                        )
+                    )
                     .build()
             )
             .setExpirationDateOptions(

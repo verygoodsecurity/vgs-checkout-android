@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscheckout.config.ui.view
+package com.verygoodsecurity.vgscheckout.config.ui.view.expiration
 
 import com.verygoodsecurity.vgscheckout.config.ui.view.core.ViewConfig
 import kotlinx.parcelize.Parcelize
