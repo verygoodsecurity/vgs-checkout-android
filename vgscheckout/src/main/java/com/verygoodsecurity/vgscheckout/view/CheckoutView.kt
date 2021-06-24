@@ -9,7 +9,7 @@ import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.android.material.button.MaterialButton
 import com.verygoodsecurity.vgscheckout.R
-import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutVaultFormConfiguration
+import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutFormConfiguration
 import com.verygoodsecurity.vgscheckout.util.extension.*
 import com.verygoodsecurity.vgscheckout.view.adapter.CardIconAdapter
 import com.verygoodsecurity.vgscheckout.view.adapter.CardMaskAdapter
@@ -74,7 +74,7 @@ class CheckoutView @JvmOverloads constructor(
         }
     }
 
-    fun applyConfig(config: VGSCheckoutVaultFormConfiguration) {
+    fun applyConfig(config: VGSCheckoutFormConfiguration) {
         // Apply card holder config
         cardHolderEt.setFieldName(config.cardHolderOptions.fieldName)
 
