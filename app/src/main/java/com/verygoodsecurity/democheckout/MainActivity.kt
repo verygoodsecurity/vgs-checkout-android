@@ -13,6 +13,7 @@ import com.verygoodsecurity.vgscheckout.config.VGSCheckoutConfiguration
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingConfiguration
 import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutRouteConfiguration
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutFormConfiguration
+import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutMultiplexingFormConfiguration
 import com.verygoodsecurity.vgscheckout.config.ui.view.cardholder.VGSCheckoutCardHolderOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.cardnumber.VGSCheckoutCardNumberOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.cardnumber.model.VGSCheckoutCardBrand
@@ -33,71 +34,79 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     @Suppress("DEPRECATION")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK) {
-            val result = data?.getParcelableExtra<VGSCheckoutResult>(CHECKOUT_RESULT_EXTRA_KEY)
-            showShort("Checkout complete: code = ${result?.code}, message = ${result?.body}")
-        } else if (resultCode == Activity.RESULT_CANCELED) {
-            showShort("Checkout canceled")
+        when (resultCode) {
+            Activity.RESULT_OK -> {
+                val result = data?.getParcelableExtra<VGSCheckoutResult>(CHECKOUT_RESULT_EXTRA_KEY)
+                showShort("Checkout complete: code = ${result?.code}, message = ${result?.body}")
+            }
+            Activity.RESULT_CANCELED -> showShort("Checkout canceled")
         }
     }
 
     override fun onClick(v: View?) {
-
         when (v?.id) {
             R.id.mbBasicFlow -> VGSCheckout().present(this, 1, getCheckoutConfig())
             R.id.mbMultiplexingFlow -> VGSCheckout().present(this, 1, getMultiplexingConfig())
         }
     }
 
-    private fun getCheckoutConfig(): VGSCheckoutConfiguration {
-        val routeConfig = VGSCheckoutRouteConfiguration.Builder()
-            .setPath("post")
-            .build()
+    //region Checkout config
+    private fun getCheckoutConfig() = VGSCheckoutConfiguration.Builder("tntpszqgikn")
+        .setRouteConfig(getCheckoutRouteConfig())
+        .setFormConfig(getCheckoutFormConfig())
+        .build()
 
-        val formConfig = VGSCheckoutFormConfiguration.Builder()
-            .setCardHolderOptions(
-                VGSCheckoutCardHolderOptions.Builder()
-                    .setFieldName("card_data.personal_data.cardHolder")
-                    .build()
-            )
-            .setCardNumberOptions(
-                VGSCheckoutCardNumberOptions.Builder()
-                    .setFieldName("cardNumber")
-                    .setCardBrands(
-                        VGSCheckoutCardBrand.Elo(
-                            icon = R.drawable.ic_amex_light,
-                            mask = "# # # # # # # # # # # # # # # #"
-                        ),
-                        VGSCheckoutCardBrand.Custom(
-                            "Custom brand",
-                            R.drawable.ic_amex_dark,
-                            "^001",
-                            "## ## ## ## ## ## ## ##",
-                            arrayOf(16),
-                            arrayOf(3),
-                            VGSCheckoutChecksumAlgorithm.LUHN
-                        )
-                    )
-                    .build()
-            )
-            .setExpirationDateOptions(
-                VGSCheckoutExpirationDateOptions.Builder()
-                    .setFieldName("ard_data.personal_data.secret.expDate")
-                    .build()
-            )
-            .setCVCOptions(
-                VGSCheckoutCVCOptions.Builder()
-                    .setFieldName("card_data.cardCvc")
-                    .build()
-            )
-            .build()
+    private fun getCheckoutRouteConfig() = VGSCheckoutRouteConfiguration.Builder()
+        .setPath("post")
+        .build()
 
-        return VGSCheckoutConfiguration.Builder("tntpszqgikn")
-            .setRouteConfig(routeConfig)
-            .setFormConfig(formConfig)
-            .build()
-    }
+    private fun getCheckoutFormConfig() = VGSCheckoutFormConfiguration.Builder()
+        .setPayButtonTitle("10$")
+        .setCardHolderOptions(getCardHolderOptions())
+        .setCardNumberOptions(getCardNumberOptions())
+        .setExpirationDateOptions(getExpirationDateOptions())
+        .setCVCOptions(getCVCOptions())
+        .build()
 
+    private fun getCardHolderOptions() = VGSCheckoutCardHolderOptions.Builder()
+        .setFieldName("card_data.personal_data.cardHolder")
+        .build()
+
+    private fun getCardNumberOptions() = VGSCheckoutCardNumberOptions.Builder()
+        .setFieldName("cardNumber")
+        .setCardBrands(
+            VGSCheckoutCardBrand.Elo(
+                icon = R.drawable.ic_amex_light,
+                mask = "# # # # # # # # # # # # # # # #"
+            ),
+            VGSCheckoutCardBrand.Custom(
+                "Custom brand",
+                R.drawable.ic_amex_dark,
+                "^001",
+                "## ## ## ## ## ## ## ##",
+                arrayOf(16),
+                arrayOf(3),
+                VGSCheckoutChecksumAlgorithm.LUHN
+            )
+        )
+        .build()
+
+    private fun getExpirationDateOptions() = VGSCheckoutExpirationDateOptions.Builder()
+        .setFieldName("ard_data.personal_data.secret.expDate")
+        .build()
+
+    private fun getCVCOptions() = VGSCheckoutCVCOptions.Builder()
+        .setFieldName("card_data.cardCvc")
+        .build()
+    //endregion
+
+    //region Checkout multiplexing config
     private fun getMultiplexingConfig() =
-        VGSCheckoutMultiplexingConfiguration.Builder("tntpszqgikn").build()
+        VGSCheckoutMultiplexingConfiguration.Builder("tntpszqgikn")
+            .setFormConfig(
+                VGSCheckoutMultiplexingFormConfiguration.Builder()
+                    .setPayButtonTitle("11.99$").build()
+            )
+            .build()
+    //endregion
 }
