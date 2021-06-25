@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgscheckout.config.ui
 
-import android.os.Parcelable
+import com.verygoodsecurity.vgscheckout.config.ui.core.CheckoutFormConfiguration
 import com.verygoodsecurity.vgscheckout.config.ui.view.cardholder.VGSCheckoutCardHolderOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.cardnumber.VGSCheckoutCardNumberOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.cvc.VGSCheckoutCVCOptions
@@ -15,7 +15,8 @@ class VGSCheckoutFormConfiguration private constructor(
     val cvcOptions: VGSCheckoutCVCOptions,
     val expirationDateOptions: VGSCheckoutExpirationDateOptions,
     val postalCodeOptions: VGSCheckoutPostalCodeOptions,
-) : Parcelable {
+    override val payButtonTitle: String?
+) : CheckoutFormConfiguration() {
 
     class Builder {
 
@@ -24,6 +25,7 @@ class VGSCheckoutFormConfiguration private constructor(
         private var cvcOptions = VGSCheckoutCVCOptions.Builder().build()
         private var expirationDateOptions = VGSCheckoutExpirationDateOptions.Builder().build()
         private var postalCodeOptions = VGSCheckoutPostalCodeOptions.Builder().build()
+        private var payButtonTitle: String? = null
 
         fun setCardNumberOptions(options: VGSCheckoutCardNumberOptions) = this.apply {
             this.cardNumberOptions = options
@@ -45,12 +47,17 @@ class VGSCheckoutFormConfiguration private constructor(
             this.postalCodeOptions = options
         }
 
+        fun setPayButtonTitle(title: String) = this.apply {
+            this.payButtonTitle = title
+        }
+
         fun build(): VGSCheckoutFormConfiguration = VGSCheckoutFormConfiguration(
             cardNumberOptions,
             cardHolderOptions,
             cvcOptions,
             expirationDateOptions,
             postalCodeOptions,
+            payButtonTitle
         )
     }
 }

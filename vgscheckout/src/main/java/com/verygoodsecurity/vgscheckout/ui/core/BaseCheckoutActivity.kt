@@ -14,8 +14,8 @@ import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 import com.verygoodsecurity.vgscheckout.ui.CheckoutActivity
 import com.verygoodsecurity.vgscheckout.ui.CheckoutMultiplexingActivity
 import com.verygoodsecurity.vgscheckout.util.extension.disableScreenshots
-import com.verygoodsecurity.vgscheckout.view.CheckoutView
-import com.verygoodsecurity.vgscheckout.view.OnPayClickListener
+import com.verygoodsecurity.vgscheckout.view.checkout.CheckoutView
+import com.verygoodsecurity.vgscheckout.view.checkout.OnPayClickListener
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
 import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse

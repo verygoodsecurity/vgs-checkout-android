@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscheckout.view
+package com.verygoodsecurity.vgscheckout.view.checkout
 
 import android.content.Context
 import android.graphics.drawable.Animatable
@@ -10,9 +10,10 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.android.material.button.MaterialButton
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutFormConfiguration
+import com.verygoodsecurity.vgscheckout.config.ui.core.CheckoutFormConfiguration
 import com.verygoodsecurity.vgscheckout.util.extension.*
-import com.verygoodsecurity.vgscheckout.view.adapter.CardIconAdapter
-import com.verygoodsecurity.vgscheckout.view.adapter.CardMaskAdapter
+import com.verygoodsecurity.vgscheckout.view.checkout.adapter.CardIconAdapter
+import com.verygoodsecurity.vgscheckout.view.checkout.adapter.CardMaskAdapter
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState.CardHolderNameState
@@ -74,24 +75,34 @@ class CheckoutView @JvmOverloads constructor(
         }
     }
 
-    fun applyConfig(config: VGSCheckoutFormConfiguration) {
-        // Apply card holder config
-        cardHolderEt.setFieldName(config.cardHolderOptions.fieldName)
+    fun applyConfig(config: CheckoutFormConfiguration) {
+        // Apply pay button title
+        config.payButtonTitle?.let { payMB.text = it }
 
-        // Apply card number config
-        with(config.cardNumberOptions) {
-            cardNumberEt.setFieldName(fieldName)
-            cardNumberEt.setValidCardBrands(*cardBrands.map { it.toCollectCardBrand() }
-                .toTypedArray())
-            cardNumberEt.setCardMaskAdapter(CardMaskAdapter(cardBrands))
-            cardNumberEt.setCardIconAdapter(CardIconAdapter(this@CheckoutView.context, cardBrands))
+        if (config is VGSCheckoutFormConfiguration) {
+            // Apply card holder config
+            cardHolderEt.setFieldName(config.cardHolderOptions.fieldName)
+
+            // Apply card number config
+            with(config.cardNumberOptions) {
+                cardNumberEt.setFieldName(fieldName)
+                cardNumberEt.setValidCardBrands(*cardBrands.map { it.toCollectCardBrand() }
+                    .toTypedArray())
+                cardNumberEt.setCardMaskAdapter(CardMaskAdapter(cardBrands))
+                cardNumberEt.setCardIconAdapter(
+                    CardIconAdapter(
+                        this@CheckoutView.context,
+                        cardBrands
+                    )
+                )
+            }
+
+            // Apply expiration date config
+            expireDateEt.setFieldName(config.expirationDateOptions.fieldName)
+
+            // Apply cvc config
+            cvcEt.setFieldName(config.cvcOptions.fieldName)
         }
-
-        // Apply expiration date config
-        expireDateEt.setFieldName(config.expirationDateOptions.fieldName)
-
-        // Apply cvc config
-        cvcEt.setFieldName(config.cvcOptions.fieldName)
     }
 
     fun bindViews(collect: VGSCollect) {
@@ -160,4 +171,9 @@ class CheckoutView @JvmOverloads constructor(
     }
 
     private fun isInputValid(vararg state: FieldState?): Boolean = state.all { it?.isValid == true }
+}
+
+internal interface OnPayClickListener {
+
+    fun onPayClicked()
 }
