@@ -82,6 +82,7 @@ class CheckoutView @JvmOverloads constructor(
         if (config is VGSCheckoutFormConfiguration) {
             // Apply card holder config
             cardHolderEt.setFieldName(config.cardHolderOptions.fieldName)
+            cardHolderLL.setVisibility(config.cardHolderOptions.visibility)
 
             // Apply card number config
             with(config.cardNumberOptions) {
