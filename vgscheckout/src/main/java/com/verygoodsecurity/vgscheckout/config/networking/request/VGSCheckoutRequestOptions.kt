@@ -7,7 +7,7 @@ import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 
 @Parcelize
-class VGSCheckoutVaultRequestOptions private constructor(
+class VGSCheckoutRequestOptions private constructor(
     val httpMethod: VGSCheckoutHTTPMethod,
     val extraData: Map<String, @RawValue Any>,
     val mergePolicy: VGSCheckoutDataMergePolicy
@@ -31,6 +31,6 @@ class VGSCheckoutVaultRequestOptions private constructor(
             this.mergePolicy = policy
         }
 
-        fun build() = VGSCheckoutVaultRequestOptions(httpMethod, extraData, mergePolicy)
+        fun build() = VGSCheckoutRequestOptions(httpMethod, extraData, mergePolicy)
     }
 }
