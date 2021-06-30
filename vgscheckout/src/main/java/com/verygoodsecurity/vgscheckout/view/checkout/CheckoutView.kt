@@ -13,7 +13,6 @@ import com.verygoodsecurity.vgscheckout.databinding.CheckoutLayoutBinding
 import com.verygoodsecurity.vgscheckout.util.extension.*
 import com.verygoodsecurity.vgscheckout.view.checkout.adapter.CardIconAdapter
 import com.verygoodsecurity.vgscheckout.view.checkout.adapter.CardMaskAdapter
-import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState.CardHolderNameState
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
@@ -43,8 +42,6 @@ class CheckoutView @JvmOverloads constructor(
         cardDetailsBinding.vgsEtCardNumber.setOnFieldStateChangeListener(this)
         cardDetailsBinding.vgsEtExpirationDate.setOnFieldStateChangeListener(this)
         cardDetailsBinding.vgsEtCVC.setOnFieldStateChangeListener(this)
-
-        // Init pay button click listener
         binding.mbPay.setOnClickListener { handlePayClicked() }
     }
 
@@ -87,12 +84,12 @@ class CheckoutView @JvmOverloads constructor(
         }
     }
 
-    fun bindViews(collect: VGSCollect) {
-        collect.bindView(cardDetailsBinding.vgsEtCardHolder)
-        collect.bindView(cardDetailsBinding.vgsEtCardNumber)
-        collect.bindView(cardDetailsBinding.vgsEtExpirationDate)
-        collect.bindView(cardDetailsBinding.vgsEtCVC)
-    }
+    fun getCollectView() = arrayOf(
+        cardDetailsBinding.vgsEtCardHolder,
+        cardDetailsBinding.vgsEtCardNumber,
+        cardDetailsBinding.vgsEtExpirationDate,
+        cardDetailsBinding.vgsEtCVC
+    )
 
     private fun handlePayClicked() {
         cardDetailsBinding.llCardHolder.disable()

@@ -6,22 +6,21 @@ import android.os.Bundle
 import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
 import com.verygoodsecurity.vgscheckout.CHECKOUT_RESULT_EXTRA_KEY
-import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutConfiguration
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingConfiguration
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfiguration
+import com.verygoodsecurity.vgscheckout.databinding.CheckoutActivityBinding
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 import com.verygoodsecurity.vgscheckout.ui.CheckoutActivity
 import com.verygoodsecurity.vgscheckout.ui.CheckoutMultiplexingActivity
 import com.verygoodsecurity.vgscheckout.util.extension.disableScreenshots
-import com.verygoodsecurity.vgscheckout.view.checkout.CheckoutView
 import com.verygoodsecurity.vgscheckout.view.checkout.OnPayClickListener
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
 import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse
 
 internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
-    AppCompatActivity(R.layout.checkout_activity), VgsCollectResponseListener, OnPayClickListener {
+    AppCompatActivity(), VgsCollectResponseListener, OnPayClickListener {
 
     protected val config: C by lazy { resolveConfig(EXTRA_KEY_CONFIG) }
 
@@ -31,6 +30,8 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
         }
     }
 
+    private lateinit var binding: CheckoutActivityBinding
+
     abstract fun resolveConfig(key: String): C
 
     abstract fun resolveCollect(): VGSCollect
@@ -38,6 +39,8 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         disableScreenshots()
+        binding = CheckoutActivityBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         initView(savedInstanceState)
     }
 
@@ -56,10 +59,10 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
 
     @CallSuper
     protected open fun initView(savedInstanceState: Bundle?) {
-        findViewById<CheckoutView>(R.id.cvForm)?.let {
-            it.applyConfig(config.formConfig)
-            it.bindViews(collect)
-            it.onPayListener = this
+        with(binding.cvForm) {
+            applyConfig(config.formConfig)
+            onPayListener = this@BaseCheckoutActivity
+            collect.bindView(*getCollectView())
         }
     }
 
