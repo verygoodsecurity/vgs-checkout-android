@@ -190,6 +190,32 @@ class CheckoutActivityTest {
     }
 
     @Test
+    fun performCheckout_showCardHolderName() {
+        // Arrange
+        val intent = Intent(context, CheckoutActivity::class.java).apply {
+            putExtra(
+                "extra_checkout_config",
+                VGSCheckoutConfiguration.Builder("tntpszqgikn")
+                    .setFormConfig(
+                        VGSCheckoutFormConfiguration.Builder()
+                            .setCardHolderOptions(
+                                VGSCheckoutCardHolderOptions.Builder()
+                                    .setVisibility(VGSCheckoutFieldVisibility.VISIBLE)
+                                    .build()
+                            )
+                            .build()
+                    )
+                    .build()
+            )
+        }
+        launch<CheckoutActivity>(intent).use {
+            fillFields()
+            //Assert
+            onView(withId(R.id.llCardHolder)).check(matches(isDisplayed()))
+        }
+    }
+
+    @Test
     fun performCheckout_validParams_successfulResult() {
         // Arrange
         val intent = Intent(context, CheckoutActivity::class.java).apply {
