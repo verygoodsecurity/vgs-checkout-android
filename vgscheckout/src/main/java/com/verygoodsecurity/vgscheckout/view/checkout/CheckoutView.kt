@@ -23,17 +23,15 @@ class CheckoutView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : ScrollView(context, attrs, defStyleAttr), OnFieldStateChangeListener {
 
+    internal var onPayListener: OnPayClickListener? = null
+
     private val binding = CheckoutLayoutBinding.inflate(LayoutInflater.from(context), this)
     private val cardDetailsBinding = binding.includeCardDetails
 
-    private val defaultStrokeWidth by lazy { resources.getDimensionPixelSize(R.dimen.stoke_width) }
-
-    internal var onPayListener: OnPayClickListener? = null
-
-    // Stroke colors
     private val defaultStrokeColor by lazy { getColor(R.color.vgs_checkout_stroke_default) }
     private val highlightedStrokeColor by lazy { getColor(R.color.vgs_checkout_stroke_highlighted) }
     private val errorStrokeColor by lazy { getColor(R.color.vgs_checkout_stroke_error) }
+    private val defaultStrokeWidth by lazy { resources.getDimensionPixelSize(R.dimen.stoke_width) }
 
     init {
         initListeners()
