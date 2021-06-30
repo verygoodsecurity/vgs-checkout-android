@@ -8,6 +8,7 @@ import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
+import com.verygoodsecurity.vgscheckout.config.ui.view.core.VGSCheckoutFieldVisibility
 
 internal fun View.applyStokeColor(width: Int, color: Int) {
     if (background is StateListDrawable) {
@@ -33,3 +34,10 @@ internal fun View.getString(@StringRes id: Int) = resources.getString(id)
 internal fun View.getDrawable(@DrawableRes id: Int) = ContextCompat.getDrawable(context, id)
 
 internal fun View.getColor(@ColorRes id: Int) = ContextCompat.getColor(context, id)
+
+internal fun View.setVisibility(visibility: VGSCheckoutFieldVisibility) {
+    this.visibility = when (visibility) {
+        VGSCheckoutFieldVisibility.VISIBLE -> View.VISIBLE
+        VGSCheckoutFieldVisibility.GONE -> View.GONE
+    }
+}
