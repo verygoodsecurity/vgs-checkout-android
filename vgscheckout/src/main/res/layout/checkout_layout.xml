@@ -1,8 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/margin_padding_size_medium">
+    android:padding="@dimen/margin_padding_size_medium"
+    tools:parentTag="android.widget.ScrollView">
 
-    <include layout="@layout/checkout_card_details" />
-</ScrollView>
+    <LinearLayout
+        android:id="@+id/llCardDetails"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true"
+        android:background="@drawable/rounded_border_bg_white"
+        android:clipToPadding="false"
+        android:orientation="vertical"
+        android:padding="@dimen/margin_padding_size_medium">
+
+        <include
+            android:id="@+id/includeCardDetails"
+            layout="@layout/checkout_card_details" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/mbPay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_padding_size_large"
+            android:layout_marginBottom="@dimen/margin_padding_size_large"
+            android:enabled="false"
+            android:text="@string/vgs_checkout_pay_button_title"
+            android:textColor="@android:color/white"
+            app:backgroundTint="@color/pay_button_background_state_list"
+            app:icon="@drawable/ic_lock_white_10dp"
+            app:iconGravity="textStart"
+            app:iconPadding="@dimen/margin_padding_size_small"
+            app:iconTint="@android:color/white" />
+    </LinearLayout>
+</merge>
