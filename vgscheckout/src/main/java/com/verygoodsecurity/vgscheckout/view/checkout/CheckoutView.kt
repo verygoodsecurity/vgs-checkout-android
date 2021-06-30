@@ -8,6 +8,7 @@ import android.widget.ScrollView
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutFormConfiguration
 import com.verygoodsecurity.vgscheckout.config.ui.core.CheckoutFormConfiguration
+import com.verygoodsecurity.vgscheckout.databinding.CheckoutCardDetailsBinding
 import com.verygoodsecurity.vgscheckout.databinding.CheckoutLayoutBinding
 import com.verygoodsecurity.vgscheckout.util.extension.*
 import com.verygoodsecurity.vgscheckout.view.checkout.adapter.CardIconAdapter
@@ -26,7 +27,7 @@ class CheckoutView @JvmOverloads constructor(
     internal var onPayListener: OnPayClickListener? = null
 
     private val binding = CheckoutLayoutBinding.inflate(LayoutInflater.from(context), this)
-    private val cardDetailsBinding = binding.includeCardDetails
+    private val cardDetailsBinding = CheckoutCardDetailsBinding.bind(binding.root)
 
     private val defaultStrokeColor by lazy { getColor(R.color.vgs_checkout_stroke_default) }
     private val highlightedStrokeColor by lazy { getColor(R.color.vgs_checkout_stroke_highlighted) }
@@ -61,8 +62,8 @@ class CheckoutView @JvmOverloads constructor(
 
         if (config is VGSCheckoutFormConfiguration) {
             // Apply card holder config
-            binding.includeCardDetails.vgsEtCardNumber.setFieldName(config.cardHolderOptions.fieldName)
-            binding.includeCardDetails.llCardHolder.setVisibility(config.cardHolderOptions.visibility)
+            cardDetailsBinding.vgsEtCardNumber.setFieldName(config.cardHolderOptions.fieldName)
+            cardDetailsBinding.llCardHolder.setVisibility(config.cardHolderOptions.visibility)
 
             // Apply card number config
             with(config.cardNumberOptions) {

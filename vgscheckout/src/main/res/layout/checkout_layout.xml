@@ -17,9 +17,7 @@
         android:orientation="vertical"
         android:padding="@dimen/margin_padding_size_medium">
 
-        <include
-            android:id="@+id/includeCardDetails"
-            layout="@layout/checkout_card_details" />
+        <include layout="@layout/checkout_card_details" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/mbPay"
