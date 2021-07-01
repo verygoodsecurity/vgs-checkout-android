@@ -25,8 +25,8 @@ class CheckoutView @JvmOverloads constructor(
 
     internal var onPayListener: OnPayClickListener? = null
 
-    private val binding = CheckoutLayoutBinding.inflate(LayoutInflater.from(context), this)
-    private val cardDetailsBinding = CheckoutCardDetailsBinding.bind(binding.root)
+    private val rootBinding = CheckoutLayoutBinding.inflate(LayoutInflater.from(context), this)
+    private val cardDetailsBinding = CheckoutCardDetailsBinding.bind(rootBinding.root)
 
     private val defaultStrokeColor by lazy { getColor(R.color.vgs_checkout_stroke_default) }
     private val highlightedStrokeColor by lazy { getColor(R.color.vgs_checkout_stroke_highlighted) }
@@ -42,7 +42,7 @@ class CheckoutView @JvmOverloads constructor(
         cardDetailsBinding.vgsEtCardNumber.setOnFieldStateChangeListener(this)
         cardDetailsBinding.vgsEtExpirationDate.setOnFieldStateChangeListener(this)
         cardDetailsBinding.vgsEtCVC.setOnFieldStateChangeListener(this)
-        binding.mbPay.setOnClickListener { handlePayClicked() }
+        rootBinding.mbPay.setOnClickListener { handlePayClicked() }
     }
 
     override fun onStateChange(state: FieldState) {
@@ -55,7 +55,7 @@ class CheckoutView @JvmOverloads constructor(
 
     fun applyConfig(config: CheckoutFormConfiguration) {
         // Apply pay button title
-        config.payButtonTitle?.let { binding.mbPay.text = it }
+        config.payButtonTitle?.let { rootBinding.mbPay.text = it }
 
         if (config is VGSCheckoutFormConfiguration) {
             // Apply card holder config
@@ -84,7 +84,7 @@ class CheckoutView @JvmOverloads constructor(
         }
     }
 
-    fun getCollectView() = arrayOf(
+    fun getCollectViews() = arrayOf(
         cardDetailsBinding.vgsEtCardHolder,
         cardDetailsBinding.vgsEtCardNumber,
         cardDetailsBinding.vgsEtExpirationDate,
@@ -94,9 +94,9 @@ class CheckoutView @JvmOverloads constructor(
     private fun handlePayClicked() {
         cardDetailsBinding.llCardHolder.disable()
         cardDetailsBinding.clCardDetails.disable()
-        binding.mbPay.text = getString(R.string.vgs_checkout_pay_button_processing_title)
-        binding.mbPay.icon = getDrawable(R.drawable.animated_ic_progress_circle_white_16dp)
-        (binding.mbPay.icon as Animatable).start()
+        rootBinding.mbPay.text = getString(R.string.vgs_checkout_pay_button_processing_title)
+        rootBinding.mbPay.icon = getDrawable(R.drawable.animated_ic_progress_circle_white_16dp)
+        (rootBinding.mbPay.icon as Animatable).start()
         onPayListener?.onPayClicked()
     }
 
@@ -137,7 +137,7 @@ class CheckoutView @JvmOverloads constructor(
     }
 
     private fun updatePayButtonState() {
-        binding.mbPay.isEnabled = isAllInputValid()
+        rootBinding.mbPay.isEnabled = isAllInputValid()
     }
 
     private fun getStrokeColor(vararg state: FieldState?): Int = when {

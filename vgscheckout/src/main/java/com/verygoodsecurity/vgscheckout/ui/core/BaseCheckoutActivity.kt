@@ -62,7 +62,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
         with(binding.cvForm) {
             applyConfig(config.formConfig)
             onPayListener = this@BaseCheckoutActivity
-            collect.bindView(*getCollectView())
+            collect.bindView(*getCollectViews())
         }
     }
 
