@@ -13,7 +13,12 @@ sealed class FieldContent {
         internal set
 
     var data:String? = null
-        internal set
+        internal set(value) {
+            if (!isDataChanged) isDataChanged = value?.length ?: 0 > 0
+            field = value
+        }
+
+    var isDataChanged: Boolean = false
 
     class CardNumberContent:FieldContent() {
         var cardtype: CardType = CardType.UNKNOWN

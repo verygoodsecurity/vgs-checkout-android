@@ -27,6 +27,11 @@ sealed class FieldState {
 
     /** The length of this character sequence inside input. */
     var contentLength: Int = 0
+        internal set
+
+    /** Check if field data changed. */
+    var isDirty: Boolean = false
+        internal set
 
     /**
      * The text to be used for data transfer to VGS proxy.
