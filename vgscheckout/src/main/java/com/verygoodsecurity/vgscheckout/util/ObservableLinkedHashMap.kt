@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgscheckout.util
 
-internal abstract class ObservableHashMap<K, V> : HashMap<K, V>() {
+internal abstract class ObservableLinkedHashMap<K, V> : LinkedHashMap<K, V>() {
 
     protected abstract fun onChanged(map: HashMap<K, V>)
 

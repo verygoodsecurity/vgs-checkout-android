@@ -4,12 +4,13 @@ import android.content.Context
 import android.graphics.drawable.Animatable
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.FrameLayout
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutFormConfiguration
 import com.verygoodsecurity.vgscheckout.config.ui.core.CheckoutFormConfiguration
 import com.verygoodsecurity.vgscheckout.databinding.CheckoutLayoutBinding
-import com.verygoodsecurity.vgscheckout.util.ObservableHashMap
+import com.verygoodsecurity.vgscheckout.util.ObservableLinkedHashMap
 import com.verygoodsecurity.vgscheckout.util.extension.*
 import com.verygoodsecurity.vgscheckout.view.checkout.adapter.CardIconAdapter
 import com.verygoodsecurity.vgscheckout.view.checkout.adapter.CardMaskAdapter
@@ -21,7 +22,8 @@ class CheckoutView @JvmOverloads internal constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : FrameLayout(context, attrs, defStyleAttr), OnFieldStateChangeListener {
+) : FrameLayout(context, attrs, defStyleAttr), View.OnFocusChangeListener,
+    OnFieldStateChangeListener {
 
     internal var onPayListener: OnPayClickListener? = null
 
@@ -37,22 +39,39 @@ class CheckoutView @JvmOverloads internal constructor(
     private val cvvHint by lazy { getString(R.string.vgs_checkout_card_cvv_hint) }
     //endregion
 
-    private val errorMessages = object : ObservableHashMap<Int, String?>() {
+    // TODO: Check & handle order
+    private val errorMessages = object : ObservableLinkedHashMap<Int, String?>() {
 
         override fun onChanged(map: HashMap<Int, String?>) {
             binding.tvCardDetailsError.showWithText(map.firstNotNullOfOrNull { it.value })
         }
     }
 
+    // TODO: Remove this crutch as fast as you can
+    private var cardHolderValidationEnabled: Boolean = false
+    private var cardNumberValidationEnabled: Boolean = false
+    private var expirationDateValidationEnabled: Boolean = false
+    private var cvcValidationEnabled: Boolean = false
+
     init {
         initListeners()
     }
 
+    // TODO: Remove this crutch as fast as you can
+    // TODO: Add check isDirty
+    override fun onFocusChange(v: View?, hasFocus: Boolean) {
+        when (v?.id) {
+            R.id.vgsEtCardHolder -> if (!hasFocus) cardHolderValidationEnabled = true
+            R.id.vgsEtCardNumber -> if (!hasFocus) cardNumberValidationEnabled = true
+            R.id.vgsEtExpirationDate -> if (!hasFocus) expirationDateValidationEnabled = true
+            R.id.vgsEtCVC -> if (!hasFocus) cvcValidationEnabled = true
+        }
+    }
+
     override fun onStateChange(state: FieldState) {
         updatePayButtonState()
-        updateErrorMessage()
         when (state) {
-            is CardHolderNameState -> handleCardHolderStateChange(state)
+            is CardHolderNameState -> validateCardHolderName(state)
             is CardNumberState -> handleCardNumberStateChange(state)
             is CardExpirationDateState -> handleExpirationStateChange(state)
             is CVCState -> handleCvcStateChange(state)
@@ -101,6 +120,11 @@ class CheckoutView @JvmOverloads internal constructor(
     //endregion
 
     private fun initListeners() {
+        binding.vgsEtCardHolder.onFocusChangeListener = this
+        binding.vgsEtCardNumber.onFocusChangeListener = this
+        binding.vgsEtExpirationDate.onFocusChangeListener = this
+        binding.vgsEtCVC.onFocusChangeListener = this
+
         binding.vgsEtCardHolder.setOnFieldStateChangeListener(this)
         binding.vgsEtCardNumber.setOnFieldStateChangeListener(this)
         binding.vgsEtExpirationDate.setOnFieldStateChangeListener(this)
@@ -118,32 +142,52 @@ class CheckoutView @JvmOverloads internal constructor(
         onPayListener?.onPayClicked()
     }
 
-    private fun handleCardHolderStateChange(state: CardHolderNameState) {
+    private fun validateCardHolderName(state: CardHolderNameState) {
         binding.llCardHolder.applyStokeColor(defaultStrokeWidth, getStrokeColor(state))
+        if (cardHolderValidationEnabled && state.isDirty) {
+            errorMessages[binding.vgsEtCardHolder.id] = when {
+                !state.isValid -> getString(R.string.vgs_checkout_card_holder_error)
+                else -> null
+            }
+        }
     }
 
     private fun handleCardNumberStateChange(state: CardNumberState) {
+        // TODO: Implement border color
         updateSecurityCodeHint(state.cardBrand)
-        // TODO: Implement
+        if (cardNumberValidationEnabled && state.isDirty) {
+            errorMessages[binding.vgsEtCardNumber.id] = when {
+                !state.isEmpty -> getString(R.string.vgs_checkout_card_number_empty_error)
+                !state.isValid -> getString(R.string.vgs_checkout_card_number_invalid_error)
+                else -> null
+            }
+        }
     }
 
     private fun handleExpirationStateChange(state: CardExpirationDateState) {
-        // TODO: Implement
+        // TODO: Implement border color
+        if (expirationDateValidationEnabled && state.isDirty) {
+            errorMessages[binding.vgsEtExpirationDate.id] = when {
+                !state.isEmpty -> getString(R.string.vgs_checkout_card_date_empty_error)
+                !state.isValid -> getString(R.string.vgs_checkout_card_date_invalid_error)
+                else -> null
+            }
+        }
     }
 
     private fun handleCvcStateChange(state: CVCState) {
-        // TODO: Implement
+        // TODO: Implement border color
+        if (cvcValidationEnabled && state.isDirty) {
+            errorMessages[binding.vgsEtCVC.id] = when {
+                !state.isEmpty -> getString(R.string.vgs_checkout_card_cvc_empty_error)
+                !state.isValid -> getString(R.string.vgs_checkout_card_cvc_invalid_error)
+                else -> null
+            }
+        }
     }
 
     private fun updatePayButtonState() {
         binding.mbPay.isEnabled = isFieldsValid()
-    }
-
-    private fun updateErrorMessage() {
-        binding.vgsEtCardHolder.getState()?.let {
-            errorMessages[binding.tvCardDetailsError.id] =
-                if (!it.isValid && it.isDirty) "Card holder name is empty!" else null
-        }
     }
 
     private fun updateSecurityCodeHint(brand: String?) {

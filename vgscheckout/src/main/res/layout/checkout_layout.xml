@@ -214,8 +214,8 @@
             android:layout_marginTop="@dimen/margin_padding_size_micro"
             android:textAppearance="?textAppearanceBody2"
             android:textColor="@color/vgs_checkout_error_text"
-            android:visibility="visible"
-            tools:text="@string/vgs_checkout_card_cvc_error"
+            android:visibility="gone"
+            tools:text="Test error"
             tools:visibility="visible" />
 
         <com.google.android.material.button.MaterialButton
