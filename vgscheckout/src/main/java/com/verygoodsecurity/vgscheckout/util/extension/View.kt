@@ -4,6 +4,7 @@ import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.StateListDrawable
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
@@ -33,6 +34,7 @@ internal fun View.getString(@StringRes id: Int) = resources.getString(id)
 
 internal fun View.getDrawable(@DrawableRes id: Int) = ContextCompat.getDrawable(context, id)
 
+@ColorInt
 internal fun View.getColor(@ColorRes id: Int) = ContextCompat.getColor(context, id)
 
 internal fun View.setVisibility(visibility: VGSCheckoutFieldVisibility) {

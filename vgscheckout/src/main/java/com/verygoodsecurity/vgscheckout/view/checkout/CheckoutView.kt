@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.drawable.Animatable
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.view.View
 import android.widget.FrameLayout
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutFormConfiguration
@@ -14,72 +13,47 @@ import com.verygoodsecurity.vgscheckout.util.ObservableLinkedHashMap
 import com.verygoodsecurity.vgscheckout.util.extension.*
 import com.verygoodsecurity.vgscheckout.view.checkout.adapter.CardIconAdapter
 import com.verygoodsecurity.vgscheckout.view.checkout.adapter.CardMaskAdapter
-import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState.*
-import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
 
-class CheckoutView @JvmOverloads internal constructor(
+internal class CheckoutView @JvmOverloads internal constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : FrameLayout(context, attrs, defStyleAttr), View.OnFocusChangeListener,
-    OnFieldStateChangeListener {
+) : FrameLayout(context, attrs, defStyleAttr), StateChangeListener {
 
     internal var onPayListener: OnPayClickListener? = null
 
     private val binding = CheckoutLayoutBinding.inflate(LayoutInflater.from(context), this)
+    private val cardHolderStateHolder = InputViewStateHolder(binding.vgsEtCardHolder, this)
+    private val cardNumberStateHolder = InputViewStateHolder(binding.vgsEtCardNumber, this)
+    private val expirationStateHolder = InputViewStateHolder(binding.vgsEtExpirationDate, this)
+    private val cvcStateHolder = InputViewStateHolder(binding.vgsEtCVC, this)
+
+    private val errorMessages: ObservableLinkedHashMap<Int, String?> = initErrorMessages()
 
     //region Resources
-    private val defaultStrokeColor by lazy { getColor(R.color.vgs_checkout_stroke_default) }
-    private val highlightedStrokeColor by lazy { getColor(R.color.vgs_checkout_stroke_highlighted) }
-    private val errorStrokeColor by lazy { getColor(R.color.vgs_checkout_stroke_error) }
-    private val defaultStrokeWidth by lazy { resources.getDimensionPixelSize(R.dimen.stoke_width) }
-
+    private val defaultBorderColor by lazy { getColor(R.color.vgs_checkout_stroke_default) }
+    private val focusedBorderColor by lazy { getColor(R.color.vgs_checkout_stroke_highlighted) }
+    private val errorSBorderColor by lazy { getColor(R.color.vgs_checkout_stroke_error) }
+    private val defaultBorderWidth by lazy { resources.getDimensionPixelSize(R.dimen.stoke_width) }
     private val cvcHint by lazy { getString(R.string.vgs_checkout_card_cvc_hint) }
     private val cvvHint by lazy { getString(R.string.vgs_checkout_card_cvv_hint) }
     //endregion
-
-    // TODO: Check & handle order
-    private val errorMessages = object : ObservableLinkedHashMap<Int, String?>() {
-
-        override fun onChanged(map: HashMap<Int, String?>) {
-            binding.tvCardDetailsError.showWithText(map.firstNotNullOfOrNull { it.value })
-        }
-    }
-
-    // TODO: Remove this crutch as fast as you can
-    private var cardHolderValidationEnabled: Boolean = false
-    private var cardNumberValidationEnabled: Boolean = false
-    private var expirationDateValidationEnabled: Boolean = false
-    private var cvcValidationEnabled: Boolean = false
 
     init {
         initListeners()
     }
 
-    // TODO: Remove this crutch as fast as you can
-    // TODO: Add check isDirty
-    override fun onFocusChange(v: View?, hasFocus: Boolean) {
-        when (v?.id) {
-            R.id.vgsEtCardHolder -> if (!hasFocus) cardHolderValidationEnabled = true
-            R.id.vgsEtCardNumber -> if (!hasFocus) cardNumberValidationEnabled = true
-            R.id.vgsEtExpirationDate -> if (!hasFocus) expirationDateValidationEnabled = true
-            R.id.vgsEtCVC -> if (!hasFocus) cvcValidationEnabled = true
+    override fun onStateChange(id: Int, state: ViewState) {
+        when (id) {
+            R.id.vgsEtCardHolder -> handleCardHolderStateChanged(state)
+            R.id.vgsEtCardNumber -> handleCardNumberStateChanged(state)
+            R.id.vgsEtExpirationDate -> handleExpirationStateChanged(state)
+            R.id.vgsEtCVC -> handleCVCStateChanged(state)
         }
     }
 
-    override fun onStateChange(state: FieldState) {
-        updatePayButtonState()
-        when (state) {
-            is CardHolderNameState -> validateCardHolderName(state)
-            is CardNumberState -> handleCardNumberStateChange(state)
-            is CardExpirationDateState -> handleExpirationStateChange(state)
-            is CVCState -> handleCvcStateChange(state)
-            else -> throw IllegalArgumentException("Not implemented!")
-        }
-    }
-
-    //region CheckoutView
+    //region Public API TODO: Refactor
     fun applyConfig(config: CheckoutFormConfiguration) {
         // Apply pay button title
         config.payButtonTitle?.let { binding.mbPay.text = it }
@@ -119,16 +93,22 @@ class CheckoutView @JvmOverloads internal constructor(
     )
     //endregion
 
-    private fun initListeners() {
-        binding.vgsEtCardHolder.onFocusChangeListener = this
-        binding.vgsEtCardNumber.onFocusChangeListener = this
-        binding.vgsEtExpirationDate.onFocusChangeListener = this
-        binding.vgsEtCVC.onFocusChangeListener = this
+    private fun initErrorMessages(): ObservableLinkedHashMap<Int, String?> {
+        val defaultMessages = linkedMapOf<Int, String?>(
+            R.id.vgsEtCardHolder to null,
+            R.id.vgsEtCardNumber to null,
+            R.id.vgsEtExpirationDate to null,
+            R.id.vgsEtCVC to null
+        )
+        return object : ObservableLinkedHashMap<Int, String?>(defaultMessages) {
 
-        binding.vgsEtCardHolder.setOnFieldStateChangeListener(this)
-        binding.vgsEtCardNumber.setOnFieldStateChangeListener(this)
-        binding.vgsEtExpirationDate.setOnFieldStateChangeListener(this)
-        binding.vgsEtCVC.setOnFieldStateChangeListener(this)
+            override fun onChanged(map: ObservableLinkedHashMap<Int, String?>) {
+                binding.tvCardDetailsError.showWithText(map.firstNotNullOfOrNull { it.value })
+            }
+        }
+    }
+
+    private fun initListeners() {
         binding.mbPay.setOnClickListener { handlePayClicked() }
     }
 
@@ -142,72 +122,77 @@ class CheckoutView @JvmOverloads internal constructor(
         onPayListener?.onPayClicked()
     }
 
-    private fun validateCardHolderName(state: CardHolderNameState) {
-        binding.llCardHolder.applyStokeColor(defaultStrokeWidth, getStrokeColor(state))
-        if (cardHolderValidationEnabled && state.isDirty) {
-            errorMessages[binding.vgsEtCardHolder.id] = when {
-                !state.isValid -> getString(R.string.vgs_checkout_card_holder_error)
+    private fun handleCardHolderStateChanged(state: ViewState) {
+        binding.llCardHolder.applyStokeColor(defaultBorderWidth, getBorderColor(state))
+        if (state.shouldValidate()) {
+            errorMessages[R.id.vgsEtCardHolder] = when {
+                state.isEmpty -> getString(R.string.vgs_checkout_card_holder_error)
                 else -> null
             }
         }
     }
 
-    private fun handleCardNumberStateChange(state: CardNumberState) {
-        // TODO: Implement border color
-        updateSecurityCodeHint(state.cardBrand)
-        if (cardNumberValidationEnabled && state.isDirty) {
-            errorMessages[binding.vgsEtCardNumber.id] = when {
-                !state.isEmpty -> getString(R.string.vgs_checkout_card_number_empty_error)
+    private fun handleCardNumberStateChanged(state: ViewState) {
+        updateSecurityCodeHint()
+        updateCardDetailsBorderColor()
+        if (state.shouldValidate()) {
+            errorMessages[R.id.vgsEtCardNumber] = when {
+                state.isEmpty -> getString(R.string.vgs_checkout_card_number_empty_error)
                 !state.isValid -> getString(R.string.vgs_checkout_card_number_invalid_error)
                 else -> null
             }
         }
     }
 
-    private fun handleExpirationStateChange(state: CardExpirationDateState) {
-        // TODO: Implement border color
-        if (expirationDateValidationEnabled && state.isDirty) {
-            errorMessages[binding.vgsEtExpirationDate.id] = when {
-                !state.isEmpty -> getString(R.string.vgs_checkout_card_date_empty_error)
+    private fun handleExpirationStateChanged(state: ViewState) {
+        updateCardDetailsBorderColor()
+        if (state.shouldValidate()) {
+            errorMessages[R.id.vgsEtExpirationDate] = when {
+                state.isEmpty -> getString(R.string.vgs_checkout_card_date_empty_error)
                 !state.isValid -> getString(R.string.vgs_checkout_card_date_invalid_error)
                 else -> null
             }
         }
     }
 
-    private fun handleCvcStateChange(state: CVCState) {
-        // TODO: Implement border color
-        if (cvcValidationEnabled && state.isDirty) {
-            errorMessages[binding.vgsEtCVC.id] = when {
-                !state.isEmpty -> getString(R.string.vgs_checkout_card_cvc_empty_error)
+    private fun handleCVCStateChanged(state: ViewState) {
+        updateCardDetailsBorderColor()
+        if (state.shouldValidate()) {
+            errorMessages[R.id.vgsEtCVC] = when {
+                state.isEmpty -> getString(R.string.vgs_checkout_card_cvc_empty_error)
                 !state.isValid -> getString(R.string.vgs_checkout_card_cvc_invalid_error)
                 else -> null
             }
         }
     }
 
-    private fun updatePayButtonState() {
-        binding.mbPay.isEnabled = isFieldsValid()
+    private fun updateSecurityCodeHint() {
+        (if (binding.vgsEtCardNumber.getState()?.cardBrand.isAmericanExpress()) cvvHint else cvcHint).run {
+            binding.vgsEtCVC.setHint(this)
+        }
     }
 
-    private fun updateSecurityCodeHint(brand: String?) {
-        binding.vgsEtCVC.setHint(if (brand.isAmericanExpress()) cvvHint else cvcHint)
+    private fun updateCardDetailsBorderColor() {
+        with(
+            getBorderColor(
+                cardNumberStateHolder.getState(),
+                expirationStateHolder.getState(),
+                cvcStateHolder.getState()
+            )
+        ) {
+            binding.clCardDetails.applyStokeColor(defaultBorderWidth, this)
+            binding.viewDividerHorizontal.setBackgroundColor(this)
+            binding.viewDividerVertical.setBackgroundColor(this)
+        }
     }
 
-    private fun getStrokeColor(vararg state: FieldState?): Int = when {
-        state.any { it?.hasFocus == true } -> highlightedStrokeColor
-        state.any { it?.isValid == false && it.isDirty } -> errorStrokeColor
-        else -> defaultStrokeColor
+    private fun getBorderColor(vararg state: ViewState?): Int = when {
+        state.any { it?.hasFocus == true } -> focusedBorderColor
+        state.any { it?.isValid == false && it.isDirty } -> errorSBorderColor
+        else -> defaultBorderColor
     }
 
-    private fun isFieldsValid(
-        vararg state: FieldState? = arrayOf(
-            binding.vgsEtCardHolder.getState(),
-            binding.vgsEtCardNumber.getState(),
-            binding.vgsEtExpirationDate.getState(),
-            binding.vgsEtCVC.getState()
-        )
-    ): Boolean = state.all { it?.isValid == true }
+    private fun ViewState.shouldValidate() = hasFocusedBefore && isDirty
 }
 
 internal interface OnPayClickListener {
