@@ -3,6 +3,7 @@ package com.verygoodsecurity.vgscheckout.ui
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import androidx.annotation.IdRes
 import androidx.test.core.app.ActivityScenario.launch
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
@@ -10,6 +11,7 @@ import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.google.android.material.textview.MaterialTextView
 import com.verygoodsecurity.vgscheckout.CHECKOUT_RESULT_EXTRA_KEY
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutConfiguration
@@ -81,6 +83,25 @@ class CheckoutActivityTest {
             )
             //Assert
             onView(withId(R.id.mbPay)).check(matches(not(isEnabled())))
+        }
+    }
+
+    @Test
+    fun performCheckout_cardHolderNotValidNotFocused_errorShowed() {
+        // Arrange
+        launch<CheckoutActivity>(defaultIntent).use {
+            // Act
+            requestFocus(R.id.vgsEtCardHolder)
+            setText(R.id.vgsEtCardHolder, TEST_TEXT)
+            clearFocus(R.id.vgsEtCardHolder)
+            setText(R.id.vgsEtCardHolder, EMPTY)
+
+            var errorText: String? = null
+            onView(withId(R.id.tvCardDetailsError)).perform(doAction<MaterialTextView> {
+                errorText = it.text.toString()
+            })
+            //Assert
+            assertEquals("Name is empty", errorText)
         }
     }
 
@@ -158,7 +179,7 @@ class CheckoutActivityTest {
             //Assert
             onView(withId(R.id.vgsEtCardHolder)).check(matches(not(isEnabled())))
             onView(withId(R.id.vgsEtCardNumber)).check(matches(not(isEnabled())))
-            onView(withId(R.id.vgsEtExpirationDate)).check(matches(not(isEnabled())))
+            onView(withId(R.id.vgsEtDate)).check(matches(not(isEnabled())))
             onView(withId(R.id.vgsEtCVC)).check(matches(not(isEnabled())))
         }
     }
@@ -298,7 +319,7 @@ class CheckoutActivityTest {
         onView(withId(R.id.vgsEtCardNumber)).perform(doAction<VGSCardNumberEditText> {
             it.setText(cardNumber)
         })
-        onView(withId(R.id.vgsEtExpirationDate)).perform(doAction<ExpirationDateEditText> {
+        onView(withId(R.id.vgsEtDate)).perform(doAction<ExpirationDateEditText> {
             it.setText(expirationDate)
         })
         onView(withId(R.id.vgsEtCVC)).perform(doAction<CardVerificationCodeEditText> {
@@ -306,9 +327,28 @@ class CheckoutActivityTest {
         })
     }
 
+    private fun setText(@IdRes id: Int, text: String) {
+        onView(withId(id)).perform(doAction<PersonNameEditText> {
+            it.setText(text)
+        })
+    }
+
+    private fun requestFocus(@IdRes id: Int) {
+        onView(withId(id)).perform(doAction<PersonNameEditText> {
+            it.requestFocus()
+        })
+    }
+
+    private fun clearFocus(@IdRes id: Int) {
+        onView(withId(id)).perform(doAction<PersonNameEditText> {
+            it.clearFocus()
+        })
+    }
+
     companion object {
 
         // Fields data
+        private const val TEST_TEXT = "1"
         private const val EMPTY = ""
         private const val CARD_HOLDER_NAME = "Test"
         private const val CARD_NUMBER = "4111111111111111"
