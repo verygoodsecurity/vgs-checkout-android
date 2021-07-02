@@ -47,7 +47,7 @@ internal class CheckoutView @JvmOverloads internal constructor(
         when (id) {
             R.id.vgsEtCardHolder -> handleCardHolderStateChanged(state)
             R.id.vgsEtCardNumber -> handleCardNumberStateChanged(state)
-            R.id.vgsEtDate -> handleExpirationStateChanged(state)
+            R.id.vgsEtDate -> handleDateStateChanged(state)
             R.id.vgsEtCVC -> handleCVCStateChanged(state)
         }
     }
@@ -135,7 +135,7 @@ internal class CheckoutView @JvmOverloads internal constructor(
         }
     }
 
-    private fun handleExpirationStateChanged(state: ViewState) {
+    private fun handleDateStateChanged(state: ViewState) {
         updateCardDetailsBorderColor()
         if (state.shouldValidate()) {
             errorMessages[R.id.vgsEtDate] = when {
