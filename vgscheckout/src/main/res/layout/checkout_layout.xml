@@ -41,7 +41,7 @@
                 android:text="@string/vgs_checkout_card_holder_subtitle"
                 android:textAllCaps="true"
                 android:textAppearance="?attr/textAppearanceCaption"
-                app:drawableTint="@color/vgs_checkout_error" />
+                app:drawableTint="@color/vgs_checkout_error_icon_tint" />
 
             <com.verygoodsecurity.vgscollect.widget.PersonNameEditText
                 android:id="@+id/vgsEtCardHolder"
@@ -126,7 +126,7 @@
                         android:text="@string/vgs_checkout_card_date_subtitle"
                         android:textAllCaps="true"
                         android:textAppearance="?attr/textAppearanceCaption"
-                        app:drawableTint="@color/vgs_checkout_error" />
+                        app:drawableTint="@color/vgs_checkout_error_icon_tint" />
 
                     <com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
                         android:id="@+id/vgsEtDate"
@@ -163,7 +163,7 @@
                         android:text="@string/vgs_checkout_card_cvc_subtitle"
                         android:textAllCaps="true"
                         android:textAppearance="?attr/textAppearanceCaption"
-                        app:drawableTint="@color/vgs_checkout_error" />
+                        app:drawableTint="@color/vgs_checkout_error_icon_tint" />
 
                     <com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
                         android:id="@+id/vgsEtCVC"
@@ -201,7 +201,7 @@
                     android:text="@string/vgs_checkout_card_number_subtitle"
                     android:textAllCaps="true"
                     android:textAppearance="?attr/textAppearanceCaption"
-                    app:drawableTint="@color/vgs_checkout_error" />
+                    app:drawableTint="@color/vgs_checkout_error_icon_tint" />
 
                 <com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
                     android:id="@+id/vgsEtCardNumber"
@@ -225,7 +225,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_padding_size_micro"
             android:textAppearance="?textAppearanceBody2"
-            android:textColor="@color/vgs_checkout_error"
+            android:textColor="@color/vgs_checkout_text_error"
             android:visibility="gone"
             tools:text="Test error"
             tools:visibility="visible" />

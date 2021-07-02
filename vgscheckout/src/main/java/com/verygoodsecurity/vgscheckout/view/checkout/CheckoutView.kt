@@ -158,9 +158,7 @@ internal class CheckoutView @JvmOverloads internal constructor(
     }
 
     private fun updatePayButton() {
-        binding.mbPay.isEnabled = cardHolderStateHolder.getState().isValid &&
-                cardNumberStateHolder.getState().isValid && dateStateHolder.getState().isValid &&
-                cvcStateHolder.getState().isValid
+        binding.mbPay.isEnabled = isInputValid()
     }
 
     private fun updateSecurityCodeHint() {
@@ -188,6 +186,15 @@ internal class CheckoutView @JvmOverloads internal constructor(
         state.any { it?.isValid == false && it.isDirty } -> errorBorderColor
         else -> defaultBorderColor
     }
+
+    private fun isInputValid(
+        vararg state: InputViewStateHolder? = arrayOf(
+            cardHolderStateHolder,
+            cardNumberStateHolder,
+            dateStateHolder,
+            cvcStateHolder
+        )
+    ): Boolean = state.all { it?.getState()?.isValid == true }
 
     private fun ViewState.shouldValidate() = hasFocusedBefore && isDirty
 }

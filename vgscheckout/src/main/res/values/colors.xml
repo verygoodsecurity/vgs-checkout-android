@@ -6,7 +6,7 @@
 
     <color name="vgs_checkout_text_enabled">#40545F</color>
     <color name="vgs_checkout_text_disabled">#5040545F</color>
-    <color name="vgs_checkout_error">#CC0000</color>
+    <color name="vgs_checkout_text_error">#CC0000</color>
     <color name="vgs_checkout_text_hint">#C8D0DB</color>
 
     <color name="vgs_checkout_stroke_default">#C8D0DB</color>
@@ -18,4 +18,6 @@
 
     <color name="vgs_checkout_pay_enabled_background">#145FF5</color>
     <color name="vgs_checkout_pay_disabled_background">#88aff9</color>
+
+    <color name="vgs_checkout_error_icon_tint">#CC0000</color>
 </resources>
