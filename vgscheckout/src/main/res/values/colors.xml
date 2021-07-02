@@ -6,7 +6,7 @@
 
     <color name="vgs_checkout_text_enabled">#40545F</color>
     <color name="vgs_checkout_text_disabled">#5040545F</color>
-    <color name="vgs_checkout_error_text">#CC0000</color>
+    <color name="vgs_checkout_error">#CC0000</color>
     <color name="vgs_checkout_text_hint">#C8D0DB</color>
 
     <color name="vgs_checkout_stroke_default">#C8D0DB</color>

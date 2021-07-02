@@ -6,7 +6,6 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
 import com.verygoodsecurity.vgscheckout.R
-import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutFormConfiguration
 import com.verygoodsecurity.vgscheckout.config.ui.core.CheckoutFormConfiguration
 import com.verygoodsecurity.vgscheckout.databinding.CheckoutLayoutBinding
 import com.verygoodsecurity.vgscheckout.util.ObservableLinkedHashMap
@@ -26,84 +25,76 @@ internal class CheckoutView @JvmOverloads internal constructor(
     private val binding = CheckoutLayoutBinding.inflate(LayoutInflater.from(context), this)
     private val cardHolderStateHolder = InputViewStateHolder(binding.vgsEtCardHolder, this)
     private val cardNumberStateHolder = InputViewStateHolder(binding.vgsEtCardNumber, this)
-    private val expirationStateHolder = InputViewStateHolder(binding.vgsEtExpirationDate, this)
+    private val dateStateHolder = InputViewStateHolder(binding.vgsEtDate, this)
     private val cvcStateHolder = InputViewStateHolder(binding.vgsEtCVC, this)
 
     private val errorMessages: ObservableLinkedHashMap<Int, String?> = initErrorMessages()
 
-    //region Resources
     private val defaultBorderColor by lazy { getColor(R.color.vgs_checkout_stroke_default) }
     private val focusedBorderColor by lazy { getColor(R.color.vgs_checkout_stroke_highlighted) }
-    private val errorSBorderColor by lazy { getColor(R.color.vgs_checkout_stroke_error) }
+    private val errorBorderColor by lazy { getColor(R.color.vgs_checkout_stroke_error) }
     private val defaultBorderWidth by lazy { resources.getDimensionPixelSize(R.dimen.stoke_width) }
+    private val errorDrawable by lazy { getDrawable(R.drawable.ic_error_white_10dp) }
     private val cvcHint by lazy { getString(R.string.vgs_checkout_card_cvc_hint) }
     private val cvvHint by lazy { getString(R.string.vgs_checkout_card_cvv_hint) }
-    //endregion
 
     init {
         initListeners()
     }
 
     override fun onStateChange(id: Int, state: ViewState) {
+        updatePayButton()
         when (id) {
             R.id.vgsEtCardHolder -> handleCardHolderStateChanged(state)
             R.id.vgsEtCardNumber -> handleCardNumberStateChanged(state)
-            R.id.vgsEtExpirationDate -> handleExpirationStateChanged(state)
+            R.id.vgsEtDate -> handleExpirationStateChanged(state)
             R.id.vgsEtCVC -> handleCVCStateChanged(state)
         }
     }
 
-    //region Public API TODO: Refactor
     fun applyConfig(config: CheckoutFormConfiguration) {
-        // Apply pay button title
+        binding.vgsEtCardNumber.setFieldName(config.cardHolderOptions.fieldName)
+        binding.llCardHolder.setVisibility(config.cardHolderOptions.visibility)
+        binding.vgsEtCardNumber.setFieldName(config.cardNumberOptions.fieldName)
+        binding.vgsEtCardNumber.setValidCardBrands(
+            *config.cardNumberOptions.cardBrands.map { it.toCollectCardBrand() }.toTypedArray()
+        )
+        binding.vgsEtCardNumber.setCardMaskAdapter(CardMaskAdapter(config.cardNumberOptions.cardBrands))
+        binding.vgsEtCardNumber.setCardIconAdapter(
+            CardIconAdapter(this@CheckoutView.context, config.cardNumberOptions.cardBrands)
+        )
+        binding.vgsEtDate.setFieldName(config.expirationDateOptions.fieldName)
+        binding.vgsEtCVC.setFieldName(config.cvcOptions.fieldName)
         config.payButtonTitle?.let { binding.mbPay.text = it }
-
-        if (config is VGSCheckoutFormConfiguration) {
-            // Apply card holder config
-            binding.vgsEtCardNumber.setFieldName(config.cardHolderOptions.fieldName)
-            binding.llCardHolder.setVisibility(config.cardHolderOptions.visibility)
-
-            // Apply card number config
-            with(config.cardNumberOptions) {
-                binding.vgsEtCardNumber.setFieldName(fieldName)
-                binding.vgsEtCardNumber.setValidCardBrands(*cardBrands.map { it.toCollectCardBrand() }
-                    .toTypedArray())
-                binding.vgsEtCardNumber.setCardMaskAdapter(CardMaskAdapter(cardBrands))
-                binding.vgsEtCardNumber.setCardIconAdapter(
-                    CardIconAdapter(
-                        this@CheckoutView.context,
-                        cardBrands
-                    )
-                )
-            }
-
-            // Apply expiration date config
-            binding.vgsEtExpirationDate.setFieldName(config.expirationDateOptions.fieldName)
-
-            // Apply cvc config
-            binding.vgsEtCVC.setFieldName(config.cvcOptions.fieldName)
-        }
     }
 
     fun getCollectViews() = arrayOf(
         binding.vgsEtCardHolder,
         binding.vgsEtCardNumber,
-        binding.vgsEtExpirationDate,
+        binding.vgsEtDate,
         binding.vgsEtCVC
     )
-    //endregion
 
     private fun initErrorMessages(): ObservableLinkedHashMap<Int, String?> {
         val defaultMessages = linkedMapOf<Int, String?>(
             R.id.vgsEtCardHolder to null,
             R.id.vgsEtCardNumber to null,
-            R.id.vgsEtExpirationDate to null,
+            R.id.vgsEtDate to null,
             R.id.vgsEtCVC to null
         )
         return object : ObservableLinkedHashMap<Int, String?>(defaultMessages) {
 
             override fun onChanged(map: ObservableLinkedHashMap<Int, String?>) {
                 binding.tvCardDetailsError.showWithText(map.firstNotNullOfOrNull { it.value })
+                map.forEach {
+                    val drawable = if (it.value == null) null else errorDrawable
+                    when (it.key) {
+                        R.id.vgsEtCardHolder -> binding.mtvCardHolderHint.setDrawableEnd(drawable)
+                        R.id.vgsEtCardNumber -> binding.mtvCardNumberHint.setDrawableEnd(drawable)
+                        R.id.vgsEtDate -> binding.mtvDateHint.setDrawableEnd(drawable)
+                        R.id.vgsEtCVC -> binding.mtvCVCHint.setDrawableEnd(drawable)
+                    }
+                }
             }
         }
     }
@@ -147,7 +138,7 @@ internal class CheckoutView @JvmOverloads internal constructor(
     private fun handleExpirationStateChanged(state: ViewState) {
         updateCardDetailsBorderColor()
         if (state.shouldValidate()) {
-            errorMessages[R.id.vgsEtExpirationDate] = when {
+            errorMessages[R.id.vgsEtDate] = when {
                 state.isEmpty -> getString(R.string.vgs_checkout_card_date_empty_error)
                 !state.isValid -> getString(R.string.vgs_checkout_card_date_invalid_error)
                 else -> null
@@ -166,6 +157,12 @@ internal class CheckoutView @JvmOverloads internal constructor(
         }
     }
 
+    private fun updatePayButton() {
+        binding.mbPay.isEnabled = cardHolderStateHolder.getState().isValid &&
+                cardNumberStateHolder.getState().isValid && dateStateHolder.getState().isValid &&
+                cvcStateHolder.getState().isValid
+    }
+
     private fun updateSecurityCodeHint() {
         (if (binding.vgsEtCardNumber.getState()?.cardBrand.isAmericanExpress()) cvvHint else cvcHint).run {
             binding.vgsEtCVC.setHint(this)
@@ -176,7 +173,7 @@ internal class CheckoutView @JvmOverloads internal constructor(
         with(
             getBorderColor(
                 cardNumberStateHolder.getState(),
-                expirationStateHolder.getState(),
+                dateStateHolder.getState(),
                 cvcStateHolder.getState()
             )
         ) {
@@ -188,7 +185,7 @@ internal class CheckoutView @JvmOverloads internal constructor(
 
     private fun getBorderColor(vararg state: ViewState?): Int = when {
         state.any { it?.hasFocus == true } -> focusedBorderColor
-        state.any { it?.isValid == false && it.isDirty } -> errorSBorderColor
+        state.any { it?.isValid == false && it.isDirty } -> errorBorderColor
         else -> defaultBorderColor
     }
 

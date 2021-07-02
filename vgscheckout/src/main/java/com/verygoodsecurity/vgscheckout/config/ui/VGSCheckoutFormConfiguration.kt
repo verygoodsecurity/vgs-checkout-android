@@ -10,11 +10,11 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 class VGSCheckoutFormConfiguration private constructor(
-    val cardNumberOptions: VGSCheckoutCardNumberOptions,
-    val cardHolderOptions: VGSCheckoutCardHolderOptions,
-    val cvcOptions: VGSCheckoutCVCOptions,
-    val expirationDateOptions: VGSCheckoutExpirationDateOptions,
-    val postalCodeOptions: VGSCheckoutPostalCodeOptions,
+    override val cardNumberOptions: VGSCheckoutCardNumberOptions,
+    override val cardHolderOptions: VGSCheckoutCardHolderOptions,
+    override val cvcOptions: VGSCheckoutCVCOptions,
+    override val expirationDateOptions: VGSCheckoutExpirationDateOptions,
+    override val postalCodeOptions: VGSCheckoutPostalCodeOptions,
     override val payButtonTitle: String?
 ) : CheckoutFormConfiguration() {
 
