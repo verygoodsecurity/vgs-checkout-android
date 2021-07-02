@@ -43,7 +43,6 @@ internal fun VGSFieldState.mapToFieldState(): FieldState {
     f.isValid = isValid
 
     f.contentLength = content?.data?.length ?: 0
-    f.isDirty = content?.isDataChanged ?: false
     f.isEmpty = f.contentLength == 0
 
     f.isRequired = isRequired
