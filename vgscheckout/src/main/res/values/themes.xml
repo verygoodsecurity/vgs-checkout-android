@@ -43,6 +43,13 @@
         <item name="android:textAppearance">?textAppearanceBody2</item>
     </style>
 
+    <style name="VGSCheckout.Description">
+        <item name="android:fontFamily">@font/inter_semi_bold</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textAppearance">?textAppearanceCaption</item>
+        <item name="drawableTint">@color/vgs_checkout_error_icon_tint</item>
+    </style>
+
     <style name="VGSCheckout.Button" parent="Widget.MaterialComponents.Button">
         <item name="android:textColor">@color/vgs_checkout_pay_text</item>
         <item name="backgroundTint">@color/vgs_checkout_pay_button_background_state_list</item>

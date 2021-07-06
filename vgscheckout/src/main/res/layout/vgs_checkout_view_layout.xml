@@ -34,14 +34,11 @@
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/mtvCardHolderHint"
+                style="@style/VGSCheckout.Description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawablePadding="@dimen/vgs_checkout_margin_padding_size_small"
-                android:fontFamily="@font/inter_semi_bold"
-                android:text="@string/vgs_checkout_card_holder_subtitle"
-                android:textAllCaps="true"
-                android:textAppearance="?attr/textAppearanceCaption"
-                app:drawableTint="@color/vgs_checkout_error_icon_tint" />
+                android:text="@string/vgs_checkout_card_holder_subtitle" />
 
             <com.verygoodsecurity.vgscollect.widget.PersonNameEditText
                 android:id="@+id/vgsEtCardHolder"
@@ -118,14 +115,11 @@
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/mtvDateHint"
+                        style="@style/VGSCheckout.Description"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:drawablePadding="@dimen/vgs_checkout_margin_padding_size_small"
-                        android:fontFamily="@font/inter_semi_bold"
-                        android:text="@string/vgs_checkout_card_expiration_date_subtitle"
-                        android:textAllCaps="true"
-                        android:textAppearance="?attr/textAppearanceCaption"
-                        app:drawableTint="@color/vgs_checkout_error_icon_tint" />
+                        android:text="@string/vgs_checkout_card_expiration_date_subtitle" />
 
                     <com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
                         android:id="@+id/vgsEtDate"
@@ -154,14 +148,11 @@
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/mtvCVCHint"
+                        style="@style/VGSCheckout.Description"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:drawablePadding="@dimen/vgs_checkout_margin_padding_size_small"
-                        android:fontFamily="@font/inter_semi_bold"
-                        android:text="@string/vgs_checkout_card_verification_code_subtitle"
-                        android:textAllCaps="true"
-                        android:textAppearance="?attr/textAppearanceCaption"
-                        app:drawableTint="@color/vgs_checkout_error_icon_tint" />
+                        android:text="@string/vgs_checkout_card_verification_code_subtitle" />
 
                     <com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
                         android:id="@+id/vgsEtCVC"
@@ -191,14 +182,11 @@
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/mtvCardNumberHint"
+                    style="@style/VGSCheckout.Description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:drawablePadding="@dimen/vgs_checkout_margin_padding_size_small"
-                    android:fontFamily="@font/inter_semi_bold"
-                    android:text="@string/vgs_checkout_card_number_subtitle"
-                    android:textAllCaps="true"
-                    android:textAppearance="?attr/textAppearanceCaption"
-                    app:drawableTint="@color/vgs_checkout_error_icon_tint" />
+                    android:text="@string/vgs_checkout_card_number_subtitle" />
 
                 <com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
                     android:id="@+id/vgsEtCardNumber"
