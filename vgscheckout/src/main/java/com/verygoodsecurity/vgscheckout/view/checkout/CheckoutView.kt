@@ -3,7 +3,6 @@ package com.verygoodsecurity.vgscheckout.view.checkout
 import android.content.Context
 import android.graphics.drawable.Animatable
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
 import android.widget.FrameLayout
 import com.verygoodsecurity.vgscheckout.R
@@ -137,7 +136,6 @@ internal class CheckoutView @JvmOverloads internal constructor(
     }
 
     private fun handleDateStateChanged(state: ViewState) {
-        Log.d("Test", state.toString())
         updateCardDetailsBorderColor()
         if (state.shouldValidate()) {
             errorMessages[R.id.vgsEtDate] = when {
