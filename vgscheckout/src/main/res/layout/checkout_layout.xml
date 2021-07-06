@@ -55,7 +55,7 @@
                 tools:text="Dmytro" />
         </LinearLayout>
 
-        <!--   NOTE: order of items inside this layout is IMPORTANT.-->
+        <!--   NOTE: order of view inside this layout is IMPORTANT.-->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/clCardDetails"
             android:layout_width="match_parent"
