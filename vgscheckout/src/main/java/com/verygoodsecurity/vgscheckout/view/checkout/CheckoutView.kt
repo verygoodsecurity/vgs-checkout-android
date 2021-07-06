@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.widget.FrameLayout
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.config.ui.core.CheckoutFormConfiguration
-import com.verygoodsecurity.vgscheckout.databinding.VgsCheckoutLayoutBinding
+import com.verygoodsecurity.vgscheckout.databinding.VgsCheckoutViewLayoutBinding
 import com.verygoodsecurity.vgscheckout.util.ObservableLinkedHashMap
 import com.verygoodsecurity.vgscheckout.util.extension.*
 import com.verygoodsecurity.vgscheckout.view.checkout.adapter.CardIconAdapter
@@ -22,7 +22,7 @@ internal class CheckoutView @JvmOverloads internal constructor(
 
     internal var onPayListener: OnPayClickListener? = null
 
-    private val binding = VgsCheckoutLayoutBinding.inflate(LayoutInflater.from(context), this)
+    private val binding = VgsCheckoutViewLayoutBinding.inflate(LayoutInflater.from(context), this)
     private val cardHolderStateHolder = InputViewStateHolder(binding.vgsEtCardHolder, this)
     private val cardNumberStateHolder = InputViewStateHolder(binding.vgsEtCardNumber, this)
     private val dateStateHolder = InputViewStateHolder(binding.vgsEtDate, this)
