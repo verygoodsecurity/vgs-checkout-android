@@ -9,9 +9,9 @@
     <color name="vgs_checkout_text_error">#CC0000</color>
     <color name="vgs_checkout_text_hint">#C8D0DB</color>
 
-    <color name="vgs_checkout_stroke_default">#C8D0DB</color>
-    <color name="vgs_checkout_stroke_highlighted">#579EFF</color>
-    <color name="vgs_checkout_stroke_error">#40CC0000</color>
+    <color name="vgs_checkout_border_default">#C8D0DB</color>
+    <color name="vgs_checkout_border_highlighted">#579EFF</color>
+    <color name="vgs_checkout_border_error">#40CC0000</color>
 
     <color name="vgs_checkout_input_field_enabled_background">#FFFFFF</color>
     <color name="vgs_checkout_input_field_disabled_background">#F8FAFC</color>

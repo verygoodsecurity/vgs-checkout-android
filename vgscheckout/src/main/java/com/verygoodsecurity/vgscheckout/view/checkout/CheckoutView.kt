@@ -30,9 +30,9 @@ internal class CheckoutView @JvmOverloads internal constructor(
 
     private val errorMessages: ObservableLinkedHashMap<Int, String?> = initErrorMessages()
 
-    private val defaultBorderColor by lazy { getColor(R.color.vgs_checkout_stroke_default) }
-    private val focusedBorderColor by lazy { getColor(R.color.vgs_checkout_stroke_highlighted) }
-    private val errorBorderColor by lazy { getColor(R.color.vgs_checkout_stroke_error) }
+    private val defaultBorderColor by lazy { getColor(R.color.vgs_checkout_border_default) }
+    private val focusedBorderColor by lazy { getColor(R.color.vgs_checkout_border_highlighted) }
+    private val errorBorderColor by lazy { getColor(R.color.vgs_checkout_border_error) }
     private val defaultBorderWidth by lazy { resources.getDimensionPixelSize(R.dimen.stoke_width) }
     private val errorDrawable by lazy { getDrawable(R.drawable.ic_error_white_10dp) }
     private val cvcHint by lazy { getString(R.string.vgs_checkout_card_verification_code_hint) }
