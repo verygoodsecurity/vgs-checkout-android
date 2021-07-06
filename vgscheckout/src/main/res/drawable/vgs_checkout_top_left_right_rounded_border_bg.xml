@@ -3,10 +3,10 @@
     android:shape="rectangle">
 
     <corners
-        android:topLeftRadius="@dimen/margin_padding_size_small"
-        android:topRightRadius="@dimen/margin_padding_size_small" />
+        android:topLeftRadius="@dimen/vgs_checkout_margin_padding_size_small"
+        android:topRightRadius="@dimen/vgs_checkout_margin_padding_size_small" />
 
     <stroke
-        android:width="@dimen/stoke_width"
+        android:width="@dimen/vgs_checkout_default_stoke_width"
         android:color="@android:color/transparent" />
 </shape>

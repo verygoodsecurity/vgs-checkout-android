@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.widget.FrameLayout
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.config.ui.core.CheckoutFormConfiguration
-import com.verygoodsecurity.vgscheckout.databinding.CheckoutLayoutBinding
+import com.verygoodsecurity.vgscheckout.databinding.VgsCheckoutLayoutBinding
 import com.verygoodsecurity.vgscheckout.util.ObservableLinkedHashMap
 import com.verygoodsecurity.vgscheckout.util.extension.*
 import com.verygoodsecurity.vgscheckout.view.checkout.adapter.CardIconAdapter
@@ -22,7 +22,7 @@ internal class CheckoutView @JvmOverloads internal constructor(
 
     internal var onPayListener: OnPayClickListener? = null
 
-    private val binding = CheckoutLayoutBinding.inflate(LayoutInflater.from(context), this)
+    private val binding = VgsCheckoutLayoutBinding.inflate(LayoutInflater.from(context), this)
     private val cardHolderStateHolder = InputViewStateHolder(binding.vgsEtCardHolder, this)
     private val cardNumberStateHolder = InputViewStateHolder(binding.vgsEtCardNumber, this)
     private val dateStateHolder = InputViewStateHolder(binding.vgsEtDate, this)
@@ -33,8 +33,8 @@ internal class CheckoutView @JvmOverloads internal constructor(
     private val defaultBorderColor by lazy { getColor(R.color.vgs_checkout_border_default) }
     private val focusedBorderColor by lazy { getColor(R.color.vgs_checkout_border_highlighted) }
     private val errorBorderColor by lazy { getColor(R.color.vgs_checkout_border_error) }
-    private val defaultBorderWidth by lazy { resources.getDimensionPixelSize(R.dimen.stoke_width) }
-    private val errorDrawable by lazy { getDrawable(R.drawable.ic_error_white_10dp) }
+    private val defaultBorderWidth by lazy { resources.getDimensionPixelSize(R.dimen.vgs_checkout_default_stoke_width) }
+    private val errorDrawable by lazy { getDrawable(R.drawable.vgs_checkout_ic_error_white_10dp) }
     private val cvcHint by lazy { getString(R.string.vgs_checkout_card_verification_code_hint) }
     private val cvvHint by lazy { getString(R.string.vgs_checkout_card_verification_value_hint) }
 
@@ -108,7 +108,7 @@ internal class CheckoutView @JvmOverloads internal constructor(
         binding.clCardDetails.disable()
         binding.mbPay.isClickable = false
         binding.mbPay.text = getString(R.string.vgs_checkout_pay_button_processing_title)
-        binding.mbPay.icon = getDrawable(R.drawable.animated_ic_progress_circle_white_16dp)
+        binding.mbPay.icon = getDrawable(R.drawable.vgs_checkout_animated_ic_progress_circle_white_16dp)
         (binding.mbPay.icon as Animatable).start()
         onPayListener?.onPayClicked()
     }

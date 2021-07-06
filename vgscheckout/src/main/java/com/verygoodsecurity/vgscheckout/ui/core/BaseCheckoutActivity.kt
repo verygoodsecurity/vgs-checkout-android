@@ -9,7 +9,7 @@ import com.verygoodsecurity.vgscheckout.CHECKOUT_RESULT_EXTRA_KEY
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutConfiguration
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingConfiguration
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfiguration
-import com.verygoodsecurity.vgscheckout.databinding.CheckoutActivityBinding
+import com.verygoodsecurity.vgscheckout.databinding.VgsCheckoutActivityBinding
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 import com.verygoodsecurity.vgscheckout.ui.CheckoutActivity
 import com.verygoodsecurity.vgscheckout.ui.CheckoutMultiplexingActivity
@@ -30,7 +30,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
         }
     }
 
-    private lateinit var binding: CheckoutActivityBinding
+    private lateinit var binding: VgsCheckoutActivityBinding
 
     abstract fun resolveConfig(key: String): C
 
@@ -39,7 +39,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         disableScreenshots()
-        binding = CheckoutActivityBinding.inflate(layoutInflater)
+        binding = VgsCheckoutActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
         initView(savedInstanceState)
     }

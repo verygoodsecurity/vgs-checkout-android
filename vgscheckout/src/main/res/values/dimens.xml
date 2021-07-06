@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <dimen name="margin_padding_size_micro">4dp</dimen>
-    <dimen name="margin_padding_size_small">8dp</dimen>
-    <dimen name="margin_padding_size_xsmall">12dp</dimen>
-    <dimen name="margin_padding_size_medium">16dp</dimen>
-    <dimen name="margin_padding_size_large">24dp</dimen>
-    <dimen name="margin_padding_size_xlarge">32dp</dimen>
-    <dimen name="margin_padding_size_xxlarge">40dp</dimen>
+    <dimen name="vgs_checkout_margin_padding_size_micro">4dp</dimen>
+    <dimen name="vgs_checkout_margin_padding_size_small">8dp</dimen>
+    <dimen name="vgs_checkout_margin_padding_size_xsmall">12dp</dimen>
+    <dimen name="vgs_checkout_margin_padding_size_medium">16dp</dimen>
+    <dimen name="vgs_checkout_margin_padding_size_large">24dp</dimen>
 
-    <dimen name="divider_size">1dp</dimen>
+    <dimen name="vgs_checkout_default_divider_size">1dp</dimen>
 
-    <dimen name="stoke_width">1dp</dimen>
+    <dimen name="vgs_checkout_default_stoke_width">1dp</dimen>
 </resources>

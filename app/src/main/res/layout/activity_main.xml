@@ -11,6 +11,7 @@
         android:id="@+id/mbBasicFlow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="@dimen/vgs_checkout_default_divider_size"
         android:text="Basic"
         tools:ignore="HardcodedText" />
 

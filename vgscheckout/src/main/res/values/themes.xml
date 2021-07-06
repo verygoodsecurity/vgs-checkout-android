@@ -6,8 +6,8 @@
         <item name="colorSecondary">@color/vgs_checkout_color_secondary</item>
         <item name="colorAccent">@color/vgs_checkout_color_accent</item>
 
-        <item name="android:textColorPrimary">@color/text_color_state_list</item>
-        <item name="android:textColorSecondary">@color/text_color_state_list</item>
+        <item name="android:textColorPrimary">@color/vgs_checkout_text_color_state_list</item>
+        <item name="android:textColorSecondary">@color/vgs_checkout_text_color_state_list</item>
 
         <item name="textAppearanceCaption">@style/VGSCheckout.TextAppearance.Caption</item>
         <item name="textAppearanceBody2">@style/VGSCheckout.TextAppearance.Body2</item>
@@ -32,8 +32,8 @@
 
     <!--    VGS Views Styles-->
     <style name="VGSCheckout.InputField" parent="VGSCheckout.TextAppearance.Subtitle1">
-        <item name="textColor">@color/text_color_state_list</item>
-        <item name="android:textColor">@color/text_color_state_list</item>
+        <item name="textColor">@color/vgs_checkout_text_color_state_list</item>
+        <item name="android:textColor">@color/vgs_checkout_text_color_state_list</item>
         <item name="textAppearance">?attr/textAppearanceSubtitle1</item>
         <item name="android:background">@android:color/transparent</item>
     </style>
@@ -45,9 +45,9 @@
 
     <style name="VGSCheckout.Button" parent="Widget.MaterialComponents.Button">
         <item name="android:textColor">@color/vgs_checkout_pay_text</item>
-        <item name="backgroundTint">@color/pay_button_background_state_list</item>
+        <item name="backgroundTint">@color/vgs_checkout_pay_button_background_state_list</item>
         <item name="iconGravity">textStart</item>
-        <item name="iconPadding">@dimen/margin_padding_size_small</item>
+        <item name="iconPadding">@dimen/vgs_checkout_margin_padding_size_small</item>
         <item name="iconTint">@color/vgs_checkout_pay_icon_tint</item>
     </style>
 </resources>
