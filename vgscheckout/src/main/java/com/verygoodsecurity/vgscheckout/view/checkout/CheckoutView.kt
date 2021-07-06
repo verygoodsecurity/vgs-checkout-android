@@ -164,9 +164,7 @@ internal class CheckoutView @JvmOverloads internal constructor(
     }
 
     private fun updateSecurityCodeHint() {
-        (if (binding.vgsEtCardNumber.getState()?.cardBrand.isAmericanExpress()) cvvHint else cvcHint).run {
-            binding.vgsEtCVC.setHint(this)
-        }
+        binding.vgsEtCVC.setHint(getCVCHint())
     }
 
     private fun updateCardDetailsBorderColor() {
@@ -182,6 +180,9 @@ internal class CheckoutView @JvmOverloads internal constructor(
             binding.viewDividerVertical.setBackgroundColor(this)
         }
     }
+
+    private fun getCVCHint() =
+        if (binding.vgsEtCardNumber.getState()?.cardBrand.isAmericanExpress()) cvvHint else cvcHint
 
     private fun getBorderColor(vararg state: ViewState?): Int = when {
         state.any { it?.hasFocus == true } -> focusedBorderColor
