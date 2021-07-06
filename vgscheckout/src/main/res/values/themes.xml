@@ -38,9 +38,9 @@
         <item name="android:background">@android:color/transparent</item>
     </style>
 
-    <style name="VGSCheckout.ErrorText">
-        <item name="android:textColor">@color/vgs_checkout_text_error</item>
-        <item name="android:textAppearance">?textAppearanceBody2</item>
+    <style name="VGSCheckout.Title">
+        <item name="android:fontFamily">@font/inter_semi_bold</item>
+        <item name="android:textAppearance">?textAppearanceSubtitle1</item>
     </style>
 
     <style name="VGSCheckout.Description">
@@ -48,6 +48,11 @@
         <item name="android:textAllCaps">true</item>
         <item name="android:textAppearance">?textAppearanceCaption</item>
         <item name="drawableTint">@color/vgs_checkout_error_icon_tint</item>
+    </style>
+
+    <style name="VGSCheckout.ErrorText">
+        <item name="android:textColor">@color/vgs_checkout_text_error</item>
+        <item name="android:textAppearance">?textAppearanceBody2</item>
     </style>
 
     <style name="VGSCheckout.Button" parent="Widget.MaterialComponents.Button">

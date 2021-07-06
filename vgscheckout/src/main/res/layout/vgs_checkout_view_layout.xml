@@ -17,12 +17,11 @@
         android:padding="@dimen/vgs_checkout_margin_padding_size_medium">
 
         <com.google.android.material.textview.MaterialTextView
+            style="@style/VGSCheckout.Title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/vgs_checkout_margin_padding_size_xsmall"
-            android:fontFamily="@font/inter_semi_bold"
-            android:text="@string/vgs_checkout_card_details_title"
-            android:textAppearance="?attr/textAppearanceSubtitle1" />
+            android:text="@string/vgs_checkout_card_details_title" />
 
         <LinearLayout
             android:id="@+id/llCardHolder"
