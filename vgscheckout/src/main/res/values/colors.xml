@@ -16,6 +16,8 @@
     <color name="vgs_checkout_input_field_enabled_background">#FFFFFF</color>
     <color name="vgs_checkout_input_field_disabled_background">#F8FAFC</color>
 
+    <color name="vgs_checkout_pay_text">#FFFFFF</color>
+    <color name="vgs_checkout_pay_icon_tint">#FFFFFF</color>
     <color name="vgs_checkout_pay_enabled_background">#145FF5</color>
     <color name="vgs_checkout_pay_disabled_background">#88aff9</color>
 

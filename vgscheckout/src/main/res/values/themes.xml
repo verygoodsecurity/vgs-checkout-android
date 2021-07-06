@@ -30,11 +30,24 @@
         <item name="android:fontFamily">@font/inter_regular</item>
     </style>
 
-    <!--    TODO: VGS Collect doesn't support color state list for text color-->
-    <!--    VGS Input Fields Styles-->
+    <!--    VGS Views Styles-->
     <style name="VGSCheckout.InputField" parent="VGSCheckout.TextAppearance.Subtitle1">
         <item name="textColor">@color/text_color_state_list</item>
         <item name="android:textColor">@color/text_color_state_list</item>
         <item name="textAppearance">?attr/textAppearanceSubtitle1</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="VGSCheckout.ErrorText">
+        <item name="android:textColor">@color/vgs_checkout_text_error</item>
+        <item name="android:textAppearance">?textAppearanceBody2</item>
+    </style>
+
+    <style name="VGSCheckout.Button" parent="Widget.MaterialComponents.Button">
+        <item name="android:textColor">@color/vgs_checkout_pay_text</item>
+        <item name="backgroundTint">@color/pay_button_background_state_list</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconPadding">@dimen/margin_padding_size_small</item>
+        <item name="iconTint">@color/vgs_checkout_pay_icon_tint</item>
     </style>
 </resources>
