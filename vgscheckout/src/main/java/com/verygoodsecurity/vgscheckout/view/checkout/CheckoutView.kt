@@ -117,7 +117,7 @@ internal class CheckoutView @JvmOverloads internal constructor(
         binding.llCardHolder.applyStokeColor(defaultBorderWidth, getBorderColor(state))
         if (state.shouldValidate()) {
             errorMessages[R.id.vgsEtCardHolder] = when {
-                state.isEmpty -> getString(R.string.vgs_checkout_card_holder_error)
+                state.isEmpty -> getString(R.string.vgs_checkout_card_holder_empty_error)
                 else -> null
             }
         }

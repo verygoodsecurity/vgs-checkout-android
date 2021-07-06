@@ -5,7 +5,7 @@
 
     <string name="vgs_checkout_card_holder_subtitle">Name on card</string>
     <string name="vgs_checkout_card_holder_hint">Joe Business</string>
-    <string name="vgs_checkout_card_holder_error">Name is empty</string>
+    <string name="vgs_checkout_card_holder_empty_error">Name is empty</string>
 
     <string name="vgs_checkout_card_number_subtitle">Card number</string>
     <string name="vgs_checkout_card_number_hint">1234 1234 1234 1234</string>
