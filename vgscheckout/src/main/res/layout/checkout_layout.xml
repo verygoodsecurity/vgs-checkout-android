@@ -123,7 +123,7 @@
                         android:layout_height="wrap_content"
                         android:drawablePadding="@dimen/margin_padding_size_small"
                         android:fontFamily="@font/inter_semi_bold"
-                        android:text="@string/vgs_checkout_card_date_subtitle"
+                        android:text="@string/vgs_checkout_card_expiration_date_subtitle"
                         android:textAllCaps="true"
                         android:textAppearance="?attr/textAppearanceCaption"
                         app:drawableTint="@color/vgs_checkout_error_icon_tint" />
@@ -138,7 +138,7 @@
                         android:padding="0dp"
                         app:datePattern="MM/yy"
                         app:datePickerModes="input"
-                        app:hint="@string/vgs_checkout_card_date_hint"
+                        app:hint="@string/vgs_checkout_card_expiration_date_hint"
                         app:imeOptions="actionNext"
                         app:inputType="date" />
                 </LinearLayout>

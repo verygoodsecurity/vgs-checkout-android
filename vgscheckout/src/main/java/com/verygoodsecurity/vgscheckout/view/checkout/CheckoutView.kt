@@ -139,8 +139,8 @@ internal class CheckoutView @JvmOverloads internal constructor(
         updateCardDetailsBorderColor()
         if (state.shouldValidate()) {
             errorMessages[R.id.vgsEtDate] = when {
-                state.isEmpty -> getString(R.string.vgs_checkout_card_date_empty_error)
-                !state.isValid -> getString(R.string.vgs_checkout_card_date_invalid_error)
+                state.isEmpty -> getString(R.string.vgs_checkout_card_expiration_date_empty_error)
+                !state.isValid -> getString(R.string.vgs_checkout_card_expiration_date_invalid_error)
                 else -> null
             }
         }

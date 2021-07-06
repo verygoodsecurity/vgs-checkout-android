@@ -12,10 +12,10 @@
     <string name="vgs_checkout_card_number_invalid_error">Enter a valid card number</string>
     <string name="vgs_checkout_card_number_empty_error">Card number is empty</string>
 
-    <string name="vgs_checkout_card_date_subtitle">Expiration Date</string>
-    <string name="vgs_checkout_card_date_hint">MM/YY</string>
-    <string name="vgs_checkout_card_date_invalid_error">Expiration date is not valid</string>
-    <string name="vgs_checkout_card_date_empty_error">Expiration date is empty</string>
+    <string name="vgs_checkout_card_expiration_date_subtitle">Expiration Date</string>
+    <string name="vgs_checkout_card_expiration_date_hint">MM/YY</string>
+    <string name="vgs_checkout_card_expiration_date_invalid_error">Expiration date is not valid</string>
+    <string name="vgs_checkout_card_expiration_date_empty_error">Expiration date is empty</string>
 
     <string name="vgs_checkout_card_verification_code_subtitle">Security code</string>
     <string name="vgs_checkout_card_verification_code_hint">CVC</string>
