@@ -3,6 +3,7 @@ package com.verygoodsecurity.vgscheckout.ui
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import androidx.annotation.IdRes
 import androidx.test.core.app.ActivityScenario.launch
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
@@ -10,6 +11,7 @@ import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.google.android.material.textview.MaterialTextView
 import com.verygoodsecurity.vgscheckout.CHECKOUT_RESULT_EXTRA_KEY
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutConfiguration
@@ -23,6 +25,7 @@ import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 import com.verygoodsecurity.vgscheckout.util.ActionHelper.doAction
 import com.verygoodsecurity.vgscheckout.util.extension.readExtraParcelable
 import com.verygoodsecurity.vgscheckout.util.extension.safeResult
+import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
 import com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
 import com.verygoodsecurity.vgscollect.widget.PersonNameEditText
@@ -55,21 +58,6 @@ class CheckoutActivityTest {
     }
 
     @Test
-    fun performCheckout_invalidFilledFields_payButtonIsNotEnabled() {
-        // Arrange
-        launch<CheckoutActivity>(defaultIntent).use {
-            fillFields(
-                CARD_HOLDER_NAME,
-                INVALID_CARD_NUMBER,
-                CARD_EXPIRATION_DATE,
-                CARD_CVC
-            )
-            //Assert
-            onView(withId(R.id.mbPay)).check(matches(not(isEnabled())))
-        }
-    }
-
-    @Test
     fun performCheckout_cardHolderNotValid_payButtonNotEnabled() {
         // Arrange
         launch<CheckoutActivity>(defaultIntent).use {
@@ -85,7 +73,7 @@ class CheckoutActivityTest {
     }
 
     @Test
-    fun performCheckout_cardNumberNotValid_errorShowed() {
+    fun performCheckout_cardNumberNotValid_payButtonIsNotEnabled() {
         // Arrange
         launch<CheckoutActivity>(defaultIntent).use {
             fillFields(
@@ -95,12 +83,12 @@ class CheckoutActivityTest {
                 CARD_CVC
             )
             //Assert
-            // TODO: Add assertion
+            onView(withId(R.id.mbPay)).check(matches(not(isEnabled())))
         }
     }
 
     @Test
-    fun performCheckout_expirationDateNotValid_errorShowed() {
+    fun performCheckout_expirationDateNotValid_payButtonIsNotEnabled() {
         // Arrange
         launch<CheckoutActivity>(defaultIntent).use {
             fillFields(
@@ -110,12 +98,12 @@ class CheckoutActivityTest {
                 CARD_CVC
             )
             //Assert
-            // TODO: Add assertion
+            onView(withId(R.id.mbPay)).check(matches(not(isEnabled())))
         }
     }
 
     @Test
-    fun performCheckout_cvcNotValid_errorShowed() {
+    fun performCheckout_cvcNotValid_payButtonIsNotEnabled() {
         // Arrange
         launch<CheckoutActivity>(defaultIntent).use {
             fillFields(
@@ -125,7 +113,7 @@ class CheckoutActivityTest {
                 INVALID_CARD_CVC
             )
             //Assert
-            // TODO: Add assertion
+            onView(withId(R.id.mbPay)).check(matches(not(isEnabled())))
         }
     }
 
@@ -145,6 +133,150 @@ class CheckoutActivityTest {
     }
 
     @Test
+    fun performCheckout_cardHolderNotValid_errorShowed() {
+        // Arrange
+        launch<CheckoutActivity>(defaultIntent).use {
+            // Act
+            requestFocus(R.id.vgsEtCardHolder)
+            setText(R.id.vgsEtCardHolder, TEST_TEXT)
+            clearFocus(R.id.vgsEtCardHolder)
+            setText(R.id.vgsEtCardHolder, EMPTY)
+
+            var errorText: String? = null
+            onView(withId(R.id.tvCardDetailsError)).perform(doAction<MaterialTextView> {
+                errorText = it.text.toString()
+            })
+            //Assert
+            assertEquals("Name is empty", errorText)
+        }
+    }
+
+    @Test
+    fun performCheckout_cardNumberEmpty_errorShowed() {
+        // Arrange
+        launch<CheckoutActivity>(defaultIntent).use {
+            // Act
+            requestFocus(R.id.vgsEtCardNumber)
+            setText(R.id.vgsEtCardNumber, TEST_TEXT)
+            setText(R.id.vgsEtCardNumber, EMPTY)
+            clearFocus(R.id.vgsEtCardNumber)
+            var errorText: String? = null
+            onView(withId(R.id.tvCardDetailsError)).perform(doAction<MaterialTextView> {
+                errorText = it.text.toString()
+            })
+            //Assert
+            assertEquals("Card number is empty", errorText)
+        }
+    }
+
+    @Test
+    fun performCheckout_cardNumberNotValid_errorShowed() {
+        // Arrange
+        launch<CheckoutActivity>(defaultIntent).use {
+            // Act
+            requestFocus(R.id.vgsEtCardNumber)
+            setText(R.id.vgsEtCardNumber, TEST_TEXT)
+            clearFocus(R.id.vgsEtCardNumber)
+            var errorText: String? = null
+            onView(withId(R.id.tvCardDetailsError)).perform(doAction<MaterialTextView> {
+                errorText = it.text.toString()
+            })
+            //Assert
+            assertEquals("Enter a valid card number", errorText)
+        }
+    }
+
+    @Test
+    fun performCheckout_expirationDateEmpty_errorShowed() {
+        // Arrange
+        launch<CheckoutActivity>(defaultIntent).use {
+            // Act
+            requestFocus(R.id.vgsEtDate)
+            setText(R.id.vgsEtDate, TEST_TEXT)
+            setText(R.id.vgsEtDate, EMPTY)
+            clearFocus(R.id.vgsEtDate)
+            var errorText: String? = null
+            onView(withId(R.id.tvCardDetailsError)).perform(doAction<MaterialTextView> {
+                errorText = it.text.toString()
+            })
+            //Assert
+            assertEquals("Expiration date is empty", errorText)
+        }
+    }
+
+    @Test
+    fun performCheckout_expirationDateNotValid_errorShowed() {
+        // Arrange
+        launch<CheckoutActivity>(defaultIntent).use {
+            // Act
+            requestFocus(R.id.vgsEtDate)
+            setText(R.id.vgsEtDate, TEST_TEXT)
+            clearFocus(R.id.vgsEtDate)
+            var errorText: String? = null
+            onView(withId(R.id.tvCardDetailsError)).perform(doAction<MaterialTextView> {
+                errorText = it.text.toString()
+            })
+            //Assert
+            assertEquals("Expiration date is not valid", errorText)
+        }
+    }
+
+    @Test
+    fun performCheckout_cvcEmpty_errorShowed() {
+        // Arrange
+        launch<CheckoutActivity>(defaultIntent).use {
+            // Act
+            requestFocus(R.id.vgsEtCVC)
+            setText(R.id.vgsEtCVC, TEST_TEXT)
+            setText(R.id.vgsEtCVC, EMPTY)
+            clearFocus(R.id.vgsEtCVC)
+            var errorText: String? = null
+            onView(withId(R.id.tvCardDetailsError)).perform(doAction<MaterialTextView> {
+                errorText = it.text.toString()
+            })
+            //Assert
+            assertEquals("Security code is empty", errorText)
+        }
+    }
+
+    @Test
+    fun performCheckout_cvcNotValid_errorShowed() {
+        // Arrange
+        launch<CheckoutActivity>(defaultIntent).use {
+            // Act
+            requestFocus(R.id.vgsEtCVC)
+            setText(R.id.vgsEtCVC, TEST_TEXT)
+            clearFocus(R.id.vgsEtCVC)
+            var errorText: String? = null
+            onView(withId(R.id.tvCardDetailsError)).perform(doAction<MaterialTextView> {
+                errorText = it.text.toString()
+            })
+            //Assert
+            assertEquals("Security code is not valid", errorText)
+        }
+    }
+
+    @Test
+    fun performCheckout_fieldsNotValid_errorOrderCorrect() {
+        // Arrange
+        launch<CheckoutActivity>(defaultIntent).use {
+            // Act
+            requestFocus(R.id.vgsEtCardNumber)
+            setText(R.id.vgsEtCardNumber, TEST_TEXT)
+            requestFocus(R.id.vgsEtCardHolder)
+            setText(R.id.vgsEtCardHolder, TEST_TEXT)
+            setText(R.id.vgsEtCardHolder, EMPTY)
+            clearFocus(R.id.vgsEtCardHolder)
+            var errorText: String? = null
+            onView(withId(R.id.tvCardDetailsError)).perform(doAction<MaterialTextView> {
+                errorText = it.text.toString()
+            })
+            //Assert
+            assertEquals("Name is empty", errorText)
+        }
+    }
+
+    @Test
     fun performCheckout_validFilledFields_fieldsNotEnabledWhenLoading() {
         // Arrange
         launch<CheckoutActivity>(defaultIntent).use {
@@ -158,7 +290,7 @@ class CheckoutActivityTest {
             //Assert
             onView(withId(R.id.vgsEtCardHolder)).check(matches(not(isEnabled())))
             onView(withId(R.id.vgsEtCardNumber)).check(matches(not(isEnabled())))
-            onView(withId(R.id.vgsEtExpirationDate)).check(matches(not(isEnabled())))
+            onView(withId(R.id.vgsEtDate)).check(matches(not(isEnabled())))
             onView(withId(R.id.vgsEtCVC)).check(matches(not(isEnabled())))
         }
     }
@@ -298,7 +430,7 @@ class CheckoutActivityTest {
         onView(withId(R.id.vgsEtCardNumber)).perform(doAction<VGSCardNumberEditText> {
             it.setText(cardNumber)
         })
-        onView(withId(R.id.vgsEtExpirationDate)).perform(doAction<ExpirationDateEditText> {
+        onView(withId(R.id.vgsEtDate)).perform(doAction<ExpirationDateEditText> {
             it.setText(expirationDate)
         })
         onView(withId(R.id.vgsEtCVC)).perform(doAction<CardVerificationCodeEditText> {
@@ -306,9 +438,28 @@ class CheckoutActivityTest {
         })
     }
 
+    private fun setText(@IdRes id: Int, text: String) {
+        onView(withId(id)).perform(doAction<InputFieldView> {
+            it.setText(text)
+        })
+    }
+
+    private fun requestFocus(@IdRes id: Int) {
+        onView(withId(id)).perform(doAction<InputFieldView> {
+            it.requestFocus()
+        })
+    }
+
+    private fun clearFocus(@IdRes id: Int) {
+        onView(withId(id)).perform(doAction<InputFieldView> {
+            it.clearFocus()
+        })
+    }
+
     companion object {
 
         // Fields data
+        private const val TEST_TEXT = "1"
         private const val EMPTY = ""
         private const val CARD_HOLDER_NAME = "Test"
         private const val CARD_NUMBER = "4111111111111111"

@@ -1,13 +1,16 @@
 package com.verygoodsecurity.vgscheckout.util.extension
 
+import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.StateListDrawable
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
+import com.google.android.material.textview.MaterialTextView
 import com.verygoodsecurity.vgscheckout.config.ui.view.core.VGSCheckoutFieldVisibility
 
 internal fun View.applyStokeColor(width: Int, color: Int) {
@@ -33,6 +36,7 @@ internal fun View.getString(@StringRes id: Int) = resources.getString(id)
 
 internal fun View.getDrawable(@DrawableRes id: Int) = ContextCompat.getDrawable(context, id)
 
+@ColorInt
 internal fun View.getColor(@ColorRes id: Int) = ContextCompat.getColor(context, id)
 
 internal fun View.setVisibility(visibility: VGSCheckoutFieldVisibility) {
@@ -40,4 +44,8 @@ internal fun View.setVisibility(visibility: VGSCheckoutFieldVisibility) {
         VGSCheckoutFieldVisibility.VISIBLE -> View.VISIBLE
         VGSCheckoutFieldVisibility.GONE -> View.GONE
     }
+}
+
+internal fun MaterialTextView.setDrawableEnd(drawable: Drawable?) {
+    this.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, drawable, null)
 }

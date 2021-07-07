@@ -8,5 +8,5 @@
 
     <stroke
         android:width="@dimen/stoke_width"
-        android:color="@color/vgs_checkout_stroke_default" />
+        android:color="@color/vgs_checkout_border_default" />
 </shape>
