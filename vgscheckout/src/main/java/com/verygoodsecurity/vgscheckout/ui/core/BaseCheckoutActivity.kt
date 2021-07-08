@@ -64,6 +64,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
             onPayListener = this@BaseCheckoutActivity
             collect.bindView(*getCollectViews())
         }
+        binding.ivBack.setOnClickListener { onBackPressed() }
     }
 
     companion object {
