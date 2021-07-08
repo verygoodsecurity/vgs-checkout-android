@@ -42,7 +42,6 @@ android {
             returnDefaultValues = true
         }
     }
-    resourcePrefix 'vgs_checkout'
 }
 
 dependencies {
