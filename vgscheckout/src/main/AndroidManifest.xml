@@ -1,16 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.verygoodsecurity.vgscheckout">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
-        android:supportsRtl="true">
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:supportsRtl="true"
+        tools:targetApi="n">
 
         <activity
             android:name=".ui.CheckoutActivity"
             android:theme="@style/VGSCheckout" />
 
         <activity
-        android:name=".ui.CheckoutMultiplexingActivity"
-        android:theme="@style/VGSCheckout" />
+            android:name=".ui.CheckoutMultiplexingActivity"
+            android:theme="@style/VGSCheckout" />
     </application>
 </manifest>

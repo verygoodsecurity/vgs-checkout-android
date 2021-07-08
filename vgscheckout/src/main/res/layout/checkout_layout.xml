@@ -43,7 +43,7 @@
                 android:textAppearance="?attr/textAppearanceCaption"
                 app:drawableTint="@color/vgs_checkout_error_icon_tint" />
 
-            <com.verygoodsecurity.vgscollect.widget.PersonNameEditText
+            <com.verygoodsecurity.vgscheckout.collect.widget.PersonNameEditText
                 android:id="@+id/vgsEtCardHolder"
                 style="@style/VGSCheckout.InputField"
                 android:layout_width="match_parent"
@@ -127,7 +127,7 @@
                         android:textAppearance="?attr/textAppearanceCaption"
                         app:drawableTint="@color/vgs_checkout_error_icon_tint" />
 
-                    <com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
+                    <com.verygoodsecurity.vgscheckout.collect.widget.ExpirationDateEditText
                         android:id="@+id/vgsEtDate"
                         style="@style/VGSCheckout.InputField"
                         android:layout_width="match_parent"
@@ -163,7 +163,7 @@
                         android:textAppearance="?attr/textAppearanceCaption"
                         app:drawableTint="@color/vgs_checkout_error_icon_tint" />
 
-                    <com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
+                    <com.verygoodsecurity.vgscheckout.collect.widget.CardVerificationCodeEditText
                         android:id="@+id/vgsEtCVC"
                         style="@style/VGSCheckout.InputField"
                         android:layout_width="match_parent"
@@ -200,7 +200,7 @@
                     android:textAppearance="?attr/textAppearanceCaption"
                     app:drawableTint="@color/vgs_checkout_error_icon_tint" />
 
-                <com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
+                <com.verygoodsecurity.vgscheckout.collect.widget.VGSCardNumberEditText
                     android:id="@+id/vgsEtCardNumber"
                     style="@style/VGSCheckout.InputField"
                     android:layout_width="match_parent"
