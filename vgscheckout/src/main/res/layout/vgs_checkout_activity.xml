@@ -20,7 +20,7 @@
             android:id="@+id/cvForm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="@dimen/margin_padding_size_medium"
-            android:paddingEnd="@dimen/margin_padding_size_medium" />
+            android:paddingStart="@dimen/vgs_checkout_margin_padding_size_medium"
+            android:paddingEnd="@dimen/vgs_checkout_margin_padding_size_medium" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 </ScrollView>
