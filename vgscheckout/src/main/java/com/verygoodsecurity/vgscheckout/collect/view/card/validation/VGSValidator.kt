@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgscheckout.collect.view.card.validation
 
 /** @suppress */
-interface VGSValidator {
+internal interface VGSValidator {
     fun isValid(content:String?):Boolean
 }

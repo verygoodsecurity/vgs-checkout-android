@@ -95,7 +95,7 @@ class CvcIconAdapterTest {
         adapter.setIcon(drawable)
     }
 
-    class IconAdapterFake(context: Context) : CVCIconAdapter(context) {
+    internal class IconAdapterFake(context: Context) : CVCIconAdapter(context) {
 
         private var rect: Rect? = null
         private var drawable: Drawable? = null

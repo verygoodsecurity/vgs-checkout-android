@@ -4,7 +4,7 @@ import android.text.Editable
 import com.verygoodsecurity.vgscheckout.collect.view.date.DatePickerMode
 import java.lang.StringBuilder
 
-class FlexibleDateFormatter : BaseDateFormatter() {
+internal class FlexibleDateFormatter : BaseDateFormatter() {
 
     companion object {
         private const val DATE_PATTERN = "MM/yyyy"

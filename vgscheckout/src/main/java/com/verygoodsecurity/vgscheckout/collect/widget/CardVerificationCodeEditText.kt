@@ -13,7 +13,7 @@ import com.verygoodsecurity.vgscheckout.collect.view.card.FieldType
 import com.verygoodsecurity.vgscheckout.collect.view.cvc.CVCIconAdapter
 import com.verygoodsecurity.vgscheckout.collect.view.internal.CVCInputField
 
-class CardVerificationCodeEditText @JvmOverloads constructor(
+internal class CardVerificationCodeEditText @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : InputFieldView(context, attrs, defStyleAttr) {
 

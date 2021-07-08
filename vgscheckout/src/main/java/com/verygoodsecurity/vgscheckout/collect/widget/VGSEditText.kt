@@ -17,7 +17,7 @@ import com.verygoodsecurity.vgscheckout.collect.view.card.validation.rules.VGSIn
  *
  * @since 1.0.0
  */
-open class VGSEditText @JvmOverloads constructor(
+internal open class VGSEditText @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : InputFieldView(context, attrs, defStyleAttr) {
 

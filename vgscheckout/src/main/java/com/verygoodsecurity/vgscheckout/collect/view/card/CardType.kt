@@ -13,7 +13,7 @@ import com.verygoodsecurity.vgscheckout.collect.view.card.validation.payment.Che
  * @param rangeNumber The array of the card's number which a brand supported.
  * @param rangeCVV The array of the card's CVC number which a brand supported.
  */
-enum class CardType(val regex:String,
+internal enum class CardType(val regex:String,
                     val resId:Int,
                     val mask:String,
                     val algorithm: ChecksumAlgorithm,

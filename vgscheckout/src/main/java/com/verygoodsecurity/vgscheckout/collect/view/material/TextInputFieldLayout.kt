@@ -23,7 +23,7 @@ import com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout
  *
  * @since 1.0.0
  */
-abstract class TextInputFieldLayout @JvmOverloads constructor(
+internal abstract class TextInputFieldLayout @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
 

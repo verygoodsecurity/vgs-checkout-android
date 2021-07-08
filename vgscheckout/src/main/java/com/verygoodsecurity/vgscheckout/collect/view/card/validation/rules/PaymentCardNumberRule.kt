@@ -5,7 +5,7 @@ import com.verygoodsecurity.vgscheckout.collect.view.card.validation.payment.Che
 /**
  * This rule provides a simplified mechanism to improve default behavior of the bank card number field.
  */
-class PaymentCardNumberRule private constructor(
+internal class PaymentCardNumberRule private constructor(
     internal val algorithm: ChecksumAlgorithm?,
     length: Array<Int>?,
     regex: String?,

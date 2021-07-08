@@ -3,7 +3,7 @@ package com.verygoodsecurity.vgscheckout.collect.core.model.state
 import com.verygoodsecurity.vgscheckout.collect.core.storage.DependencyType
 
 /** @suppress */
-data class Dependency(val dependencyType: DependencyType, val value: Any) {
+internal data class Dependency(val dependencyType: DependencyType, val value: Any) {
 
     companion object {
 

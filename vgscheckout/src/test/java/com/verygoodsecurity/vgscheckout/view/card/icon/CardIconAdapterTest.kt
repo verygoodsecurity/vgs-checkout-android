@@ -98,7 +98,7 @@ class CardIconAdapterTest {
         assertEquals(h, bounds.bottom)
     }
 
-    class TestAdapter(
+    internal class TestAdapter(
         val context: Context
     ): CardIconAdapter(context) {
 

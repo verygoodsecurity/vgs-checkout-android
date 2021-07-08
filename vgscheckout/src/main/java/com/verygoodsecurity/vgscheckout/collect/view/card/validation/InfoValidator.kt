@@ -3,7 +3,7 @@ package com.verygoodsecurity.vgscheckout.collect.view.card.validation
 import java.util.regex.Pattern
 
 /** @suppress */
-class InfoValidator:VGSValidator {
+internal class InfoValidator:VGSValidator {
     private val m = Pattern.compile(".*?")
 
     override fun isValid(content: String?): Boolean {

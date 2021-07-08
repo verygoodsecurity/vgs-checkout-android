@@ -11,7 +11,7 @@ import com.verygoodsecurity.vgscheckout.collect.view.card.CardType
 /**
  * You can use this class to create custom Drawables as a preview image for the [CardVerificationCodeEditText].
  */
-open class CVCIconAdapter(private val context: Context) {
+internal open class CVCIconAdapter(private val context: Context) {
 
     private val defaultIcon: Drawable by lazy {
         AppCompatResources.getDrawable(context, R.drawable.ic_card_back_preview_dark)!!

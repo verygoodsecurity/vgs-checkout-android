@@ -5,7 +5,7 @@ import com.verygoodsecurity.vgscheckout.collect.view.card.validation.payment.Che
 /**
  * Creates a new set of card brand parameters.
  */
-data class BrandParams(
+internal data class BrandParams(
 
     /** Represents format of the current card's number. */
     val mask:String = "#### #### #### #### ###",

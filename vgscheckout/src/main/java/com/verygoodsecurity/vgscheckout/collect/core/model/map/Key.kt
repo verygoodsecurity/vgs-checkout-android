@@ -2,7 +2,7 @@ package com.verygoodsecurity.vgscheckout.collect.core.model.map
 
 import com.verygoodsecurity.vgscheckout.collect.util.extension.substringOrNull
 
-sealed class Key {
+internal sealed class Key {
 
     abstract val value: String
 

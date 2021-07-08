@@ -1,9 +1,9 @@
 package com.verygoodsecurity.vgscheckout.collect.core.api.client.extension
 
-fun Int.isCodeSuccessful(): Boolean {
+internal fun Int.isCodeSuccessful(): Boolean {
     return this in 200..299
 }
 
-fun Int.isHttpStatusCode(): Boolean {
+internal fun Int.isHttpStatusCode(): Boolean {
     return this in 200..999
 }

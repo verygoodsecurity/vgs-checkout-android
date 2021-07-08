@@ -7,7 +7,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 /** @suppress */
-sealed class FieldContent {
+internal sealed class FieldContent {
 
     var rawData:String? = null
         internal set

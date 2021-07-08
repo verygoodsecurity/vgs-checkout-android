@@ -9,7 +9,7 @@ import com.verygoodsecurity.vgscheckout.collect.view.card.CardType
  *
  * @return newly created CardBrand
  */
-fun CardType.toCardBrand(): CardBrand {
+internal fun CardType.toCardBrand(): CardBrand {
     return CardBrand(
         this,
         this.regex,
@@ -29,6 +29,6 @@ fun CardType.toCardBrand(): CardBrand {
  *
  * @return list of newly created CardBrands.
  */
-fun Array<CardType>.toCardBrands(): List<CardBrand> {
+internal fun Array<CardType>.toCardBrands(): List<CardBrand> {
     return this.map { it.toCardBrand() }
 }

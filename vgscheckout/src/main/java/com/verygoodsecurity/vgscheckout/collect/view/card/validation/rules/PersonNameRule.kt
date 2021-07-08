@@ -3,7 +3,7 @@ package com.verygoodsecurity.vgscheckout.collect.view.card.validation.rules
 /**
  * This rule provides a simplified mechanism to improve default behavior of field which include person name.
  */
-class PersonNameRule private constructor(
+internal class PersonNameRule private constructor(
     regex: String?,
     length: Array<Int>?
 ) : ValidationRule(regex, length) {

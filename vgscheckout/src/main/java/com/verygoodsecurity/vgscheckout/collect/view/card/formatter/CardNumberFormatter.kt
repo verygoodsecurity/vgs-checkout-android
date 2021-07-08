@@ -5,7 +5,7 @@ import android.text.TextWatcher
 import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgscheckout.collect.util.extension.formatToMask
 
-class CardNumberFormatter: TextWatcher, Formatter {
+internal class CardNumberFormatter: TextWatcher, Formatter {
 
     companion object {
         private const val DEFAULT_MASK = "#### #### #### #### ###"

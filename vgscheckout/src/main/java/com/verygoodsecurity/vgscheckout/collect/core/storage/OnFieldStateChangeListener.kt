@@ -8,7 +8,7 @@ import com.verygoodsecurity.vgscheckout.collect.core.model.state.FieldState
  *
  * @version 1.0.0
  */
-interface OnFieldStateChangeListener {
+internal interface OnFieldStateChangeListener {
 
     /**
      * Called when new changes is detected

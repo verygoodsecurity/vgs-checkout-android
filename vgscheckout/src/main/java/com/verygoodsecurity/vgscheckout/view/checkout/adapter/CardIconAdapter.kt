@@ -6,7 +6,7 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.cardnumber.model.VGSCheck
 import com.verygoodsecurity.vgscheckout.collect.view.card.CardType
 import com.verygoodsecurity.vgscheckout.collect.view.card.icon.CardIconAdapter
 
-class CardIconAdapter constructor(
+internal class CardIconAdapter constructor(
     context: Context,
     private val brands: Set<VGSCheckoutCardBrand>
 ) : CardIconAdapter(context) {

@@ -12,7 +12,7 @@ import org.mockito.ArgumentMatchers.anyInt
 import org.mockito.Mockito
 
 class InputCardExpDateConnectionTest {
-    val connection: InputRunnable by lazy {
+    private val connection: InputRunnable by lazy {
         val client = Mockito.mock(VGSValidator::class.java)
         Mockito.doReturn(true).`when`(client).isValid(Mockito.anyString())
         InputCardExpDateConnection(

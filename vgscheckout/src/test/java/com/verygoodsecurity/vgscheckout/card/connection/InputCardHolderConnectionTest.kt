@@ -11,7 +11,7 @@ import org.mockito.ArgumentMatchers.anyInt
 import org.mockito.Mockito
 
 class InputCardHolderConnectionTest {
-    val connection: InputRunnable by lazy {
+    private val connection: InputRunnable by lazy {
         val client = Mockito.mock(VGSValidator::class.java)
         Mockito.doReturn(true).`when`(client).isValid(Mockito.anyString())
         InputCardHolderConnection(

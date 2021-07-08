@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgscheckout.collect.core.api
 
-enum class VGSHttpBodyFormat {
+internal enum class VGSHttpBodyFormat {
     PLAIN_TEXT,
     JSON,
     X_WWW_FORM_URLENCODED

@@ -10,7 +10,7 @@ import com.verygoodsecurity.vgscheckout.collect.view.card.CardType
 /**
  * You can use this class to create custom Drawables as a preview image for the [VGSCardNumberEditText].
  */
-open class CardIconAdapter(
+internal open class CardIconAdapter(
     private val context: Context
 ) {
 

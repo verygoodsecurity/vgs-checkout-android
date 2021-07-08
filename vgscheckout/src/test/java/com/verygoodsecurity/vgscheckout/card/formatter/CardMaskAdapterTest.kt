@@ -56,7 +56,7 @@ class CardMaskAdapterTest {
         return state
     }
 
-    class TestAdapter : CardMaskAdapter() {
+    internal class TestAdapter : CardMaskAdapter() {
 
         private var currentMask:String? = null
 

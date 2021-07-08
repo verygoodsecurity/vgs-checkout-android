@@ -1,7 +1,7 @@
 package com.verygoodsecurity.vgscheckout.collect.view.card.validation
 
 /** @suppress */
-class CardCVCCodeValidator(
+internal class CardCVCCodeValidator(
     private val cvcLength:Array<Int> = arrayOf(3,4)
 ):VGSValidator {
     override fun isValid(content: String?): Boolean {

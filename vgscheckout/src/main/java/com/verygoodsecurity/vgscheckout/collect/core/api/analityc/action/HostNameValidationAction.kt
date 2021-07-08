@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgscheckout.collect.core.api.analityc.action
 
-class HostNameValidationAction(
+internal class HostNameValidationAction(
     val params:Map<String, Any>
 ): Action {
 

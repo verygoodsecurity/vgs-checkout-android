@@ -23,7 +23,7 @@ import com.verygoodsecurity.vgscheckout.collect.view.card.validation.payment.Che
  *
  * @since 1.0.2
  */
-class VGSCardNumberEditText @JvmOverloads constructor(
+internal class VGSCardNumberEditText @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : InputFieldView(context, attrs, defStyleAttr) {
 

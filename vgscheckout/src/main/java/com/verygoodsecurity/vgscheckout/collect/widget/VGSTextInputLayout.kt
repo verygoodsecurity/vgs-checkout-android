@@ -13,7 +13,7 @@ import com.verygoodsecurity.vgscheckout.collect.view.material.TextInputFieldLayo
  * Material component which wraps an VGS field to show a floating label when
  * the hint is hidden due to user inputting text.
  */
-class VGSTextInputLayout @JvmOverloads constructor(
+internal class VGSTextInputLayout @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : TextInputFieldLayout(context, attrs, defStyleAttr) {
 

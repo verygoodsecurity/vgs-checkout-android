@@ -3,7 +3,7 @@ package com.verygoodsecurity.vgscheckout.collect.core.model.network
 import android.content.Context
 import com.verygoodsecurity.vgscheckout.R
 
-enum class VGSError(val code:Int, val messageResId:Int) {
+internal enum class VGSError(val code:Int, val messageResId:Int) {
     URL_NOT_VALID(1480,
         R.string.error_url_validation
     ),
@@ -36,7 +36,7 @@ enum class VGSError(val code:Int, val messageResId:Int) {
     )
 }
 
-fun VGSError.toVGSResponse(context: Context, vararg params: String?): VGSResponse.ErrorResponse {
+internal fun VGSError.toVGSResponse(context: Context, vararg params: String?): VGSResponse.ErrorResponse {
     val message = if (params.isEmpty()) {
         context.getString(this.messageResId)
     } else {

@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgscheckout.collect.core.api.analityc.action
 
-data class InitAction(
+internal data class InitAction(
     val params:Map<String, Any>
 ): Action {
 

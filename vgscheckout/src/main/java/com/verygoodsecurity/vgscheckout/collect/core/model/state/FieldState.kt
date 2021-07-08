@@ -7,7 +7,7 @@ import com.verygoodsecurity.vgscheckout.collect.view.card.FieldType
  *
  * @since 1.0.1
  */
-sealed class FieldState {
+internal sealed class FieldState {
 
     /** The State is true if this input field has focus itself. */
     var hasFocus: Boolean = false

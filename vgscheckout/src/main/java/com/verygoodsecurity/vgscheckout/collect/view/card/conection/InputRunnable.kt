@@ -5,7 +5,7 @@ import com.verygoodsecurity.vgscheckout.collect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscheckout.collect.view.card.filter.CardInputFilter
 
 /** @suppress */
-interface InputRunnable:Runnable, CardInputFilter {
+internal interface InputRunnable:Runnable, CardInputFilter {
     fun setOutput(state: VGSFieldState)
     fun getOutput(): VGSFieldState
 

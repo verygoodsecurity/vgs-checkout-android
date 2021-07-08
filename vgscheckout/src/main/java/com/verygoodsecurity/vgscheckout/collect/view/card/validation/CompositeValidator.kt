@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgscheckout.collect.view.card.validation
 
-class CompositeValidator : MutableValidator {
+internal class CompositeValidator : MutableValidator {
     private val validators = mutableListOf<VGSValidator>()
 
     override fun clearRules() {

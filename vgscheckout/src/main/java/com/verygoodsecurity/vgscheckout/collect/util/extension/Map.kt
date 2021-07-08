@@ -3,7 +3,7 @@ package com.verygoodsecurity.vgscheckout.collect.util.extension
 import com.verygoodsecurity.vgscheckout.collect.core.model.map.FlatMap
 import org.json.JSONObject
 
-fun <K, V> Map<K, V>.toJSON(): JSONObject = try {
+internal fun <K, V> Map<K, V>.toJSON(): JSONObject = try {
     JSONObject(this)
 } catch (e: Exception) {
     JSONObject()

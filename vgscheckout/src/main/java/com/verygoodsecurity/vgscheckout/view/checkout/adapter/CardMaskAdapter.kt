@@ -4,7 +4,7 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.cardnumber.model.VGSCheck
 import com.verygoodsecurity.vgscheckout.collect.view.card.CardType
 import com.verygoodsecurity.vgscheckout.collect.view.card.formatter.CardMaskAdapter
 
-class CardMaskAdapter constructor(
+internal class CardMaskAdapter constructor(
     private val brands: Set<VGSCheckoutCardBrand>
 ) : CardMaskAdapter() {
 

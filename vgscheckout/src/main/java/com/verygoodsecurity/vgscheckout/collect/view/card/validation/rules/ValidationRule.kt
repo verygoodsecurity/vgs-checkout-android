@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgscheckout.collect.view.card.validation.rules
 
-open class ValidationRule protected constructor(
+internal open class ValidationRule protected constructor(
     internal val regex: String?,
     internal val length:Array<Int>?
 ) {

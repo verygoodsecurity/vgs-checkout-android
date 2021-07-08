@@ -8,7 +8,7 @@ import com.verygoodsecurity.vgscheckout.collect.core.model.state.FileState
  * VGSFileProvider is a part of VGSCollect SDK. The instance provides means for file management inside the SDK.
  * It allows managing files inside SDK by attach/detach/get file general info methods.
  */
-interface VGSFileProvider {
+internal interface VGSFileProvider {
 
     /**
      * Specify the maximum size of the cache for file stored before submit to the Proxy Server.

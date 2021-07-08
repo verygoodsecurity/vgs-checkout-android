@@ -21,7 +21,7 @@ private const val DEFAULT_CONNECTION_TIME_OUT = 60_000L
  *
  * @since 1.0.6
  */
-data class VGSRequest private constructor(
+internal data class VGSRequest private constructor(
     val method: HTTPMethod,
     val path: String,
     val customHeader: Map<String, String>,
@@ -169,7 +169,7 @@ data class VGSRequest private constructor(
     }
 }
 
-fun VGSRequest.toAnalyticRequest(url: String): NetworkRequest {
+internal fun VGSRequest.toAnalyticRequest(url: String): NetworkRequest {
     return NetworkRequest(
         method,
         url concatWithSlash path,
@@ -182,7 +182,7 @@ fun VGSRequest.toAnalyticRequest(url: String): NetworkRequest {
     )
 }
 
-fun VGSRequest.toNetworkRequest(url: String, requestData: Map<String, Any>? = null): NetworkRequest {
+internal fun VGSRequest.toNetworkRequest(url: String, requestData: Map<String, Any>? = null): NetworkRequest {
     return NetworkRequest(
         method,
         url concatWithSlash path,

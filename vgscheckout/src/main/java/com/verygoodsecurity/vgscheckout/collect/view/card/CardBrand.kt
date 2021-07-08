@@ -10,7 +10,7 @@ package com.verygoodsecurity.vgscheckout.collect.view.card
  * @param drawableResId - The drawable resource represents credit card logo.
  * @param params - The set of parameters for card brand creation.
  */
-data class CardBrand(
+internal data class CardBrand(
     val regex: String,
     val cardBrandName: String,
     val drawableResId: Int = 0,

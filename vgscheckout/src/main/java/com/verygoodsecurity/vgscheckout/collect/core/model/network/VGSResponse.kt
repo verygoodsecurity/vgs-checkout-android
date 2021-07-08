@@ -6,7 +6,7 @@ package com.verygoodsecurity.vgscheckout.collect.core.model.network
  * @param code The response code from server.
  * @param body The response string.
  */
-sealed class VGSResponse(
+internal sealed class VGSResponse(
     val code: Int = -1,
     val body: String? = null
 ) {

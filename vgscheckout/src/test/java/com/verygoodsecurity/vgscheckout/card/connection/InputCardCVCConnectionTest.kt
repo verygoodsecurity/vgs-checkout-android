@@ -11,7 +11,7 @@ import org.mockito.Mockito
 import org.mockito.Mockito.*
 
 class InputCardCVCConnectionTest {
-    val connection: InputRunnable by lazy {
+    private val connection: InputRunnable by lazy {
         val client = mock(VGSValidator::class.java)
         doReturn(true).`when`(client).isValid(anyString())
         InputCardCVCConnection(

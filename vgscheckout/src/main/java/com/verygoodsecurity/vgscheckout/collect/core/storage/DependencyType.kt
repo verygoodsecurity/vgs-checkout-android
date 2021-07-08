@@ -1,7 +1,7 @@
 package com.verygoodsecurity.vgscheckout.collect.core.storage
 
 /** @suppress */
-enum class DependencyType {
+internal enum class DependencyType {
     TEXT,
     LENGTH,
     CARD

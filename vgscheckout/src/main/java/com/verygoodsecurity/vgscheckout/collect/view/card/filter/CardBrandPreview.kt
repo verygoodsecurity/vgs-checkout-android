@@ -4,7 +4,7 @@ import com.verygoodsecurity.vgscheckout.collect.view.card.CardType
 import com.verygoodsecurity.vgscheckout.collect.view.card.validation.payment.ChecksumAlgorithm
 
 /** @suppress */
-data class CardBrandPreview(
+internal data class CardBrandPreview(
     val cardType: CardType = CardType.UNKNOWN,
     val regex:String = CardType.UNKNOWN.regex,
     val name:String? = CardType.UNKNOWN.name,

@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgscheckout.collect.view.card.validation.rules
 
-class VGSInfoRule private constructor(
+internal class VGSInfoRule private constructor(
     regex: String?,
     length: Array<Int>?
 ) : ValidationRule(regex, length) {

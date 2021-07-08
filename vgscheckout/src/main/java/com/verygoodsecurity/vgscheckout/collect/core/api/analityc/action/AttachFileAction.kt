@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgscheckout.collect.core.api.analityc.action
 
-class AttachFileAction(
+internal class AttachFileAction(
     val params:Map<String, Any>
 ): Action {
 

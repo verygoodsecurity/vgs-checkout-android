@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgscheckout.collect.core.storage
 
 /** @suppress */
-interface StorageContractor<T> {
+internal interface StorageContractor<T> {
     fun checkState(state:T):Boolean
 }

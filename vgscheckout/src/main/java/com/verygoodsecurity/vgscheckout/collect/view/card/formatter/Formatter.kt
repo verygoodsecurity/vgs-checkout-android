@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgscheckout.collect.view.card.formatter
 
-interface Formatter {
+internal interface Formatter {
     fun setMask(mask:String)
     fun getMask():String
 }

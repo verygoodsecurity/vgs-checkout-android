@@ -5,7 +5,7 @@ package com.verygoodsecurity.vgscheckout.collect.view.card
  *
  * @since 1.0.1
  */
-enum class FieldType(
+internal enum class FieldType(
     val raw:String
 ) {
 
@@ -42,7 +42,7 @@ enum class FieldType(
 
 }
 
-fun FieldType.getAnalyticName():String {
+internal fun FieldType.getAnalyticName():String {
     return when(this) {
         FieldType.CARD_NUMBER -> "card-number"
         FieldType.CVC -> "card-security-code"

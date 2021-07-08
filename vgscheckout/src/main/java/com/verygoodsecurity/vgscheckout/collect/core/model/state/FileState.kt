@@ -11,7 +11,7 @@ package com.verygoodsecurity.vgscheckout.collect.core.model.state
  *
  * @since 1.1.0
  */
-data class FileState(
+internal data class FileState(
     val size: Long = 0,
     val name: String?,
     val mimeType: String?,

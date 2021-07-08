@@ -13,7 +13,7 @@ import java.util.*
  * @param monthFieldName - this field name will be used for month in request json.
  * @param yearFieldName - this field name will be used for year in request json.
  */
-class VGSExpDateSeparateSerializer constructor(
+internal class VGSExpDateSeparateSerializer constructor(
     private val monthFieldName: String,
     private val yearFieldName: String,
 ) : FieldDataSerializer<VGSExpDateSeparateSerializer.Params, List<Pair<String, String>>>() {

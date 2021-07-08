@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgscheckout.collect.core.api.analityc.action
 
-class AutofillAction(
+internal class AutofillAction(
     val params:Map<String, Any>
 ): Action {
 

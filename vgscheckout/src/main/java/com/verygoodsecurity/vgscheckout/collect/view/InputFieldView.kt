@@ -45,7 +45,7 @@ import com.verygoodsecurity.vgscheckout.collect.widget.ExpirationDateEditText
 /**
  * An abstract class that provide displays text user-editable text to the user.
  */
-abstract class InputFieldView @JvmOverloads constructor(
+internal abstract class InputFieldView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
 

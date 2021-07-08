@@ -3,7 +3,7 @@ package com.verygoodsecurity.vgscheckout.collect.core.model.network
 import com.verygoodsecurity.vgscheckout.collect.core.HTTPMethod
 import com.verygoodsecurity.vgscheckout.collect.core.api.VGSHttpBodyFormat
 
-data class NetworkRequest(
+internal data class NetworkRequest(
     val method: HTTPMethod,
     var url: String,
     val customHeader: Map<String, String>,

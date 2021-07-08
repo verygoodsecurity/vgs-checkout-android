@@ -6,7 +6,7 @@ import java.util.regex.Pattern
 
 /** @suppress */
 @Deprecated("Use DateFormatter or ExpirationDateFormatter class")
-class ExpirationDateTextWatcher(
+internal class ExpirationDateTextWatcher(
     private val datePattern:String = "MM/yy"
 ): TextWatcher {
 

@@ -19,7 +19,7 @@ import com.verygoodsecurity.vgscheckout.collect.view.date.DatePickerMode
  *
  * @since 1.0.7
  */
-class ExpirationDateEditText @JvmOverloads constructor(
+internal class ExpirationDateEditText @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : InputFieldView(context, attrs, defStyleAttr) {
 

@@ -5,7 +5,7 @@ package com.verygoodsecurity.vgscheckout.collect.view.date
  *
  * @version 1.0.3
  */
-enum class DatePickerMode {
+internal enum class DatePickerMode {
 
     /** Configure date from CalendarView */
     CALENDAR,

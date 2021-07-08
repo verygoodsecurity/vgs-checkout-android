@@ -11,7 +11,7 @@ package com.verygoodsecurity.vgscheckout.collect.core
  *
  * @version 1.0.1
  */
-enum class Environment(val rawValue:String) {
+internal enum class Environment(val rawValue:String) {
 
     /**
      *  Sandbox Environment using sandbox Test Vault

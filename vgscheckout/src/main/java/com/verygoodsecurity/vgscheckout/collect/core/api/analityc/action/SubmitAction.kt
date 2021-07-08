@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgscheckout.collect.core.api.analityc.action
 
-class SubmitAction(
+internal class SubmitAction(
     val params:Map<String, Any>
 ): Action {
 

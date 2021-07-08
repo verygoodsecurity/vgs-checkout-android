@@ -1,12 +1,11 @@
 package com.verygoodsecurity.vgscheckout.collect.view.card.formatter
 
-import com.verygoodsecurity.vgscheckout.collect.core.model.state.FieldState
 import com.verygoodsecurity.vgscheckout.collect.view.card.CardType
 
 /**
  * You can use this class to create customize card numbers mask inside the [VGSCardNumberEditText].
  */
-open class CardMaskAdapter {
+internal open class CardMaskAdapter {
 
     /** @suppress */
     internal fun getItem(

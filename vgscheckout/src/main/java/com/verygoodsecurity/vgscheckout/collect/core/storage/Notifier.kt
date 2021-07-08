@@ -6,7 +6,7 @@ import com.verygoodsecurity.vgscheckout.collect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscheckout.collect.core.model.state.isCardNumberType
 import com.verygoodsecurity.vgscheckout.collect.view.card.FieldType
 
-typealias DependencyHandler = (FieldType, Dependency) -> Unit
+internal typealias DependencyHandler = (FieldType, Dependency) -> Unit
 
 /** @suppress */
 internal class Notifier : DependencyDispatcher, FieldDependencyObserver {

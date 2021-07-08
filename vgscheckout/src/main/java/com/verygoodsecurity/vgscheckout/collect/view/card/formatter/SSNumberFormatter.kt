@@ -5,7 +5,7 @@ import android.text.TextWatcher
 import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgscheckout.collect.util.extension.formatToMask
 
-class SSNumberFormatter : TextWatcher, Formatter {
+internal class SSNumberFormatter : TextWatcher, Formatter {
 
     private var mask: String = DEFAULT_MASK
 

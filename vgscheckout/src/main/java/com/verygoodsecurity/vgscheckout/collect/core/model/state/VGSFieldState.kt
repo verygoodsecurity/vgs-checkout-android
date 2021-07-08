@@ -3,7 +3,7 @@ package com.verygoodsecurity.vgscheckout.collect.core.model.state
 import com.verygoodsecurity.vgscheckout.collect.view.card.FieldType
 
 /** @suppress */
-data class VGSFieldState(
+internal data class VGSFieldState(
     var isFocusable: Boolean = false,
     var isRequired: Boolean = true,
     var enableValidation: Boolean = true,
@@ -51,7 +51,7 @@ internal fun VGSFieldState.mapToFieldState(): FieldState {
     return f
 }
 
-fun prepareSSNState(
+internal fun prepareSSNState(
     isValid: Boolean,
     content: FieldContent.SSNContent?
 ): FieldState.SSNNumberState {

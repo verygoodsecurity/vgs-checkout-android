@@ -2,4 +2,4 @@ package com.verygoodsecurity.vgscheckout.collect.view.card.formatter.date
 
 import android.text.TextWatcher
 
-abstract class BaseDateFormatter : TextWatcher, DatePickerFormatter {}
+internal abstract class BaseDateFormatter : TextWatcher, DatePickerFormatter {}
