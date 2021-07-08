@@ -185,19 +185,19 @@ internal class CardInputField(context: Context) : BaseInputField(context),
             divider.isNullOrEmpty() -> outputDivider = EMPTY_CHAR
             arrayOf("#", "\\").contains(divider) -> printWarning(
                 TAG,
-                R.string.error_output_divider_mask
+                R.string.vgs_checkout_error_output_divider_mask
             ).also {
                 outputDivider = EMPTY_CHAR
             }
             divider.isNumeric() -> printWarning(
                 TAG,
-                R.string.error_output_divider_number_field
+                R.string.vgs_checkout_error_output_divider_number_field
             ).also {
                 outputDivider = EMPTY_CHAR
             }
             divider.length > 1 -> printWarning(
                 TAG,
-                R.string.error_output_divider_count_number_field
+                R.string.vgs_checkout_error_output_divider_count_number_field
             ).also {
                 outputDivider = EMPTY_CHAR
             }
@@ -211,16 +211,16 @@ internal class CardInputField(context: Context) : BaseInputField(context),
             divider.isNullOrEmpty() -> this@CardInputField.divider = EMPTY_CHAR
             arrayOf("#", "\\").contains(divider) -> printWarning(
                 TAG,
-                R.string.error_divider_mask
+                R.string.vgs_checkout_error_divider_mask
             ).also {
                 this@CardInputField.divider = SPACE
             }
-            divider.isNumeric() -> printWarning(TAG, R.string.error_divider_number_field).also {
+            divider.isNumeric() -> printWarning(TAG, R.string.vgs_checkout_error_divider_number_field).also {
                 this@CardInputField.divider = SPACE
             }
             divider.length > 1 -> printWarning(
                 TAG,
-                R.string.error_divider_count_number_field
+                R.string.vgs_checkout_error_divider_count_number_field
             ).also {
                 this@CardInputField.divider = SPACE
             }
@@ -233,7 +233,7 @@ internal class CardInputField(context: Context) : BaseInputField(context),
     }
 
     private fun setupKeyListener() {
-        val digits = resources.getString(R.string.card_number_digits) + this@CardInputField.divider
+        val digits = resources.getString(R.string.vgs_checkout_card_number_digits) + this@CardInputField.divider
         keyListener = DigitsKeyListener.getInstance(digits)
     }
 

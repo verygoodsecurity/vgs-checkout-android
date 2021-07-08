@@ -10,6 +10,6 @@
         android:calendarViewShown="false"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="@dimen/vgsfield_padding"
+        android:padding="@dimen/vgs_checkout_margin_padding_size_medium"
         android:layout_gravity="center"/>
 </FrameLayout>

@@ -7,7 +7,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-        android:networkSecurityConfig="@xml/network_security_config"
+        android:networkSecurityConfig="@xml/vgs_checkout_network_security_config"
         android:supportsRtl="true"
         tools:targetApi="n">
 

@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:animateLayoutChanges="true"
-        android:background="@drawable/rounded_border_bg_white"
+        android:background="@drawable/vgs_checkout_rounded_border_bg_white"
         android:clipToPadding="false"
         android:orientation="vertical"
         android:padding="@dimen/vgs_checkout_margin_padding_size_medium">
@@ -27,7 +27,7 @@
             android:id="@+id/llCardHolder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/input_field_background_state_list"
+            android:background="@drawable/vgs_checkout_input_field_background_state_list"
             android:orientation="vertical"
             android:padding="@dimen/vgs_checkout_margin_padding_size_small">
 
@@ -57,7 +57,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/vgs_checkout_margin_padding_size_small"
-            android:background="@drawable/input_field_background_state_list">
+            android:background="@drawable/vgs_checkout_input_field_background_state_list">
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guidelineHorizontal"
@@ -221,6 +221,6 @@
             android:layout_marginBottom="@dimen/vgs_checkout_margin_padding_size_large"
             android:enabled="false"
             android:text="@string/vgs_checkout_pay_button_title"
-            app:icon="@drawable/ic_lock_white_10dp" />
+            app:icon="@drawable/vgs_checkout_ic_lock_white_10dp" />
     </LinearLayout>
 </merge>

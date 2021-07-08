@@ -15,7 +15,7 @@ import com.verygoodsecurity.vgscheckout.collect.view.card.validation.RegexValida
 internal class PersonNameInputField(context: Context) : BaseInputField(context) {
 
     init {
-        validator.addRule(RegexValidator(context.getString(R.string.validation_regex_person)))
+        validator.addRule(RegexValidator(context.getString(R.string.vgs_checkout_validation_regex_person)))
     }
 
     override var fieldType: FieldType = FieldType.CARD_HOLDER_NAME

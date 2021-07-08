@@ -34,7 +34,7 @@ class ValidCardBrandsFilteringTest {
     @Test
     fun setValidCardBrands_customBrandAndVISA_otherBrandsNotDetected() {
         // Arrange
-        val customBrand = CardBrand("^777", "VGS", drawableResId = R.drawable.ic_jcb_light)
+        val customBrand = CardBrand("^777", "VGS", drawableResId = R.drawable.vgs_checkout_ic_jcb_light)
         filter.setValidCardBrands(listOf(customBrand, CardType.VISA.toCardBrand()))
         // Act
         val visaResult = filter.detect("4111-1111-1111-1111")

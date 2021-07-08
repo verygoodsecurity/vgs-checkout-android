@@ -17,18 +17,18 @@
 
     <!--    Text styles-->
     <style name="VGSCheckout.TextAppearance.Caption" parent="TextAppearance.MaterialComponents.Caption">
-        <item name="fontFamily">@font/inter_regular</item>
-        <item name="android:fontFamily">@font/inter_regular</item>
+        <item name="fontFamily">@font/vgs_checkout_inter_regular</item>
+        <item name="android:fontFamily">@font/vgs_checkout_inter_regular</item>
     </style>
 
     <style name="VGSCheckout.TextAppearance.Body2" parent="TextAppearance.MaterialComponents.Body2">
-        <item name="fontFamily">@font/inter_regular</item>
-        <item name="android:fontFamily">@font/inter_regular</item>
+        <item name="fontFamily">@font/vgs_checkout_inter_regular</item>
+        <item name="android:fontFamily">@font/vgs_checkout_inter_regular</item>
     </style>
 
     <style name="VGSCheckout.TextAppearance.Subtitle1" parent="TextAppearance.MaterialComponents.Subtitle1">
-        <item name="fontFamily">@font/inter_regular</item>
-        <item name="android:fontFamily">@font/inter_regular</item>
+        <item name="fontFamily">@font/vgs_checkout_inter_regular</item>
+        <item name="android:fontFamily">@font/vgs_checkout_inter_regular</item>
     </style>
 
     <!--    VGS Views Styles-->
@@ -40,12 +40,12 @@
     </style>
 
     <style name="VGSCheckout.Title">
-        <item name="android:fontFamily">@font/inter_semi_bold</item>
+        <item name="android:fontFamily">@font/vgs_checkout_inter_semi_bold</item>
         <item name="android:textAppearance">?textAppearanceSubtitle1</item>
     </style>
 
     <style name="VGSCheckout.Description">
-        <item name="android:fontFamily">@font/inter_semi_bold</item>
+        <item name="android:fontFamily">@font/vgs_checkout_inter_semi_bold</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:textAppearance">?textAppearanceCaption</item>
         <item name="drawableTint">@color/vgs_checkout_error_icon_tint</item>

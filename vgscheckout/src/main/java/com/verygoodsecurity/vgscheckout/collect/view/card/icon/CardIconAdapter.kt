@@ -18,7 +18,7 @@ internal open class CardIconAdapter(
      * Returns a drawable object associated with a particular resource ID.
      */
     protected fun getDrawable(resId: Int): Drawable {
-        return AppCompatResources.getDrawable(context, resId) ?: AppCompatResources.getDrawable(context, R.drawable.ic_card_back_preview_dark)!!
+        return AppCompatResources.getDrawable(context, resId) ?: AppCompatResources.getDrawable(context, R.drawable.vgs_checkout_ic_card_back_preview_dark)!!
     }
 
     /**
@@ -30,8 +30,8 @@ internal open class CardIconAdapter(
      * @return The bounds for the drawable.
      */
     private fun getBounds(): Rect {
-        val c_icon_size_w = context.resources.getDimension(R.dimen.c_icon_size_w).toInt()
-        val c_icon_size_h = context.resources.getDimension(R.dimen.c_icon_size_h).toInt()
+        val c_icon_size_w = context.resources.getDimension(R.dimen.vgs_checkout_c_icon_size_w).toInt()
+        val c_icon_size_h = context.resources.getDimension(R.dimen.vgs_checkout_c_icon_size_h).toInt()
 
         return Rect(0, 0, c_icon_size_w, c_icon_size_h)
     }

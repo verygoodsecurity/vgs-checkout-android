@@ -262,7 +262,7 @@ class VGSCardNumberEditTextTest {
         stateResult.bin = "411111"
         stateResult.last = "1111"
         stateResult.number = "411111######1111"
-        stateResult.drawableBrandResId = R.drawable.ic_visa_dark
+        stateResult.drawableBrandResId = R.drawable.vgs_checkout_ic_visa_dark
 
         val child = view.statePreparer.getView()
         assertTrue(child is BaseInputField)

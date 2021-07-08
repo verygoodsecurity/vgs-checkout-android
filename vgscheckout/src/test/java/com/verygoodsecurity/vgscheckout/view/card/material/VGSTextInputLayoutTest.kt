@@ -106,7 +106,7 @@ class VGSTextInputLayoutTest {
         attachView()
 
         val TAG = "VGS Checkout"
-        textInputLayout.setError(R.string.sdk_name)
+        textInputLayout.setError(R.string.vgs_checkout_sdk_name)
         val state = textInputLayout.getFieldState()
 
         assertEquals(TAG, state.error)
@@ -130,7 +130,7 @@ class VGSTextInputLayoutTest {
         attachView()
 
         val TAG = "VGS Checkout"
-        textInputLayout.setHint(R.string.sdk_name)
+        textInputLayout.setHint(R.string.vgs_checkout_sdk_name)
         val state = textInputLayout.getFieldState()
 
         assertEquals(TAG, state.hint)
@@ -206,7 +206,7 @@ class VGSTextInputLayoutTest {
     fun test_attach_first_set_password_visibility_toggle_drawable() {
         attachView()
 
-        val DRAWABLE = R.drawable.ic_amex_dark
+        val DRAWABLE = R.drawable.vgs_checkout_ic_amex_dark
         textInputLayout.setPasswordVisibilityToggleDrawable(DRAWABLE)
         val state = textInputLayout.getFieldState()
 
@@ -349,7 +349,7 @@ class VGSTextInputLayoutTest {
     @Test
     fun test_attach_last_set_error_res() {
         val TAG = "VGS Checkout"
-        textInputLayout.setError(R.string.sdk_name)
+        textInputLayout.setError(R.string.vgs_checkout_sdk_name)
         attachView()
 
         val state = textInputLayout.getFieldState()
@@ -373,7 +373,7 @@ class VGSTextInputLayoutTest {
     @Test
     fun test_attach_last_set_hint_res() {
         val TAG = "VGS Checkout"
-        textInputLayout.setHint(R.string.sdk_name)
+        textInputLayout.setHint(R.string.vgs_checkout_sdk_name)
         attachView()
 
         val state = textInputLayout.getFieldState()
@@ -430,7 +430,7 @@ class VGSTextInputLayoutTest {
 
     @Test
     fun test_attach_last_set_password_visibility_toggle_drawable() {
-        val DRAWABLE = R.drawable.ic_amex_dark
+        val DRAWABLE = R.drawable.vgs_checkout_ic_amex_dark
         textInputLayout.setPasswordVisibilityToggleDrawable(DRAWABLE)
         attachView()
 
@@ -548,7 +548,7 @@ class VGSTextInputLayoutTest {
     @Test
     fun test_empty_container_set_error_res() {
         val TAG = "VGS Checkout"
-        textInputLayout.setError(R.string.sdk_name)
+        textInputLayout.setError(R.string.vgs_checkout_sdk_name)
         val state = textInputLayout.getFieldState()
 
         assertEquals(TAG, state.error)
@@ -566,7 +566,7 @@ class VGSTextInputLayoutTest {
     @Test
     fun test_empty_container_set_hint_res() {
         val TAG = "VGS Checkout"
-        textInputLayout.setHint(R.string.sdk_name)
+        textInputLayout.setHint(R.string.vgs_checkout_sdk_name)
         val state = textInputLayout.getFieldState()
 
         assertEquals(TAG, state.hint)
@@ -624,7 +624,7 @@ class VGSTextInputLayoutTest {
 
     @Test
     fun test_empty_container_set_password_visibility_toggle_drawable() {
-        val DRAWABLE = R.drawable.ic_amex_dark
+        val DRAWABLE = R.drawable.vgs_checkout_ic_amex_dark
         textInputLayout.setPasswordVisibilityToggleDrawable(DRAWABLE)
         val state = textInputLayout.getFieldState()
 
@@ -692,7 +692,7 @@ class VGSTextInputLayoutTest {
 
     @Test
     fun test_set_start_icon_drawable() {
-        val resID = R.drawable.ic_amex_dark
+        val resID = R.drawable.vgs_checkout_ic_amex_dark
         textInputLayout.setStartIconDrawable(resID)
         val state1 = textInputLayout.getFieldState()
 
@@ -723,7 +723,7 @@ class VGSTextInputLayoutTest {
 
     @Test
     fun test_set_end_icon_drawable() {
-        val resID = R.drawable.ic_amex_dark
+        val resID = R.drawable.vgs_checkout_ic_amex_dark
         textInputLayout.setEndIconDrawable(resID)
         val state1 = textInputLayout.getFieldState()
 

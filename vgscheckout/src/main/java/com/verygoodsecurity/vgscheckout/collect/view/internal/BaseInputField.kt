@@ -122,7 +122,7 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
     private fun setupViewAttributes() {
         id = ViewCompat.generateViewId()
 
-        compoundDrawablePadding = resources.getDimension(R.dimen.half_vgsfield_padding).toInt()
+        compoundDrawablePadding = resources.getDimension(R.dimen.vgs_checkout_margin_padding_size_small).toInt()
     }
 
     private fun setupFocusChangeListener() {
