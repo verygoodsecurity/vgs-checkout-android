@@ -3,7 +3,7 @@ package com.verygoodsecurity.vgscheckout.config.ui.view.cardnumber.model
 import android.os.Parcelable
 import androidx.annotation.DrawableRes
 import com.verygoodsecurity.vgscheckout.util.extension.toCheckoutChecksumAlgorithm
-import com.verygoodsecurity.vgscollect.view.card.CardType
+import com.verygoodsecurity.vgscheckout.collect.view.card.CardType
 import kotlinx.parcelize.Parcelize
 
 @Suppress("SpellCheckingInspection", "unused")

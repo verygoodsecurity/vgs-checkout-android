@@ -15,9 +15,9 @@ import com.verygoodsecurity.vgscheckout.ui.CheckoutActivity
 import com.verygoodsecurity.vgscheckout.ui.CheckoutMultiplexingActivity
 import com.verygoodsecurity.vgscheckout.util.extension.disableScreenshots
 import com.verygoodsecurity.vgscheckout.view.checkout.OnPayClickListener
-import com.verygoodsecurity.vgscollect.core.VGSCollect
-import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
-import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse
+import com.verygoodsecurity.vgscheckout.collect.core.VGSCollect
+import com.verygoodsecurity.vgscheckout.collect.core.VgsCollectResponseListener
+import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSResponse
 
 internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
     AppCompatActivity(), VgsCollectResponseListener, OnPayClickListener {
