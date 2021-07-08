@@ -2,9 +2,9 @@ package com.verygoodsecurity.vgscheckout.view.checkout
 
 import android.view.View
 import androidx.annotation.IdRes
-import com.verygoodsecurity.vgscollect.core.model.state.FieldState
-import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
-import com.verygoodsecurity.vgscollect.view.InputFieldView
+import com.verygoodsecurity.vgscheckout.collect.core.model.state.FieldState
+import com.verygoodsecurity.vgscheckout.collect.core.storage.OnFieldStateChangeListener
+import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
 
 internal class InputViewStateHolder constructor(
     private val view: InputFieldView,

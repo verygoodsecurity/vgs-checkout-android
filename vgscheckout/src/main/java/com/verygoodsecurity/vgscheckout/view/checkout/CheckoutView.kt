@@ -12,7 +12,7 @@ import com.verygoodsecurity.vgscheckout.util.ObservableLinkedHashMap
 import com.verygoodsecurity.vgscheckout.util.extension.*
 import com.verygoodsecurity.vgscheckout.view.checkout.adapter.CardIconAdapter
 import com.verygoodsecurity.vgscheckout.view.checkout.adapter.CardMaskAdapter
-import com.verygoodsecurity.vgscollect.core.model.state.FieldState.*
+import com.verygoodsecurity.vgscheckout.collect.core.model.state.FieldState.*
 
 internal class CheckoutView @JvmOverloads internal constructor(
     context: Context,

@@ -25,11 +25,11 @@ import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 import com.verygoodsecurity.vgscheckout.util.ActionHelper.doAction
 import com.verygoodsecurity.vgscheckout.util.extension.readExtraParcelable
 import com.verygoodsecurity.vgscheckout.util.extension.safeResult
-import com.verygoodsecurity.vgscollect.view.InputFieldView
-import com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
-import com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
-import com.verygoodsecurity.vgscollect.widget.PersonNameEditText
-import com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
+import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
+import com.verygoodsecurity.vgscheckout.collect.widget.CardVerificationCodeEditText
+import com.verygoodsecurity.vgscheckout.collect.widget.ExpirationDateEditText
+import com.verygoodsecurity.vgscheckout.collect.widget.PersonNameEditText
+import com.verygoodsecurity.vgscheckout.collect.widget.VGSCardNumberEditText
 import org.hamcrest.CoreMatchers.not
 import org.junit.Assert.assertEquals
 import org.junit.Test

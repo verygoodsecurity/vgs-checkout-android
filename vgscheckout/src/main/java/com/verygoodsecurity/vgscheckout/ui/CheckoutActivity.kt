@@ -6,7 +6,7 @@ import com.verygoodsecurity.vgscheckout.util.CollectProvider
 import com.verygoodsecurity.vgscheckout.util.extension.requireExtra
 import com.verygoodsecurity.vgscheckout.util.extension.toCollectHTTPMethod
 import com.verygoodsecurity.vgscheckout.util.extension.toCollectMergePolicy
-import com.verygoodsecurity.vgscollect.core.model.network.VGSRequest
+import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSRequest
 
 internal class CheckoutActivity : BaseCheckoutActivity<VGSCheckoutConfiguration>() {
 

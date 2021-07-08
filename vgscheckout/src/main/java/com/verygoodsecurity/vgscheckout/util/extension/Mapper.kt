@@ -4,13 +4,13 @@ import com.verygoodsecurity.vgscheckout.config.networking.request.core.VGSChecko
 import com.verygoodsecurity.vgscheckout.config.networking.request.core.VGSCheckoutHTTPMethod
 import com.verygoodsecurity.vgscheckout.config.ui.view.cardnumber.model.VGSCheckoutCardBrand
 import com.verygoodsecurity.vgscheckout.config.ui.view.cardnumber.model.VGSCheckoutChecksumAlgorithm
-import com.verygoodsecurity.vgscollect.core.HTTPMethod
-import com.verygoodsecurity.vgscollect.core.model.VGSCollectFieldNameMappingPolicy
-import com.verygoodsecurity.vgscollect.util.extension.toCardBrand
-import com.verygoodsecurity.vgscollect.view.card.BrandParams
-import com.verygoodsecurity.vgscollect.view.card.CardBrand
-import com.verygoodsecurity.vgscollect.view.card.CardType
-import com.verygoodsecurity.vgscollect.view.card.validation.payment.ChecksumAlgorithm
+import com.verygoodsecurity.vgscheckout.collect.core.HTTPMethod
+import com.verygoodsecurity.vgscheckout.collect.core.model.VGSCollectFieldNameMappingPolicy
+import com.verygoodsecurity.vgscheckout.collect.util.extension.toCardBrand
+import com.verygoodsecurity.vgscheckout.collect.view.card.BrandParams
+import com.verygoodsecurity.vgscheckout.collect.view.card.CardBrand
+import com.verygoodsecurity.vgscheckout.collect.view.card.CardType
+import com.verygoodsecurity.vgscheckout.collect.view.card.validation.payment.ChecksumAlgorithm
 
 //region Networking
 internal fun VGSCheckoutHTTPMethod.toCollectHTTPMethod() = when (this) {

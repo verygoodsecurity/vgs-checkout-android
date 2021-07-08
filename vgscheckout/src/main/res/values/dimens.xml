@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!--Checkout -->
     <dimen name="vgs_checkout_margin_padding_size_micro">4dp</dimen>
     <dimen name="vgs_checkout_margin_padding_size_small">8dp</dimen>
     <dimen name="vgs_checkout_margin_padding_size_xsmall">12dp</dimen>
@@ -10,4 +11,23 @@
     <dimen name="vgs_checkout_default_divider_size">1dp</dimen>
 
     <dimen name="vgs_checkout_default_stoke_width">1dp</dimen>
+
+    <!--Collect -->
+    <dimen name="vgsfield_padding">16dp</dimen>
+    <dimen name="half_vgsfield_padding">8dp</dimen>
+
+    <dimen name="default_vertical_field">8dp</dimen>
+    <dimen name="default_horizontal_field">0dp</dimen>
+
+    <dimen name="f_label_vertical_field_set_1">6dp</dimen>
+    <dimen name="f_label_horizontal_field_set_1">3dp</dimen>
+
+    <dimen name="f_label_vertical_field_set_2">4dp</dimen>
+    <dimen name="f_label_horizontal_field_set_2">0dp</dimen>
+
+    <dimen name="f_label_vertical_field_set_3">2dp</dimen>
+    <dimen name="f_label_horizontal_field_set_3">0dp</dimen>
+
+    <dimen name="c_icon_size_w">32dp</dimen>
+    <dimen name="c_icon_size_h">21dp</dimen>
 </resources>
