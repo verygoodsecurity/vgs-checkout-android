@@ -1,14 +1,12 @@
 package com.verygoodsecurity.vgscheckout.view.checkout
 
 import android.content.Context
-import android.graphics.drawable.Animatable
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.FrameLayout
 import android.widget.LinearLayout
+import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.google.android.material.button.MaterialButton
 import com.google.android.material.textview.MaterialTextView
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.core.model.state.FieldState.*
@@ -17,18 +15,26 @@ import com.verygoodsecurity.vgscheckout.collect.widget.ExpirationDateEditText
 import com.verygoodsecurity.vgscheckout.collect.widget.PersonNameEditText
 import com.verygoodsecurity.vgscheckout.collect.widget.VGSCardNumberEditText
 import com.verygoodsecurity.vgscheckout.config.ui.core.CheckoutFormConfiguration
+import com.verygoodsecurity.vgscheckout.config.ui.view.cardholder.VGSCheckoutCardHolderOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.cardnumber.VGSCheckoutCardNumberOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.cvc.VGSCheckoutCVCOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.expiration.VGSCheckoutExpirationDateOptions
 import com.verygoodsecurity.vgscheckout.util.ObservableLinkedHashMap
 import com.verygoodsecurity.vgscheckout.util.extension.*
 import com.verygoodsecurity.vgscheckout.view.checkout.adapter.CardIconAdapter
 import com.verygoodsecurity.vgscheckout.view.checkout.adapter.CardMaskAdapter
+import com.verygoodsecurity.vgscheckout.view.checkout.model.InputViewStateHolder
+import com.verygoodsecurity.vgscheckout.view.checkout.model.OnStateChangeListener
+import com.verygoodsecurity.vgscheckout.view.checkout.model.StateChangeListener
+import com.verygoodsecurity.vgscheckout.view.checkout.model.ViewState
 
-internal class CheckoutView @JvmOverloads internal constructor(
+internal class CreditCardView @JvmOverloads internal constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : FrameLayout(context, attrs, defStyleAttr), StateChangeListener {
+) : LinearLayoutCompat(context, attrs, defStyleAttr), StateChangeListener {
 
-    internal var onPayListener: OnPayClickListener? = null
+    var onStateChangeListener: OnStateChangeListener? = null
 
     private val errorMessages: ObservableLinkedHashMap<Int, String?> = initErrorMessages()
 
@@ -42,7 +48,6 @@ internal class CheckoutView @JvmOverloads internal constructor(
     private val tvExpirationDateHint: MaterialTextView
     private val etSecurityCode: CardVerificationCodeEditText
     private val tvSecurityCodeHint: MaterialTextView
-    private val bPay: MaterialButton
     private val tvError: MaterialTextView
     private val vDividerHorizontal: View
     private val vDividerVertical: View
@@ -62,6 +67,7 @@ internal class CheckoutView @JvmOverloads internal constructor(
 
     init {
         LayoutInflater.from(context).inflate(R.layout.vgs_checkout_view_layout, this)
+        orientation = VERTICAL
 
         clCardDetails = findViewById(R.id.clCardDetails)
         etCardHolder = findViewById(R.id.vgsEtCardHolder)
@@ -73,7 +79,6 @@ internal class CheckoutView @JvmOverloads internal constructor(
         tvExpirationDateHint = findViewById(R.id.mtvDateHint)
         etSecurityCode = findViewById(R.id.vgsEtCVC)
         tvSecurityCodeHint = findViewById(R.id.mtvCVCHint)
-        bPay = findViewById(R.id.mbPay)
         tvError = findViewById(R.id.tvCardDetailsError)
         vDividerHorizontal = findViewById(R.id.viewDividerHorizontal)
         vDividerVertical = findViewById(R.id.viewDividerVertical)
@@ -82,12 +87,16 @@ internal class CheckoutView @JvmOverloads internal constructor(
         cardNumberStateHolder = InputViewStateHolder(etCardNumber, this)
         dateStateHolder = InputViewStateHolder(etExpirationDate, this)
         cvcStateHolder = InputViewStateHolder(etSecurityCode, this)
+    }
 
-        initListeners()
+    override fun setEnabled(enabled: Boolean) {
+        super.setEnabled(enabled)
+        llCardHolder.setEnabledRecursively(enabled)
+        clCardDetails.setEnabledRecursively(enabled)
     }
 
     override fun onStateChange(id: Int, state: ViewState) {
-        updatePayButton()
+        onStateChangeListener?.onStateChanged(this, isInputValid())
         when (id) {
             R.id.vgsEtCardHolder -> handleCardHolderStateChanged(state)
             R.id.vgsEtCardNumber -> handleCardNumberStateChanged(state)
@@ -97,19 +106,10 @@ internal class CheckoutView @JvmOverloads internal constructor(
     }
 
     fun applyConfig(config: CheckoutFormConfiguration) {
-        etCardHolder.setFieldName(config.cardHolderOptions.fieldName)
-        llCardHolder.setVisibility(config.cardHolderOptions.visibility)
-        etCardNumber.setFieldName(config.cardNumberOptions.fieldName)
-        etCardNumber.setValidCardBrands(
-            *config.cardNumberOptions.cardBrands.map { it.toCollectCardBrand() }.toTypedArray()
-        )
-        etCardNumber.setCardMaskAdapter(CardMaskAdapter(config.cardNumberOptions.cardBrands))
-        etCardNumber.setCardIconAdapter(
-            CardIconAdapter(this@CheckoutView.context, config.cardNumberOptions.cardBrands)
-        )
-        etExpirationDate.setFieldName(config.expirationDateOptions.fieldName)
-        etSecurityCode.setFieldName(config.cvcOptions.fieldName)
-        config.payButtonTitle?.let { bPay.text = it }
+        applyCardHolderOptions(config.cardHolderOptions)
+        applyCardNumberOptions(config.cardNumberOptions)
+        applyExpirationDateOptions(config.expirationDateOptions)
+        applySecurityCodeOptions(config.cvcOptions)
     }
 
     fun getCollectViews() = arrayOf(
@@ -118,6 +118,15 @@ internal class CheckoutView @JvmOverloads internal constructor(
         etExpirationDate,
         etSecurityCode
     )
+
+    fun isInputValid(
+        vararg state: InputViewStateHolder? = arrayOf(
+            cardHolderStateHolder,
+            cardNumberStateHolder,
+            dateStateHolder,
+            cvcStateHolder
+        )
+    ): Boolean = state.all { it?.getState()?.isValid == true }
 
     private fun initErrorMessages(): ObservableLinkedHashMap<Int, String?> {
         val defaultMessages = linkedMapOf<Int, String?>(
@@ -143,18 +152,30 @@ internal class CheckoutView @JvmOverloads internal constructor(
         }
     }
 
-    private fun initListeners() {
-        bPay.setOnClickListener { handlePayClicked() }
+    private fun applyCardHolderOptions(options: VGSCheckoutCardHolderOptions) {
+        etCardHolder.setFieldName(options.fieldName)
+        llCardHolder.setVisibility(options.visibility)
     }
 
-    private fun handlePayClicked() {
-        llCardHolder.disable()
-        clCardDetails.disable()
-        bPay.isClickable = false
-        bPay.text = getString(R.string.vgs_checkout_pay_button_processing_title)
-        bPay.icon = getDrawable(R.drawable.vgs_checkout_animated_ic_progress_circle_white_16dp)
-        (bPay.icon as Animatable).start()
-        onPayListener?.onPayClicked()
+    private fun applyCardNumberOptions(options: VGSCheckoutCardNumberOptions) {
+        etCardNumber.setFieldName(options.fieldName)
+        etCardNumber.setValidCardBrands(*options.cardBrands.map { it.toCollectCardBrand() }
+            .toTypedArray())
+        etCardNumber.setCardMaskAdapter(CardMaskAdapter(options.cardBrands))
+        etCardNumber.setCardIconAdapter(
+            CardIconAdapter(
+                this@CreditCardView.context,
+                options.cardBrands
+            )
+        )
+    }
+
+    private fun applyExpirationDateOptions(options: VGSCheckoutExpirationDateOptions) {
+        etExpirationDate.setFieldName(options.fieldName)
+    }
+
+    private fun applySecurityCodeOptions(options: VGSCheckoutCVCOptions) {
+        etSecurityCode.setFieldName(options.fieldName)
     }
 
     private fun handleCardHolderStateChanged(state: ViewState) {
@@ -201,10 +222,6 @@ internal class CheckoutView @JvmOverloads internal constructor(
         }
     }
 
-    private fun updatePayButton() {
-        bPay.isEnabled = isInputValid()
-    }
-
     private fun updateSecurityCodeHint() {
         etSecurityCode.setHint(getCVCHint())
     }
@@ -232,19 +249,5 @@ internal class CheckoutView @JvmOverloads internal constructor(
         else -> defaultBorderColor
     }
 
-    private fun isInputValid(
-        vararg state: InputViewStateHolder? = arrayOf(
-            cardHolderStateHolder,
-            cardNumberStateHolder,
-            dateStateHolder,
-            cvcStateHolder
-        )
-    ): Boolean = state.all { it?.getState()?.isValid == true }
-
     private fun ViewState.shouldValidate() = hasFocusedBefore && isDirty
-}
-
-internal interface OnPayClickListener {
-
-    fun onPayClicked()
 }

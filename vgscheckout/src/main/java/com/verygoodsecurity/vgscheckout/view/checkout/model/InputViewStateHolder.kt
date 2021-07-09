@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscheckout.view.checkout
+package com.verygoodsecurity.vgscheckout.view.checkout.model
 
 import android.view.View
 import androidx.annotation.IdRes

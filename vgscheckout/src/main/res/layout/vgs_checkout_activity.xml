@@ -16,11 +16,37 @@
             android:padding="@dimen/vgs_checkout_margin_padding_size_medium"
             app:srcCompat="@drawable/vgs_checkout_ic_baseline_arrow_back_24" />
 
-        <com.verygoodsecurity.vgscheckout.view.checkout.CheckoutView
-            android:id="@+id/cvForm"
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="@dimen/vgs_checkout_margin_padding_size_medium"
-            android:paddingEnd="@dimen/vgs_checkout_margin_padding_size_medium" />
+            android:layout_marginStart="@dimen/vgs_checkout_margin_padding_size_medium"
+            android:layout_marginEnd="@dimen/vgs_checkout_margin_padding_size_medium"
+            android:background="@drawable/vgs_checkout_rounded_border_bg_white"
+            android:orientation="vertical"
+            android:padding="@dimen/vgs_checkout_margin_padding_size_medium">
+
+            <com.google.android.material.textview.MaterialTextView
+                style="@style/VGSCheckout.Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/vgs_checkout_card_details_title" />
+
+            <com.verygoodsecurity.vgscheckout.view.checkout.CreditCardView
+                android:id="@+id/cvForm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/vgs_checkout_margin_padding_size_medium" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/mbPay"
+                style="@style/VGSCheckout.Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/vgs_checkout_margin_padding_size_large"
+                android:layout_marginBottom="@dimen/vgs_checkout_margin_padding_size_large"
+                android:enabled="false"
+                android:text="@string/vgs_checkout_pay_button_title"
+                app:icon="@drawable/vgs_checkout_ic_lock_white_10dp" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.appcompat.widget.LinearLayoutCompat>
 </ScrollView>

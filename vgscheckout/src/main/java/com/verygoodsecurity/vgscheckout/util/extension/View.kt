@@ -21,13 +21,13 @@ internal fun View.applyStokeColor(width: Int, color: Int) {
     (background as? GradientDrawable)?.setStroke(width, color)
 }
 
-internal fun ViewGroup.disable() {
+internal fun ViewGroup.setEnabledRecursively(enabled: Boolean) {
     isEnabled = false
     for (i in 0 until childCount) {
         val child = getChildAt(i)
-        child.isEnabled = false
+        child.isEnabled = enabled
         if (child is ViewGroup) {
-            child.disable()
+            child.setEnabledRecursively(enabled)
         }
     }
 }
