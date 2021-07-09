@@ -32,10 +32,23 @@
                 android:text="@string/vgs_checkout_card_details_title" />
 
             <com.verygoodsecurity.vgscheckout.view.checkout.CreditCardView
-                android:id="@+id/cvForm"
+                android:id="@+id/creditCardView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/vgs_checkout_margin_padding_size_medium" />
+                android:layout_marginTop="@dimen/vgs_checkout_margin_padding_size_small" />
+
+            <com.google.android.material.textview.MaterialTextView
+                style="@style/VGSCheckout.Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/vgs_checkout_margin_padding_size_medium"
+                android:text="@string/vgs_checkout_billing_address_title" />
+
+            <com.verygoodsecurity.vgscheckout.view.checkout.AddressView
+                android:id="@+id/addressView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/vgs_checkout_margin_padding_size_small" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/mbPay"

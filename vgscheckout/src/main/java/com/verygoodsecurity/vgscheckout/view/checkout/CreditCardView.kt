@@ -28,6 +28,8 @@ import com.verygoodsecurity.vgscheckout.view.checkout.model.OnStateChangeListene
 import com.verygoodsecurity.vgscheckout.view.checkout.model.StateChangeListener
 import com.verygoodsecurity.vgscheckout.view.checkout.model.ViewState
 
+// TODO: Add ability to set color state list for collect input views text color.
+// TODO: Add ability to icon tint color for collect input view.
 internal class CreditCardView @JvmOverloads internal constructor(
     context: Context,
     attrs: AttributeSet? = null,

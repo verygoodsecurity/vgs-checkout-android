@@ -5,6 +5,7 @@
 
     <!--Checkout -->
     <string name="vgs_checkout_card_details_title">Card Details</string>
+    <string name="vgs_checkout_billing_address_title">Billing Address</string>
 
     <string name="vgs_checkout_card_holder_subtitle">Name on card</string>
     <string name="vgs_checkout_card_holder_hint">Joe Business</string>

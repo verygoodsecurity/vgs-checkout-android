@@ -36,6 +36,8 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
         }
     }
 
+    private lateinit var creditCardView: CreditCardView
+
     private lateinit var payButton: MaterialButton
 
     abstract fun resolveConfig(key: String): C
@@ -72,31 +74,27 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
     }
 
     override fun onStateChanged(view: View, isInputValid: Boolean) {
-        updatePayButton(isInputValid)
+        payButton.isEnabled = isInputValid
     }
 
     @CallSuper
     protected open fun initView(savedInstanceState: Bundle?) {
+        findViewById<ImageView>(R.id.ivBack).setOnClickListener(this)
         payButton = findViewById(R.id.mbPay)
         payButton.setOnClickListener(this)
-        findViewById<ImageView>(R.id.ivBack).setOnClickListener(this)
-        findViewById<CreditCardView>(R.id.cvForm).let {
-            it.onStateChangeListener = this@BaseCheckoutActivity
-            it.applyConfig(config.formConfig)
-            collect.bindView(*it.getCollectViews())
-        }
+        creditCardView = findViewById(R.id.creditCardView)
+        creditCardView.onStateChangeListener = this@BaseCheckoutActivity
+        creditCardView.applyConfig(config.formConfig)
+        collect.bindView(*creditCardView.getCollectViews())
     }
 
     private fun handlePayClicked() {
+        creditCardView.isEnabled = false
+        payButton.isClickable = false
         payButton.text = getString(R.string.vgs_checkout_pay_button_processing_title)
         payButton.icon = getDrawableCompat(R.drawable.vgs_checkout_animated_ic_progress_white_16dp)
         (payButton.icon as? Animatable)?.start()
         onPayClicked()
-    }
-
-    private fun updatePayButton(inputValid: Boolean) {
-        payButton.isClickable = inputValid
-        payButton.isEnabled = inputValid
     }
 
     companion object {
