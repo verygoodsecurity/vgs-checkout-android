@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <public name="textColor" type="attrs"/>
-    <public name="textAppearance" type="attrs"/>
+    <public name="vgs_checkout_sdk_name" type="string"/>
 </resources>
