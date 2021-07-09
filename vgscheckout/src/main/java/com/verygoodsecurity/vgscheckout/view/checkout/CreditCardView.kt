@@ -66,7 +66,7 @@ internal class CreditCardView @JvmOverloads internal constructor(
     private val cvvHint by lazy { getString(R.string.vgs_checkout_card_verification_value_hint) }
 
     init {
-        LayoutInflater.from(context).inflate(R.layout.vgs_checkout_view_layout, this)
+        LayoutInflater.from(context).inflate(R.layout.vgs_checkout_credit_card_view, this)
         orientation = VERTICAL
 
         clCardDetails = findViewById(R.id.clCardDetails)
