@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:parentTag="androidx.appcompat.widget.LinearLayoutCompat">
+    android:columnCount="2"
+    tools:parentTag="com.verygoodsecurity.vgscheckout.view.custom.DividerGridLayout">
 
 
 </merge>

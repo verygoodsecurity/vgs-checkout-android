@@ -1,10 +1,12 @@
 package com.verygoodsecurity.vgscheckout.view.custom
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.graphics.*
 import android.os.Parcel
 import android.os.Parcelable
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 import android.widget.GridLayout
 import androidx.annotation.ColorInt
@@ -12,9 +14,9 @@ import androidx.annotation.IdRes
 import androidx.core.graphics.and
 import androidx.core.view.updatePadding
 import com.verygoodsecurity.vgscheckout.R
+import com.verygoodsecurity.vgscheckout.util.extension.*
+import com.verygoodsecurity.vgscheckout.util.extension.getColorStateListOrNull
 import com.verygoodsecurity.vgscheckout.util.extension.getStyledAttributes
-import com.verygoodsecurity.vgscheckout.util.extension.half
-import com.verygoodsecurity.vgscheckout.util.extension.isPositive
 import kotlin.math.max
 
 internal class DividerGridLayout @JvmOverloads internal constructor(
@@ -28,6 +30,7 @@ internal class DividerGridLayout @JvmOverloads internal constructor(
 
     private var gridWidth: Int = DEFAULT_GRID_WIDTH
     private var gridColor: Int = DEFAULT_GRID_COLOR
+    private var gridColorStateList: ColorStateList? = null
     private var gridPaint: Paint? = null
 
     private var selectedGridColor: Int = DEFAULT_GRID_COLOR
@@ -36,7 +39,7 @@ internal class DividerGridLayout @JvmOverloads internal constructor(
     private var selectedId: Int? = null
 
     init {
-
+        isEnabled = false
         context.getStyledAttributes(attrs, R.styleable.DividerGridLayout) {
             cornersRadius = getDimension(
                 R.styleable.DividerGridLayout_dgl_corners_radius,
@@ -50,13 +53,16 @@ internal class DividerGridLayout @JvmOverloads internal constructor(
                 R.styleable.DividerGridLayout_dgl_grid_color,
                 DEFAULT_GRID_COLOR
             )
+            gridColorStateList = getColorStateListOrNull(
+                R.styleable.DividerGridLayout_dgl_grid_color
+            )
             selectedGridColor = getColor(
                 R.styleable.DividerGridLayout_dgl_selected_grid_color,
                 DEFAULT_GRID_COLOR
             )
             if (gridWidth.isPositive()) {
                 gridPaint = Paint().apply {
-                    color = gridColor
+                    color = gridColorStateList.getColor(drawableState, gridColor)
                     style = Paint.Style.STROKE
                     strokeWidth = gridWidth.toFloat()
                 }
@@ -103,19 +109,23 @@ internal class DividerGridLayout @JvmOverloads internal constructor(
         }
     }
 
-    override fun dispatchDraw(canvas: Canvas) {
-        canvas.save()
-        applyRoundedCorners(canvas)
-        super.dispatchDraw(canvas)
-        canvas.restore()
-        drawDividers(canvas)
-    }
-
     fun setGridColor(@ColorInt color: Int) {
         gridColor = color
         if (gridWidth.isPositive()) {
             gridPaint = Paint().apply {
                 this.color = gridColor
+                this.style = Paint.Style.STROKE
+                this.strokeWidth = gridWidth.toFloat()
+            }
+            invalidate()
+        }
+    }
+
+    fun setGridColor(stateList: ColorStateList) {
+        gridColorStateList = stateList
+        if (gridWidth.isPositive()) {
+            gridPaint = Paint().apply {
+                this.color = gridColorStateList.getColor(drawableState, gridColor)
                 this.style = Paint.Style.STROKE
                 this.strokeWidth = gridWidth.toFloat()
             }
@@ -155,6 +165,17 @@ internal class DividerGridLayout @JvmOverloads internal constructor(
             checkPaintAndDrawBorder(canvas, view, gridPaint)
         }
         selected?.let { checkPaintAndDrawBorder(canvas, it, selectedGridPaint) }
+    }
+
+    override fun draw(canvas: Canvas?) {
+        Log.d("Test", "drawableState = ${drawableState.asList()}")
+        canvas?.let {
+            canvas.save()
+            applyRoundedCorners(canvas)
+            super.draw(canvas)
+            canvas.restore()
+            drawDividers(canvas)
+        } ?: super.draw(canvas)
     }
 
     private fun checkPaintAndDrawBorder(canvas: Canvas, view: View, paint: Paint?) {
