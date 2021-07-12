@@ -6,7 +6,6 @@ import android.graphics.*
 import android.os.Parcel
 import android.os.Parcelable
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import android.widget.GridLayout
 import androidx.annotation.ColorInt
@@ -15,11 +14,9 @@ import androidx.core.graphics.and
 import androidx.core.view.updatePadding
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.util.extension.*
-import com.verygoodsecurity.vgscheckout.util.extension.getColorStateListOrNull
-import com.verygoodsecurity.vgscheckout.util.extension.getStyledAttributes
 import kotlin.math.max
 
-internal class DividerGridLayout @JvmOverloads internal constructor(
+internal open class DividerGridLayout @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
@@ -109,6 +106,25 @@ internal class DividerGridLayout @JvmOverloads internal constructor(
         }
     }
 
+    override fun draw(canvas: Canvas?) {
+        canvas?.let {
+            canvas.save()
+            applyRoundedCorners(canvas)
+            super.draw(canvas)
+            canvas.restore()
+        } ?: super.draw(canvas)
+    }
+
+    override fun dispatchDraw(canvas: Canvas?) {
+        canvas?.let {
+            canvas.save()
+            applyRoundedCorners(canvas)
+            super.dispatchDraw(canvas)
+            canvas.restore()
+            drawDividers(canvas)
+        } ?: super.dispatchDraw(canvas)
+    }
+
     fun setGridColor(@ColorInt color: Int) {
         gridColor = color
         if (gridWidth.isPositive()) {
@@ -165,17 +181,6 @@ internal class DividerGridLayout @JvmOverloads internal constructor(
             checkPaintAndDrawBorder(canvas, view, gridPaint)
         }
         selected?.let { checkPaintAndDrawBorder(canvas, it, selectedGridPaint) }
-    }
-
-    override fun draw(canvas: Canvas?) {
-        Log.d("Test", "drawableState = ${drawableState.asList()}")
-        canvas?.let {
-            canvas.save()
-            applyRoundedCorners(canvas)
-            super.draw(canvas)
-            canvas.restore()
-            drawDividers(canvas)
-        } ?: super.draw(canvas)
     }
 
     private fun checkPaintAndDrawBorder(canvas: Canvas, view: View, paint: Paint?) {
