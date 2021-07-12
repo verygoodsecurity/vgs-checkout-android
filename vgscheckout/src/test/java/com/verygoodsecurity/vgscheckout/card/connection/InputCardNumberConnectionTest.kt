@@ -136,7 +136,7 @@ class InputCardNumberConnectionTest {
 
     @Test
     fun test_custom_filter() {
-        val customBrand = CardBrand("^777", "VGS", R.drawable.ic_jcb_light)
+        val customBrand = CardBrand("^777", "VGS", R.drawable.vgs_checkout_ic_jcb_light)
         val preview = CardBrandPreview(CardType.UNKNOWN,
             customBrand.regex,
             customBrand.cardBrandName,

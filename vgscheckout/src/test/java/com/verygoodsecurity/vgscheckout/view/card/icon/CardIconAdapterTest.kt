@@ -43,8 +43,8 @@ class CardIconAdapterTest {
     fun test_bounds() {
         val cardType = CardType.DINCLUB
 
-        val w = context.resources.getDimension(R.dimen.c_icon_size_w).toInt()
-        val h = context.resources.getDimension(R.dimen.c_icon_size_h).toInt()
+        val w = context.resources.getDimension(R.dimen.vgs_checkout_c_icon_size_w).toInt()
+        val h = context.resources.getDimension(R.dimen.vgs_checkout_c_icon_size_h).toInt()
 
         val item = adapter.getItem(cardType, cardType.name, cardType.resId, Rect())
         val bounds = item.bounds
@@ -59,15 +59,15 @@ class CardIconAdapterTest {
     fun test_override_icon_with_bounds() {
         val cardType = CardType.AMERICAN_EXPRESS
 
-        val w = context.resources.getDimension(R.dimen.vgsfield_padding).toInt()
-        val h = context.resources.getDimension(R.dimen.vgsfield_padding).toInt()
+        val w = context.resources.getDimension(R.dimen.vgs_checkout_margin_padding_size_medium).toInt()
+        val h = context.resources.getDimension(R.dimen.vgs_checkout_margin_padding_size_medium).toInt()
 
         val item = adapter.getItem(cardType, cardType.name, cardType.resId, Rect())
         val bounds = item.bounds
 
         val cb = adapter.getCardBrand()
         assertNotEquals(cardType.resId, cb!!.resId)
-        assertEquals(R.drawable.ic_amex_light, cb.resId)
+        assertEquals(R.drawable.vgs_checkout_ic_amex_light, cb.resId)
         assertEquals(cardType.name, cb.name)
 
         assertEquals(0, bounds.left)
@@ -81,15 +81,15 @@ class CardIconAdapterTest {
     fun test_override_icon_without_bounds() {
         val cardType = CardType.VISA
 
-        val w = context.resources.getDimension(R.dimen.c_icon_size_w).toInt()
-        val h = context.resources.getDimension(R.dimen.c_icon_size_h).toInt()
+        val w = context.resources.getDimension(R.dimen.vgs_checkout_c_icon_size_w).toInt()
+        val h = context.resources.getDimension(R.dimen.vgs_checkout_c_icon_size_h).toInt()
 
         val item = adapter.getItem(cardType, cardType.name, cardType.resId, Rect())
         val bounds = item.bounds
 
         val cb = adapter.getCardBrand()
         assertNotEquals(cardType.resId, cb!!.resId)
-        assertEquals(R.drawable.ic_visa_light, cb.resId)
+        assertEquals(R.drawable.vgs_checkout_ic_visa_light, cb.resId)
         assertEquals(cardType.name, cb.name)
 
         assertEquals(0, bounds.left)
@@ -107,12 +107,12 @@ class CardIconAdapterTest {
         override fun getIcon(cardType: CardType, name: String?, resId: Int, r:Rect): Drawable {
             return when(cardType) {
                 CardType.AMERICAN_EXPRESS -> {
-                    brand = CardBrand(name, R.drawable.ic_amex_light)
+                    brand = CardBrand(name, R.drawable.vgs_checkout_ic_amex_light)
                     handleAmex()
                 }
                 CardType.VISA -> {
-                    brand = CardBrand(name, R.drawable.ic_visa_light)
-                    getDrawable(R.drawable.ic_visa_light)
+                    brand = CardBrand(name, R.drawable.vgs_checkout_ic_visa_light)
+                    getDrawable(R.drawable.vgs_checkout_ic_visa_light)
                 }
                 else -> {
                     brand = CardBrand(name, resId)
@@ -122,9 +122,9 @@ class CardIconAdapterTest {
         }
 
         private fun handleAmex(): Drawable {
-            val c_icon_size_w = context.resources.getDimension(R.dimen.vgsfield_padding).toInt()
-            val c_icon_size_h = context.resources.getDimension(R.dimen.vgsfield_padding).toInt()
-            val d = getDrawable(R.drawable.ic_amex_dark)
+            val c_icon_size_w = context.resources.getDimension(R.dimen.vgs_checkout_margin_padding_size_medium).toInt()
+            val c_icon_size_h = context.resources.getDimension(R.dimen.vgs_checkout_margin_padding_size_medium).toInt()
+            val d = getDrawable(R.drawable.vgs_checkout_ic_amex_dark)
             d.setBounds(0,0,c_icon_size_w, c_icon_size_h)
             return d
         }

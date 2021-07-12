@@ -13,9 +13,7 @@ import com.verygoodsecurity.vgscheckout.collect.view.card.FieldType
 import com.verygoodsecurity.vgscheckout.collect.view.card.conection.InputSSNConnection
 import com.verygoodsecurity.vgscheckout.collect.view.card.formatter.Formatter
 import com.verygoodsecurity.vgscheckout.collect.view.card.formatter.SSNumberFormatter
-import com.verygoodsecurity.vgscheckout.collect.view.card.validation.CompositeValidator
 import com.verygoodsecurity.vgscheckout.collect.view.card.validation.LengthValidator
-import com.verygoodsecurity.vgscheckout.collect.view.card.validation.MutableValidator
 import com.verygoodsecurity.vgscheckout.collect.view.card.validation.RegexValidator
 import com.verygoodsecurity.vgscheckout.collect.widget.SSNEditText.Companion.DIVIDER
 import com.verygoodsecurity.vgscheckout.collect.widget.SSNEditText.Companion.TAG
@@ -77,7 +75,7 @@ internal class SSNInputField(context: Context) : BaseInputField(context) {
     }
 
     private fun setupKeyListener() {
-        val digits = resources.getString(R.string.card_number_digits) + this@SSNInputField.divider
+        val digits = resources.getString(R.string.vgs_checkout_card_number_digits) + this@SSNInputField.divider
         keyListener = DigitsKeyListener.getInstance(digits)
     }
 
@@ -150,19 +148,19 @@ internal class SSNInputField(context: Context) : BaseInputField(context) {
             divider.isNullOrEmpty() -> outputDivider = EMPTY_CHAR
             arrayOf("#", "\\").contains(divider) -> printWarning(
                 TAG,
-                R.string.error_output_divider_mask
+                R.string.vgs_checkout_error_output_divider_mask
             ).also {
                 outputDivider = DIVIDER
             }
             divider.isNumeric() -> printWarning(
                 TAG,
-                R.string.error_output_divider_number_field
+                R.string.vgs_checkout_error_output_divider_number_field
             ).also {
                 outputDivider = DIVIDER
             }
             divider.length > 1 -> printWarning(
                 TAG,
-                R.string.error_output_divider_count_number_field
+                R.string.vgs_checkout_error_output_divider_count_number_field
             ).also {
                 outputDivider = DIVIDER
             }
@@ -180,16 +178,16 @@ internal class SSNInputField(context: Context) : BaseInputField(context) {
             divider.isNullOrEmpty() -> this@SSNInputField.divider = EMPTY_CHAR
             arrayOf("#", "\\").contains(divider) -> printWarning(
                 TAG,
-                R.string.error_divider_mask
+                R.string.vgs_checkout_error_divider_mask
             ).also {
                 this@SSNInputField.divider = DIVIDER
             }
-            divider.isNumeric() -> printWarning(TAG, R.string.error_divider_number_field).also {
+            divider.isNumeric() -> printWarning(TAG, R.string.vgs_checkout_error_divider_number_field).also {
                 this@SSNInputField.divider = DIVIDER
             }
             divider.length > 1 -> printWarning(
                 TAG,
-                R.string.error_divider_count_number_field
+                R.string.vgs_checkout_error_divider_count_number_field
             ).also {
                 this@SSNInputField.divider = DIVIDER
             }

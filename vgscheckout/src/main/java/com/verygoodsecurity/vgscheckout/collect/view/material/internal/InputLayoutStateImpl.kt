@@ -438,16 +438,16 @@ internal class InputLayoutStateImpl(
     private fun produceInnerViewPaddingLimitations(mode: Int, context:Context):Pair<Int, Int> {
         return when(mode) {
             TextInputLayout.BOX_BACKGROUND_OUTLINE -> Pair(
-                context.resources.getDimension(R.dimen.f_label_horizontal_field_set_1).toInt(),
-                context.resources.getDimension(R.dimen.f_label_vertical_field_set_1).toInt()
+                context.resources.getDimension(R.dimen.vgs_checkout_f_label_horizontal_field_set_1).toInt(),
+                context.resources.getDimension(R.dimen.vgs_checkout_f_label_vertical_field_set_1).toInt()
             )
             TextInputLayout.BOX_BACKGROUND_FILLED -> Pair(
-                context.resources.getDimension(R.dimen.f_label_horizontal_field_set_2).toInt(),
-                context.resources.getDimension(R.dimen.f_label_vertical_field_set_2).toInt()
+                context.resources.getDimension(R.dimen.vgs_checkout_f_label_horizontal_field_set_2).toInt(),
+                context.resources.getDimension(R.dimen.vgs_checkout_f_label_vertical_field_set_2).toInt()
             )
             TextInputLayout.BOX_BACKGROUND_NONE -> Pair(
-                context.resources.getDimension(R.dimen.f_label_horizontal_field_set_3).toInt(),
-                context.resources.getDimension(R.dimen.f_label_vertical_field_set_3).toInt()
+                context.resources.getDimension(R.dimen.vgs_checkout_f_label_horizontal_field_set_3).toInt(),
+                context.resources.getDimension(R.dimen.vgs_checkout_f_label_vertical_field_set_3).toInt()
             )
             else -> Pair(0,0)
         }

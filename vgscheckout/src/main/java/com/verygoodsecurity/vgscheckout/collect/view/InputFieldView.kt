@@ -316,8 +316,8 @@ internal abstract class InputFieldView @JvmOverloads constructor(
             if (parent !is TextInputFieldLayout) {
                 setAddStatesFromChildren(true)
                 inputField.setMinimumPaddingLimitations(
-                    resources.getDimension(R.dimen.default_horizontal_field).toInt(),
-                    resources.getDimension(R.dimen.default_vertical_field).toInt()
+                    resources.getDimension(R.dimen.vgs_checkout_default_horizontal_field).toInt(),
+                    resources.getDimension(R.dimen.vgs_checkout_default_vertical_field).toInt()
                 )
                 applyLayoutParams(inputField)
                 addView(inputField)

@@ -156,7 +156,7 @@ internal class VGSCardNumberEditText @JvmOverloads constructor(
         } else {
             VGSCollectLogger.warn(
                 BrandParams::class.qualifiedName.toString(),
-                context.getString(R.string.error_custom_brand_mask_length, c.cardBrandName)
+                context.getString(R.string.vgs_checkout_error_custom_brand_mask_length, c.cardBrandName)
             )
         }
     }

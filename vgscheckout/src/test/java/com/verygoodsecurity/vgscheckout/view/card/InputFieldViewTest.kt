@@ -62,8 +62,8 @@ class InputFieldViewTest {
         assertEquals(FIELD_NAME, view.getFieldName())
         assertEquals(FIELD_NAME, (child as BaseInputField).tag)
 
-        val FIELD_NAME_ID = R.string.sdk_name
-        val TEXT = activity.resources.getString(R.string.sdk_name)
+        val FIELD_NAME_ID = R.string.vgs_checkout_sdk_name
+        val TEXT = activity.resources.getString(R.string.vgs_checkout_sdk_name)
         view.setFieldName(FIELD_NAME_ID)
         assertEquals(TEXT, view.getFieldName())
         assertEquals(TEXT, child.tag)
@@ -119,8 +119,8 @@ class InputFieldViewTest {
         view.setText(TEXT2, TextView.BufferType.SPANNABLE)
         assertEquals(TEXT2, child.text.toString())
 
-        val TEXT_ID_1 = R.string.sdk_name
-        val TEXT = activity.resources.getString(R.string.sdk_name)
+        val TEXT_ID_1 = R.string.vgs_checkout_sdk_name
+        val TEXT = activity.resources.getString(R.string.vgs_checkout_sdk_name)
         view.setText(TEXT_ID_1, TextView.BufferType.SPANNABLE)
         assertEquals(TEXT, child.text.toString())
 

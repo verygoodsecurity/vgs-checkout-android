@@ -11,37 +11,33 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:animateLayoutChanges="true"
-        android:background="@drawable/rounded_border_bg_white"
+        android:background="@drawable/vgs_checkout_rounded_border_bg_white"
         android:clipToPadding="false"
         android:orientation="vertical"
-        android:padding="@dimen/margin_padding_size_medium">
+        android:padding="@dimen/vgs_checkout_margin_padding_size_medium">
 
         <com.google.android.material.textview.MaterialTextView
+            style="@style/VGSCheckout.Title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_padding_size_xsmall"
-            android:fontFamily="@font/inter_semi_bold"
-            android:text="@string/vgs_checkout_card_details_title"
-            android:textAppearance="?attr/textAppearanceSubtitle1" />
+            android:layout_marginBottom="@dimen/vgs_checkout_margin_padding_size_xsmall"
+            android:text="@string/vgs_checkout_card_details_title" />
 
         <LinearLayout
             android:id="@+id/llCardHolder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/input_field_background_state_list"
+            android:background="@drawable/vgs_checkout_input_field_background_state_list"
             android:orientation="vertical"
-            android:padding="@dimen/margin_padding_size_small">
+            android:padding="@dimen/vgs_checkout_margin_padding_size_small">
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/mtvCardHolderHint"
+                style="@style/VGSCheckout.Description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawablePadding="@dimen/margin_padding_size_small"
-                android:fontFamily="@font/inter_semi_bold"
-                android:text="@string/vgs_checkout_card_holder_subtitle"
-                android:textAllCaps="true"
-                android:textAppearance="?attr/textAppearanceCaption"
-                app:drawableTint="@color/vgs_checkout_error_icon_tint" />
+                android:drawablePadding="@dimen/vgs_checkout_margin_padding_size_small"
+                android:text="@string/vgs_checkout_card_holder_subtitle" />
 
             <com.verygoodsecurity.vgscheckout.collect.widget.PersonNameEditText
                 android:id="@+id/vgsEtCardHolder"
@@ -60,8 +56,8 @@
             android:id="@+id/clCardDetails"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_padding_size_small"
-            android:background="@drawable/input_field_background_state_list">
+            android:layout_marginTop="@dimen/vgs_checkout_margin_padding_size_small"
+            android:background="@drawable/vgs_checkout_input_field_background_state_list">
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guidelineHorizontal"
@@ -97,7 +93,7 @@
 
                 <View
                     android:id="@+id/viewDividerVertical"
-                    android:layout_width="@dimen/divider_size"
+                    android:layout_width="@dimen/vgs_checkout_default_divider_size"
                     android:layout_height="0dp"
                     android:background="@color/vgs_checkout_border_default"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -110,7 +106,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="@dimen/margin_padding_size_small"
+                    android:padding="@dimen/vgs_checkout_margin_padding_size_small"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@id/viewDividerVertical"
                     app:layout_constraintStart_toStartOf="parent"
@@ -118,14 +114,11 @@
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/mtvDateHint"
+                        style="@style/VGSCheckout.Description"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:drawablePadding="@dimen/margin_padding_size_small"
-                        android:fontFamily="@font/inter_semi_bold"
-                        android:text="@string/vgs_checkout_card_expiration_date_subtitle"
-                        android:textAllCaps="true"
-                        android:textAppearance="?attr/textAppearanceCaption"
-                        app:drawableTint="@color/vgs_checkout_error_icon_tint" />
+                        android:drawablePadding="@dimen/vgs_checkout_margin_padding_size_small"
+                        android:text="@string/vgs_checkout_card_expiration_date_subtitle" />
 
                     <com.verygoodsecurity.vgscheckout.collect.widget.ExpirationDateEditText
                         android:id="@+id/vgsEtDate"
@@ -146,7 +139,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="@dimen/margin_padding_size_small"
+                    android:padding="@dimen/vgs_checkout_margin_padding_size_small"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@id/viewDividerVertical"
@@ -154,14 +147,11 @@
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/mtvCVCHint"
+                        style="@style/VGSCheckout.Description"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:drawablePadding="@dimen/margin_padding_size_small"
-                        android:fontFamily="@font/inter_semi_bold"
-                        android:text="@string/vgs_checkout_card_verification_code_subtitle"
-                        android:textAllCaps="true"
-                        android:textAppearance="?attr/textAppearanceCaption"
-                        app:drawableTint="@color/vgs_checkout_error_icon_tint" />
+                        android:drawablePadding="@dimen/vgs_checkout_margin_padding_size_small"
+                        android:text="@string/vgs_checkout_card_verification_code_subtitle" />
 
                     <com.verygoodsecurity.vgscheckout.collect.widget.CardVerificationCodeEditText
                         android:id="@+id/vgsEtCVC"
@@ -182,7 +172,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="@dimen/margin_padding_size_small"
+                android:padding="@dimen/vgs_checkout_margin_padding_size_small"
                 app:layout_constraintBottom_toBottomOf="@+id/viewDividerHorizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -191,14 +181,11 @@
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/mtvCardNumberHint"
+                    style="@style/VGSCheckout.Description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawablePadding="@dimen/margin_padding_size_small"
-                    android:fontFamily="@font/inter_semi_bold"
-                    android:text="@string/vgs_checkout_card_number_subtitle"
-                    android:textAllCaps="true"
-                    android:textAppearance="?attr/textAppearanceCaption"
-                    app:drawableTint="@color/vgs_checkout_error_icon_tint" />
+                    android:drawablePadding="@dimen/vgs_checkout_margin_padding_size_small"
+                    android:text="@string/vgs_checkout_card_number_subtitle" />
 
                 <com.verygoodsecurity.vgscheckout.collect.widget.VGSCardNumberEditText
                     android:id="@+id/vgsEtCardNumber"
@@ -220,7 +207,7 @@
             style="@style/VGSCheckout.ErrorText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_padding_size_micro"
+            android:layout_marginTop="@dimen/vgs_checkout_margin_padding_size_micro"
             android:visibility="gone"
             tools:text="Test error"
             tools:visibility="visible" />
@@ -230,10 +217,10 @@
             style="@style/VGSCheckout.Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_padding_size_large"
-            android:layout_marginBottom="@dimen/margin_padding_size_large"
+            android:layout_marginTop="@dimen/vgs_checkout_margin_padding_size_large"
+            android:layout_marginBottom="@dimen/vgs_checkout_margin_padding_size_large"
             android:enabled="false"
             android:text="@string/vgs_checkout_pay_button_title"
-            app:icon="@drawable/ic_lock_white_10dp" />
+            app:icon="@drawable/vgs_checkout_ic_lock_white_10dp" />
     </LinearLayout>
 </merge>

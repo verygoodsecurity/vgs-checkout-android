@@ -16,8 +16,6 @@ import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutFormConfiguration
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutMultiplexingFormConfiguration
 import com.verygoodsecurity.vgscheckout.config.ui.view.cardholder.VGSCheckoutCardHolderOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.cardnumber.VGSCheckoutCardNumberOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.cardnumber.model.VGSCheckoutCardBrand
-import com.verygoodsecurity.vgscheckout.config.ui.view.cardnumber.model.VGSCheckoutChecksumAlgorithm
 import com.verygoodsecurity.vgscheckout.config.ui.view.cvc.VGSCheckoutCVCOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.expiration.VGSCheckoutExpirationDateOptions
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
@@ -74,21 +72,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun getCardNumberOptions() = VGSCheckoutCardNumberOptions.Builder()
         .setFieldName("cardNumber")
-        .setCardBrands(
-            VGSCheckoutCardBrand.Elo(
-                icon = R.drawable.ic_amex_light,
-                mask = "# # # # # # # # # # # # # # # #"
-            ),
-            VGSCheckoutCardBrand.Custom(
-                "Custom brand",
-                R.drawable.ic_amex_dark,
-                "^001",
-                "## ## ## ## ## ## ## ##",
-                arrayOf(16),
-                arrayOf(3),
-                VGSCheckoutChecksumAlgorithm.LUHN
-            )
-        )
         .build()
 
     private fun getExpirationDateOptions() = VGSCheckoutExpirationDateOptions.Builder()

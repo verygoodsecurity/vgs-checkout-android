@@ -14,11 +14,11 @@ import com.verygoodsecurity.vgscheckout.collect.view.card.CardType
 internal open class CVCIconAdapter(private val context: Context) {
 
     private val defaultIcon: Drawable by lazy {
-        AppCompatResources.getDrawable(context, R.drawable.ic_card_back_preview_dark)!!
+        AppCompatResources.getDrawable(context, R.drawable.vgs_checkout_ic_card_back_preview_dark)!!
     }
 
-    private val defaultIconWidth = context.resources.getDimension(R.dimen.c_icon_size_w).toInt()
-    private val defaultIconHeight = context.resources.getDimension(R.dimen.c_icon_size_h).toInt()
+    private val defaultIconWidth = context.resources.getDimension(R.dimen.vgs_checkout_c_icon_size_w).toInt()
+    private val defaultIconHeight = context.resources.getDimension(R.dimen.vgs_checkout_c_icon_size_h).toInt()
 
     /**
      * Returns a drawable object associated with a particular resource ID or default drawable.
@@ -74,7 +74,7 @@ internal open class CVCIconAdapter(private val context: Context) {
     @DrawableRes
     /** @suppress */
     private fun getDrawableId(cardType: CardType): Int = when (cardType) {
-        CardType.AMERICAN_EXPRESS -> R.drawable.ic_card_back_preview_dark_4
-        else -> R.drawable.ic_card_back_preview_dark
+        CardType.AMERICAN_EXPRESS -> R.drawable.vgs_checkout_ic_card_back_preview_dark_4
+        else -> R.drawable.vgs_checkout_ic_card_back_preview_dark
     }
 }

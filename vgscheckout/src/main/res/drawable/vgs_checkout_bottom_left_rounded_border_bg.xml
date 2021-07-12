@@ -2,9 +2,9 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
 
-    <corners android:bottomLeftRadius="@dimen/margin_padding_size_small" />
+    <corners android:bottomLeftRadius="@dimen/vgs_checkout_margin_padding_size_small" />
 
     <stroke
-        android:width="@dimen/stoke_width"
+        android:width="@dimen/vgs_checkout_default_stoke_width"
         android:color="@android:color/transparent" />
 </shape>

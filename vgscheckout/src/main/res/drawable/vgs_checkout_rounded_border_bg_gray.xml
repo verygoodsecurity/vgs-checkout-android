@@ -4,9 +4,9 @@
 
     <solid android:color="@color/vgs_checkout_input_field_disabled_background"/>
 
-    <corners android:radius="@dimen/margin_padding_size_small" />
+    <corners android:radius="@dimen/vgs_checkout_margin_padding_size_small" />
 
     <stroke
-        android:width="@dimen/stoke_width"
+        android:width="@dimen/vgs_checkout_default_stoke_width"
         android:color="@color/vgs_checkout_border_default" />
 </shape>
