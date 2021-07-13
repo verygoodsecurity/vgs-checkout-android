@@ -32,7 +32,7 @@
                 style="@style/VGSCheckout.Title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/vgs_checkout_card_details_title" />
+                android:text="@string/vgs_checkout_form_card_details_title" />
 
             <com.verygoodsecurity.vgscheckout.view.checkout.CreditCardView
                 android:id="@+id/creditCardView"
