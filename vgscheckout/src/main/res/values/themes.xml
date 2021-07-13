@@ -39,6 +39,14 @@
         <item name="android:background">@android:color/transparent</item>
     </style>
 
+    <style name="VGSCheckout.Spinner">
+        <item name="android:textAppearance">?textAppearanceSubtitle1</item>
+    </style>
+
+    <style name="VGSCheckout.Spinner.Header">
+        <item name="android:textAppearance">?textAppearanceSubtitle1</item>
+    </style>
+
     <style name="VGSCheckout.Title">
         <item name="android:fontFamily">@font/vgs_checkout_inter_semi_bold</item>
         <item name="android:textAppearance">?textAppearanceSubtitle1</item>

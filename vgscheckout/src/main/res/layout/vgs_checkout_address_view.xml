@@ -22,11 +22,14 @@
             style="@style/VGSCheckout.Description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Country" />
+            android:text="@string/vgs_checkout_country_subtitle" />
 
         <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/spinnerCountries"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/vgs_checkout_margin_padding_size_small"
+            android:layout_marginBottom="@dimen/vgs_checkout_margin_padding_size_small" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -41,13 +44,13 @@
             style="@style/VGSCheckout.Description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Address line 1" />
+            android:text="@string/vgs_checkout_address_one_subtitle" />
 
         <com.verygoodsecurity.vgscheckout.collect.widget.VGSEditText
             style="@style/VGSCheckout.InputField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:hint="Address line 1" />
+            app:hint="@string/vgs_checkout_address_one_hint" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -62,13 +65,13 @@
             style="@style/VGSCheckout.Description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Address line 2 (optional)" />
+            android:text="@string/vgs_checkout_address_two_subtitle" />
 
         <com.verygoodsecurity.vgscheckout.collect.widget.VGSEditText
             style="@style/VGSCheckout.InputField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:hint="Address line 2 (optional)" />
+            app:hint="@string/vgs_checkout_address_two_hint" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -83,13 +86,13 @@
             style="@style/VGSCheckout.Description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="City" />
+            android:text="@string/vgs_checkout_city_subtitle" />
 
         <com.verygoodsecurity.vgscheckout.collect.widget.VGSEditText
             style="@style/VGSCheckout.InputField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:hint="City" />
+            app:hint="@string/vgs_checkout_city_hint" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -105,7 +108,7 @@
             style="@style/VGSCheckout.Description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="State" />
+            android:text="@string/vgs_checkout_state_subtitle" />
 
         <androidx.appcompat.widget.AppCompatSpinner
             android:layout_width="match_parent"
@@ -125,12 +128,12 @@
             style="@style/VGSCheckout.Description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="City" />
+            android:text="@string/vgs_checkout_zip_code_subtitle" />
 
         <com.verygoodsecurity.vgscheckout.collect.widget.VGSEditText
             style="@style/VGSCheckout.InputField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:hint="City" />
+            app:hint="@string/vgs_checkout_zip_code_hint" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 </com.verygoodsecurity.vgscheckout.view.custom.DividerGridLayout>

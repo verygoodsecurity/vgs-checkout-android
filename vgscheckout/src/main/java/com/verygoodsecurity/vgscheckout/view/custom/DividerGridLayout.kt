@@ -6,7 +6,6 @@ import android.graphics.*
 import android.os.Parcel
 import android.os.Parcelable
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import android.widget.GridLayout
 import androidx.annotation.ColorInt
@@ -47,7 +46,6 @@ internal open class DividerGridLayout @JvmOverloads constructor(
                 R.styleable.DividerGridLayout_dgl_grid_width,
                 DEFAULT_GRID_WIDTH
             )
-            Log.d("Test", "gridWidth = $gridWidth")
             gridColor = getColor(
                 R.styleable.DividerGridLayout_dgl_grid_color,
                 DEFAULT_GRID_COLOR

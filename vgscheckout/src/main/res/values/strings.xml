@@ -27,6 +27,22 @@
     <string name="vgs_checkout_card_verification_code_invalid_error">Security code is not valid</string>
     <string name="vgs_checkout_card_verification_code_empty_error">Security code is empty</string>
 
+    <string name="vgs_checkout_country_subtitle">Country</string>
+
+    <string name="vgs_checkout_address_one_subtitle">Address line 1</string>
+    <string name="vgs_checkout_address_one_hint">Address line 1</string>
+
+    <string name="vgs_checkout_address_two_subtitle">Address line 2 (optional)</string>
+    <string name="vgs_checkout_address_two_hint">Address line 2 (optional)</string>
+
+    <string name="vgs_checkout_city_subtitle">City</string>
+    <string name="vgs_checkout_city_hint">City</string>
+
+    <string name="vgs_checkout_state_subtitle">State</string>
+
+    <string name="vgs_checkout_zip_code_subtitle">Zip Code</string>
+    <string name="vgs_checkout_zip_code_hint">12345</string>
+
     <string name="vgs_checkout_pay_button_title">Pay</string>
     <string name="vgs_checkout_pay_button_processing_title">Payment Processing…</string>
 
