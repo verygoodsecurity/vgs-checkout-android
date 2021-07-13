@@ -45,6 +45,7 @@ dependencies {
     implementation "androidx.appcompat:appcompat:$app_compat"
     implementation "androidx.core:core-ktx:$core_ktx"
 
+    api "com.google.code.gson:gson:2.8.7"
     api "com.google.android.material:material:$material"
     api "com.squareup.okhttp3:okhttp:$okHttp"
 

@@ -11,6 +11,7 @@ import android.widget.GridLayout
 import androidx.annotation.ColorInt
 import androidx.annotation.IdRes
 import androidx.core.graphics.and
+import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.util.extension.*
@@ -191,6 +192,9 @@ internal open class DividerGridLayout @JvmOverloads constructor(
     }
 
     private fun drawBorder(canvas: Canvas, view: View, paint: Paint) {
+        if (!view.isVisible) {
+            return
+        }
         val path = Path().also {
             it.addRect(
                 RectF(

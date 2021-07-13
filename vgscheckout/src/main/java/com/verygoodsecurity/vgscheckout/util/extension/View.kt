@@ -49,3 +49,19 @@ internal fun View.setVisibility(visibility: VGSCheckoutFieldVisibility) {
 internal fun MaterialTextView.setDrawableEnd(drawable: Drawable?) {
     this.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, drawable, null)
 }
+
+internal fun View.visible() {
+    this.visibility = View.VISIBLE
+}
+
+internal fun View.invisible() {
+    this.visibility = View.INVISIBLE
+}
+
+internal fun View.gone() {
+    this.visibility = View.GONE
+}
+
+internal fun View.setVisibility(isVisible: Boolean) {
+    if (isVisible) this.visible() else this.gone()
+}
