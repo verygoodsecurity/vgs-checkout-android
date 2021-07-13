@@ -6,6 +6,7 @@ import android.graphics.*
 import android.os.Parcel
 import android.os.Parcelable
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 import android.widget.GridLayout
 import androidx.annotation.ColorInt
@@ -35,6 +36,8 @@ internal open class DividerGridLayout @JvmOverloads constructor(
 
     private var selectedId: Int? = null
 
+    private var isDrawnAlready: Boolean = false
+
     init {
         isEnabled = false
         context.getStyledAttributes(attrs, R.styleable.DividerGridLayout) {
@@ -46,6 +49,7 @@ internal open class DividerGridLayout @JvmOverloads constructor(
                 R.styleable.DividerGridLayout_dgl_grid_width,
                 DEFAULT_GRID_WIDTH
             )
+            Log.d("Test", "gridWidth = $gridWidth")
             gridColor = getColor(
                 R.styleable.DividerGridLayout_dgl_grid_color,
                 DEFAULT_GRID_COLOR
@@ -62,11 +66,13 @@ internal open class DividerGridLayout @JvmOverloads constructor(
                     color = gridColorStateList.getColor(drawableState, gridColor)
                     style = Paint.Style.STROKE
                     strokeWidth = gridWidth.toFloat()
+                    isAntiAlias = true
                 }
                 selectedGridPaint = Paint().apply {
                     color = selectedGridColor
                     style = Paint.Style.STROKE
                     strokeWidth = gridWidth.toFloat()
+                    isAntiAlias = true
                 }
             }
             updatePadding()
@@ -107,22 +113,15 @@ internal open class DividerGridLayout @JvmOverloads constructor(
     }
 
     override fun draw(canvas: Canvas?) {
-        canvas?.let {
-            canvas.save()
-            applyRoundedCorners(canvas)
-            super.draw(canvas)
-            canvas.restore()
-        } ?: super.draw(canvas)
+        canvas?.let { draw(it) { super.draw(canvas) } } ?: super.draw(canvas)
     }
 
     override fun dispatchDraw(canvas: Canvas?) {
-        canvas?.let {
-            canvas.save()
-            applyRoundedCorners(canvas)
+        if (canvas != null && background == null) {
+            draw(canvas) { super.dispatchDraw(canvas) }
+        } else {
             super.dispatchDraw(canvas)
-            canvas.restore()
-            drawDividers(canvas)
-        } ?: super.dispatchDraw(canvas)
+        }
     }
 
     fun setGridColor(@ColorInt color: Int) {
@@ -168,6 +167,14 @@ internal open class DividerGridLayout @JvmOverloads constructor(
 
     private fun applyRoundedCorners(canvas: Canvas) {
         canvas.clipPath(roundedCornersPath)
+    }
+
+    private fun draw(canvas: Canvas, callSuper: (Canvas) -> Unit) {
+        canvas.save()
+        applyRoundedCorners(canvas)
+        callSuper.invoke(canvas)
+        canvas.restore()
+        drawDividers(canvas)
     }
 
     private fun drawDividers(canvas: Canvas) {
