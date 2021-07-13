@@ -36,10 +36,8 @@ internal open class DividerGridLayout @JvmOverloads constructor(
 
     private var selectedId: Int? = null
 
-    private var isDrawnAlready: Boolean = false
-
     init {
-        isEnabled = false
+        isEnabled = true
         context.getStyledAttributes(attrs, R.styleable.DividerGridLayout) {
             cornersRadius = getDimension(
                 R.styleable.DividerGridLayout_dgl_corners_radius,

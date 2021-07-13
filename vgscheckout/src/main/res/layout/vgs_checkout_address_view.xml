@@ -1,10 +1,136 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<com.verygoodsecurity.vgscheckout.view.custom.DividerGridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/dglRoot"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/vgs_checkout_input_bg"
     android:columnCount="2"
-    tools:parentTag="com.verygoodsecurity.vgscheckout.view.custom.DividerGridLayout">
+    app:dgl_corners_radius="@dimen/vgs_checkout_margin_padding_size_small"
+    app:dgl_grid_color="@color/vgs_checkout_border_default"
+    app:dgl_grid_width="1dp">
 
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_columnSpan="2"
+        android:layout_gravity="fill"
+        android:orientation="vertical"
+        android:padding="@dimen/vgs_checkout_margin_padding_size_small">
 
-</merge>
+        <com.google.android.material.textview.MaterialTextView
+            style="@style/VGSCheckout.Description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Country" />
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_columnSpan="2"
+        android:layout_gravity="fill"
+        android:orientation="vertical"
+        android:padding="@dimen/vgs_checkout_margin_padding_size_small">
+
+        <com.google.android.material.textview.MaterialTextView
+            style="@style/VGSCheckout.Description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Address line 1" />
+
+        <com.verygoodsecurity.vgscheckout.collect.widget.VGSEditText
+            style="@style/VGSCheckout.InputField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hint="Address line 1" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_columnSpan="2"
+        android:layout_gravity="fill"
+        android:orientation="vertical"
+        android:padding="@dimen/vgs_checkout_margin_padding_size_small">
+
+        <com.google.android.material.textview.MaterialTextView
+            style="@style/VGSCheckout.Description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Address line 2 (optional)" />
+
+        <com.verygoodsecurity.vgscheckout.collect.widget.VGSEditText
+            style="@style/VGSCheckout.InputField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hint="Address line 2 (optional)" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_columnSpan="2"
+        android:layout_gravity="fill"
+        android:orientation="vertical"
+        android:padding="@dimen/vgs_checkout_margin_padding_size_small">
+
+        <com.google.android.material.textview.MaterialTextView
+            style="@style/VGSCheckout.Description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="City" />
+
+        <com.verygoodsecurity.vgscheckout.collect.widget.VGSEditText
+            style="@style/VGSCheckout.InputField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hint="City" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_column="0"
+        android:layout_columnWeight="1"
+        android:layout_gravity="fill_vertical"
+        android:orientation="vertical"
+        android:padding="@dimen/vgs_checkout_margin_padding_size_small">
+
+        <com.google.android.material.textview.MaterialTextView
+            style="@style/VGSCheckout.Description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="State" />
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_column="1"
+        android:layout_columnWeight="1"
+        android:orientation="vertical"
+        android:padding="@dimen/vgs_checkout_margin_padding_size_small">
+
+        <com.google.android.material.textview.MaterialTextView
+            style="@style/VGSCheckout.Description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="City" />
+
+        <com.verygoodsecurity.vgscheckout.collect.widget.VGSEditText
+            style="@style/VGSCheckout.InputField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hint="City" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</com.verygoodsecurity.vgscheckout.view.custom.DividerGridLayout>
