@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscheckout.view.checkout
+package com.verygoodsecurity.vgscheckout.view.checkout.card
 
 import android.content.Context
 import android.util.AttributeSet
@@ -21,12 +21,12 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.cvc.VGSCheckoutCVCOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.expiration.VGSCheckoutExpirationDateOptions
 import com.verygoodsecurity.vgscheckout.util.ObservableLinkedHashMap
 import com.verygoodsecurity.vgscheckout.util.extension.*
-import com.verygoodsecurity.vgscheckout.view.checkout.adapter.CardIconAdapter
-import com.verygoodsecurity.vgscheckout.view.checkout.adapter.CardMaskAdapter
-import com.verygoodsecurity.vgscheckout.view.checkout.model.InputViewStateHolder
-import com.verygoodsecurity.vgscheckout.view.checkout.model.OnStateChangeListener
-import com.verygoodsecurity.vgscheckout.view.checkout.model.StateChangeListener
-import com.verygoodsecurity.vgscheckout.view.checkout.model.ViewState
+import com.verygoodsecurity.vgscheckout.view.checkout.card.adapter.CardIconAdapter
+import com.verygoodsecurity.vgscheckout.view.checkout.card.adapter.CardMaskAdapter
+import com.verygoodsecurity.vgscheckout.view.checkout.core.model.InputViewStateHolder
+import com.verygoodsecurity.vgscheckout.view.checkout.core.model.OnStateChangeListener
+import com.verygoodsecurity.vgscheckout.view.checkout.core.model.StateChangeListener
+import com.verygoodsecurity.vgscheckout.view.checkout.core.model.ViewState
 
 // TODO: Add ability to set color state list for collect input views text color.
 // TODO: Add ability to icon tint color for collect input view.

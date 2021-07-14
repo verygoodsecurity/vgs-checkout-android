@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscheckout.view.checkout
+package com.verygoodsecurity.vgscheckout.view.checkout.address
 
 import android.content.Context
 import android.util.AttributeSet
@@ -7,7 +7,6 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.FrameLayout
-import androidx.appcompat.widget.AppCompatSpinner
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.android.material.textview.MaterialTextView
@@ -17,37 +16,54 @@ import com.verygoodsecurity.vgscheckout.util.address.AddressHelper
 import com.verygoodsecurity.vgscheckout.util.address.UNITED_KINGDOM
 import com.verygoodsecurity.vgscheckout.util.address.model.PostalAddressType
 import com.verygoodsecurity.vgscheckout.util.address.model.RegionType
+import com.verygoodsecurity.vgscheckout.util.extension.getColor
 import com.verygoodsecurity.vgscheckout.util.extension.getString
 import com.verygoodsecurity.vgscheckout.util.extension.gone
 import com.verygoodsecurity.vgscheckout.util.extension.visible
+import com.verygoodsecurity.vgscheckout.view.checkout.address.model.State
 import com.verygoodsecurity.vgscheckout.view.custom.DividerGridLayout
+import com.verygoodsecurity.vgscheckout.view.custom.DropdownEventSpinner
+import kotlin.properties.Delegates
 
 internal class AddressView @JvmOverloads internal constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : FrameLayout(context, attrs, defStyleAttr), AdapterView.OnItemSelectedListener {
+) : FrameLayout(context, attrs, defStyleAttr), AdapterView.OnItemSelectedListener,
+    View.OnFocusChangeListener, DropdownEventSpinner.OnDropdownStateChangeListener {
 
-    private val dividerGridLayout: DividerGridLayout
+    private lateinit var dividerGridLayout: DividerGridLayout
 
     private val countriesRoot: ConstraintLayout
-    private val countriesSpinner: AppCompatSpinner
+    private val countriesSpinner: DropdownEventSpinner
 
     private val addressRoot: LinearLayoutCompat
+    private val addressInput: VGSEditText
 
     private val cityRoot: LinearLayoutCompat
     private val citySubtitle: MaterialTextView
+    private val cityInput: VGSEditText
 
     private val regionInputRoot: LinearLayoutCompat
     private val regionInput: VGSEditText
 
     private val regionsRoot: ConstraintLayout
     private val regionsSubtitle: MaterialTextView
-    private val regionsSpinner: AppCompatSpinner
+    private val regionsSpinner: DropdownEventSpinner
 
     private val postalAddressRoot: LinearLayoutCompat
     private val postalAddressSubtitle: MaterialTextView
     private val postalAddressInput: VGSEditText
+
+    private var state: State by Delegates.observable(State.DEFAULT) { _, _, new ->
+        if (this::dividerGridLayout.isInitialized) {
+            when (new) {
+                State.FOCUSED -> dividerGridLayout.setGridColor(getColor(R.color.vgs_checkout_border_highlighted))
+                State.ERROR -> dividerGridLayout.setGridColor(getColor(R.color.vgs_checkout_border_error))
+                State.DEFAULT -> dividerGridLayout.setGridColor(getColor(R.color.vgs_checkout_border_default))
+            }
+        }
+    }
 
     init {
 
@@ -59,9 +75,11 @@ internal class AddressView @JvmOverloads internal constructor(
         countriesSpinner = findViewById(R.id.spinnerCountries)
 
         addressRoot = findViewById(R.id.llcAddressRoot)
+        addressInput = findViewById(R.id.vgsEtAddressInput)
 
         cityRoot = findViewById(R.id.llcCityRoot)
         citySubtitle = findViewById(R.id.mtvCitySubtitle)
+        cityInput = findViewById(R.id.vgsEtCityInput)
 
         regionInputRoot = findViewById(R.id.llcRegionInputRoot)
         regionInput = findViewById(R.id.vgsEtRegionInput)
@@ -78,6 +96,7 @@ internal class AddressView @JvmOverloads internal constructor(
         setupCity()
         setupRegions()
         setupPostalAddressCode()
+        initListeners()
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
@@ -88,12 +107,36 @@ internal class AddressView @JvmOverloads internal constructor(
         }
     }
 
-    override fun onNothingSelected(parent: AdapterView<*>?) {
+    override fun onNothingSelected(parent: AdapterView<*>?) {}
 
+    override fun onFocusChange(v: View?, hasFocus: Boolean) {
+        state = if (isAnyInputFocused()){
+            State.FOCUSED
+        } else {
+            State.DEFAULT
+        }
+    }
+
+    override fun onDropdownOpened() {
+        state = State.FOCUSED
+    }
+
+    override fun onDropdownClosed() {
+        if (isAnyInputFocused().not()) state = State.DEFAULT
     }
 
     fun applyConfig() {
         // TODO: Implement apply config (field names etc.)
+    }
+
+    private fun initListeners() {
+        addressInput.onFocusChangeListener = this
+        cityInput.onFocusChangeListener = this
+        regionInput.onFocusChangeListener = this
+        postalAddressInput.onFocusChangeListener = this
+
+        countriesSpinner.onDropdownStateChangeListener = this
+        regionsSpinner.onDropdownStateChangeListener = this
     }
 
     private fun setupCountries() {
@@ -160,4 +203,8 @@ internal class AddressView @JvmOverloads internal constructor(
             RegionType.UNKNOWN -> R.string.vgs_checkout_region_input_subtitle
         }
     )
+
+    private fun isAnyInputFocused(): Boolean {
+        return listOf(addressInput, cityInput, regionInput, postalAddressInput).any { it.isFocused }
+    }
 }

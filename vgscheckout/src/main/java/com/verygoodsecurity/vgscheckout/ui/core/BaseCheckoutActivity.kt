@@ -22,8 +22,8 @@ import com.verygoodsecurity.vgscheckout.ui.CheckoutActivity
 import com.verygoodsecurity.vgscheckout.ui.CheckoutMultiplexingActivity
 import com.verygoodsecurity.vgscheckout.util.extension.disableScreenshots
 import com.verygoodsecurity.vgscheckout.util.extension.getDrawableCompat
-import com.verygoodsecurity.vgscheckout.view.checkout.CreditCardView
-import com.verygoodsecurity.vgscheckout.view.checkout.model.OnStateChangeListener
+import com.verygoodsecurity.vgscheckout.view.checkout.card.CreditCardView
+import com.verygoodsecurity.vgscheckout.view.checkout.core.model.OnStateChangeListener
 
 internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
     AppCompatActivity(), View.OnClickListener, VgsCollectResponseListener, OnStateChangeListener {

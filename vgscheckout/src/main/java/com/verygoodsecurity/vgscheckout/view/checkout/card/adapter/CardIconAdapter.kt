@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscheckout.view.checkout.adapter
+package com.verygoodsecurity.vgscheckout.view.checkout.card.adapter
 
 import android.content.Context
 import android.graphics.Rect
