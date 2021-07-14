@@ -14,10 +14,11 @@ import com.google.android.material.textview.MaterialTextView
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.widget.VGSEditText
 import com.verygoodsecurity.vgscheckout.util.address.AddressHelper
+import com.verygoodsecurity.vgscheckout.util.address.UNITED_KINGDOM
 import com.verygoodsecurity.vgscheckout.util.address.model.PostalAddressType
+import com.verygoodsecurity.vgscheckout.util.address.model.RegionType
 import com.verygoodsecurity.vgscheckout.util.extension.getString
 import com.verygoodsecurity.vgscheckout.util.extension.gone
-import com.verygoodsecurity.vgscheckout.util.extension.setVisibility
 import com.verygoodsecurity.vgscheckout.util.extension.visible
 import com.verygoodsecurity.vgscheckout.view.custom.DividerGridLayout
 
@@ -34,11 +35,14 @@ internal class AddressView @JvmOverloads internal constructor(
 
     private val addressRoot: LinearLayoutCompat
 
-    private val addressOptionRoot: LinearLayoutCompat
-
     private val cityRoot: LinearLayoutCompat
+    private val citySubtitle: MaterialTextView
+
+    private val regionInputRoot: LinearLayoutCompat
+    private val regionInput: VGSEditText
 
     private val regionsRoot: ConstraintLayout
+    private val regionsSubtitle: MaterialTextView
     private val regionsSpinner: AppCompatSpinner
 
     private val postalAddressRoot: LinearLayoutCompat
@@ -56,32 +60,31 @@ internal class AddressView @JvmOverloads internal constructor(
 
         addressRoot = findViewById(R.id.llcAddressRoot)
 
-        addressOptionRoot = findViewById(R.id.llcAddressOptionRoot)
-
         cityRoot = findViewById(R.id.llcCityRoot)
+        citySubtitle = findViewById(R.id.mtvCitySubtitle)
+
+        regionInputRoot = findViewById(R.id.llcRegionInputRoot)
+        regionInput = findViewById(R.id.vgsEtRegionInput)
 
         regionsRoot = findViewById(R.id.clRegionsRoot)
+        regionsSubtitle = findViewById(R.id.mtvRegionsSubtitle)
         regionsSpinner = findViewById(R.id.spinnerRegions)
 
         postalAddressRoot = findViewById(R.id.llcPostalAddressRoot)
         postalAddressSubtitle = findViewById(R.id.mtvPostalAddressSubtitle)
         postalAddressInput = findViewById(R.id.vgsEtPostalAddress)
 
-        initCountries()
-        initAddress()
-        initAddressOptional()
-        initCity()
-        initRegions()
-        initPostalAddressCode()
+        setupCountries()
+        setupCity()
+        setupRegions()
+        setupPostalAddressCode()
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        with(parent?.getItemAtPosition(position) as? String) {
-            initAddress(this)
-            initAddressOptional(this)
-            initCity(this)
-            initRegions(this)
-            initPostalAddressCode(this)
+        (parent?.getItemAtPosition(position) as? String)?.let {
+            setupCity(it)
+            setupRegions(it)
+            setupPostalAddressCode(it)
         }
     }
 
@@ -93,39 +96,40 @@ internal class AddressView @JvmOverloads internal constructor(
         // TODO: Implement apply config (field names etc.)
     }
 
-    private fun initCountries() {
+    private fun setupCountries() {
         val countries = AddressHelper.getCountries()
         countriesSpinner.adapter = createSpinnerAdapter(countries)
         countriesSpinner.onItemSelectedListener = this
         countriesSpinner.setSelection(countries.indexOf(AddressHelper.getCurrentLocaleCountry()))
     }
 
-    private fun initAddress(country: String? = AddressHelper.getCurrentLocaleCountry()) {
-        addressRoot.setVisibility(AddressHelper.handledCountries.contains(country))
+    private fun setupCity(country: String = AddressHelper.getCurrentLocaleCountry()) {
+        citySubtitle.text = getString(
+            if (country == UNITED_KINGDOM) R.string.vgs_checkout_town_city_hint else R.string.vgs_checkout_city_hint
+        )
     }
 
-    private fun initAddressOptional(country: String? = AddressHelper.getCurrentLocaleCountry()) {
-        addressOptionRoot.setVisibility(AddressHelper.handledCountries.contains(country))
-
+    private fun setupRegions(country: String = AddressHelper.getCurrentLocaleCountry()) {
+        val regions = AddressHelper.getCountryRegions(context, country)
+        if (regions.isNullOrEmpty()) setupRegionsInput() else setupRegionsSpinner(country, regions)
     }
 
-    // TODO: Handle city/town for United Kingdom
-    private fun initCity(country: String? = AddressHelper.getCurrentLocaleCountry()) {
-        cityRoot.setVisibility(AddressHelper.handledCountries.contains(country))
+    private fun setupRegionsInput() {
+        regionInputRoot.visible()
+        regionsRoot.gone()
     }
 
-    // TODO: Handle province for canada
-    private fun initRegions(country: String? = AddressHelper.getCurrentLocaleCountry()) {
-        val countriesRegions = AddressHelper.getCountryRegions(context, country)
-        regionsSpinner.adapter = createSpinnerAdapter(countriesRegions ?: emptyList())
-        if (countriesRegions.isNullOrEmpty()) regionsRoot.gone() else regionsRoot.visible()
+    private fun setupRegionsSpinner(country: String, regions: List<String>) {
+        regionsSpinner.adapter = createSpinnerAdapter(regions)
+        regionsSubtitle.text = getRegionSubtitle(AddressHelper.getRegionType(country))
+        regionsRoot.visible()
+        regionInputRoot.gone()
     }
 
-    private fun initPostalAddressCode(country: String? = AddressHelper.getCurrentLocaleCountry()) {
+    private fun setupPostalAddressCode(country: String = AddressHelper.getCurrentLocaleCountry()) {
         when (AddressHelper.getPostalAddressType(country)) {
             PostalAddressType.ZIP -> setupZipCode()
             PostalAddressType.POSTAL -> setupPostalCode()
-            PostalAddressType.UNKNOWN -> postalAddressRoot.gone()
         }
     }
 
@@ -148,4 +152,12 @@ internal class AddressView @JvmOverloads internal constructor(
             setDropDownViewResource(R.layout.vgs_checkout_spinner_item)
         }
     }
+
+    private fun getRegionSubtitle(type: RegionType) = getString(
+        when (type) {
+            RegionType.STATE -> R.string.vgs_checkout_region_state_subtitle
+            RegionType.PROVINCE -> R.string.vgs_checkout_region_province_subtitle
+            RegionType.UNKNOWN -> R.string.vgs_checkout_region_input_subtitle
+        }
+    )
 }

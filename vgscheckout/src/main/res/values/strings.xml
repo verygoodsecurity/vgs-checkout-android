@@ -29,16 +29,21 @@
 
     <string name="vgs_checkout_country_subtitle">Country</string>
 
-    <string name="vgs_checkout_address_one_subtitle">Address line 1</string>
-    <string name="vgs_checkout_address_one_hint">Address line 1</string>
+    <string name="vgs_checkout_address_subtitle">Address</string>
+    <string name="vgs_checkout_address_hint">Address</string>
 
-    <string name="vgs_checkout_address_two_subtitle">Address line 2 (optional)</string>
-    <string name="vgs_checkout_address_two_hint">Address line 2 (optional)</string>
+    <string name="vgs_checkout_address_optional_subtitle">Address line 2 (optional)</string>
+    <string name="vgs_checkout_address_optional_hint">Address line 2 (optional)</string>
 
     <string name="vgs_checkout_city_subtitle">City</string>
     <string name="vgs_checkout_city_hint">City</string>
+    <string name="vgs_checkout_town_city_hint">Town/City</string>
 
-    <string name="vgs_checkout_state_subtitle">State</string>
+    <string name="vgs_checkout_region_input_subtitle">State/Province/Region</string>
+    <string name="vgs_checkout_region_input_hint"/>
+
+    <string name="vgs_checkout_region_state_subtitle">State</string>
+    <string name="vgs_checkout_region_province_subtitle">Province</string>
 
     <string name="vgs_checkout_zip_code_subtitle">Zip Code</string>
     <string name="vgs_checkout_zip_code_hint">12345</string>

@@ -4,6 +4,7 @@ import android.content.Context
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.util.address.model.PostalAddressType
 import com.verygoodsecurity.vgscheckout.util.address.model.Region
+import com.verygoodsecurity.vgscheckout.util.address.model.RegionType
 import com.verygoodsecurity.vgscheckout.util.extension.readRawJson
 import java.util.*
 
@@ -36,7 +37,12 @@ internal object AddressHelper {
 
     fun getPostalAddressType(country: String?) = when (country) {
         USA -> PostalAddressType.ZIP
-        CANADA, AUSTRALIA, NEW_ZEALAND, UNITED_KINGDOM -> PostalAddressType.POSTAL
-        else -> PostalAddressType.UNKNOWN
+        else -> PostalAddressType.POSTAL
+    }
+
+    fun getRegionType(country: String?) = when (country) {
+        USA, AUSTRALIA -> RegionType.STATE
+        CANADA -> RegionType.PROVINCE
+        else -> RegionType.UNKNOWN
     }
 }

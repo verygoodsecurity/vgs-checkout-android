@@ -50,13 +50,13 @@
             style="@style/VGSCheckout.Description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/vgs_checkout_address_one_subtitle" />
+            android:text="@string/vgs_checkout_address_subtitle" />
 
         <com.verygoodsecurity.vgscheckout.collect.widget.VGSEditText
             style="@style/VGSCheckout.InputField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:hint="@string/vgs_checkout_address_one_hint" />
+            app:hint="@string/vgs_checkout_address_hint" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -67,19 +67,20 @@
         android:layout_gravity="fill"
         android:minHeight="@dimen/vgs_checkout_min_form_item_height"
         android:orientation="vertical"
-        android:padding="@dimen/vgs_checkout_margin_padding_size_small">
+        android:padding="@dimen/vgs_checkout_margin_padding_size_small"
+        android:visibility="gone">
 
         <com.google.android.material.textview.MaterialTextView
             style="@style/VGSCheckout.Description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/vgs_checkout_address_two_subtitle" />
+            android:text="@string/vgs_checkout_address_optional_subtitle" />
 
         <com.verygoodsecurity.vgscheckout.collect.widget.VGSEditText
             style="@style/VGSCheckout.InputField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:hint="@string/vgs_checkout_address_two_hint" />
+            app:hint="@string/vgs_checkout_address_optional_hint" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -93,6 +94,7 @@
         android:padding="@dimen/vgs_checkout_margin_padding_size_small">
 
         <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/mtvCitySubtitle"
             style="@style/VGSCheckout.Description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -103,6 +105,32 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:hint="@string/vgs_checkout_city_hint" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/llcRegionInputRoot"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_columnSpan="2"
+        android:layout_gravity="fill"
+        android:minHeight="@dimen/vgs_checkout_min_form_item_height"
+        android:orientation="vertical"
+        android:padding="@dimen/vgs_checkout_margin_padding_size_small"
+        android:visibility="visible">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/mtvRegionInputSubtitle"
+            style="@style/VGSCheckout.Description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/vgs_checkout_region_input_subtitle" />
+
+        <com.verygoodsecurity.vgscheckout.collect.widget.VGSEditText
+            android:id="@+id/vgsEtRegionInput"
+            style="@style/VGSCheckout.InputField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hint="@string/vgs_checkout_region_input_hint" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -122,7 +150,7 @@
             style="@style/VGSCheckout.Description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/vgs_checkout_state_subtitle"
+            android:text="@string/vgs_checkout_region_state_subtitle"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatSpinner
