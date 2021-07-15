@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscheckout.config.ui.view.cardnumber.model
+package com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.model
 
 enum class VGSCheckoutSetCardBrandsMode {
 

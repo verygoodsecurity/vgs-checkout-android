@@ -1,10 +1,12 @@
-package com.verygoodsecurity.vgscheckout.config.ui.view.cvc
+package com.verygoodsecurity.vgscheckout.config.ui.view.card.postalcode
 
 import com.verygoodsecurity.vgscheckout.config.ui.view.core.ViewConfig
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-class VGSCheckoutCVCOptions private constructor(override val fieldName: String) : ViewConfig() {
+class VGSCheckoutPostalCodeOptions private constructor(
+    override val fieldName: String
+) : ViewConfig() {
 
     class Builder {
 
@@ -14,6 +16,6 @@ class VGSCheckoutCVCOptions private constructor(override val fieldName: String) 
             this.fieldName = fieldName
         }
 
-        fun build() = VGSCheckoutCVCOptions(fieldName)
+        fun build() = VGSCheckoutPostalCodeOptions(fieldName)
     }
 }

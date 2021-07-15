@@ -1,10 +1,10 @@
-package com.verygoodsecurity.vgscheckout.config.ui.view.postalcode
+package com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration
 
 import com.verygoodsecurity.vgscheckout.config.ui.view.core.ViewConfig
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-class VGSCheckoutPostalCodeOptions private constructor(
+class VGSCheckoutExpirationDateOptions private constructor(
     override val fieldName: String
 ) : ViewConfig() {
 
@@ -16,6 +16,6 @@ class VGSCheckoutPostalCodeOptions private constructor(
             this.fieldName = fieldName
         }
 
-        fun build() = VGSCheckoutPostalCodeOptions(fieldName)
+        fun build() = VGSCheckoutExpirationDateOptions(fieldName)
     }
 }

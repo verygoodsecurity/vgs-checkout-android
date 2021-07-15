@@ -1,12 +1,10 @@
-package com.verygoodsecurity.vgscheckout.config.ui.view.expiration
+package com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc
 
 import com.verygoodsecurity.vgscheckout.config.ui.view.core.ViewConfig
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-class VGSCheckoutExpirationDateOptions private constructor(
-    override val fieldName: String
-) : ViewConfig() {
+class VGSCheckoutCVCOptions private constructor(override val fieldName: String) : ViewConfig() {
 
     class Builder {
 
@@ -16,6 +14,6 @@ class VGSCheckoutExpirationDateOptions private constructor(
             this.fieldName = fieldName
         }
 
-        fun build() = VGSCheckoutExpirationDateOptions(fieldName)
+        fun build() = VGSCheckoutCVCOptions(fieldName)
     }
 }

@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscheckout.config.ui.view.cardholder
+package com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder
 
 import com.verygoodsecurity.vgscheckout.config.ui.view.core.VGSCheckoutFieldVisibility
 import com.verygoodsecurity.vgscheckout.config.ui.view.core.ViewConfig

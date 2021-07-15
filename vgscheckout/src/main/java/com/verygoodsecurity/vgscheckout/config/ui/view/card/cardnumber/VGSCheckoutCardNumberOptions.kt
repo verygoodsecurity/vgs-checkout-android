@@ -1,7 +1,7 @@
-package com.verygoodsecurity.vgscheckout.config.ui.view.cardnumber
+package com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber
 
-import com.verygoodsecurity.vgscheckout.config.ui.view.cardnumber.model.VGSCheckoutCardBrand
-import com.verygoodsecurity.vgscheckout.config.ui.view.cardnumber.model.VGSCheckoutSetCardBrandsMode
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.model.VGSCheckoutCardBrand
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.model.VGSCheckoutSetCardBrandsMode
 import com.verygoodsecurity.vgscheckout.config.ui.view.core.ViewConfig
 import com.verygoodsecurity.vgscheckout.util.extension.addAllWithReplace
 import kotlinx.parcelize.Parcelize
