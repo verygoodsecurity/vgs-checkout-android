@@ -53,16 +53,46 @@
             style="@style/VGSCheckout.Button.PayPal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:iconTint="@null"
             android:layout_marginStart="@dimen/vgs_checkout_margin_padding_size_medium"
             android:layout_marginTop="@dimen/vgs_checkout_margin_padding_size_xsmall"
-            android:layout_marginEnd="@dimen/vgs_checkout_margin_padding_size_medium" />
+            android:layout_marginEnd="@dimen/vgs_checkout_margin_padding_size_medium"
+            app:iconTint="@null" />
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/vgs_checkout_margin_padding_size_medium"
-            android:layout_marginTop="@dimen/vgs_checkout_margin_padding_size_medium"
+            android:layout_marginTop="@dimen/vgs_checkout_margin_padding_size_small"
+            android:layout_marginEnd="@dimen/vgs_checkout_margin_padding_size_medium"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="@dimen/vgs_checkout_default_divider_size"
+                android:layout_marginEnd="@dimen/vgs_checkout_margin_padding_size_micro"
+                android:layout_weight="1"
+                android:background="@color/vgs_checkout_text_hint" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?attr/textAppearanceCaption"
+                android:text="Or pay with card" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="@dimen/vgs_checkout_default_divider_size"
+                android:layout_marginStart="@dimen/vgs_checkout_margin_padding_size_micro"
+                android:layout_weight="1"
+                android:background="@color/vgs_checkout_text_hint" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/vgs_checkout_margin_padding_size_medium"
+            android:layout_marginTop="@dimen/vgs_checkout_margin_padding_size_small"
             android:layout_marginEnd="@dimen/vgs_checkout_margin_padding_size_medium"
             android:background="@drawable/vgs_checkout_rounded_border_bg_white"
             android:orientation="vertical"
