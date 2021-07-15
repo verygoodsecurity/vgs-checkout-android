@@ -108,10 +108,10 @@ internal class CreditCardView @JvmOverloads internal constructor(
     }
 
     fun applyConfig(config: CheckoutFormConfiguration) {
-        applyCardHolderOptions(config.cardHolderOptions)
-        applyCardNumberOptions(config.cardNumberOptions)
-        applyExpirationDateOptions(config.expirationDateOptions)
-        applySecurityCodeOptions(config.cvcOptions)
+        applyCardHolderOptions(config.cardOptions.cardHolderOptions)
+        applyCardNumberOptions(config.cardOptions.cardNumberOptions)
+        applyExpirationDateOptions(config.cardOptions.expirationDateOptions)
+        applySecurityCodeOptions(config.cardOptions.cvcOptions)
     }
 
     fun getCollectViews() = arrayOf(

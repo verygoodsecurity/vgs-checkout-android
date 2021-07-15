@@ -1,50 +1,22 @@
 package com.verygoodsecurity.vgscheckout.config.ui
 
 import com.verygoodsecurity.vgscheckout.config.ui.core.CheckoutFormConfiguration
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.VGSCheckoutCardHolderOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.VGSCheckoutCardNumberOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.VGSCheckoutCVCOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.VGSCheckoutExpirationDateOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.postalcode.VGSCheckoutPostalCodeOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.VGSCheckoutCardOptions
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 class VGSCheckoutFormConfiguration private constructor(
-    override val cardNumberOptions: VGSCheckoutCardNumberOptions,
-    override val cardHolderOptions: VGSCheckoutCardHolderOptions,
-    override val cvcOptions: VGSCheckoutCVCOptions,
-    override val expirationDateOptions: VGSCheckoutExpirationDateOptions,
-    override val postalCodeOptions: VGSCheckoutPostalCodeOptions,
+    override val cardOptions: VGSCheckoutCardOptions,
     override val payButtonTitle: String?
 ) : CheckoutFormConfiguration() {
 
     class Builder {
 
-        private var cardNumberOptions = VGSCheckoutCardNumberOptions.Builder().build()
-        private var cardHolderOptions = VGSCheckoutCardHolderOptions.Builder().build()
-        private var cvcOptions = VGSCheckoutCVCOptions.Builder().build()
-        private var expirationDateOptions = VGSCheckoutExpirationDateOptions.Builder().build()
-        private var postalCodeOptions = VGSCheckoutPostalCodeOptions.Builder().build()
+        private var cardOptions = VGSCheckoutCardOptions.Builder().build()
         private var payButtonTitle: String? = null
 
-        fun setCardNumberOptions(options: VGSCheckoutCardNumberOptions) = this.apply {
-            this.cardNumberOptions = options
-        }
-
-        fun setCardHolderOptions(options: VGSCheckoutCardHolderOptions) = this.apply {
-            this.cardHolderOptions = options
-        }
-
-        fun setCVCOptions(options: VGSCheckoutCVCOptions) = this.apply {
-            this.cvcOptions = options
-        }
-
-        fun setExpirationDateOptions(options: VGSCheckoutExpirationDateOptions) = this.apply {
-            this.expirationDateOptions = options
-        }
-
-        fun setPostalCodeOptions(options: VGSCheckoutPostalCodeOptions) = this.apply {
-            this.postalCodeOptions = options
+        fun setCardOptions(options: VGSCheckoutCardOptions) = this.apply {
+            this.cardOptions = options
         }
 
         fun setPayButtonTitle(title: String) = this.apply {
@@ -52,11 +24,7 @@ class VGSCheckoutFormConfiguration private constructor(
         }
 
         fun build(): VGSCheckoutFormConfiguration = VGSCheckoutFormConfiguration(
-            cardNumberOptions,
-            cardHolderOptions,
-            cvcOptions,
-            expirationDateOptions,
-            postalCodeOptions,
+            cardOptions,
             payButtonTitle
         )
     }

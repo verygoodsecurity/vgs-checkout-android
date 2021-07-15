@@ -14,6 +14,7 @@ import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingConfigurat
 import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutRouteConfiguration
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutFormConfiguration
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutMultiplexingFormConfiguration
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.VGSCheckoutCardOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.VGSCheckoutCardHolderOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.VGSCheckoutCardNumberOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.VGSCheckoutCVCOptions
@@ -60,10 +61,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun getCheckoutFormConfig() = VGSCheckoutFormConfiguration.Builder()
         .setPayButtonTitle("10$")
-        .setCardHolderOptions(getCardHolderOptions())
-        .setCardNumberOptions(getCardNumberOptions())
-        .setExpirationDateOptions(getExpirationDateOptions())
-        .setCVCOptions(getCVCOptions())
+        .setCardOptions(
+            VGSCheckoutCardOptions.Builder()
+                .setCardHolderOptions(getCardHolderOptions())
+                .setCardNumberOptions(getCardNumberOptions())
+                .setExpirationDateOptions(getExpirationDateOptions())
+                .setCVCOptions(getCVCOptions())
+                .build()
+        )
         .build()
 
     private fun getCardHolderOptions() = VGSCheckoutCardHolderOptions.Builder()
