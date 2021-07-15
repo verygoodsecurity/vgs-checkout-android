@@ -22,4 +22,6 @@
     <color name="vgs_checkout_pay_disabled_background">#88aff9</color>
 
     <color name="vgs_checkout_error_icon_tint">#CC0000</color>
+
+    <color name="vgs_checkout_paypal_background">#a5daf0</color>
 </resources>

@@ -15,6 +15,8 @@
 
     <dimen name="vgs_checkout_min_form_item_height">72dp</dimen>
 
+    <dimen name="vgs_checkout_title_text_size">18sp</dimen>
+
     <!--Collect -->
     <dimen name="vgs_checkout_default_vertical_field">8dp</dimen>
     <dimen name="vgs_checkout_default_horizontal_field">0dp</dimen>

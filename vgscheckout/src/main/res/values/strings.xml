@@ -4,6 +4,8 @@
     <string name="vgs_checkout_sdk_name">VGS Checkout</string>
 
     <!--Checkout -->
+    <string name="vgs_checkout_form_title">Select a payment method:</string>
+
     <string name="vgs_checkout_form_card_details_title">Card Details</string>
     <string name="vgs_checkout_billing_address_title">Billing Address</string>
 
