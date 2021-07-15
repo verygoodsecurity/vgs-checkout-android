@@ -78,7 +78,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?attr/textAppearanceCaption"
-                android:text="Or pay with card" />
+                android:text="@string/vgs_checkout_pay_with_card_title" />
 
             <View
                 android:layout_width="0dp"
