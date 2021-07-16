@@ -47,7 +47,7 @@ import com.verygoodsecurity.vgscheckout.collect.widget.ExpirationDateEditText
  */
 internal abstract class InputFieldView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : FrameLayout(context, attrs, defStyleAttr) {
+) : FrameLayout(context, attrs, defStyleAttr), VGSView {
 
     private var isAttachPermitted = true
 
@@ -133,7 +133,7 @@ internal abstract class InputFieldView @JvmOverloads constructor(
         }
     }
 
-    internal val statePreparer: AccessibilityStatePreparer = StatePreparer()
+    override val statePreparer: AccessibilityStatePreparer = StatePreparer()
 
     internal inner class StatePreparer : AccessibilityStatePreparer {
 
@@ -372,32 +372,25 @@ internal abstract class InputFieldView @JvmOverloads constructor(
         inputField.inputType = inputType
     }
 
-    /**
-     * Sets the text to be used for data transfer to VGS proxy. Usually,
-     * it is similar to field-name in JSON path in your inbound route filters.
-     *
-     * @param fieldName the name of the field
-     */
-    open fun setFieldName(fieldName: String?) {
+    //region VGSView
+    override fun setFieldName(fieldName: String?) {
         inputField.tag = fieldName
     }
 
-    /**
-     * Return the text that field is using for data transfer to VGS proxy.
-     *
-     * @return The text used by the field.
-     */
-    open fun getFieldName(): String? = inputField.tag as String?
+    override fun getFieldName(): String? = inputField.tag as String?
 
-    /**
-     * Sets the text to be used for data transfer to VGS proxy. Usually,
-     * it is similar to field-name in JSON path in your inbound route filters.
-     *
-     * @param resId the resource identifier of the field name
-     */
-    open fun setFieldName(resId: Int) {
+    override fun setFieldName(resId: Int) {
         inputField.tag = resources.getString(resId, "")
     }
+
+    override fun getFieldType(): FieldType {
+        return fieldType
+    }
+
+    override fun addStateListener(stateListener: OnVgsViewStateChangeListener) {
+        inputField.stateListener = stateListener
+    }
+    //endregion
 
     /**
      * Causes words in the text that are longer than the view's width to be ellipsized
@@ -727,17 +720,6 @@ internal abstract class InputFieldView @JvmOverloads constructor(
         return inputField.isRequired
     }
 
-    /**
-     * Gets the current field type of the InputFieldView.
-     *
-     * @return FieldType
-     *
-     * @see FieldType
-     */
-    fun getFieldType(): FieldType {
-        return fieldType
-    }
-
     protected fun applyMaxLength(length: Int) {
         (inputField as? InfoInputField)?.filters = arrayOf(InputFilter.LengthFilter(length))
     }
@@ -787,10 +769,6 @@ internal abstract class InputFieldView @JvmOverloads constructor(
         if (::inputField.isInitialized) {
             inputField.importantForAutofill = mode
         }
-    }
-
-    internal fun addStateListener(stateListener: OnVgsViewStateChangeListener) {
-        inputField.stateListener = stateListener
     }
 
     protected fun applyPreviewIconGravity(gravity: Int) {
