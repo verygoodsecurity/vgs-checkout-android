@@ -58,6 +58,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:tag="Test"
+            app:enableValidation="false"
             app:hint="@string/vgs_checkout_address_hint" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -83,6 +84,7 @@
             style="@style/VGSCheckout.InputField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:enableValidation="false"
             app:hint="@string/vgs_checkout_address_optional_hint" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -108,6 +110,7 @@
             style="@style/VGSCheckout.InputField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:enableValidation="false"
             app:hint="@string/vgs_checkout_city_hint" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -134,6 +137,7 @@
             style="@style/VGSCheckout.InputField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:enableValidation="false"
             app:hint="@string/vgs_checkout_region_input_hint" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -188,6 +192,7 @@
             style="@style/VGSCheckout.InputField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:enableValidation="false"
             app:hint="@string/vgs_checkout_zip_code_hint" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 </com.verygoodsecurity.vgscheckout.view.custom.DividerGridLayout>

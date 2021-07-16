@@ -11,7 +11,9 @@ import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.android.material.textview.MaterialTextView
 import com.verygoodsecurity.vgscheckout.R
+import com.verygoodsecurity.vgscheckout.collect.view.VGSView
 import com.verygoodsecurity.vgscheckout.collect.widget.VGSEditText
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutAddressOptions
 import com.verygoodsecurity.vgscheckout.util.address.AddressHelper
 import com.verygoodsecurity.vgscheckout.util.address.UNITED_KINGDOM
 import com.verygoodsecurity.vgscheckout.util.address.model.PostalAddressType
@@ -110,7 +112,7 @@ internal class AddressView @JvmOverloads internal constructor(
     override fun onNothingSelected(parent: AdapterView<*>?) {}
 
     override fun onFocusChange(v: View?, hasFocus: Boolean) {
-        state = if (isAnyInputFocused()){
+        state = if (isAnyInputFocused()) {
             State.FOCUSED
         } else {
             State.DEFAULT
@@ -125,9 +127,23 @@ internal class AddressView @JvmOverloads internal constructor(
         if (isAnyInputFocused().not()) state = State.DEFAULT
     }
 
-    fun applyConfig() {
-        // TODO: Implement apply config (field names etc.)
+    fun applyConfig(options: VGSCheckoutAddressOptions) {
+        countriesSpinner.setFieldName(options.countryOptions.fieldName)
+        cityInput.setFieldName(options.cityOptions.fieldName)
+        addressInput.setFieldName(options.addressOptions.fieldName)
+        postalAddressInput.setFieldName(options.postalAddressOptions.fieldName)
+        regionsSpinner.setFieldName(options.regionOptions.fieldName)
+        regionInput.setFieldName(options.regionOptions.fieldName)
     }
+
+    fun getVGSViews() = arrayOf<VGSView>(
+        countriesSpinner,
+        addressInput,
+        cityInput,
+        regionInput,
+        regionsSpinner,
+        postalAddressInput
+    )
 
     private fun initListeners() {
         addressInput.onFocusChangeListener = this

@@ -14,6 +14,12 @@ import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingConfigurat
 import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutRouteConfiguration
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutFormConfiguration
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutMultiplexingFormConfiguration
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutAddressOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.VGSCheckoutCityAddressOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.city.VGSCheckoutCityOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.code.VGSCheckoutPostalAddressOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.country.VGSCheckoutCountryOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.region.VGSCheckoutRegionOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.VGSCheckoutCardOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.VGSCheckoutCardHolderOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.VGSCheckoutCardNumberOptions
@@ -67,6 +73,31 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 .setCardNumberOptions(getCardNumberOptions())
                 .setExpirationDateOptions(getExpirationDateOptions())
                 .setCVCOptions(getCVCOptions())
+                .build()
+        )
+        .setAddressOptions(
+            VGSCheckoutAddressOptions.Builder()
+                .setCountryOptions(
+                    VGSCheckoutCountryOptions.Builder()
+                        .setFieldName("address.country")
+                        .build()
+                )
+                .setRegionOptions(
+                    VGSCheckoutRegionOptions.Builder().setFieldName("address.region").build()
+                )
+                .setCityOptions(
+                    VGSCheckoutCityOptions.Builder().setFieldName("address.city").build()
+                )
+                .setAddressOptions(
+                    VGSCheckoutCityAddressOptions.Builder()
+                        .setFieldName("address.city_address")
+                        .build()
+                )
+                .setPostalAddressOptions(
+                    VGSCheckoutPostalAddressOptions.Builder()
+                        .setFieldName("address.postal_address")
+                        .build()
+                )
                 .build()
         )
         .build()

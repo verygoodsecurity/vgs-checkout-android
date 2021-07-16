@@ -14,7 +14,7 @@ import com.verygoodsecurity.vgscheckout.collect.widget.CardVerificationCodeEditT
 import com.verygoodsecurity.vgscheckout.collect.widget.ExpirationDateEditText
 import com.verygoodsecurity.vgscheckout.collect.widget.PersonNameEditText
 import com.verygoodsecurity.vgscheckout.collect.widget.VGSCardNumberEditText
-import com.verygoodsecurity.vgscheckout.config.ui.core.CheckoutFormConfiguration
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.VGSCheckoutCardOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.VGSCheckoutCardHolderOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.VGSCheckoutCardNumberOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.VGSCheckoutCVCOptions
@@ -107,14 +107,14 @@ internal class CreditCardView @JvmOverloads internal constructor(
         }
     }
 
-    fun applyConfig(config: CheckoutFormConfiguration) {
-        applyCardHolderOptions(config.cardOptions.cardHolderOptions)
-        applyCardNumberOptions(config.cardOptions.cardNumberOptions)
-        applyExpirationDateOptions(config.cardOptions.expirationDateOptions)
-        applySecurityCodeOptions(config.cardOptions.cvcOptions)
+    fun applyConfig(options: VGSCheckoutCardOptions) {
+        applyCardHolderOptions(options.cardHolderOptions)
+        applyCardNumberOptions(options.cardNumberOptions)
+        applyExpirationDateOptions(options.expirationDateOptions)
+        applySecurityCodeOptions(options.cvcOptions)
     }
 
-    fun getCollectViews() = arrayOf(
+    fun getVGSViews() = arrayOf(
         etCardHolder,
         etCardNumber,
         etExpirationDate,

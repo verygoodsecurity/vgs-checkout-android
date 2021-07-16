@@ -22,6 +22,7 @@ import com.verygoodsecurity.vgscheckout.ui.CheckoutActivity
 import com.verygoodsecurity.vgscheckout.ui.CheckoutMultiplexingActivity
 import com.verygoodsecurity.vgscheckout.util.extension.disableScreenshots
 import com.verygoodsecurity.vgscheckout.util.extension.getDrawableCompat
+import com.verygoodsecurity.vgscheckout.view.checkout.address.AddressView
 import com.verygoodsecurity.vgscheckout.view.checkout.card.CreditCardView
 import com.verygoodsecurity.vgscheckout.view.checkout.core.model.OnStateChangeListener
 
@@ -37,6 +38,8 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
     }
 
     private lateinit var creditCardView: CreditCardView
+
+    private lateinit var addressView: AddressView
 
     private lateinit var payButton: MaterialButton
 
@@ -84,8 +87,11 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
         payButton.setOnClickListener(this)
         creditCardView = findViewById(R.id.creditCardView)
         creditCardView.onStateChangeListener = this@BaseCheckoutActivity
-        creditCardView.applyConfig(config.formConfig)
-        collect.bindView(*creditCardView.getCollectViews())
+        creditCardView.applyConfig(config.formConfig.cardOptions)
+        collect.bindView(*creditCardView.getVGSViews())
+        addressView = findViewById(R.id.addressView)
+        addressView.applyConfig(config.formConfig.addressOptions)
+        collect.bindView(*addressView.getVGSViews())
     }
 
     private fun handlePayClicked() {
