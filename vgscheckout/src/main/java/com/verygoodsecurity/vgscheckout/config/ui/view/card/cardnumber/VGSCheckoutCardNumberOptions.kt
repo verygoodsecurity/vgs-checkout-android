@@ -2,7 +2,7 @@ package com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber
 
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.model.VGSCheckoutCardBrand
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.model.VGSCheckoutSetCardBrandsMode
-import com.verygoodsecurity.vgscheckout.config.ui.view.core.ViewConfig
+import com.verygoodsecurity.vgscheckout.config.ui.view.core.ViewOptions
 import com.verygoodsecurity.vgscheckout.util.extension.addAllWithReplace
 import kotlinx.parcelize.Parcelize
 
@@ -10,7 +10,7 @@ import kotlinx.parcelize.Parcelize
 class VGSCheckoutCardNumberOptions private constructor(
     override val fieldName: String,
     val cardBrands: Set<VGSCheckoutCardBrand>
-) : ViewConfig() {
+) : ViewOptions() {
 
     class Builder {
 

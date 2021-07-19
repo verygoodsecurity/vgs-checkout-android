@@ -1,14 +1,14 @@
 package com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder
 
 import com.verygoodsecurity.vgscheckout.config.ui.view.core.VGSCheckoutFieldVisibility
-import com.verygoodsecurity.vgscheckout.config.ui.view.core.ViewConfig
+import com.verygoodsecurity.vgscheckout.config.ui.view.core.ViewOptions
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 class VGSCheckoutCardHolderOptions private constructor(
     override val fieldName: String,
     val visibility: VGSCheckoutFieldVisibility
-) : ViewConfig() {
+) : ViewOptions() {
 
     class Builder {
 
