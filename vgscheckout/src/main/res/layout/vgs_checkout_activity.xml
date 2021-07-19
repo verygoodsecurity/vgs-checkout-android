@@ -111,6 +111,7 @@
                 android:layout_marginTop="@dimen/vgs_checkout_margin_padding_size_small" />
 
             <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/mtvAddressTitle"
                 style="@style/VGSCheckout.Title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

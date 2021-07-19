@@ -6,6 +6,7 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.address.city.VGSCheckoutC
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.code.VGSCheckoutPostalAddressOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.country.VGSCheckoutCountryOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.region.VGSCheckoutRegionOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.core.VGSCheckoutFieldVisibility
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -15,6 +16,7 @@ class VGSCheckoutAddressOptions constructor(
     val cityOptions: VGSCheckoutCityOptions,
     val addressOptions: VGSCheckoutCityAddressOptions,
     val postalAddressOptions: VGSCheckoutPostalAddressOptions,
+    val visibility: VGSCheckoutFieldVisibility
 ) : Parcelable {
 
     class Builder {
@@ -24,6 +26,7 @@ class VGSCheckoutAddressOptions constructor(
         private var cityOptions = VGSCheckoutCityOptions.Builder().build()
         private var addressOptions = VGSCheckoutCityAddressOptions.Builder().build()
         private var postalAddressOptions = VGSCheckoutPostalAddressOptions.Builder().build()
+        private var visibility = VGSCheckoutFieldVisibility.VISIBLE
 
         fun setCountryOptions(options: VGSCheckoutCountryOptions) = this.apply {
             this.countryOptions = options
@@ -45,12 +48,17 @@ class VGSCheckoutAddressOptions constructor(
             this.postalAddressOptions = options
         }
 
+        fun setAddressFormVisibility(visibility: VGSCheckoutFieldVisibility) = this.apply {
+            this.visibility = visibility
+        }
+
         fun build(): VGSCheckoutAddressOptions = VGSCheckoutAddressOptions(
             countryOptions,
             regionOptions,
             cityOptions,
             addressOptions,
-            postalAddressOptions
+            postalAddressOptions,
+            visibility
         )
     }
 }

@@ -9,6 +9,7 @@ import android.widget.ImageView
 import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.textview.MaterialTextView
 import com.verygoodsecurity.vgscheckout.CHECKOUT_RESULT_EXTRA_KEY
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.core.VGSCollect
@@ -17,11 +18,15 @@ import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutConfiguration
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingConfiguration
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfiguration
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutAddressOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.VGSCheckoutCardOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.core.VGSCheckoutFieldVisibility
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 import com.verygoodsecurity.vgscheckout.ui.CheckoutActivity
 import com.verygoodsecurity.vgscheckout.ui.CheckoutMultiplexingActivity
 import com.verygoodsecurity.vgscheckout.util.extension.disableScreenshots
 import com.verygoodsecurity.vgscheckout.util.extension.getDrawableCompat
+import com.verygoodsecurity.vgscheckout.util.extension.gone
 import com.verygoodsecurity.vgscheckout.view.checkout.address.AddressView
 import com.verygoodsecurity.vgscheckout.view.checkout.card.CreditCardView
 import com.verygoodsecurity.vgscheckout.view.checkout.core.model.OnStateChangeListener
@@ -85,13 +90,29 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
         findViewById<ImageView>(R.id.ivBack).setOnClickListener(this)
         payButton = findViewById(R.id.mbPay)
         payButton.setOnClickListener(this)
+        initCardView(config.formConfig.cardOptions)
+        initAddressView(config.formConfig.addressOptions)
+    }
+
+    private fun initCardView(options: VGSCheckoutCardOptions) {
         creditCardView = findViewById(R.id.creditCardView)
         creditCardView.onStateChangeListener = this@BaseCheckoutActivity
-        creditCardView.applyConfig(config.formConfig.cardOptions)
+        creditCardView.applyConfig(options)
         collect.bindView(*creditCardView.getVGSViews())
+    }
+
+    private fun initAddressView(options: VGSCheckoutAddressOptions) {
         addressView = findViewById(R.id.addressView)
-        addressView.applyConfig(config.formConfig.addressOptions)
-        collect.bindView(*addressView.getVGSViews())
+        when (options.visibility) {
+            VGSCheckoutFieldVisibility.VISIBLE -> {
+                addressView.applyConfig(config.formConfig.addressOptions)
+                collect.bindView(*addressView.getVGSViews())
+            }
+            VGSCheckoutFieldVisibility.GONE -> {
+                findViewById<MaterialTextView>(R.id.mtvAddressTitle).gone()
+                addressView.gone()
+            }
+        }
     }
 
     private fun handlePayClicked() {
