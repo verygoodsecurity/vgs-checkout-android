@@ -8,11 +8,11 @@ internal const val DEFAULT_ENVIRONMENT = "sandbox"
 
 abstract class CheckoutConfiguration internal constructor() : Parcelable {
 
-    internal abstract val vaultID: String
+    abstract val vaultID: String
 
-    internal abstract val environment: String
+    abstract val environment: String
 
-    internal abstract val routeConfig: VGSCheckoutRouteConfiguration // Can be more generic type in future
+    abstract val routeConfig: VGSCheckoutRouteConfiguration // Can be more generic type in future
 
-    internal abstract val formConfig: CheckoutFormConfiguration // Can be more generic type in future
+    abstract val formConfig: CheckoutFormConfiguration
 }
