@@ -8,6 +8,7 @@ import androidx.test.core.app.ActivityScenario.launch
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions
+import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -30,6 +31,7 @@ import com.verygoodsecurity.vgscheckout.collect.widget.CardVerificationCodeEditT
 import com.verygoodsecurity.vgscheckout.collect.widget.ExpirationDateEditText
 import com.verygoodsecurity.vgscheckout.collect.widget.PersonNameEditText
 import com.verygoodsecurity.vgscheckout.collect.widget.VGSCardNumberEditText
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.VGSCheckoutCardOptions
 import org.hamcrest.CoreMatchers.not
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -286,7 +288,7 @@ class CheckoutActivityTest {
                 CARD_EXPIRATION_DATE,
                 CARD_CVC
             )
-            onView(withId(R.id.mbPay)).perform(ViewActions.click())
+            onView(withId(R.id.mbPay)).perform(scrollTo(), ViewActions.click())
             //Assert
             onView(withId(R.id.vgsEtCardHolder)).check(matches(not(isEnabled())))
             onView(withId(R.id.vgsEtCardNumber)).check(matches(not(isEnabled())))
@@ -304,9 +306,13 @@ class CheckoutActivityTest {
                 VGSCheckoutConfiguration.Builder("tntpszqgikn")
                     .setFormConfig(
                         VGSCheckoutFormConfiguration.Builder()
-                            .setCardHolderOptions(
-                                VGSCheckoutCardHolderOptions.Builder()
-                                    .setVisibility(VGSCheckoutFieldVisibility.GONE)
+                            .setCardOptions(
+                                VGSCheckoutCardOptions.Builder()
+                                    .setCardHolderOptions(
+                                        VGSCheckoutCardHolderOptions.Builder()
+                                            .setVisibility(VGSCheckoutFieldVisibility.GONE)
+                                            .build()
+                                    )
                                     .build()
                             )
                             .build()
@@ -330,11 +336,15 @@ class CheckoutActivityTest {
                 VGSCheckoutConfiguration.Builder("tntpszqgikn")
                     .setFormConfig(
                         VGSCheckoutFormConfiguration.Builder()
-                            .setCardHolderOptions(
-                                VGSCheckoutCardHolderOptions.Builder()
-                                    .setVisibility(VGSCheckoutFieldVisibility.VISIBLE)
+                            .setCardOptions(
+                                VGSCheckoutCardOptions.Builder()
+                                    .setCardHolderOptions(
+                                        VGSCheckoutCardHolderOptions.Builder()
+                                            .setVisibility(VGSCheckoutFieldVisibility.VISIBLE)
+                                            .build()
+                                    )
                                     .build()
-                            )
+                                )
                             .build()
                     )
                     .build()
@@ -370,7 +380,7 @@ class CheckoutActivityTest {
                 CARD_CVC
             )
             // Act
-            onView(withId(R.id.mbPay)).perform(ViewActions.click())
+            onView(withId(R.id.mbPay)).perform(scrollTo(), ViewActions.click())
             val result = scenario.safeResult
             val vgsResultData =
                 result.resultData?.readExtraParcelable<VGSCheckoutResult>(CHECKOUT_RESULT_EXTRA_KEY)
@@ -408,7 +418,7 @@ class CheckoutActivityTest {
                 CARD_CVC
             )
             // Act
-            onView(withId(R.id.mbPay)).perform(ViewActions.click())
+            onView(withId(R.id.mbPay)).perform(scrollTo(), ViewActions.click())
             val result = scenario.safeResult
             val vgsResultData =
                 result.resultData?.readExtraParcelable<VGSCheckoutResult>(CHECKOUT_RESULT_EXTRA_KEY)
