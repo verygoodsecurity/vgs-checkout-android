@@ -1,34 +1,34 @@
 [
   {
     "name":"New South Wales",
-    "abbreviation":"NSW"
+    "code":"NSW"
   },
   {
     "name":"Victoria",
-    "abbreviation":"VIC"
+    "code":"VIC"
   },
   {
     "name":"Queensland",
-    "abbreviation":"QLD"
+    "code":"QLD"
   },
   {
     "name":"Tasmania",
-    "abbreviation":"TAS"
+    "code":"TAS"
   },
   {
     "name":"South Australia",
-    "abbreviation":"SA"
+    "code":"SA"
   },
   {
     "name":"Western Australia",
-    "abbreviation":"WA"
+    "code":"WA"
   },
   {
     "name":"Northern Territory",
-    "abbreviation":"NT"
+    "code":"NT"
   },
   {
     "name":"Australian Capital Territory",
-    "abbreviation":"ACT"
+    "code":"ACT"
   }
 ]
