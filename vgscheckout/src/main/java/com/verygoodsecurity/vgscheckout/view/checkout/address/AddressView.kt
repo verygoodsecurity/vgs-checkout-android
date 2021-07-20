@@ -23,8 +23,8 @@ import com.verygoodsecurity.vgscheckout.util.extension.getString
 import com.verygoodsecurity.vgscheckout.util.extension.gone
 import com.verygoodsecurity.vgscheckout.util.extension.visible
 import com.verygoodsecurity.vgscheckout.view.checkout.address.model.State
-import com.verygoodsecurity.vgscheckout.view.custom.DividerGridLayout
 import com.verygoodsecurity.vgscheckout.view.custom.DropdownEventSpinner
+import com.verygoodsecurity.vgscheckout.view.custom.VGSCheckoutDividerGridLayout
 import kotlin.properties.Delegates
 
 internal class AddressView @JvmOverloads internal constructor(
@@ -34,7 +34,7 @@ internal class AddressView @JvmOverloads internal constructor(
 ) : FrameLayout(context, attrs, defStyleAttr), AdapterView.OnItemSelectedListener,
     View.OnFocusChangeListener, DropdownEventSpinner.OnDropdownStateChangeListener {
 
-    private lateinit var dividerGridLayout: DividerGridLayout
+    private lateinit var dividerGridLayout: VGSCheckoutDividerGridLayout
 
     private val countriesRoot: ConstraintLayout
     private val countriesSpinner: DropdownEventSpinner

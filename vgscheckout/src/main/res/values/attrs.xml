@@ -691,11 +691,11 @@
 
     </declare-styleable>
 
-    <declare-styleable name="DividerGridLayout">
+    <declare-styleable name="VGSCheckoutDividerGridLayout">
 
-        <attr name="dgl_grid_width" format="dimension" />
-        <attr name="dgl_grid_color" format="color" />
-        <attr name="dgl_selected_grid_color" format="color" />
-        <attr name="dgl_corners_radius" format="dimension" />
+        <attr name="vgs_checkout_dgl_grid_width" format="dimension" />
+        <attr name="vgs_checkout_dgl_grid_color" format="color" />
+        <attr name="vgs_checkout_dgl_selected_grid_color" format="color" />
+        <attr name="vgs_checkout_dgl_corners_radius" format="dimension" />
     </declare-styleable>
 </resources>
