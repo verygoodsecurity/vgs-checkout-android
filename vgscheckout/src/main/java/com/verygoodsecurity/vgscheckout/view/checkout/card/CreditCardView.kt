@@ -93,8 +93,8 @@ internal class CreditCardView @JvmOverloads internal constructor(
 
     override fun setEnabled(enabled: Boolean) {
         super.setEnabled(enabled)
-        llCardHolder.setEnabledRecursively(enabled)
-        clCardDetails.setEnabledRecursively(enabled)
+        llCardHolder.setEnabled(enabled, true)
+        clCardDetails.setEnabled(enabled, true)
     }
 
     override fun onStateChange(id: Int, state: ViewState) {
