@@ -10,7 +10,7 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.core.VGSCheckoutFieldVisi
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-class VGSCheckoutAddressOptions constructor(
+class VGSCheckoutAddressOptions private constructor(
     val countryOptions: VGSCheckoutCountryOptions,
     val regionOptions: VGSCheckoutRegionOptions,
     val cityOptions: VGSCheckoutCityOptions,

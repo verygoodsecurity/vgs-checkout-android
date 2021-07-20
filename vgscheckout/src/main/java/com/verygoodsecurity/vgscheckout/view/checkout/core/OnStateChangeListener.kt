@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscheckout.view.checkout.core.model
+package com.verygoodsecurity.vgscheckout.view.checkout.core
 
 import android.view.View
 

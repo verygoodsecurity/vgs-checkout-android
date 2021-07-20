@@ -11,7 +11,7 @@ import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.android.material.textview.MaterialTextView
 import com.verygoodsecurity.vgscheckout.R
-import com.verygoodsecurity.vgscheckout.collect.view.VGSView
+import com.verygoodsecurity.vgscheckout.collect.view.VGSCollectView
 import com.verygoodsecurity.vgscheckout.collect.widget.VGSEditText
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutAddressOptions
 import com.verygoodsecurity.vgscheckout.util.address.AddressHelper
@@ -23,8 +23,8 @@ import com.verygoodsecurity.vgscheckout.util.extension.getString
 import com.verygoodsecurity.vgscheckout.util.extension.gone
 import com.verygoodsecurity.vgscheckout.util.extension.visible
 import com.verygoodsecurity.vgscheckout.view.checkout.address.model.State
-import com.verygoodsecurity.vgscheckout.view.custom.DividerGridLayout
-import com.verygoodsecurity.vgscheckout.view.custom.DropdownEventSpinner
+import com.verygoodsecurity.vgscheckout.collect.widget.VGSDropdownEventSpinner
+import com.verygoodsecurity.vgscheckout.view.checkout.grid.DividerGridLayout
 import kotlin.properties.Delegates
 
 internal class AddressView @JvmOverloads internal constructor(
@@ -32,12 +32,12 @@ internal class AddressView @JvmOverloads internal constructor(
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr), AdapterView.OnItemSelectedListener,
-    View.OnFocusChangeListener, DropdownEventSpinner.OnDropdownStateChangeListener {
+    View.OnFocusChangeListener, VGSDropdownEventSpinner.OnDropdownStateChangeListener {
 
     private lateinit var dividerGridLayout: DividerGridLayout
 
     private val countriesRoot: ConstraintLayout
-    private val countriesSpinner: DropdownEventSpinner
+    private val countriesSpinner: VGSDropdownEventSpinner
 
     private val addressRoot: LinearLayoutCompat
     private val addressInput: VGSEditText
@@ -51,7 +51,7 @@ internal class AddressView @JvmOverloads internal constructor(
 
     private val regionsRoot: ConstraintLayout
     private val regionsSubtitle: MaterialTextView
-    private val regionsSpinner: DropdownEventSpinner
+    private val regionsSpinner: VGSDropdownEventSpinner
 
     private val postalAddressRoot: LinearLayoutCompat
     private val postalAddressSubtitle: MaterialTextView
@@ -136,7 +136,7 @@ internal class AddressView @JvmOverloads internal constructor(
         regionInput.setFieldName(options.regionOptions.fieldName)
     }
 
-    fun getVGSViews() = arrayOf<VGSView>(
+    fun getVGSViews() = arrayOf<VGSCollectView>(
         countriesSpinner,
         addressInput,
         cityInput,

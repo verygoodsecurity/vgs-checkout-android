@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.verygoodsecurity.vgscheckout.view.custom.DividerGridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.verygoodsecurity.vgscheckout.view.checkout.grid.DividerGridLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/dglRoot"
     android:layout_width="match_parent"
@@ -8,7 +8,7 @@
     android:columnCount="2"
     app:dgl_corners_radius="@dimen/vgs_checkout_margin_padding_size_small"
     app:dgl_grid_color="@color/vgs_checkout_border_default"
-    app:dgl_grid_width="1dp">
+    app:dgl_grid_width="@dimen/vgs_checkout_default_divider_size">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/clCountriesRoot"
@@ -28,7 +28,7 @@
             android:text="@string/vgs_checkout_country_subtitle"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.verygoodsecurity.vgscheckout.view.custom.DropdownEventSpinner
+        <com.verygoodsecurity.vgscheckout.collect.widget.VGSDropdownEventSpinner
             android:id="@+id/spinnerCountries"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -161,7 +161,7 @@
             android:text="@string/vgs_checkout_region_state_subtitle"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.verygoodsecurity.vgscheckout.view.custom.DropdownEventSpinner
+        <com.verygoodsecurity.vgscheckout.collect.widget.VGSDropdownEventSpinner
             android:id="@+id/spinnerRegions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -195,4 +195,4 @@
             app:enableValidation="false"
             app:hint="@string/vgs_checkout_zip_code_hint" />
     </androidx.appcompat.widget.LinearLayoutCompat>
-</com.verygoodsecurity.vgscheckout.view.custom.DividerGridLayout>
+</com.verygoodsecurity.vgscheckout.view.checkout.grid.DividerGridLayout>

@@ -24,7 +24,7 @@ import com.verygoodsecurity.vgscheckout.util.extension.*
 import com.verygoodsecurity.vgscheckout.view.checkout.card.adapter.CardIconAdapter
 import com.verygoodsecurity.vgscheckout.view.checkout.card.adapter.CardMaskAdapter
 import com.verygoodsecurity.vgscheckout.view.checkout.core.model.InputViewStateHolder
-import com.verygoodsecurity.vgscheckout.view.checkout.core.model.OnStateChangeListener
+import com.verygoodsecurity.vgscheckout.view.checkout.core.OnStateChangeListener
 import com.verygoodsecurity.vgscheckout.view.checkout.core.model.StateChangeListener
 import com.verygoodsecurity.vgscheckout.view.checkout.core.model.ViewState
 
@@ -93,8 +93,8 @@ internal class CreditCardView @JvmOverloads internal constructor(
 
     override fun setEnabled(enabled: Boolean) {
         super.setEnabled(enabled)
-        llCardHolder.setEnabledRecursively(enabled)
-        clCardDetails.setEnabledRecursively(enabled)
+        llCardHolder.setEnabled(enabled, true)
+        clCardDetails.setEnabled(enabled, true)
     }
 
     override fun onStateChange(id: Int, state: ViewState) {

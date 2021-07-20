@@ -47,7 +47,7 @@ import com.verygoodsecurity.vgscheckout.collect.widget.ExpirationDateEditText
  */
 internal abstract class InputFieldView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : FrameLayout(context, attrs, defStyleAttr), VGSView {
+) : FrameLayout(context, attrs, defStyleAttr), VGSCollectView {
 
     private var isAttachPermitted = true
 

@@ -10,7 +10,7 @@ import com.verygoodsecurity.vgscheckout.collect.core.storage.content.file.Storag
 import com.verygoodsecurity.vgscheckout.collect.core.storage.content.file.TemporaryFileStorage
 import com.verygoodsecurity.vgscheckout.collect.core.storage.content.file.VGSFileProvider
 import com.verygoodsecurity.vgscheckout.collect.util.extension.merge
-import com.verygoodsecurity.vgscheckout.collect.view.VGSView
+import com.verygoodsecurity.vgscheckout.collect.view.VGSCollectView
 import com.verygoodsecurity.vgscheckout.collect.view.core.serializers.VGSExpDateSeparateSerializer
 
 /** @suppress */
@@ -74,7 +74,7 @@ internal class InternalStorage(
         emitter.attachStateChangeListener(fieldStateListener)
     }
 
-    fun performSubscription(view: VGSView?) {
+    fun performSubscription(view: VGSCollectView?) {
         view?.let {
             fieldsDependencyDispatcher.addDependencyListener(
                 it.getFieldType(),
@@ -84,7 +84,7 @@ internal class InternalStorage(
         }
     }
 
-    fun unsubscribe(view: VGSView?) {
+    fun unsubscribe(view: VGSCollectView?) {
         view?.let {
             it.statePreparer.unsubscribe()
             fieldsStorage.remove(it.statePreparer.getView().id)

@@ -1,9 +1,8 @@
-package com.verygoodsecurity.vgscheckout.view.custom
+package com.verygoodsecurity.vgscheckout.view.checkout.grid
 
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.*
-import android.os.Parcel
 import android.os.Parcelable
 import android.util.AttributeSet
 import android.view.View
@@ -15,9 +14,10 @@ import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.util.extension.*
+import kotlinx.parcelize.Parcelize
 import kotlin.math.max
 
-internal open class DividerGridLayout @JvmOverloads constructor(
+internal class DividerGridLayout @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
@@ -34,7 +34,7 @@ internal open class DividerGridLayout @JvmOverloads constructor(
     private var selectedGridColor: Int = DEFAULT_GRID_COLOR
     private var selectedGridPaint: Paint? = null
 
-    private var selectedId: Int? = null
+    private var selectedId: Int = DEFAULT_SELECTED_ID
 
     init {
         isEnabled = true
@@ -77,17 +77,20 @@ internal open class DividerGridLayout @JvmOverloads constructor(
     }
 
     override fun onSaveInstanceState(): Parcelable {
-        return DividerGridLayoutState(super.onSaveInstanceState()).apply {
-            this.gridColor = this@DividerGridLayout.gridColor
-            this.selectedGridColor = this@DividerGridLayout.selectedGridColor
-        }
+        return DividerGridLayoutState(
+            super.onSaveInstanceState(),
+            gridColor,
+            selectedGridColor,
+            selectedId
+        )
     }
 
     override fun onRestoreInstanceState(state: Parcelable?) {
-        super.onRestoreInstanceState(state)
-        (state as? DividerGridLayoutState)?.let {
-            setGridColor(it.gridColor)
-            setSelectedGridColor(it.selectedGridColor)
+        (state as DividerGridLayoutState).run {
+            super.onRestoreInstanceState(superState)
+            this@DividerGridLayout.selectedId = selectedId
+            setGridColor(gridColor)
+            setSelectedGridColor(selectedGridColor)
         }
     }
 
@@ -216,39 +219,14 @@ internal open class DividerGridLayout @JvmOverloads constructor(
         private const val DEFAULT_CORNERS_RADIUS = 0f
         private const val DEFAULT_GRID_WIDTH = -1
         private const val DEFAULT_GRID_COLOR = Color.BLACK
+        private const val DEFAULT_SELECTED_ID = -1
     }
 
-    internal class DividerGridLayoutState : BaseSavedState {
-
-        var gridColor: Int = DEFAULT_GRID_COLOR
-        var selectedGridColor: Int = DEFAULT_GRID_COLOR
-
-        constructor(superState: Parcelable?) : super(superState)
-
-        constructor(`in`: Parcel) : super(`in`) {
-            gridColor = `in`.readInt()
-            selectedGridColor = `in`.readInt()
-        }
-
-        override fun writeToParcel(out: Parcel, flags: Int) {
-            super.writeToParcel(out, flags)
-            out.writeInt(gridColor)
-            out.writeInt(selectedGridColor)
-        }
-
-        companion object {
-
-            @Suppress("unused")
-            @JvmField
-            val CREATOR = object : Parcelable.Creator<DividerGridLayoutState> {
-                override fun createFromParcel(source: Parcel): DividerGridLayoutState {
-                    return DividerGridLayoutState(source)
-                }
-
-                override fun newArray(size: Int): Array<DividerGridLayoutState?> {
-                    return arrayOfNulls(size)
-                }
-            }
-        }
-    }
+    @Parcelize
+    internal class DividerGridLayoutState constructor(
+        val superState: Parcelable?,
+        val gridColor: Int = DEFAULT_GRID_COLOR,
+        val selectedGridColor: Int = DEFAULT_GRID_COLOR,
+        val selectedId: Int = DEFAULT_SELECTED_ID
+    ) : Parcelable
 }

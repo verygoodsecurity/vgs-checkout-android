@@ -29,7 +29,7 @@ import com.verygoodsecurity.vgscheckout.util.extension.getDrawableCompat
 import com.verygoodsecurity.vgscheckout.util.extension.gone
 import com.verygoodsecurity.vgscheckout.view.checkout.address.AddressView
 import com.verygoodsecurity.vgscheckout.view.checkout.card.CreditCardView
-import com.verygoodsecurity.vgscheckout.view.checkout.core.model.OnStateChangeListener
+import com.verygoodsecurity.vgscheckout.view.checkout.core.OnStateChangeListener
 
 internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
     AppCompatActivity(), View.OnClickListener, VgsCollectResponseListener, OnStateChangeListener {
