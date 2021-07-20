@@ -33,7 +33,7 @@ import com.verygoodsecurity.vgscheckout.collect.core.storage.external.ExternalDe
 import com.verygoodsecurity.vgscheckout.collect.util.*
 import com.verygoodsecurity.vgscheckout.collect.util.extension.*
 import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
-import com.verygoodsecurity.vgscheckout.collect.view.VGSView
+import com.verygoodsecurity.vgscheckout.collect.view.VGSCollectView
 import com.verygoodsecurity.vgscheckout.collect.view.card.getAnalyticName
 import java.util.*
 
@@ -173,7 +173,7 @@ internal class VGSCollect {
      *
      * @param view base class for VGS secure fields.
      */
-    fun bindView(view: VGSView?) {
+    fun bindView(view: VGSCollectView?) {
         view?.statePreparer?.let {
             externalDependencyDispatcher.addDependencyListener(
                 view.getFieldName(),
@@ -193,7 +193,7 @@ internal class VGSCollect {
      *
      * @param views VGS secure views.
      */
-    fun bindView(vararg views: VGSView?) {
+    fun bindView(vararg views: VGSCollectView?) {
         views.forEach {
             bindView(it)
         }
@@ -204,7 +204,7 @@ internal class VGSCollect {
      *
      * @param view base class for VGS secure fields.
      */
-    fun unbindView(view: VGSView?) {
+    fun unbindView(view: VGSCollectView?) {
         view?.let {
             storage.unsubscribe(view)
         }
@@ -215,7 +215,7 @@ internal class VGSCollect {
      *
      * @param views VGS secure views.
      */
-    fun unbindView(vararg views: VGSView?) {
+    fun unbindView(vararg views: VGSCollectView?) {
         views.forEach {
             unbindView(it)
         }
@@ -526,7 +526,7 @@ internal class VGSCollect {
         client = c
     }
 
-    private fun initField(view: VGSView?) {
+    private fun initField(view: VGSCollectView?) {
         val m = view?.getFieldType()?.getAnalyticName()?.run {
             with(mutableMapOf<String, String>()) {
                 put("field", this@run)

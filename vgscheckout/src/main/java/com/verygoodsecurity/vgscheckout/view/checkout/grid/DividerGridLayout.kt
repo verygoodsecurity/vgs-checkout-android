@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscheckout.view.custom
+package com.verygoodsecurity.vgscheckout.view.checkout.grid
 
 import android.content.Context
 import android.content.res.ColorStateList
@@ -17,7 +17,7 @@ import com.verygoodsecurity.vgscheckout.util.extension.*
 import kotlinx.parcelize.Parcelize
 import kotlin.math.max
 
-internal class VGSCheckoutDividerGridLayout @JvmOverloads constructor(
+internal class DividerGridLayout @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
@@ -38,24 +38,24 @@ internal class VGSCheckoutDividerGridLayout @JvmOverloads constructor(
 
     init {
         isEnabled = true
-        context.getStyledAttributes(attrs, R.styleable.VGSCheckoutDividerGridLayout) {
+        context.getStyledAttributes(attrs, R.styleable.DividerGridLayout) {
             cornersRadius = getDimension(
-                R.styleable.VGSCheckoutDividerGridLayout_vgs_checkout_dgl_corners_radius,
+                R.styleable.DividerGridLayout_dgl_corners_radius,
                 DEFAULT_CORNERS_RADIUS
             )
             gridWidth = getDimensionPixelOffset(
-                R.styleable.VGSCheckoutDividerGridLayout_vgs_checkout_dgl_grid_width,
+                R.styleable.DividerGridLayout_dgl_grid_width,
                 DEFAULT_GRID_WIDTH
             )
             gridColor = getColor(
-                R.styleable.VGSCheckoutDividerGridLayout_vgs_checkout_dgl_grid_color,
+                R.styleable.DividerGridLayout_dgl_grid_color,
                 DEFAULT_GRID_COLOR
             )
             gridColorStateList = getColorStateListOrNull(
-                R.styleable.VGSCheckoutDividerGridLayout_vgs_checkout_dgl_grid_color
+                R.styleable.DividerGridLayout_dgl_grid_color
             )
             selectedGridColor = getColor(
-                R.styleable.VGSCheckoutDividerGridLayout_vgs_checkout_dgl_selected_grid_color,
+                R.styleable.DividerGridLayout_dgl_selected_grid_color,
                 DEFAULT_GRID_COLOR
             )
             if (gridWidth.isPositive()) {
@@ -77,7 +77,7 @@ internal class VGSCheckoutDividerGridLayout @JvmOverloads constructor(
     }
 
     override fun onSaveInstanceState(): Parcelable {
-        return VGSCheckoutDividerGridLayoutState(
+        return DividerGridLayoutState(
             super.onSaveInstanceState(),
             gridColor,
             selectedGridColor,
@@ -86,9 +86,9 @@ internal class VGSCheckoutDividerGridLayout @JvmOverloads constructor(
     }
 
     override fun onRestoreInstanceState(state: Parcelable?) {
-        (state as VGSCheckoutDividerGridLayoutState).run {
+        (state as DividerGridLayoutState).run {
             super.onRestoreInstanceState(superState)
-            this@VGSCheckoutDividerGridLayout.selectedId = selectedId
+            this@DividerGridLayout.selectedId = selectedId
             setGridColor(gridColor)
             setSelectedGridColor(selectedGridColor)
         }
@@ -223,7 +223,7 @@ internal class VGSCheckoutDividerGridLayout @JvmOverloads constructor(
     }
 
     @Parcelize
-    internal class VGSCheckoutDividerGridLayoutState constructor(
+    internal class DividerGridLayoutState constructor(
         val superState: Parcelable?,
         val gridColor: Int = DEFAULT_GRID_COLOR,
         val selectedGridColor: Int = DEFAULT_GRID_COLOR,

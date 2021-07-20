@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscheckout.view.custom
+package com.verygoodsecurity.vgscheckout.collect.widget
 
 import android.content.Context
 import android.util.AttributeSet
@@ -12,14 +12,14 @@ import com.verygoodsecurity.vgscheckout.collect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscheckout.collect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscheckout.collect.core.storage.DependencyListener
 import com.verygoodsecurity.vgscheckout.collect.view.AccessibilityStatePreparer
-import com.verygoodsecurity.vgscheckout.collect.view.VGSView
+import com.verygoodsecurity.vgscheckout.collect.view.VGSCollectView
 import com.verygoodsecurity.vgscheckout.collect.view.card.FieldType
 import com.verygoodsecurity.vgscheckout.util.extension.getString
 
-internal class DropdownEventSpinner @JvmOverloads constructor(
+internal class VGSDropdownEventSpinner @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
-) : AppCompatSpinner(context, attrs), VGSView, DependencyListener {
+) : AppCompatSpinner(context, attrs), VGSCollectView, DependencyListener {
 
     override val statePreparer: AccessibilityStatePreparer = DropdownEventSpinnerStatePreparer()
 
@@ -40,7 +40,7 @@ internal class DropdownEventSpinner @JvmOverloads constructor(
                 id: Long
             ) {
                 val selectedItem = parent?.getItemAtPosition(position) as? String
-                stateListener?.emit(this@DropdownEventSpinner.id, createState(selectedItem))
+                stateListener?.emit(this@VGSDropdownEventSpinner.id, createState(selectedItem))
                 userOnItemSelectedListener?.onItemSelected(parent, view, position, id)
             }
 
@@ -58,19 +58,19 @@ internal class DropdownEventSpinner @JvmOverloads constructor(
 
     override fun setFieldName(fieldName: String?) {
         this.fieldName = fieldName
-        stateListener?.emit(this@DropdownEventSpinner.id, createState())
+        stateListener?.emit(this@VGSDropdownEventSpinner.id, createState())
     }
 
     override fun setFieldName(resId: Int) {
         this.fieldName = getString(resId)
-        stateListener?.emit(this@DropdownEventSpinner.id, createState())
+        stateListener?.emit(this@VGSDropdownEventSpinner.id, createState())
     }
 
     override fun getFieldName(): String? = fieldName
 
     override fun addStateListener(stateListener: OnVgsViewStateChangeListener) {
         this.stateListener = stateListener
-        stateListener.emit(this@DropdownEventSpinner.id, createState())
+        stateListener.emit(this@VGSDropdownEventSpinner.id, createState())
     }
 
     override fun dispatchDependencySetting(dependency: Dependency) {}
@@ -103,15 +103,15 @@ internal class DropdownEventSpinner @JvmOverloads constructor(
 
     inner class DropdownEventSpinnerStatePreparer : AccessibilityStatePreparer {
 
-        override fun getId(): Int = this@DropdownEventSpinner.id
+        override fun getId(): Int = this@VGSDropdownEventSpinner.id
 
-        override fun getView(): View = this@DropdownEventSpinner
+        override fun getView(): View = this@VGSDropdownEventSpinner
 
         override fun unsubscribe() {
             stateListener = null
         }
 
-        override fun getDependencyListener(): DependencyListener = this@DropdownEventSpinner
+        override fun getDependencyListener(): DependencyListener = this@VGSDropdownEventSpinner
 
         override fun setAnalyticTracker(tr: AnalyticTracker) {}
     }

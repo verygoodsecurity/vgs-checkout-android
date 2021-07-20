@@ -3,7 +3,7 @@ package com.verygoodsecurity.vgscheckout.collect.view
 import com.verygoodsecurity.vgscheckout.collect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscheckout.collect.view.card.FieldType
 
-internal interface VGSView {
+internal interface VGSCollectView {
 
     val statePreparer: AccessibilityStatePreparer
 
