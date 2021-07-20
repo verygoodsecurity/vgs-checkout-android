@@ -1,9 +1,11 @@
 package com.verygoodsecurity.vgscheckout.ui.core
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageView
+import androidx.activity.result.ActivityResultLauncher
 import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
 import com.verygoodsecurity.vgscheckout.CHECKOUT_RESULT_EXTRA_KEY
@@ -70,16 +72,19 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
 
         private const val EXTRA_KEY_CONFIG = "extra_checkout_config"
 
-        internal fun startForResult(activity: Activity, code: Int, config: CheckoutConfiguration) {
+        internal fun startForResult(
+            context: Context,
+            activityLauncher: ActivityResultLauncher<Intent>,
+            config: CheckoutConfiguration
+        ) {
             val target = when (config) {
                 is VGSCheckoutConfiguration -> CheckoutActivity::class.java
                 is VGSCheckoutMultiplexingConfiguration -> CheckoutMultiplexingActivity::class.java
                 else -> throw IllegalArgumentException("Not implemented!")
             }
-            activity.startActivityForResult(
-                Intent(activity, target).apply { putExtra(EXTRA_KEY_CONFIG, config) },
-                code
-            )
+            activityLauncher.launch(Intent(context, target).apply {
+                putExtra(EXTRA_KEY_CONFIG, config)
+            })
         }
     }
 }
