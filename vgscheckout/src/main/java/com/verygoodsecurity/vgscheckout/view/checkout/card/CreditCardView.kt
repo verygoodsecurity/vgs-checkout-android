@@ -24,7 +24,7 @@ import com.verygoodsecurity.vgscheckout.util.extension.*
 import com.verygoodsecurity.vgscheckout.view.checkout.card.adapter.CardIconAdapter
 import com.verygoodsecurity.vgscheckout.view.checkout.card.adapter.CardMaskAdapter
 import com.verygoodsecurity.vgscheckout.view.checkout.core.model.InputViewStateHolder
-import com.verygoodsecurity.vgscheckout.view.checkout.core.model.OnStateChangeListener
+import com.verygoodsecurity.vgscheckout.view.checkout.core.OnStateChangeListener
 import com.verygoodsecurity.vgscheckout.view.checkout.core.model.StateChangeListener
 import com.verygoodsecurity.vgscheckout.view.checkout.core.model.ViewState
 
