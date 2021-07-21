@@ -4,6 +4,9 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.button.MaterialButton
 import com.verygoodsecurity.democheckout.util.extension.showShort
@@ -29,6 +32,11 @@ import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
+    private val activityLauncher: ActivityResultLauncher<Intent> = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult(),
+        ::handleCheckoutResult
+    )
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -36,22 +44,30 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<MaterialButton>(R.id.mbMultiplexingFlow).setOnClickListener(this)
     }
 
-    @Suppress("DEPRECATION")
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        when (resultCode) {
-            Activity.RESULT_OK -> {
-                val result = data?.getParcelableExtra<VGSCheckoutResult>(CHECKOUT_RESULT_EXTRA_KEY)
-                showShort("Checkout complete: code = ${result?.code}, message = ${result?.body}")
-            }
-            Activity.RESULT_CANCELED -> showShort("Checkout canceled")
+    override fun onClick(v: View?) {
+        when (v?.id) {
+            R.id.mbBasicFlow -> VGSCheckout().present(
+                this,
+                activityLauncher,
+                getCheckoutConfig()
+            )
+            R.id.mbMultiplexingFlow -> VGSCheckout().present(
+                this,
+                activityLauncher,
+                getMultiplexingConfig(),
+            )
         }
     }
 
-    override fun onClick(v: View?) {
-        when (v?.id) {
-            R.id.mbBasicFlow -> VGSCheckout().present(this, 1, getCheckoutConfig())
-            R.id.mbMultiplexingFlow -> VGSCheckout().present(this, 1, getMultiplexingConfig())
+    private fun handleCheckoutResult(activityResult: ActivityResult) {
+        when (activityResult.resultCode) {
+            Activity.RESULT_OK -> {
+                val result = activityResult.data?.getParcelableExtra<VGSCheckoutResult>(
+                    CHECKOUT_RESULT_EXTRA_KEY
+                )
+                showShort("Checkout complete: code = ${result?.code}, message = ${result?.body}")
+            }
+            Activity.RESULT_CANCELED -> showShort("Checkout canceled")
         }
     }
 
