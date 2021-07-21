@@ -31,6 +31,7 @@ import com.verygoodsecurity.vgscheckout.collect.widget.CardVerificationCodeEditT
 import com.verygoodsecurity.vgscheckout.collect.widget.ExpirationDateEditText
 import com.verygoodsecurity.vgscheckout.collect.widget.PersonNameEditText
 import com.verygoodsecurity.vgscheckout.collect.widget.VGSCardNumberEditText
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutAddressOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.VGSCheckoutCardOptions
 import org.hamcrest.CoreMatchers.not
 import org.junit.Assert.assertEquals
@@ -53,7 +54,7 @@ class CheckoutActivityTest {
     fun performCheckout_emptyFields_payButtonIsNotEnabled() {
         // Arrange
         launch<CheckoutActivity>(defaultIntent).use {
-            fillFields()
+            fillCardFields()
             //Assert
             onView(withId(R.id.mbPay)).check(matches(not(isEnabled())))
         }
@@ -63,7 +64,7 @@ class CheckoutActivityTest {
     fun performCheckout_cardHolderNotValid_payButtonNotEnabled() {
         // Arrange
         launch<CheckoutActivity>(defaultIntent).use {
-            fillFields(
+            fillCardFields(
                 EMPTY,
                 CARD_NUMBER,
                 CARD_EXPIRATION_DATE,
@@ -78,7 +79,7 @@ class CheckoutActivityTest {
     fun performCheckout_cardNumberNotValid_payButtonIsNotEnabled() {
         // Arrange
         launch<CheckoutActivity>(defaultIntent).use {
-            fillFields(
+            fillCardFields(
                 CARD_HOLDER_NAME,
                 INVALID_CARD_NUMBER,
                 CARD_EXPIRATION_DATE,
@@ -93,7 +94,7 @@ class CheckoutActivityTest {
     fun performCheckout_expirationDateNotValid_payButtonIsNotEnabled() {
         // Arrange
         launch<CheckoutActivity>(defaultIntent).use {
-            fillFields(
+            fillCardFields(
                 CARD_HOLDER_NAME,
                 CARD_NUMBER,
                 INVALID_CARD_EXPIRATION_DATE,
@@ -108,7 +109,7 @@ class CheckoutActivityTest {
     fun performCheckout_cvcNotValid_payButtonIsNotEnabled() {
         // Arrange
         launch<CheckoutActivity>(defaultIntent).use {
-            fillFields(
+            fillCardFields(
                 CARD_HOLDER_NAME,
                 CARD_NUMBER,
                 CARD_EXPIRATION_DATE,
@@ -123,7 +124,7 @@ class CheckoutActivityTest {
     fun performCheckout_validFilledFields_payButtonIsEnabled() {
         // Arrange
         launch<CheckoutActivity>(defaultIntent).use {
-            fillFields(
+            fillCardFields(
                 CARD_HOLDER_NAME,
                 CARD_NUMBER,
                 CARD_EXPIRATION_DATE,
@@ -282,7 +283,7 @@ class CheckoutActivityTest {
     fun performCheckout_validFilledFields_fieldsNotEnabledWhenLoading() {
         // Arrange
         launch<CheckoutActivity>(defaultIntent).use {
-            fillFields(
+            fillCardFields(
                 CARD_HOLDER_NAME,
                 CARD_NUMBER,
                 CARD_EXPIRATION_DATE,
@@ -321,7 +322,7 @@ class CheckoutActivityTest {
             )
         }
         launch<CheckoutActivity>(intent).use {
-            fillFields()
+            fillCardFields()
             //Assert
             onView(withId(R.id.llCardHolder)).check(matches(not(isDisplayed())))
         }
@@ -344,16 +345,60 @@ class CheckoutActivityTest {
                                             .build()
                                     )
                                     .build()
-                                )
+                            )
                             .build()
                     )
                     .build()
             )
         }
         launch<CheckoutActivity>(intent).use {
-            fillFields()
+            fillCardFields()
             //Assert
             onView(withId(R.id.llCardHolder)).check(matches(isDisplayed()))
+        }
+    }
+
+    @Test
+    fun performCheckout_addressIsVisibleByDefault() {
+        // Arrange
+        val intent = Intent(context, CheckoutActivity::class.java).apply {
+            putExtra(
+                "extra_checkout_config",
+                VGSCheckoutConfiguration.Builder("tntpszqgikn").build()
+            )
+        }
+        launch<CheckoutActivity>(intent).use {
+            fillCardFields()
+            //Assert
+            onView(withId(R.id.mtvAddressTitle)).check(matches(isDisplayed()))
+            onView(withId(R.id.addressView)).check(matches(isDisplayed()))
+        }
+    }
+
+    @Test
+    fun performCheckout_hideAddress() {
+        // Arrange
+        val intent = Intent(context, CheckoutActivity::class.java).apply {
+            putExtra(
+                "extra_checkout_config",
+                VGSCheckoutConfiguration.Builder("tntpszqgikn")
+                    .setFormConfig(
+                        VGSCheckoutFormConfiguration.Builder()
+                            .setAddressOptions(
+                                VGSCheckoutAddressOptions.Builder()
+                                    .setAddressFormVisibility(VGSCheckoutFieldVisibility.GONE)
+                                    .build()
+                            )
+                            .build()
+                    )
+                    .build()
+            )
+        }
+        launch<CheckoutActivity>(intent).use {
+            fillCardFields()
+            //Assert
+            onView(withId(R.id.mtvAddressTitle)).check(matches(not(isDisplayed())))
+            onView(withId(R.id.addressView)).check(matches(not(isDisplayed())))
         }
     }
 
@@ -373,7 +418,7 @@ class CheckoutActivityTest {
             )
         }
         launch<CheckoutActivity>(intent).use { scenario ->
-            fillFields(
+            fillCardFields(
                 CARD_HOLDER_NAME,
                 CARD_NUMBER,
                 CARD_EXPIRATION_DATE,
@@ -411,7 +456,7 @@ class CheckoutActivityTest {
             )
         }
         launch<CheckoutActivity>(intent).use { scenario ->
-            fillFields(
+            fillCardFields(
                 CARD_HOLDER_NAME,
                 CARD_NUMBER,
                 CARD_EXPIRATION_DATE,
@@ -428,7 +473,7 @@ class CheckoutActivityTest {
         }
     }
 
-    private fun fillFields(
+    private fun fillCardFields(
         cardHolderName: String = EMPTY,
         cardNumber: String = EMPTY,
         expirationDate: String = EMPTY,
