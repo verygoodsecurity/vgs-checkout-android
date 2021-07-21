@@ -92,6 +92,8 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
         findViewById<ImageView>(R.id.ivBack).setOnClickListener(this)
         payButton = findViewById(R.id.mbPay)
         payButton.setOnClickListener(this)
+        payButton.text =
+            config.formConfig.payButtonTitle ?: getString(R.string.vgs_checkout_pay_button_title)
         initCardView(config.formConfig.cardOptions)
         initAddressView(config.formConfig.addressOptions)
     }
