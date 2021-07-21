@@ -108,4 +108,8 @@ internal class CardVerificationCodeEditText @JvmOverloads constructor(
     fun setPreviewIconAdapter(adapter: CVCIconAdapter?) {
         setCVCPreviewIconAdapter(adapter)
     }
+
+    fun setPreviewIconMode(mode: CVCInputField.PreviewIconVisibility) {
+        applyPreviewIconMode(mode.ordinal)
+    }
 }
