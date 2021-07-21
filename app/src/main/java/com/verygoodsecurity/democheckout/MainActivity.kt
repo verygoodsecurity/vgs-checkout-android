@@ -3,7 +3,7 @@ package com.verygoodsecurity.democheckout
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-=import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         findViewById<MaterialButton>(R.id.mbPay).setOnClickListener {
-            VGSCheckout().present(this, 1, getCheckoutConfig())
+            VGSCheckout().present(this, activityLauncher, getCheckoutConfig())
         }
     }
 
@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
                 val result = activityResult.data?.getParcelableExtra<VGSCheckoutResult>(
                     CHECKOUT_RESULT_EXTRA_KEY
                 )
-                showShort("Checkout complete: code = ${result?.code}, message = ${result?.body}")
+                showShort("Checkout complete: code = ${result?.code}")
             }
             Activity.RESULT_CANCELED -> showShort("Checkout canceled")
         }
