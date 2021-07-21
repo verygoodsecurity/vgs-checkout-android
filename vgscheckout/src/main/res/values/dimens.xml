@@ -7,10 +7,15 @@
     <dimen name="vgs_checkout_margin_padding_size_xsmall">12dp</dimen>
     <dimen name="vgs_checkout_margin_padding_size_medium">16dp</dimen>
     <dimen name="vgs_checkout_margin_padding_size_large">24dp</dimen>
+    <dimen name="vgs_checkout_margin_padding_size_xlarge">48dp</dimen>
 
     <dimen name="vgs_checkout_default_divider_size">1dp</dimen>
 
     <dimen name="vgs_checkout_default_stoke_width">1dp</dimen>
+
+    <dimen name="vgs_checkout_min_form_item_height">72dp</dimen>
+
+    <dimen name="vgs_checkout_title_text_size">18sp</dimen>
 
     <!--Collect -->
     <dimen name="vgs_checkout_default_vertical_field">8dp</dimen>

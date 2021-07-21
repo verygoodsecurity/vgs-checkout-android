@@ -690,4 +690,12 @@
         <attr name="helperText" format="string"/>
 
     </declare-styleable>
+
+    <declare-styleable name="DividerGridLayout">
+
+        <attr name="dgl_grid_width" format="dimension" />
+        <attr name="dgl_grid_color" format="color" />
+        <attr name="dgl_selected_grid_color" format="color" />
+        <attr name="dgl_corners_radius" format="dimension" />
+    </declare-styleable>
 </resources>

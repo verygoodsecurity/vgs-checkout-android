@@ -21,13 +21,15 @@ internal fun View.applyStokeColor(width: Int, color: Int) {
     (background as? GradientDrawable)?.setStroke(width, color)
 }
 
-internal fun ViewGroup.disable() {
-    isEnabled = false
-    for (i in 0 until childCount) {
-        val child = getChildAt(i)
-        child.isEnabled = false
-        if (child is ViewGroup) {
-            child.disable()
+internal fun ViewGroup.setEnabled(enabled: Boolean, recursively: Boolean) {
+    isEnabled = enabled
+    if (recursively) {
+        for (i in 0 until childCount) {
+            val child = getChildAt(i)
+            child.isEnabled = enabled
+            if (child is ViewGroup) {
+                child.setEnabled(enabled, recursively)
+            }
         }
     }
 }
@@ -48,4 +50,20 @@ internal fun View.setVisibility(visibility: VGSCheckoutFieldVisibility) {
 
 internal fun MaterialTextView.setDrawableEnd(drawable: Drawable?) {
     this.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, drawable, null)
+}
+
+internal fun View.visible() {
+    this.visibility = View.VISIBLE
+}
+
+internal fun View.invisible() {
+    this.visibility = View.INVISIBLE
+}
+
+internal fun View.gone() {
+    this.visibility = View.GONE
+}
+
+internal fun View.setVisibility(isVisible: Boolean) {
+    if (isVisible) this.visible() else this.gone()
 }

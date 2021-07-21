@@ -1,18 +1,12 @@
 package com.verygoodsecurity.vgscheckout.config.ui.core
 
 import android.os.Parcelable
-import com.verygoodsecurity.vgscheckout.config.ui.view.cardholder.VGSCheckoutCardHolderOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.cardnumber.VGSCheckoutCardNumberOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.cvc.VGSCheckoutCVCOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.expiration.VGSCheckoutExpirationDateOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.postalcode.VGSCheckoutPostalCodeOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutAddressOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.VGSCheckoutCardOptions
 
 abstract class CheckoutFormConfiguration internal constructor() : Parcelable {
 
-    abstract val cardNumberOptions: VGSCheckoutCardNumberOptions
-    abstract val cardHolderOptions: VGSCheckoutCardHolderOptions
-    abstract val cvcOptions: VGSCheckoutCVCOptions
-    abstract val expirationDateOptions: VGSCheckoutExpirationDateOptions
-    abstract val postalCodeOptions: VGSCheckoutPostalCodeOptions
+    abstract val cardOptions: VGSCheckoutCardOptions
+    abstract val addressOptions: VGSCheckoutAddressOptions
     abstract val payButtonTitle: String?
 }
