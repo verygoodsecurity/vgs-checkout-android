@@ -7,6 +7,7 @@
     <string name="vgs_checkout_form_title">Select a payment method:</string>
     <string name="vgs_checkout_pay_with_card_title">Or pay with card</string>
 
+    <!--Card info -->
     <string name="vgs_checkout_form_card_details_title">Card Details</string>
 
     <string name="vgs_checkout_card_holder_subtitle">Name on card</string>
@@ -29,31 +30,41 @@
     <string name="vgs_checkout_card_verification_code_invalid_error">Security code is not valid</string>
     <string name="vgs_checkout_card_verification_code_empty_error">Security code is empty</string>
 
-    <string name="vgs_checkout_billing_address_title">Billing Address</string>
+    <!--Address info -->
+    <string name="vgs_checkout_form_billing_address_title">Billing Address</string>
 
-    <string name="vgs_checkout_country_subtitle">Country</string>
+    <string name="vgs_checkout_address_info_country_subtitle">Country</string>
 
-    <string name="vgs_checkout_address_subtitle">Address</string>
-    <string name="vgs_checkout_address_hint">Address</string>
+    <string name="vgs_checkout_address_info_region_type_state_subtitle">State</string>
+    <string name="vgs_checkout_address_info_region_type_state_hint">State</string>
+    <string name="vgs_checkout_address_info_region_type_suburb_subtitle">Suburb</string>
+    <string name="vgs_checkout_address_info_region_type_suburb_hint">Suburb</string>
+    <string name="vgs_checkout_address_info_region_type_province_subtitle">Province</string>
+    <string name="vgs_checkout_address_info_region_type_province_hint">Province</string>
+    <string name="vgs_checkout_address_info_region_type_county_subtitle">County</string>
+    <string name="vgs_checkout_address_info_region_type_county_hint">County</string>
+    <string name="vgs_checkout_address_info_region_type_unknown_subtitle">State/Province/Region</string>
+    <string name="vgs_checkout_address_info_region_type_unknown_hint">State/Province/Region</string>
 
-    <string name="vgs_checkout_address_optional_subtitle">Address line 2 (optional)</string>
-    <string name="vgs_checkout_address_optional_hint">Address line 2 (optional)</string>
 
-    <string name="vgs_checkout_city_subtitle">City</string>
-    <string name="vgs_checkout_city_hint">City</string>
-    <string name="vgs_checkout_town_city_hint">Town/City</string>
+    <string name="vgs_checkout_address_info_city_subtitle">City</string>
+    <string name="vgs_checkout_address_info_city_hint">City</string>
+    <string name="vgs_checkout_address_info_city_town_subtitle">Town/City</string>
+    <string name="vgs_checkout_address_info_city_town_hint">Town/City</string>
 
-    <string name="vgs_checkout_region_input_subtitle">State/Province/Region</string>
-    <string name="vgs_checkout_region_input_hint"/>
+    <string name="vgs_checkout_address_info_address_line1_subtitle">Address line 1</string>
+    <string name="vgs_checkout_address_info_address_line1_hint">Address line 1</string>
 
-    <string name="vgs_checkout_region_state_subtitle">State</string>
-    <string name="vgs_checkout_region_province_subtitle">Province</string>
+    <string name="vgs_checkout_address_info_address_line2_subtitle">Address line 2 (optional)</string>
+    <string name="vgs_checkout_address_info_address_line2_hint">Address line 2 (optional)</string>
 
-    <string name="vgs_checkout_zip_code_subtitle">Zip Code</string>
-    <string name="vgs_checkout_zip_code_hint">12345</string>
-    <string name="vgs_checkout_postal_code_subtitle">Postal Code</string>
-    <string name="vgs_checkout_postal_code_hint">K1A0B1</string>
+    <string name="vgs_checkout_address_info_zip_subtitle">Zip Code</string>
+    <string name="vgs_checkout_address_info_zip_hint">12345</string>
 
+    <string name="vgs_checkout_address_info_postal_code_subtitle">Postal Code</string>
+    <string name="vgs_checkout_address_info_postal_code_hint">K1A0B1</string>
+
+    <!--Pay button -->
     <string name="vgs_checkout_pay_button_title">Pay</string>
     <string name="vgs_checkout_pay_button_processing_title">Payment Processing…</string>
 

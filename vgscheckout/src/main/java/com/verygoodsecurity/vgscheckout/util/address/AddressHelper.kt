@@ -1,11 +1,7 @@
 package com.verygoodsecurity.vgscheckout.util.address
 
-import android.content.Context
-import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.util.address.model.PostalAddressType
-import com.verygoodsecurity.vgscheckout.util.address.model.Region
 import com.verygoodsecurity.vgscheckout.util.address.model.RegionType
-import com.verygoodsecurity.vgscheckout.util.extension.readRawJson
 import java.util.*
 
 internal const val USA = "United States"
@@ -26,15 +22,6 @@ internal object AddressHelper {
         return Locale.getISOCountries().map { Locale(EMPTY, it).getDisplayCountry(Locale.US) }
     }
 
-    fun getCountryRegions(context: Context, country: String?): List<String>? {
-        return when (country) {
-            USA -> context.readRawJson<Array<Region>>(R.raw.us_states).map { it.name }
-            CANADA -> context.readRawJson<Array<Region>>(R.raw.canada_provinces).map { it.name }
-            AUSTRALIA -> context.readRawJson<Array<Region>>(R.raw.au_sates).map { it.name }
-            else -> null
-        }
-    }
-
     fun getPostalAddressType(country: String?) = when (country) {
         USA -> PostalAddressType.ZIP
         else -> PostalAddressType.POSTAL
@@ -43,6 +30,8 @@ internal object AddressHelper {
     fun getRegionType(country: String?) = when (country) {
         USA, AUSTRALIA -> RegionType.STATE
         CANADA -> RegionType.PROVINCE
+        NEW_ZEALAND -> RegionType.SUBURB
+        UNITED_KINGDOM -> RegionType.COUNTY
         else -> RegionType.UNKNOWN
     }
 }
