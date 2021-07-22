@@ -121,15 +121,6 @@ internal class CreditCardView @JvmOverloads internal constructor(
         etSecurityCode
     )
 
-    fun isInputValid(
-        vararg state: InputViewStateHolder? = arrayOf(
-            cardHolderStateHolder,
-            cardNumberStateHolder,
-            dateStateHolder,
-            cvcStateHolder
-        )
-    ): Boolean = state.all { it?.getState()?.isValid == true }
-
     private fun initErrorMessages(): ObservableLinkedHashMap<Int, String?> {
         val defaultMessages = linkedMapOf<Int, String?>(
             R.id.vgsEtCardHolder to null,
@@ -231,9 +222,9 @@ internal class CreditCardView @JvmOverloads internal constructor(
     private fun updateCardDetailsBorderColor() {
         with(
             getBorderColor(
-                cardNumberStateHolder.getState(),
-                dateStateHolder.getState(),
-                cvcStateHolder.getState()
+                cardNumberStateHolder.state,
+                dateStateHolder.state,
+                cvcStateHolder.state
             )
         ) {
             clCardDetails.applyStokeColor(defaultBorderWidth, this)
@@ -251,5 +242,12 @@ internal class CreditCardView @JvmOverloads internal constructor(
         else -> defaultBorderColor
     }
 
-    private fun ViewState.shouldValidate() = hasFocusedBefore && isDirty
+    private fun isInputValid(
+        vararg state: InputViewStateHolder? = arrayOf(
+            cardHolderStateHolder,
+            cardNumberStateHolder,
+            dateStateHolder,
+            cvcStateHolder
+        )
+    ): Boolean = state.all { it?.state?.isValid == true }
 }

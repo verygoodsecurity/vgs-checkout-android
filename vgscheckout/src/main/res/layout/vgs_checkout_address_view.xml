@@ -47,6 +47,7 @@
         android:padding="@dimen/vgs_checkout_margin_padding_size_small">
 
         <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/mtvAddressSubtitle"
             style="@style/VGSCheckout.Description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -160,7 +161,7 @@
             android:text="@string/vgs_checkout_address_info_zip_subtitle" />
 
         <com.verygoodsecurity.vgscheckout.collect.widget.VGSEditText
-            android:id="@+id/vgsEtPostalAddress"
+            android:id="@+id/vgsEtPostalAddressInput"
             style="@style/VGSCheckout.InputField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

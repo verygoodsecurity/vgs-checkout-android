@@ -12,33 +12,40 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.android.material.textview.MaterialTextView
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.view.VGSCollectView
+import com.verygoodsecurity.vgscheckout.collect.view.card.validation.rules.VGSInfoRule
 import com.verygoodsecurity.vgscheckout.collect.widget.VGSDropdownEventSpinner
 import com.verygoodsecurity.vgscheckout.collect.widget.VGSEditText
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutAddressOptions
+import com.verygoodsecurity.vgscheckout.util.ObservableLinkedHashMap
 import com.verygoodsecurity.vgscheckout.util.address.AddressHelper
 import com.verygoodsecurity.vgscheckout.util.address.USA
 import com.verygoodsecurity.vgscheckout.util.address.model.PostalAddressType
 import com.verygoodsecurity.vgscheckout.util.address.model.RegionType
-import com.verygoodsecurity.vgscheckout.util.extension.getColor
-import com.verygoodsecurity.vgscheckout.util.extension.getString
-import com.verygoodsecurity.vgscheckout.util.extension.visible
-import com.verygoodsecurity.vgscheckout.view.checkout.address.model.State
+import com.verygoodsecurity.vgscheckout.util.extension.*
+import com.verygoodsecurity.vgscheckout.view.checkout.core.InputViewStateHolder
+import com.verygoodsecurity.vgscheckout.view.checkout.core.OnInputViewStateChangedListener
+import com.verygoodsecurity.vgscheckout.view.checkout.core.OnStateChangeListener
+import com.verygoodsecurity.vgscheckout.view.checkout.core.ViewState
 import com.verygoodsecurity.vgscheckout.view.checkout.grid.DividerGridLayout
-import kotlin.properties.Delegates
 
 internal class AddressView @JvmOverloads internal constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : FrameLayout(context, attrs, defStyleAttr), AdapterView.OnItemSelectedListener,
-    View.OnFocusChangeListener, VGSDropdownEventSpinner.OnDropdownStateChangeListener {
+) : FrameLayout(context, attrs, defStyleAttr), OnInputViewStateChangedListener,
+    AdapterView.OnItemSelectedListener, VGSDropdownEventSpinner.OnDropdownStateChangeListener {
 
-    private lateinit var dividerGridLayout: DividerGridLayout
+    var onStateChangeListener: OnStateChangeListener? = null
+
+    private val errorMessages: ObservableLinkedHashMap<Int, String?> = initErrorMessages()
+
+    private var dividerGridLayout: DividerGridLayout
 
     private val countriesRoot: ConstraintLayout
     private val countriesSpinner: VGSDropdownEventSpinner
 
     private val addressRoot: LinearLayoutCompat
+    private val addressSubtitle: MaterialTextView
     private val addressInput: VGSEditText
 
     private val cityRoot: LinearLayoutCompat
@@ -53,15 +60,16 @@ internal class AddressView @JvmOverloads internal constructor(
     private val postalAddressSubtitle: MaterialTextView
     private val postalAddressInput: VGSEditText
 
-    private var state: State by Delegates.observable(State.DEFAULT) { _, _, new ->
-        if (this::dividerGridLayout.isInitialized) {
-            when (new) {
-                State.FOCUSED -> dividerGridLayout.setGridColor(getColor(R.color.vgs_checkout_border_highlighted))
-                State.ERROR -> dividerGridLayout.setGridColor(getColor(R.color.vgs_checkout_border_error))
-                State.DEFAULT -> dividerGridLayout.setGridColor(getColor(R.color.vgs_checkout_border_default))
-            }
-        }
-    }
+    private val addressInputStateHolder: InputViewStateHolder
+    private val cityInputStateHolder: InputViewStateHolder
+    private val regionInputStateHolder: InputViewStateHolder
+    private val postalAddressInputStateHolder: InputViewStateHolder
+    private val inputViewsHolders: Array<InputViewStateHolder>
+
+    private val defaultBorderColor by lazy { getColor(R.color.vgs_checkout_border_default) }
+    private val focusedBorderColor by lazy { getColor(R.color.vgs_checkout_border_highlighted) }
+    private val errorBorderColor by lazy { getColor(R.color.vgs_checkout_border_error) }
+    private val errorDrawable by lazy { getDrawable(R.drawable.vgs_checkout_ic_error_white_10dp) }
 
     init {
 
@@ -73,6 +81,7 @@ internal class AddressView @JvmOverloads internal constructor(
         countriesSpinner = findViewById(R.id.spinnerCountries)
 
         addressRoot = findViewById(R.id.llcAddressRoot)
+        addressSubtitle = findViewById(R.id.mtvAddressSubtitle)
         addressInput = findViewById(R.id.vgsEtAddressInput)
 
         cityRoot = findViewById(R.id.llcCityRoot)
@@ -85,12 +94,30 @@ internal class AddressView @JvmOverloads internal constructor(
 
         postalAddressRoot = findViewById(R.id.llcPostalAddressRoot)
         postalAddressSubtitle = findViewById(R.id.mtvPostalAddressSubtitle)
-        postalAddressInput = findViewById(R.id.vgsEtPostalAddress)
+        postalAddressInput = findViewById(R.id.vgsEtPostalAddressInput)
+
+        addressInputStateHolder = InputViewStateHolder(addressInput, this)
+        cityInputStateHolder = InputViewStateHolder(cityInput, this)
+        regionInputStateHolder = InputViewStateHolder(regionInput, this)
+        postalAddressInputStateHolder = InputViewStateHolder(postalAddressInput, this)
+        inputViewsHolders = arrayOf(
+            addressInputStateHolder,
+            cityInputStateHolder,
+            regionInputStateHolder,
+            postalAddressInputStateHolder
+        )
 
         setupCountries()
         setupRegions()
         setupPostalAddressCode()
+
+        initInputValidation()
         initListeners()
+    }
+
+    override fun onStateChange(id: Int, state: ViewState) {
+        updateGridColor()
+        onStateChangeListener?.onStateChanged(this, isInputValid())
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
@@ -102,20 +129,12 @@ internal class AddressView @JvmOverloads internal constructor(
 
     override fun onNothingSelected(parent: AdapterView<*>?) {}
 
-    override fun onFocusChange(v: View?, hasFocus: Boolean) {
-        state = if (isAnyInputFocused()) {
-            State.FOCUSED
-        } else {
-            State.DEFAULT
-        }
-    }
-
     override fun onDropdownOpened() {
-        state = State.FOCUSED
+        updateGridColor()
     }
 
     override fun onDropdownClosed() {
-        if (isAnyInputFocused().not()) state = State.DEFAULT
+        updateGridColor()
     }
 
     fun applyConfig(options: VGSCheckoutAddressOptions) {
@@ -134,13 +153,44 @@ internal class AddressView @JvmOverloads internal constructor(
         postalAddressInput
     )
 
-    private fun initListeners() {
-        addressInput.onFocusChangeListener = this
-        cityInput.onFocusChangeListener = this
-        regionInput.onFocusChangeListener = this
-        postalAddressInput.onFocusChangeListener = this
+    private fun initErrorMessages(): ObservableLinkedHashMap<Int, String?> {
+        val defaultMessages = linkedMapOf<Int, String?>(
+            R.id.vgsEtAddressInput to null,
+            R.id.vgsEtCityInput to null,
+            R.id.vgsEtRegionInput to null,
+            R.id.vgsEtPostalAddressInput to null
+        )
+        return object : ObservableLinkedHashMap<Int, String?>(defaultMessages) {
 
+            override fun onChanged(map: ObservableLinkedHashMap<Int, String?>) {
+                // TODO: Show error text
+                map.forEach {
+                    val drawable = if (it.value == null) null else null
+                    when (it.key) {
+                        R.id.vgsEtAddressInput -> addressSubtitle.setDrawableEnd(drawable)
+                        R.id.vgsEtCityInput -> citySubtitle.setDrawableEnd(drawable)
+                        R.id.vgsEtRegionInput -> regionSubtitle.setDrawableEnd(drawable)
+                        R.id.mtvPostalAddressSubtitle ->
+                            postalAddressSubtitle.setDrawableEnd(drawable)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun initListeners() {
         countriesSpinner.onDropdownStateChangeListener = this
+    }
+
+    private fun initInputValidation() {
+        countriesSpinner.onDropdownStateChangeListener
+        val minLengthValidationRule = VGSInfoRule.ValidationBuilder()
+            .setAllowableMinLength(MIN_INPUT_LENGTH)
+            .build()
+        addressInput.addRule(minLengthValidationRule)
+        regionInput.addRule(minLengthValidationRule)
+        cityInput.addRule(minLengthValidationRule)
+        regionInput.addRule(minLengthValidationRule)
     }
 
     private fun setupCountries() {
@@ -204,7 +254,23 @@ internal class AddressView @JvmOverloads internal constructor(
         }
     )
 
-    private fun isAnyInputFocused(): Boolean {
-        return listOf(addressInput, cityInput, regionInput, postalAddressInput).any { it.isFocused }
+    private fun updateGridColor() {
+        dividerGridLayout.setGridColor(
+            when {
+                countriesSpinner.isDropdownOpened || inputViewsHolders.any { it.state.hasFocus } -> focusedBorderColor
+                inputViewsHolders.any { !it.state.isValid && it.state.isDirty } -> errorBorderColor
+                else -> defaultBorderColor
+            }
+        )
+    }
+
+    private fun isInputValid(): Boolean = inputViewsHolders.all { it.state.isValid }
+
+    private fun isAnyInputFocused() =
+        listOf(addressInput, cityInput, regionInput, postalAddressInput).any { it.isFocused }
+
+    companion object {
+
+        private const val MIN_INPUT_LENGTH = 1
     }
 }

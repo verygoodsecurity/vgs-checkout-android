@@ -11,7 +11,8 @@ internal class InputViewStateHolder constructor(
     private val listener: OnInputViewStateChangedListener
 ) : View.OnFocusChangeListener, InputFieldView.OnTextChangedListener, OnFieldStateChangeListener {
 
-    private var state = ViewState()
+    var state = ViewState()
+        private set
 
     init {
 
@@ -36,8 +37,6 @@ internal class InputViewStateHolder constructor(
         )
         listener.onStateChange(view.id, this.state)
     }
-
-    fun getState() = state
 }
 
 internal data class ViewState constructor(
@@ -46,7 +45,10 @@ internal data class ViewState constructor(
     val isDirty: Boolean = false,
     val isValid: Boolean = false,
     val isEmpty: Boolean = true
-)
+) {
+
+    fun shouldValidate() = hasFocusedBefore && isDirty
+}
 
 internal interface OnInputViewStateChangedListener {
 
