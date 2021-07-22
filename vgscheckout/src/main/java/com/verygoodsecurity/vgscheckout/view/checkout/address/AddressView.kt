@@ -16,7 +16,6 @@ import com.verygoodsecurity.vgscheckout.collect.widget.VGSDropdownEventSpinner
 import com.verygoodsecurity.vgscheckout.collect.widget.VGSEditText
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutAddressOptions
 import com.verygoodsecurity.vgscheckout.util.address.AddressHelper
-import com.verygoodsecurity.vgscheckout.util.address.UNITED_KINGDOM
 import com.verygoodsecurity.vgscheckout.util.address.USA
 import com.verygoodsecurity.vgscheckout.util.address.model.PostalAddressType
 import com.verygoodsecurity.vgscheckout.util.address.model.RegionType
@@ -89,7 +88,6 @@ internal class AddressView @JvmOverloads internal constructor(
         postalAddressInput = findViewById(R.id.vgsEtPostalAddress)
 
         setupCountries()
-        setupCity()
         setupRegions()
         setupPostalAddressCode()
         initListeners()
@@ -97,7 +95,6 @@ internal class AddressView @JvmOverloads internal constructor(
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         (parent?.getItemAtPosition(position) as? String)?.let {
-            setupCity(it)
             setupRegions(it)
             setupPostalAddressCode(it)
         }
@@ -153,11 +150,6 @@ internal class AddressView @JvmOverloads internal constructor(
         countriesSpinner.setSelection(countries.indexOf(USA))
     }
 
-    private fun setupCity(country: String = USA) {
-        citySubtitle.text = getCitySubtitle(country)
-        cityInput.setHint(getCityHint(country))
-    }
-
     private fun setupRegions(country: String = USA) {
         val regionType = AddressHelper.getRegionType(country)
         regionSubtitle.text = getRegionSubtitle(regionType)
@@ -191,20 +183,6 @@ internal class AddressView @JvmOverloads internal constructor(
             setDropDownViewResource(R.layout.vgs_checkout_spinner_item)
         }
     }
-
-    private fun getCitySubtitle(country: String) = getString(
-        when (country) {
-            UNITED_KINGDOM -> R.string.vgs_checkout_address_info_city_town_subtitle
-            else -> R.string.vgs_checkout_address_info_city_hint
-        }
-    )
-
-    private fun getCityHint(country: String) = getString(
-        when (country) {
-            UNITED_KINGDOM -> R.string.vgs_checkout_address_info_city_town_hint
-            else -> R.string.vgs_checkout_address_info_city_hint
-        }
-    )
 
     private fun getRegionSubtitle(type: RegionType) = getString(
         when (type) {
