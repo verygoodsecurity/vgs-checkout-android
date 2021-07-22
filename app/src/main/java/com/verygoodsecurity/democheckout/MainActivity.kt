@@ -96,7 +96,7 @@ class MainActivity : AppCompatActivity() {
     private fun getAddressOptions() = VGSCheckoutAddressOptions.Builder()
         .setCountryOptions(
             VGSCheckoutCountryOptions.Builder()
-                .setFieldName("address.country")
+                .setFieldName("address_info.country")
                 .build()
         )
         .setRegionOptions(

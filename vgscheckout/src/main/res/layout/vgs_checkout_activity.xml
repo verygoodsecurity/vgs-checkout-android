@@ -116,7 +116,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/vgs_checkout_margin_padding_size_medium"
-                android:text="@string/vgs_checkout_billing_address_title" />
+                android:text="@string/vgs_checkout_form_billing_address_title" />
 
             <com.verygoodsecurity.vgscheckout.view.checkout.address.AddressView
                 android:id="@+id/addressView"

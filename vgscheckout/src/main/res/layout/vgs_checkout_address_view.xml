@@ -25,7 +25,7 @@
             style="@style/VGSCheckout.Description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/vgs_checkout_country_subtitle"
+            android:text="@string/vgs_checkout_address_info_country_subtitle"
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.verygoodsecurity.vgscheckout.collect.widget.VGSDropdownEventSpinner
@@ -50,7 +50,7 @@
             style="@style/VGSCheckout.Description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/vgs_checkout_address_subtitle" />
+            android:text="@string/vgs_checkout_address_info_address_line1_subtitle" />
 
         <com.verygoodsecurity.vgscheckout.collect.widget.VGSEditText
             android:id="@+id/vgsEtAddressInput"
@@ -59,7 +59,7 @@
             android:layout_height="wrap_content"
             android:tag="Test"
             app:enableValidation="false"
-            app:hint="@string/vgs_checkout_address_hint" />
+            app:hint="@string/vgs_checkout_address_info_address_line1_hint" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -77,7 +77,7 @@
             style="@style/VGSCheckout.Description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/vgs_checkout_address_optional_subtitle" />
+            android:text="@string/vgs_checkout_address_info_address_line2_subtitle" />
 
         <com.verygoodsecurity.vgscheckout.collect.widget.VGSEditText
             android:id="@+id/vgsEtAddressOptionalInput"
@@ -85,7 +85,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:enableValidation="false"
-            app:hint="@string/vgs_checkout_address_optional_hint" />
+            app:hint="@string/vgs_checkout_address_info_address_line2_hint" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -103,7 +103,7 @@
             style="@style/VGSCheckout.Description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/vgs_checkout_city_subtitle" />
+            android:text="@string/vgs_checkout_address_info_city_subtitle" />
 
         <com.verygoodsecurity.vgscheckout.collect.widget.VGSEditText
             android:id="@+id/vgsEtCityInput"
@@ -111,7 +111,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:enableValidation="false"
-            app:hint="@string/vgs_checkout_city_hint" />
+            app:hint="@string/vgs_checkout_address_info_city_hint" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -123,14 +123,14 @@
         android:minHeight="@dimen/vgs_checkout_min_form_item_height"
         android:orientation="vertical"
         android:padding="@dimen/vgs_checkout_margin_padding_size_small"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/mtvRegionInputSubtitle"
             style="@style/VGSCheckout.Description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/vgs_checkout_region_input_subtitle" />
+            android:text="@string/vgs_checkout_address_info_region_type_unknown_subtitle" />
 
         <com.verygoodsecurity.vgscheckout.collect.widget.VGSEditText
             android:id="@+id/vgsEtRegionInput"
@@ -138,36 +138,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:enableValidation="false"
-            app:hint="@string/vgs_checkout_region_input_hint" />
+            app:hint="@string/vgs_checkout_address_info_region_type_unknown_hint" />
     </androidx.appcompat.widget.LinearLayoutCompat>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/clRegionsRoot"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_column="0"
-        android:layout_columnWeight="1"
-        android:layout_gravity="fill_vertical"
-        android:minHeight="@dimen/vgs_checkout_min_form_item_height"
-        android:orientation="vertical"
-        android:padding="@dimen/vgs_checkout_margin_padding_size_small"
-        android:tag="Regions">
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/mtvRegionsSubtitle"
-            style="@style/VGSCheckout.Description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/vgs_checkout_region_state_subtitle"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <com.verygoodsecurity.vgscheckout.collect.widget.VGSDropdownEventSpinner
-            android:id="@+id/spinnerRegions"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/mtvRegionsSubtitle" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/llcPostalAddressRoot"
@@ -185,7 +157,7 @@
             style="@style/VGSCheckout.Description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/vgs_checkout_zip_code_subtitle" />
+            android:text="@string/vgs_checkout_address_info_zip_subtitle" />
 
         <com.verygoodsecurity.vgscheckout.collect.widget.VGSEditText
             android:id="@+id/vgsEtPostalAddress"
@@ -193,6 +165,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:enableValidation="false"
-            app:hint="@string/vgs_checkout_zip_code_hint" />
+            app:hint="@string/vgs_checkout_address_info_zip_hint" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 </com.verygoodsecurity.vgscheckout.view.checkout.grid.DividerGridLayout>

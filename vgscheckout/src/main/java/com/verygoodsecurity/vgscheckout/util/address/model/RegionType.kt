@@ -4,5 +4,7 @@ internal enum class RegionType {
 
     STATE,
     PROVINCE,
+    SUBURB,
+    COUNTY,
     UNKNOWN
 }
