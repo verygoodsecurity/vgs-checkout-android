@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscheckout.view.checkout.core.model
+package com.verygoodsecurity.vgscheckout.view.checkout.core
 
 import android.view.View
 import androidx.annotation.IdRes
@@ -8,7 +8,7 @@ import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
 
 internal class InputViewStateHolder constructor(
     private val view: InputFieldView,
-    private val listener: StateChangeListener
+    private val listener: OnInputViewStateChangedListener
 ) : View.OnFocusChangeListener, InputFieldView.OnTextChangedListener, OnFieldStateChangeListener {
 
     private var state = ViewState()
@@ -48,7 +48,7 @@ internal data class ViewState constructor(
     val isEmpty: Boolean = true
 )
 
-internal interface StateChangeListener {
+internal interface OnInputViewStateChangedListener {
 
     fun onStateChange(@IdRes id: Int, state: ViewState)
 }

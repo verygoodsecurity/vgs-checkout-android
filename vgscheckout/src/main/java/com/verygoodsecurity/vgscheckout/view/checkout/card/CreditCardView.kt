@@ -23,10 +23,10 @@ import com.verygoodsecurity.vgscheckout.util.ObservableLinkedHashMap
 import com.verygoodsecurity.vgscheckout.util.extension.*
 import com.verygoodsecurity.vgscheckout.view.checkout.card.adapter.CardIconAdapter
 import com.verygoodsecurity.vgscheckout.view.checkout.card.adapter.CardMaskAdapter
-import com.verygoodsecurity.vgscheckout.view.checkout.core.model.InputViewStateHolder
+import com.verygoodsecurity.vgscheckout.view.checkout.core.InputViewStateHolder
+import com.verygoodsecurity.vgscheckout.view.checkout.core.OnInputViewStateChangedListener
 import com.verygoodsecurity.vgscheckout.view.checkout.core.OnStateChangeListener
-import com.verygoodsecurity.vgscheckout.view.checkout.core.model.StateChangeListener
-import com.verygoodsecurity.vgscheckout.view.checkout.core.model.ViewState
+import com.verygoodsecurity.vgscheckout.view.checkout.core.ViewState
 
 // TODO: Add ability to set color state list for collect input views text color.
 // TODO: Add ability to icon tint color for collect input view.
@@ -34,7 +34,7 @@ internal class CreditCardView @JvmOverloads internal constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : LinearLayoutCompat(context, attrs, defStyleAttr), StateChangeListener {
+) : LinearLayoutCompat(context, attrs, defStyleAttr), OnInputViewStateChangedListener {
 
     var onStateChangeListener: OnStateChangeListener? = null
 
