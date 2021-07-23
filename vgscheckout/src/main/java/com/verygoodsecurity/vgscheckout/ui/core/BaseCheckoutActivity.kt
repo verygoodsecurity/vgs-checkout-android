@@ -84,7 +84,11 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
     }
 
     override fun onStateChanged(view: View, isInputValid: Boolean) {
-        payButton.isEnabled = isInputValid
+        updatePayButtonState()
+    }
+
+    private fun updatePayButtonState() {
+        payButton.isEnabled = creditCardView.isValid() && addressView.isValid()
     }
 
     @CallSuper
@@ -109,6 +113,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
         addressView = findViewById(R.id.addressView)
         when (options.visibility) {
             VGSCheckoutFieldVisibility.VISIBLE -> {
+                addressView.onStateChangeListener = this@BaseCheckoutActivity
                 addressView.applyConfig(config.formConfig.addressOptions)
                 collect.bindView(*addressView.getVGSViews())
             }

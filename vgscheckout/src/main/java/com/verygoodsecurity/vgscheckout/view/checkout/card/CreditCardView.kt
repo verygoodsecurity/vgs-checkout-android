@@ -58,6 +58,7 @@ internal class CreditCardView @JvmOverloads internal constructor(
     private val cardNumberStateHolder: InputViewStateHolder
     private val dateStateHolder: InputViewStateHolder
     private val cvcStateHolder: InputViewStateHolder
+    private val inputViewsHolders: Array<InputViewStateHolder>
 
     private val defaultBorderColor by lazy { getColor(R.color.vgs_checkout_border_default) }
     private val focusedBorderColor by lazy { getColor(R.color.vgs_checkout_border_highlighted) }
@@ -89,6 +90,12 @@ internal class CreditCardView @JvmOverloads internal constructor(
         cardNumberStateHolder = InputViewStateHolder(etCardNumber, this)
         dateStateHolder = InputViewStateHolder(etExpirationDate, this)
         cvcStateHolder = InputViewStateHolder(etSecurityCode, this)
+        inputViewsHolders =  arrayOf(
+            cardHolderStateHolder,
+            cardNumberStateHolder,
+            dateStateHolder,
+            cvcStateHolder
+        )
     }
 
     override fun setEnabled(enabled: Boolean) {
@@ -98,7 +105,7 @@ internal class CreditCardView @JvmOverloads internal constructor(
     }
 
     override fun onStateChange(id: Int, state: ViewState) {
-        onStateChangeListener?.onStateChanged(this, isInputValid())
+        onStateChangeListener?.onStateChanged(this, isValid())
         when (id) {
             R.id.vgsEtCardHolder -> handleCardHolderStateChanged(state)
             R.id.vgsEtCardNumber -> handleCardNumberStateChanged(state)
@@ -120,6 +127,8 @@ internal class CreditCardView @JvmOverloads internal constructor(
         etExpirationDate,
         etSecurityCode
     )
+
+    fun isValid() = inputViewsHolders.all { it.state.isValid }
 
     private fun initErrorMessages(): ObservableLinkedHashMap<Int, String?> {
         val defaultMessages = linkedMapOf<Int, String?>(
@@ -241,13 +250,4 @@ internal class CreditCardView @JvmOverloads internal constructor(
         state.any { it?.isValid == false && it.isDirty } -> errorBorderColor
         else -> defaultBorderColor
     }
-
-    private fun isInputValid(
-        vararg state: InputViewStateHolder? = arrayOf(
-            cardHolderStateHolder,
-            cardNumberStateHolder,
-            dateStateHolder,
-            cvcStateHolder
-        )
-    ): Boolean = state.all { it?.state?.isValid == true }
 }
