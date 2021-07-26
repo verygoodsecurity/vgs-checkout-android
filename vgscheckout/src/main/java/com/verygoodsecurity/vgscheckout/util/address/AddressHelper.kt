@@ -2,7 +2,6 @@ package com.verygoodsecurity.vgscheckout.util.address
 
 import com.verygoodsecurity.vgscheckout.util.address.model.PostalAddressType
 import com.verygoodsecurity.vgscheckout.util.address.model.RegionType
-import java.util.*
 
 internal const val USA = "United States"
 internal const val CANADA = "Canada"
@@ -12,15 +11,7 @@ internal const val UNITED_KINGDOM = "United Kingdom"
 
 internal object AddressHelper {
 
-    private const val EMPTY = ""
-
-    val handledCountries = listOf(USA, CANADA, AUSTRALIA, NEW_ZEALAND, UNITED_KINGDOM)
-
-    fun getCurrentLocaleCountry(): String = Locale.getDefault().getDisplayCountry(Locale.US)
-
-    fun getCountries(): List<String> {
-        return Locale.getISOCountries().map { Locale(EMPTY, it).getDisplayCountry(Locale.US) }
-    }
+    val countries = listOf(USA, CANADA, AUSTRALIA, NEW_ZEALAND, UNITED_KINGDOM)
 
     fun getPostalAddressType(country: String?) = when (country) {
         USA -> PostalAddressType.ZIP

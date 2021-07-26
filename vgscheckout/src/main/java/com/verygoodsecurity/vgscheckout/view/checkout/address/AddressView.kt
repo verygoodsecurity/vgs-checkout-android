@@ -199,7 +199,7 @@ internal class AddressView @JvmOverloads internal constructor(
     }
 
     private fun setupCountries() {
-        val countries = AddressHelper.handledCountries
+        val countries = AddressHelper.countries
         countriesSpinner.adapter = createSpinnerAdapter(countries)
         countriesSpinner.onItemSelectedListener = this
         countriesSpinner.setSelection(countries.indexOf(USA))
