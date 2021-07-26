@@ -7,16 +7,17 @@ import android.util.TypedValue
 import android.view.Gravity
 import android.view.inputmethod.EditorInfo
 import com.verygoodsecurity.vgscheckout.R
-import com.verygoodsecurity.vgscheckout.collect.core.model.state.FieldState
 import com.verygoodsecurity.vgscheckout.collect.VGSCollectLogger
+import com.verygoodsecurity.vgscheckout.collect.core.model.state.FieldState
 import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
 import com.verygoodsecurity.vgscheckout.collect.view.card.BrandParams
 import com.verygoodsecurity.vgscheckout.collect.view.card.CardBrand
 import com.verygoodsecurity.vgscheckout.collect.view.card.FieldType
-import com.verygoodsecurity.vgscheckout.collect.view.card.validation.rules.PaymentCardNumberRule
 import com.verygoodsecurity.vgscheckout.collect.view.card.formatter.CardMaskAdapter
 import com.verygoodsecurity.vgscheckout.collect.view.card.icon.CardIconAdapter
 import com.verygoodsecurity.vgscheckout.collect.view.card.validation.payment.ChecksumAlgorithm
+import com.verygoodsecurity.vgscheckout.collect.view.card.validation.rules.PaymentCardNumberRule
+import com.verygoodsecurity.vgscheckout.collect.view.internal.CardInputField
 
 /**
  * A user interface element that displays text to the user in bank card number format.
@@ -142,6 +143,10 @@ internal class VGSCardNumberEditText @JvmOverloads constructor(
      */
     fun getCardPreviewIconGravity(): Int {
         return getCardIconGravity()
+    }
+
+    fun setCardBrandPreviewIconMode(mode: CardInputField.PreviewIconMode) {
+        applyPreviewIconMode(mode.ordinal)
     }
 
     /**

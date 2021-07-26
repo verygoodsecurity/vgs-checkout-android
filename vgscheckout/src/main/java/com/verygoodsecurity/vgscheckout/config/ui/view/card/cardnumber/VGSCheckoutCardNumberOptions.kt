@@ -9,16 +9,22 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 class VGSCheckoutCardNumberOptions private constructor(
     override val fieldName: String,
+    val isIconHidden: Boolean,
     val cardBrands: Set<VGSCheckoutCardBrand>
 ) : ViewOptions() {
 
     class Builder {
 
         private var fieldName: String = ""
+        private var isIconHidden: Boolean = false
         private var cardBrands: Set<VGSCheckoutCardBrand> = VGSCheckoutCardBrand.BRANDS
 
         fun setFieldName(fieldName: String) = this.apply {
             this.fieldName = fieldName
+        }
+
+        fun setIconHidden(isHidden: Boolean) = this.apply {
+            this.isIconHidden = isHidden
         }
 
         fun setCardBrands(
@@ -31,6 +37,6 @@ class VGSCheckoutCardNumberOptions private constructor(
             }
         }
 
-        fun build() = VGSCheckoutCardNumberOptions(fieldName, cardBrands)
+        fun build() = VGSCheckoutCardNumberOptions(fieldName, isIconHidden, cardBrands)
     }
 }
