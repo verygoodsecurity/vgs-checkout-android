@@ -10,6 +10,8 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.android.material.textview.MaterialTextView
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.core.model.state.FieldState.*
+import com.verygoodsecurity.vgscheckout.collect.view.internal.CVCInputField
+import com.verygoodsecurity.vgscheckout.collect.view.internal.CardInputField
 import com.verygoodsecurity.vgscheckout.collect.widget.CardVerificationCodeEditText
 import com.verygoodsecurity.vgscheckout.collect.widget.ExpirationDateEditText
 import com.verygoodsecurity.vgscheckout.collect.widget.PersonNameEditText
@@ -26,6 +28,7 @@ import com.verygoodsecurity.vgscheckout.view.checkout.card.adapter.CardMaskAdapt
 import com.verygoodsecurity.vgscheckout.view.checkout.core.InputViewStateHolder
 import com.verygoodsecurity.vgscheckout.view.checkout.core.OnInputViewStateChangedListener
 import com.verygoodsecurity.vgscheckout.view.checkout.core.OnStateChangeListener
+import com.verygoodsecurity.vgscheckout.view.checkout.core.model.InputViewStateHolder
 import com.verygoodsecurity.vgscheckout.view.checkout.core.ViewState
 
 // TODO: Add ability to set color state list for collect input views text color.
@@ -161,6 +164,13 @@ internal class CreditCardView @JvmOverloads internal constructor(
 
     private fun applyCardNumberOptions(options: VGSCheckoutCardNumberOptions) {
         etCardNumber.setFieldName(options.fieldName)
+        etCardNumber.setCardBrandPreviewIconMode(
+            if (options.isIconHidden) {
+                CardInputField.PreviewIconMode.NEVER
+            } else {
+                CardInputField.PreviewIconMode.ALWAYS
+            }
+        )
         etCardNumber.setValidCardBrands(*options.cardBrands.map { it.toCollectCardBrand() }
             .toTypedArray())
         etCardNumber.setCardMaskAdapter(CardMaskAdapter(options.cardBrands))
@@ -178,6 +188,13 @@ internal class CreditCardView @JvmOverloads internal constructor(
 
     private fun applySecurityCodeOptions(options: VGSCheckoutCVCOptions) {
         etSecurityCode.setFieldName(options.fieldName)
+        etSecurityCode.setPreviewIconMode(
+            if (options.isIconHidden) {
+                CVCInputField.PreviewIconVisibility.NEVER
+            } else {
+                CVCInputField.PreviewIconVisibility.ALWAYS
+            }
+        )
     }
 
     private fun handleCardHolderStateChanged(state: ViewState) {
