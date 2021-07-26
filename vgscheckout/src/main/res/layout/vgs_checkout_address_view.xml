@@ -32,6 +32,7 @@
                 android:layout_height="wrap_content"
                 android:drawablePadding="@dimen/vgs_checkout_margin_padding_size_small"
                 android:text="@string/vgs_checkout_address_info_country_subtitle"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <com.verygoodsecurity.vgscheckout.collect.widget.VGSDropdownEventSpinner
