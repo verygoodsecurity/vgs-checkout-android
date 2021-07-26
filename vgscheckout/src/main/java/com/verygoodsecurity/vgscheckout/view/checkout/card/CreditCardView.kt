@@ -28,7 +28,6 @@ import com.verygoodsecurity.vgscheckout.view.checkout.card.adapter.CardMaskAdapt
 import com.verygoodsecurity.vgscheckout.view.checkout.core.InputViewStateHolder
 import com.verygoodsecurity.vgscheckout.view.checkout.core.OnInputViewStateChangedListener
 import com.verygoodsecurity.vgscheckout.view.checkout.core.OnStateChangeListener
-import com.verygoodsecurity.vgscheckout.view.checkout.core.model.InputViewStateHolder
 import com.verygoodsecurity.vgscheckout.view.checkout.core.ViewState
 
 // TODO: Add ability to set color state list for collect input views text color.
