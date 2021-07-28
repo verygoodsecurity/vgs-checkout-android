@@ -59,7 +59,6 @@ internal class AddressView @JvmOverloads internal constructor(
     private val cityInputHolder: InputViewHolder
     private val regionInputHolder: InputViewHolder
     private val postalAddressInputHolder: InputViewHolder
-    private val inputViewsHolders: Array<InputViewHolder>
 
     private val defaultBorderColor by lazy { getColor(R.color.vgs_checkout_border_default) }
     private val focusedBorderColor by lazy { getColor(R.color.vgs_checkout_border_highlighted) }
@@ -95,12 +94,6 @@ internal class AddressView @JvmOverloads internal constructor(
         cityInputHolder = InputViewHolder(cityInput, this)
         regionInputHolder = InputViewHolder(regionInput, this)
         postalAddressInputHolder = InputViewHolder(postalAddressInput, this)
-        inputViewsHolders = arrayOf(
-            addressInputHolder,
-            cityInputHolder,
-            regionInputHolder,
-            postalAddressInputHolder
-        )
 
         setupCountries()
         setupRegions()
@@ -157,7 +150,7 @@ internal class AddressView @JvmOverloads internal constructor(
         postalAddressInput
     )
 
-    fun isValid(): Boolean = inputViewsHolders.all { it.state.isValid }
+    fun isValid(): Boolean = isAllInputInvalid()
 
     private fun initErrorMessages(): ObservableLinkedHashMap<Int, String?> {
         val defaultMessages = linkedMapOf<Int, String?>(
@@ -321,11 +314,32 @@ internal class AddressView @JvmOverloads internal constructor(
     private fun updateGridColor() {
         dividerGridLayout.setGridColor(
             when {
-                countriesSpinner.isDropdownOpened || inputViewsHolders.any { it.state.hasFocus } -> focusedBorderColor
-                inputViewsHolders.any { !it.state.isValid && it.state.isDirty } -> errorBorderColor
+                countriesSpinner.isDropdownOpened || isAnyInputFocused() -> focusedBorderColor
+                isAnyInputInvalid() -> errorBorderColor
                 else -> defaultBorderColor
             }
         )
+    }
+
+    private fun isAnyInputFocused(): Boolean {
+        return addressInputHolder.state.hasFocus ||
+                cityInputHolder.state.hasFocus ||
+                regionInputHolder.state.hasFocus ||
+                postalAddressInputHolder.state.hasFocus
+    }
+
+    private fun isAnyInputInvalid(): Boolean {
+        return (addressInputHolder.state.isDirty && addressInputHolder.state.isValid.not()) ||
+                (cityInputHolder.state.isDirty && cityInputHolder.state.isValid.not()) ||
+                (regionInputHolder.state.isDirty && regionInputHolder.state.isValid.not()) ||
+                (postalAddressInputHolder.state.isDirty && postalAddressInputHolder.state.isValid.not())
+    }
+
+    private fun isAllInputInvalid(): Boolean {
+        return addressInputHolder.state.isValid ||
+                cityInputHolder.state.isValid ||
+                regionInputHolder.state.isValid ||
+                postalAddressInputHolder.state.isValid
     }
 
     companion object {

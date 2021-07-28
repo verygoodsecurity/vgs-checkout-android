@@ -60,7 +60,6 @@ internal class CreditCardView @JvmOverloads internal constructor(
     private val cardNumberHolder: InputViewHolder
     private val dateHolder: InputViewHolder
     private val cvcHolder: InputViewHolder
-    private val inputViewsHolders: Array<InputViewHolder>
 
     private val defaultBorderColor by lazy { getColor(R.color.vgs_checkout_border_default) }
     private val focusedBorderColor by lazy { getColor(R.color.vgs_checkout_border_highlighted) }
@@ -92,12 +91,6 @@ internal class CreditCardView @JvmOverloads internal constructor(
         cardNumberHolder = InputViewHolder(etCardNumber, this)
         dateHolder = InputViewHolder(etExpirationDate, this)
         cvcHolder = InputViewHolder(etSecurityCode, this)
-        inputViewsHolders =  arrayOf(
-            cardHolderHolder,
-            cardNumberHolder,
-            dateHolder,
-            cvcHolder
-        )
     }
 
     override fun setEnabled(enabled: Boolean) {
@@ -130,7 +123,7 @@ internal class CreditCardView @JvmOverloads internal constructor(
         etSecurityCode
     )
 
-    fun isValid() = inputViewsHolders.all { it.state.isValid }
+    fun isValid() = isAllInputInvalid()
 
     private fun initErrorMessages(): ObservableLinkedHashMap<Int, String?> {
         val defaultMessages = linkedMapOf<Int, String?>(
@@ -258,12 +251,20 @@ internal class CreditCardView @JvmOverloads internal constructor(
         }
     }
 
-    private fun getCVCHint() =
-        if (etCardNumber.getState()?.cardBrand.isAmericanExpress()) cvvHint else cvcHint
+    private fun getCVCHint(): String {
+        return if (etCardNumber.getState()?.cardBrand.isAmericanExpress()) cvvHint else cvcHint
+    }
 
     private fun getBorderColor(vararg state: ViewState?): Int = when {
         state.any { it?.hasFocus == true } -> focusedBorderColor
         state.any { it?.isValid == false && it.isDirty } -> errorBorderColor
         else -> defaultBorderColor
+    }
+
+    private fun isAllInputInvalid(): Boolean {
+        return cardHolderHolder.state.isValid ||
+                cardNumberHolder.state.isValid ||
+                dateHolder.state.isValid ||
+                cvcHolder.state.isValid
     }
 }
