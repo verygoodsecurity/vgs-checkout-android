@@ -8,7 +8,7 @@ import com.verygoodsecurity.vgscheckout.collect.core.storage.OnFieldStateChangeL
 import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
 
 internal class InputFieldViewHolder<I: InputFieldView> constructor(
-    val title: MaterialTextView,
+    val subtitle: MaterialTextView,
     val input: I,
     val listener: OnInputFieldStateChanged? = null
 ) : View.OnFocusChangeListener, InputFieldView.OnTextChangedListener, OnFieldStateChangeListener {

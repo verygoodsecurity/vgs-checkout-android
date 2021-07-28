@@ -2,166 +2,140 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    tools:parentTag="androidx.appcompat.widget.LinearLayoutCompat">
+    android:columnCount="1"
+    tools:parentTag="com.verygoodsecurity.vgscheckout.view.checkout.grid.DividerGridLayout">
 
-    <com.verygoodsecurity.vgscheckout.view.checkout.grid.DividerGridLayout
-        android:id="@+id/dglRoot"
-        android:layout_width="match_parent"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clCountriesRoot"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/vgs_checkout_input_bg"
-        android:columnCount="2"
-        app:dgl_corners_radius="@dimen/vgs_checkout_margin_padding_size_small"
-        app:dgl_grid_color="@color/vgs_checkout_border_default"
-        app:dgl_grid_width="@dimen/vgs_checkout_default_divider_size">
+        android:layout_gravity="fill"
+        android:minHeight="@dimen/vgs_checkout_min_form_item_height"
+        android:orientation="vertical"
+        android:padding="@dimen/vgs_checkout_margin_padding_size_small">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/clCountriesRoot"
-            android:layout_width="0dp"
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/mtvCountrySubtitle"
+            style="@style/VGSCheckout.Description"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_columnSpan="2"
-            android:layout_gravity="fill"
-            android:minHeight="@dimen/vgs_checkout_min_form_item_height"
-            android:orientation="vertical"
-            android:padding="@dimen/vgs_checkout_margin_padding_size_small">
+            android:drawablePadding="@dimen/vgs_checkout_margin_padding_size_small"
+            android:text="@string/vgs_checkout_address_info_country_subtitle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/mtvCountrySubtitle"
-                style="@style/VGSCheckout.Description"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawablePadding="@dimen/vgs_checkout_margin_padding_size_small"
-                android:text="@string/vgs_checkout_address_info_country_subtitle"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <com.verygoodsecurity.vgscheckout.collect.widget.VGSDropdownEventSpinner
-                android:id="@+id/spinnerCountries"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/mtvCountrySubtitle" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:id="@+id/llcAddressRoot"
-            android:layout_width="0dp"
+        <com.verygoodsecurity.vgscheckout.collect.widget.VGSDropdownEventSpinner
+            android:id="@+id/spinnerCountries"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_columnSpan="2"
-            android:layout_gravity="fill"
-            android:minHeight="@dimen/vgs_checkout_min_form_item_height"
-            android:orientation="vertical"
-            android:padding="@dimen/vgs_checkout_margin_padding_size_small">
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mtvCountrySubtitle" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/mtvAddressSubtitle"
-                style="@style/VGSCheckout.Description"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawablePadding="@dimen/vgs_checkout_margin_padding_size_small"
-                android:text="@string/vgs_checkout_address_info_address_line1_subtitle" />
-
-            <com.verygoodsecurity.vgscheckout.collect.widget.VGSEditText
-                android:id="@+id/vgsEtAddress"
-                style="@style/VGSCheckout.InputField"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:tag="Test"
-                app:enableValidation="false"
-                app:hint="@string/vgs_checkout_address_info_address_line1_hint" />
-        </androidx.appcompat.widget.LinearLayoutCompat>
-
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:id="@+id/llcCityRoot"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_columnSpan="2"
-            android:layout_gravity="fill"
-            android:minHeight="@dimen/vgs_checkout_min_form_item_height"
-            android:orientation="vertical"
-            android:padding="@dimen/vgs_checkout_margin_padding_size_small">
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/mtvCitySubtitle"
-                style="@style/VGSCheckout.Description"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawablePadding="@dimen/vgs_checkout_margin_padding_size_small"
-                android:text="@string/vgs_checkout_address_info_city_subtitle" />
-
-            <com.verygoodsecurity.vgscheckout.collect.widget.VGSEditText
-                android:id="@+id/vgsEtCity"
-                style="@style/VGSCheckout.InputField"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:enableValidation="false"
-                app:hint="@string/vgs_checkout_address_info_city_hint" />
-        </androidx.appcompat.widget.LinearLayoutCompat>
-
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:id="@+id/llcRegionInputRoot"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_columnSpan="2"
-            android:layout_gravity="fill"
-            android:minHeight="@dimen/vgs_checkout_min_form_item_height"
-            android:orientation="vertical"
-            android:padding="@dimen/vgs_checkout_margin_padding_size_small"
-            android:visibility="visible">
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/mtvRegionInputSubtitle"
-                style="@style/VGSCheckout.Description"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawablePadding="@dimen/vgs_checkout_margin_padding_size_small"
-                android:text="@string/vgs_checkout_address_info_region_type_unknown_subtitle" />
-
-            <com.verygoodsecurity.vgscheckout.collect.widget.VGSEditText
-                android:id="@+id/vgsEtRegion"
-                style="@style/VGSCheckout.InputField"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:enableValidation="false"
-                app:hint="@string/vgs_checkout_address_info_region_type_unknown_hint" />
-        </androidx.appcompat.widget.LinearLayoutCompat>
-
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:id="@+id/llcPostalAddressRoot"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_column="1"
-            android:layout_columnWeight="1"
-            android:minHeight="@dimen/vgs_checkout_min_form_item_height"
-            android:orientation="vertical"
-            android:padding="@dimen/vgs_checkout_margin_padding_size_small"
-            android:tag="Postal address">
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/mtvPostalAddressSubtitle"
-                style="@style/VGSCheckout.Description"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawablePadding="@dimen/vgs_checkout_margin_padding_size_small"
-                android:text="@string/vgs_checkout_address_info_zip_subtitle" />
-
-            <com.verygoodsecurity.vgscheckout.collect.widget.VGSEditText
-                android:id="@+id/vgsEtPostalAddress"
-                style="@style/VGSCheckout.InputField"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:enableValidation="false"
-                app:hint="@string/vgs_checkout_address_info_zip_hint" />
-        </androidx.appcompat.widget.LinearLayoutCompat>
-    </com.verygoodsecurity.vgscheckout.view.checkout.grid.DividerGridLayout>
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/tvAddressError"
-        style="@style/VGSCheckout.ErrorText"
-        android:layout_width="match_parent"
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/llcAddressRoot"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/vgs_checkout_margin_padding_size_micro"
-        android:visibility="gone"
-        tools:text="Test error"
-        tools:visibility="visible" />
+        android:layout_gravity="fill"
+        android:minHeight="@dimen/vgs_checkout_min_form_item_height"
+        android:orientation="vertical"
+        android:padding="@dimen/vgs_checkout_margin_padding_size_small">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/mtvAddressSubtitle"
+            style="@style/VGSCheckout.Description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="@dimen/vgs_checkout_margin_padding_size_small"
+            android:text="@string/vgs_checkout_address_info_address_line1_subtitle" />
+
+        <com.verygoodsecurity.vgscheckout.collect.widget.VGSEditText
+            android:id="@+id/vgsEtAddress"
+            style="@style/VGSCheckout.InputField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:tag="Test"
+            app:enableValidation="false"
+            app:hint="@string/vgs_checkout_address_info_address_line1_hint" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/llcCityRoot"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="fill"
+        android:minHeight="@dimen/vgs_checkout_min_form_item_height"
+        android:orientation="vertical"
+        android:padding="@dimen/vgs_checkout_margin_padding_size_small">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/mtvCitySubtitle"
+            style="@style/VGSCheckout.Description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="@dimen/vgs_checkout_margin_padding_size_small"
+            android:text="@string/vgs_checkout_address_info_city_subtitle" />
+
+        <com.verygoodsecurity.vgscheckout.collect.widget.VGSEditText
+            android:id="@+id/vgsEtCity"
+            style="@style/VGSCheckout.InputField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:enableValidation="false"
+            app:hint="@string/vgs_checkout_address_info_city_hint" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/llcRegionInputRoot"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="fill"
+        android:minHeight="@dimen/vgs_checkout_min_form_item_height"
+        android:orientation="vertical"
+        android:padding="@dimen/vgs_checkout_margin_padding_size_small"
+        android:visibility="visible">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/mtvRegionInputSubtitle"
+            style="@style/VGSCheckout.Description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="@dimen/vgs_checkout_margin_padding_size_small"
+            android:text="@string/vgs_checkout_address_info_region_type_unknown_subtitle" />
+
+        <com.verygoodsecurity.vgscheckout.collect.widget.VGSEditText
+            android:id="@+id/vgsEtRegion"
+            style="@style/VGSCheckout.InputField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:enableValidation="false"
+            app:hint="@string/vgs_checkout_address_info_region_type_unknown_hint" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/llcPostalAddressRoot"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="fill"
+        android:minHeight="@dimen/vgs_checkout_min_form_item_height"
+        android:orientation="vertical"
+        android:padding="@dimen/vgs_checkout_margin_padding_size_small"
+        android:tag="Postal address">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/mtvPostalAddressSubtitle"
+            style="@style/VGSCheckout.Description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="@dimen/vgs_checkout_margin_padding_size_small"
+            android:text="@string/vgs_checkout_address_info_zip_subtitle" />
+
+        <com.verygoodsecurity.vgscheckout.collect.widget.VGSEditText
+            android:id="@+id/vgsEtPostalAddress"
+            style="@style/VGSCheckout.InputField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:enableValidation="false"
+            app:hint="@string/vgs_checkout_address_info_zip_hint" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
 </merge>

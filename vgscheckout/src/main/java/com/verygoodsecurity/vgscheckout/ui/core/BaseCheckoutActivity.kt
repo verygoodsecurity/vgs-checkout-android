@@ -103,7 +103,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
 
     private fun updatePayButtonState() {
         payButton.isEnabled = cardHolderView.isInputValid() && creditCardView.isInputValid() &&
-                addressView.isValid()
+                addressView.isInputValid()
     }
 
     @CallSuper
@@ -140,7 +140,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
             VGSCheckoutFieldVisibility.VISIBLE -> {
                 addressView.onStateChangeListener = this
                 addressView.applyConfig(config.formConfig.addressOptions)
-                collect.bindView(*addressView.getVGSViews())
+//                collect.bindView(*addressView.getVGSViews())
             }
             VGSCheckoutFieldVisibility.GONE -> {
                 findViewById<MaterialTextView>(R.id.mtvAddressTitle).gone()

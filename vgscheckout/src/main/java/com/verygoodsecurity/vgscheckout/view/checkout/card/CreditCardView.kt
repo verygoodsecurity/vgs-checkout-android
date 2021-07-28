@@ -111,7 +111,7 @@ internal class CreditCardView @JvmOverloads internal constructor(
             else -> null to null
         }
         updateError(cardNumberViewHolder.input.id, message)
-        cardNumberViewHolder.title.setDrawableEnd(drawable)
+        cardNumberViewHolder.subtitle.setDrawableEnd(drawable)
     }
 
     private fun updateExpirationDateError(state: InputFieldViewHolder.ViewState) {
@@ -121,7 +121,7 @@ internal class CreditCardView @JvmOverloads internal constructor(
             else -> null to null
         }
         updateError(expirationDateViewHolder.input.id, message)
-        expirationDateViewHolder.title.setDrawableEnd(drawable)
+        expirationDateViewHolder.subtitle.setDrawableEnd(drawable)
     }
 
     private fun updateCVCError(state: InputFieldViewHolder.ViewState) {
@@ -131,7 +131,7 @@ internal class CreditCardView @JvmOverloads internal constructor(
             else -> null to null
         }
         updateError(cvcViewHolder.input.id, message)
-        cvcViewHolder.title.setDrawableEnd(drawable)
+        cvcViewHolder.subtitle.setDrawableEnd(drawable)
     }
 
     companion object {

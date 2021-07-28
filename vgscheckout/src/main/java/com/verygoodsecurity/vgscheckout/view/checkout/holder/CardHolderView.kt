@@ -55,7 +55,7 @@ internal class CardHolderView @JvmOverloads internal constructor(
             else -> null to null
         }
         updateError(0, message)
-        cardHolderViewHolder.title.setDrawableEnd(drawable)
+        cardHolderViewHolder.subtitle.setDrawableEnd(drawable)
     }
 
     companion object {
