@@ -25,7 +25,7 @@ import com.verygoodsecurity.vgscheckout.util.ObservableLinkedHashMap
 import com.verygoodsecurity.vgscheckout.util.extension.*
 import com.verygoodsecurity.vgscheckout.view.checkout.card.adapter.CardIconAdapter
 import com.verygoodsecurity.vgscheckout.view.checkout.card.adapter.CardMaskAdapter
-import com.verygoodsecurity.vgscheckout.view.checkout.core.InputViewStateHolder
+import com.verygoodsecurity.vgscheckout.view.checkout.core.InputViewHolder
 import com.verygoodsecurity.vgscheckout.view.checkout.core.OnInputViewStateChangedListener
 import com.verygoodsecurity.vgscheckout.view.checkout.core.OnStateChangeListener
 import com.verygoodsecurity.vgscheckout.view.checkout.core.ViewState
@@ -56,11 +56,11 @@ internal class CreditCardView @JvmOverloads internal constructor(
     private val vDividerHorizontal: View
     private val vDividerVertical: View
 
-    private val cardHolderStateHolder: InputViewStateHolder
-    private val cardNumberStateHolder: InputViewStateHolder
-    private val dateStateHolder: InputViewStateHolder
-    private val cvcStateHolder: InputViewStateHolder
-    private val inputViewsHolders: Array<InputViewStateHolder>
+    private val cardHolderHolder: InputViewHolder
+    private val cardNumberHolder: InputViewHolder
+    private val dateHolder: InputViewHolder
+    private val cvcHolder: InputViewHolder
+    private val inputViewsHolders: Array<InputViewHolder>
 
     private val defaultBorderColor by lazy { getColor(R.color.vgs_checkout_border_default) }
     private val focusedBorderColor by lazy { getColor(R.color.vgs_checkout_border_highlighted) }
@@ -88,15 +88,15 @@ internal class CreditCardView @JvmOverloads internal constructor(
         vDividerHorizontal = findViewById(R.id.viewDividerHorizontal)
         vDividerVertical = findViewById(R.id.viewDividerVertical)
 
-        cardHolderStateHolder = InputViewStateHolder(etCardHolder, this)
-        cardNumberStateHolder = InputViewStateHolder(etCardNumber, this)
-        dateStateHolder = InputViewStateHolder(etExpirationDate, this)
-        cvcStateHolder = InputViewStateHolder(etSecurityCode, this)
+        cardHolderHolder = InputViewHolder(etCardHolder, this)
+        cardNumberHolder = InputViewHolder(etCardNumber, this)
+        dateHolder = InputViewHolder(etExpirationDate, this)
+        cvcHolder = InputViewHolder(etSecurityCode, this)
         inputViewsHolders =  arrayOf(
-            cardHolderStateHolder,
-            cardNumberStateHolder,
-            dateStateHolder,
-            cvcStateHolder
+            cardHolderHolder,
+            cardNumberHolder,
+            dateHolder,
+            cvcHolder
         )
     }
 
@@ -247,9 +247,9 @@ internal class CreditCardView @JvmOverloads internal constructor(
     private fun updateCardDetailsBorderColor() {
         with(
             getBorderColor(
-                cardNumberStateHolder.state,
-                dateStateHolder.state,
-                cvcStateHolder.state
+                cardNumberHolder.state,
+                dateHolder.state,
+                cvcHolder.state
             )
         ) {
             clCardDetails.applyStokeColor(defaultBorderWidth, this)

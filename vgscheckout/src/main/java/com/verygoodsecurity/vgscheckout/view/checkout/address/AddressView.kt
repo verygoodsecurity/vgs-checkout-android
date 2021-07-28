@@ -21,7 +21,7 @@ import com.verygoodsecurity.vgscheckout.util.address.USA
 import com.verygoodsecurity.vgscheckout.util.address.model.PostalAddressType
 import com.verygoodsecurity.vgscheckout.util.address.model.RegionType
 import com.verygoodsecurity.vgscheckout.util.extension.*
-import com.verygoodsecurity.vgscheckout.view.checkout.core.InputViewStateHolder
+import com.verygoodsecurity.vgscheckout.view.checkout.core.InputViewHolder
 import com.verygoodsecurity.vgscheckout.view.checkout.core.OnInputViewStateChangedListener
 import com.verygoodsecurity.vgscheckout.view.checkout.core.OnStateChangeListener
 import com.verygoodsecurity.vgscheckout.view.checkout.core.ViewState
@@ -55,11 +55,11 @@ internal class AddressView @JvmOverloads internal constructor(
     private val postalAddressSubtitle: MaterialTextView
     private val postalAddressInput: VGSEditText
 
-    private val addressInputStateHolder: InputViewStateHolder
-    private val cityInputStateHolder: InputViewStateHolder
-    private val regionInputStateHolder: InputViewStateHolder
-    private val postalAddressInputStateHolder: InputViewStateHolder
-    private val inputViewsHolders: Array<InputViewStateHolder>
+    private val addressInputHolder: InputViewHolder
+    private val cityInputHolder: InputViewHolder
+    private val regionInputHolder: InputViewHolder
+    private val postalAddressInputHolder: InputViewHolder
+    private val inputViewsHolders: Array<InputViewHolder>
 
     private val defaultBorderColor by lazy { getColor(R.color.vgs_checkout_border_default) }
     private val focusedBorderColor by lazy { getColor(R.color.vgs_checkout_border_highlighted) }
@@ -91,15 +91,15 @@ internal class AddressView @JvmOverloads internal constructor(
         postalAddressSubtitle = findViewById(R.id.mtvPostalAddressSubtitle)
         postalAddressInput = findViewById(R.id.vgsEtPostalAddress)
 
-        addressInputStateHolder = InputViewStateHolder(addressInput, this)
-        cityInputStateHolder = InputViewStateHolder(cityInput, this)
-        regionInputStateHolder = InputViewStateHolder(regionInput, this)
-        postalAddressInputStateHolder = InputViewStateHolder(postalAddressInput, this)
+        addressInputHolder = InputViewHolder(addressInput, this)
+        cityInputHolder = InputViewHolder(cityInput, this)
+        regionInputHolder = InputViewHolder(regionInput, this)
+        postalAddressInputHolder = InputViewHolder(postalAddressInput, this)
         inputViewsHolders = arrayOf(
-            addressInputStateHolder,
-            cityInputStateHolder,
-            regionInputStateHolder,
-            postalAddressInputStateHolder
+            addressInputHolder,
+            cityInputHolder,
+            regionInputHolder,
+            postalAddressInputHolder
         )
 
         setupCountries()
