@@ -77,8 +77,8 @@
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?attr/textAppearanceCaption"
-                android:text="@string/vgs_checkout_pay_with_card_title" />
+                android:text="@string/vgs_checkout_pay_with_card_title"
+                android:textAppearance="?attr/textAppearanceCaption" />
 
             <View
                 android:layout_width="0dp"
@@ -104,11 +104,26 @@
                 android:layout_height="wrap_content"
                 android:text="@string/vgs_checkout_form_card_details_title" />
 
+            <com.verygoodsecurity.vgscheckout.view.checkout.holder.CardHolderView
+                android:id="@+id/cardHolderView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
             <com.verygoodsecurity.vgscheckout.view.checkout.card.CreditCardView
                 android:id="@+id/creditCardView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/vgs_checkout_margin_padding_size_small" />
+
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/mtvCardDetailsError"
+                style="@style/VGSCheckout.ErrorText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                tools:text="Test error"
+                tools:visibility="visible" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/mtvAddressTitle"

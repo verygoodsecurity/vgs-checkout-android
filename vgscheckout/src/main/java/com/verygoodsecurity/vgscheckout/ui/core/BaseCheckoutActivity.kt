@@ -29,12 +29,16 @@ import com.verygoodsecurity.vgscheckout.ui.CheckoutMultiplexingActivity
 import com.verygoodsecurity.vgscheckout.util.extension.disableScreenshots
 import com.verygoodsecurity.vgscheckout.util.extension.getDrawableCompat
 import com.verygoodsecurity.vgscheckout.util.extension.gone
+import com.verygoodsecurity.vgscheckout.util.extension.showWithText
 import com.verygoodsecurity.vgscheckout.view.checkout.address.AddressView
 import com.verygoodsecurity.vgscheckout.view.checkout.card.CreditCardView
+import com.verygoodsecurity.vgscheckout.view.checkout.core.BaseCheckoutFormView
 import com.verygoodsecurity.vgscheckout.view.checkout.core.OnStateChangeListener
+import com.verygoodsecurity.vgscheckout.view.checkout.holder.CardHolderView
 
 internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
-    AppCompatActivity(), View.OnClickListener, VgsCollectResponseListener, OnStateChangeListener {
+    AppCompatActivity(), View.OnClickListener, VgsCollectResponseListener, OnStateChangeListener,
+    BaseCheckoutFormView.OnErrorListener {
 
     protected val config: C by lazy { resolveConfig(EXTRA_KEY_CONFIG) }
 
@@ -43,6 +47,8 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
             addOnResponseListeners(this@BaseCheckoutActivity)
         }
     }
+
+    private lateinit var cardHolderView: CardHolderView
 
     private lateinit var creditCardView: CreditCardView
 
@@ -87,6 +93,14 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
         updatePayButtonState()
     }
 
+    override fun onError(view: View, message: String?) {
+        when (view.id) {
+            R.id.cardHolderView -> {
+                findViewById<MaterialTextView>(R.id.mtvCardDetailsError).showWithText(message)
+            }
+        }
+    }
+
     private fun updatePayButtonState() {
         payButton.isEnabled = creditCardView.isValid() && addressView.isValid()
     }
@@ -98,8 +112,14 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
         payButton.setOnClickListener(this)
         payButton.text =
             config.formConfig.payButtonTitle ?: getString(R.string.vgs_checkout_pay_button_title)
+        initCardHolderView()
         initCardView(config.formConfig.cardOptions)
         initAddressView(config.formConfig.addressOptions)
+    }
+
+    private fun initCardHolderView() {
+        cardHolderView = findViewById(R.id.cardHolderView)
+        cardHolderView.onErrorListener = this
     }
 
     private fun initCardView(options: VGSCheckoutCardOptions) {
