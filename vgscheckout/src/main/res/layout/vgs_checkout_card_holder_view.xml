@@ -5,9 +5,10 @@
     tools:parentTag="com.verygoodsecurity.vgscheckout.view.checkout.grid.DividerGridLayout">
 
     <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:layout_gravity="fill"
         android:padding="@dimen/vgs_checkout_margin_padding_size_small">
 
         <com.google.android.material.textview.MaterialTextView

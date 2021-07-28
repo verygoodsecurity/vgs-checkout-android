@@ -21,9 +21,9 @@ import com.verygoodsecurity.vgscheckout.util.address.USA
 import com.verygoodsecurity.vgscheckout.util.address.model.PostalAddressType
 import com.verygoodsecurity.vgscheckout.util.address.model.RegionType
 import com.verygoodsecurity.vgscheckout.util.extension.*
+import com.verygoodsecurity.vgscheckout.view.checkout.core.BaseCheckoutFormView
 import com.verygoodsecurity.vgscheckout.view.checkout.core.InputViewHolder
 import com.verygoodsecurity.vgscheckout.view.checkout.core.OnInputViewStateChangedListener
-import com.verygoodsecurity.vgscheckout.view.checkout.core.OnStateChangeListener
 import com.verygoodsecurity.vgscheckout.view.checkout.core.ViewState
 import com.verygoodsecurity.vgscheckout.view.checkout.grid.DividerGridLayout
 
@@ -34,7 +34,7 @@ internal class AddressView @JvmOverloads internal constructor(
 ) : LinearLayoutCompat(context, attrs, defStyleAttr), OnInputViewStateChangedListener,
     AdapterView.OnItemSelectedListener, VGSDropdownEventSpinner.OnDropdownStateChangeListener {
 
-    var onStateChangeListener: OnStateChangeListener? = null
+    var onStateChangeListener: BaseCheckoutFormView.OnStateChangeListener? = null
 
     private val errorMessages: ObservableLinkedHashMap<Int, String?> = initErrorMessages()
 

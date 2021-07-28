@@ -5,8 +5,7 @@ import android.util.AttributeSet
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.view.card.validation.rules.VGSInfoRule
 import com.verygoodsecurity.vgscheckout.collect.widget.VGSEditText
-import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutFormConfiguration
-import com.verygoodsecurity.vgscheckout.util.extension.getDrawable
+import com.verygoodsecurity.vgscheckout.config.ui.core.CheckoutFormConfiguration
 import com.verygoodsecurity.vgscheckout.util.extension.getString
 import com.verygoodsecurity.vgscheckout.util.extension.setDrawableEnd
 import com.verygoodsecurity.vgscheckout.view.checkout.core.BaseCheckoutFormView
@@ -31,30 +30,32 @@ internal class CardHolderView @JvmOverloads internal constructor(
 
     override fun getRowsCount(): Int = DEFAULT_COLUMN_ROW_COUNT
 
-    override fun applyConfig(config: VGSCheckoutFormConfiguration) {
+    override fun applyConfig(config: CheckoutFormConfiguration) {
         with(findViewById<VGSEditText>(R.id.vgsEtCardHolder)) {
             this.addRule(
                 VGSInfoRule.ValidationBuilder()
-                    .setRegex(".+")
+                    .setRegex(NOT_EMPTY_REGEX)
                     .build()
             )
             this.setFieldName(config.cardOptions.cardHolderOptions.fieldName)
         }
     }
 
-    override fun onStateChange(state: InputFieldViewHolder.ViewState) {
+    override fun isInputValid() = isInputValid(cardHolderViewHolder.state)
+
+    override fun onStateChange(inputId: Int, state: InputFieldViewHolder.ViewState) {
+        super.onStateChange(inputId, state)
         updateGridColor(state)
         updateErrorMessage(state)
     }
 
     private fun updateErrorMessage(state: InputFieldViewHolder.ViewState) {
-        if (!isChildInvalid(state)) {
-            updateError(null)
-            cardHolderViewHolder.title.setDrawableEnd(null)
-            return
+        val (message, drawable) = when {
+            isInputInvalid(state) -> getString(R.string.vgs_checkout_card_holder_empty_error) to errorDrawable
+            else -> null to null
         }
-        updateError(getString(R.string.vgs_checkout_card_holder_empty_error))
-        cardHolderViewHolder.title.setDrawableEnd(getDrawable(R.drawable.vgs_checkout_ic_error_white_10dp))
+        updateError(0, message)
+        cardHolderViewHolder.title.setDrawableEnd(drawable)
     }
 
     companion object {
