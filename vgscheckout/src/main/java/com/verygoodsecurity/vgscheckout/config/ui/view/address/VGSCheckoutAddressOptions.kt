@@ -5,14 +5,12 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.VGSChecko
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.city.VGSCheckoutCityOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.code.VGSCheckoutPostalAddressOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.country.VGSCheckoutCountryOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.region.VGSCheckoutRegionOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.core.VGSCheckoutFieldVisibility
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 class VGSCheckoutAddressOptions private constructor(
     val countryOptions: VGSCheckoutCountryOptions,
-    val regionOptions: VGSCheckoutRegionOptions,
     val cityOptions: VGSCheckoutCityOptions,
     val addressOptions: VGSCheckoutCityAddressOptions,
     val postalAddressOptions: VGSCheckoutPostalAddressOptions,
@@ -22,7 +20,6 @@ class VGSCheckoutAddressOptions private constructor(
     class Builder {
 
         private var countryOptions = VGSCheckoutCountryOptions.Builder().build()
-        private var regionOptions = VGSCheckoutRegionOptions.Builder().build()
         private var cityOptions = VGSCheckoutCityOptions.Builder().build()
         private var addressOptions = VGSCheckoutCityAddressOptions.Builder().build()
         private var postalAddressOptions = VGSCheckoutPostalAddressOptions.Builder().build()
@@ -30,10 +27,6 @@ class VGSCheckoutAddressOptions private constructor(
 
         fun setCountryOptions(options: VGSCheckoutCountryOptions) = this.apply {
             this.countryOptions = options
-        }
-
-        fun setRegionOptions(options: VGSCheckoutRegionOptions) = this.apply {
-            this.regionOptions = options
         }
 
         fun setCityOptions(options: VGSCheckoutCityOptions) = this.apply {
@@ -54,7 +47,6 @@ class VGSCheckoutAddressOptions private constructor(
 
         fun build(): VGSCheckoutAddressOptions = VGSCheckoutAddressOptions(
             countryOptions,
-            regionOptions,
             cityOptions,
             addressOptions,
             postalAddressOptions,

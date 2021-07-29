@@ -19,7 +19,6 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.VGSChecko
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.city.VGSCheckoutCityOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.code.VGSCheckoutPostalAddressOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.country.VGSCheckoutCountryOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.region.VGSCheckoutRegionOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.VGSCheckoutCardOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.VGSCheckoutCardHolderOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.VGSCheckoutCardNumberOptions
@@ -98,9 +97,6 @@ class MainActivity : AppCompatActivity() {
             VGSCheckoutCountryOptions.Builder()
                 .setFieldName("address_info.country")
                 .build()
-        )
-        .setRegionOptions(
-            VGSCheckoutRegionOptions.Builder().setFieldName("address_info.region").build()
         )
         .setCityOptions(
             VGSCheckoutCityOptions.Builder().setFieldName("address_info.city").build()
