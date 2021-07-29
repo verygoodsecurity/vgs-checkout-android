@@ -2,6 +2,7 @@ package com.verygoodsecurity.vgscheckout.config.ui.view.address
 
 import android.os.Parcelable
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.VGSCheckoutAddressOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.VGSCheckoutOptionalAddressOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.city.VGSCheckoutCityOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.code.VGSCheckoutPostalAddressOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.country.VGSCheckoutCountryOptions
@@ -13,6 +14,7 @@ class VGSCheckoutBillingAddressOptions private constructor(
     val countryOptions: VGSCheckoutCountryOptions,
     val cityOptions: VGSCheckoutCityOptions,
     val addressOptions: VGSCheckoutAddressOptions,
+    val optionalAddressOptions: VGSCheckoutOptionalAddressOptions,
     val postalAddressOptions: VGSCheckoutPostalAddressOptions,
     val visibility: VGSCheckoutFieldVisibility
 ) : Parcelable {
@@ -22,6 +24,7 @@ class VGSCheckoutBillingAddressOptions private constructor(
         private var countryOptions = VGSCheckoutCountryOptions.Builder().build()
         private var cityOptions = VGSCheckoutCityOptions.Builder().build()
         private var addressOptions = VGSCheckoutAddressOptions.Builder().build()
+        private var optionalAddressOptions = VGSCheckoutOptionalAddressOptions.Builder().build()
         private var postalAddressOptions = VGSCheckoutPostalAddressOptions.Builder().build()
         private var visibility = VGSCheckoutFieldVisibility.VISIBLE
 
@@ -37,6 +40,10 @@ class VGSCheckoutBillingAddressOptions private constructor(
             this.addressOptions = options
         }
 
+        fun setOptionalAddressOptions(options: VGSCheckoutOptionalAddressOptions) = this.apply {
+            this.optionalAddressOptions = options
+        }
+
         fun setPostalAddressOptions(options: VGSCheckoutPostalAddressOptions) = this.apply {
             this.postalAddressOptions = options
         }
@@ -49,6 +56,7 @@ class VGSCheckoutBillingAddressOptions private constructor(
             countryOptions,
             cityOptions,
             addressOptions,
+            optionalAddressOptions,
             postalAddressOptions,
             visibility
         )

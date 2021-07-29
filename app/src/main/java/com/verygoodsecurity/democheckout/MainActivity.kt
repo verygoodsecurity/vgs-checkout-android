@@ -14,8 +14,8 @@ import com.verygoodsecurity.vgscheckout.VGSCheckout
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutConfiguration
 import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutRouteConfiguration
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutFormConfiguration
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutAddressOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.VGSCheckoutCityAddressOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillingAddressOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.VGSCheckoutAddressOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.city.VGSCheckoutCityOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.code.VGSCheckoutPostalAddressOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.country.VGSCheckoutCountryOptions
@@ -92,7 +92,7 @@ class MainActivity : AppCompatActivity() {
         )
         .build()
 
-    private fun getAddressOptions() = VGSCheckoutAddressOptions.Builder()
+    private fun getAddressOptions() = VGSCheckoutBillingAddressOptions.Builder()
         .setCountryOptions(
             VGSCheckoutCountryOptions.Builder()
                 .setFieldName("address_info.country")
@@ -102,7 +102,7 @@ class MainActivity : AppCompatActivity() {
             VGSCheckoutCityOptions.Builder().setFieldName("address_info.city").build()
         )
         .setAddressOptions(
-            VGSCheckoutCityAddressOptions.Builder()
+            VGSCheckoutAddressOptions.Builder()
                 .setFieldName("address_info.address")
                 .build()
         )

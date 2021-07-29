@@ -69,7 +69,7 @@ internal class AddressView @JvmOverloads internal constructor(
     override fun applyConfig(config: CheckoutFormConfiguration) {
         countriesSpinner.setFieldName(config.addressOptions.countryOptions.fieldName)
         addressViewHolder.input.setFieldName(config.addressOptions.addressOptions.fieldName)
-        addressOptionViewHolder.input.setFieldName(config.addressOptions.addressOptions.fieldName)
+        addressOptionViewHolder.input.setFieldName(config.addressOptions.optionalAddressOptions.fieldName)
         cityViewHolder.input.setFieldName(config.addressOptions.cityOptions.fieldName)
         postalAddressViewHolder.input.setFieldName(config.addressOptions.postalAddressOptions.fieldName)
     }
