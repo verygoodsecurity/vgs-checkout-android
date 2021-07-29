@@ -3,6 +3,7 @@ package com.verygoodsecurity.vgscheckout.view.checkout.card
 import android.content.Context
 import android.util.AttributeSet
 import com.verygoodsecurity.vgscheckout.R
+import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
 import com.verygoodsecurity.vgscheckout.collect.view.internal.CVCInputField
 import com.verygoodsecurity.vgscheckout.collect.view.internal.CardInputField
 import com.verygoodsecurity.vgscheckout.collect.widget.CardVerificationCodeEditText
@@ -57,6 +58,18 @@ internal class CreditCardView @JvmOverloads internal constructor(
         applyCVCOption(config.cardOptions.cvcOptions)
     }
 
+    override fun getInputViews(): Array<InputFieldView> = arrayOf(
+        cardNumberViewHolder.input,
+        expirationDateViewHolder.input,
+        cvcViewHolder.input
+    )
+
+    override fun isInputValid() = isInputValid(
+        cardNumberViewHolder.state,
+        expirationDateViewHolder.state,
+        cvcViewHolder.state
+    )
+
     override fun onStateChange(inputId: Int, state: InputFieldViewHolder.ViewState) {
         super.onStateChange(inputId, state)
         updateGridColor(
@@ -70,12 +83,6 @@ internal class CreditCardView @JvmOverloads internal constructor(
             R.id.vgsEtCVC -> updateCVCError(state)
         }
     }
-
-    override fun isInputValid() = isInputValid(
-        cardNumberViewHolder.state,
-        expirationDateViewHolder.state,
-        cvcViewHolder.state
-    )
 
     private fun applyCardNumberOption(options: VGSCheckoutCardNumberOptions) {
         cardNumberViewHolder.input.setFieldName(options.fieldName)

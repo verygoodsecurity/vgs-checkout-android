@@ -139,6 +139,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/vgs_checkout_margin_padding_size_small" />
 
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/mtvAddressError"
+                style="@style/VGSCheckout.ErrorText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                tools:text="Test error"
+                tools:visibility="visible" />
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/mbPay"
                 style="@style/VGSCheckout.Button.Pay"

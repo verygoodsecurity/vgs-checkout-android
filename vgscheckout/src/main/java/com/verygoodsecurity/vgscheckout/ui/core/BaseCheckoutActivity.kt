@@ -20,8 +20,6 @@ import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutConfiguration
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingConfiguration
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfiguration
-import com.verygoodsecurity.vgscheckout.config.ui.core.CheckoutFormConfiguration
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutAddressOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.core.VGSCheckoutFieldVisibility
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 import com.verygoodsecurity.vgscheckout.ui.CheckoutActivity
@@ -38,7 +36,7 @@ import com.verygoodsecurity.vgscheckout.view.checkout.holder.CardHolderView
 internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
     AppCompatActivity(), View.OnClickListener, VgsCollectResponseListener,
     BaseCheckoutFormView.OnStateChangeListener,
-    BaseCheckoutFormView.OnErrorListener {
+    BaseCheckoutFormView.OnValidationErrorListener {
 
     protected val config: C by lazy { resolveConfig(EXTRA_KEY_CONFIG) }
 
@@ -52,6 +50,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
     private lateinit var creditCardView: CreditCardView
     private lateinit var cardDetailsError: MaterialTextView
     private lateinit var addressView: AddressView
+    private lateinit var addressError: MaterialTextView
     private lateinit var payButton: MaterialButton
 
     abstract fun resolveConfig(key: String): C
@@ -88,65 +87,52 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
     }
 
     override fun onStateChanged(view: View, isInputValid: Boolean) {
-        updatePayButtonState()
+        payButton.isEnabled = isInputValid()
     }
 
-    override fun onError(view: View, message: String?) {
+    override fun onValidationError(view: View, message: String?) {
         when (view.id) {
             R.id.cardHolderView, R.id.creditCardView -> {
-                cardDetailsError.showWithText(
-                    cardHolderView.getError() ?: creditCardView.getError()
-                )
+                val errorMessage = cardHolderView.getError() ?: creditCardView.getError()
+                cardDetailsError.showWithText(errorMessage)
             }
+            R.id.addressView -> addressError.showWithText(message)
         }
-    }
-
-    private fun updatePayButtonState() {
-        payButton.isEnabled = cardHolderView.isInputValid() && creditCardView.isInputValid() &&
-                addressView.isInputValid()
     }
 
     @CallSuper
     protected open fun initView(savedInstanceState: Bundle?) {
-        findViewById<ImageView>(R.id.ivBack).setOnClickListener(this)
-        cardDetailsError = findViewById(R.id.mtvCardDetailsError)
-        payButton = findViewById(R.id.mbPay)
-        payButton.setOnClickListener(this)
-        config.formConfig.payButtonTitle?.let { payButton.text = it }
-        initCardHolderView(config.formConfig)
-        initCardView(config.formConfig)
-        initAddressView(config.formConfig.addressOptions)
-    }
-
-    private fun initCardHolderView(config: CheckoutFormConfiguration) {
         cardHolderView = findViewById(R.id.cardHolderView)
-        cardHolderView.onErrorListener = this
-        cardHolderView.onStateChangeListener = this
-        cardHolderView.applyConfig(config)
-        //        collect.bindView(*creditCardView.getVGSViews())
-    }
-
-    private fun initCardView(config: CheckoutFormConfiguration) {
         creditCardView = findViewById(R.id.creditCardView)
-        creditCardView.onErrorListener = this
-        creditCardView.onStateChangeListener = this
-        creditCardView.applyConfig(config)
-        //        collect.bindView(*creditCardView.getVGSViews())
+        cardDetailsError = findViewById(R.id.mtvCardDetailsError)
+        addressView = findViewById(R.id.addressView)
+        addressError = findViewById(R.id.mtvAddressError)
+        payButton = findViewById(R.id.mbPay)
+        initCheckoutView(cardHolderView, config.formConfig.cardOptions.cardHolderOptions.visibility)
+        initCheckoutView(creditCardView, VGSCheckoutFieldVisibility.VISIBLE)
+        initCheckoutView(addressView, config.formConfig.addressOptions.visibility)
+        config.formConfig.payButtonTitle?.let { payButton.text = it }
+        payButton.setOnClickListener(this)
+        findViewById<ImageView>(R.id.ivBack).setOnClickListener(this)
     }
 
-    private fun initAddressView(options: VGSCheckoutAddressOptions) {
-        addressView = findViewById(R.id.addressView)
-        when (options.visibility) {
-            VGSCheckoutFieldVisibility.VISIBLE -> {
-                addressView.onStateChangeListener = this
-                addressView.applyConfig(config.formConfig.addressOptions)
-//                collect.bindView(*addressView.getVGSViews())
-            }
-            VGSCheckoutFieldVisibility.GONE -> {
-                findViewById<MaterialTextView>(R.id.mtvAddressTitle).gone()
-                addressView.gone()
+    private fun initCheckoutView(
+        view: BaseCheckoutFormView,
+        visibility: VGSCheckoutFieldVisibility
+    ) {
+        when (visibility) {
+            VGSCheckoutFieldVisibility.GONE -> view.gone()
+            else -> {
+                view.onErrorListener = this
+                view.onStateChangeListener = this
+                view.applyConfig(config.formConfig)
+                collect.bindView(*view.getInputViews())
             }
         }
+    }
+
+    private fun isInputValid(): Boolean {
+        return cardHolderView.isInputValid() && creditCardView.isInputValid() && addressView.isInputValid()
     }
 
     private fun handlePayClicked() {

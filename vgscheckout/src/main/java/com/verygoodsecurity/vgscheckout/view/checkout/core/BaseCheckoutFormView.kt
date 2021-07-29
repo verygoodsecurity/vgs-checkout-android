@@ -2,12 +2,13 @@ package com.verygoodsecurity.vgscheckout.view.checkout.core
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
 import com.verygoodsecurity.vgscheckout.R
+import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
+import com.verygoodsecurity.vgscheckout.collect.widget.VGSDropdownEventSpinner
 import com.verygoodsecurity.vgscheckout.config.ui.core.CheckoutFormConfiguration
 import com.verygoodsecurity.vgscheckout.util.ObservableLinkedHashMap
 import com.verygoodsecurity.vgscheckout.util.extension.getColor
@@ -24,7 +25,7 @@ internal abstract class BaseCheckoutFormView @JvmOverloads internal constructor(
 
     var onStateChangeListener: OnStateChangeListener? = null
 
-    var onErrorListener: OnErrorListener? = null
+    var onErrorListener: OnValidationErrorListener? = null
 
     protected val errorDrawable = getDrawable(R.drawable.vgs_checkout_ic_error_white_10dp)
 
@@ -32,25 +33,26 @@ internal abstract class BaseCheckoutFormView @JvmOverloads internal constructor(
     private val errors = object : ObservableLinkedHashMap<Int, String?>() {
 
         override fun onChanged(map: ObservableLinkedHashMap<Int, String?>) {
-            onErrorListener?.onError(this@BaseCheckoutFormView, getError())
+            onErrorListener?.onValidationError(this@BaseCheckoutFormView, getError())
         }
     }
 
     @LayoutRes
-    abstract fun getLayoutId(): Int
+    protected abstract fun getLayoutId(): Int
 
-    abstract fun getColumnsCount(): Int
+    protected abstract fun getColumnsCount(): Int
 
-    abstract fun getRowsCount(): Int
+    protected abstract fun getRowsCount(): Int
 
     abstract fun applyConfig(config: CheckoutFormConfiguration)
+
+    abstract fun getInputViews(): Array<InputFieldView>
 
     abstract fun isInputValid(): Boolean
 
     init {
         LayoutInflater.from(context).inflate(getLayoutId(), this)
         initGrid()
-        Log.d("Test", "errorMMessages = ${errors.toList()}")
     }
 
     @CallSuper
@@ -60,11 +62,14 @@ internal abstract class BaseCheckoutFormView @JvmOverloads internal constructor(
 
     fun getError(): String? = errors.values.firstOrNull { it != null }
 
-    protected fun updateGridColor(vararg viewHolders: InputFieldViewHolder.ViewState) {
+    protected fun updateGridColor(
+        vararg viewHolders: InputFieldViewHolder.ViewState,
+        spinner: VGSDropdownEventSpinner? = null
+    ) {
         setGridColor(
             when {
-                isInputFocused(*viewHolders) -> getColor(R.color.vgs_checkout_border_highlighted)
-                isInputInvalid(*viewHolders) -> getColor(R.color.vgs_checkout_border_error)
+                spinner?.isDropdownOpened == true || isInputFocused(*viewHolders) -> getColor(R.color.vgs_checkout_border_highlighted)
+                viewHolders.any { isInputInvalid(it) } -> getColor(R.color.vgs_checkout_border_error)
                 else -> getColor(R.color.vgs_checkout_border_default)
             }
         )
@@ -74,20 +79,20 @@ internal abstract class BaseCheckoutFormView @JvmOverloads internal constructor(
         errors[key] = message
     }
 
-    protected fun isInputFocused(vararg viewHolders: InputFieldViewHolder.ViewState): Boolean {
-        return viewHolders.any { it.hasFocus }
+    protected fun isInputFocused(vararg state: InputFieldViewHolder.ViewState): Boolean {
+        return state.any { it.hasFocus }
     }
 
-    protected fun isInputEmpty(vararg viewHolders: InputFieldViewHolder.ViewState): Boolean {
-        return viewHolders.any { it.hasBeenFocusedBefore && it.isDirty && it.isEmpty }
+    protected fun isInputEmpty(state: InputFieldViewHolder.ViewState): Boolean {
+        return state.hasBeenFocusedBefore && state.isDirty && state.isEmpty
     }
 
-    protected fun isInputInvalid(vararg viewHolders: InputFieldViewHolder.ViewState): Boolean {
-        return viewHolders.any { it.hasBeenFocusedBefore && it.isDirty && !it.isValid }
+    protected fun isInputInvalid(state: InputFieldViewHolder.ViewState): Boolean {
+        return state.hasBeenFocusedBefore && state.isDirty && !state.isValid
     }
 
-    protected fun isInputValid(vararg viewHolders: InputFieldViewHolder.ViewState): Boolean {
-        return viewHolders.any { it.hasBeenFocusedBefore && it.isDirty && !it.isValid }
+    protected fun isInputValid(vararg states: InputFieldViewHolder.ViewState): Boolean {
+        return states.all { it.isValid }
     }
 
     private fun initGrid() {
@@ -108,8 +113,8 @@ internal abstract class BaseCheckoutFormView @JvmOverloads internal constructor(
         fun onStateChanged(view: View, isInputValid: Boolean)
     }
 
-    internal interface OnErrorListener {
+    internal interface OnValidationErrorListener {
 
-        fun onError(view: View, message: String?)
+        fun onValidationError(view: View, message: String?)
     }
 }
