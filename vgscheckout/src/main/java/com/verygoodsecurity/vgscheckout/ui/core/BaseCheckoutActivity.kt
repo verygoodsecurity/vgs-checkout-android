@@ -5,8 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Animatable
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.View
 import android.widget.ImageView
 import androidx.activity.result.ActivityResultLauncher
@@ -189,11 +187,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
         payButton.icon =
             getDrawableCompat(R.drawable.vgs_checkout_animated_ic_progress_white_16dp)
         (payButton.icon as? Animatable)?.start()
-        Handler(Looper.getMainLooper()).postDelayed({
-            runOnUiThread {
-                onPayClicked()
-            }
-        }, 5000)
+        onPayClicked()
     }
 
     companion object {
