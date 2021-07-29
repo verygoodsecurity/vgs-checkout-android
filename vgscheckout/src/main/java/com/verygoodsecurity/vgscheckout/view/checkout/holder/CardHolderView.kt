@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
+import com.verygoodsecurity.vgscheckout.collect.view.card.validation.rules.VGSInfoRule
 import com.verygoodsecurity.vgscheckout.collect.widget.VGSEditText
 import com.verygoodsecurity.vgscheckout.config.ui.core.CheckoutFormConfiguration
 import com.verygoodsecurity.vgscheckout.util.extension.getString
@@ -24,6 +25,11 @@ internal class CardHolderView @JvmOverloads internal constructor(
         this
     )
 
+    init {
+
+        initInputValidation()
+    }
+
     override fun getLayoutId(): Int = R.layout.vgs_checkout_card_holder_view
 
     override fun getColumnsCount(): Int = DEFAULT_COLUMN_ROW_COUNT
@@ -42,6 +48,14 @@ internal class CardHolderView @JvmOverloads internal constructor(
         super.onStateChange(inputId, state)
         updateGridColor(state)
         updateErrorMessage(state)
+    }
+
+    private fun initInputValidation() {
+        cardHolderViewHolder.input.addRule(
+            VGSInfoRule.ValidationBuilder()
+                .setRegex(NOT_EMPTY_REGEX)
+                .build()
+        )
     }
 
     private fun updateErrorMessage(state: InputFieldViewHolder.ViewState) {

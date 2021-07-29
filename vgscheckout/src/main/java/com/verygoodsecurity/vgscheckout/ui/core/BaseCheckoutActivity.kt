@@ -20,6 +20,7 @@ import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutConfiguration
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingConfiguration
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfiguration
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillingAddressVisibility
 import com.verygoodsecurity.vgscheckout.config.ui.view.core.VGSCheckoutFieldVisibility
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 import com.verygoodsecurity.vgscheckout.ui.CheckoutActivity
@@ -139,7 +140,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
         addressError = findViewById(R.id.mtvAddressError)
         addressView = findViewById(R.id.addressView)
         when (config.formConfig.addressOptions.visibility) {
-            VGSCheckoutFieldVisibility.GONE -> {
+            VGSCheckoutBillingAddressVisibility.HIDDEN -> {
                 findViewById<MaterialTextView>(R.id.mtvAddressTitle).gone()
                 addressView.gone()
             }

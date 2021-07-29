@@ -7,6 +7,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
+import com.verygoodsecurity.vgscheckout.collect.view.card.validation.rules.VGSInfoRule
 import com.verygoodsecurity.vgscheckout.collect.widget.VGSDropdownEventSpinner
 import com.verygoodsecurity.vgscheckout.collect.widget.VGSEditText
 import com.verygoodsecurity.vgscheckout.config.ui.core.CheckoutFormConfiguration
@@ -58,6 +59,7 @@ internal class AddressView @JvmOverloads internal constructor(
         setupCountries()
         setupPostalAddressCode()
         initListeners()
+        initInputValidation()
     }
 
     override fun getLayoutId(): Int = R.layout.vgs_checkout_address_view
@@ -131,6 +133,15 @@ internal class AddressView @JvmOverloads internal constructor(
 
     private fun initListeners() {
         countriesSpinner.onDropdownStateChangeListener = this
+    }
+
+    private fun initInputValidation() {
+        val rule = VGSInfoRule.ValidationBuilder()
+            .setRegex(NOT_EMPTY_REGEX)
+            .build()
+        addressViewHolder.input.addRule(rule)
+        cityViewHolder.input.addRule(rule)
+        postalAddressViewHolder.input.addRule(rule)
     }
 
     private fun updateGridColor() {
