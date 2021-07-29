@@ -102,18 +102,60 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
 
     @CallSuper
     protected open fun initView(savedInstanceState: Bundle?) {
-        cardHolderView = findViewById(R.id.cardHolderView)
-        creditCardView = findViewById(R.id.creditCardView)
-        cardDetailsError = findViewById(R.id.mtvCardDetailsError)
-        addressView = findViewById(R.id.addressView)
-        addressError = findViewById(R.id.mtvAddressError)
-        payButton = findViewById(R.id.mbPay)
-        initCheckoutView(cardHolderView, config.formConfig.cardOptions.cardHolderOptions.visibility)
-        initCheckoutView(creditCardView, VGSCheckoutFieldVisibility.VISIBLE)
-        initCheckoutView(addressView, config.formConfig.addressOptions.visibility)
-        config.formConfig.payButtonTitle?.let { payButton.text = it }
-        payButton.setOnClickListener(this)
+        initBackButton()
+        initCardHolderView()
+        initCreditCardView()
+        initAddressView()
+        initPayButton()
+    }
+
+    private fun initBackButton() {
         findViewById<ImageView>(R.id.ivBack).setOnClickListener(this)
+    }
+
+    private fun initCardHolderView() {
+        cardHolderView = findViewById(R.id.cardHolderView)
+        when (config.formConfig.cardOptions.cardHolderOptions.visibility) {
+            VGSCheckoutFieldVisibility.GONE -> cardHolderView.gone()
+            else -> {
+                cardHolderView.onErrorListener = this
+                cardHolderView.onStateChangeListener = this
+                cardHolderView.applyConfig(config.formConfig)
+                collect.bindView(*cardHolderView.getInputViews())
+            }
+        }
+    }
+
+    private fun initCreditCardView() {
+        cardDetailsError = findViewById(R.id.mtvCardDetailsError)
+        creditCardView = findViewById(R.id.creditCardView)
+        creditCardView.onErrorListener = this
+        creditCardView.onStateChangeListener = this
+        creditCardView.applyConfig(config.formConfig)
+        collect.bindView(*creditCardView.getInputViews())
+    }
+
+    private fun initAddressView() {
+        addressError = findViewById(R.id.mtvAddressError)
+        addressView = findViewById(R.id.addressView)
+        when (config.formConfig.addressOptions.visibility) {
+            VGSCheckoutFieldVisibility.GONE -> {
+                findViewById<MaterialTextView>(R.id.mtvAddressTitle).gone()
+                addressView.gone()
+            }
+            else -> {
+                addressView.onErrorListener = this
+                addressView.onStateChangeListener = this
+                addressView.applyConfig(config.formConfig)
+                collect.bindView(*addressView.getInputViews())
+            }
+        }
+    }
+
+    private fun initPayButton() {
+        payButton = findViewById(R.id.mbPay)
+        payButton.setOnClickListener(this)
+        config.formConfig.payButtonTitle?.let { payButton.text = it }
     }
 
     private fun initCheckoutView(
@@ -139,7 +181,8 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
         creditCardView.isEnabled = false
         payButton.isClickable = false
         payButton.text = getString(R.string.vgs_checkout_pay_button_processing_title)
-        payButton.icon = getDrawableCompat(R.drawable.vgs_checkout_animated_ic_progress_white_16dp)
+        payButton.icon =
+            getDrawableCompat(R.drawable.vgs_checkout_animated_ic_progress_white_16dp)
         (payButton.icon as? Animatable)?.start()
         onPayClicked()
     }

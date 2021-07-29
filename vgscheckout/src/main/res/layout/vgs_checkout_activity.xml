@@ -107,7 +107,8 @@
             <com.verygoodsecurity.vgscheckout.view.checkout.holder.CardHolderView
                 android:id="@+id/cardHolderView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/vgs_checkout_margin_padding_size_small" />
 
             <com.verygoodsecurity.vgscheckout.view.checkout.card.CreditCardView
                 android:id="@+id/creditCardView"
