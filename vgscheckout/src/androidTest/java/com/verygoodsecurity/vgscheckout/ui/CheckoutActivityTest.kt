@@ -24,7 +24,7 @@ import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutRouteConfig
 import com.verygoodsecurity.vgscheckout.config.networking.request.VGSCheckoutRequestOptions
 import com.verygoodsecurity.vgscheckout.config.networking.request.core.VGSCheckoutHTTPMethod
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutFormConfiguration
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutAddressOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillingAddressOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.core.VGSCheckoutFieldVisibility
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 import com.verygoodsecurity.vgscheckout.util.ActionHelper.doAction
@@ -159,7 +159,7 @@ class CheckoutActivityTest {
                     .setFormConfig(
                         VGSCheckoutFormConfiguration.Builder()
                             .setAddressOptions(
-                                VGSCheckoutAddressOptions.Builder()
+                                VGSCheckoutBillingAddressOptions.Builder()
                                     .setAddressFormVisibility(VGSCheckoutFieldVisibility.GONE)
                                     .build()
                             )

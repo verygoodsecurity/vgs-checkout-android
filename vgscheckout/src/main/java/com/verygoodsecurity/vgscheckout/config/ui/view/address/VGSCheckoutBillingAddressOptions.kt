@@ -1,7 +1,7 @@
 package com.verygoodsecurity.vgscheckout.config.ui.view.address
 
 import android.os.Parcelable
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.VGSCheckoutCityAddressOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.VGSCheckoutAddressOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.city.VGSCheckoutCityOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.code.VGSCheckoutPostalAddressOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.country.VGSCheckoutCountryOptions
@@ -9,10 +9,10 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.core.VGSCheckoutFieldVisi
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-class VGSCheckoutAddressOptions private constructor(
+class VGSCheckoutBillingAddressOptions private constructor(
     val countryOptions: VGSCheckoutCountryOptions,
     val cityOptions: VGSCheckoutCityOptions,
-    val addressOptions: VGSCheckoutCityAddressOptions,
+    val addressOptions: VGSCheckoutAddressOptions,
     val postalAddressOptions: VGSCheckoutPostalAddressOptions,
     val visibility: VGSCheckoutFieldVisibility
 ) : Parcelable {
@@ -21,7 +21,7 @@ class VGSCheckoutAddressOptions private constructor(
 
         private var countryOptions = VGSCheckoutCountryOptions.Builder().build()
         private var cityOptions = VGSCheckoutCityOptions.Builder().build()
-        private var addressOptions = VGSCheckoutCityAddressOptions.Builder().build()
+        private var addressOptions = VGSCheckoutAddressOptions.Builder().build()
         private var postalAddressOptions = VGSCheckoutPostalAddressOptions.Builder().build()
         private var visibility = VGSCheckoutFieldVisibility.VISIBLE
 
@@ -33,7 +33,7 @@ class VGSCheckoutAddressOptions private constructor(
             this.cityOptions = options
         }
 
-        fun setAddressOptions(options: VGSCheckoutCityAddressOptions) = this.apply {
+        fun setAddressOptions(options: VGSCheckoutAddressOptions) = this.apply {
             this.addressOptions = options
         }
 
@@ -45,7 +45,7 @@ class VGSCheckoutAddressOptions private constructor(
             this.visibility = visibility
         }
 
-        fun build(): VGSCheckoutAddressOptions = VGSCheckoutAddressOptions(
+        fun build(): VGSCheckoutBillingAddressOptions = VGSCheckoutBillingAddressOptions(
             countryOptions,
             cityOptions,
             addressOptions,
