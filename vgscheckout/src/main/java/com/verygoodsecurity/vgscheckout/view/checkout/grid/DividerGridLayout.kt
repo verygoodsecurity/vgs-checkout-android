@@ -1,7 +1,6 @@
 package com.verygoodsecurity.vgscheckout.view.checkout.grid
 
 import android.content.Context
-import android.content.res.ColorStateList
 import android.graphics.*
 import android.os.Parcelable
 import android.util.AttributeSet
@@ -17,7 +16,7 @@ import com.verygoodsecurity.vgscheckout.util.extension.*
 import kotlinx.parcelize.Parcelize
 import kotlin.math.max
 
-internal class DividerGridLayout @JvmOverloads constructor(
+internal open class DividerGridLayout @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
@@ -28,7 +27,6 @@ internal class DividerGridLayout @JvmOverloads constructor(
 
     private var gridWidth: Int = DEFAULT_GRID_WIDTH
     private var gridColor: Int = DEFAULT_GRID_COLOR
-    private var gridColorStateList: ColorStateList? = null
     private var gridPaint: Paint? = null
 
     private var selectedGridColor: Int = DEFAULT_GRID_COLOR
@@ -37,13 +35,12 @@ internal class DividerGridLayout @JvmOverloads constructor(
     private var selectedId: Int = DEFAULT_SELECTED_ID
 
     init {
-        isEnabled = true
         context.getStyledAttributes(attrs, R.styleable.DividerGridLayout) {
             cornersRadius = getDimension(
                 R.styleable.DividerGridLayout_dgl_corners_radius,
                 DEFAULT_CORNERS_RADIUS
             )
-            gridWidth = getDimensionPixelOffset(
+            gridWidth = getDimensionPixelSize(
                 R.styleable.DividerGridLayout_dgl_grid_width,
                 DEFAULT_GRID_WIDTH
             )
@@ -51,16 +48,13 @@ internal class DividerGridLayout @JvmOverloads constructor(
                 R.styleable.DividerGridLayout_dgl_grid_color,
                 DEFAULT_GRID_COLOR
             )
-            gridColorStateList = getColorStateListOrNull(
-                R.styleable.DividerGridLayout_dgl_grid_color
-            )
             selectedGridColor = getColor(
                 R.styleable.DividerGridLayout_dgl_selected_grid_color,
                 DEFAULT_GRID_COLOR
             )
             if (gridWidth.isPositive()) {
                 gridPaint = Paint().apply {
-                    color = gridColorStateList.getColor(drawableState, gridColor)
+                    color = gridColor
                     style = Paint.Style.STROKE
                     strokeWidth = gridWidth.toFloat()
                     isAntiAlias = true
@@ -124,23 +118,22 @@ internal class DividerGridLayout @JvmOverloads constructor(
         }
     }
 
+    fun setRoundedCorners(radius: Float) {
+        this.cornersRadius = radius
+        invalidate()
+    }
+
+    fun setGridWidth(width: Int) {
+        this.gridWidth = width
+        updatePadding()
+        invalidate()
+    }
+
     fun setGridColor(@ColorInt color: Int) {
         gridColor = color
         if (gridWidth.isPositive()) {
             gridPaint = Paint().apply {
                 this.color = gridColor
-                this.style = Paint.Style.STROKE
-                this.strokeWidth = gridWidth.toFloat()
-            }
-            invalidate()
-        }
-    }
-
-    fun setGridColor(stateList: ColorStateList) {
-        gridColorStateList = stateList
-        if (gridWidth.isPositive()) {
-            gridPaint = Paint().apply {
-                this.color = gridColorStateList.getColor(drawableState, gridColor)
                 this.style = Paint.Style.STROKE
                 this.strokeWidth = gridWidth.toFloat()
             }
@@ -218,8 +211,8 @@ internal class DividerGridLayout @JvmOverloads constructor(
 
         private const val DEFAULT_CORNERS_RADIUS = 0f
         private const val DEFAULT_GRID_WIDTH = -1
-        private const val DEFAULT_GRID_COLOR = Color.BLACK
-        private const val DEFAULT_SELECTED_ID = -1
+        private const val DEFAULT_GRID_COLOR = Color.BLUE
+        private const val DEFAULT_SELECTED_ID = Int.MIN_VALUE
     }
 
     @Parcelize

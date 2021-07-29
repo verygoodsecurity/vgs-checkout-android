@@ -1,10 +1,10 @@
-package com.verygoodsecurity.vgscheckout.config.ui.view.address.region
+package com.verygoodsecurity.vgscheckout.config.ui.view.address.address
 
 import com.verygoodsecurity.vgscheckout.config.ui.view.core.ViewOptions
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-class VGSCheckoutRegionOptions private constructor(
+class VGSCheckoutAddressOptions private constructor(
     override val fieldName: String
 ) : ViewOptions() {
 
@@ -16,6 +16,6 @@ class VGSCheckoutRegionOptions private constructor(
             this.fieldName = fieldName
         }
 
-        fun build() = VGSCheckoutRegionOptions(fieldName)
+        fun build() = VGSCheckoutAddressOptions(fieldName)
     }
 }

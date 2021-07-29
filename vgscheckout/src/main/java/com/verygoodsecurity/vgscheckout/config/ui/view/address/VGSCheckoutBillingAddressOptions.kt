@@ -1,62 +1,61 @@
 package com.verygoodsecurity.vgscheckout.config.ui.view.address
 
 import android.os.Parcelable
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.VGSCheckoutCityAddressOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.VGSCheckoutAddressOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.VGSCheckoutOptionalAddressOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.city.VGSCheckoutCityOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.code.VGSCheckoutPostalAddressOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.country.VGSCheckoutCountryOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.region.VGSCheckoutRegionOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.core.VGSCheckoutFieldVisibility
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-class VGSCheckoutAddressOptions private constructor(
+class VGSCheckoutBillingAddressOptions private constructor(
     val countryOptions: VGSCheckoutCountryOptions,
-    val regionOptions: VGSCheckoutRegionOptions,
     val cityOptions: VGSCheckoutCityOptions,
-    val addressOptions: VGSCheckoutCityAddressOptions,
+    val addressOptions: VGSCheckoutAddressOptions,
+    val optionalAddressOptions: VGSCheckoutOptionalAddressOptions,
     val postalAddressOptions: VGSCheckoutPostalAddressOptions,
-    val visibility: VGSCheckoutFieldVisibility
+    val visibility: VGSCheckoutBillingAddressVisibility
 ) : Parcelable {
 
     class Builder {
 
         private var countryOptions = VGSCheckoutCountryOptions.Builder().build()
-        private var regionOptions = VGSCheckoutRegionOptions.Builder().build()
         private var cityOptions = VGSCheckoutCityOptions.Builder().build()
-        private var addressOptions = VGSCheckoutCityAddressOptions.Builder().build()
+        private var addressOptions = VGSCheckoutAddressOptions.Builder().build()
+        private var optionalAddressOptions = VGSCheckoutOptionalAddressOptions.Builder().build()
         private var postalAddressOptions = VGSCheckoutPostalAddressOptions.Builder().build()
-        private var visibility = VGSCheckoutFieldVisibility.VISIBLE
+        private var visibility = VGSCheckoutBillingAddressVisibility.VISIBLE
 
         fun setCountryOptions(options: VGSCheckoutCountryOptions) = this.apply {
             this.countryOptions = options
-        }
-
-        fun setRegionOptions(options: VGSCheckoutRegionOptions) = this.apply {
-            this.regionOptions = options
         }
 
         fun setCityOptions(options: VGSCheckoutCityOptions) = this.apply {
             this.cityOptions = options
         }
 
-        fun setAddressOptions(options: VGSCheckoutCityAddressOptions) = this.apply {
+        fun setAddressOptions(options: VGSCheckoutAddressOptions) = this.apply {
             this.addressOptions = options
+        }
+
+        fun setOptionalAddressOptions(options: VGSCheckoutOptionalAddressOptions) = this.apply {
+            this.optionalAddressOptions = options
         }
 
         fun setPostalAddressOptions(options: VGSCheckoutPostalAddressOptions) = this.apply {
             this.postalAddressOptions = options
         }
 
-        fun setAddressFormVisibility(visibility: VGSCheckoutFieldVisibility) = this.apply {
+        fun setAddressFormVisibility(visibility: VGSCheckoutBillingAddressVisibility) = this.apply {
             this.visibility = visibility
         }
 
-        fun build(): VGSCheckoutAddressOptions = VGSCheckoutAddressOptions(
+        fun build(): VGSCheckoutBillingAddressOptions = VGSCheckoutBillingAddressOptions(
             countryOptions,
-            regionOptions,
             cityOptions,
             addressOptions,
+            optionalAddressOptions,
             postalAddressOptions,
             visibility
         )

@@ -2,126 +2,97 @@ package com.verygoodsecurity.vgscheckout.view.checkout.address
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.LayoutInflater
 import android.view.View
 import android.widget.AdapterView
-import androidx.appcompat.widget.LinearLayoutCompat
-import androidx.constraintlayout.widget.ConstraintLayout
-import com.google.android.material.textview.MaterialTextView
+import android.widget.ArrayAdapter
 import com.verygoodsecurity.vgscheckout.R
-import com.verygoodsecurity.vgscheckout.collect.view.VGSCollectView
+import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
 import com.verygoodsecurity.vgscheckout.collect.view.card.validation.rules.VGSInfoRule
 import com.verygoodsecurity.vgscheckout.collect.widget.VGSDropdownEventSpinner
 import com.verygoodsecurity.vgscheckout.collect.widget.VGSEditText
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutAddressOptions
-import com.verygoodsecurity.vgscheckout.util.ObservableLinkedHashMap
-import com.verygoodsecurity.vgscheckout.util.extension.*
-import com.verygoodsecurity.vgscheckout.view.checkout.address.adapter.CountryAdapter
-import com.verygoodsecurity.vgscheckout.view.checkout.address.util.country.CountriesHelper
-import com.verygoodsecurity.vgscheckout.view.checkout.address.util.country.model.Country
-import com.verygoodsecurity.vgscheckout.view.checkout.address.util.emptyError
-import com.verygoodsecurity.vgscheckout.view.checkout.address.util.hint
-import com.verygoodsecurity.vgscheckout.view.checkout.address.util.invalidError
-import com.verygoodsecurity.vgscheckout.view.checkout.address.util.subtitle
-import com.verygoodsecurity.vgscheckout.view.checkout.core.InputViewHolder
-import com.verygoodsecurity.vgscheckout.view.checkout.core.OnInputViewStateChangedListener
-import com.verygoodsecurity.vgscheckout.view.checkout.core.OnStateChangeListener
-import com.verygoodsecurity.vgscheckout.view.checkout.core.ViewState
-import com.verygoodsecurity.vgscheckout.view.checkout.grid.DividerGridLayout
+import com.verygoodsecurity.vgscheckout.config.ui.core.CheckoutFormConfiguration
+import com.verygoodsecurity.vgscheckout.util.address.AddressHelper
+import com.verygoodsecurity.vgscheckout.util.address.USA
+import com.verygoodsecurity.vgscheckout.util.address.model.PostalAddressType
+import com.verygoodsecurity.vgscheckout.util.extension.getString
+import com.verygoodsecurity.vgscheckout.util.extension.setDrawableEnd
+import com.verygoodsecurity.vgscheckout.view.checkout.core.BaseCheckoutFormView
+import com.verygoodsecurity.vgscheckout.view.checkout.core.InputFieldViewHolder
 
 internal class AddressView @JvmOverloads internal constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : LinearLayoutCompat(context, attrs, defStyleAttr), OnInputViewStateChangedListener,
-    AdapterView.OnItemSelectedListener, VGSDropdownEventSpinner.OnDropdownStateChangeListener {
+) : BaseCheckoutFormView(context, attrs, defStyleAttr), AdapterView.OnItemSelectedListener,
+    VGSDropdownEventSpinner.OnDropdownStateChangeListener {
 
-    var onStateChangeListener: OnStateChangeListener? = null
+    private val countriesSpinner: VGSDropdownEventSpinner = findViewById(R.id.spinnerCountries)
 
-    private val errorMessages: ObservableLinkedHashMap<Int, String?> = initErrorMessages()
+    private val addressViewHolder = InputFieldViewHolder<VGSEditText>(
+        findViewById(R.id.mtvAddressSubtitle),
+        findViewById(R.id.vgsEtAddress),
+        this
+    )
 
-    private var dividerGridLayout: DividerGridLayout
-    private val errorText: MaterialTextView
-    private val countriesRoot: ConstraintLayout
-    private val countriesSpinner: VGSDropdownEventSpinner
-    private val addressRoot: LinearLayoutCompat
-    private val addressSubtitle: MaterialTextView
-    private val addressInput: VGSEditText
-    private val cityRoot: LinearLayoutCompat
-    private val citySubtitle: MaterialTextView
-    private val cityInput: VGSEditText
-    private val regionInputRoot: LinearLayoutCompat
-    private val regionSubtitle: MaterialTextView
-    private val regionInput: VGSEditText
-    private val postalAddressRoot: LinearLayoutCompat
-    private val postalAddressSubtitle: MaterialTextView
-    private val postalAddressInput: VGSEditText
+    private val addressOptionViewHolder = InputFieldViewHolder<VGSEditText>(
+        findViewById(R.id.mtvAddressOptionalSubtitle),
+        findViewById(R.id.vgsEtAddressOptional),
+        this
+    )
 
-    private val addressInputHolder: InputViewHolder
-    private val cityInputHolder: InputViewHolder
-    private val regionInputHolder: InputViewHolder
-    private val postalAddressInputHolder: InputViewHolder
+    private val cityViewHolder = InputFieldViewHolder<VGSEditText>(
+        findViewById(R.id.mtvCitySubtitle),
+        findViewById(R.id.vgsEtCity),
+        this
+    )
 
-    private val defaultBorderColor by lazy { getColor(R.color.vgs_checkout_border_default) }
-    private val focusedBorderColor by lazy { getColor(R.color.vgs_checkout_border_highlighted) }
-    private val errorBorderColor by lazy { getColor(R.color.vgs_checkout_border_error) }
-    private val errorDrawable by lazy { getDrawable(R.drawable.vgs_checkout_ic_error_white_10dp) }
+    private val postalAddressViewHolder = InputFieldViewHolder<VGSEditText>(
+        findViewById(R.id.mtvPostalAddressSubtitle),
+        findViewById(R.id.vgsEtPostalAddress),
+        this
+    )
 
     private var currentCountry: Country = CountriesHelper.getCountry(CountriesHelper.ISO.USA)
 
     init {
 
-        LayoutInflater.from(context).inflate(R.layout.vgs_checkout_address_view, this)
-
-        orientation = VERTICAL
-
-        dividerGridLayout = findViewById(R.id.dglRoot)
-        errorText = findViewById(R.id.tvAddressError)
-        countriesRoot = findViewById(R.id.clCountriesRoot)
-        countriesSpinner = findViewById(R.id.spinnerCountries)
-        addressRoot = findViewById(R.id.llcAddressRoot)
-        addressSubtitle = findViewById(R.id.mtvAddressSubtitle)
-        addressInput = findViewById(R.id.vgsEtAddress)
-        cityRoot = findViewById(R.id.llcCityRoot)
-        citySubtitle = findViewById(R.id.mtvCitySubtitle)
-        cityInput = findViewById(R.id.vgsEtCity)
-        regionInputRoot = findViewById(R.id.llcRegionInputRoot)
-        regionSubtitle = findViewById(R.id.mtvRegionInputSubtitle)
-        regionInput = findViewById(R.id.vgsEtRegion)
-        postalAddressRoot = findViewById(R.id.llcPostalAddressRoot)
-        postalAddressSubtitle = findViewById(R.id.mtvPostalAddressSubtitle)
-        postalAddressInput = findViewById(R.id.vgsEtPostalAddress)
-
-        addressInputHolder = InputViewHolder(addressInput, this)
-        cityInputHolder = InputViewHolder(cityInput, this)
-        regionInputHolder = InputViewHolder(regionInput, this)
-        postalAddressInputHolder = InputViewHolder(postalAddressInput, this)
-
         setupCountries()
-        setupRegions()
         setupPostalAddressCode()
-
-        initInputValidation()
         initListeners()
+        initInputValidation()
     }
 
-    override fun onStateChange(id: Int, state: ViewState) {
-        updateGridColor()
-        onStateChangeListener?.onStateChanged(this, isValid())
-        if (state.shouldValidate()) {
-            when (id) {
-                R.id.vgsEtAddress -> updateAddressError(state)
-                R.id.vgsEtCity -> updateCityError(state)
-                R.id.vgsEtRegion -> updateRegionError(state)
-                R.id.vgsEtPostalAddress -> updatePostalAddressError(state)
-            }
-        }
+    override fun getLayoutId(): Int = R.layout.vgs_checkout_address_view
+
+    override fun getColumnsCount() = COLUMN_COUNT
+
+    override fun getRowsCount() = ROW_COUNT
+
+    override fun applyConfig(config: CheckoutFormConfiguration) {
+        countriesSpinner.setFieldName(config.addressOptions.countryOptions.fieldName)
+        addressViewHolder.input.setFieldName(config.addressOptions.addressOptions.fieldName)
+        addressOptionViewHolder.input.setFieldName(config.addressOptions.optionalAddressOptions.fieldName)
+        cityViewHolder.input.setFieldName(config.addressOptions.cityOptions.fieldName)
+        postalAddressViewHolder.input.setFieldName(config.addressOptions.postalAddressOptions.fieldName)
     }
+
+    override fun getInputViews(): Array<InputFieldView> = arrayOf(
+        addressViewHolder.input,
+        addressOptionViewHolder.input,
+        cityViewHolder.input,
+        postalAddressViewHolder.input,
+    )
+
+    override fun isInputValid(): Boolean =
+        isInputValid(
+            addressViewHolder.state,
+            cityViewHolder.state,
+            postalAddressViewHolder.state
+        )
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         (parent?.getItemAtPosition(position) as? Country)?.let {
             currentCountry = it
-            setupRegions()
             setupPostalAddressCode()
         }
     }
@@ -136,58 +107,13 @@ internal class AddressView @JvmOverloads internal constructor(
         updateGridColor()
     }
 
-    fun applyConfig(options: VGSCheckoutAddressOptions) {
-        countriesSpinner.setFieldName(options.countryOptions.fieldName)
-        cityInput.setFieldName(options.cityOptions.fieldName)
-        addressInput.setFieldName(options.addressOptions.fieldName)
-        postalAddressInput.setFieldName(options.postalAddressOptions.fieldName)
-        regionInput.setFieldName(options.regionOptions.fieldName)
-    }
-
-    fun getVGSViews() = arrayOf<VGSCollectView>(
-        countriesSpinner,
-        addressInput,
-        cityInput,
-        regionInput,
-        postalAddressInput
-    )
-
-    fun isValid(): Boolean = isAllInputInvalid()
-
-    private fun initErrorMessages(): ObservableLinkedHashMap<Int, String?> {
-        val defaultMessages = linkedMapOf<Int, String?>(
-            R.id.vgsEtAddress to null,
-            R.id.vgsEtCity to null,
-            R.id.vgsEtRegion to null,
-            R.id.vgsEtPostalAddress to null
-        )
-        return object : ObservableLinkedHashMap<Int, String?>(defaultMessages) {
-
-            override fun onChanged(map: ObservableLinkedHashMap<Int, String?>) {
-                errorText.showWithText(map.firstNotNullOfOrNull { it.value })
-                map.forEach {
-                    val drawable = if (it.value == null) null else errorDrawable
-                    when (it.key) {
-                        R.id.vgsEtAddress -> addressSubtitle.setDrawableEnd(drawable)
-                        R.id.vgsEtCity -> citySubtitle.setDrawableEnd(drawable)
-                        R.id.vgsEtRegion -> regionSubtitle.setDrawableEnd(drawable)
-                        R.id.vgsEtPostalAddress -> postalAddressSubtitle.setDrawableEnd(drawable)
-                    }
-                }
-            }
-        }
-    }
-
-    private fun initListeners() {
-        countriesSpinner.onDropdownStateChangeListener = this
-    }
-
-    private fun initInputValidation() {
-        with(VGSInfoRule.ValidationBuilder().setAllowableMinLength(MIN_INPUT_LENGTH).build()) {
-            addressInput.addRule(this)
-            regionInput.addRule(this)
-            cityInput.addRule(this)
-            regionInput.addRule(this)
+    override fun onStateChange(inputId: Int, state: InputFieldViewHolder.ViewState) {
+        super.onStateChange(inputId, state)
+        updateGridColor()
+        when (inputId) {
+            R.id.vgsEtAddress -> updateAddressError(state)
+            R.id.vgsEtCity -> updateCityError(state)
+            R.id.vgsEtPostalAddress -> updatePostalAddressError(state)
         }
     }
 
@@ -198,87 +124,105 @@ internal class AddressView @JvmOverloads internal constructor(
         countriesSpinner.setSelection(countries.indexOf(currentCountry))
     }
 
-    private fun setupRegions() {
-        regionSubtitle.text = getString(currentCountry.regionType.subtitle())
-        regionInput.setHint(getString(currentCountry.regionType.hint()))
-    }
-
     private fun setupPostalAddressCode() {
-        postalAddressSubtitle.text = getString(currentCountry.postalAddressType.subtitle())
-        postalAddressInput.setHint(getString(currentCountry.postalAddressType.hint()))
-        postalAddressInput.addRule(
+        val type = CountriesHelper.getPostalAddressType(currentCountry)
+        postalAddressViewHolder.subtitle.text = getPostalAddressSubtitle(type)
+        postalAddressViewHolder.input.setHint(getPostalAddressHint(type))
+        postalAddressViewHolder.input.addRule(
             VGSInfoRule.ValidationBuilder().setRegex(currentCountry.postalAddressRegex).build()
         )
-        postalAddressInput.reInvalidateInput()
+        postalAddressViewHolder.input.reInvalidateInput()
+    }
+
+    private fun initListeners() {
+        countriesSpinner.onDropdownStateChangeListener = this
+    }
+
+    private fun initInputValidation() {
+        val rule = VGSInfoRule.ValidationBuilder()
+            .setRegex(NOT_EMPTY_REGEX)
+            .build()
+        addressViewHolder.input.addRule(rule)
+        cityViewHolder.input.addRule(rule)
+        postalAddressViewHolder.input.addRule(rule)
     }
 
     private fun updateGridColor() {
-        dividerGridLayout.setGridColor(
-            when {
-                countriesSpinner.isDropdownOpened || isAnyInputFocused() -> focusedBorderColor
-                isAnyInputInvalid() -> errorBorderColor
-                else -> defaultBorderColor
-            }
+        updateGridColor(
+            addressViewHolder.state,
+            addressOptionViewHolder.state,
+            cityViewHolder.state,
+            postalAddressViewHolder.state,
+            spinner = countriesSpinner
         )
     }
 
-    private fun updateRegionError(state: ViewState) {
-        errorMessages[R.id.vgsEtRegion] = if (state.isEmpty) {
-            getString(currentCountry.regionType.emptyError())
-        } else {
-            null
+    private fun updateAddressError(state: InputFieldViewHolder.ViewState) {
+        val (message, drawable) = when {
+            isInputEmpty(state) -> getString(R.string.vgs_checkout_address_info_address_line1_empty_error) to errorDrawable
+            else -> null to null
+        }
+        updateError(addressViewHolder.input.id, message)
+        addressViewHolder.subtitle.setDrawableEnd(drawable)
+    }
+
+    private fun updateCityError(state: InputFieldViewHolder.ViewState) {
+        val (message, drawable) = when {
+            isInputEmpty(state) -> getString(R.string.vgs_checkout_address_info_city_empty_error) to errorDrawable
+            else -> null to null
+        }
+        updateError(cityViewHolder.input.id, message)
+        cityViewHolder.subtitle.setDrawableEnd(drawable)
+    }
+
+    private fun updatePostalAddressError(state: InputFieldViewHolder.ViewState) {
+        val postalAddressType = AddressHelper.getPostalAddressType(currentCountry)
+        val (message, drawable) = when {
+            isInputEmpty(state) -> getPostalAddressEmptyError(postalAddressType) to errorDrawable
+            isInputInvalid(state) -> getPostalAddressInvalidError(postalAddressType) to errorDrawable
+            else -> null to null
+        }
+        updateError(postalAddressViewHolder.input.id, message)
+        postalAddressViewHolder.subtitle.setDrawableEnd(drawable)
+    }
+
+    private fun createSpinnerAdapter(data: List<String>): ArrayAdapter<String> {
+        return ArrayAdapter(context, R.layout.vgs_checkout_spinner_header_layout, data).apply {
+            setDropDownViewResource(R.layout.vgs_checkout_spinner_item)
         }
     }
 
-    private fun updateCityError(state: ViewState) {
-        errorMessages[R.id.vgsEtCity] = if (state.isEmpty) {
-            getString(R.string.vgs_checkout_address_info_city_empty_error)
-        } else {
-            null
+    private fun getPostalAddressSubtitle(type: PostalAddressType) = getString(
+        when (type) {
+            PostalAddressType.POSTAL -> R.string.vgs_checkout_address_info_postal_code_subtitle
+            PostalAddressType.ZIP -> R.string.vgs_checkout_address_info_zip_subtitle
         }
-    }
+    )
 
-    private fun updateAddressError(state: ViewState) {
-        errorMessages[R.id.vgsEtAddress] = if (state.isEmpty) {
-            getString(R.string.vgs_checkout_address_info_address_line1_empty_error)
-        } else {
-            null
+    private fun getPostalAddressHint(type: PostalAddressType) = getString(
+        when (type) {
+            PostalAddressType.POSTAL -> R.string.vgs_checkout_address_info_postal_code_hint
+            PostalAddressType.ZIP -> R.string.vgs_checkout_address_info_zip_hint
         }
-    }
+    )
 
-    private fun updatePostalAddressError(state: ViewState) {
-        errorMessages[R.id.vgsEtPostalAddress] = if (state.isEmpty) {
-            getString(currentCountry.postalAddressType.emptyError())
-        } else if (!state.isValid) {
-            getString(currentCountry.postalAddressType.invalidError())
-        } else {
-            null
+    private fun getPostalAddressEmptyError(type: PostalAddressType) = getString(
+        when (type) {
+            PostalAddressType.POSTAL -> R.string.vgs_checkout_address_info_postal_code_empty_error
+            PostalAddressType.ZIP -> R.string.vgs_checkout_address_info_zipcode_empty_error
         }
-    }
+    )
 
-    private fun isAnyInputFocused(): Boolean {
-        return addressInputHolder.state.hasFocus ||
-                cityInputHolder.state.hasFocus ||
-                regionInputHolder.state.hasFocus ||
-                postalAddressInputHolder.state.hasFocus
-    }
-
-    private fun isAnyInputInvalid(): Boolean {
-        return (addressInputHolder.state.isDirty && addressInputHolder.state.isValid.not()) ||
-                (cityInputHolder.state.isDirty && cityInputHolder.state.isValid.not()) ||
-                (regionInputHolder.state.isDirty && regionInputHolder.state.isValid.not()) ||
-                (postalAddressInputHolder.state.isDirty && postalAddressInputHolder.state.isValid.not())
-    }
-
-    private fun isAllInputInvalid(): Boolean {
-        return addressInputHolder.state.isValid ||
-                cityInputHolder.state.isValid ||
-                regionInputHolder.state.isValid ||
-                postalAddressInputHolder.state.isValid
-    }
+    private fun getPostalAddressInvalidError(type: PostalAddressType) = getString(
+        when (type) {
+            PostalAddressType.POSTAL -> R.string.vgs_checkout_address_info_postal_code_invalid_error
+            PostalAddressType.ZIP -> R.string.vgs_checkout_address_info_zipcode_invalid_error
+        }
+    )
 
     companion object {
 
-        private const val MIN_INPUT_LENGTH = 1
+        private const val COLUMN_COUNT = 1
+        private const val ROW_COUNT = 4
     }
 }

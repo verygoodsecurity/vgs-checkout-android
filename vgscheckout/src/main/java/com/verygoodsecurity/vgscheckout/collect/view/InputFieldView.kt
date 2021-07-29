@@ -805,7 +805,7 @@ internal abstract class InputFieldView @JvmOverloads constructor(
         }
     }
     
-    protected fun setValidCardBrands(cardBrands: List<CardBrand>) {
+    internal fun setValidCardBrands(cardBrands: List<CardBrand>) {
         if (fieldType == FieldType.CARD_NUMBER) {
             (inputField as? CardInputField)?.setValidCardBrands(cardBrands)
         }
