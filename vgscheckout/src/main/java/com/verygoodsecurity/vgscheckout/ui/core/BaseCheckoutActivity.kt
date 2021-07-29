@@ -5,6 +5,8 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Animatable
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.widget.ImageView
 import androidx.activity.result.ActivityResultLauncher
@@ -179,13 +181,19 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
     }
 
     private fun handlePayClicked() {
-        creditCardView.isEnabled = false
+        cardHolderView.disable()
+        creditCardView.disable()
+        addressView.disable()
         payButton.isClickable = false
         payButton.text = getString(R.string.vgs_checkout_pay_button_processing_title)
         payButton.icon =
             getDrawableCompat(R.drawable.vgs_checkout_animated_ic_progress_white_16dp)
         (payButton.icon as? Animatable)?.start()
-        onPayClicked()
+        Handler(Looper.getMainLooper()).postDelayed({
+            runOnUiThread {
+                onPayClicked()
+            }
+        }, 5000)
     }
 
     companion object {

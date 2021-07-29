@@ -13,6 +13,7 @@ import com.verygoodsecurity.vgscheckout.config.ui.core.CheckoutFormConfiguration
 import com.verygoodsecurity.vgscheckout.util.ObservableLinkedHashMap
 import com.verygoodsecurity.vgscheckout.util.extension.getColor
 import com.verygoodsecurity.vgscheckout.util.extension.getDrawable
+import com.verygoodsecurity.vgscheckout.util.extension.setEnabled
 import com.verygoodsecurity.vgscheckout.view.checkout.grid.DividerGridLayout
 import java.util.*
 
@@ -58,6 +59,10 @@ internal abstract class BaseCheckoutFormView @JvmOverloads internal constructor(
     @CallSuper
     override fun onStateChange(inputId: Int, state: InputFieldViewHolder.ViewState) {
         onStateChangeListener?.onStateChanged(this, isInputValid())
+    }
+
+    fun disable() {
+        this.setEnabled(enabled = false, recursively = true)
     }
 
     fun getError(): String? = errors.values.firstOrNull { it != null }
