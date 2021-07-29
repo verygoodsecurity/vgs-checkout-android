@@ -117,7 +117,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
     private fun initCardHolderView() {
         cardHolderView = findViewById(R.id.cardHolderView)
         when (config.formConfig.cardOptions.cardHolderOptions.visibility) {
-            VGSCheckoutFieldVisibility.GONE -> cardHolderView.gone()
+            VGSCheckoutFieldVisibility.HIDDEN -> cardHolderView.gone()
             else -> {
                 cardHolderView.onErrorListener = this
                 cardHolderView.onStateChangeListener = this
@@ -164,7 +164,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
         visibility: VGSCheckoutFieldVisibility
     ) {
         when (visibility) {
-            VGSCheckoutFieldVisibility.GONE -> view.gone()
+            VGSCheckoutFieldVisibility.HIDDEN -> view.gone()
             else -> {
                 view.onErrorListener = this
                 view.onStateChangeListener = this
