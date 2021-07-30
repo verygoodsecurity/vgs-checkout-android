@@ -1,7 +1,6 @@
 package com.verygoodsecurity.vgscheckout.util.address
 
 import com.verygoodsecurity.vgscheckout.util.address.model.PostalAddressType
-import com.verygoodsecurity.vgscheckout.util.address.model.RegionType
 
 internal const val USA = "United States"
 internal const val CANADA = "Canada"
@@ -16,13 +15,5 @@ internal object AddressHelper {
     fun getPostalAddressType(country: String?) = when (country) {
         USA -> PostalAddressType.ZIP
         else -> PostalAddressType.POSTAL
-    }
-
-    fun getRegionType(country: String?) = when (country) {
-        USA, AUSTRALIA -> RegionType.STATE
-        CANADA -> RegionType.PROVINCE
-        NEW_ZEALAND -> RegionType.SUBURB
-        UNITED_KINGDOM -> RegionType.COUNTY
-        else -> RegionType.UNKNOWN
     }
 }
