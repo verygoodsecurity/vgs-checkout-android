@@ -90,10 +90,7 @@ internal class CreditCardView @JvmOverloads internal constructor(
         cardNumberViewHolder.input.setCardMaskAdapter(CardMaskAdapter(options.cardBrands))
         cardNumberViewHolder.input.setCardIconAdapter(CardIconAdapter(context, options.cardBrands))
         cardNumberViewHolder.input.setCardBrandPreviewIconMode(
-            when (options.isIconHidden) {
-                true -> CardInputField.PreviewIconMode.NEVER
-                false -> CardInputField.PreviewIconMode.ALWAYS
-            }
+            if (options.isIconHidden) CardInputField.PreviewIconMode.NEVER else CardInputField.PreviewIconMode.ALWAYS
         )
     }
 
@@ -104,10 +101,7 @@ internal class CreditCardView @JvmOverloads internal constructor(
     private fun applyCVCOption(options: VGSCheckoutCVCOptions) {
         cvcViewHolder.input.setFieldName(options.fieldName)
         cvcViewHolder.input.setPreviewIconMode(
-            when (options.isIconHidden) {
-                true -> CVCInputField.PreviewIconVisibility.NEVER
-                false -> CVCInputField.PreviewIconVisibility.ALWAYS
-            }
+            if (options.isIconHidden) CVCInputField.PreviewIconVisibility.NEVER else CVCInputField.PreviewIconVisibility.ALWAYS
         )
     }
 
