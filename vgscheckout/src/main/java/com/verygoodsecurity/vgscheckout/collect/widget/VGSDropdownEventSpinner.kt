@@ -25,9 +25,11 @@ internal class VGSDropdownEventSpinner @JvmOverloads constructor(
 
     var onDropdownStateChangeListener: OnDropdownStateChangeListener? = null
 
+    var isDropdownOpened: Boolean = false
+    private set
+
     private var userOnItemSelectedListener: OnItemSelectedListener? = null
     private var stateListener: OnVgsViewStateChangeListener? = null
-    private var isDropdownOpened: Boolean = false
     private var fieldName: String? = null
 
     init {
