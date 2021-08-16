@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscheckout.util.address.model
+package com.verygoodsecurity.vgscheckout.view.checkout.address.util.country.model
 
 internal enum class RegionType {
 

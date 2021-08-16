@@ -4,18 +4,21 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
 import com.verygoodsecurity.vgscheckout.collect.view.card.validation.rules.VGSInfoRule
 import com.verygoodsecurity.vgscheckout.collect.widget.VGSDropdownEventSpinner
 import com.verygoodsecurity.vgscheckout.collect.widget.VGSEditText
 import com.verygoodsecurity.vgscheckout.config.ui.core.CheckoutFormConfiguration
-import com.verygoodsecurity.vgscheckout.util.address.AddressHelper
-import com.verygoodsecurity.vgscheckout.util.address.USA
-import com.verygoodsecurity.vgscheckout.util.address.model.PostalAddressType
 import com.verygoodsecurity.vgscheckout.util.extension.getString
 import com.verygoodsecurity.vgscheckout.util.extension.setDrawableEnd
+import com.verygoodsecurity.vgscheckout.view.checkout.address.adapter.CountryAdapter
+import com.verygoodsecurity.vgscheckout.view.checkout.address.util.country.CountriesHelper
+import com.verygoodsecurity.vgscheckout.view.checkout.address.util.country.model.Country
+import com.verygoodsecurity.vgscheckout.view.checkout.address.util.emptyError
+import com.verygoodsecurity.vgscheckout.view.checkout.address.util.hint
+import com.verygoodsecurity.vgscheckout.view.checkout.address.util.invalidError
+import com.verygoodsecurity.vgscheckout.view.checkout.address.util.subtitle
 import com.verygoodsecurity.vgscheckout.view.checkout.core.BaseCheckoutFormView
 import com.verygoodsecurity.vgscheckout.view.checkout.core.InputFieldViewHolder
 
@@ -52,7 +55,7 @@ internal class AddressView @JvmOverloads internal constructor(
         this
     )
 
-    private var currentCountry: String = USA
+    private var currentCountry: Country = CountriesHelper.getCountry(CountriesHelper.ISO.USA)
 
     init {
 
@@ -91,7 +94,7 @@ internal class AddressView @JvmOverloads internal constructor(
         )
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        (parent?.getItemAtPosition(position) as? String)?.let {
+        (parent?.getItemAtPosition(position) as? Country)?.let {
             currentCountry = it
             setupPostalAddressCode()
         }
@@ -118,17 +121,21 @@ internal class AddressView @JvmOverloads internal constructor(
     }
 
     private fun setupCountries() {
-        val countries = AddressHelper.countries
-        countriesSpinner.adapter = createSpinnerAdapter(countries)
+        val countries = CountriesHelper.getHandledCountries()
+        countriesSpinner.adapter = CountryAdapter(context, countries)
         countriesSpinner.onItemSelectedListener = this
-        countriesSpinner.setSelection(countries.indexOf(USA))
+        countriesSpinner.setSelection(countries.indexOf(currentCountry))
     }
 
     private fun setupPostalAddressCode() {
-        val type = AddressHelper.getPostalAddressType(currentCountry)
-        postalAddressViewHolder.subtitle.text = getPostalAddressSubtitle(type)
-        postalAddressViewHolder.input.setHint(getPostalAddressHint(type))
-        //TODO: Set validation
+        with(postalAddressViewHolder) {
+            subtitle.text = getString(currentCountry.postalAddressType.subtitle())
+            input.setHint(getString(currentCountry.postalAddressType.hint()))
+            input.addRule(
+                VGSInfoRule.ValidationBuilder().setRegex(currentCountry.postalAddressRegex).build()
+            )
+            input.reInvalidateInput()
+        }
     }
 
     private fun initListeners() {
@@ -173,49 +180,14 @@ internal class AddressView @JvmOverloads internal constructor(
     }
 
     private fun updatePostalAddressError(state: InputFieldViewHolder.ViewState) {
-        val postalAddressType = AddressHelper.getPostalAddressType(currentCountry)
         val (message, drawable) = when {
-            isInputEmpty(state) -> getPostalAddressEmptyError(postalAddressType) to errorDrawable
-            isInputInvalid(state) -> getPostalAddressInvalidError(postalAddressType) to errorDrawable
+            isInputEmpty(state) -> getString(currentCountry.postalAddressType.emptyError()) to errorDrawable
+            isInputInvalid(state) -> getString(currentCountry.postalAddressType.invalidError()) to errorDrawable
             else -> null to null
         }
         updateError(postalAddressViewHolder.input.id, message)
         postalAddressViewHolder.subtitle.setDrawableEnd(drawable)
     }
-
-    private fun createSpinnerAdapter(data: List<String>): ArrayAdapter<String> {
-        return ArrayAdapter(context, R.layout.vgs_checkout_spinner_header_layout, data).apply {
-            setDropDownViewResource(R.layout.vgs_checkout_spinner_item)
-        }
-    }
-
-    private fun getPostalAddressSubtitle(type: PostalAddressType) = getString(
-        when (type) {
-            PostalAddressType.POSTAL -> R.string.vgs_checkout_address_info_postal_code_subtitle
-            PostalAddressType.ZIP -> R.string.vgs_checkout_address_info_zip_subtitle
-        }
-    )
-
-    private fun getPostalAddressHint(type: PostalAddressType) = getString(
-        when (type) {
-            PostalAddressType.POSTAL -> R.string.vgs_checkout_address_info_postal_code_hint
-            PostalAddressType.ZIP -> R.string.vgs_checkout_address_info_zip_hint
-        }
-    )
-
-    private fun getPostalAddressEmptyError(type: PostalAddressType) = getString(
-        when (type) {
-            PostalAddressType.POSTAL -> R.string.vgs_checkout_address_info_postal_code_empty_error
-            PostalAddressType.ZIP -> R.string.vgs_checkout_address_info_zipcode_empty_error
-        }
-    )
-
-    private fun getPostalAddressInvalidError(type: PostalAddressType) = getString(
-        when (type) {
-            PostalAddressType.POSTAL -> R.string.vgs_checkout_address_info_postal_code_invalid_error
-            PostalAddressType.ZIP -> R.string.vgs_checkout_address_info_zipcode_invalid_error
-        }
-    )
 
     companion object {
 

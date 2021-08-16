@@ -629,6 +629,10 @@ internal abstract class InputFieldView @JvmOverloads constructor(
         }
     }
 
+    fun reInvalidateInput() {
+        inputField.text = inputField.text
+    }
+
     /**
      * Sets the text to be displayed using a string resource identifier.
      *
