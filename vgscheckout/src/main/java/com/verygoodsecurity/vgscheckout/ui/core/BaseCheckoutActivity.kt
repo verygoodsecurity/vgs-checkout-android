@@ -3,23 +3,17 @@ package com.verygoodsecurity.vgscheckout.ui.core
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
-import android.widget.ImageView
-import androidx.activity.result.ActivityResultLauncher
 import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.textview.MaterialTextView
-import com.verygoodsecurity.vgscheckout.CHECKOUT_RESULT_EXTRA_KEY
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.core.VGSCollect
 import com.verygoodsecurity.vgscheckout.collect.core.VgsCollectResponseListener
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfiguration
-import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
-import com.verygoodsecurity.vgscheckout.ui.CheckoutActivity
-import com.verygoodsecurity.vgscheckout.ui.CheckoutMultiplexingActivity
+import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.util.extension.disableScreenshots
+import com.verygoodsecurity.vgscheckout.util.extension.toCheckoutResult
 
 internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
     AppCompatActivity(), VgsCollectResponseListener {
