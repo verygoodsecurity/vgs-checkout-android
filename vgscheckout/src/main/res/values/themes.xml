@@ -1,23 +1,39 @@
 <resources>
 
-    <!--Checkout -->
     <style name="VGSCheckout" parent="Theme.MaterialComponents.DayNight.NoActionBar">
 
-        <item name="colorPrimary">@color/vgs_checkout_color_primary</item>
-        <item name="colorSecondary">@color/vgs_checkout_color_secondary</item>
-        <item name="colorAccent">@color/vgs_checkout_color_accent</item>
+        <item name="colorPrimary">@color/vgs_checkout_white</item>
+        <item name="colorOnPrimary">@color/vgs_checkout_black_r</item>
+        <item name="colorPrimaryVariant">@color/vgs_checkout_white</item>
+        <item name="colorSecondary">@color/vgs_checkout_navy_blue</item>
+        <item name="colorSurface">@color/vgs_checkout_white</item>
+        <item name="colorOnSurface">@color/vgs_checkout_spun_pearl</item>
 
-        <item name="textAppearanceCaption">@style/VGSCheckout.TextAppearance.Caption</item>
-        <item name="textAppearanceBody2">@style/VGSCheckout.TextAppearance.Body2</item>
-        <item name="textAppearanceSubtitle1">@style/VGSCheckout.TextAppearance.Subtitle1</item>
+        <item name="android:textColorPrimary">@color/vgs_checkout_black_r</item>
+
+        <item name="android:windowBackground">@color/vgs_checkout_whisper</item>
     </style>
 
-    <!--    Text styles-->
-    <style name="VGSCheckout.TextAppearance.Caption" parent="TextAppearance.MaterialComponents.Caption" />
+    <style name="VGSCheckout.Subtitle">
+        <item name="android:textAppearance">?attr/textAppearanceSubtitle2</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 
-    <style name="VGSCheckout.TextAppearance.Body2" parent="TextAppearance.MaterialComponents.Body2" />
+    <style name="VGSCheckout.ClearButton">
+        <item name="srcCompat">@drawable/vgs_checkout_ic_round_cancel_white_24dp</item>
+        <item name="android:tint">@color/vgs_checkout_spun_pearl</item>
+    </style>
 
-    <style name="VGSCheckout.TextAppearance.Subtitle1" parent="TextAppearance.MaterialComponents.Subtitle1" />
+    <style name="VGSCheckout.Input">
+        <item name="textColor">@color/vgs_checkout_black_r</item>
+        <item name="textAppearance">?attr/textAppearanceSubtitle2</item>
+    </style>
 
-    <style name="VGSCheckout.TextAppearance.Headline5" parent="TextAppearance.MaterialComponents.Headline5" />
+    <style name="VGSCheckout.Error">
+        <item name="android:textAppearance">?attr/textAppearanceCaption</item>
+        <item name="android:textColor">@color/vgs_checkout_red_orange</item>
+        <item name="android:lines">@integer/vgs_checkout_single_line</item>
+    </style>
 </resources>

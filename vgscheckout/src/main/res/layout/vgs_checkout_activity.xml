@@ -9,6 +9,7 @@
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="@dimen/vgs_checkout_margin_padding_size_medium"
         android:orientation="vertical">
 
         <com.verygoodsecurity.vgscheckout.view.checkout.VGSCheckoutPersonNameView
