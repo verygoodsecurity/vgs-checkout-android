@@ -1,20 +1,31 @@
 package com.verygoodsecurity.vgscheckout
 
-import android.content.Context
-import android.content.Intent
+import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResultLauncher
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfiguration
-import com.verygoodsecurity.vgscheckout.ui.core.BaseCheckoutActivity
+import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 
-const val CHECKOUT_RESULT_EXTRA_KEY = "checkout_result_extra_key"
+class VGSCheckout internal constructor(
+    private val activityResultLauncher: ActivityResultLauncher<CheckoutResultContract.Args<CheckoutConfiguration>>
+) {
 
-class VGSCheckout {
+    constructor(activity: ComponentActivity, callback: VGSCheckoutCallback) : this(
+        registerActivityLauncher(activity, callback)
+    )
 
-    fun present(
-        context: Context,
-        activityLauncher: ActivityResultLauncher<Intent>,
-        config: CheckoutConfiguration
-    ) {
-        BaseCheckoutActivity.startForResult(context, activityLauncher, config)
+    fun present(config: CheckoutConfiguration) {
+        activityResultLauncher.launch(CheckoutResultContract.Args(config))
+    }
+
+    companion object {
+
+        private fun registerActivityLauncher(
+            activity: ComponentActivity,
+            callback: VGSCheckoutCallback
+        ): ActivityResultLauncher<CheckoutResultContract.Args<CheckoutConfiguration>> {
+            return activity.registerForActivityResult(CheckoutResultContract()) {
+                callback.onCheckoutResult(it)
+            }
+        }
     }
 }
