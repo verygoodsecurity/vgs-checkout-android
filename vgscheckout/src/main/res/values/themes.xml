@@ -7,9 +7,6 @@
         <item name="colorSecondary">@color/vgs_checkout_color_secondary</item>
         <item name="colorAccent">@color/vgs_checkout_color_accent</item>
 
-        <item name="android:textColorPrimary">@color/vgs_checkout_text_color_state_list</item>
-        <item name="android:textColorSecondary">@color/vgs_checkout_text_color_state_list</item>
-
         <item name="textAppearanceCaption">@style/VGSCheckout.TextAppearance.Caption</item>
         <item name="textAppearanceBody2">@style/VGSCheckout.TextAppearance.Body2</item>
         <item name="textAppearanceSubtitle1">@style/VGSCheckout.TextAppearance.Subtitle1</item>
@@ -23,76 +20,4 @@
     <style name="VGSCheckout.TextAppearance.Subtitle1" parent="TextAppearance.MaterialComponents.Subtitle1" />
 
     <style name="VGSCheckout.TextAppearance.Headline5" parent="TextAppearance.MaterialComponents.Headline5" />
-
-    <!--    VGS Views Styles-->
-    <style name="VGSCheckout.InputField" parent="VGSCheckout.TextAppearance.Subtitle1">
-        <item name="textColor">@color/vgs_checkout_text_color_state_list</item>
-        <item name="android:textColor">@color/vgs_checkout_text_color_state_list</item>
-        <item name="textAppearance">?attr/textAppearanceSubtitle1</item>
-        <item name="android:background">@android:color/transparent</item>
-    </style>
-
-    <style name="VGSCheckout.Spinner">
-        <item name="android:textAppearance">?attr/textAppearanceSubtitle1</item>
-    </style>
-
-    <style name="VGSCheckout.Spinner.Header">
-        <item name="android:textAppearance">?attr/textAppearanceSubtitle1</item>
-    </style>
-
-    <style name="VGSCheckout.Title">
-        <item name="android:textStyle">bold</item>
-        <item name="android:textAppearance">?attr/textAppearanceSubtitle1</item>
-    </style>
-
-    <style name="VGSCheckout.Description">
-        <item name="android:textStyle">bold</item>
-        <item name="android:textAllCaps">true</item>
-        <item name="android:textAppearance">?textAppearanceCaption</item>
-        <item name="drawableTint">@color/vgs_checkout_error_icon_tint</item>
-    </style>
-
-    <style name="VGSCheckout.ErrorText">
-        <item name="android:textColor">@color/vgs_checkout_text_error</item>
-        <item name="android:textAppearance">?textAppearanceBody2</item>
-    </style>
-
-    <style name="VGSCheckout.Button" parent="Widget.MaterialComponents.Button">
-        <item name="android:textAppearance">?attr/textAppearanceSubtitle1</item>
-        <item name="iconGravity">textStart</item>
-    </style>
-
-    <style name="VGSCheckout.Button.Pay">
-        <item name="android:enabled">false</item>
-        <item name="android:textAllCaps">true</item>
-        <item name="android:text">@string/vgs_checkout_pay_button_title</item>
-        <item name="android:textColor">@color/vgs_checkout_pay_text</item>
-        <item name="android:padding">@dimen/vgs_checkout_margin_padding_size_small</item>
-        <item name="backgroundTint">@color/vgs_checkout_pay_button_background_state_list</item>
-        <item name="iconTint">@color/vgs_checkout_pay_icon_tint</item>
-        <item name="icon">@drawable/vgs_checkout_ic_lock_white_10dp</item>
-    </style>
-
-    <style name="VGSCheckout.Button.ApplePay">
-        <item name="backgroundTint">@android:color/black</item>
-        <item name="icon">@drawable/vgs_checkout_ic_apple_white</item>
-        <item name="android:padding">@dimen/vgs_checkout_margin_padding_size_xsmall</item>
-
-    </style>
-
-    <style name="VGSCheckout.Button.GooglePay" parent="Widget.MaterialComponents.Button.OutlinedButton">
-        <item name="strokeColor">@color/vgs_checkout_border_default</item>
-        <item name="textAllCaps">false</item>
-        <item name="android:padding">@dimen/vgs_checkout_margin_padding_size_xsmall</item>
-        <item name="android:textColor">#686f74</item>
-        <item name="iconPadding">@dimen/vgs_checkout_margin_padding_size_small</item>
-        <item name="iconTint">@color/vgs_checkout_pay_icon_tint</item>
-        <item name="icon">@null</item>
-    </style>
-
-    <style name="VGSCheckout.Button.PayPal">
-        <item name="backgroundTint">@color/vgs_checkout_paypal_background</item>
-        <item name="android:padding">@dimen/vgs_checkout_margin_padding_size_xsmall</item>
-        <item name="icon">@drawable/vgs_checkout_ic_paypal</item>
-    </style>
 </resources>
