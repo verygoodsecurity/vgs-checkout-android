@@ -689,4 +689,10 @@
         <attr name="helperText" format="string" />
 
     </declare-styleable>
+
+    <declare-styleable name="VGSCheckoutInputView">
+
+        <attr name="vgs_checkout_subtitle" format="string" />
+        <attr name="vgs_checkout_hint" format="string" />
+    </declare-styleable>
 </resources>

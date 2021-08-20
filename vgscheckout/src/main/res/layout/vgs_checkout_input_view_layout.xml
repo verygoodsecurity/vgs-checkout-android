@@ -13,11 +13,12 @@
         android:padding="@dimen/vgs_checkout_margin_padding_size_small">
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/mtvTitle"
+            android:id="@+id/mtvSubtitle"
             style="@style/VGSCheckout.Subtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toStartOf="@+id/ibClear"
+            android:drawablePadding="@dimen/vgs_checkout_margin_padding_size_micro"
+            app:layout_constraintEnd_toStartOf="@+id/ivClear"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -28,12 +29,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/ibClear"
+            app:layout_constraintEnd_toStartOf="@id/ivClear"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/mtvTitle" />
+            app:layout_constraintTop_toBottomOf="@id/mtvSubtitle" />
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/ibClear"
+            android:id="@+id/ivClear"
             style="@style/VGSCheckout.ClearButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -46,6 +47,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/mtvError"
         style="@style/VGSCheckout.Error"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

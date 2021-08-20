@@ -30,8 +30,8 @@ internal fun View.getDrawable(@DrawableRes id: Int) = ContextCompat.getDrawable(
 @ColorInt
 internal fun View.getColor(@ColorRes id: Int) = ContextCompat.getColor(context, id)
 
-internal fun MaterialTextView.setDrawableEnd(drawable: Drawable?) {
-    this.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, drawable, null)
+internal fun MaterialTextView.setDrawableStart(drawable: Drawable?) {
+    this.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable, null, null, null)
 }
 
 internal fun View.visible() {
