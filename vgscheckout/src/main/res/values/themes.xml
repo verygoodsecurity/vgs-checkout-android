@@ -8,6 +8,7 @@
         <item name="colorSecondary">@color/vgs_checkout_navy_blue</item>
         <item name="colorSurface">@color/vgs_checkout_white</item>
         <item name="colorOnSurface">@color/vgs_checkout_spun_pearl</item>
+        <item name="colorError">@color/vgs_checkout_red_orange</item>
 
         <item name="android:textColorPrimary">@color/vgs_checkout_black_r</item>
 
@@ -19,11 +20,12 @@
         <item name="android:textAllCaps">true</item>
         <item name="android:fontFamily">sans-serif-light</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:drawablePadding">@dimen/vgs_checkout_margin_padding_size_micro</item>
     </style>
 
     <style name="VGSCheckout.ClearButton">
         <item name="srcCompat">@drawable/vgs_checkout_ic_round_cancel_white_24dp</item>
-        <item name="android:tint">@color/vgs_checkout_spun_pearl</item>
+        <item name="android:tint">?attr/colorOnSurface</item>
     </style>
 
     <style name="VGSCheckout.Input">
@@ -33,7 +35,5 @@
 
     <style name="VGSCheckout.Error">
         <item name="android:textAppearance">?attr/textAppearanceCaption</item>
-        <item name="android:textColor">@color/vgs_checkout_red_orange</item>
-        <item name="android:lines">@integer/vgs_checkout_single_line</item>
     </style>
 </resources>

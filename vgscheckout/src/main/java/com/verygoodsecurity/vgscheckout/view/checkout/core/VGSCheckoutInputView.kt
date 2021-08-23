@@ -76,7 +76,7 @@ internal abstract class VGSCheckoutInputView<V : InputFieldView> @JvmOverloads i
         if (error == null) {
             setError(null, null)
         } else {
-            setError(error, getDrawable(R.drawable.vgs_checkout_ic_round_error_red_14dp))
+            setError(error, getDrawable(R.drawable.vgs_checkout_ic_round_error_white_14dp))
         }
     }
 
@@ -109,11 +109,11 @@ internal abstract class VGSCheckoutInputView<V : InputFieldView> @JvmOverloads i
 
     private fun updateSubtitleTextColor() {
         subtitleView.setTextColor(
-            getColor(
+            getThemeColor(
                 when {
-                    errorView.text.isNotBlank() -> R.color.vgs_checkout_red_orange
-                    inputView.hasFocus() -> R.color.vgs_checkout_navy_blue
-                    else -> R.color.vgs_checkout_spun_pearl
+                    errorView.text.isNotBlank() -> R.attr.colorError
+                    inputView.hasFocus() -> R.attr.colorSecondary
+                    else -> R.attr.colorOnSurface
                 }
             )
         )
