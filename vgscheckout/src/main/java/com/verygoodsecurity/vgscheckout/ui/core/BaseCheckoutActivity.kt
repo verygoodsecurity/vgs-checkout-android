@@ -1,34 +1,24 @@
 package com.verygoodsecurity.vgscheckout.ui.core
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Animatable
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
-import androidx.activity.result.ActivityResultLauncher
 import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textview.MaterialTextView
-import com.verygoodsecurity.vgscheckout.CHECKOUT_RESULT_EXTRA_KEY
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.core.VGSCollect
 import com.verygoodsecurity.vgscheckout.collect.core.VgsCollectResponseListener
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSResponse
-import com.verygoodsecurity.vgscheckout.config.VGSCheckoutConfiguration
-import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingConfiguration
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfiguration
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillingAddressVisibility
 import com.verygoodsecurity.vgscheckout.config.ui.view.core.VGSCheckoutFieldVisibility
-import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
-import com.verygoodsecurity.vgscheckout.ui.CheckoutActivity
-import com.verygoodsecurity.vgscheckout.ui.CheckoutMultiplexingActivity
-import com.verygoodsecurity.vgscheckout.util.extension.disableScreenshots
-import com.verygoodsecurity.vgscheckout.util.extension.getDrawableCompat
-import com.verygoodsecurity.vgscheckout.util.extension.gone
-import com.verygoodsecurity.vgscheckout.util.extension.showWithText
+import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
+import com.verygoodsecurity.vgscheckout.util.extension.*
 import com.verygoodsecurity.vgscheckout.view.checkout.address.AddressView
 import com.verygoodsecurity.vgscheckout.view.checkout.card.CreditCardView
 import com.verygoodsecurity.vgscheckout.view.checkout.core.BaseCheckoutFormView
@@ -39,7 +29,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
     BaseCheckoutFormView.OnStateChangeListener,
     BaseCheckoutFormView.OnValidationErrorListener {
 
-    protected val config: C by lazy { resolveConfig(EXTRA_KEY_CONFIG) }
+    protected val config: C by lazy { resolveConfig(intent) }
 
     protected val collect by lazy {
         resolveCollect().apply {
@@ -54,7 +44,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
     private lateinit var addressError: MaterialTextView
     private lateinit var payButton: MaterialButton
 
-    abstract fun resolveConfig(key: String): C
+    abstract fun resolveConfig(intent: Intent): C
 
     abstract fun resolveCollect(): VGSCollect
 
@@ -67,11 +57,6 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
         initView(savedInstanceState)
     }
 
-    override fun onBackPressed() {
-        super.onBackPressed()
-        setResult(Activity.RESULT_CANCELED)
-    }
-
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.mbPay -> handlePayClicked()
@@ -80,10 +65,8 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
     }
 
     override fun onResponse(response: VGSResponse?) {
-        with(Intent()) {
-            putExtra(CHECKOUT_RESULT_EXTRA_KEY, VGSCheckoutResult(response?.code, response?.body))
-            setResult(Activity.RESULT_OK, this)
-        }
+        val resultBundle = CheckoutResultContract.Result(response?.toCheckoutResult()).toBundle()
+        setResult(Activity.RESULT_OK, Intent().putExtras(resultBundle))
         finish()
     }
 
@@ -188,25 +171,5 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
             getDrawableCompat(R.drawable.vgs_checkout_animated_ic_progress_white_16dp)
         (payButton.icon as? Animatable)?.start()
         onPayClicked()
-    }
-
-    companion object {
-
-        private const val EXTRA_KEY_CONFIG = "extra_checkout_config"
-
-        internal fun startForResult(
-            context: Context,
-            activityLauncher: ActivityResultLauncher<Intent>,
-            config: CheckoutConfiguration
-        ) {
-            val target = when (config) {
-                is VGSCheckoutConfiguration -> CheckoutActivity::class.java
-                is VGSCheckoutMultiplexingConfiguration -> CheckoutMultiplexingActivity::class.java
-                else -> throw IllegalArgumentException("Not implemented!")
-            }
-            activityLauncher.launch(Intent(context, target).apply {
-                putExtra(EXTRA_KEY_CONFIG, config)
-            })
-        }
     }
 }

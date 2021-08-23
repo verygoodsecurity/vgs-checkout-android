@@ -1,16 +1,23 @@
 package com.verygoodsecurity.vgscheckout.util.extension
 
-import com.verygoodsecurity.vgscheckout.config.networking.request.core.VGSCheckoutDataMergePolicy
-import com.verygoodsecurity.vgscheckout.config.networking.request.core.VGSCheckoutHTTPMethod
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.model.VGSCheckoutCardBrand
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.model.VGSCheckoutChecksumAlgorithm
 import com.verygoodsecurity.vgscheckout.collect.core.HTTPMethod
 import com.verygoodsecurity.vgscheckout.collect.core.model.VGSCollectFieldNameMappingPolicy
+import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscheckout.collect.util.extension.toCardBrand
 import com.verygoodsecurity.vgscheckout.collect.view.card.BrandParams
 import com.verygoodsecurity.vgscheckout.collect.view.card.CardBrand
 import com.verygoodsecurity.vgscheckout.collect.view.card.CardType
 import com.verygoodsecurity.vgscheckout.collect.view.card.validation.payment.ChecksumAlgorithm
+import com.verygoodsecurity.vgscheckout.config.networking.request.core.VGSCheckoutDataMergePolicy
+import com.verygoodsecurity.vgscheckout.config.networking.request.core.VGSCheckoutHTTPMethod
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.model.VGSCheckoutCardBrand
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.model.VGSCheckoutChecksumAlgorithm
+import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
+
+internal fun VGSResponse.toCheckoutResult() = when (this) {
+    is VGSResponse.SuccessResponse -> VGSCheckoutResult.Success(code, body)
+    is VGSResponse.ErrorResponse -> VGSCheckoutResult.Failed(code, body)
+}
 
 //region Networking
 internal fun VGSCheckoutHTTPMethod.toCollectHTTPMethod() = when (this) {
@@ -42,7 +49,7 @@ internal fun ChecksumAlgorithm.toCheckoutChecksumAlgorithm() = when (this) {
     ChecksumAlgorithm.NONE -> VGSCheckoutChecksumAlgorithm.NONE
 }
 
-internal fun VGSCheckoutCardBrand.toCollectCardType() = when(this) {
+internal fun VGSCheckoutCardBrand.toCollectCardType() = when (this) {
     is VGSCheckoutCardBrand.Elo -> CardType.ELO
     is VGSCheckoutCardBrand.VisaElectron -> CardType.VISA_ELECTRON
     is VGSCheckoutCardBrand.Maestro -> CardType.MAESTRO
@@ -56,10 +63,10 @@ internal fun VGSCheckoutCardBrand.toCollectCardType() = when(this) {
     is VGSCheckoutCardBrand.Discover -> CardType.DISCOVER
     is VGSCheckoutCardBrand.Unionpay -> CardType.UNIONPAY
     is VGSCheckoutCardBrand.JCB -> CardType.JCB
-    else-> CardType.UNKNOWN
+    else -> CardType.UNKNOWN
 }
 
-internal fun VGSCheckoutCardBrand.toCollectCardBrand() = when(this) {
+internal fun VGSCheckoutCardBrand.toCollectCardBrand() = when (this) {
     is VGSCheckoutCardBrand.Custom -> CardBrand(regex, name, icon, toCollectBrandParams())
     else -> toCollectCardType().toCardBrand()
 }
