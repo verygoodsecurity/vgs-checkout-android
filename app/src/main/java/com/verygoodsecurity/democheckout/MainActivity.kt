@@ -20,6 +20,7 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.VGSChecko
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.VGSCheckoutCVCOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.VGSCheckoutExpirationDateOptions
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
+import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult.*
 
 class MainActivity : AppCompatActivity(), VGSCheckoutCallback {
 
@@ -35,9 +36,9 @@ class MainActivity : AppCompatActivity(), VGSCheckoutCallback {
     override fun onCheckoutResult(result: VGSCheckoutResult) {
         showShort(
             when (result) {
-                is VGSCheckoutResult.Success -> "Checkout complete: body = ${result.body}"
-                is VGSCheckoutResult.Failed -> "Checkout failed: code = ${result.code}, body = ${result.body}"
-                is VGSCheckoutResult.Canceled -> "Checkout canceled"
+                is Success -> "Checkout complete: body = ${result.body}"
+                is Failed -> "Checkout failed: code = ${result.code}, body = ${result.body}"
+                is Canceled -> "Checkout canceled"
             }
         )
     }
