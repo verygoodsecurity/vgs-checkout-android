@@ -6,30 +6,8 @@ import com.verygoodsecurity.vgscheckout.config.networking.request.VGSCheckoutReq
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-class VGSCheckoutRouteConfiguration private constructor(
-    val path: String,
-    val hostnamePolicy: VGSCheckoutHostnamePolicy,
-    val requestOptions: VGSCheckoutRequestOptions
-) : Parcelable {
-
-    class Builder {
-
-        private var path: String = ""
-        private var hostnamePolicy: VGSCheckoutHostnamePolicy = VGSCheckoutHostnamePolicy.Vault
-        private var requestOptions = VGSCheckoutRequestOptions.Builder().build()
-
-        fun setPath(path: String) = this.apply {
-            this.path = path
-        }
-
-        fun setHostnamePolicy(policy: VGSCheckoutHostnamePolicy) = this.apply {
-            this.hostnamePolicy = policy
-        }
-
-        fun setRequestOptions(config: VGSCheckoutRequestOptions) = this.apply {
-            this.requestOptions = config
-        }
-
-        fun build() = VGSCheckoutRouteConfiguration(path, hostnamePolicy, requestOptions)
-    }
-}
+class VGSCheckoutRouteConfiguration @JvmOverloads constructor(
+    val path: String = "",
+    val hostnamePolicy: VGSCheckoutHostnamePolicy = VGSCheckoutHostnamePolicy.Vault,
+    val requestOptions: VGSCheckoutRequestOptions = VGSCheckoutRequestOptions()
+) : Parcelable

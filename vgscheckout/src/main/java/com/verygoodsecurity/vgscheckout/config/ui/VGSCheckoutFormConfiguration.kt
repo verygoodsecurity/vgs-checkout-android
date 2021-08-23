@@ -6,34 +6,8 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.card.VGSCheckoutCardOptio
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-class VGSCheckoutFormConfiguration private constructor(
-    override val cardOptions: VGSCheckoutCardOptions,
-    override val addressOptions: VGSCheckoutBillingAddressOptions,
-    override val payButtonTitle: String?
-) : CheckoutFormConfiguration() {
-
-    class Builder {
-
-        private var cardOptions = VGSCheckoutCardOptions.Builder().build()
-        private var addressOptions = VGSCheckoutBillingAddressOptions.Builder().build()
-        private var payButtonTitle: String? = null
-
-        fun setCardOptions(options: VGSCheckoutCardOptions) = this.apply {
-            this.cardOptions = options
-        }
-
-        fun setAddressOptions(options: VGSCheckoutBillingAddressOptions) = this.apply {
-            this.addressOptions = options
-        }
-
-        fun setPayButtonTitle(title: String) = this.apply {
-            this.payButtonTitle = title
-        }
-
-        fun build(): VGSCheckoutFormConfiguration = VGSCheckoutFormConfiguration(
-            cardOptions,
-            addressOptions,
-            payButtonTitle
-        )
-    }
-}
+class VGSCheckoutFormConfiguration @JvmOverloads constructor(
+    override val cardOptions: VGSCheckoutCardOptions = VGSCheckoutCardOptions(),
+    override val addressOptions: VGSCheckoutBillingAddressOptions = VGSCheckoutBillingAddressOptions(),
+    override val payButtonTitle: String? = null
+) : CheckoutFormConfiguration()

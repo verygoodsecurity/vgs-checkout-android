@@ -7,30 +7,8 @@ import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 
 @Parcelize
-class VGSCheckoutRequestOptions private constructor(
-    val httpMethod: VGSCheckoutHTTPMethod,
-    val extraData: Map<String, @RawValue Any>,
-    val mergePolicy: VGSCheckoutDataMergePolicy
-) : Parcelable {
-
-    class Builder {
-
-        private var httpMethod = VGSCheckoutHTTPMethod.POST
-        private var extraData = emptyMap<String, Any>()
-        private var mergePolicy = VGSCheckoutDataMergePolicy.NESTED_JSON
-
-        fun setHTTPMethod(method: VGSCheckoutHTTPMethod) = apply {
-            this.httpMethod = method
-        }
-
-        fun setExtraData(data: Map<String, Any>) = this.apply {
-            this.extraData = data
-        }
-
-        fun setDataMergePolicy(policy: VGSCheckoutDataMergePolicy) = this.apply {
-            this.mergePolicy = policy
-        }
-
-        fun build() = VGSCheckoutRequestOptions(httpMethod, extraData, mergePolicy)
-    }
-}
+class VGSCheckoutRequestOptions @JvmOverloads constructor(
+    val httpMethod: VGSCheckoutHTTPMethod = VGSCheckoutHTTPMethod.POST,
+    val extraData: Map<String, @RawValue Any> = emptyMap(),
+    val mergePolicy: VGSCheckoutDataMergePolicy = VGSCheckoutDataMergePolicy.NESTED_JSON
+) : Parcelable

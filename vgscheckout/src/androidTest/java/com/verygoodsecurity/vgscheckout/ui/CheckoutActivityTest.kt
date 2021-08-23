@@ -31,7 +31,7 @@ class CheckoutActivityTest {
     private val defaultIntent = Intent(context, CheckoutActivity::class.java).apply {
         putExtra(
             "extra_checkout_config",
-            VGSCheckoutConfiguration.Builder("tntpszqgikn").build()
+            VGSCheckoutConfiguration("tntpszqgikn")
         )
     }
 
@@ -126,7 +126,7 @@ class CheckoutActivityTest {
         val intent = Intent(context, CheckoutActivity::class.java).apply {
             putExtra(
                 "extra_checkout_config",
-                VGSCheckoutConfiguration.Builder("tntpszqgikn").build()
+                VGSCheckoutConfiguration("tntpszqgikn")
             )
         }
         launch<CheckoutActivity>(intent).use {
@@ -144,19 +144,17 @@ class CheckoutActivityTest {
             putExtra(
                 "com.verygoodsecurity.vgscheckout.model.extra_checkout_args",
                 CheckoutResultContract.Args(
-                    VGSCheckoutConfiguration.Builder("tntpszqgikn")
-                        .setFormConfig(
-                            VGSCheckoutFormConfiguration.Builder()
-                                .setAddressOptions(
-                                    VGSCheckoutBillingAddressOptions.Builder()
-                                        .setAddressFormVisibility(
+                    VGSCheckoutConfiguration(
+                        vaultID = "tntpszqgikn",
+                           formConfig = VGSCheckoutFormConfiguration(
+                                addressOptions =
+                                    VGSCheckoutBillingAddressOptions(
+                                        visibility =
                                             VGSCheckoutBillingAddressVisibility.HIDDEN
+
                                         )
-                                        .build()
                                 )
-                                .build()
-                        )
-                        .build()
+                                )
                 )
             )
         }
@@ -165,6 +163,69 @@ class CheckoutActivityTest {
             //Assert
             onView(withId(R.id.mtvAddressTitle)).check(matches(not(isDisplayed())))
             onView(withId(R.id.addressView)).check(matches(not(isDisplayed())))
+        }
+    }
+
+    @Test
+    fun performCheckout_validParams_successfulResult() {
+        // Arrange
+        val intent = Intent(context, CheckoutActivity::class.java).apply {
+            putExtra(
+                "extra_checkout_config",
+                VGSCheckoutConfiguration(
+                    vaultID = "tntpszqgikn",
+                    routeConfig = VGSCheckoutRouteConfiguration("post")
+                )
+            )
+        }
+        launch<CheckoutActivity>(intent).use { scenario ->
+            fillCardFields(
+                CARD_HOLDER_NAME,
+                CARD_NUMBER,
+                CARD_EXPIRATION_DATE,
+                CARD_CVC
+            )
+            // Act
+            onView(withId(R.id.mbPay)).perform(scrollTo(), ViewActions.click())
+            val result = scenario.safeResult
+            val vgsResultData =
+                result.resultData?.readExtraParcelable<VGSCheckoutResult>(CHECKOUT_RESULT_EXTRA_KEY)
+            //Assert
+            assertEquals(Activity.RESULT_OK, result.resultCode)
+            assertEquals(SUCCESS_CODE, vgsResultData?.code)
+        }
+    }
+
+    @Test
+    fun performCheckout_invalidHTTPMethod_errorReturned() {
+        // Arrange
+        val intent = Intent(context, CheckoutActivity::class.java).apply {
+            putExtra(
+                "extra_checkout_config",
+                VGSCheckoutConfiguration(
+                    vaultID = "tntpszqgikn",
+                    routeConfig = VGSCheckoutRouteConfiguration(
+                        path = "post",
+                        requestOptions = VGSCheckoutRequestOptions(VGSCheckoutHTTPMethod.DELETE)
+                    )
+                )
+            )
+        }
+        launch<CheckoutActivity>(intent).use { scenario ->
+            fillCardFields(
+                CARD_HOLDER_NAME,
+                CARD_NUMBER,
+                CARD_EXPIRATION_DATE,
+                CARD_CVC
+            )
+            // Act
+            onView(withId(R.id.mbPay)).perform(scrollTo(), ViewActions.click())
+            val result = scenario.safeResult
+            val vgsResultData =
+                result.resultData?.readExtraParcelable<VGSCheckoutResult>(CHECKOUT_RESULT_EXTRA_KEY)
+            //Assert
+            assertEquals(Activity.RESULT_OK, result.resultCode)
+            assertEquals(METHOD_NOT_ALLOWED, vgsResultData?.code)
         }
     }
 
