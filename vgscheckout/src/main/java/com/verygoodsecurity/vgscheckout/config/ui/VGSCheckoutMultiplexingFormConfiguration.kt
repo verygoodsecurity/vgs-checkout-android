@@ -12,20 +12,10 @@ class VGSCheckoutMultiplexingFormConfiguration private constructor(
     override val payButtonTitle: String?
 ) : CheckoutFormConfiguration() {
 
-    class Builder {
-
-        private var cardOptions = VGSCheckoutCardOptions.Builder().build()
-        private var addressOptions = VGSCheckoutBillingAddressOptions.Builder().build()
-        private var payButtonTitle: String? = null
-
-        fun setPayButtonTitle(title: String) = this.apply {
-            this.payButtonTitle = title
-        }
-
-        fun build() = VGSCheckoutMultiplexingFormConfiguration(
-            cardOptions,
-            addressOptions,
-            payButtonTitle
-        )
-    }
+    @JvmOverloads
+    constructor(payButtonTitle: String? = null) : this(
+        VGSCheckoutCardOptions(),
+        VGSCheckoutBillingAddressOptions(),
+        payButtonTitle,
+    )
 }
