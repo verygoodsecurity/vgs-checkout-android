@@ -9,8 +9,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 class VGSCheckoutCardOptions @JvmOverloads constructor(
-    val cardNumberOptions: VGSCheckoutCardNumberOptions = VGSCheckoutCardNumberOptions.Builder()
-        .build(),
+    val cardNumberOptions: VGSCheckoutCardNumberOptions = VGSCheckoutCardNumberOptions(),
     val cardHolderOptions: VGSCheckoutCardHolderOptions = VGSCheckoutCardHolderOptions(),
     val cvcOptions: VGSCheckoutCVCOptions = VGSCheckoutCVCOptions(),
     val expirationDateOptions: VGSCheckoutExpirationDateOptions = VGSCheckoutExpirationDateOptions()

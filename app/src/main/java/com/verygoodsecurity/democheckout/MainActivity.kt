@@ -66,9 +66,7 @@ class MainActivity : AppCompatActivity() {
         VGSCheckoutFormConfiguration(getCardOptions(), getAddressOptions(), "9.73$")
 
     private fun getCardOptions() = VGSCheckoutCardOptions(
-        VGSCheckoutCardNumberOptions.Builder()
-            .setFieldName("card_data.card_number")
-            .build(),
+        VGSCheckoutCardNumberOptions("card_data.card_number"),
         VGSCheckoutCardHolderOptions("card_data.card_holder"),
         VGSCheckoutCVCOptions("card_data.card_cvc"),
         VGSCheckoutExpirationDateOptions("card_data.exp_date")
