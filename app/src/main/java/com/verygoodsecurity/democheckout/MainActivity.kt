@@ -54,63 +54,31 @@ class MainActivity : AppCompatActivity() {
     }
 
     //region Checkout config
-    private fun getCheckoutConfig() = VGSCheckoutConfiguration.Builder("tntpszqgikn")
-        .setRouteConfig(getCheckoutRouteConfig())
-        .setFormConfig(getCheckoutFormConfig())
-        .build()
+    private fun getCheckoutConfig() = VGSCheckoutConfiguration(
+        vaultID = "tntpszqgikn",
+        routeConfig = getCheckoutRouteConfig(),
+        formConfig = getCheckoutFormConfig()
+    )
 
-    private fun getCheckoutRouteConfig() = VGSCheckoutRouteConfiguration.Builder()
-        .setPath("post")
-        .build()
+    private fun getCheckoutRouteConfig() = VGSCheckoutRouteConfiguration("post")
 
-    private fun getCheckoutFormConfig() = VGSCheckoutFormConfiguration.Builder()
-        .setPayButtonTitle("9.73$")
-        .setCardOptions(getCardOptions())
-        .setAddressOptions(getAddressOptions())
-        .build()
+    private fun getCheckoutFormConfig() =
+        VGSCheckoutFormConfiguration(getCardOptions(), getAddressOptions(), "9.73$")
 
-    private fun getCardOptions() = VGSCheckoutCardOptions.Builder()
-        .setCardHolderOptions(
-            VGSCheckoutCardHolderOptions.Builder()
-                .setFieldName("card_data.card_holder")
-                .build()
-        )
-        .setCardNumberOptions(
-            VGSCheckoutCardNumberOptions.Builder()
-                .setFieldName("card_data.card_number")
-                .build()
-        )
-        .setExpirationDateOptions(
-            VGSCheckoutExpirationDateOptions.Builder()
-                .setFieldName("card_data.exp_date")
-                .build()
-        )
-        .setCVCOptions(
-            VGSCheckoutCVCOptions.Builder()
-                .setFieldName("card_data.card_cvc")
-                .build()
-        )
-        .build()
+    private fun getCardOptions() = VGSCheckoutCardOptions(
+        VGSCheckoutCardNumberOptions.Builder()
+            .setFieldName("card_data.card_number")
+            .build(),
+        VGSCheckoutCardHolderOptions("card_data.card_holder"),
+        VGSCheckoutCVCOptions("card_data.card_cvc"),
+        VGSCheckoutExpirationDateOptions("card_data.exp_date")
+    )
 
-    private fun getAddressOptions() = VGSCheckoutBillingAddressOptions.Builder()
-        .setCountryOptions(
-            VGSCheckoutCountryOptions.Builder()
-                .setFieldName("address_info.country")
-                .build()
-        )
-        .setCityOptions(
-            VGSCheckoutCityOptions.Builder().setFieldName("address_info.city").build()
-        )
-        .setAddressOptions(
-            VGSCheckoutAddressOptions.Builder()
-                .setFieldName("address_info.address")
-                .build()
-        )
-        .setPostalAddressOptions(
-            VGSCheckoutPostalAddressOptions.Builder()
-                .setFieldName("address_info.postal_address")
-                .build()
-        )
-        .build()
+    private fun getAddressOptions() = VGSCheckoutBillingAddressOptions(
+        VGSCheckoutCountryOptions("address_info.country"),
+        VGSCheckoutCityOptions("address_info.city"),
+        VGSCheckoutAddressOptions("address_info.address"),
+        postalAddressOptions = VGSCheckoutPostalAddressOptions("address_info.postal_address"),
+    )
     //endregion
 }

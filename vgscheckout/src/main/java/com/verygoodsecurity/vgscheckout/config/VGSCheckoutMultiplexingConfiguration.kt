@@ -14,22 +14,15 @@ class VGSCheckoutMultiplexingConfiguration private constructor(
     override val formConfig: VGSCheckoutMultiplexingFormConfiguration
 ) : CheckoutConfiguration() {
 
-    class Builder constructor(
-        private val vaultID: String,
-        private val environment: String = DEFAULT_ENVIRONMENT
-    ) {
-
-        private var formConfig = VGSCheckoutMultiplexingFormConfiguration.Builder().build()
-
-        fun setFormConfig(config: VGSCheckoutMultiplexingFormConfiguration) = this.also {
-            this.formConfig = config
-        }
-
-        fun build() = VGSCheckoutMultiplexingConfiguration(
-            vaultID,
-            environment,
-            VGSCheckoutRouteConfiguration.Builder().build(),
-            formConfig
-        )
-    }
+    @JvmOverloads
+    constructor(
+        vaultID: String,
+        environment: String = DEFAULT_ENVIRONMENT,
+        formConfig: VGSCheckoutMultiplexingFormConfiguration = VGSCheckoutMultiplexingFormConfiguration()
+    ) : this(
+        vaultID,
+        environment,
+        VGSCheckoutRouteConfiguration(),
+        formConfig
+    )
 }

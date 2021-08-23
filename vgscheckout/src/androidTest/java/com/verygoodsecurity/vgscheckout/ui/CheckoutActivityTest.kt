@@ -43,7 +43,7 @@ class CheckoutActivityTest {
     private val defaultIntent = Intent(context, CheckoutActivity::class.java).apply {
         putExtra(
             "extra_checkout_config",
-            VGSCheckoutConfiguration.Builder("tntpszqgikn").build()
+            VGSCheckoutConfiguration("tntpszqgikn")
         )
     }
 
@@ -138,7 +138,7 @@ class CheckoutActivityTest {
         val intent = Intent(context, CheckoutActivity::class.java).apply {
             putExtra(
                 "extra_checkout_config",
-                VGSCheckoutConfiguration.Builder("tntpszqgikn").build()
+                VGSCheckoutConfiguration("tntpszqgikn")
             )
         }
         launch<CheckoutActivity>(intent).use {
@@ -155,17 +155,14 @@ class CheckoutActivityTest {
         val intent = Intent(context, CheckoutActivity::class.java).apply {
             putExtra(
                 "extra_checkout_config",
-                VGSCheckoutConfiguration.Builder("tntpszqgikn")
-                    .setFormConfig(
-                        VGSCheckoutFormConfiguration.Builder()
-                            .setAddressOptions(
-                                VGSCheckoutBillingAddressOptions.Builder()
-                                    .setAddressFormVisibility(VGSCheckoutBillingAddressVisibility.HIDDEN)
-                                    .build()
-                            )
-                            .build()
+                VGSCheckoutConfiguration(
+                    vaultID = "tntpszqgikn",
+                    formConfig = VGSCheckoutFormConfiguration(
+                        addressOptions = VGSCheckoutBillingAddressOptions(
+                            visibility = VGSCheckoutBillingAddressVisibility.HIDDEN
+                        )
                     )
-                    .build()
+                )
             )
         }
         launch<CheckoutActivity>(intent).use {
@@ -182,13 +179,10 @@ class CheckoutActivityTest {
         val intent = Intent(context, CheckoutActivity::class.java).apply {
             putExtra(
                 "extra_checkout_config",
-                VGSCheckoutConfiguration.Builder("tntpszqgikn")
-                    .setRouteConfig(
-                        VGSCheckoutRouteConfiguration.Builder()
-                            .setPath("post")
-                            .build()
-                    )
-                    .build()
+                VGSCheckoutConfiguration(
+                    vaultID = "tntpszqgikn",
+                    routeConfig = VGSCheckoutRouteConfiguration("post")
+                )
             )
         }
         launch<CheckoutActivity>(intent).use { scenario ->
@@ -215,18 +209,13 @@ class CheckoutActivityTest {
         val intent = Intent(context, CheckoutActivity::class.java).apply {
             putExtra(
                 "extra_checkout_config",
-                VGSCheckoutConfiguration.Builder("tntpszqgikn")
-                    .setRouteConfig(
-                        VGSCheckoutRouteConfiguration.Builder()
-                            .setPath("post")
-                            .setRequestOptions(
-                                VGSCheckoutRequestOptions.Builder()
-                                    .setHTTPMethod(VGSCheckoutHTTPMethod.DELETE)
-                                    .build()
-                            )
-                            .build()
+                VGSCheckoutConfiguration(
+                    vaultID = "tntpszqgikn",
+                    routeConfig = VGSCheckoutRouteConfiguration(
+                        path = "post",
+                        requestOptions = VGSCheckoutRequestOptions(VGSCheckoutHTTPMethod.DELETE)
                     )
-                    .build()
+                )
             )
         }
         launch<CheckoutActivity>(intent).use { scenario ->

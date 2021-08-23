@@ -13,30 +13,18 @@ class VGSCheckoutCardNumberOptions private constructor(
     val cardBrands: Set<VGSCheckoutCardBrand>
 ) : ViewOptions() {
 
-    class Builder {
-
-        private var fieldName: String = ""
-        private var isIconHidden: Boolean = false
-        private var cardBrands: Set<VGSCheckoutCardBrand> = VGSCheckoutCardBrand.BRANDS
-
-        fun setFieldName(fieldName: String) = this.apply {
-            this.fieldName = fieldName
+    @JvmOverloads
+    constructor(
+        fieldName: String = "",
+        isIconHidden: Boolean = false,
+        vararg brand: VGSCheckoutCardBrand = emptyArray(),
+        mode: VGSCheckoutSetCardBrandsMode = VGSCheckoutSetCardBrandsMode.MODIFY
+    ) : this(
+        fieldName,
+        isIconHidden,
+        when (mode) {
+            VGSCheckoutSetCardBrandsMode.MODIFY -> VGSCheckoutCardBrand.BRANDS.addAllWithReplace(*brand)
+            VGSCheckoutSetCardBrandsMode.REPLACE -> setOf(*brand)
         }
-
-        fun setIconHidden(isHidden: Boolean) = this.apply {
-            this.isIconHidden = isHidden
-        }
-
-        fun setCardBrands(
-            vararg brand: VGSCheckoutCardBrand,
-            mode: VGSCheckoutSetCardBrandsMode = VGSCheckoutSetCardBrandsMode.MODIFY
-        ) = this.apply {
-            this.cardBrands = when (mode) {
-                VGSCheckoutSetCardBrandsMode.MODIFY -> cardBrands.addAllWithReplace(*brand)
-                VGSCheckoutSetCardBrandsMode.REPLACE -> setOf(*brand)
-            }
-        }
-
-        fun build() = VGSCheckoutCardNumberOptions(fieldName, isIconHidden, cardBrands)
-    }
+    )
 }
