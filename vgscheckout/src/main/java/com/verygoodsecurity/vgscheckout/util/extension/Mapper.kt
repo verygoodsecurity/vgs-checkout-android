@@ -15,7 +15,7 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.model.VGS
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 
 internal fun VGSResponse.toCheckoutResult() = when (this) {
-    is VGSResponse.SuccessResponse -> VGSCheckoutResult.Success(body)
+    is VGSResponse.SuccessResponse -> VGSCheckoutResult.Success(code, body)
     is VGSResponse.ErrorResponse -> VGSCheckoutResult.Failed(code, body)
 }
 
