@@ -9,55 +9,11 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.address.country.VGSChecko
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-class VGSCheckoutBillingAddressOptions private constructor(
-    val countryOptions: VGSCheckoutCountryOptions,
-    val cityOptions: VGSCheckoutCityOptions,
-    val addressOptions: VGSCheckoutAddressOptions,
-    val optionalAddressOptions: VGSCheckoutOptionalAddressOptions,
-    val postalAddressOptions: VGSCheckoutPostalAddressOptions,
-    val visibility: VGSCheckoutBillingAddressVisibility
-) : Parcelable {
-
-    class Builder {
-
-        private var countryOptions = VGSCheckoutCountryOptions.Builder().build()
-        private var cityOptions = VGSCheckoutCityOptions.Builder().build()
-        private var addressOptions = VGSCheckoutAddressOptions.Builder().build()
-        private var optionalAddressOptions = VGSCheckoutOptionalAddressOptions.Builder().build()
-        private var postalAddressOptions = VGSCheckoutPostalAddressOptions.Builder().build()
-        private var visibility = VGSCheckoutBillingAddressVisibility.VISIBLE
-
-        fun setCountryOptions(options: VGSCheckoutCountryOptions) = this.apply {
-            this.countryOptions = options
-        }
-
-        fun setCityOptions(options: VGSCheckoutCityOptions) = this.apply {
-            this.cityOptions = options
-        }
-
-        fun setAddressOptions(options: VGSCheckoutAddressOptions) = this.apply {
-            this.addressOptions = options
-        }
-
-        fun setOptionalAddressOptions(options: VGSCheckoutOptionalAddressOptions) = this.apply {
-            this.optionalAddressOptions = options
-        }
-
-        fun setPostalAddressOptions(options: VGSCheckoutPostalAddressOptions) = this.apply {
-            this.postalAddressOptions = options
-        }
-
-        fun setAddressFormVisibility(visibility: VGSCheckoutBillingAddressVisibility) = this.apply {
-            this.visibility = visibility
-        }
-
-        fun build(): VGSCheckoutBillingAddressOptions = VGSCheckoutBillingAddressOptions(
-            countryOptions,
-            cityOptions,
-            addressOptions,
-            optionalAddressOptions,
-            postalAddressOptions,
-            visibility
-        )
-    }
-}
+class VGSCheckoutBillingAddressOptions @JvmOverloads constructor(
+    val countryOptions: VGSCheckoutCountryOptions = VGSCheckoutCountryOptions(),
+    val cityOptions: VGSCheckoutCityOptions = VGSCheckoutCityOptions(),
+    val addressOptions: VGSCheckoutAddressOptions = VGSCheckoutAddressOptions(),
+    val optionalAddressOptions: VGSCheckoutOptionalAddressOptions = VGSCheckoutOptionalAddressOptions(),
+    val postalAddressOptions: VGSCheckoutPostalAddressOptions = VGSCheckoutPostalAddressOptions(),
+    val visibility: VGSCheckoutBillingAddressVisibility = VGSCheckoutBillingAddressVisibility.VISIBLE
+) : Parcelable

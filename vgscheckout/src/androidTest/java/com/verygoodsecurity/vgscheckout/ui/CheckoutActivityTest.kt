@@ -31,7 +31,7 @@ class CheckoutActivityTest {
     private val defaultIntent = Intent(context, CheckoutActivity::class.java).apply {
         putExtra(
             "extra_checkout_config",
-            VGSCheckoutConfiguration.Builder("tntpszqgikn").build()
+            VGSCheckoutConfiguration("tntpszqgikn")
         )
     }
 
@@ -126,7 +126,7 @@ class CheckoutActivityTest {
         val intent = Intent(context, CheckoutActivity::class.java).apply {
             putExtra(
                 "extra_checkout_config",
-                VGSCheckoutConfiguration.Builder("tntpszqgikn").build()
+                VGSCheckoutConfiguration("tntpszqgikn")
             )
         }
         launch<CheckoutActivity>(intent).use {
@@ -144,19 +144,17 @@ class CheckoutActivityTest {
             putExtra(
                 "com.verygoodsecurity.vgscheckout.model.extra_checkout_args",
                 CheckoutResultContract.Args(
-                    VGSCheckoutConfiguration.Builder("tntpszqgikn")
-                        .setFormConfig(
-                            VGSCheckoutFormConfiguration.Builder()
-                                .setAddressOptions(
-                                    VGSCheckoutBillingAddressOptions.Builder()
-                                        .setAddressFormVisibility(
-                                            VGSCheckoutBillingAddressVisibility.HIDDEN
-                                        )
-                                        .build()
-                                )
-                                .build()
+                    VGSCheckoutConfiguration(
+                        vaultID = "tntpszqgikn",
+                        formConfig = VGSCheckoutFormConfiguration(
+                            addressOptions =
+                            VGSCheckoutBillingAddressOptions(
+                                visibility =
+                                VGSCheckoutBillingAddressVisibility.HIDDEN
+
+                            )
                         )
-                        .build()
+                    )
                 )
             )
         }

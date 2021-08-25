@@ -4,18 +4,6 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.core.ViewOptions
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-class VGSCheckoutCityOptions private constructor(
-    override val fieldName: String
-) : ViewOptions() {
-
-    class Builder {
-
-        private var fieldName: String = ""
-
-        fun setFieldName(fieldName: String) = this.apply {
-            this.fieldName = fieldName
-        }
-
-        fun build() = VGSCheckoutCityOptions(fieldName)
-    }
-}
+class VGSCheckoutCityOptions @JvmOverloads constructor(
+    override val fieldName: String = ""
+) : ViewOptions()
