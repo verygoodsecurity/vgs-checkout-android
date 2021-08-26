@@ -5,11 +5,18 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.doOnTextChanged
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.core.VGSCollect
 import com.verygoodsecurity.vgscheckout.collect.core.VgsCollectResponseListener
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSResponse
+import com.verygoodsecurity.vgscheckout.collect.core.model.state.FieldState
+import com.verygoodsecurity.vgscheckout.collect.core.storage.OnFieldStateChangeListener
+import com.verygoodsecurity.vgscheckout.collect.widget.PersonNameEditText
+import com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfiguration
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.util.extension.disableScreenshots
@@ -54,5 +61,29 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
 
     @CallSuper
     protected open fun initView(savedInstanceState: Bundle?) {
+        val vgsTilPersonName = findViewById<VGSTextInputLayout>(R.id.vgsTilPersonName)
+        val vgsTiedPersonName = findViewById<PersonNameEditText>(R.id.vgsTiedPersonName)
+
+        vgsTiedPersonName?.setOnFieldStateChangeListener(object : OnFieldStateChangeListener {
+
+            override fun onStateChange(state: FieldState) {
+                if (state.contentLength > 5) {
+                    vgsTilPersonName.setError("Error")
+                } else {
+                    vgsTilPersonName.setError(null)
+                }
+            }
+        })
+
+        val tilPersonName = findViewById<TextInputLayout>(R.id.til)
+        val tiedPersonName = findViewById<TextInputEditText>(R.id.tied)
+
+        tiedPersonName.doOnTextChanged { text, _, _, _ ->
+            if ((text?.length ?: 0) > 5) {
+                tilPersonName.error = "Error"
+            } else {
+                tilPersonName.error = null
+            }
+        }
     }
 }
