@@ -80,6 +80,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/vgs_checkout_card_holder_subtitle"
+                app:startIconTint="@null"
+                app:startIconDrawable="@drawable/vgs_checkout_ic_visa_electron_dark"
                 app:endIconMode="clear_text"
                 app:errorEnabled="true">
 
