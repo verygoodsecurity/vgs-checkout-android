@@ -50,6 +50,7 @@
             </com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout>
 
             <com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout
+                android:id="@+id/vgsTilCardNumber"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:boxCornerRadius="@dimen/vgs_checkout_margin_padding_size_micro"
@@ -61,13 +62,14 @@
                 app:hintTextColor="?attr/colorPrimary">
 
                 <com.verygoodsecurity.vgscheckout.collect.widget.VGSCardNumberEditText
+                    android:id="@+id/vgsTiedCardNumber"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingStart="@dimen/vgs_checkout_margin_padding_size_medium"
                     android:paddingTop="@dimen/vgs_checkout_margin_padding_size_xsmall"
                     android:paddingEnd="0dp"
                     app:numberDivider=" "
-                    app:cardBrandIconGravity="end"
+                    app:cardBrandIconGravity="start"
                     android:paddingBottom="@dimen/vgs_checkout_margin_padding_size_xsmall"
                     app:textSize="14sp" />
             </com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout>

@@ -279,24 +279,24 @@ internal class CardInputField(context: Context) : BaseInputField(context),
             PreviewIconMode.IF_DETECTED -> if (card.successfullyDetected) {
                 refreshIconPreview()
             } else {
-                setCompoundDrawables(null, null, null, null)
+                setCompoundDrawablesRelative(null, null, null, null)
             }
             PreviewIconMode.HAS_CONTENT -> if (!text.isNullOrEmpty()) {
                 refreshIconPreview()
             } else {
-                setCompoundDrawables(null, null, null, null)
+                setCompoundDrawablesRelative(null, null, null, null)
             }
-            PreviewIconMode.NEVER -> setCompoundDrawables(null, null, null, null)
+            PreviewIconMode.NEVER -> setCompoundDrawablesRelative(null, null, null, null)
         }
     }
 
     private fun refreshIconPreview() {
         when (iconGravity) {
-            Gravity.LEFT -> setCompoundDrawables(lastCardIconPreview, null, null, null)
-            Gravity.START -> setCompoundDrawables(lastCardIconPreview, null, null, null)
-            Gravity.RIGHT -> setCompoundDrawables(null, null, lastCardIconPreview, null)
-            Gravity.END -> setCompoundDrawables(null, null, lastCardIconPreview, null)
-            Gravity.NO_GRAVITY -> setCompoundDrawables(null, null, null, null)
+            Gravity.LEFT -> setCompoundDrawablesRelative(lastCardIconPreview, null, null, null)
+            Gravity.START -> setCompoundDrawablesRelative(lastCardIconPreview, null, null, null)
+            Gravity.RIGHT -> setCompoundDrawablesRelative(null, null, lastCardIconPreview, null)
+            Gravity.END -> setCompoundDrawablesRelative(null, null, lastCardIconPreview, null)
+            Gravity.NO_GRAVITY -> setCompoundDrawablesRelative(null, null, null, null)
         }
     }
 
@@ -319,16 +319,16 @@ internal class CardInputField(context: Context) : BaseInputField(context),
         }
     }
 
-    override fun setCompoundDrawables(
-        left: Drawable?,
+    override fun setCompoundDrawablesRelative(
+        start: Drawable?,
         top: Drawable?,
-        right: Drawable?,
+        end: Drawable?,
         bottom: Drawable?
     ) {
         if (hasRTL) {
-            super.setCompoundDrawables(right, top, left, bottom)
+            super.setCompoundDrawablesRelative(end, top, start, bottom)
         } else {
-            super.setCompoundDrawables(left, top, right, bottom)
+            super.setCompoundDrawablesRelative(start, top, end, bottom)
         }
     }
 
