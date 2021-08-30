@@ -15,25 +15,30 @@
         <item name="android:windowBackground">@color/vgs_checkout_whisper</item>
     </style>
 
-    <style name="VGSCheckout.Subtitle">
-        <item name="android:textAppearance">?attr/textAppearanceSubtitle2</item>
-        <item name="android:textAllCaps">true</item>
-        <item name="android:fontFamily">sans-serif-light</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:drawablePadding">@dimen/vgs_checkout_margin_padding_size_micro</item>
+    <style name="VGSCheckout.Title">
+        <item name="android:textAppearance">?attr/textAppearanceBody1</item>
+    </style>
+
+    <style name="VGSCheckout.TextInputLayout">
+        <item name="endIconModes">clear_text</item>
+        <item name="endIconTint">?colorOnSurface</item>
+        <item name="endIconDrawable">@drawable/vgs_checkout_ic_round_cancel_white_24dp</item>
+        <item name="errorEnabled">true</item>
+        <item name="hintTextColor">?colorPrimary</item>
+        <item name="boxCornerRadius">@dimen/vgs_checkout_margin_padding_size_micro</item>
+    </style>
+
+    <style name="VGSCheckout.TextInputEditText">
+        <item name="textColor">@color/vgs_checkout_black_r</item>
+        <item name="textSize">@dimen/vgs_checkout_input_text_size</item>
+        <item name="android:paddingStart">@dimen/vgs_checkout_margin_padding_size_medium</item>
+        <item name="android:paddingEnd">@dimen/vgs_checkout_margin_padding_size_medium</item>
+        <item name="android:paddingTop">@dimen/vgs_checkout_margin_padding_size_xsmall</item>
+        <item name="android:paddingBottom">@dimen/vgs_checkout_margin_padding_size_xsmall</item>
     </style>
 
     <style name="VGSCheckout.ClearButton">
         <item name="srcCompat">@drawable/vgs_checkout_ic_round_cancel_white_24dp</item>
         <item name="android:tint">?attr/colorOnSurface</item>
-    </style>
-
-    <style name="VGSCheckout.Input">
-        <item name="textColor">@color/vgs_checkout_black_r</item>
-        <item name="textAppearance">?attr/textAppearanceSubtitle2</item>
-    </style>
-
-    <style name="VGSCheckout.Error">
-        <item name="android:textAppearance">?attr/textAppearanceCaption</item>
     </style>
 </resources>

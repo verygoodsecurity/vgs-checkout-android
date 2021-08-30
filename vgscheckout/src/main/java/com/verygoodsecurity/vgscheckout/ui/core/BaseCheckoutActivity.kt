@@ -5,10 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.widget.doOnTextChanged
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.core.VGSCollect
 import com.verygoodsecurity.vgscheckout.collect.core.VgsCollectResponseListener
@@ -90,16 +87,5 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
                 }
             }
         })
-
-        val tilPersonName = findViewById<TextInputLayout>(R.id.til)
-        val tiedPersonName = findViewById<TextInputEditText>(R.id.tied)
-
-        tiedPersonName.doOnTextChanged { text, _, _, _ ->
-            if ((text?.length ?: 0) > 5) {
-                tilPersonName.error = "Error"
-            } else {
-                tilPersonName.error = null
-            }
-        }
     }
 }

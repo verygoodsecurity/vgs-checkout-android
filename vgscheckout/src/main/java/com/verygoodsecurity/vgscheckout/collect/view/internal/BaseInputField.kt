@@ -405,15 +405,6 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
     }
 }
 
-internal fun TextInputEditText.setCompoundDrawablesOrNull(
-    start: Drawable? = null,
-    top: Drawable? = null,
-    end: Drawable? = null,
-    bottom: Drawable? = null
-) {
-    this.setCompoundDrawables(start, top, end, bottom)
-}
-
 internal val TextInputEditText.localVisibleRect: Rect
     get() {
         val rect = Rect()

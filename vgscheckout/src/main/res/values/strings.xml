@@ -10,19 +10,14 @@
     <!--Card info -->
     <string name="vgs_checkout_form_card_details_title">Card Details</string>
     <string name="vgs_checkout_card_holder_subtitle">Name on card</string>
-    <string name="vgs_checkout_card_holder_hint">Joe Business</string>
     <string name="vgs_checkout_card_holder_empty_error">Name is empty</string>
     <string name="vgs_checkout_card_number_subtitle">Card number</string>
-    <string name="vgs_checkout_card_number_hint">1234 1234 1234 1234</string>
     <string name="vgs_checkout_card_number_invalid_error">Enter a valid card number</string>
     <string name="vgs_checkout_card_number_empty_error">Card number is empty</string>
     <string name="vgs_checkout_card_expiration_date_subtitle">Expiration Date</string>
-    <string name="vgs_checkout_card_expiration_date_hint">MM/YY</string>
     <string name="vgs_checkout_card_expiration_date_invalid_error">Expiration date is not valid</string>
     <string name="vgs_checkout_card_expiration_date_empty_error">Expiration date is empty</string>
-    <string name="vgs_checkout_card_verification_code_subtitle">Security code</string>
-    <string name="vgs_checkout_card_verification_code_hint">CVC</string>
-    <string name="vgs_checkout_card_verification_value_hint">CVV</string>
+    <string name="vgs_checkout_card_verification_code_subtitle">CVC</string>
     <string name="vgs_checkout_card_verification_code_invalid_error">Security code is not valid</string>
     <string name="vgs_checkout_card_verification_code_empty_error">Security code is empty</string>
 
