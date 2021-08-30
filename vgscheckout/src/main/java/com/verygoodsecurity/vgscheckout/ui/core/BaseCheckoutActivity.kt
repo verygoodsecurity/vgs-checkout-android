@@ -10,11 +10,6 @@ import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.core.VGSCollect
 import com.verygoodsecurity.vgscheckout.collect.core.VgsCollectResponseListener
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSResponse
-import com.verygoodsecurity.vgscheckout.collect.core.model.state.FieldState
-import com.verygoodsecurity.vgscheckout.collect.core.storage.OnFieldStateChangeListener
-import com.verygoodsecurity.vgscheckout.collect.widget.PersonNameEditText
-import com.verygoodsecurity.vgscheckout.collect.widget.VGSCardNumberEditText
-import com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfiguration
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.util.extension.disableScreenshots
@@ -59,33 +54,6 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
 
     @CallSuper
     protected open fun initView(savedInstanceState: Bundle?) {
-        val vgsTilPersonName = findViewById<VGSTextInputLayout>(R.id.vgsTilPersonName)
-        val vgsTiedPersonName = findViewById<PersonNameEditText>(R.id.vgsTiedPersonName)
 
-        vgsTiedPersonName?.setOnFieldStateChangeListener(object : OnFieldStateChangeListener {
-
-            override fun onStateChange(state: FieldState) {
-                if (state.contentLength > 5) {
-                    vgsTilPersonName.setError("Error")
-                } else {
-                    vgsTilPersonName.setError(null)
-                }
-            }
-        })
-
-        val vgsTilCardNumber = findViewById<VGSTextInputLayout>(R.id.vgsTilCardNumber)
-        val vgsTiedPCardNumber = findViewById<VGSCardNumberEditText>(R.id.vgsTiedCardNumber)
-
-
-        vgsTiedPCardNumber?.setOnFieldStateChangeListener(object : OnFieldStateChangeListener {
-
-            override fun onStateChange(state: FieldState) {
-                if (state.contentLength > 5) {
-                    vgsTilCardNumber.setError("Error")
-                } else {
-                    vgsTilCardNumber.setError(null)
-                }
-            }
-        })
     }
 }
