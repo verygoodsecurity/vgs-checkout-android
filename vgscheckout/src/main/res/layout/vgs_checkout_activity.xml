@@ -32,7 +32,7 @@
                     android:text="@string/vgs_checkout_form_card_details_title" />
 
                 <com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout
-                    android:id="@+id/vgsTilPersonName"
+                    android:id="@+id/vgsTilCardHolder"
                     style="@style/VGSCheckout.TextInputLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -40,7 +40,7 @@
                     app:hint="@string/vgs_checkout_card_holder_subtitle">
 
                     <com.verygoodsecurity.vgscheckout.collect.widget.PersonNameEditText
-                        android:id="@+id/vgsTiedPersonName"
+                        android:id="@+id/vgsTiedCardHolder"
                         style="@style/VGSCheckout.TextInputEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
@@ -68,6 +68,7 @@
                     android:orientation="horizontal">
 
                     <com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout
+                        android:id="@+id/vgsTilExpirationDate"
                         style="@style/VGSCheckout.TextInputLayout"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -75,6 +76,7 @@
                         app:hint="@string/vgs_checkout_card_expiration_date_subtitle">
 
                         <com.verygoodsecurity.vgscheckout.collect.widget.ExpirationDateEditText
+                            android:id="@+id/vgsTiedExpirationDate"
                             style="@style/VGSCheckout.TextInputEditText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -87,6 +89,7 @@
                         android:layout_height="0dp" />
 
                     <com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout
+                        android:id="@+id/vgsTilSecurityCode"
                         style="@style/VGSCheckout.TextInputLayout"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -94,6 +97,7 @@
                         app:hint="@string/vgs_checkout_card_verification_code_subtitle">
 
                         <com.verygoodsecurity.vgscheckout.collect.widget.CardVerificationCodeEditText
+                            android:id="@+id/vgsTiedSecurityCode"
                             style="@style/VGSCheckout.TextInputEditText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -105,6 +109,7 @@
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/mbSaveCard"
             style="@style/VGSCheckout.SaveButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
