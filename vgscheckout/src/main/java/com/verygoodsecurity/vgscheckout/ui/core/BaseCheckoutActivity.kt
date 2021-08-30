@@ -7,6 +7,7 @@ import androidx.annotation.CallSuper
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.card.MaterialCardView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.core.VGSCollect
@@ -15,6 +16,7 @@ import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
 import com.verygoodsecurity.vgscheckout.collect.widget.*
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfiguration
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillingAddressVisibility
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.VGSCheckoutCardHolderOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.VGSCheckoutCardNumberOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.VGSCheckoutCVCOptions
@@ -98,13 +100,18 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
     }
 
     private fun initInputViews() {
+        initCardDetailsViews()
+        initBillingAddressViews()
+        initSaveButton()
+    }
+
+    private fun initCardDetailsViews() {
         with(config.formConfig.cardOptions) {
             initCardHolderView(cardHolderOptions)
             initCardNumberView(cardNumberOptions)
             initExpirationDateView(expirationDateOptions)
             initSecurityCodeView(cvcOptions)
         }
-        initSaveButton()
     }
 
     private fun initCardHolderView(options: VGSCheckoutCardHolderOptions) {
@@ -142,6 +149,13 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
         collect.bindView(securityCodeTied)
     }
 
+    private fun initBillingAddressViews() {
+        if (config.formConfig.addressOptions.visibility == VGSCheckoutBillingAddressVisibility.HIDDEN) {
+            findViewById<MaterialCardView>(R.id.mcvBillingAddress).gone()
+            return
+        }
+    }
+
     private fun initSaveButton() {
         saveCardButton = findViewById(R.id.mbSaveCard)
         saveCardButton.setOnClickListener {
@@ -150,24 +164,6 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
     }
 
     private fun isCardDetailsValid(): Boolean {
-
-        fun validate(
-            target: InputFieldView,
-            parent: VGSTextInputLayout,
-            @StringRes emptyError: Int,
-            @StringRes invalidError: Int
-        ): Boolean = when {
-            target.getFieldState()?.isEmpty == true -> {
-                parent.setError(emptyError)
-                false
-            }
-            target.getFieldState()?.isValid == false -> {
-                parent.setError(invalidError)
-                false
-            }
-            else -> true
-        }
-
         val isCardHolderValid = validate(
             cardHolderTied,
             cardHolderTil,
@@ -197,6 +193,23 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
         )
 
         return isCardHolderValid && isCardNumberValid && isExpirationDateValid && isSecurityCodeValid
+    }
+
+    private fun validate(
+        target: InputFieldView,
+        parent: VGSTextInputLayout,
+        @StringRes emptyError: Int,
+        @StringRes invalidError: Int
+    ): Boolean = when {
+        target.getFieldState()?.isEmpty == true -> {
+            parent.setError(emptyError)
+            false
+        }
+        target.getFieldState()?.isValid == false -> {
+            parent.setError(invalidError)
+            false
+        }
+        else -> true
     }
 
     private fun showConfirmDialog(onConfirmed: () -> Unit) {

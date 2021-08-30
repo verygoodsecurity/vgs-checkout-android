@@ -21,6 +21,10 @@ internal fun ViewGroup.setEnabled(enabled: Boolean, recursively: Boolean) {
     }
 }
 
+internal fun View.gone() {
+    visibility = View.GONE
+}
+
 internal fun View.getString(@StringRes id: Int) = resources.getString(id)
 
 internal fun View.getDrawable(@DrawableRes id: Int) = ContextCompat.getDrawable(context, id)
