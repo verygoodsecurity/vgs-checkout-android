@@ -15,8 +15,14 @@
         <item name="android:windowBackground">@color/vgs_checkout_whisper</item>
     </style>
 
+    <style name="VGSCheckout.CardView">
+        <item name="cardCornerRadius">@dimen/vgs_checkout_margin_padding_size_small</item>
+        <item name="cardElevation">0dp</item>
+    </style>
+
     <style name="VGSCheckout.Title">
-        <item name="android:textAppearance">?attr/textAppearanceBody1</item>
+        <item name="android:textSize">@dimen/vgs_checkout_title_text_size</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
     </style>
 
     <style name="VGSCheckout.TextInputLayout">
