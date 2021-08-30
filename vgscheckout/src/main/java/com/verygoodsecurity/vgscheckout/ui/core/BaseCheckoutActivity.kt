@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.core.VGSCollect
 import com.verygoodsecurity.vgscheckout.collect.core.VgsCollectResponseListener
@@ -42,8 +43,15 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
     }
 
     override fun onBackPressed() {
-        super.onBackPressed()
-        setResult(Activity.RESULT_CANCELED)
+        showConfirmDialog {
+            super.onBackPressed()
+            setResult(Activity.RESULT_CANCELED)
+        }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
 
     override fun onResponse(response: VGSResponse?) {
@@ -54,6 +62,24 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
 
     @CallSuper
     protected open fun initView(savedInstanceState: Bundle?) {
+        initToolbar()
+    }
 
+    private fun initToolbar() {
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.vgs_checkout_ic_baseline_close_white_24)
+        supportActionBar?.setTitle(R.string.vgs_checkout_add_card_title)
+    }
+
+    private fun showConfirmDialog(onConfirmed: () -> Unit) {
+        MaterialAlertDialogBuilder(this)
+            .setTitle(R.string.vgs_checkout_close_dialog_title)
+            .setMessage(R.string.vgs_checkout_close_dialog_description)
+            .setNegativeButton(R.string.vgs_checkout_close_dialog_cancel) { dialog, _ -> dialog.cancel() }
+            .setPositiveButton(R.string.vgs_checkout_close_dialog_ok) { dialog, _ ->
+                dialog.cancel()
+                onConfirmed.invoke()
+            }
+            .show()
     }
 }

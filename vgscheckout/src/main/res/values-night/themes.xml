@@ -11,6 +11,13 @@
 
         <item name="android:textColorHint">@color/vgs_checkout_comet</item>
         <item name="android:textColorPrimary">@color/vgs_checkout_white</item>
+
+        <item name="toolbarNavigationButtonStyle">@style/VGSCheckout.Toolbar.Button.Navigation
+        </item>
+    </style>
+
+    <style name="VGSCheckout.Toolbar.Button.Navigation" parent="Widget.AppCompat.Toolbar.Button.Navigation">
+        <item name="tint">@color/vgs_checkout_comet</item>
     </style>
 
     <style name="VGSCheckout.Title">

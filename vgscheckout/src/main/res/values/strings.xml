@@ -3,6 +3,12 @@
 
     <string name="vgs_checkout_sdk_name">VGS Checkout</string>
 
+    <string name="vgs_checkout_add_card_title">Add Card</string>
+    <string name="vgs_checkout_close_dialog_title">Close this page?</string>
+    <string name="vgs_checkout_close_dialog_description">Entered data will be cleared after closing.</string>
+    <string name="vgs_checkout_close_dialog_cancel">Cancel</string>
+    <string name="vgs_checkout_close_dialog_ok">Ok</string>
+
     <!--Card info -->
     <string name="vgs_checkout_form_card_details_title">Card Details</string>
     <string name="vgs_checkout_card_holder_subtitle">Name on card</string>
