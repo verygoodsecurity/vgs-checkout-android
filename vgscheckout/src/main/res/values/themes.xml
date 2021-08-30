@@ -37,8 +37,13 @@
         <item name="android:paddingBottom">@dimen/vgs_checkout_margin_padding_size_xsmall</item>
     </style>
 
-    <style name="VGSCheckout.ClearButton">
-        <item name="srcCompat">@drawable/vgs_checkout_ic_round_cancel_white_24dp</item>
-        <item name="android:tint">?attr/colorOnSurface</item>
+    <style name="VGSCheckout.SaveButton" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="textColor">@color/vgs_checkout_white</item>
+        <item name="backgroundTint">@color/vgs_checkout_dodger_blue</item>
+        <item name="android:textColor">@color/vgs_checkout_white</item>
+        <item name="android:paddingTop">@dimen/vgs_checkout_margin_padding_size_medium</item>
+        <item name="android:paddingBottom">@dimen/vgs_checkout_margin_padding_size_medium</item>
+        <item name="cornerRadius">@dimen/vgs_checkout_margin_padding_size_small</item>
+        <item name="textAppearance">?attr/textAppearanceBody2</item>
     </style>
 </resources>

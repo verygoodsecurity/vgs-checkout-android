@@ -3,6 +3,7 @@
 
     <color name="vgs_checkout_white">#FFFFFF</color>
     <color name="vgs_checkout_navy_blue">#145FF5</color>
+    <color name="vgs_checkout_dodger_blue">#0A84FF</color>
     <color name="vgs_checkout_san_juan">#40545F</color>
     <color name="vgs_checkout_whisper">#E5E5E5</color>
     <color name="vgs_checkout_black_r">#1C1C1E</color>

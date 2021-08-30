@@ -3,10 +3,6 @@
 
     <string name="vgs_checkout_sdk_name">VGS Checkout</string>
 
-    <!--Checkout -->
-    <string name="vgs_checkout_form_title">Select a payment method:</string>
-    <string name="vgs_checkout_pay_with_card_title">Or pay with card</string>
-
     <!--Card info -->
     <string name="vgs_checkout_form_card_details_title">Card Details</string>
     <string name="vgs_checkout_card_holder_subtitle">Name on card</string>
@@ -57,9 +53,7 @@
     <string name="vgs_checkout_address_info_postal_code_invalid_error">Postal code is invalid</string>
     <string name="vgs_checkout_address_info_postal_code_empty_error">Postal code is empty</string>
 
-    <!--Pay button -->
-    <string name="vgs_checkout_pay_button_title">Pay</string>
-    <string name="vgs_checkout_pay_button_processing_title">Payment Processing…</string>
+    <string name="vgs_checkout_save_button_title">Save card</string>
 
     <!-- Collect -->
     <string name="vgs_checkout_error_internet_permission">Permission denied (missing INTERNET permission?)</string>
