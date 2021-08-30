@@ -7,7 +7,6 @@ import android.graphics.drawable.Drawable
 import android.text.InputType
 import android.text.method.DigitsKeyListener
 import android.view.Gravity
-import android.view.View
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.core.model.state.*
 import com.verygoodsecurity.vgscheckout.collect.util.extension.formatToMask
@@ -166,16 +165,6 @@ internal class CardInputField(context: Context) : BaseInputField(context),
         inputConnection?.run()
     }
 
-    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-        if (isRTL()) {
-            hasRTL = true
-            layoutDirection = View.LAYOUT_DIRECTION_LTR
-            textDirection = View.TEXT_DIRECTION_LTR
-            gravity = Gravity.CENTER_VERTICAL or Gravity.RIGHT
-        }
-    }
-
     internal fun getOutputDivider(): Char? {
         return outputDivider.firstOrNull()
     }
@@ -316,19 +305,6 @@ internal class CardInputField(context: Context) : BaseInputField(context),
                 card.currentMask
             )
             applyDividerOnMask()
-        }
-    }
-
-    override fun setCompoundDrawablesRelative(
-        start: Drawable?,
-        top: Drawable?,
-        end: Drawable?,
-        bottom: Drawable?
-    ) {
-        if (hasRTL) {
-            super.setCompoundDrawablesRelative(end, top, start, bottom)
-        } else {
-            super.setCompoundDrawablesRelative(start, top, end, bottom)
         }
     }
 

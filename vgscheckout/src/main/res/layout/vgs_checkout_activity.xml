@@ -67,10 +67,10 @@
                     android:layout_height="wrap_content"
                     android:paddingStart="@dimen/vgs_checkout_margin_padding_size_medium"
                     android:paddingTop="@dimen/vgs_checkout_margin_padding_size_xsmall"
-                    android:paddingEnd="0dp"
-                    app:numberDivider=" "
-                    app:cardBrandIconGravity="start"
+                    android:paddingEnd="@dimen/vgs_checkout_margin_padding_size_xsmall"
                     android:paddingBottom="@dimen/vgs_checkout_margin_padding_size_xsmall"
+                    app:cardBrandIconGravity="start"
+                    app:numberDivider=" "
                     app:textSize="14sp" />
             </com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout>
 
@@ -80,10 +80,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/vgs_checkout_card_holder_subtitle"
-                app:startIconTint="@null"
-                app:startIconDrawable="@drawable/vgs_checkout_ic_visa_electron_dark"
                 app:endIconMode="clear_text"
-                app:errorEnabled="true">
+                app:errorEnabled="true"
+                app:startIconDrawable="@drawable/vgs_checkout_ic_visa_electron_dark"
+                app:startIconTint="@null">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/tied"
