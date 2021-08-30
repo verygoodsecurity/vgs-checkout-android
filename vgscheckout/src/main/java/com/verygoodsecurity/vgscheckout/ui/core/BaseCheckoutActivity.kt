@@ -145,11 +145,11 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
     private fun initSaveButton() {
         saveCardButton = findViewById(R.id.mbSaveCard)
         saveCardButton.setOnClickListener {
-            if (validate()) onPayClicked()
+            if (isCardDetailsValid()) onPayClicked()
         }
     }
 
-    private fun validate(): Boolean {
+    private fun isCardDetailsValid(): Boolean {
 
         fun validate(
             target: InputFieldView,

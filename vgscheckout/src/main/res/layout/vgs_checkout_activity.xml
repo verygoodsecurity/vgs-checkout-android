@@ -51,6 +51,7 @@
                     style="@style/VGSCheckout.TextInputLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/vgs_checkout_margin_padding_size_micro"
                     app:hint="@string/vgs_checkout_card_number_subtitle">
 
                     <com.verygoodsecurity.vgscheckout.collect.widget.VGSCardNumberEditText
@@ -65,6 +66,7 @@
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/vgs_checkout_margin_padding_size_micro"
                     android:orientation="horizontal">
 
                     <com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout
@@ -81,7 +83,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             app:datePattern="MM/yy"
-                            app:datePickerModes="input" />
+                            app:datePickerModes="input"
+                            app:inputType="date" />
                     </com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout>
 
                     <Space
