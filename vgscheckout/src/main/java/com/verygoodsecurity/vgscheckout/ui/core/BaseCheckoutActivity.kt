@@ -21,6 +21,7 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.VGSChecko
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.VGSCheckoutCardNumberOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.VGSCheckoutCVCOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.VGSCheckoutExpirationDateOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.core.VGSCheckoutFieldVisibility
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.util.extension.*
 
@@ -117,6 +118,10 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
     private fun initCardHolderView(options: VGSCheckoutCardHolderOptions) {
         cardHolderTil = findViewById(R.id.vgsTilCardHolder)
         cardHolderTied = findViewById(R.id.vgsTiedCardHolder)
+        if (options.visibility == VGSCheckoutFieldVisibility.HIDDEN) {
+            cardHolderTil.gone()
+            return
+        }
         cardHolderTied.setFieldName(options.fieldName)
         cardHolderTied.addOnTextChangeListener(this)
         collect.bindView(cardHolderTied)
