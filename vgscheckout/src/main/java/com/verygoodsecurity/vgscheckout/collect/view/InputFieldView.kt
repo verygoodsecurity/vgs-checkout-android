@@ -1114,6 +1114,10 @@ internal abstract class InputFieldView @JvmOverloads constructor(
         inputField.setOnFocusChangeListener(l, true)
     }
 
+    override fun setOnClickListener(l: OnClickListener?) {
+        inputField.setOnClickListener(l)
+    }
+
     /**
      * Interface definition for a callback to be invoked when an action is
      * performed on the editor.
