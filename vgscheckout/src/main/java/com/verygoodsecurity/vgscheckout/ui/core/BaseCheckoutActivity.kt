@@ -305,8 +305,8 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
         val postalAddressValid = validate(
             postalAddressEt,
             postalAddressTil,
-            R.string.vgs_checkout_address_info_postal_code_empty_error,
-            R.string.vgs_checkout_address_info_postal_code_invalid_error
+            R.string.vgs_checkout_address_info_zipcode_empty_error,
+            R.string.vgs_checkout_address_info_zipcode_invalid_error
         )
 
         return isAddressValid && isCityValid && postalAddressValid

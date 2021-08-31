@@ -44,11 +44,11 @@
     <string name="vgs_checkout_address_info_address_line2_subtitle">Address line 2 (Optional)</string>
     <string name="vgs_checkout_address_info_address_line2_empty_error">Address line 2 is empty</string>
     <string name="vgs_checkout_address_info_zip_subtitle">Zip Code</string>
-    <string name="vgs_checkout_address_info_zipcode_invalid_error">ZIP is invalid</string>
     <string name="vgs_checkout_address_info_zipcode_empty_error">ZIP is empty</string>
+    <string name="vgs_checkout_address_info_zipcode_invalid_error">ZIP is invalid</string>
     <string name="vgs_checkout_address_info_postal_code_subtitle">Postal Code</string>
-    <string name="vgs_checkout_address_info_postal_code_invalid_error">Postal code is invalid</string>
     <string name="vgs_checkout_address_info_postal_code_empty_error">Postal code is empty</string>
+    <string name="vgs_checkout_address_info_postal_code_invalid_error">Postal code is invalid</string>
 
     <string name="vgs_checkout_save_button_title">Save card</string>
 
