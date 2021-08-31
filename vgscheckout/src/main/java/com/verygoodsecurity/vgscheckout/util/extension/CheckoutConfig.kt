@@ -5,3 +5,6 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.core.VGSCheckoutFieldVisi
 
 internal fun CheckoutConfiguration.isCardHolderHidden() =
     this.formConfig.cardOptions.cardHolderOptions.visibility == VGSCheckoutFieldVisibility.HIDDEN
+
+internal fun CheckoutConfiguration.isOptionalAddressFieldNameBlank() =
+    this.formConfig.addressOptions.optionalAddressOptions.fieldName.isBlank()

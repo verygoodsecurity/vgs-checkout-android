@@ -66,6 +66,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
 
     private lateinit var saveCardButton: MaterialButton
 
+    // TODO: Think if we need this rule?
     private val billingAddressValidationRule: VGSInfoRule by lazy {
         VGSInfoRule.ValidationBuilder()
             .setAllowableMinLength(BILLING_ADDRESS_MIN_CHARS_COUNT)
@@ -109,6 +110,10 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
             R.id.vgsEtCardNumber -> cardNumberTil.setError(null)
             R.id.vgsEtExpirationDate -> expirationDateTil.setError(null)
             R.id.vgsEtSecurityCode -> securityCodeTil.setError(null)
+            R.id.vgsEtAddress -> addressTil.setError(null)
+            R.id.vgsEtAddressOptional -> optionalAddressTil.setError(null)
+            R.id.vgsEtCity -> cityTil.setError(null)
+            R.id.vgsEtPostalAddress -> postalAddressTil.setError(null)
         }
     }
 
@@ -235,16 +240,21 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
     private fun initSaveButton() {
         saveCardButton = findViewById(R.id.mbSaveCard)
         saveCardButton.setOnClickListener {
-            if (isCardDetailsValid() && isBillingAddressValid()) onPayClicked()
+            if (isFormValid()) onPayClicked()
         }
+    }
+
+    private fun isFormValid(): Boolean {
+        val isCardDetailsValid = isCardDetailsValid()
+        val isBillingAddressValid = isBillingAddressValid()
+        return isCardDetailsValid && isBillingAddressValid
     }
 
     private fun isCardDetailsValid(): Boolean {
         val isCardHolderValid = config.isCardHolderHidden() || validate(
             cardHolderEt,
             cardHolderTil,
-            R.string.vgs_checkout_card_holder_empty_error,
-            0
+            R.string.vgs_checkout_card_holder_empty_error
         )
 
         val isCardNumberValid = validate(
@@ -275,22 +285,47 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
         if (config.formConfig.addressOptions.visibility == VGSCheckoutBillingAddressVisibility.HIDDEN) {
             return true
         }
-        // TODO: Add implementation
-        return true
+
+        val isAddressValid = validate(
+            addressEt,
+            addressTil,
+            R.string.vgs_checkout_address_info_address_line1_empty_error
+        )
+
+        val isOptionalAddressValid = config.isOptionalAddressFieldNameBlank() || validate(
+            optionalAddressEt,
+            optionalAddressTil,
+            R.string.vgs_checkout_address_info_address_line2_empty_error
+        )
+
+        val isCityValid = validate(
+            cityEt,
+            cityTil,
+            R.string.vgs_checkout_address_info_city_empty_error
+        )
+
+        val postalAddressValid = validate(
+            postalAddressEt,
+            postalAddressTil,
+            R.string.vgs_checkout_address_info_postal_code_empty_error,
+            R.string.vgs_checkout_address_info_postal_code_invalid_error
+        )
+
+        return isAddressValid && isOptionalAddressValid && isCityValid && postalAddressValid
     }
 
     private fun validate(
         target: InputFieldView,
         parent: VGSTextInputLayout,
         @StringRes emptyError: Int,
-        @StringRes invalidError: Int
+        @StringRes invalidError: Int? = null
     ): Boolean = when {
         target.getFieldState()?.isEmpty == true -> {
             parent.setError(emptyError)
             false
         }
         target.getFieldState()?.isValid == false -> {
-            parent.setError(invalidError)
+            invalidError?.let { parent.setError(it) }
             false
         }
         else -> true
