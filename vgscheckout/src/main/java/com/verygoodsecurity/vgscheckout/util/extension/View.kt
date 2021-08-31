@@ -1,12 +1,10 @@
 package com.verygoodsecurity.vgscheckout.util.extension
 
 import android.graphics.drawable.Drawable
+import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.ColorInt
-import androidx.annotation.ColorRes
-import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
+import androidx.annotation.*
 import androidx.core.content.ContextCompat
 import com.google.android.material.textview.MaterialTextView
 
@@ -23,6 +21,10 @@ internal fun ViewGroup.setEnabled(enabled: Boolean, recursively: Boolean) {
     }
 }
 
+internal fun View.gone() {
+    visibility = View.GONE
+}
+
 internal fun View.getString(@StringRes id: Int) = resources.getString(id)
 
 internal fun View.getDrawable(@DrawableRes id: Int) = ContextCompat.getDrawable(context, id)
@@ -30,18 +32,13 @@ internal fun View.getDrawable(@DrawableRes id: Int) = ContextCompat.getDrawable(
 @ColorInt
 internal fun View.getColor(@ColorRes id: Int) = ContextCompat.getColor(context, id)
 
-internal fun MaterialTextView.setDrawableEnd(drawable: Drawable?) {
-    this.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, drawable, null)
+@ColorInt
+internal fun View.getThemeColor(@AttrRes colorAttr: Int): Int {
+    val typedValue = TypedValue()
+    context.theme.resolveAttribute(colorAttr, typedValue, true)
+    return typedValue.data
 }
 
-internal fun View.visible() {
-    this.visibility = View.VISIBLE
-}
-
-internal fun View.invisible() {
-    this.visibility = View.INVISIBLE
-}
-
-internal fun View.gone() {
-    this.visibility = View.GONE
+internal fun MaterialTextView.setDrawableStart(drawable: Drawable?) {
+    this.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable, null, null, null)
 }

@@ -7,7 +7,6 @@ import android.os.Build
 import android.text.InputFilter
 import android.text.InputType
 import android.text.format.DateUtils
-import android.view.Gravity
 import android.view.View
 import android.view.autofill.AutofillValue
 import android.widget.DatePicker
@@ -70,16 +69,6 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
     init {
         minDate = System.currentTimeMillis()
         maxDate = minDate + DateUtils.YEAR_IN_MILLIS * 20
-    }
-
-    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-        if(isRTL()) {
-            hasRTL = true
-            layoutDirection = View.LAYOUT_DIRECTION_LTR
-            textDirection = View.TEXT_DIRECTION_LTR
-            gravity = Gravity.CENTER_VERTICAL or Gravity.RIGHT
-        }
     }
 
     override fun applyFieldType() {

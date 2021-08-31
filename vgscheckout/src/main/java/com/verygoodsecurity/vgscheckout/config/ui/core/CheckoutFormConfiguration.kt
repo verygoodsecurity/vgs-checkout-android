@@ -8,5 +8,4 @@ abstract class CheckoutFormConfiguration internal constructor() : Parcelable {
 
     abstract val cardOptions: VGSCheckoutCardOptions
     abstract val addressOptions: VGSCheckoutBillingAddressOptions
-    abstract val payButtonTitle: String?
 }

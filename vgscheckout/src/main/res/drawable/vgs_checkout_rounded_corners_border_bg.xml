@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <stroke
+        android:width="@dimen/vgs_checkout_border_width"
+        android:color="@color/vgs_checkout_spun_pearl" />
+
+    <corners android:radius="@dimen/vgs_checkout_margin_padding_size_micro" />
+</shape>

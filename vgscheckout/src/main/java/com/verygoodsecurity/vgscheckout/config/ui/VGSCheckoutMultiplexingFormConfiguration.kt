@@ -9,13 +9,7 @@ import kotlinx.parcelize.Parcelize
 class VGSCheckoutMultiplexingFormConfiguration private constructor(
     override val cardOptions: VGSCheckoutCardOptions,
     override val addressOptions: VGSCheckoutBillingAddressOptions,
-    override val payButtonTitle: String?
 ) : CheckoutFormConfiguration() {
 
-    @JvmOverloads
-    constructor(payButtonTitle: String? = null) : this(
-        VGSCheckoutCardOptions(),
-        VGSCheckoutBillingAddressOptions(),
-        payButtonTitle,
-    )
+    constructor() : this(VGSCheckoutCardOptions(), VGSCheckoutBillingAddressOptions())
 }

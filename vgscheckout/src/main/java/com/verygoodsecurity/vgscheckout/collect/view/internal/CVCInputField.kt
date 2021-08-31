@@ -1,11 +1,12 @@
 package com.verygoodsecurity.vgscheckout.collect.view.internal
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.os.Build
 import android.text.InputFilter
 import android.text.InputType
-import android.view.Gravity
 import android.view.View
+import com.google.android.material.textfield.TextInputEditText
 import com.verygoodsecurity.vgscheckout.collect.core.model.state.Dependency
 import com.verygoodsecurity.vgscheckout.collect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscheckout.collect.core.storage.DependencyType
@@ -97,16 +98,6 @@ internal class CVCInputField(context: Context) : BaseInputField(context) {
         filters = arrayOf(CVCValidateFilter(), filterLength)
     }
 
-    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-        if (isRTL()) {
-            hasRTL = true
-            layoutDirection = View.LAYOUT_DIRECTION_LTR
-            textDirection = View.TEXT_DIRECTION_LTR
-            gravity = Gravity.CENTER_VERTICAL or Gravity.RIGHT
-        }
-    }
-
     override fun setupAutofill() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             setAutofillHints(View.AUTOFILL_HINT_CREDIT_CARD_SECURITY_CODE)
@@ -153,13 +144,22 @@ internal class CVCInputField(context: Context) : BaseInputField(context) {
             localVisibleRect
         )
         when (previewIconGravity) {
-            START -> setCompoundDrawablesOrNull(start = icon)
-            END -> setCompoundDrawablesOrNull(end = icon)
+            START -> setCompoundDrawablesRelativeOrNull(start = icon)
+            END -> setCompoundDrawablesRelativeOrNull(end = icon)
         }
     }
 
     private fun removeIcon() {
-        setCompoundDrawablesOrNull()
+        setCompoundDrawablesRelativeOrNull()
+    }
+
+    private fun TextInputEditText.setCompoundDrawablesRelativeOrNull(
+        start: Drawable? = null,
+        top: Drawable? = null,
+        end: Drawable? = null,
+        bottom: Drawable? = null
+    ) {
+        this.setCompoundDrawablesRelative(start, top, end, bottom)
     }
 
     enum class PreviewIconVisibility {

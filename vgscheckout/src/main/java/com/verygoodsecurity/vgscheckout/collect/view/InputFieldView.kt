@@ -1171,6 +1171,10 @@ internal abstract class InputFieldView @JvmOverloads constructor(
         }
     }
 
+    fun getFieldState(): FieldState? {
+        return inputField.getState()
+    }
+
     protected fun getCardNumberState(): FieldState.CardNumberState? {
         return if (fieldType == FieldType.CARD_NUMBER) {
             (inputField as? CardInputField)?.getState() as? FieldState.CardNumberState
