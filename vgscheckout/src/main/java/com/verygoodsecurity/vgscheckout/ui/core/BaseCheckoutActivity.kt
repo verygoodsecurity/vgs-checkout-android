@@ -240,7 +240,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
     }
 
     private fun isCardDetailsValid(): Boolean {
-        val isCardHolderValid = validate(
+        val isCardHolderValid = config.isCardHolderHidden() || validate(
             cardHolderEt,
             cardHolderTil,
             R.string.vgs_checkout_card_holder_empty_error,
