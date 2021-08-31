@@ -61,7 +61,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
     }
 
     override fun onBackPressed() {
-        showConfirmDialog {
+        handleBackPressWithConfirmation {
             super.onBackPressed()
             setResult(Activity.RESULT_CANCELED)
         }
@@ -217,7 +217,22 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
         else -> true
     }
 
-    private fun showConfirmDialog(onConfirmed: () -> Unit) {
+    private fun handleBackPressWithConfirmation(onBackPressed: () -> Unit) {
+        if (isBackPressRequireConfirmation()) {
+            showBackPressConfirmationDialog(onBackPressed)
+        } else {
+            onBackPressed.invoke()
+        }
+    }
+
+    private fun isBackPressRequireConfirmation(): Boolean {
+        return cardHolderTied.isContentNotEmpty() ||
+                cardNumberTied.isContentNotEmpty() ||
+                expirationDateTied.isContentNotEmpty() ||
+                securityCodeTied.isContentNotEmpty()
+    }
+
+    private fun showBackPressConfirmationDialog(onConfirmed: () -> Unit) {
         MaterialAlertDialogBuilder(this)
             .setTitle(R.string.vgs_checkout_close_dialog_title)
             .setMessage(R.string.vgs_checkout_close_dialog_description)
