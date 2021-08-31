@@ -66,12 +66,13 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
 
     private lateinit var saveCardButton: MaterialButton
 
-    // TODO: Think if we need this rule?
     private val billingAddressValidationRule: VGSInfoRule by lazy {
         VGSInfoRule.ValidationBuilder()
             .setAllowableMinLength(BILLING_ADDRESS_MIN_CHARS_COUNT)
             .build()
     }
+
+    private var selectedCountry: String = "USA"
 
     abstract fun resolveConfig(intent: Intent): C
 
@@ -202,6 +203,9 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
         countryEt = findViewById(R.id.vgsEtCountry)
         countryEt.setFieldName(options.fieldName)
         countryEt.addRule(billingAddressValidationRule)
+        countryEt.isFocusable = false
+        countryEt.setText(selectedCountry)
+        countryEt.setOnClickListener { showCountrySelectionDialog() }
         collect.bindView(countryEt)
     }
 
@@ -344,10 +348,24 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
         MaterialAlertDialogBuilder(this)
             .setTitle(R.string.vgs_checkout_close_dialog_title)
             .setMessage(R.string.vgs_checkout_close_dialog_description)
-            .setNegativeButton(R.string.vgs_checkout_close_dialog_cancel) { dialog, _ -> dialog.cancel() }
-            .setPositiveButton(R.string.vgs_checkout_close_dialog_ok) { dialog, _ ->
-                dialog.cancel()
-                onConfirmed.invoke()
+            .setNegativeButton(R.string.vgs_checkout_close_dialog_cancel, null)
+            .setPositiveButton(R.string.vgs_checkout_close_dialog_ok) { _, _ -> onConfirmed.invoke() }
+            .show()
+    }
+
+    private fun showCountrySelectionDialog() {
+        val countries = arrayOf("USA", "Canada", "New Zealand")
+        val selectedIndex = countries.indexOf(selectedCountry)
+        var selected = -1
+        MaterialAlertDialogBuilder(this)
+            .setTitle(R.string.vgs_checkout_select_country_dialog_title)
+            .setSingleChoiceItems(countries, selectedIndex) { _, which -> selected = which }
+            .setNegativeButton(R.string.vgs_checkout_close_dialog_cancel, null)
+            .setPositiveButton(R.string.vgs_checkout_close_dialog_ok) { _, _ ->
+                countries.getOrNull(selected)?.let {
+                    selectedCountry = it
+                    countryEt.setText(selectedCountry)
+                }
             }
             .show()
     }

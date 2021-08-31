@@ -136,6 +136,7 @@
                     style="@style/VGSCheckout.TextInputEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:cursorVisible="false"
                     app:imeOptions="actionNext" />
             </com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout>
 
