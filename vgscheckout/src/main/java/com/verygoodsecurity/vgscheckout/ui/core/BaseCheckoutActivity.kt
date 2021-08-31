@@ -292,12 +292,6 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
             R.string.vgs_checkout_address_info_address_line1_empty_error
         )
 
-        val isOptionalAddressValid = config.isOptionalAddressFieldNameBlank() || validate(
-            optionalAddressEt,
-            optionalAddressTil,
-            R.string.vgs_checkout_address_info_address_line2_empty_error
-        )
-
         val isCityValid = validate(
             cityEt,
             cityTil,
@@ -311,7 +305,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
             R.string.vgs_checkout_address_info_postal_code_invalid_error
         )
 
-        return isAddressValid && isOptionalAddressValid && isCityValid && postalAddressValid
+        return isAddressValid && isCityValid && postalAddressValid
     }
 
     private fun validate(
