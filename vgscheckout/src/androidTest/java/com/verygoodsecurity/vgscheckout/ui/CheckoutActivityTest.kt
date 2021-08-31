@@ -121,16 +121,16 @@ class CheckoutActivityTest {
         expirationDate: String = EMPTY,
         cvc: String = EMPTY,
     ) {
-        onView(withId(R.id.vgsTiedCardHolder)).perform(doAction<PersonNameEditText> {
+        onView(withId(R.id.vgsEtCardHolder)).perform(doAction<PersonNameEditText> {
             it.setText(cardHolderName)
         })
-        onView(withId(R.id.vgsTiedCardNumber)).perform(doAction<VGSCardNumberEditText> {
+        onView(withId(R.id.vgsEtCardNumber)).perform(doAction<VGSCardNumberEditText> {
             it.setText(cardNumber)
         })
-        onView(withId(R.id.vgsTiedExpirationDate)).perform(doAction<ExpirationDateEditText> {
+        onView(withId(R.id.vgsEtExpirationDate)).perform(doAction<ExpirationDateEditText> {
             it.setText(expirationDate)
         })
-        onView(withId(R.id.vgsTiedSecurityCode)).perform(doAction<CardVerificationCodeEditText> {
+        onView(withId(R.id.vgsEtSecurityCode)).perform(doAction<CardVerificationCodeEditText> {
             it.setText(cvc)
         })
     }
