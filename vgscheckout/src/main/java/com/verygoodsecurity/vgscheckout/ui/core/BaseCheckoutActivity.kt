@@ -93,7 +93,6 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
         initInputViews()
     }
 
-
     private fun initToolbar() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.vgs_checkout_ic_baseline_close_white_24)

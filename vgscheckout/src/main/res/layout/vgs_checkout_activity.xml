@@ -46,7 +46,6 @@
                 style="@style/VGSCheckout.TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/vgs_checkout_margin_padding_size_micro"
                 app:hint="@string/vgs_checkout_card_number_subtitle">
 
                 <com.verygoodsecurity.vgscheckout.collect.widget.VGSCardNumberEditText
@@ -61,6 +60,7 @@
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/vgs_checkout_margin_padding_size_micro"
                 android:orientation="horizontal">
 
                 <com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout
@@ -118,6 +118,107 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/vgs_checkout_form_billing_address_title" />
+
+            <com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout
+                android:id="@+id/vgsTilCountry"
+                style="@style/VGSCheckout.TextInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/vgs_checkout_margin_padding_size_xsmall"
+                app:hint="@string/vgs_checkout_address_info_country_subtitle">
+
+                <com.verygoodsecurity.vgscheckout.collect.widget.VGSEditText
+                    android:id="@+id/vgsEtCountry"
+                    style="@style/VGSCheckout.TextInputEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout>
+
+            <com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout
+                android:id="@+id/vgsTilAddress"
+                style="@style/VGSCheckout.TextInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/vgs_checkout_margin_padding_size_micro"
+                app:hint="@string/vgs_checkout_address_info_address_line1_subtitle">
+
+                <com.verygoodsecurity.vgscheckout.collect.widget.VGSEditText
+                    android:id="@+id/vgsEtAddress"
+                    style="@style/VGSCheckout.TextInputEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout>
+
+            <com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout
+                android:id="@+id/vgsTilAddressOptional"
+                style="@style/VGSCheckout.TextInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/vgs_checkout_margin_padding_size_micro"
+                app:hint="@string/vgs_checkout_address_info_address_line2_subtitle">
+
+                <com.verygoodsecurity.vgscheckout.collect.widget.VGSEditText
+                    android:id="@+id/vgsEtAddressOptional"
+                    style="@style/VGSCheckout.TextInputEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/vgs_checkout_margin_padding_size_micro"
+                android:orientation="horizontal">
+
+                <com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout
+                    android:id="@+id/vgsTilCity"
+                    style="@style/VGSCheckout.TextInputLayout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:hint="@string/vgs_checkout_address_info_city_subtitle">
+
+                    <com.verygoodsecurity.vgscheckout.collect.widget.VGSEditText
+                        android:id="@+id/vgsEtCity"
+                        style="@style/VGSCheckout.TextInputEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout>
+
+                <Space
+                    android:layout_width="@dimen/vgs_checkout_margin_padding_size_medium"
+                    android:layout_height="0dp" />
+
+                <com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout
+                    android:id="@+id/vgsTilPostalAddress"
+                    style="@style/VGSCheckout.TextInputLayout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:hint="@string/vgs_checkout_address_info_zip_subtitle">
+
+                    <com.verygoodsecurity.vgscheckout.collect.widget.VGSEditText
+                        android:id="@+id/vgsEtPostalAddress"
+                        style="@style/VGSCheckout.TextInputEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout
+                android:id="@+id/vgsTilState"
+                style="@style/VGSCheckout.TextInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/vgs_checkout_margin_padding_size_micro"
+                app:hint="@string/vgs_checkout_address_info_region_type_state_subtitle">
+
+                <com.verygoodsecurity.vgscheckout.collect.widget.VGSEditText
+                    android:id="@+id/vgsEtState"
+                    style="@style/VGSCheckout.TextInputEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout>
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <com.google.android.material.button.MaterialButton
