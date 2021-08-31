@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity(), VGSCheckoutCallback {
     private fun getCheckoutRouteConfig() = VGSCheckoutRouteConfiguration("post")
 
     private fun getCheckoutFormConfig() =
-        VGSCheckoutFormConfiguration(getCardOptions(), getAddressOptions(), "9.73$")
+        VGSCheckoutFormConfiguration(getCardOptions(), getAddressOptions())
 
     private fun getCardOptions() = VGSCheckoutCardOptions(
         VGSCheckoutCardNumberOptions("card_data.card_number"),
