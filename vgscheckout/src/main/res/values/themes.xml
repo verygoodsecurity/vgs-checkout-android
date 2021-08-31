@@ -15,9 +15,8 @@
         <item name="android:windowBackground">@color/vgs_checkout_whisper</item>
     </style>
 
-    <style name="VGSCheckout.CardView">
-        <item name="cardCornerRadius">@dimen/vgs_checkout_margin_padding_size_small</item>
-        <item name="cardElevation">0dp</item>
+    <style name="VGSCheckout.Form">
+        <item name="android:background">@drawable/vgs_checkout_form_bg</item>
     </style>
 
     <style name="VGSCheckout.Title">

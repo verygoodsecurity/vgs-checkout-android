@@ -12,123 +12,113 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <com.google.android.material.card.MaterialCardView
-            style="@style/VGSCheckout.CardView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="@dimen/vgs_checkout_margin_padding_size_medium">
-
-                <com.google.android.material.textview.MaterialTextView
-                    style="@style/VGSCheckout.Title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/vgs_checkout_form_card_details_title" />
-
-                <com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout
-                    android:id="@+id/vgsTilCardHolder"
-                    style="@style/VGSCheckout.TextInputLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/vgs_checkout_margin_padding_size_xsmall"
-                    android:layout_marginBottom="@dimen/vgs_checkout_margin_padding_size_micro"
-                    app:hint="@string/vgs_checkout_card_holder_subtitle">
-
-                    <com.verygoodsecurity.vgscheckout.collect.widget.PersonNameEditText
-                        android:id="@+id/vgsTiedCardHolder"
-                        style="@style/VGSCheckout.TextInputEditText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-                </com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout>
-
-                <com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout
-                    android:id="@+id/vgsTilCardNumber"
-                    style="@style/VGSCheckout.TextInputLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/vgs_checkout_margin_padding_size_micro"
-                    app:hint="@string/vgs_checkout_card_number_subtitle">
-
-                    <com.verygoodsecurity.vgscheckout.collect.widget.VGSCardNumberEditText
-                        android:id="@+id/vgsTiedCardNumber"
-                        style="@style/VGSCheckout.TextInputEditText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:cardBrandIconGravity="start"
-                        app:numberDivider=" " />
-                </com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout>
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout
-                        android:id="@+id/vgsTilExpirationDate"
-                        style="@style/VGSCheckout.TextInputLayout"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        app:hint="@string/vgs_checkout_card_expiration_date_subtitle">
-
-                        <com.verygoodsecurity.vgscheckout.collect.widget.ExpirationDateEditText
-                            android:id="@+id/vgsTiedExpirationDate"
-                            style="@style/VGSCheckout.TextInputEditText"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            app:datePattern="MM/yy"
-                            app:datePickerModes="input"
-                            app:inputType="date" />
-                    </com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout>
-
-                    <Space
-                        android:layout_width="@dimen/vgs_checkout_margin_padding_size_medium"
-                        android:layout_height="0dp" />
-
-                    <com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout
-                        android:id="@+id/vgsTilSecurityCode"
-                        style="@style/VGSCheckout.TextInputLayout"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        app:hint="@string/vgs_checkout_card_verification_code_subtitle">
-
-                        <com.verygoodsecurity.vgscheckout.collect.widget.CardVerificationCodeEditText
-                            android:id="@+id/vgsTiedSecurityCode"
-                            style="@style/VGSCheckout.TextInputEditText"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            app:previewIconGravity="start"
-                            app:previewIconVisibility="always" />
-                    </com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout>
-                </androidx.appcompat.widget.LinearLayoutCompat>
-            </androidx.appcompat.widget.LinearLayoutCompat>
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/mcvBillingAddress"
-            style="@style/VGSCheckout.CardView"
+        <androidx.appcompat.widget.LinearLayoutCompat
+            style="@style/VGSCheckout.Form"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/vgs_checkout_margin_padding_size_medium">
+            android:orientation="vertical"
+            android:padding="@dimen/vgs_checkout_margin_padding_size_medium">
+
+            <com.google.android.material.textview.MaterialTextView
+                style="@style/VGSCheckout.Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/vgs_checkout_form_card_details_title" />
+
+            <com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout
+                android:id="@+id/vgsTilCardHolder"
+                style="@style/VGSCheckout.TextInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/vgs_checkout_margin_padding_size_xsmall"
+                android:layout_marginBottom="@dimen/vgs_checkout_margin_padding_size_micro"
+                app:hint="@string/vgs_checkout_card_holder_subtitle">
+
+                <com.verygoodsecurity.vgscheckout.collect.widget.PersonNameEditText
+                    android:id="@+id/vgsTiedCardHolder"
+                    style="@style/VGSCheckout.TextInputEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout>
+
+            <com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout
+                android:id="@+id/vgsTilCardNumber"
+                style="@style/VGSCheckout.TextInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/vgs_checkout_margin_padding_size_micro"
+                app:hint="@string/vgs_checkout_card_number_subtitle">
+
+                <com.verygoodsecurity.vgscheckout.collect.widget.VGSCardNumberEditText
+                    android:id="@+id/vgsTiedCardNumber"
+                    style="@style/VGSCheckout.TextInputEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardBrandIconGravity="start"
+                    app:numberDivider=" " />
+            </com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout>
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="@dimen/vgs_checkout_margin_padding_size_medium">
+                android:orientation="horizontal">
 
-                <com.google.android.material.textview.MaterialTextView
-                    style="@style/VGSCheckout.Title"
-                    android:layout_width="match_parent"
+                <com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout
+                    android:id="@+id/vgsTilExpirationDate"
+                    style="@style/VGSCheckout.TextInputLayout"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/vgs_checkout_form_billing_address_title" />
+                    android:layout_weight="1"
+                    app:hint="@string/vgs_checkout_card_expiration_date_subtitle">
+
+                    <com.verygoodsecurity.vgscheckout.collect.widget.ExpirationDateEditText
+                        android:id="@+id/vgsTiedExpirationDate"
+                        style="@style/VGSCheckout.TextInputEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:datePattern="MM/yy"
+                        app:datePickerModes="input"
+                        app:inputType="date" />
+                </com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout>
+
+                <Space
+                    android:layout_width="@dimen/vgs_checkout_margin_padding_size_medium"
+                    android:layout_height="0dp" />
+
+                <com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout
+                    android:id="@+id/vgsTilSecurityCode"
+                    style="@style/VGSCheckout.TextInputLayout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:hint="@string/vgs_checkout_card_verification_code_subtitle">
+
+                    <com.verygoodsecurity.vgscheckout.collect.widget.CardVerificationCodeEditText
+                        android:id="@+id/vgsTiedSecurityCode"
+                        style="@style/VGSCheckout.TextInputEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:previewIconGravity="start"
+                        app:previewIconVisibility="always" />
+                </com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout>
             </androidx.appcompat.widget.LinearLayoutCompat>
-        </com.google.android.material.card.MaterialCardView>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/llBillingAddress"
+            style="@style/VGSCheckout.Form"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/vgs_checkout_margin_padding_size_medium"
+            android:orientation="vertical"
+            android:padding="@dimen/vgs_checkout_margin_padding_size_medium">
+
+            <com.google.android.material.textview.MaterialTextView
+                style="@style/VGSCheckout.Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/vgs_checkout_form_billing_address_title" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/mbSaveCard"

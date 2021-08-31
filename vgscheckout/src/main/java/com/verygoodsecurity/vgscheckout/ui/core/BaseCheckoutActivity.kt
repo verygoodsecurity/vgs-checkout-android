@@ -6,8 +6,8 @@ import android.os.Bundle
 import androidx.annotation.CallSuper
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.LinearLayoutCompat
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.card.MaterialCardView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.core.VGSCollect
@@ -156,7 +156,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
 
     private fun initBillingAddressViews() {
         if (config.formConfig.addressOptions.visibility == VGSCheckoutBillingAddressVisibility.HIDDEN) {
-            findViewById<MaterialCardView>(R.id.mcvBillingAddress).gone()
+            findViewById<LinearLayoutCompat>(R.id.llBillingAddress).gone()
             return
         }
     }
