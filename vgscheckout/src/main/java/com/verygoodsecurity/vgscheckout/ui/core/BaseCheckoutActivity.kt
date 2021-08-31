@@ -206,6 +206,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
         countryEt.isFocusable = false
         countryEt.setText(selectedCountry)
         countryEt.setOnClickListener { showCountrySelectionDialog() }
+        countryEt.addOnTextChangeListener(this)
         collect.bindView(countryEt)
     }
 
@@ -214,6 +215,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
         addressEt = findViewById(R.id.vgsEtAddress)
         addressEt.setFieldName(options.fieldName)
         addressEt.addRule(billingAddressValidationRule)
+        addressEt.addOnTextChangeListener(this)
         collect.bindView(addressEt)
     }
 
@@ -230,6 +232,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
         cityEt = findViewById(R.id.vgsEtCity)
         cityEt.setFieldName(options.fieldName)
         cityEt.addRule(billingAddressValidationRule)
+        cityEt.addOnTextChangeListener(this)
         collect.bindView(cityEt)
     }
 
@@ -238,6 +241,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
         postalAddressEt = findViewById(R.id.vgsEtPostalAddress)
         postalAddressEt.setFieldName(options.fieldName)
         postalAddressEt.addRule(billingAddressValidationRule)
+        postalAddressEt.addOnTextChangeListener(this)
         collect.bindView(postalAddressEt)
     }
 
