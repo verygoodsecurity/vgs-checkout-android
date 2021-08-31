@@ -334,10 +334,10 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
     }
 
     private fun isBackPressRequireConfirmation(): Boolean {
-        return cardHolderTied.isContentNotEmpty() ||
-                cardNumberTied.isContentNotEmpty() ||
-                expirationDateTied.isContentNotEmpty() ||
-                securityCodeTied.isContentNotEmpty()
+        return cardHolderEt.isContentNotEmpty() ||
+                cardNumberEt.isContentNotEmpty() ||
+                expirationDateEt.isContentNotEmpty() ||
+                securityCodeEt.isContentNotEmpty()
     }
 
     private fun showBackPressConfirmationDialog(onConfirmed: () -> Unit) {
