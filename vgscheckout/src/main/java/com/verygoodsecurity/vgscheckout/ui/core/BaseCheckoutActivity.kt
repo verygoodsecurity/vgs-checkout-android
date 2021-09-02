@@ -29,6 +29,9 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.VGSCheckoutCVCOp
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.VGSCheckoutExpirationDateOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.core.VGSCheckoutFieldVisibility
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
+import com.verygoodsecurity.vgscheckout.util.country.CountriesHelper
+import com.verygoodsecurity.vgscheckout.util.country.model.Country
+import com.verygoodsecurity.vgscheckout.util.country.model.PostalAddressType
 import com.verygoodsecurity.vgscheckout.util.extension.*
 
 private const val BILLING_ADDRESS_MIN_CHARS_COUNT = 1
@@ -72,7 +75,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
             .build()
     }
 
-    private var selectedCountry: String = "USA"
+    private var selectedCountry: Country = CountriesHelper.countries.first()
 
     abstract fun resolveConfig(intent: Intent): C
 
@@ -204,10 +207,14 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
         countryEt.setFieldName(options.fieldName)
         countryEt.addRule(billingAddressValidationRule)
         countryEt.isFocusable = false
-        countryEt.setText(selectedCountry)
         countryEt.setOnClickListener { showCountrySelectionDialog() }
         countryEt.addOnTextChangeListener(this)
         collect.bindView(countryEt)
+        updateCountryView()
+    }
+
+    private fun updateCountryView() {
+        countryEt.setText(selectedCountry.name)
     }
 
     private fun initAddressView(options: VGSCheckoutAddressOptions) {
@@ -240,10 +247,38 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
         postalAddressTil = findViewById(R.id.vgsTilPostalAddress)
         postalAddressEt = findViewById(R.id.vgsEtPostalAddress)
         postalAddressEt.setFieldName(options.fieldName)
-        postalAddressEt.addRule(billingAddressValidationRule)
         postalAddressEt.addOnTextChangeListener(this)
         collect.bindView(postalAddressEt)
+        updatePostalAddressView()
     }
+
+    private fun updatePostalAddressView() {
+        postalAddressEt.addRule(getPostalAddressValidationRule())
+        postalAddressEt.reSetText()
+        postalAddressTil.setHint(getString(getPostalAddressHint()))
+    }
+
+    @StringRes
+    private fun getPostalAddressHint() = when (selectedCountry.postalAddressType) {
+        PostalAddressType.ZIP -> R.string.vgs_checkout_address_info_zip_subtitle
+        PostalAddressType.POSTAL -> R.string.vgs_checkout_address_info_postal_code_subtitle
+    }
+
+    @StringRes
+    private fun getPostalAddressEmptyErrorMessage() = when (selectedCountry.postalAddressType) {
+        PostalAddressType.ZIP -> R.string.vgs_checkout_address_info_zipcode_empty_error
+        PostalAddressType.POSTAL -> R.string.vgs_checkout_address_info_postal_code_empty_error
+    }
+
+    @StringRes
+    private fun getPostalAddressInvalidErrorMessage() = when (selectedCountry.postalAddressType) {
+        PostalAddressType.ZIP -> R.string.vgs_checkout_address_info_zipcode_invalid_error
+        PostalAddressType.POSTAL -> R.string.vgs_checkout_address_info_postal_code_invalid_error
+    }
+
+    private fun getPostalAddressValidationRule() = VGSInfoRule.ValidationBuilder()
+        .setRegex(selectedCountry.postalAddressRegex)
+        .build()
 
     private fun initSaveButton() {
         saveCardButton = findViewById(R.id.mbSaveCard)
@@ -309,8 +344,8 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
         val postalAddressValid = validate(
             postalAddressEt,
             postalAddressTil,
-            R.string.vgs_checkout_address_info_zipcode_empty_error,
-            R.string.vgs_checkout_address_info_zipcode_invalid_error
+            getPostalAddressEmptyErrorMessage(),
+            getPostalAddressInvalidErrorMessage()
         )
 
         return isAddressValid && isCityValid && postalAddressValid
@@ -330,7 +365,10 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
             invalidError?.let { parent.setError(it) }
             false
         }
-        else -> true
+        else -> {
+            parent.setError(null)
+            true
+        }
     }
 
     private fun handleBackPressWithConfirmation(onBackPressed: () -> Unit) {
@@ -358,17 +396,19 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
     }
 
     private fun showCountrySelectionDialog() {
-        val countries = arrayOf("USA", "Canada", "New Zealand")
+        val countries = CountriesHelper.countries
+        val countryNames = countries.map { it.name }.toTypedArray()
         val selectedIndex = countries.indexOf(selectedCountry)
         var selected = -1
         MaterialAlertDialogBuilder(this)
             .setTitle(R.string.vgs_checkout_select_country_dialog_title)
-            .setSingleChoiceItems(countries, selectedIndex) { _, which -> selected = which }
+            .setSingleChoiceItems(countryNames, selectedIndex) { _, which -> selected = which }
             .setNegativeButton(R.string.vgs_checkout_close_dialog_cancel, null)
             .setPositiveButton(R.string.vgs_checkout_close_dialog_ok) { _, _ ->
                 countries.getOrNull(selected)?.let {
                     selectedCountry = it
-                    countryEt.setText(selectedCountry)
+                    updateCountryView()
+                    updatePostalAddressView()
                 }
             }
             .show()

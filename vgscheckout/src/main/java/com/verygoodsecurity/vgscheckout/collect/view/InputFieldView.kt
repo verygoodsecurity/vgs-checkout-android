@@ -629,8 +629,9 @@ internal abstract class InputFieldView @JvmOverloads constructor(
         }
     }
 
-    fun reInvalidateInput() {
+    fun reSetText() {
         inputField.text = inputField.text
+        inputField.setSelection(inputField.text?.length ?: 0)
     }
 
     /**
