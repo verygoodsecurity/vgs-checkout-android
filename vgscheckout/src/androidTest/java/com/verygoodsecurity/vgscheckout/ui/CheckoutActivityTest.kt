@@ -7,6 +7,7 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.RootMatchers.isDialog
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.verygoodsecurity.vgscheckout.R
@@ -20,7 +21,8 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.VGSChecko
 import com.verygoodsecurity.vgscheckout.config.ui.view.core.VGSCheckoutFieldVisibility
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.util.ActionHelper.doAction
-import com.verygoodsecurity.vgscheckout.util.Matchers.error
+import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers
+import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers.withError
 import com.verygoodsecurity.vgscheckout.util.ViewInteraction.onViewWithScrollTo
 import org.hamcrest.CoreMatchers.not
 import org.junit.Test
@@ -41,7 +43,6 @@ class CheckoutActivityTest {
 
     @Test
     fun performCheckout_saveButtonIsEnabled() {
-        // Arrange
         launch<CheckoutActivity>(defaultIntent).use {
             //Assert
             onView(withId(R.id.mbSaveCard)).check(matches(isEnabled()))
@@ -78,13 +79,13 @@ class CheckoutActivityTest {
     fun preformCheckout_noErrorMessagesDisplayedByDefault() {
         launch<CheckoutActivity>(defaultIntent).use {
             // Assert
-            onViewWithScrollTo(R.id.vgsTilCardHolder).check(matches(error(null)))
-            onViewWithScrollTo(R.id.vgsTilCardNumber).check(matches(error(null)))
-            onViewWithScrollTo(R.id.vgsTilExpirationDate).check(matches(error(null)))
-            onViewWithScrollTo(R.id.vgsTilSecurityCode).check(matches(error(null)))
-            onViewWithScrollTo(R.id.vgsTilAddress).check(matches(error(null)))
-            onViewWithScrollTo(R.id.vgsTilCity).check(matches(error(null)))
-            onViewWithScrollTo(R.id.vgsTilPostalAddress).check(matches(error(null)))
+            onViewWithScrollTo(R.id.vgsTilCardHolder).check(matches(withError(null)))
+            onViewWithScrollTo(R.id.vgsTilCardNumber).check(matches(withError(null)))
+            onViewWithScrollTo(R.id.vgsTilExpirationDate).check(matches(withError(null)))
+            onViewWithScrollTo(R.id.vgsTilSecurityCode).check(matches(withError(null)))
+            onViewWithScrollTo(R.id.vgsTilAddress).check(matches(withError(null)))
+            onViewWithScrollTo(R.id.vgsTilCity).check(matches(withError(null)))
+            onViewWithScrollTo(R.id.vgsTilPostalAddress).check(matches(withError(null)))
         }
     }
 
@@ -96,49 +97,49 @@ class CheckoutActivityTest {
             // Assert
             onViewWithScrollTo(R.id.vgsTilCardHolder).check(
                 matches(
-                    error(
+                    withError(
                         "Name is empty"
                     )
                 )
             )
             onViewWithScrollTo(R.id.vgsTilCardNumber).check(
                 matches(
-                    error(
+                    withError(
                         "Card number is empty"
                     )
                 )
             )
             onViewWithScrollTo(R.id.vgsTilExpirationDate).check(
                 matches(
-                    error(
+                    withError(
                         "Expiration date is empty"
                     )
                 )
             )
             onViewWithScrollTo(R.id.vgsTilSecurityCode).check(
                 matches(
-                    error(
+                    withError(
                         "CVC is empty"
                     )
                 )
             )
             onViewWithScrollTo(R.id.vgsTilAddress).check(
                 matches(
-                    error(
+                    withError(
                         "Address line 1 is empty"
                     )
                 )
             )
             onViewWithScrollTo(R.id.vgsTilCity).check(
                 matches(
-                    error(
+                    withError(
                         "City is empty"
                     )
                 )
             )
             onViewWithScrollTo(R.id.vgsTilPostalAddress).check(
                 matches(
-                    error(
+                    withError(
                         "ZIP is empty"
                     )
                 )
@@ -166,28 +167,28 @@ class CheckoutActivityTest {
             // Assert
             onViewWithScrollTo(R.id.vgsTilCardNumber).check(
                 matches(
-                    error(
+                    withError(
                         "Enter a valid card number"
                     )
                 )
             )
             onViewWithScrollTo(R.id.vgsTilExpirationDate).check(
                 matches(
-                    error(
+                    withError(
                         "Expiration date is not valid"
                     )
                 )
             )
             onViewWithScrollTo(R.id.vgsTilSecurityCode).check(
                 matches(
-                    error(
+                    withError(
                         "CVC is not valid"
                     )
                 )
             )
             onViewWithScrollTo(R.id.vgsTilPostalAddress).check(
                 matches(
-                    error(
+                    withError(
                         "ZIP is invalid"
                     )
                 )
@@ -213,19 +214,18 @@ class CheckoutActivityTest {
             // Act
             onViewWithScrollTo(R.id.mbSaveCard).perform(click())
             // Assert
-            onViewWithScrollTo(R.id.vgsTilCardHolder).check(matches(error(null)))
-            onViewWithScrollTo(R.id.vgsTilCardNumber).check(matches(error(null)))
-            onViewWithScrollTo(R.id.vgsTilExpirationDate).check(matches(error(null)))
-            onViewWithScrollTo(R.id.vgsTilSecurityCode).check(matches(error(null)))
-            onViewWithScrollTo(R.id.vgsTilAddress).check(matches(error(null)))
-            onViewWithScrollTo(R.id.vgsTilCity).check(matches(error(null)))
-            onViewWithScrollTo(R.id.vgsTilPostalAddress).check(matches(error(null)))
+            onViewWithScrollTo(R.id.vgsTilCardHolder).check(matches(withError(null)))
+            onViewWithScrollTo(R.id.vgsTilCardNumber).check(matches(withError(null)))
+            onViewWithScrollTo(R.id.vgsTilExpirationDate).check(matches(withError(null)))
+            onViewWithScrollTo(R.id.vgsTilSecurityCode).check(matches(withError(null)))
+            onViewWithScrollTo(R.id.vgsTilAddress).check(matches(withError(null)))
+            onViewWithScrollTo(R.id.vgsTilCity).check(matches(withError(null)))
+            onViewWithScrollTo(R.id.vgsTilPostalAddress).check(matches(withError(null)))
         }
     }
 
     @Test
     fun performCheckout_addressIsVisibleByDefault() {
-        // Arrange
         launch<CheckoutActivity>(defaultIntent).use {
             //Assert
             onView(withId(R.id.llBillingAddress)).check(matches(isDisplayed()))
@@ -255,6 +255,66 @@ class CheckoutActivityTest {
         launch<CheckoutActivity>(intent).use {
             //Assert
             onView(withId(R.id.llBillingAddress)).check(matches(not(isDisplayed())))
+        }
+    }
+
+    @Test
+    fun countrySelect_dialogShowed() {
+        launch<CheckoutActivity>(defaultIntent).use {
+            // Act
+            onViewWithScrollTo(R.id.vgsTilCountry).perform(click())
+            //Assert
+            onView(isRoot()).inRoot(isDialog()).check(matches(isDisplayed()))
+        }
+    }
+
+    @Test
+    fun countrySelect_selectCanada_countryChanged() {
+        launch<CheckoutActivity>(defaultIntent).use {
+            // Act
+            onViewWithScrollTo(R.id.vgsTilCountry).perform(click())
+            onView(withText("Canada")).perform(click())
+            onView(withText("Ok")).perform(click())
+            //Assert
+            onView(withId(R.id.vgsEtCountry)).check(matches(VGSViewMatchers.withText("Canada")))
+        }
+    }
+
+    @Test
+    fun countrySelect_selectCanada_postalAddressHintChanged() {
+        launch<CheckoutActivity>(defaultIntent).use {
+            // Act
+            onViewWithScrollTo(R.id.vgsTilCountry).perform(click())
+            onView(withText("Canada")).perform(click())
+            onView(withText("Ok")).perform(click())
+            //Assert
+            onViewWithScrollTo(R.id.vgsTilPostalAddress).check(matches(VGSViewMatchers.withHint("Postal Code")))
+        }
+    }
+
+    @Test
+    fun countrySelect_selectCanada_postalAddressErrorChanged() {
+        launch<CheckoutActivity>(defaultIntent).use {
+            // Act
+            onViewWithScrollTo(R.id.vgsTilCountry).perform(click())
+            onView(withText("Canada")).perform(click())
+            onView(withText("Ok")).perform(click())
+            onViewWithScrollTo(R.id.mbSaveCard).perform(click())
+            //Assert
+            onViewWithScrollTo(R.id.vgsTilPostalAddress).check(matches(withError("Postal code is empty")))
+        }
+    }
+
+    @Test
+    fun showErrorMessage_countrySelect_selectCanada_postalAddressErrorMessageCleared() {
+        launch<CheckoutActivity>(defaultIntent).use {
+            // Act
+            onViewWithScrollTo(R.id.mbSaveCard).perform(click())
+            onViewWithScrollTo(R.id.vgsTilCountry).perform(click())
+            onView(withText("Canada")).perform(click())
+            onView(withText("Ok")).perform(click())
+            //Assert
+            onViewWithScrollTo(R.id.vgsTilPostalAddress).check(matches(withError(null)))
         }
     }
 

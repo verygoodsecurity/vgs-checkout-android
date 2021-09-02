@@ -1325,6 +1325,9 @@ internal abstract class InputFieldView @JvmOverloads constructor(
         inputField.setOnKeyListener(l)
     }
 
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    internal fun getText() = inputField.text
+
     companion object {
         internal val TAG: String = InputFieldView::class.simpleName.toString()
     }
