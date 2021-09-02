@@ -3,6 +3,9 @@ package com.verygoodsecurity.vgscheckout.ui.core
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.view.KeyEvent
+import android.view.View
+import android.view.inputmethod.EditorInfo
 import androidx.annotation.CallSuper
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
@@ -81,7 +84,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
 
     abstract fun resolveCollect(): VGSCollect
 
-    abstract fun onPayClicked()
+    abstract fun handleSaveCard()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -248,6 +251,16 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
         postalAddressEt = findViewById(R.id.vgsEtPostalAddress)
         postalAddressEt.setFieldName(options.fieldName)
         postalAddressEt.addOnTextChangeListener(this)
+        postalAddressEt.setOnEditorActionListener(object : InputFieldView.OnEditorActionListener {
+
+            override fun onEditorAction(v: View?, actionId: Int, event: KeyEvent?): Boolean {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    saveCard()
+                    return true
+                }
+                return false
+            }
+        })
         collect.bindView(postalAddressEt)
         updatePostalAddressView()
     }
@@ -282,12 +295,15 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
 
     private fun initSaveButton() {
         saveCardButton = findViewById(R.id.mbSaveCard)
-        saveCardButton.setOnClickListener {
-            if (isFormValid()) onPayClicked()
-        }
+        saveCardButton.setOnClickListener { saveCard() }
     }
 
-    private fun isFormValid(): Boolean {
+    private fun saveCard() {
+        hideSoftKeyboard()
+        if (isInputValid()) handleSaveCard()
+    }
+
+    private fun isInputValid(): Boolean {
         val isCardDetailsValid = isCardDetailsValid()
         val isBillingAddressValid = isBillingAddressValid()
         return isCardDetailsValid && isBillingAddressValid
