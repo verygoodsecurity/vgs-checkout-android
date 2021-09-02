@@ -41,7 +41,7 @@ class CheckoutActivityTest {
     }
 
     @Test
-    fun performCheckout_payButtonIsEnabled() {
+    fun performCheckout_saveButtonIsEnabled() {
         // Arrange
         launch<CheckoutActivity>(defaultIntent).use {
             fillCardFields()
