@@ -1,7 +1,6 @@
 package com.verygoodsecurity.democheckout
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.button.MaterialButton
 import com.verygoodsecurity.democheckout.util.extension.showShort
@@ -42,12 +41,11 @@ class MainActivity : AppCompatActivity(), VGSCheckoutCallback {
                 is Canceled -> "Checkout canceled"
             }
         )
-        Log.d(MainActivity::class.java.simpleName, (result as? Success)?.body.toString())
     }
 
     //region Checkout config
     private fun getCheckoutConfig() = VGSCheckoutConfiguration(
-        vaultID = "tnt3dj7zbi8",
+        vaultID = "tntpszqgikn",
         routeConfig = getCheckoutRouteConfig(),
         formConfig = getCheckoutFormConfig()
     )
