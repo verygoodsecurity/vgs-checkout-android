@@ -33,16 +33,6 @@ class MainActivity : AppCompatActivity(), VGSCheckoutCallback {
         }
     }
 
-    override fun onCheckoutResult(result: VGSCheckoutResult) {
-        showShort(
-            when (result) {
-                is Success -> "Checkout complete: code = ${result.code}, body = ${result.body}"
-                is Failed -> "Checkout failed: code = ${result.code}, body = ${result.body}"
-                is Canceled -> "Checkout canceled"
-            }
-        )
-    }
-
     //region Checkout config
     private fun getCheckoutConfig() = VGSCheckoutConfiguration(
         vaultID = "tntpszqgikn",
@@ -68,5 +58,14 @@ class MainActivity : AppCompatActivity(), VGSCheckoutCallback {
         VGSCheckoutAddressOptions("address_info.address"),
         postalAddressOptions = VGSCheckoutPostalAddressOptions("address_info.postal_address"),
     )
-    //endregion
+
+    override fun onCheckoutResult(result: VGSCheckoutResult) {
+        showShort(
+            when (result) {
+                is Success -> "Checkout complete: code = ${result.code}, body = ${result.body}"
+                is Failed -> "Checkout failed: code = ${result.code}, body = ${result.body}"
+                is Canceled -> "Checkout canceled"
+            }
+        )
+    }
 }
