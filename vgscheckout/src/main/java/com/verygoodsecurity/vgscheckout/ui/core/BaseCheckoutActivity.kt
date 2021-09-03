@@ -37,13 +37,13 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
     }
 
     private lateinit var cardHolderTil: VGSTextInputLayout
-    private lateinit var cardHolderTied: PersonNameEditText
+    protected lateinit var cardHolderTied: PersonNameEditText
     private lateinit var cardNumberTil: VGSTextInputLayout
-    private lateinit var cardNumberTied: VGSCardNumberEditText
+    protected lateinit var cardNumberTied: VGSCardNumberEditText
     private lateinit var expirationDateTil: VGSTextInputLayout
-    private lateinit var expirationDateTied: ExpirationDateEditText
+    protected lateinit var expirationDateTied: ExpirationDateEditText
     private lateinit var securityCodeTil: VGSTextInputLayout
-    private lateinit var securityCodeTied: CardVerificationCodeEditText
+    protected lateinit var securityCodeTied: CardVerificationCodeEditText
 
     private lateinit var saveCardButton: MaterialButton
 
@@ -102,11 +102,27 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
 
     private fun initInputViews() {
         initCardDetailsViews()
+        setupCardDetailsViews()
+
         initBillingAddressViews()
         initSaveButton()
     }
 
-    private fun initCardDetailsViews() {
+    protected open fun initCardDetailsViews() {
+        cardHolderTil = findViewById(R.id.vgsTilCardHolder)
+        cardHolderTied = findViewById(R.id.vgsTiedCardHolder)
+
+        cardNumberTil = findViewById(R.id.vgsTilCardNumber)
+        cardNumberTied = findViewById(R.id.vgsTiedCardNumber)
+
+        expirationDateTil = findViewById(R.id.vgsTilExpirationDate)
+        expirationDateTied = findViewById(R.id.vgsTiedExpirationDate)
+
+        securityCodeTil = findViewById(R.id.vgsTilSecurityCode)
+        securityCodeTied = findViewById(R.id.vgsTiedSecurityCode)
+    }
+
+    private fun setupCardDetailsViews() {
         with(config.formConfig.cardOptions) {
             initCardHolderView(cardHolderOptions)
             initCardNumberView(cardNumberOptions)
@@ -116,21 +132,21 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
     }
 
     private fun initCardHolderView(options: VGSCheckoutCardHolderOptions) {
-        cardHolderTil = findViewById(R.id.vgsTilCardHolder)
-        cardHolderTied = findViewById(R.id.vgsTiedCardHolder)
         if (options.visibility == VGSCheckoutFieldVisibility.HIDDEN) {
             cardHolderTil.gone()
             return
         }
-        cardHolderTied.setFieldName(options.fieldName)
+        options.fieldName
+            .takeIf { it.isNotEmpty() }
+            ?.let { cardHolderTied.setFieldName(options.fieldName) }
         cardHolderTied.addOnTextChangeListener(this)
         collect.bindView(cardHolderTied)
     }
 
     private fun initCardNumberView(options: VGSCheckoutCardNumberOptions) {
-        cardNumberTil = findViewById(R.id.vgsTilCardNumber)
-        cardNumberTied = findViewById(R.id.vgsTiedCardNumber)
-        cardNumberTied.setFieldName(options.fieldName)
+        options.fieldName
+            .takeIf { it.isNotEmpty() }
+            ?.let { cardNumberTied.setFieldName(options.fieldName) }
         cardNumberTied.setValidCardBrands(options.cardBrands)
         cardNumberTied.setIsCardBrandPreviewHidden(options.isIconHidden)
         cardNumberTied.addOnTextChangeListener(this)
@@ -138,17 +154,17 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
     }
 
     private fun initExpirationDateView(options: VGSCheckoutExpirationDateOptions) {
-        expirationDateTil = findViewById(R.id.vgsTilExpirationDate)
-        expirationDateTied = findViewById(R.id.vgsTiedExpirationDate)
-        expirationDateTied.setFieldName(options.fieldName)
+        options.fieldName
+            .takeIf { it.isNotEmpty() }
+            ?.let { expirationDateTied.setFieldName(options.fieldName) }
         expirationDateTied.addOnTextChangeListener(this)
         collect.bindView(expirationDateTied)
     }
 
     private fun initSecurityCodeView(options: VGSCheckoutCVCOptions) {
-        securityCodeTil = findViewById(R.id.vgsTilSecurityCode)
-        securityCodeTied = findViewById(R.id.vgsTiedSecurityCode)
-        securityCodeTied.setFieldName(options.fieldName)
+        options.fieldName
+            .takeIf { it.isNotEmpty() }
+            ?.let { securityCodeTied.setFieldName(options.fieldName) }
         securityCodeTied.setIsPreviewIconHidden(options.isIconHidden)
         securityCodeTied.addOnTextChangeListener(this)
         collect.bindView(securityCodeTied)

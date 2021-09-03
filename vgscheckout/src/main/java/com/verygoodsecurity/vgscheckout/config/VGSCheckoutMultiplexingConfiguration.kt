@@ -9,6 +9,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 class VGSCheckoutMultiplexingConfiguration private constructor(
     override val vaultID: String,
+    val token: String,
     override val environment: String,
     override val routeConfig: VGSCheckoutRouteConfiguration,
     override val formConfig: VGSCheckoutMultiplexingFormConfiguration
@@ -17,10 +18,12 @@ class VGSCheckoutMultiplexingConfiguration private constructor(
     @JvmOverloads
     constructor(
         vaultID: String,
+        token: String,
         environment: String = DEFAULT_ENVIRONMENT,
         formConfig: VGSCheckoutMultiplexingFormConfiguration = VGSCheckoutMultiplexingFormConfiguration()
     ) : this(
         vaultID,
+        token,
         environment,
         VGSCheckoutRouteConfiguration(),
         formConfig
