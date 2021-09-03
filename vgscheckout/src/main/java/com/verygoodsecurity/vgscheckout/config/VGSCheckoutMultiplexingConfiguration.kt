@@ -17,12 +17,11 @@ class VGSCheckoutMultiplexingConfiguration private constructor(
     @JvmOverloads
     constructor(
         vaultID: String,
-        environment: String = DEFAULT_ENVIRONMENT,
-        formConfig: VGSCheckoutMultiplexingFormConfiguration = VGSCheckoutMultiplexingFormConfiguration()
+        environment: String = DEFAULT_ENVIRONMENT
     ) : this(
         vaultID,
         environment,
         VGSCheckoutRouteConfiguration(),
-        formConfig
+        VGSCheckoutMultiplexingFormConfiguration()
     )
 }
