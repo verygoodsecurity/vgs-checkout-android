@@ -35,6 +35,8 @@ android {
 dependencies {
     implementation project(':vgscheckout')
 
+    implementation 'com.google.code.gson:gson:2.8.7'
+
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation "androidx.core:core-ktx:$core_ktx"
     implementation "androidx.appcompat:appcompat:$app_compat"
