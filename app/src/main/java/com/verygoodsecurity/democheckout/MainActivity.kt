@@ -1,71 +1,90 @@
 package com.verygoodsecurity.democheckout
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.button.MaterialButton
-import com.verygoodsecurity.democheckout.util.extension.showShort
+import com.google.gson.JsonParser
 import com.verygoodsecurity.vgscheckout.VGSCheckout
 import com.verygoodsecurity.vgscheckout.VGSCheckoutCallback
-import com.verygoodsecurity.vgscheckout.config.VGSCheckoutConfiguration
-import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutRouteConfiguration
-import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutFormConfiguration
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillingAddressOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.VGSCheckoutAddressOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.city.VGSCheckoutCityOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.code.VGSCheckoutPostalAddressOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.country.VGSCheckoutCountryOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.VGSCheckoutCardOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.VGSCheckoutCardHolderOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.VGSCheckoutCardNumberOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.VGSCheckoutCVCOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.VGSCheckoutExpirationDateOptions
+import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingConfiguration
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult.*
 
 class MainActivity : AppCompatActivity(), VGSCheckoutCallback {
 
+    private val applicationClient: HttpClient by lazy {
+        HttpClient()
+    }
+
+    private lateinit var checkout: VGSCheckout
+
+    private var accessToken: String = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val checkout = VGSCheckout(this, this)
+
+        retrieveToken()
+        checkout = VGSCheckout(this, this)
+
         findViewById<MaterialButton>(R.id.mbPay).setOnClickListener {
             checkout.present(getCheckoutConfig())
         }
     }
 
+    private fun retrieveToken() {
+        applicationClient.enqueue(
+            "https://multiplexing-demo.apps.verygood.systems/get-auth-token",
+            ""
+        ) { code, body ->
+            if(code in 200..299) {
+                accessToken = body?.let {
+                    JsonParser
+                        .parseString(it)
+                        .asJsonObject
+                        .run {
+                            takeIf { this.has("access_token") }
+                                ?.run { get("access_token").asString } ?: ""
+                        }
+                } ?: ""
+
+                Log.e("test", "accessToken: $accessToken")
+            }
+        }
+    }
+
     //region Checkout config
-    private fun getCheckoutConfig() = VGSCheckoutConfiguration(
-        vaultID = "tntpszqgikn",
-        routeConfig = getCheckoutRouteConfig(),
-        formConfig = getCheckoutFormConfig()
-    )
-
-    private fun getCheckoutRouteConfig() = VGSCheckoutRouteConfiguration("post")
-
-    private fun getCheckoutFormConfig() =
-        VGSCheckoutFormConfiguration(getCardOptions(), getAddressOptions())
-
-    private fun getCardOptions() = VGSCheckoutCardOptions(
-        VGSCheckoutCardNumberOptions("card_data.card_number"),
-        VGSCheckoutCardHolderOptions("card_data.card_holder"),
-        VGSCheckoutCVCOptions("card_data.card_cvc"),
-        VGSCheckoutExpirationDateOptions("card_data.exp_date")
-    )
-
-    private fun getAddressOptions() = VGSCheckoutBillingAddressOptions(
-        VGSCheckoutCountryOptions("address_info.country"),
-        VGSCheckoutCityOptions("address_info.city"),
-        VGSCheckoutAddressOptions("address_info.address"),
-        postalAddressOptions = VGSCheckoutPostalAddressOptions("address_info.postal_address"),
+    private fun getCheckoutConfig() = VGSCheckoutMultiplexingConfiguration(
+        vaultID = VAULT_ID,
+        token = accessToken,
     )
 
     override fun onCheckoutResult(result: VGSCheckoutResult) {
-        showShort(
-            when (result) {
-                is Success -> "Checkout complete: code = ${result.code}, body = ${result.body}"
-                is Failed -> "Checkout failed: code = ${result.code}, body = ${result.body}"
-                is Canceled -> "Checkout canceled"
+        showTransactionDialog(result)
+    }
+
+    private fun showTransactionDialog(result: VGSCheckoutResult) {
+        TransactionDialogFragment().apply {
+            arguments = when (result) {
+                is Success -> Bundle().apply {
+                    result.code?.let { putInt(TransactionDialogFragment.CODE, it) }
+                    putString(TransactionDialogFragment.TNT, VAULT_ID)
+                    putString(TransactionDialogFragment.BODY, result.body)
+                }
+                is Failed -> Bundle().apply {
+                    result.code?.let { putInt(TransactionDialogFragment.CODE, it) }
+                    putString(TransactionDialogFragment.TNT, VAULT_ID)
+                    putString(TransactionDialogFragment.BODY, result.body)
+                }
+                is Canceled -> Bundle()
             }
-        )
+        }.show(supportFragmentManager, TransactionDialogFragment::class.java.canonicalName)
+    }
+
+    companion object {
+
+        //todo replace it to the local.properties file.
+        val VAULT_ID = "tntshmljla7"
     }
 }
