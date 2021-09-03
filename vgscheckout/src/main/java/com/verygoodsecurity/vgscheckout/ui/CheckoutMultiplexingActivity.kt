@@ -15,7 +15,7 @@ internal class CheckoutMultiplexingActivity :
 
     override fun resolveCollect() = CollectProvider().get(this, config)
 
-    override fun onPayClicked() {
+    override fun handleSaveCard() {
         // TODO: Start multiplexing requests
         setResult(Activity.RESULT_OK, null)
         finish()
