@@ -1,0 +1,34 @@
+package com.verygoodsecurity.vgscheckout.config
+
+import org.junit.Assert.assertNotNull
+import org.junit.Test
+
+private const val VAULT_ID = "tntxxxxxxx"
+private const val VALID_JWT =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzA1MjIyODcsImlhdCI6MTYzMDUyMTk4NywianRpIjoiNWVjZGVyMzItOWM2My00YzAyLWE1MjMtYWE4MjRjYzI3NDRjIiwiaXNzIjoiaHR0cHM6Ly9hdXRoLnZlcnlnb29kc2VjdXJpdHkuY29tL2F1dGgvcmVhbG1zL3ZncyIsImF1ZCI6Im11bHRpcGxleGluZy1hcHAtdG50c2htbGpsYTciLCJzdWIiOiI3ZmZmZDFkZS1hM2UyLTRkMDAtYjAzZi00Mjg4MjJhMmFlOWYiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJtdWx0aXBsZXhpbmctYXBwLXRudHh4eHh4eHgtVVM2YmRQR3BGaGhqYml0eVFQd3JrZWNOIiwic2Vzc2lvbl9zdGF0ZSI6IjQzMTJkODcyLTNmZWUtNDlhMy05OGNmLTc1YjAwMDA5N2U0NiIsImFjciI6IjEiLCJyZXNvdXJjZV9hY2Nlc3MiOnsibXVsdGlwbGV4aW5nLWFwcC10bnR4eHh4eHh4Ijp7InJvbGVzIjpbImZpbmFuY2lhbC1pbnN0cnVtZW50czp3cml0ZSJdfX0sInNjb3BlIjoidXNlcl9pZCBzZXJ2aWNlLWFjY291bnQiLCJzZXJ2aWNlX2FjY291bnQiOnRydWUsImNsaWVudElkIjoibXVsdGlwbGV4aW5nLWFwcC10bnR4eHh4eHh4LVVTNmJkUEdwRmhoamJpdHlRUHdya2VjTiIsImNsaWVudEhvc3QiOiIxNzYuMTAwLjEwNS4yMzUiLCJjbGllbnRBZGRyZXNzIjoiMTc2LjEwMC4xMDUuMjM1In0.CBnEWsQb4fOjpI2T1SUcZ2OWqWIE1omnGwUnrjQQ604"
+private const val INVALID_JWT =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyJleHAiOjE2MzA1MjIyODcsImlhdCI6MTYzMDUyMTk4NywianRpIjoiNWVjZGVyMzItOWM2My00YzAyLWE1MjMtYWE4MjRjYzI3NDRjIiwiaXNzIjoiaHR0cHM6Ly9hdXRoLnZlcnlnb29kc2VjdXJpdHkuY29tL2F1dGgvcmVhbG1zL3ZncyIsImF1ZCI6Im11bHRpcGxleGluZy1hcHAtdG50c2htbGpsYTciLCJzdWIiOiI3ZmZmZDFkZS1hM2UyLTRkMDAtYjAzZi00Mjg4MjJhMmFlOWYiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJtdWx0aXBsZXhpbmctYXBwLXRudHh4eHh4eHgtVVM2YmRQR3BGaGhqYml0eVFQd3JrZWNOIiwic2Vzc2lvbl9zdGF0ZSI6IjQzMTJkODcyLTNmZWUtNDlhMy05OGNmLTc1YjAwMDA5N2U0NiIsImFjciI6IjEiLCJyZXNvdXJjZV9hY2Nlc3MiOnsibXVsdGlwbGV4aW5nLWFwcC10bnR4eHh4eHh4Ijp7InJvbGVzIjpbImZpbmFuY2lhbC1pbnN0cnVtZW50czp3cml0ZSIsInRyYW5zZmVyczp3cml0ZSJdfX0sInNjb3BlIjoidXNlcl9pZCBzZXJ2aWNlLWFjY291bnQiLCJzZXJ2aWNlX2FjY291bnQiOnRydWUsImNsaWVudElkIjoibXVsdGlwbGV4aW5nLWFwcC10bnR4eHh4eHh4LVVTNmJkUEdwRmhoamJpdHlRUHdya2VjTiIsImNsaWVudEhvc3QiOiIxNzYuMTAwLjEwNS4yMzUiLCJjbGllbnRBZGRyZXNzIjoiMTc2LjEwMC4xMDUuMjM1In0SPLLms7ed5aLOEo3LLQzU0r-D_eTAx-GNrdsDLCLCu4"
+private const val EMPTY_JWT = ""
+
+class VGSCheckoutMultiplexingCredentialsValidatorTest {
+
+    @Test
+    fun createMultiplexingConfig_validJWT_objectCreated() {
+        // Act
+        val config = VGSCheckoutMultiplexingConfiguration(VAULT_ID, VALID_JWT)
+        // Assert
+        assertNotNull(config)
+    }
+
+    @Test(expected = IllegalArgumentException::class)
+    fun createMultiplexingConfig_invalidJWT_exceptionThrown() {
+        // Act
+        VGSCheckoutMultiplexingConfiguration(VAULT_ID, INVALID_JWT)
+    }
+
+    @Test(expected = IllegalArgumentException::class)
+    fun createMultiplexingConfig_emptyJWT_exceptionThrown() {
+        // Act
+        VGSCheckoutMultiplexingConfiguration(VAULT_ID, EMPTY_JWT)
+    }
+}
