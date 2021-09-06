@@ -1,6 +1,6 @@
 <resources>
 
-    <style name="VGSCheckout" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="VGSCheckout" parent="Theme.MaterialComponents.DayNight.NoActionBar">
 
         <item name="colorPrimary">@color/vgs_checkout_dodger_blue</item>
         <item name="colorPrimaryDark">@color/vgs_checkout_nero</item>
@@ -11,22 +11,14 @@
 
         <item name="android:textColorHint">@color/vgs_checkout_gray</item>
         <item name="android:textColorPrimary">@color/vgs_checkout_white</item>
-
-        <item name="toolbarNavigationButtonStyle">@style/VGSCheckout.ToolbarNavigationButton</item>
     </style>
 
-    <style name="VGSCheckout.ToolbarNavigationButton" parent="Widget.AppCompat.Toolbar.Button.Navigation">
-        <item name="tint">@color/vgs_checkout_gray</item>
-    </style>
-
-    <style name="VGSCheckout.TextInputLayout">
-        <item name="endIconModes">clear_text</item>
-        <item name="endIconTint">@color/vgs_checkout_gray</item>
-        <item name="endIconDrawable">@drawable/vgs_checkout_ic_round_cancel_white_24dp</item>
-        <item name="errorEnabled">true</item>
-        <item name="hintTextColor">?colorPrimary</item>
-        <item name="boxCornerRadius">@dimen/vgs_checkout_margin_padding_size_micro</item>
-        <item name="boxStrokeColor">@color/vgs_checkout_input_box_stroke_color</item>
+    <style name="VGSCheckout.Toolbar" parent="Widget.MaterialComponents.Toolbar.PrimarySurface">
+        <item name="android:background">?colorSurface</item>
+        <item name="titleTextColor">?colorOnSurface</item>
+        <item name="title">@string/vgs_checkout_add_card_title</item>
+        <item name="navigationIcon">@drawable/vgs_checkout_ic_baseline_close_white_24</item>
+        <item name="navigationIconTint">@color/vgs_checkout_gray</item>
     </style>
 
     <style name="VGSCheckout.TextInputEditText">

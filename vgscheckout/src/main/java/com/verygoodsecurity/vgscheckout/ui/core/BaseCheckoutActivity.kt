@@ -131,9 +131,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
     }
 
     private fun initToolbar() {
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setHomeAsUpIndicator(R.drawable.vgs_checkout_ic_baseline_close_white_24)
-        supportActionBar?.setTitle(R.string.vgs_checkout_add_card_title)
+        setSupportActionBar(findViewById(R.id.mtToolbar))
     }
 
     private fun initViews() {
