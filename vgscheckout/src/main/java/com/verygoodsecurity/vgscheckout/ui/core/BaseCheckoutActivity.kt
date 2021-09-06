@@ -12,9 +12,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.LinearLayoutCompat
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.core.VGSCollect
 import com.verygoodsecurity.vgscheckout.collect.core.VgsCollectResponseListener
+import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSError
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
 import com.verygoodsecurity.vgscheckout.collect.view.card.validation.rules.VGSInfoRule
@@ -106,6 +108,12 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
     }
 
     override fun onResponse(response: VGSResponse?) {
+        (response as? VGSResponse.ErrorResponse)?.let {
+            if (it.errorCode == VGSError.NO_NETWORK_CONNECTIONS.code) {
+                showNetworkConnectionErrorSnackBar()
+                return
+            }
+        }
         val resultBundle = CheckoutResultContract.Result(response?.toCheckoutResult()).toBundle()
         setResult(Activity.RESULT_OK, Intent().putExtras(resultBundle))
         finish()
@@ -425,6 +433,13 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
                     updatePostalAddressView()
                 }
             }
+            .show()
+    }
+
+    private fun showNetworkConnectionErrorSnackBar() {
+        val message = getString(R.string.vgs_checkout_network_connection_error)
+        Snackbar.make(findViewById(R.id.llRoot), message, Snackbar.LENGTH_LONG)
+            .setAction(getString(R.string.vgs_checkout_retry)) { saveCard() }
             .show()
     }
 }
