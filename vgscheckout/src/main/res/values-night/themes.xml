@@ -32,7 +32,6 @@
     <style name="VGSCheckout.TextInputEditText">
         <item name="textColor">@color/vgs_checkout_white</item>
         <item name="textSize">@dimen/vgs_checkout_input_text_size</item>
-        <item name="textStyle">bold</item>
         <item name="android:paddingStart">@dimen/vgs_checkout_margin_padding_size_medium</item>
         <item name="android:paddingEnd">@dimen/vgs_checkout_margin_padding_size_medium</item>
         <item name="android:paddingTop">@dimen/vgs_checkout_margin_padding_size_xsmall</item>

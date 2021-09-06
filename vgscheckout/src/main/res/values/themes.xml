@@ -21,7 +21,6 @@
 
     <style name="VGSCheckout.Title">
         <item name="android:textSize">@dimen/vgs_checkout_title_text_size</item>
-        <item name="android:fontFamily">sans-serif-medium</item>
     </style>
 
     <style name="VGSCheckout.TextInputLayout">
