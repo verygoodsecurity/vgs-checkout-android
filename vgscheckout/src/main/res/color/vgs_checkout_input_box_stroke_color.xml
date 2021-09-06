@@ -3,5 +3,5 @@
 
     <item android:color="@color/vgs_checkout_gray" android:state_focused="false"/>
 
-    <item android:color="?attr/colorPrimary" android:state_focused="true"/>
+    <item android:color="@color/vgs_checkout_dodger_blue" android:state_focused="true"/>
 </selector>
