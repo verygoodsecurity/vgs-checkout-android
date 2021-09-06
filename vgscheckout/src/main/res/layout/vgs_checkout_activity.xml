@@ -129,6 +129,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/vgs_checkout_margin_padding_size_xsmall"
+                app:endIconDrawable="@drawable/ic_baseline_arrow_drop_down_white_24dp"
+                app:endIconModes="custom"
                 app:hint="@string/vgs_checkout_address_info_country_subtitle">
 
                 <com.verygoodsecurity.vgscheckout.collect.widget.VGSEditText
