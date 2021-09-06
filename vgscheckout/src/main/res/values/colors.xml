@@ -2,15 +2,13 @@
 <resources>
 
     <color name="vgs_checkout_white">#FFFFFF</color>
-    <color name="vgs_checkout_navy_blue">#145FF5</color>
-    <color name="vgs_checkout_navy_blue_400">#0077C2</color>
-    <color name="vgs_checkout_dodger_blue">#0A84FF</color>
+    <color name="vgs_checkout_dodger_blue">#2196F3</color>
     <color name="vgs_checkout_san_juan">#40545F</color>
     <color name="vgs_checkout_whisper">#E5E5E5</color>
     <color name="vgs_checkout_black_r">#1C1C1E</color>
     <color name="vgs_checkout_spun_pearl">#AEAEB2</color>
     <color name="vgs_checkout_red_orange">#FF451C</color>
+    <color name="vgs_checkout_cardinal">#B61827</color>
     <color name="vgs_checkout_nero">#252525</color>
-    <color name="vgs_checkout_dark_gray">#a8a8a8</color>
-    <color name="vgs_checkout_comet">#6C6C70</color>
+    <color name="vgs_checkout_gray">#787878</color>
 </resources>

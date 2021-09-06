@@ -2,10 +2,10 @@
 
     <style name="VGSCheckout" parent="Theme.MaterialComponents.DayNight.NoActionBar">
 
-        <item name="colorPrimary">@color/vgs_checkout_navy_blue</item>
+        <item name="colorPrimary">@color/vgs_checkout_dodger_blue</item>
         <item name="colorOnPrimary">@color/vgs_checkout_black_r</item>
         <item name="colorPrimaryVariant">@color/vgs_checkout_white</item>
-        <item name="colorSecondary">@color/vgs_checkout_navy_blue</item>
+        <item name="colorSecondary">@color/vgs_checkout_dodger_blue</item>
         <item name="colorSurface">@color/vgs_checkout_white</item>
         <item name="colorOnSurface">@color/vgs_checkout_spun_pearl</item>
         <item name="colorError">@color/vgs_checkout_red_orange</item>
