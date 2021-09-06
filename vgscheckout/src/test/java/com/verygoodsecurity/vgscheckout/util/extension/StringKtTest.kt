@@ -12,7 +12,7 @@ class StringKtTest {
     @Test
     fun decodeJwtPayload_validJWT_decodedPayloadReturned() {
         // Arrange
-        val expected: String =
+        val expected =
             "{\"exp\":1630522287,\"iat\":1630521987,\"jti\":\"5ecder32-9c63-4c02-a523-aa824cc2744c\",\"iss\":\"https://auth.verygoodsecurity.com/auth/realms/vgs\",\"aud\":\"multiplexing-app-tntshmljla7\",\"sub\":\"7fffd1de-a3e2-4d00-b03f-428822a2ae9f\",\"typ\":\"Bearer\",\"azp\":\"multiplexing-app-tntxxxxxxx-US6bdPGpFhhjbityQPwrkecN\",\"session_state\":\"4312d872-3fee-49a3-98cf-75b000097e46\",\"acr\":\"1\",\"resource_access\":{\"multiplexing-app-tntxxxxxxx\":{\"roles\":[\"financial-instruments:write\"]}},\"scope\":\"user_id service-account\",\"service_account\":true,\"clientId\":\"multiplexing-app-tntxxxxxxx-US6bdPGpFhhjbityQPwrkecN\",\"clientHost\":\"176.100.105.235\",\"clientAddress\":\"176.100.105.235\"}"
         // Act
         val decodeResult = VALID_JWT.decodeJwtPayload()
