@@ -21,8 +21,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
-        android:overScrollMode="never"
-        android:padding="@dimen/vgs_checkout_margin_padding_size_medium">
+        android:padding="@dimen/vgs_checkout_margin_padding_size_medium"
+        android:scrollbars="none">
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
