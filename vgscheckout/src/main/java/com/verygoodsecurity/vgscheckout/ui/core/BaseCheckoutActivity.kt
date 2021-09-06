@@ -30,7 +30,7 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.address.code.VGSCheckoutP
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.country.VGSCheckoutCountryOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.VGSCheckoutCardHolderOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.VGSCheckoutCardNumberOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.VGSCheckoutCVCOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.VGSCheckoutSecurityCodeOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.VGSCheckoutExpirationDateOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.core.VGSCheckoutFieldVisibility
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
@@ -153,7 +153,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
             initCardHolderView(cardHolderOptions)
             initCardNumberView(cardNumberOptions)
             initExpirationDateView(expirationDateOptions)
-            initSecurityCodeView(cvcOptions)
+            initSecurityCodeView(securityCodeOptions)
         }
     }
 
@@ -187,7 +187,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
         collect.bindView(expirationDateEt)
     }
 
-    private fun initSecurityCodeView(options: VGSCheckoutCVCOptions) {
+    private fun initSecurityCodeView(options: VGSCheckoutSecurityCodeOptions) {
         securityCodeTil = findViewById(R.id.vgsTilSecurityCode)
         securityCodeEt = findViewById(R.id.vgsEtSecurityCode)
         securityCodeEt.setFieldName(options.fieldName)
