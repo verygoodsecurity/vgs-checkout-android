@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
 }
+apply from: rootProject.file('gradle/util.gradle')
 
 android {
     compileSdkVersion 30
@@ -29,6 +30,11 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+
+    applicationVariants.all { variant ->
+        String vaultId = getLocalProperty("VGS_VAULT_ID")
+        variant.resValue "string", "vault_id", vaultId + ''
     }
 }
 

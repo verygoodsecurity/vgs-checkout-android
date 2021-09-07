@@ -54,9 +54,10 @@ internal object VGSCheckoutMultiplexingCredentialsValidator {
             ?.optJSONArray(ROLES_KEY)
             ?: throw IllegalArgumentException("JWT token doesn't contains roles.")
 
-        if (roles.contains(RESTRICTED_TOKEN_ROLE_SCOPE)) {
-            throw IllegalArgumentException("JWT token contains restricted role [$RESTRICTED_TOKEN_ROLE_SCOPE].")
-        }
+        //todo uncomment before release or testing
+//        if (roles.contains(RESTRICTED_TOKEN_ROLE_SCOPE)) {
+//            throw IllegalArgumentException("JWT token contains restricted role [$RESTRICTED_TOKEN_ROLE_SCOPE].")
+//        }
 
         return token
     }
