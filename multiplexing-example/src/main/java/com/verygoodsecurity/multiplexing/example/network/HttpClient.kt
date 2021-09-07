@@ -1,6 +1,5 @@
 package com.verygoodsecurity.multiplexing.example.network
 
-import android.util.Log
 import okhttp3.*
 import java.io.IOException
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -21,7 +20,6 @@ class HttpClient {
     }
 
     fun enqueue(url: String, body: String, callback: ((code: Int, body: String?) -> Unit)?) {
-        Log.e("test", "body: \n $body")
         val okHttpRequest = buildRequest(url, body)
 
         try {

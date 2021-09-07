@@ -3,7 +3,6 @@ package com.verygoodsecurity.multiplexing.example
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
@@ -105,7 +104,6 @@ class TransactionDialogFragment : DialogFragment() {
     }
 
     private fun handlePaymentResponse(code: Int, body: String?) {
-        Log.e("test", "DONE. $code \n $body")
 
         if (code in 200..299) {
             this@TransactionDialogFragment.activity?.runOnUiThread {
