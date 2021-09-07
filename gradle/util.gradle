@@ -1,0 +1,20 @@
+ext.getLocalProperty = { propName ->
+    getLocalProperty(propName)
+}
+
+def getLocalProperty(String propName) {
+    def propsFile = rootProject.file('local.properties')
+    if (propsFile.exists()) {
+        def props = new Properties()
+        props.load(new FileInputStream(propsFile))
+        def value = props[propName]
+        if (value == null) {
+            return ""
+        } else {
+            return value
+        }
+
+    } else {
+        return ""
+    }
+}

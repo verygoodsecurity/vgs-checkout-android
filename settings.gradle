@@ -1,3 +1,4 @@
 rootProject.name = "VGS Checkout Demo"
 include ':app'
 include ':vgscheckout'
+include ':multiplexing-example'
