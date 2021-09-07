@@ -17,7 +17,7 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.address.country.VGSChecko
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.VGSCheckoutCardOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.VGSCheckoutCardHolderOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.VGSCheckoutCardNumberOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.VGSCheckoutCVCOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.VGSCheckoutSecurityCodeOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.VGSCheckoutExpirationDateOptions
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult.*
@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity(), VGSCheckoutCallback {
     private fun getCardOptions() = VGSCheckoutCardOptions(
         VGSCheckoutCardNumberOptions("card_data.card_number"),
         VGSCheckoutCardHolderOptions("card_data.card_holder"),
-        VGSCheckoutCVCOptions("card_data.card_cvc"),
+        VGSCheckoutSecurityCodeOptions("card_data.card_cvc"),
         VGSCheckoutExpirationDateOptions("card_data.exp_date")
     )
 

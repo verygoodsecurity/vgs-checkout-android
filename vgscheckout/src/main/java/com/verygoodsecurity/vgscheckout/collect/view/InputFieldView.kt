@@ -629,11 +629,6 @@ internal abstract class InputFieldView @JvmOverloads constructor(
         }
     }
 
-    fun reSetText() {
-        inputField.text = inputField.text
-        inputField.setSelection(inputField.text?.length ?: 0)
-    }
-
     /**
      * Sets the text to be displayed using a string resource identifier.
      *
@@ -805,7 +800,7 @@ internal abstract class InputFieldView @JvmOverloads constructor(
             (inputField as? CardInputField)?.setCardBrand(c)
         }
     }
-    
+
     internal fun setValidCardBrands(cardBrands: List<CardBrand>) {
         if (fieldType == FieldType.CARD_NUMBER) {
             (inputField as? CardInputField)?.setValidCardBrands(cardBrands)
