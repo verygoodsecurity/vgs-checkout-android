@@ -1,6 +1,6 @@
 <resources>
 
-    <style name="VGSCheckout" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="VGSCheckout" parent="Theme.MaterialComponents.NoActionBar">
 
         <item name="colorPrimary">@color/vgs_checkout_dodger_blue</item>
         <item name="colorPrimaryDark">@color/vgs_checkout_nero</item>

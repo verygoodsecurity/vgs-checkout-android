@@ -667,6 +667,8 @@
 
         <!-- Whether the layout is laid out as if an error will be displayed. -->
         <attr name="errorEnabled" format="boolean" />
+        <attr name="errorIconDrawable" format="reference" />
+        <attr name="errorIconDrawableTint" format="color" />
 
         <!-- Sets the text color and size for the error message from the specified TextAppearance resource.-->
         <attr name="errorTextAppearance" format="reference" />
@@ -688,11 +690,5 @@
         -->
         <attr name="helperText" format="string" />
 
-    </declare-styleable>
-
-    <declare-styleable name="VGSCheckoutInputView">
-
-        <attr name="vgs_checkout_subtitle" format="string" />
-        <attr name="vgs_checkout_hint" format="string" />
     </declare-styleable>
 </resources>
