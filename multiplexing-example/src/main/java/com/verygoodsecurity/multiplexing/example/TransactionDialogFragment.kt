@@ -10,6 +10,8 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.google.gson.JsonParser
+import com.verygoodsecurity.multiplexing.BuildConfig.CLIENT_HOST
+import com.verygoodsecurity.multiplexing.BuildConfig.TRANSFERS_ENDPOINT
 import com.verygoodsecurity.multiplexing.R
 import com.verygoodsecurity.multiplexing.example.network.HttpClient
 
@@ -94,7 +96,7 @@ class TransactionDialogFragment : DialogFragment() {
         parseUserId().takeIf { it.isNotEmpty() }
             ?.let { userId ->
                 applicationClient.enqueue(
-                    "https://multiplexing-demo.apps.verygood.systems/transfers",
+                    CLIENT_HOST + TRANSFERS_ENDPOINT,
                     userId.mapToJson(),
                 ) { code: Int, body: String? ->
                     handlePaymentResponse(code, body)

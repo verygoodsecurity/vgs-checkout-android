@@ -2,9 +2,10 @@ package com.verygoodsecurity.multiplexing.example
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import com.google.android.material.button.MaterialButton
 import com.google.gson.JsonParser
+import com.verygoodsecurity.multiplexing.BuildConfig.CLIENT_HOST
+import com.verygoodsecurity.multiplexing.BuildConfig.GET_TOKEN_ENDPOINT
 import com.verygoodsecurity.multiplexing.R
 import com.verygoodsecurity.multiplexing.example.network.HttpClient
 import com.verygoodsecurity.vgscheckout.VGSCheckout
@@ -38,7 +39,7 @@ class MultiplexingActivity : AppCompatActivity(), VGSCheckoutCallback {
 
     private fun retrieveToken() {
         applicationClient.enqueue(
-            "https://multiplexing-demo.apps.verygood.systems/get-auth-token",
+            CLIENT_HOST + GET_TOKEN_ENDPOINT,
             ""
         ) { code, body ->
             if (code in 200..299) {
@@ -51,8 +52,6 @@ class MultiplexingActivity : AppCompatActivity(), VGSCheckoutCallback {
                                 ?.run { get("access_token").asString } ?: ""
                         }
                 } ?: ""
-
-                Log.e("test", "accessToken: $accessToken")
             }
         }
     }
