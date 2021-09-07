@@ -16,7 +16,7 @@ internal class CheckoutActivity : BaseCheckoutActivity<VGSCheckoutConfiguration>
 
     override fun resolveCollect() = CollectProvider().get(this, config)
 
-    override fun onPayClicked() {
+    override fun handleSaveCard() {
         asyncSubmit()
     }
 

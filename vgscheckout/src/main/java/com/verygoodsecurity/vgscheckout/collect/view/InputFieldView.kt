@@ -629,10 +629,6 @@ internal abstract class InputFieldView @JvmOverloads constructor(
         }
     }
 
-    fun reInvalidateInput() {
-        inputField.text = inputField.text
-    }
-
     /**
      * Sets the text to be displayed using a string resource identifier.
      *
@@ -804,7 +800,7 @@ internal abstract class InputFieldView @JvmOverloads constructor(
             (inputField as? CardInputField)?.setCardBrand(c)
         }
     }
-    
+
     internal fun setValidCardBrands(cardBrands: List<CardBrand>) {
         if (fieldType == FieldType.CARD_NUMBER) {
             (inputField as? CardInputField)?.setValidCardBrands(cardBrands)
@@ -1114,6 +1110,10 @@ internal abstract class InputFieldView @JvmOverloads constructor(
         inputField.setOnFocusChangeListener(l, true)
     }
 
+    override fun setOnClickListener(l: OnClickListener?) {
+        inputField.setOnClickListener(l)
+    }
+
     /**
      * Interface definition for a callback to be invoked when an action is
      * performed on the editor.
@@ -1319,6 +1319,9 @@ internal abstract class InputFieldView @JvmOverloads constructor(
     override fun setOnKeyListener(l: OnKeyListener?) {
         inputField.setOnKeyListener(l)
     }
+
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    internal fun getText() = inputField.text
 
     companion object {
         internal val TAG: String = InputFieldView::class.simpleName.toString()
