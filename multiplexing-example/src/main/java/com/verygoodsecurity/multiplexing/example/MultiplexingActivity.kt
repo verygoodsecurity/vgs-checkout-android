@@ -6,6 +6,7 @@ import android.util.Log
 import com.google.android.material.button.MaterialButton
 import com.google.gson.JsonParser
 import com.verygoodsecurity.multiplexing.R
+import com.verygoodsecurity.multiplexing.example.network.HttpClient
 import com.verygoodsecurity.vgscheckout.VGSCheckout
 import com.verygoodsecurity.vgscheckout.VGSCheckoutCallback
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingConfiguration
@@ -56,14 +57,15 @@ class MultiplexingActivity : AppCompatActivity(), VGSCheckoutCallback {
         }
     }
 
-    //region Checkout config
     private fun getCheckoutConfig() = VGSCheckoutMultiplexingConfiguration(
         vaultID = vaultId,
         token = accessToken,
     )
 
     override fun onCheckoutResult(result: VGSCheckoutResult) {
-        showTransactionDialog(result)
+        if (result !is VGSCheckoutResult.Canceled) {
+            showTransactionDialog(result)
+        }
     }
 
     private fun showTransactionDialog(result: VGSCheckoutResult) {
@@ -83,10 +85,4 @@ class MultiplexingActivity : AppCompatActivity(), VGSCheckoutCallback {
             }
         }.show(supportFragmentManager, TransactionDialogFragment::class.java.canonicalName)
     }
-
-//    companion object {
-//
-//        //todo replace it to the local.properties file.
-//        val VAULT_ID = "tntshmljla7"
-//    }
 }

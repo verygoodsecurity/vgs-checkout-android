@@ -1,4 +1,4 @@
-package com.verygoodsecurity.multiplexing.example
+package com.verygoodsecurity.multiplexing.example.network
 
 import android.util.Log
 import okhttp3.*

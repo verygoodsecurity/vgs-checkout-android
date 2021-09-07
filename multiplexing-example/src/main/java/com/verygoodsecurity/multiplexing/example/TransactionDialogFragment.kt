@@ -11,6 +11,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.google.gson.JsonParser
 import com.verygoodsecurity.multiplexing.R
+import com.verygoodsecurity.multiplexing.example.network.HttpClient
 
 class TransactionDialogFragment : DialogFragment() {
 
