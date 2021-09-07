@@ -7,7 +7,7 @@
         <item name="colorSecondary">@color/vgs_checkout_dodger_blue</item>
         <item name="colorSurface">@color/vgs_checkout_nero</item>
         <item name="colorOnSurface">@color/vgs_checkout_white</item>
-        <item name="colorError">@color/vgs_checkout_cardinal</item>
+        <item name="colorError">@color/vgs_checkout_outrageous_orange</item>
 
         <item name="android:textColorHint">@color/vgs_checkout_gray</item>
         <item name="android:textColorPrimary">@color/vgs_checkout_white</item>
