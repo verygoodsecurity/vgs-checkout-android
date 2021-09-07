@@ -32,6 +32,7 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.VGSChecko
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.VGSCheckoutCardNumberOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.VGSCheckoutSecurityCodeOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.VGSCheckoutExpirationDateOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.model.mapToCollectDateSeparateSerializer
 import com.verygoodsecurity.vgscheckout.config.ui.view.core.VGSCheckoutFieldVisibility
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.util.country.CountriesHelper
@@ -182,8 +183,13 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
     private fun initExpirationDateView(options: VGSCheckoutExpirationDateOptions) {
         expirationDateTil = findViewById(R.id.vgsTilExpirationDate)
         expirationDateEt = findViewById(R.id.vgsEtExpirationDate)
-        expirationDateEt.setFieldName(options.fieldName)
+        options.inputFormatRegex?.let { expirationDateEt.setDateRegex(it) }
+        options.outputFormatRegex?.let { expirationDateEt.setOutputRegex(it) }
+        options.dateSeparateSerializer?.let {
+            expirationDateEt.setSerializer(it.mapToCollectDateSeparateSerializer())
+        }
         expirationDateEt.addOnTextChangeListener(this)
+        expirationDateEt.setFieldName(options.fieldName)
         collect.bindView(expirationDateEt)
     }
 
