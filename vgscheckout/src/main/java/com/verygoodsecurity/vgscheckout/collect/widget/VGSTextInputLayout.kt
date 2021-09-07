@@ -67,6 +67,8 @@ internal class VGSTextInputLayout @JvmOverloads constructor(
                 val counterTextAppearance = getResourceId(R.styleable.VGSTextInputLayout_counterTextAppearance, 0)
                 val helperTextTextAppearance = getResourceId(R.styleable.VGSTextInputLayout_helperTextTextAppearance, 0)
                 val isErrorEnabled = getBoolean(R.styleable.VGSTextInputLayout_errorEnabled, false)
+                val errorIconDrawable = getResourceId(R.styleable.VGSTextInputLayout_errorIconDrawable, 0)
+                val errorIconTintList = getColorStateList(R.styleable.VGSTextInputLayout_errorIconDrawableTint)
                 val errorTextAppearance = getResourceId(R.styleable.VGSTextInputLayout_errorTextAppearance, 0)
                 val helperText = getString(R.styleable.VGSTextInputLayout_helperText)
 
@@ -94,6 +96,9 @@ internal class VGSTextInputLayout @JvmOverloads constructor(
 
                 val counterEnabled = getBoolean(R.styleable.VGSTextInputLayout_counterEnabled, false)
                 val counterMaxLength = getInteger(R.styleable.VGSTextInputLayout_counterMaxLength, -1)
+
+                setErrorIconDrawable(errorIconDrawable)
+                setErrorIconDrawableTintList(errorIconTintList)
 
                 setStartIconDrawable(startIconDrawables)
                 setStartIconDrawableTintList(startIconTints)

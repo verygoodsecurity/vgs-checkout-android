@@ -414,6 +414,14 @@ internal abstract class TextInputFieldLayout @JvmOverloads constructor(
         fieldState.counterMaxLength = maxLength
     }
 
+    fun setErrorIconDrawable(resId:Int) {
+        fieldState.errorIconDrawable = resId
+    }
+
+    fun setErrorIconDrawableTintList(tint : ColorStateList?) {
+        fieldState.errorIconTintList = tint
+    }
+
     /**
      * Sets the start icon.
      *

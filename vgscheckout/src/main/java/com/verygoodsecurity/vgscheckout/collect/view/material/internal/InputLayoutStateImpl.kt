@@ -96,6 +96,16 @@ internal class InputLayoutStateImpl(
                 textInputLayout.hintTextColor = value
             }
         }
+    internal var errorIconDrawable: Int = 0
+        set(value) {
+            field = value
+            textInputLayout.setErrorIconDrawable(value)
+        }
+    internal var errorIconTintList: ColorStateList? = null
+        set(value) {
+            field = value
+            textInputLayout.setErrorIconTintList(value)
+        }
     internal var startIconTintList: ColorStateList? = null
         set(value) {
             field = value
