@@ -24,6 +24,9 @@ import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult.*
 
 class MainActivity : AppCompatActivity(), VGSCheckoutCallback {
 
+    //todo replace hardcoded vault IDs with this one
+    private val vaultId: String by lazy { getString(R.string.vault_id) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)

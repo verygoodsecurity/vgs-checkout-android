@@ -18,6 +18,7 @@ internal interface ApiClient {
 
     fun getTemporaryStorage(): VgsApiTemporaryStorage
 
+    //todo update or remvoe according to the analytic requirements
     companion object {
         internal const val CONTENT_TYPE = "Content-type"
         private const val AGENT = "vgs-client"

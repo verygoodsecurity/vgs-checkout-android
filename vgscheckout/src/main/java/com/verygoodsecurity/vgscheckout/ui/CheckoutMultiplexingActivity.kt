@@ -1,11 +1,13 @@
 package com.verygoodsecurity.vgscheckout.ui
 
-import android.app.Activity
 import android.content.Intent
+import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSRequest
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingConfiguration
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.ui.core.BaseCheckoutActivity
 import com.verygoodsecurity.vgscheckout.util.CollectProvider
+import com.verygoodsecurity.vgscheckout.util.extension.toCollectHTTPMethod
+import com.verygoodsecurity.vgscheckout.util.extension.toCollectMergePolicy
 
 internal class CheckoutMultiplexingActivity :
     BaseCheckoutActivity<VGSCheckoutMultiplexingConfiguration>() {
@@ -16,8 +18,16 @@ internal class CheckoutMultiplexingActivity :
     override fun resolveCollect() = CollectProvider().get(this, config)
 
     override fun handleSaveCard() {
-        // TODO: Start multiplexing requests
-        setResult(Activity.RESULT_OK, null)
-        finish()
+        with(config.routeConfig) {
+            collect.asyncSubmit(
+                VGSRequest.VGSRequestBuilder()
+                    .setPath(path)
+                    .setMethod(requestOptions.httpMethod.toCollectHTTPMethod())
+                    .setCustomData(requestOptions.extraData)
+                    .setCustomHeader(requestOptions.extraHeaders)
+                    .setFieldNameMappingPolicy(requestOptions.mergePolicy.toCollectMergePolicy())
+                    .build()
+            )
+        }
     }
 }

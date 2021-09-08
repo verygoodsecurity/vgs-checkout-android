@@ -6,11 +6,10 @@ apply from: rootProject.file('gradle/util.gradle')
 
 android {
     compileSdkVersion 30
-    buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId "com.verygoodsecurity.democheckout"
-        minSdkVersion 21
+        applicationId "com.verygoodsecurity.multiplexing"
+        minSdkVersion 22
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -22,6 +21,18 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+            buildConfigField "String", "CLIENT_HOST", "\"https://multiplexing-demo.apps.verygood.systems/\""
+            buildConfigField "String", "GET_TOKEN_ENDPOINT", "\"get-auth-token\""
+            buildConfigField "String", "TRANSFERS_ENDPOINT", "\"transfers\""
+        }
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+            buildConfigField "String", "CLIENT_HOST", "\"https://multiplexing-demo.apps.verygood.systems/\""
+            buildConfigField "String", "GET_TOKEN_ENDPOINT", "\"get-auth-token\""
+            buildConfigField "String", "TRANSFERS_ENDPOINT", "\"transfers\""
         }
     }
     compileOptions {
@@ -47,7 +58,7 @@ dependencies {
     implementation "androidx.core:core-ktx:$core_ktx"
     implementation "androidx.appcompat:appcompat:$app_compat"
     implementation "com.google.android.material:material:$material"
-    implementation "androidx.constraintlayout:constraintlayout:2.0.4"
+    implementation "androidx.constraintlayout:constraintlayout:2.1.0"
 
     api "com.squareup.okhttp3:okhttp:$okHttp"
 

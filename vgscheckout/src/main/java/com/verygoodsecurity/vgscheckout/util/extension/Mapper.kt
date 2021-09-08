@@ -8,18 +8,20 @@ import com.verygoodsecurity.vgscheckout.collect.view.card.BrandParams
 import com.verygoodsecurity.vgscheckout.collect.view.card.CardBrand
 import com.verygoodsecurity.vgscheckout.collect.view.card.CardType
 import com.verygoodsecurity.vgscheckout.collect.view.card.validation.payment.ChecksumAlgorithm
+import com.verygoodsecurity.vgscheckout.collect.view.core.serializers.VGSExpDateSeparateSerializer
 import com.verygoodsecurity.vgscheckout.config.networking.request.core.VGSCheckoutDataMergePolicy
 import com.verygoodsecurity.vgscheckout.config.networking.request.core.VGSCheckoutHTTPMethod
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.model.VGSCheckoutCardBrand
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.model.VGSCheckoutChecksumAlgorithm
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.model.VGSDateSeparateSerializer
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 
+//region Networking
 internal fun VGSResponse.toCheckoutResult() = when (this) {
     is VGSResponse.SuccessResponse -> VGSCheckoutResult.Success(code, body)
     is VGSResponse.ErrorResponse -> VGSCheckoutResult.Failed(code, body)
 }
 
-//region Networking
 internal fun VGSCheckoutHTTPMethod.toCollectHTTPMethod() = when (this) {
     VGSCheckoutHTTPMethod.POST -> HTTPMethod.POST
     VGSCheckoutHTTPMethod.DELETE -> HTTPMethod.DELETE
@@ -78,3 +80,6 @@ internal fun VGSCheckoutCardBrand.toCollectBrandParams(): BrandParams = BrandPar
     securityCodeLength
 )
 //endregion
+
+internal fun VGSDateSeparateSerializer.toCollectDateSeparateSerializer() =
+    VGSExpDateSeparateSerializer(this.monthFieldName, this.yearFieldName)

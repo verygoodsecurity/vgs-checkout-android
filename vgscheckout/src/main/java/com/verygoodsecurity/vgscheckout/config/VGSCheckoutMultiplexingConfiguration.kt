@@ -3,8 +3,8 @@ package com.verygoodsecurity.vgscheckout.config
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfiguration
 import com.verygoodsecurity.vgscheckout.config.core.DEFAULT_ENVIRONMENT
 import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutRouteConfiguration
+import com.verygoodsecurity.vgscheckout.config.networking.request.VGSCheckoutRequestOptions
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutMultiplexingFormConfiguration
-import com.verygoodsecurity.vgscheckout.util.extension.contains
 import com.verygoodsecurity.vgscheckout.util.extension.decodeJwtPayload
 import com.verygoodsecurity.vgscheckout.util.extension.toJson
 import kotlinx.parcelize.Parcelize
@@ -31,9 +31,22 @@ class VGSCheckoutMultiplexingConfiguration private constructor(
         VGSCheckoutMultiplexingCredentialsValidator.validateJWT(vaultID, token),
         vaultID,
         environment,
-        VGSCheckoutRouteConfiguration(),
+        getVGSCheckoutRouteConfiguration(token),
         VGSCheckoutMultiplexingFormConfiguration()
     )
+
+    companion object {
+        private fun getVGSCheckoutRouteConfiguration(token: String) =
+            VGSCheckoutRouteConfiguration(
+                "/financial_instruments",
+                requestOptions = VGSCheckoutRequestOptions(
+                    extraHeaders = mapOf(
+                        "Content-Type" to "application/json",
+                        "Authorization" to "Bearer $token"
+                    )
+                )
+            )
+    }
 }
 
 internal object VGSCheckoutMultiplexingCredentialsValidator {
@@ -54,9 +67,10 @@ internal object VGSCheckoutMultiplexingCredentialsValidator {
             ?.optJSONArray(ROLES_KEY)
             ?: throw IllegalArgumentException("JWT token doesn't contains roles.")
 
-        if (roles.contains(RESTRICTED_TOKEN_ROLE_SCOPE)) {
-            throw IllegalArgumentException("JWT token contains restricted role [$RESTRICTED_TOKEN_ROLE_SCOPE].")
-        }
+        //todo uncomment before release or testing
+//        if (roles.contains(RESTRICTED_TOKEN_ROLE_SCOPE)) {
+//            throw IllegalArgumentException("JWT token contains restricted role [$RESTRICTED_TOKEN_ROLE_SCOPE].")
+//        }
 
         return token
     }

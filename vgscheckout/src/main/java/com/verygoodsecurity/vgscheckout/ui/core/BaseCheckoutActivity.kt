@@ -182,8 +182,13 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
     private fun initExpirationDateView(options: VGSCheckoutExpirationDateOptions) {
         expirationDateTil = findViewById(R.id.vgsTilExpirationDate)
         expirationDateEt = findViewById(R.id.vgsEtExpirationDate)
-        expirationDateEt.setFieldName(options.fieldName)
+        expirationDateEt.setDateRegex(options.inputFormatRegex)
+        expirationDateEt.setOutputRegex(options.outputFormatRegex)
+        expirationDateEt.setSerializer(
+            options.dateSeparateSerializer?.toCollectDateSeparateSerializer()
+        )
         expirationDateEt.addOnTextChangeListener(this)
+        expirationDateEt.setFieldName(options.fieldName)
         collect.bindView(expirationDateEt)
     }
 
