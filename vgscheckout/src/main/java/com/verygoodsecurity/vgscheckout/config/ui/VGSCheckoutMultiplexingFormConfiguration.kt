@@ -5,7 +5,7 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillin
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.VGSCheckoutCardOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.VGSCheckoutCardHolderOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.VGSCheckoutCardNumberOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.VGSCheckoutSecurityCodeOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.VGSCheckoutCVCOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.VGSCheckoutExpirationDateOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.model.VGSDateSeparateSerializer
 import kotlinx.parcelize.Parcelize
@@ -22,7 +22,7 @@ class VGSCheckoutMultiplexingFormConfiguration private constructor(
         private fun getVGSCheckoutCardOptions() = VGSCheckoutCardOptions(
             VGSCheckoutCardNumberOptions("card.number"),
             VGSCheckoutCardHolderOptions("card.name"),
-            VGSCheckoutSecurityCodeOptions("card.cvc"),
+            VGSCheckoutCVCOptions("card.cvc"),
             VGSCheckoutExpirationDateOptions(
                 "card.expDate",
                 VGSDateSeparateSerializer(
