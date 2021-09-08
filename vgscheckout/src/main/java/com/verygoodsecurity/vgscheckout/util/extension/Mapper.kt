@@ -81,5 +81,5 @@ internal fun VGSCheckoutCardBrand.toCollectBrandParams(): BrandParams = BrandPar
 )
 //endregion
 
-internal fun VGSDateSeparateSerializer.mapToCollectDateSeparateSerializer() =
+internal fun VGSDateSeparateSerializer.toCollectDateSeparateSerializer() =
     VGSExpDateSeparateSerializer(this.monthFieldName, this.yearFieldName)

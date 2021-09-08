@@ -185,7 +185,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
         expirationDateEt.setDateRegex(options.inputFormatRegex)
         expirationDateEt.setOutputRegex(options.outputFormatRegex)
         expirationDateEt.setSerializer(
-            options.dateSeparateSerializer?.mapToCollectDateSeparateSerializer()
+            options.dateSeparateSerializer?.toCollectDateSeparateSerializer()
         )
         expirationDateEt.addOnTextChangeListener(this)
         expirationDateEt.setFieldName(options.fieldName)

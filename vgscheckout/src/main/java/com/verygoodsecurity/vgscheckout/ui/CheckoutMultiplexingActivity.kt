@@ -30,11 +30,4 @@ internal class CheckoutMultiplexingActivity :
             )
         }
     }
-
-    private fun getExtraHeaders(): Map<String, String> {
-        return mapOf(
-            "Content-Type" to "application/json",
-            "Authorization" to "Bearer ${config.token}"
-        )
-    }
 }
