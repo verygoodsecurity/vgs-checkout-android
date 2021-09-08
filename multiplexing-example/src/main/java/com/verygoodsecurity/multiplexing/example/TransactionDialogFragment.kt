@@ -37,9 +37,9 @@ class TransactionDialogFragment : DialogFragment() {
     }
 
     private fun setupDialog(): Dialog {
-        return activity?.let {
-            val view = it.setupView()
-            AlertDialog.Builder(it)
+        return activity?.let { activity ->
+            val view = activity.setupView()
+            AlertDialog.Builder(activity)
                 .setView(view)
                 .create().also { transactionDialog ->
                     view?.apply {
@@ -48,7 +48,7 @@ class TransactionDialogFragment : DialogFragment() {
                         }
                         retryBtn.setOnClickListener {
                             transactionDialog.dismiss()
-                            //todo write example of how run Checkout again
+                            (activity as MultiplexingActivity).tryAgainCheckout()
                         }
                     }
                 }

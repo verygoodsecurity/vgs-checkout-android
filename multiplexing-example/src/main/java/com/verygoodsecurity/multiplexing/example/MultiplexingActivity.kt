@@ -8,6 +8,7 @@ import com.verygoodsecurity.multiplexing.BuildConfig.CLIENT_HOST
 import com.verygoodsecurity.multiplexing.BuildConfig.GET_TOKEN_ENDPOINT
 import com.verygoodsecurity.multiplexing.R
 import com.verygoodsecurity.multiplexing.example.network.HttpClient
+import com.verygoodsecurity.multiplexing.example.network.util.isSuccessHttpCode
 import com.verygoodsecurity.vgscheckout.VGSCheckout
 import com.verygoodsecurity.vgscheckout.VGSCheckoutCallback
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingConfiguration
@@ -29,7 +30,10 @@ class MultiplexingActivity : AppCompatActivity(), VGSCheckoutCallback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_multiplexing)
 
-        retrieveToken()
+        refreshToken { code, body ->
+            if (code.isSuccessHttpCode()) accessToken = parseToken(body)
+        }
+
         checkout = VGSCheckout(this, this)
 
         findViewById<MaterialButton>(R.id.mbPay).setOnClickListener {
@@ -37,23 +41,12 @@ class MultiplexingActivity : AppCompatActivity(), VGSCheckoutCallback {
         }
     }
 
-    private fun retrieveToken() {
+    private fun refreshToken(callback: ((code: Int, body: String?) -> Unit)?) {
         applicationClient.enqueue(
             CLIENT_HOST + GET_TOKEN_ENDPOINT,
-            ""
-        ) { code, body ->
-            if (code in 200..299) {
-                accessToken = body?.let {
-                    JsonParser
-                        .parseString(it)
-                        .asJsonObject
-                        .run {
-                            takeIf { this.has("access_token") }
-                                ?.run { get("access_token").asString } ?: ""
-                        }
-                } ?: ""
-            }
-        }
+            "",
+            callback
+        )
     }
 
     private fun getCheckoutConfig() = VGSCheckoutMultiplexingConfiguration(
@@ -83,5 +76,26 @@ class MultiplexingActivity : AppCompatActivity(), VGSCheckoutCallback {
                 is VGSCheckoutResult.Canceled -> Bundle()
             }
         }.show(supportFragmentManager, TransactionDialogFragment::class.java.canonicalName)
+    }
+
+    internal fun tryAgainCheckout() {
+        refreshToken { code, body ->
+            if (code.isSuccessHttpCode()) accessToken = parseToken(body)
+
+            checkout.present(getCheckoutConfig())
+        }
+    }
+
+    companion object {
+        private const val ACCESS_TOKEN = "access_token"
+        private fun parseToken(body: String?) = body?.let {
+            JsonParser
+                .parseString(it)
+                .asJsonObject
+                .run {
+                    takeIf { this.has(ACCESS_TOKEN) }
+                        ?.run { get(ACCESS_TOKEN).asString } ?: ""
+                }
+        } ?: ""
     }
 }
