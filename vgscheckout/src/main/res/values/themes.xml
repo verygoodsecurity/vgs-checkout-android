@@ -2,9 +2,9 @@
 
     <style name="VGSCheckout" parent="Theme.MaterialComponents.Light.NoActionBar">
 
-        <item name="colorPrimary">@color/vgs_checkout_dodger_blue</item>
+        <item name="colorPrimary">@color/vgs_checkout_denim</item>
         <item name="colorPrimaryDark">@color/vgs_checkout_white</item>
-        <item name="colorSecondary">@color/vgs_checkout_dodger_blue</item>
+        <item name="colorSecondary">@color/vgs_checkout_denim</item>
         <item name="colorSurface">@color/vgs_checkout_white</item>
         <item name="colorOnSurface">@color/vgs_checkout_nero</item>
         <item name="colorError">@color/vgs_checkout_harley_davidson_orange</item>
