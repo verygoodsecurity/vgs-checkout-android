@@ -35,9 +35,9 @@
     <style name="VGSCheckout.TextInputLayout">
         <item name="endIconModes">clear_text</item>
         <item name="endIconTint">@color/vgs_checkout_gray</item>
-        <item name="endIconDrawable">@drawable/vgs_checkout_ic_round_cancel_white_24dp</item>
+        <item name="endIconDrawable">@drawable/vgs_checkout_ic_round_cancel_white_24</item>
         <item name="errorEnabled">true</item>
-        <item name="errorIconDrawable">@drawable/vgs_checkout_ic_error_white_24dp</item>
+        <item name="errorIconDrawable">@drawable/vgs_checkout_ic_error_white_24</item>
         <item name="errorIconDrawableTint">?colorError</item>
         <item name="hintTextColor">?colorPrimary</item>
         <item name="boxCornerRadius">@dimen/vgs_checkout_margin_padding_size_micro</item>
