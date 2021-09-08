@@ -9,6 +9,7 @@ import kotlinx.parcelize.RawValue
 @Parcelize
 class VGSCheckoutRequestOptions @JvmOverloads constructor(
     val httpMethod: VGSCheckoutHTTPMethod = VGSCheckoutHTTPMethod.POST,
+    val extraHeaders: Map<String, String> = emptyMap(),
     val extraData: Map<String, @RawValue Any> = emptyMap(),
     val mergePolicy: VGSCheckoutDataMergePolicy = VGSCheckoutDataMergePolicy.NESTED_JSON
 ) : Parcelable

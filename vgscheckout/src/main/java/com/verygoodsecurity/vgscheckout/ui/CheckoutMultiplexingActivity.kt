@@ -24,7 +24,7 @@ internal class CheckoutMultiplexingActivity :
                     .setPath(path)
                     .setMethod(requestOptions.httpMethod.toCollectHTTPMethod())
                     .setCustomData(requestOptions.extraData)
-                    .setCustomHeader(getExtraHeaders())
+                    .setCustomHeader(requestOptions.extraHeaders)
                     .setFieldNameMappingPolicy(requestOptions.mergePolicy.toCollectMergePolicy())
                     .build()
             )
