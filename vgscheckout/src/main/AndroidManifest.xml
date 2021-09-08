@@ -9,10 +9,12 @@
 
         <activity
             android:name=".ui.CheckoutActivity"
-            android:theme="@style/VGSCheckout" />
+            android:theme="@style/VGSCheckout"
+            android:windowSoftInputMode="adjustResize" />
 
         <activity
             android:name=".ui.CheckoutMultiplexingActivity"
-            android:theme="@style/VGSCheckout" />
+            android:theme="@style/VGSCheckout"
+            android:windowSoftInputMode="adjustResize" />
     </application>
 </manifest>
