@@ -55,7 +55,11 @@ class MultiplexingActivity : AppCompatActivity(), VGSCheckoutCallback {
     )
 
     override fun onCheckoutResult(result: VGSCheckoutResult) {
-        if (result !is VGSCheckoutResult.Canceled) {
+        if (result is VGSCheckoutResult.Canceled) {
+            refreshToken { code, body ->
+                if (code.isSuccessHttpCode()) accessToken = parseToken(body)
+            }
+        } else {
             showTransactionDialog(result)
         }
     }
