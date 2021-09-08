@@ -146,7 +146,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/vgs_checkout_margin_padding_size_xsmall"
-                    app:endIconDrawable="@drawable/ic_baseline_arrow_drop_down_white_24dp"
+                    app:endIconDrawable="@drawable/vgs_checkout_ic_baseline_arrow_drop_down_white_24"
                     app:endIconModes="custom"
                     app:hint="@string/vgs_checkout_address_info_country_subtitle">
 
