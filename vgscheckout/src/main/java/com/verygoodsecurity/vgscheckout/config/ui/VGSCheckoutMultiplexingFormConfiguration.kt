@@ -7,7 +7,7 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.VGSChecko
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.VGSCheckoutCardNumberOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.VGSCheckoutSecurityCodeOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.VGSCheckoutExpirationDateOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.model.DateSeparateSerializer
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.model.VGSDateSeparateSerializer
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -17,18 +17,21 @@ class VGSCheckoutMultiplexingFormConfiguration private constructor(
 ) : CheckoutFormConfiguration() {
 
     constructor() : this(getVGSCheckoutCardOptions(), VGSCheckoutBillingAddressOptions())
+
+    companion object {
+        private fun getVGSCheckoutCardOptions() = VGSCheckoutCardOptions(
+            VGSCheckoutCardNumberOptions("card.number"),
+            VGSCheckoutCardHolderOptions("card.name"),
+            VGSCheckoutSecurityCodeOptions("card.cvc"),
+            VGSCheckoutExpirationDateOptions(
+                "card.expDate",
+                VGSDateSeparateSerializer(
+                    "card.exp_month",
+                    "card.exp_year"
+                ),
+                outputFormatRegex = "MM/YYYY"
+            )
+        )
+    }
 }
 
-private fun getVGSCheckoutCardOptions() = VGSCheckoutCardOptions(
-    VGSCheckoutCardNumberOptions("card.number"),
-    VGSCheckoutCardHolderOptions("card.name"),
-    VGSCheckoutSecurityCodeOptions("card.cvc"),
-    VGSCheckoutExpirationDateOptions(
-        "card.expDate",
-        DateSeparateSerializer(
-            "card.exp_month",
-            "card.exp_year"
-        ),
-        outputFormatRegex = "MM/YYYY"
-    )
-)

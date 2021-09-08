@@ -21,7 +21,7 @@ internal class CheckoutMultiplexingActivity :
         with(config.routeConfig) {
             collect.asyncSubmit(
                 VGSRequest.VGSRequestBuilder()
-                    .setPath("/financial_instruments")  //  https://tnt.sandbox.verygoodproxy.com/financial_instruments
+                    .setPath(path)
                     .setMethod(requestOptions.httpMethod.toCollectHTTPMethod())
                     .setCustomData(requestOptions.extraData)
                     .setCustomHeader(getExtraHeaders())

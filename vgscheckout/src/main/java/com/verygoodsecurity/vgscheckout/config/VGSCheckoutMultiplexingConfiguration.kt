@@ -31,9 +31,16 @@ class VGSCheckoutMultiplexingConfiguration private constructor(
         VGSCheckoutMultiplexingCredentialsValidator.validateJWT(vaultID, token),
         vaultID,
         environment,
-        VGSCheckoutRouteConfiguration(),
+        getVGSCheckoutRouteConfiguration(),
         VGSCheckoutMultiplexingFormConfiguration()
     )
+
+    companion object {
+        private fun getVGSCheckoutRouteConfiguration() =
+            VGSCheckoutRouteConfiguration(
+                "/financial_instruments"
+            )
+    }
 }
 
 internal object VGSCheckoutMultiplexingCredentialsValidator {
