@@ -2,6 +2,7 @@ package com.verygoodsecurity.vgscheckout.ui.core
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.drawable.Animatable
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.View
@@ -396,11 +397,16 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
     }
 
     private fun updateSaveButtonState(isLoading: Boolean) {
-        saveCardButton.isClickable = !isLoading
-        if (isLoading) {
-            saveCardButton.text = getString(R.string.vgs_checkout_save_button_processing_title)
-        } else {
-            saveCardButton.text = getString(R.string.vgs_checkout_save_button_save_card_title)
+        with(saveCardButton) {
+            isClickable = !isLoading
+            if (isLoading) {
+                text = getString(R.string.vgs_checkout_save_button_processing_title)
+                icon = getDrawableCompat(R.drawable.vgs_checkout_ic_loading_animated_white_16)
+                (icon as? Animatable)?.start()
+            } else {
+                saveCardButton.text = getString(R.string.vgs_checkout_save_button_save_card_title)
+                icon = null
+            }
         }
     }
 
