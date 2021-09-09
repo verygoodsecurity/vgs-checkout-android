@@ -35,7 +35,7 @@ internal open class VGSEditText @JvmOverloads constructor(
                 val fieldName = getString(R.styleable.VGSEditText_fieldName)
                 val hint = getString(R.styleable.VGSEditText_hint)
                 val textSize = getDimension(R.styleable.VGSEditText_textSize, -1f)
-                val textColor = getColor(R.styleable.VGSEditText_textColor, Color.BLACK)
+                val textColor = getColor(R.styleable.VGSEditText_textColor, -1)
                 val text = getString(R.styleable.VGSEditText_text)
                 val textStyle = getInt(R.styleable.VGSEditText_textStyle, -1)
                 val cursorVisible = getBoolean(R.styleable.VGSEditText_cursorVisible, true)
@@ -51,7 +51,7 @@ internal open class VGSEditText @JvmOverloads constructor(
 
                 setFieldName(fieldName)
                 setHint(hint)
-                setTextColor(textColor)
+                if (textColor > 0) setTextColor(textColor)
                 setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize)
                 setCursorVisible(cursorVisible)
                 setGravity(gravity)
