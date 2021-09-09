@@ -58,8 +58,7 @@
                         style="@style/VGSCheckout.TextInputEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:imeOptions="actionNext"
-                        app:text="Test" />
+                        app:imeOptions="actionNext" />
                 </com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout>
 
                 <com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout
@@ -76,8 +75,7 @@
                         android:layout_height="wrap_content"
                         app:cardBrandIconGravity="start"
                         app:imeOptions="actionNext"
-                        app:numberDivider=" "
-                        app:text="4111111111111111" />
+                        app:numberDivider=" " />
                 </com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout>
 
                 <androidx.appcompat.widget.LinearLayoutCompat
@@ -102,8 +100,7 @@
                             app:datePattern="MM/yy"
                             app:datePickerModes="input"
                             app:imeOptions="actionNext"
-                            app:inputType="date"
-                            app:text="11/22" />
+                            app:inputType="date" />
                     </com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout>
 
                     <Space
@@ -125,8 +122,7 @@
                             android:layout_height="wrap_content"
                             app:imeOptions="actionNext"
                             app:previewIconGravity="start"
-                            app:previewIconVisibility="always"
-                            app:text="111" />
+                            app:previewIconVisibility="always" />
                     </com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout>
                 </androidx.appcompat.widget.LinearLayoutCompat>
             </androidx.appcompat.widget.LinearLayoutCompat>
@@ -179,8 +175,7 @@
                         style="@style/VGSCheckout.TextInputEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:imeOptions="actionNext"
-                        app:text="Test" />
+                        app:imeOptions="actionNext" />
                 </com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout>
 
                 <com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout
@@ -218,8 +213,7 @@
                             style="@style/VGSCheckout.TextInputEditText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:imeOptions="actionNext"
-                            app:text="Test" />
+                            app:imeOptions="actionNext" />
                     </com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout>
 
                     <Space
@@ -239,8 +233,7 @@
                             style="@style/VGSCheckout.TextInputEditText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:imeOptions="actionDone"
-                            app:text="11111" />
+                            app:imeOptions="actionDone" />
                     </com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout>
                 </androidx.appcompat.widget.LinearLayoutCompat>
             </androidx.appcompat.widget.LinearLayoutCompat>
