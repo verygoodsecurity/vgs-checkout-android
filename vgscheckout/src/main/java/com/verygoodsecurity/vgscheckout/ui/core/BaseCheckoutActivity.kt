@@ -116,7 +116,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
     override fun onResponse(response: VGSResponse?) {
         (response as? VGSResponse.ErrorResponse)?.let {
             if (it.errorCode == VGSError.NO_NETWORK_CONNECTIONS.code) {
-                setViewsEnabled(true)
+                setInputViewsEnabled(true)
                 updateSaveButtonState(false)
                 showNetworkConnectionErrorSnackBar()
                 return
@@ -301,7 +301,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
     private fun saveCard() {
         hideSoftKeyboard()
         if (isInputValid()) {
-            setViewsEnabled(false)
+            setInputViewsEnabled(false)
             updateSaveButtonState(true)
             handleSaveCard()
         }
@@ -391,9 +391,16 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
         }
     }
 
-    private fun setViewsEnabled(isEnabled: Boolean) {
+    private fun setInputViewsEnabled(isEnabled: Boolean) {
         cardDetailsLL.setEnabled(isEnabled, true, cardDetailsMtv)
         billingAddressLL.setEnabled(isEnabled, true, billingAddressMtv)
+        val alpha = if (isEnabled) {
+            resources.getInteger(R.integer.vgs_checkout_input_icon_alpha_enabled)
+        } else {
+            resources.getInteger(R.integer.vgs_checkout_input_icon_alpha_disabled)
+        }
+        cardNumberEt.setDrawablesAlpha(alpha)
+        securityCodeEt.setDrawablesAlpha(alpha)
     }
 
     private fun updateSaveButtonState(isLoading: Boolean) {
