@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:color="@color/vgs_checkout_gray" android:state_focused="false"/>
+    <item android:color="@color/vgs_checkout_nobel" android:state_enabled="true" android:state_focused="false" />
 
-    <item android:color="@color/vgs_checkout_dodger_blue" android:state_focused="true"/>
+    <item android:color="@color/vgs_checkout_denim" android:state_enabled="true" android:state_focused="true" />
+
+    <item android:color="@color/vgs_checkout_silver" android:state_enabled="false" />
 </selector>
