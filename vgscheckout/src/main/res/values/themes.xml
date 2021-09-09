@@ -1,17 +1,15 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="VGSCheckout" parent="Theme.MaterialComponents.Light.NoActionBar">
-
         <item name="colorPrimary">@color/vgs_checkout_denim</item>
+        <item name="colorOnPrimary">@color/vgs_checkout_white</item>
         <item name="colorPrimaryDark">@color/vgs_checkout_white</item>
         <item name="colorSecondary">@color/vgs_checkout_denim</item>
         <item name="colorSurface">@color/vgs_checkout_white</item>
         <item name="colorOnSurface">@color/vgs_checkout_nero</item>
         <item name="colorError">@color/vgs_checkout_harley_davidson_orange</item>
-
         <item name="android:textColorHint">@color/vgs_checkout_gray</item>
         <item name="android:textColorPrimary">@color/vgs_checkout_nero</item>
-
         <item name="android:windowBackground">@color/vgs_checkout_white_smoke</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
     </style>
@@ -54,12 +52,10 @@
     </style>
 
     <style name="VGSCheckout.SaveButton" parent="Widget.MaterialComponents.Button.UnelevatedButton">
-        <item name="textColor">@color/vgs_checkout_white</item>
-        <item name="backgroundTint">@color/vgs_checkout_dodger_blue</item>
-        <item name="android:textColor">@color/vgs_checkout_white</item>
         <item name="android:paddingTop">@dimen/vgs_checkout_margin_padding_size_medium</item>
         <item name="android:paddingBottom">@dimen/vgs_checkout_margin_padding_size_medium</item>
         <item name="cornerRadius">@dimen/vgs_checkout_margin_padding_size_small</item>
         <item name="textAppearance">?attr/textAppearanceBody2</item>
+        <item name="iconGravity">textStart</item>
     </style>
 </resources>
