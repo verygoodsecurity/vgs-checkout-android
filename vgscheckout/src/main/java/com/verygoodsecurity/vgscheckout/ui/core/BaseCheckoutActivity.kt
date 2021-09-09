@@ -13,6 +13,7 @@ import androidx.appcompat.widget.LinearLayoutCompat
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.textview.MaterialTextView
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.core.VGSCollect
 import com.verygoodsecurity.vgscheckout.collect.core.VgsCollectResponseListener
@@ -52,27 +53,31 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
         }
     }
 
-    private lateinit var cardHolderTil: VGSTextInputLayout
-    private lateinit var cardHolderEt: PersonNameEditText
-    private lateinit var cardNumberTil: VGSTextInputLayout
-    private lateinit var cardNumberEt: VGSCardNumberEditText
-    private lateinit var expirationDateTil: VGSTextInputLayout
-    private lateinit var expirationDateEt: ExpirationDateEditText
-    private lateinit var securityCodeTil: VGSTextInputLayout
-    private lateinit var securityCodeEt: CardVerificationCodeEditText
+    private val cardDetailsMtv: MaterialTextView by lazy { findViewById(R.id.mtvCardDetailsTitle) }
+    private val cardDetailsLL: LinearLayoutCompat by lazy { findViewById(R.id.llCardDetails) }
+    private val cardHolderTil: VGSTextInputLayout by lazy { findViewById(R.id.vgsTilCardHolder) }
+    private val cardHolderEt: PersonNameEditText by lazy { findViewById(R.id.vgsEtCardHolder) }
+    private val cardNumberTil: VGSTextInputLayout by lazy { findViewById(R.id.vgsTilCardNumber) }
+    private val cardNumberEt: VGSCardNumberEditText by lazy { findViewById(R.id.vgsEtCardNumber) }
+    private val expirationDateTil: VGSTextInputLayout by lazy { findViewById(R.id.vgsTilExpirationDate) }
+    private val expirationDateEt: ExpirationDateEditText by lazy { findViewById(R.id.vgsEtExpirationDate) }
+    private val securityCodeTil: VGSTextInputLayout by lazy { findViewById(R.id.vgsTilSecurityCode) }
+    private val securityCodeEt: CardVerificationCodeEditText by lazy { findViewById(R.id.vgsEtSecurityCode) }
 
-    private lateinit var countryTil: VGSTextInputLayout
-    private lateinit var countryEt: VGSEditText
-    private lateinit var addressTil: VGSTextInputLayout
-    private lateinit var addressEt: VGSEditText
-    private lateinit var optionalAddressTil: VGSTextInputLayout
-    private lateinit var optionalAddressEt: VGSEditText
-    private lateinit var cityTil: VGSTextInputLayout
-    private lateinit var cityEt: VGSEditText
-    private lateinit var postalAddressTil: VGSTextInputLayout
-    private lateinit var postalAddressEt: VGSEditText
+    private val billingAddressMtv: MaterialTextView by lazy { findViewById(R.id.mtvBillingAddressTitle) }
+    private val billingAddressLL: LinearLayoutCompat by lazy { findViewById(R.id.llBillingAddress) }
+    private val countryTil: VGSTextInputLayout by lazy { findViewById(R.id.vgsTilCountry) }
+    private val countryEt: VGSEditText by lazy { findViewById(R.id.vgsEtCountry) }
+    private val addressTil: VGSTextInputLayout by lazy { findViewById(R.id.vgsTilAddress) }
+    private val addressEt: VGSEditText by lazy { findViewById(R.id.vgsEtAddress) }
+    private val optionalAddressTil: VGSTextInputLayout by lazy { findViewById(R.id.vgsTilAddressOptional) }
+    private val optionalAddressEt: VGSEditText by lazy { findViewById(R.id.vgsEtAddressOptional) }
+    private val cityTil: VGSTextInputLayout by lazy { findViewById(R.id.vgsTilCity) }
+    private val cityEt: VGSEditText by lazy { findViewById(R.id.vgsEtCity) }
+    private val postalAddressTil: VGSTextInputLayout by lazy { findViewById(R.id.vgsTilPostalAddress) }
+    private val postalAddressEt: VGSEditText by lazy { findViewById(R.id.vgsEtPostalAddress) }
 
-    private lateinit var saveCardButton: MaterialButton
+    private val saveCardButton: MaterialButton by lazy { findViewById(R.id.mbSaveCard) }
 
     private val billingAddressValidationRule: VGSInfoRule by lazy {
         VGSInfoRule.ValidationBuilder()
@@ -110,6 +115,8 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
     override fun onResponse(response: VGSResponse?) {
         (response as? VGSResponse.ErrorResponse)?.let {
             if (it.errorCode == VGSError.NO_NETWORK_CONNECTIONS.code) {
+                setViewsEnabled(true)
+                updateSaveButtonState(false)
                 showNetworkConnectionErrorSnackBar()
                 return
             }
@@ -158,8 +165,6 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
     }
 
     private fun initCardHolderView(options: VGSCheckoutCardHolderOptions) {
-        cardHolderTil = findViewById(R.id.vgsTilCardHolder)
-        cardHolderEt = findViewById(R.id.vgsEtCardHolder)
         if (options.visibility == VGSCheckoutFieldVisibility.HIDDEN) {
             cardHolderTil.gone()
             return
@@ -170,8 +175,6 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
     }
 
     private fun initCardNumberView(options: VGSCheckoutCardNumberOptions) {
-        cardNumberTil = findViewById(R.id.vgsTilCardNumber)
-        cardNumberEt = findViewById(R.id.vgsEtCardNumber)
         cardNumberEt.setFieldName(options.fieldName)
         cardNumberEt.setValidCardBrands(options.cardBrands)
         cardNumberEt.setIsCardBrandPreviewHidden(options.isIconHidden)
@@ -180,8 +183,6 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
     }
 
     private fun initExpirationDateView(options: VGSCheckoutExpirationDateOptions) {
-        expirationDateTil = findViewById(R.id.vgsTilExpirationDate)
-        expirationDateEt = findViewById(R.id.vgsEtExpirationDate)
         expirationDateEt.setDateRegex(options.inputFormatRegex)
         expirationDateEt.setOutputRegex(options.outputFormatRegex)
         expirationDateEt.setSerializer(
@@ -193,8 +194,6 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
     }
 
     private fun initSecurityCodeView(options: VGSCheckoutCVCOptions) {
-        securityCodeTil = findViewById(R.id.vgsTilSecurityCode)
-        securityCodeEt = findViewById(R.id.vgsEtSecurityCode)
         securityCodeEt.setFieldName(options.fieldName)
         securityCodeEt.setIsPreviewIconHidden(options.isIconHidden)
         securityCodeEt.addOnTextChangeListener(this)
@@ -216,8 +215,6 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
     }
 
     private fun initCountryView(options: VGSCheckoutCountryOptions) {
-        countryTil = findViewById(R.id.vgsTilCountry)
-        countryEt = findViewById(R.id.vgsEtCountry)
         countryEt.setFieldName(options.fieldName)
         countryEt.addRule(billingAddressValidationRule)
         countryEt.isFocusable = false
@@ -232,8 +229,6 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
     }
 
     private fun initAddressView(options: VGSCheckoutAddressOptions) {
-        addressTil = findViewById(R.id.vgsTilAddress)
-        addressEt = findViewById(R.id.vgsEtAddress)
         addressEt.setFieldName(options.fieldName)
         addressEt.addRule(billingAddressValidationRule)
         addressEt.addOnTextChangeListener(this)
@@ -241,16 +236,12 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
     }
 
     private fun initOptionalAddressView(options: VGSCheckoutOptionalAddressOptions) {
-        optionalAddressTil = findViewById(R.id.vgsTilAddressOptional)
-        optionalAddressEt = findViewById(R.id.vgsEtAddressOptional)
         optionalAddressEt.setFieldName(options.fieldName)
         optionalAddressEt.addRule(billingAddressValidationRule)
         collect.bindView(optionalAddressEt)
     }
 
     private fun initCityView(options: VGSCheckoutCityOptions) {
-        cityTil = findViewById(R.id.vgsTilCity)
-        cityEt = findViewById(R.id.vgsEtCity)
         cityEt.setFieldName(options.fieldName)
         cityEt.addRule(billingAddressValidationRule)
         cityEt.addOnTextChangeListener(this)
@@ -258,8 +249,6 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
     }
 
     private fun initPostalAddressView(options: VGSCheckoutPostalAddressOptions) {
-        postalAddressTil = findViewById(R.id.vgsTilPostalAddress)
-        postalAddressEt = findViewById(R.id.vgsEtPostalAddress)
         postalAddressEt.setFieldName(options.fieldName)
         postalAddressEt.addOnTextChangeListener(this)
         postalAddressEt.setOnEditorActionListener(object : InputFieldView.OnEditorActionListener {
@@ -305,13 +294,16 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
         .build()
 
     private fun initSaveButton() {
-        saveCardButton = findViewById(R.id.mbSaveCard)
         saveCardButton.setOnClickListener { saveCard() }
     }
 
     private fun saveCard() {
         hideSoftKeyboard()
-        if (isInputValid()) handleSaveCard()
+        if (isInputValid()) {
+            setViewsEnabled(false)
+            updateSaveButtonState(true)
+            handleSaveCard()
+        }
     }
 
     private fun isInputValid(): Boolean {
@@ -395,6 +387,20 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
         else -> {
             parent.setError(null)
             true
+        }
+    }
+
+    private fun setViewsEnabled(isEnabled: Boolean) {
+        cardDetailsLL.setEnabled(isEnabled, true, cardDetailsMtv)
+        billingAddressLL.setEnabled(isEnabled, true, billingAddressMtv)
+    }
+
+    private fun updateSaveButtonState(isLoading: Boolean) {
+        saveCardButton.isClickable = !isLoading
+        if (isLoading) {
+            saveCardButton.text = getString(R.string.vgs_checkout_save_button_processing_title)
+        } else {
+            saveCardButton.text = getString(R.string.vgs_checkout_save_button_save_card_title)
         }
     }
 

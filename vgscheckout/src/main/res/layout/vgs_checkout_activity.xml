@@ -58,7 +58,8 @@
                         style="@style/VGSCheckout.TextInputEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:imeOptions="actionNext" />
+                        app:imeOptions="actionNext"
+                        app:text="Test" />
                 </com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout>
 
                 <com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout
@@ -75,7 +76,8 @@
                         android:layout_height="wrap_content"
                         app:cardBrandIconGravity="start"
                         app:imeOptions="actionNext"
-                        app:numberDivider=" " />
+                        app:numberDivider=" "
+                        app:text="4111111111111111" />
                 </com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout>
 
                 <androidx.appcompat.widget.LinearLayoutCompat
@@ -100,7 +102,8 @@
                             app:datePattern="MM/yy"
                             app:datePickerModes="input"
                             app:imeOptions="actionNext"
-                            app:inputType="date" />
+                            app:inputType="date"
+                            app:text="11/22" />
                     </com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout>
 
                     <Space
@@ -122,7 +125,8 @@
                             android:layout_height="wrap_content"
                             app:imeOptions="actionNext"
                             app:previewIconGravity="start"
-                            app:previewIconVisibility="always" />
+                            app:previewIconVisibility="always"
+                            app:text="111" />
                     </com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout>
                 </androidx.appcompat.widget.LinearLayoutCompat>
             </androidx.appcompat.widget.LinearLayoutCompat>
@@ -175,7 +179,8 @@
                         style="@style/VGSCheckout.TextInputEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:imeOptions="actionNext" />
+                        app:imeOptions="actionNext"
+                        app:text="Test" />
                 </com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout>
 
                 <com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout
@@ -213,7 +218,8 @@
                             style="@style/VGSCheckout.TextInputEditText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:imeOptions="actionNext" />
+                            app:imeOptions="actionNext"
+                            app:text="Test" />
                     </com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout>
 
                     <Space
@@ -233,7 +239,8 @@
                             style="@style/VGSCheckout.TextInputEditText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:imeOptions="actionDone" />
+                            app:imeOptions="actionDone"
+                            app:text="11111" />
                     </com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout>
                 </androidx.appcompat.widget.LinearLayoutCompat>
             </androidx.appcompat.widget.LinearLayoutCompat>
@@ -244,7 +251,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/vgs_checkout_margin_padding_size_medium"
-                android:text="@string/vgs_checkout_save_button_title" />
+                android:text="@string/vgs_checkout_save_button_save_card_title" />
         </androidx.appcompat.widget.LinearLayoutCompat>
     </ScrollView>
 </androidx.appcompat.widget.LinearLayoutCompat>
