@@ -13,6 +13,8 @@
     <color name="vgs_checkout_nobel">#9E9E9E</color>
     <color name="vgs_checkout_silver">#BBBBBB</color>
     <color name="vgs_checkout_gray">#787878</color>
+    <color name="vgs_checkout_dim_gray">#666666</color>
+    <color name="vgs_checkout_dark_gray">#a8a8a8</color>
     <color name="vgs_checkout_zambezi">#5F5F5F</color>
     <color name="vgs_checkout_outrageous_orange">#F05A38</color>
     <color name="vgs_checkout_harley_davidson_orange">#DA3510</color>

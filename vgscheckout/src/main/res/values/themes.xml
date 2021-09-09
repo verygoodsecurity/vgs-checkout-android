@@ -8,8 +8,8 @@
         <item name="colorSurface">@color/vgs_checkout_white</item>
         <item name="colorOnSurface">@color/vgs_checkout_nero</item>
         <item name="colorError">@color/vgs_checkout_harley_davidson_orange</item>
-        <item name="android:textColorHint">@color/vgs_checkout_gray</item>
-        <item name="android:textColorPrimary">@color/vgs_checkout_nero</item>
+        <item name="android:textColorHint">@color/vgs_checkout_input_hint_text_color</item>
+        <item name="android:textColorPrimary">@color/vgs_checkout_primary_text_color</item>
         <item name="android:windowBackground">@color/vgs_checkout_white_smoke</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
     </style>
@@ -32,7 +32,7 @@
 
     <style name="VGSCheckout.TextInputLayout">
         <item name="endIconModes">clear_text</item>
-        <item name="endIconTint">@color/vgs_checkout_gray</item>
+        <item name="endIconTint">@color/vgs_checkout_input_end_icon_tint</item>
         <item name="endIconDrawable">@drawable/vgs_checkout_ic_round_cancel_white_24</item>
         <item name="errorEnabled">true</item>
         <item name="errorIconDrawable">@drawable/vgs_checkout_ic_error_white_24</item>
@@ -43,7 +43,6 @@
     </style>
 
     <style name="VGSCheckout.TextInputEditText">
-        <item name="textColor">@color/vgs_checkout_black_r</item>
         <item name="textSize">@dimen/vgs_checkout_input_text_size</item>
         <item name="android:paddingStart">@dimen/vgs_checkout_margin_padding_size_medium</item>
         <item name="android:paddingEnd">@dimen/vgs_checkout_margin_padding_size_medium</item>
