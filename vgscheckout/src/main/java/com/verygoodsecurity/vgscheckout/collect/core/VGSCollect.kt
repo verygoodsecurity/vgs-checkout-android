@@ -18,7 +18,6 @@ import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.utils.toAnalyt
 import com.verygoodsecurity.vgscheckout.collect.core.api.client.ApiClient
 import com.verygoodsecurity.vgscheckout.collect.core.api.client.ApiClient.Companion.generateAgentHeader
 import com.verygoodsecurity.vgscheckout.collect.core.api.client.extension.isHttpStatusCode
-import com.verygoodsecurity.vgscheckout.collect.core.model.VGSCollectFieldNameMappingPolicy
 import com.verygoodsecurity.vgscheckout.collect.core.model.VGSCollectFieldNameMappingPolicy.*
 import com.verygoodsecurity.vgscheckout.collect.core.model.VGSHashMapWrapper
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.*
@@ -34,7 +33,6 @@ import com.verygoodsecurity.vgscheckout.collect.util.*
 import com.verygoodsecurity.vgscheckout.collect.util.extension.*
 import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
 import com.verygoodsecurity.vgscheckout.collect.view.VGSCollectView
-import com.verygoodsecurity.vgscheckout.collect.view.card.getAnalyticName
 import java.util.*
 
 /**
@@ -59,7 +57,6 @@ internal class VGSCollect {
             error.toVGSResponse(context).also { r ->
                 notifyAllListeners(r)
                 VGSCollectLogger.warn(InputFieldView.TAG, r.localizeMessage)
-                submitEvent(false, code = r.errorCode)
             }
         }
     }
@@ -184,8 +181,6 @@ internal class VGSCollect {
         }
 
         storage.performSubscription(view)
-
-        initField(view)
     }
 
     /**
@@ -326,19 +321,7 @@ internal class VGSCollect {
                 notifyAllListeners(VGSError.NO_NETWORK_CONNECTIONS.toVGSResponse(context))
             !context.isConnectionAvailable() ->
                 notifyAllListeners(VGSError.NO_NETWORK_CONNECTIONS.toVGSResponse(context))
-            else -> {
-                val data = mergeData(request)
-                submitEvent(
-                    true,
-                    !request.fileIgnore && storage.getFileStorage().getItems().isNotEmpty(),
-                    !request.fieldsIgnore && storage.getFieldsStorage().getItems().isNotEmpty(),
-                    request.customHeader.isNotEmpty(),
-                    data.isNotEmpty(),
-                    hasCustomHostname,
-                    request.fieldNameMappingPolicy
-                )
-                submitRequest(data)
-            }
+            else -> submitRequest(mergeData(request))
         }
     }
 
@@ -369,7 +352,6 @@ internal class VGSCollect {
                 VGSError.INPUT_DATA_NOT_VALID.toVGSResponse(context, it.fieldName).also { r ->
                     notifyAllListeners(r)
                     VGSCollectLogger.warn(InputFieldView.TAG, r.localizeMessage)
-                    submitEvent(false, code = r.errorCode)
                 }
 
                 isValid = false
@@ -446,11 +428,7 @@ internal class VGSCollect {
                     map.get(BaseTransmitActivity.RESULT_NAME).toString(),
                     map.get(BaseTransmitActivity.RESULT_ID) as? String
                 )
-                BaseTransmitActivity.ATTACH -> attachFileEvent(
-                    map.get(BaseTransmitActivity.RESULT_STATUS).toString()
-                )
             }
-
         }
     }
 
@@ -526,19 +504,6 @@ internal class VGSCollect {
         client = c
     }
 
-    private fun initField(view: VGSCollectView?) {
-        val m = view?.getFieldType()?.getAnalyticName()?.run {
-            with(mutableMapOf<String, String>()) {
-                put("field", this@run)
-                this
-            }
-        } ?: mutableMapOf()
-
-        tracker.logEvent(
-            InitAction(m)
-        )
-    }
-
     private fun scanEvent(status: String, type: String, id: String?) {
         val m = with(mutableMapOf<String, String>()) {
             put("status", status)
@@ -550,47 +515,6 @@ internal class VGSCollect {
         tracker.logEvent(
             ScanAction(m)
         )
-    }
-
-    private fun submitEvent(
-        isSuccess: Boolean,
-        hasFiles: Boolean = false,
-        hasFields: Boolean = false,
-        hasCustomHeader: Boolean = false,
-        hasCustomData: Boolean = false,
-        hasCustomHostname: Boolean = false,
-        mappingPolicy: VGSCollectFieldNameMappingPolicy = NESTED_JSON,
-        code: Int = 200
-    ) {
-        if (code.isHttpStatusCode()) {
-            val m = with(mutableMapOf<String, Any>()) {
-                put("status", isSuccess.toAnalyticStatus())
-
-                put("statusCode", code)
-
-                val arr = with(mutableListOf<String>()) {
-                    if (hasCustomHostname) add("custom_hostname")
-                    if (hasFiles) add("file")
-                    if (hasFields) add("textField")
-                    if (hasCustomHeader ||
-                        client.getTemporaryStorage().getCustomHeaders().isNotEmpty()
-                    ) add("custom_header")
-                    if (hasCustomData ||
-                        client.getTemporaryStorage().getCustomData().isNotEmpty()
-                    ) add("custom_data")
-                    add(mappingPolicy.analyticsName)
-                    this
-                }
-
-                put("content", arr)
-
-                this
-            }
-
-            tracker.logEvent(
-                SubmitAction(m)
-            )
-        }
     }
 
     private fun responseEvent(code: Int, message: String? = null) {
@@ -606,17 +530,6 @@ internal class VGSCollect {
                 ResponseAction(m)
             )
         }
-    }
-
-    private fun attachFileEvent(status: String) {//MIME, success
-        val m = with(mutableMapOf<String, Any>()) {
-            put("status", status)
-
-            this
-        }
-        tracker.logEvent(
-            AttachFileAction(m)
-        )
     }
 
     private var hasCustomHostname = false
