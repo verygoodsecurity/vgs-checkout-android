@@ -78,7 +78,6 @@ internal class VGSCollect {
     private val context: Context
 
     private var cname: String? = null
-    private var isSatelliteMode: Boolean = false
 
     private constructor(
         context: Context,
@@ -92,11 +91,11 @@ internal class VGSCollect {
         this.externalDependencyDispatcher = DependencyReceiver()
         this.client = ApiClient.newHttpClient()
         this.baseURL = generateBaseUrl(id, environment, url, port)
-        this.tracker =
-            CollectActionTracker(id, environment, UUID.randomUUID().toString(), isSatelliteMode)
+        this.tracker = CollectActionTracker(id, environment, UUID.randomUUID().toString())
         cname?.let { configureHostname(it, id) }
         updateAgentHeader()
         addOnResponseListeners(analyticListener)
+        initEvent()
     }
 
     constructor(
@@ -504,6 +503,10 @@ internal class VGSCollect {
         client = c
     }
 
+    private fun initEvent() {
+        tracker.logEvent(InitAction(emptyMap()))
+    }
+
     private fun scanEvent(status: String, type: String, id: String?) {
         val m = with(mutableMapOf<String, String>()) {
             put("status", status)
@@ -512,9 +515,7 @@ internal class VGSCollect {
 
             this
         }
-        tracker.logEvent(
-            ScanAction(m)
-        )
+        tracker.logEvent(ScanAction(m))
     }
 
     private fun responseEvent(code: Int, message: String? = null) {
@@ -526,9 +527,7 @@ internal class VGSCollect {
 
                 this
             }
-            tracker.logEvent(
-                ResponseAction(m)
-            )
+            tracker.logEvent(ResponseAction(m))
         }
     }
 
@@ -553,7 +552,6 @@ internal class VGSCollect {
                     VGSCollectLogger.warn(message = context.getString(R.string.vgs_checkout_error_env_incorrect))
                     return id.setupURL(environment)
                 }
-                isSatelliteMode = true
                 return host.setupLocalhostURL(port)
             } else {
                 printPortDenied()

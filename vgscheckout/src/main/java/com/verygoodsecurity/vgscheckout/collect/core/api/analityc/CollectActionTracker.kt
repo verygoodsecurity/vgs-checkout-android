@@ -9,14 +9,14 @@ import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.action.Action
 import com.verygoodsecurity.vgscheckout.collect.core.api.client.ApiClient
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSRequest
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.toAnalyticRequest
+import com.verygoodsecurity.vgscheckout.collect.util.extension.toIso8601
 import java.util.*
 import java.util.concurrent.Executors
 
 internal class CollectActionTracker(
     val tnt: String,
     val environment: String,
-    val formId: String,
-    val isSatelliteMode: Boolean
+    val formId: String
 ) : AnalyticTracker {
 
     override var isEnabled: Boolean = true
@@ -32,7 +32,7 @@ internal class CollectActionTracker(
     override fun logEvent(action: Action) {
         if (isEnabled) {
             val event = action.run {
-                val sender = Event(client, tnt, environment, formId, isSatelliteMode)
+                val sender = Event(client, tnt, environment, formId)
                 sender.map = getAttributes()
                 sender
             }
@@ -45,8 +45,7 @@ internal class CollectActionTracker(
         private val client: ApiClient,
         private val tnt: String,
         private val environment: String,
-        private val formId: String,
-        private val isSatelliteMode: Boolean
+        private val formId: String
     ) : Runnable {
 
         var map: MutableMap<String, Any> = mutableMapOf()
@@ -56,12 +55,13 @@ internal class CollectActionTracker(
             }
 
         private fun attachDefaultInfo(map: MutableMap<String, Any>): Map<String, Any> {
+            val timestamp = System.currentTimeMillis()
             return with(map) {
-                this[SATELLITE] = isSatelliteMode
                 this[VG_SESSION_ID] = Sid.id
                 this[FORM_ID] = formId
                 this[SOURCE] = SOURCE_TAG
-                this[TIMESTAMP] = System.currentTimeMillis()
+                this[TIMESTAMP] = timestamp
+                this[CLIENT_TIMESTAMP] = timestamp.toIso8601()
                 this[TNT] = tnt
                 this[ENVIRONMENT] = environment
                 this[VERSION] = BuildConfig.VERSION_NAME
@@ -92,10 +92,10 @@ internal class CollectActionTracker(
         }
 
         companion object {
-            private const val SATELLITE = "vgsSatellite"
             private const val FORM_ID = "formId"
             private const val VG_SESSION_ID = "vgsCollectSessionId"
             private const val TIMESTAMP = "localTimestamp"
+            private const val CLIENT_TIMESTAMP = "clientTimestamp"
             private const val TNT = "tnt"
             private const val ENVIRONMENT = "env"
             private const val VERSION = "version"
