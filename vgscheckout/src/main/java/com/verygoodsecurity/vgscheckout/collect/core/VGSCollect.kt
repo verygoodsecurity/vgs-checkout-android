@@ -481,7 +481,7 @@ internal class VGSCollect {
      */
     fun setAnalyticsEnabled(isEnabled: Boolean) {
         tracker.isEnabled = isEnabled
-        updateAgentHeader()
+        updateAgentHeader(isEnabled)
     }
 
     @VisibleForTesting
@@ -611,10 +611,14 @@ internal class VGSCollect {
         )
     }
 
-    private fun updateAgentHeader() {
+    private fun updateAgentHeader(isAnalyticsEnabled: Boolean = true) {
         client.getStorage().setCustomHeaders(
             mapOf(
-                AGENT to String.format(AGENT_TEMPLATE, BuildConfig.VERSION_NAME)
+                AGENT to String.format(
+                    AGENT_FORMAT,
+                    BuildConfig.VERSION_NAME,
+                    if (isAnalyticsEnabled) AGENT_ANALYTICS_ENABLED else AGENT_ANALYTICS_DISABLED
+                )
             )
         )
     }
@@ -622,7 +626,9 @@ internal class VGSCollect {
     companion object {
 
         private const val AGENT = "VGS-Client"
-        private const val AGENT_TEMPLATE = "source=vgs-checkout&medium=vgs-checkout&content=%s"
+        private const val AGENT_FORMAT = "source=vgs-checkout&medium=vgs-checkout&content=%s&tr=%s"
+        private const val AGENT_ANALYTICS_ENABLED = "default"
+        private const val AGENT_ANALYTICS_DISABLED = "none"
     }
 
     /**
