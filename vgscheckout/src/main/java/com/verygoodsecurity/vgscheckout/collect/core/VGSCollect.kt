@@ -615,24 +615,17 @@ internal class VGSCollect {
     }
 
     private fun updateAgentHeader() {
-        client.getStorage().setCustomHeaders(mapOf(generateAgentHeader(tracker.isEnabled)))
-    }
-
-    private fun generateAgentHeader(isAnalyticsEnabled: Boolean): Pair<String, String> =
-        AGENT to String.format(
-            AGENT_TEMPLATE,
-            BuildConfig.VERSION_NAME,
-            CollectActionTracker.Sid.id,
-            if (isAnalyticsEnabled) AGENT_ANALYTICS_ENABLED else AGENT_ANALYTICS_DISABLED
+        client.getStorage().setCustomHeaders(
+            mapOf(
+                AGENT to String.format(AGENT_TEMPLATE, BuildConfig.VERSION_NAME)
+            )
         )
+    }
 
     companion object {
 
-        private const val AGENT = "vgs-client"
-        private const val AGENT_TEMPLATE =
-            "source=androidSDK&medium=vgs-collect&content=%s&vgsCollectSessionId=%s&tr=%s"
-        private const val AGENT_ANALYTICS_ENABLED = "default"
-        private const val AGENT_ANALYTICS_DISABLED = "none"
+        private const val AGENT = "VGS-Client"
+        private const val AGENT_TEMPLATE = "source=vgs-checkout&medium=vgs-checkout&content=%s"
     }
 
     /**
