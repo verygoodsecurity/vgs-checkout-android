@@ -94,7 +94,7 @@ class VGSCollectTest {
     fun test_bind_view() {
         val view = applyEditText(FieldType.INFO)
 
-        verify(view, times(2)).getFieldType() //default init + analytics,
+        verify(view, times(1)).getFieldType() //default init + analytics,
         verify(view).getFieldName()
         verify(view).addStateListener(any())
     }
