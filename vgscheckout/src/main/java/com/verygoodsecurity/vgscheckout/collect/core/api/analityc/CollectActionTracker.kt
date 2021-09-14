@@ -1,6 +1,7 @@
 package com.verygoodsecurity.vgscheckout.collect.core.api.analityc
 
 import android.os.Build
+import android.util.Log
 import com.verygoodsecurity.vgscheckout.BuildConfig
 import com.verygoodsecurity.vgscheckout.collect.core.HTTPMethod
 import com.verygoodsecurity.vgscheckout.collect.core.api.VGSHttpBodyFormat
@@ -57,7 +58,6 @@ internal class CollectActionTracker(
         private fun attachDefaultInfo(map: MutableMap<String, Any>): Map<String, Any> {
             val timestamp = System.currentTimeMillis()
             return with(map) {
-                this[VG_SESSION_ID] = Sid.id
                 this[FORM_ID] = formId
                 this[SOURCE] = SOURCE_TAG
                 this[TIMESTAMP] = timestamp
@@ -81,6 +81,7 @@ internal class CollectActionTracker(
         }
 
         override fun run() {
+            Log.d("Test", map.toString())
             val r = VGSRequest.VGSRequestBuilder()
                 .setPath(ENDPOINT)
                 .setMethod(HTTPMethod.POST)
@@ -93,16 +94,15 @@ internal class CollectActionTracker(
 
         companion object {
             private const val FORM_ID = "formId"
-            private const val VG_SESSION_ID = "vgsCollectSessionId"
             private const val TIMESTAMP = "localTimestamp"
             private const val CLIENT_TIMESTAMP = "clientTimestamp"
             private const val TNT = "tnt"
             private const val ENVIRONMENT = "env"
             private const val VERSION = "version"
-            private const val PLATFORM = "platform"
+            private const val PLATFORM = "source"
             private const val SOURCE = "source"
             private const val PLATFORM_TAG = "android"
-            private const val SOURCE_TAG = "androidSDK"
+            private const val SOURCE_TAG = "checkout-android"
             private const val DEVICE = "device"
             private const val DEVICE_MODEL = "deviceModel"
             private const val OS = "osVersion"
