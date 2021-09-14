@@ -56,7 +56,7 @@ internal class VGSCollect {
         override fun onStorageError(error: VGSError) {
             error.toVGSResponse(context).also { r ->
                 notifyAllListeners(r)
-                VGSCollectLogger.warn(InputFieldView.TAG, r.localizeMessage)
+                VGSCollectLogger.warn(InputFieldView.TAG, r.message)
             }
         }
     }
@@ -64,12 +64,8 @@ internal class VGSCollect {
     private val responseListeners = mutableListOf<VgsCollectResponseListener>()
     private val analyticListener = object : VgsCollectResponseListener {
         override fun onResponse(response: VGSResponse?) {
-            when (response) {
-                is VGSResponse.ErrorResponse -> responseEvent(
-                    response.code,
-                    response.localizeMessage
-                )
-                is VGSResponse.SuccessResponse -> responseEvent(response.code)
+            response?.let {
+                responseEvent(it.code, (it as? VGSResponse.ErrorResponse)?.message)
             }
         }
     }
@@ -350,7 +346,7 @@ internal class VGSCollect {
             if (it.isValid.not()) {
                 VGSError.INPUT_DATA_NOT_VALID.toVGSResponse(context, it.fieldName).also { r ->
                     notifyAllListeners(r)
-                    VGSCollectLogger.warn(InputFieldView.TAG, r.localizeMessage)
+                    VGSCollectLogger.warn(InputFieldView.TAG, r.message)
                 }
 
                 isValid = false

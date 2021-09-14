@@ -109,7 +109,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
 
     override fun onResponse(response: VGSResponse?) {
         (response as? VGSResponse.ErrorResponse)?.let {
-            if (it.errorCode == VGSError.NO_NETWORK_CONNECTIONS.code) {
+            if (it.code == VGSError.NO_NETWORK_CONNECTIONS.code) {
                 showNetworkConnectionErrorSnackBar()
                 return
             }

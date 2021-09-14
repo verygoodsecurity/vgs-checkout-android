@@ -70,9 +70,9 @@ internal class OkHttpClient(printLogs: Boolean = true) : ApiClient {
                 override fun onResponse(call: Call, response: Response) {
                     callback?.invoke(
                         NetworkResponse(
-                            response.code.isCodeSuccessful(),
-                            response.body?.string(),
+                            response.isSuccessful,
                             response.code,
+                            response.body?.string(),
                             response.message,
                             latency = response.latency()
                         )
@@ -106,16 +106,13 @@ internal class OkHttpClient(printLogs: Boolean = true) : ApiClient {
                 .build()
                 .newCall(okHttpRequest).execute()
 
-            if (response.isSuccessful) {
-                NetworkResponse(
-                    response.isSuccessful,
-                    response.body?.string(),
-                    response.code,
-                    latency = response.latency()
-                )
-            } else {
-                NetworkResponse(message = response.message, code = response.code)
-            }
+            NetworkResponse(
+                response.isSuccessful,
+                response.code,
+                response.body?.string(),
+                response.message,
+                latency = response.latency()
+            )
         } catch (e: InterruptedIOException) {
             NetworkResponse(error = VGSError.TIME_OUT)
         } catch (e: TimeoutException) {
