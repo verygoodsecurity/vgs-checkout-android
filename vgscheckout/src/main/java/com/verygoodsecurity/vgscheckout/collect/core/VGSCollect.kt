@@ -65,7 +65,7 @@ internal class VGSCollect {
     private val analyticListener = object : VgsCollectResponseListener {
         override fun onResponse(response: VGSResponse?) {
             response?.let {
-                responseEvent(it.code, (it as? VGSResponse.ErrorResponse)?.message)
+                responseEvent(it.code, it.latency, (it as? VGSResponse.ErrorResponse)?.message)
             }
         }
     }
@@ -514,10 +514,11 @@ internal class VGSCollect {
         tracker.logEvent(ScanAction(m))
     }
 
-    private fun responseEvent(code: Int, message: String? = null) {
+    private fun responseEvent(code: Int, latency: Long, message: String? = null) {
         if (code.isHttpStatusCode()) {
             val m = with(mutableMapOf<String, Any>()) {
                 put("statusCode", code)
+                put("latency", latency)
                 put("status", BaseTransmitActivity.Status.SUCCESS.raw)
                 if (!message.isNullOrEmpty()) put("error", message)
 
