@@ -24,6 +24,7 @@ import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult.*
 
 class MainActivity : AppCompatActivity(), VGSCheckoutCallback {
 
+    //todo replace hardcoded vault IDs with this one
     private val vaultId: String by lazy { getString(R.string.vault_id) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,7 +48,7 @@ class MainActivity : AppCompatActivity(), VGSCheckoutCallback {
 
     //region Checkout config
     private fun getCheckoutConfig() = VGSCheckoutConfiguration(
-        vaultID = vaultId,
+        vaultID = "tntpszqgikn",
         routeConfig = getCheckoutRouteConfig(),
         formConfig = getCheckoutFormConfig()
     )
