@@ -7,6 +7,7 @@ import android.os.Handler
 import android.os.Looper
 import androidx.annotation.IntRange
 import androidx.annotation.VisibleForTesting
+import com.verygoodsecurity.vgscheckout.BuildConfig
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.VGSCollectLogger
 import com.verygoodsecurity.vgscheckout.collect.app.BaseTransmitActivity
@@ -16,7 +17,6 @@ import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.CollectActionT
 import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.action.*
 import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.utils.toAnalyticStatus
 import com.verygoodsecurity.vgscheckout.collect.core.api.client.ApiClient
-import com.verygoodsecurity.vgscheckout.collect.core.api.client.ApiClient.Companion.generateAgentHeader
 import com.verygoodsecurity.vgscheckout.collect.core.api.client.extension.isHttpStatusCode
 import com.verygoodsecurity.vgscheckout.collect.core.model.VGSCollectFieldNameMappingPolicy.*
 import com.verygoodsecurity.vgscheckout.collect.core.model.VGSHashMapWrapper
@@ -89,7 +89,7 @@ internal class VGSCollect {
         this.context = context
         this.storage = InternalStorage(context, storageErrorListener)
         this.externalDependencyDispatcher = DependencyReceiver()
-        this.client = ApiClient.newHttpClient()
+        this.client = ApiClient.create()
         this.baseURL = generateBaseUrl(id, environment, url, port)
         this.tracker = CollectActionTracker(id, environment, UUID.randomUUID().toString())
         cname?.let { configureHostname(it, id) }
@@ -368,7 +368,7 @@ internal class VGSCollect {
             NESTED_JSON_WITH_ARRAYS_OVERWRITE -> true to ArrayMergePolicy.OVERWRITE
         }
 
-        return with(client.getTemporaryStorage().getCustomData()) { // Static additional data
+        return with(client.getStorage().getCustomData().toMutableMap()) { // Static additional data
             // Merge dynamic additional data
             deepMerge(request.customData, mergeArraysPolicy)
 
@@ -437,8 +437,8 @@ internal class VGSCollect {
      *
      * @param headers The headers to save for request.
      */
-    fun setCustomHeaders(headers: Map<String, String>?) {
-        client.getTemporaryStorage().setCustomHeaders(headers)
+    fun setCustomHeaders(headers: Map<String, String>) {
+        client.getStorage().setCustomHeaders(headers)
     }
 
     /**
@@ -446,7 +446,7 @@ internal class VGSCollect {
      * This method has no impact on all custom data that were added with [VGSRequest]
      */
     fun resetCustomHeaders() {
-        client.getTemporaryStorage().resetCustomHeaders()
+        client.getStorage().resetCustomHeaders()
     }
 
     /**
@@ -455,8 +455,8 @@ internal class VGSCollect {
      *
      * @param data The Map to save for request.
      */
-    fun setCustomData(data: Map<String, Any>?) {
-        client.getTemporaryStorage().setCustomData(data)
+    fun setCustomData(data: Map<String, Any>) {
+        client.getStorage().setCustomData(data)
     }
 
     /**
@@ -464,7 +464,7 @@ internal class VGSCollect {
      * This method has no impact on all custom data that were added with [VGSRequest]
      */
     fun resetCustomData() {
-        client.getTemporaryStorage().resetCustomData()
+        client.getStorage().resetCustomData()
     }
 
     /**
@@ -615,7 +615,24 @@ internal class VGSCollect {
     }
 
     private fun updateAgentHeader() {
-        client.getTemporaryStorage().setCustomHeaders(mapOf(generateAgentHeader(tracker.isEnabled)))
+        client.getStorage().setCustomHeaders(mapOf(generateAgentHeader(tracker.isEnabled)))
+    }
+
+    private fun generateAgentHeader(isAnalyticsEnabled: Boolean): Pair<String, String> =
+        AGENT to String.format(
+            AGENT_TEMPLATE,
+            BuildConfig.VERSION_NAME,
+            CollectActionTracker.Sid.id,
+            if (isAnalyticsEnabled) AGENT_ANALYTICS_ENABLED else AGENT_ANALYTICS_DISABLED
+        )
+
+    companion object {
+
+        private const val AGENT = "vgs-client"
+        private const val AGENT_TEMPLATE =
+            "source=androidSDK&medium=vgs-collect&content=%s&vgsCollectSessionId=%s&tr=%s"
+        private const val AGENT_ANALYTICS_ENABLED = "default"
+        private const val AGENT_ANALYTICS_DISABLED = "none"
     }
 
     /**

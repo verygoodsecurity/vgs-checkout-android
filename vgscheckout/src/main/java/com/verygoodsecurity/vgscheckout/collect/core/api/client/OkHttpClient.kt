@@ -17,10 +17,9 @@ import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeoutException
 
-internal class OkHttpClient(
-    isLogsVisible: Boolean,
-    private val tempStore: VgsApiTemporaryStorage
-) : ApiClient {
+internal class OkHttpClient(printLogs: Boolean = true) : ApiClient {
+
+    private val storage: ApiClientStorage = DefaultApiClientStorage()
 
     private val hostInterceptor: HostInterceptor = HostInterceptor()
 
@@ -28,7 +27,7 @@ internal class OkHttpClient(
         OkHttpClient().newBuilder()
             .addInterceptor(hostInterceptor)
             .dispatcher(Dispatcher(Executors.newSingleThreadExecutor())).also {
-                if (isLogsVisible) it.addInterceptor(HttpLoggingInterceptor())
+                if (printLogs) it.addInterceptor(HttpLoggingInterceptor())
             }
             .build()
     }
@@ -124,7 +123,7 @@ internal class OkHttpClient(
         client.dispatcher.cancelAll()
     }
 
-    override fun getTemporaryStorage(): VgsApiTemporaryStorage = tempStore
+    override fun getStorage(): ApiClientStorage = storage
 
     private fun buildRequest(
         url: String,
@@ -146,7 +145,7 @@ internal class OkHttpClient(
         headers?.forEach {
             this.addHeader(it.key, it.value)
         }
-        tempStore.getCustomHeaders().forEach {
+        storage.getCustomHeaders().forEach {
             this.addHeader(it.key, it.value)
         }
 

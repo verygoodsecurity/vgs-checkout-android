@@ -5,7 +5,6 @@ import android.util.Log
 import com.verygoodsecurity.vgscheckout.BuildConfig
 import com.verygoodsecurity.vgscheckout.collect.core.HTTPMethod
 import com.verygoodsecurity.vgscheckout.collect.core.api.VGSHttpBodyFormat
-import com.verygoodsecurity.vgscheckout.collect.core.api.VgsApiTemporaryStorageImpl
 import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.action.Action
 import com.verygoodsecurity.vgscheckout.collect.core.api.client.ApiClient
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSRequest
@@ -27,7 +26,7 @@ internal class CollectActionTracker(
     }
 
     private val client: ApiClient by lazy {
-        return@lazy ApiClient.newHttpClient(false, VgsApiTemporaryStorageImpl())
+        return@lazy ApiClient.create(false)
     }
 
     override fun logEvent(action: Action) {

@@ -8,7 +8,7 @@ import com.verygoodsecurity.vgscheckout.collect.core.HTTPMethod
 import com.verygoodsecurity.vgscheckout.collect.core.VGSCollect
 import com.verygoodsecurity.vgscheckout.collect.core.VgsCollectResponseListener
 import com.verygoodsecurity.vgscheckout.collect.core.api.client.ApiClient
-import com.verygoodsecurity.vgscheckout.collect.core.api.VgsApiTemporaryStorageImpl
+import com.verygoodsecurity.vgscheckout.collect.core.api.DefaultApiClientStorage
 import com.verygoodsecurity.vgscheckout.collect.core.model.VGSHashMapWrapper
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.*
 import com.verygoodsecurity.vgscheckout.collect.core.storage.InternalStorage
@@ -378,8 +378,8 @@ class VGSCollectTest {
         data["key"] = "value"
         collect.setCustomHeaders(data)
 
-        verify(client).getTemporaryStorage()
-        assertEquals(1, client.getTemporaryStorage().getCustomHeaders().size)
+        verify(client).getStorage()
+        assertEquals(1, client.getStorage().getCustomHeaders().size)
     }
 
     @Test
@@ -388,8 +388,8 @@ class VGSCollectTest {
 
         collect.resetCustomHeaders()
 
-        verify(client).getTemporaryStorage()
-        assertEquals(0, client.getTemporaryStorage().getCustomHeaders().size)
+        verify(client).getStorage()
+        assertEquals(0, client.getStorage().getCustomHeaders().size)
     }
 
     @Test
@@ -400,8 +400,8 @@ class VGSCollectTest {
         data["key"] = "value"
         collect.setCustomData(data)
 
-        verify(client).getTemporaryStorage()
-        assertEquals(1, client.getTemporaryStorage().getCustomData().size)
+        verify(client).getStorage()
+        assertEquals(1, client.getStorage().getCustomData().size)
     }
 
     @Test
@@ -410,8 +410,8 @@ class VGSCollectTest {
 
         collect.resetCustomData()
 
-        verify(client).getTemporaryStorage()
-        assertEquals(0, client.getTemporaryStorage().getCustomData().size)
+        verify(client).getStorage()
+        assertEquals(0, client.getStorage().getCustomData().size)
     }
 
     @Test
@@ -487,8 +487,8 @@ class VGSCollectTest {
 
     private fun applyApiClient(): ApiClient {
         val client = mock(ApiClient::class.java)
-        doReturn(VgsApiTemporaryStorageImpl())
-            .`when`(client).getTemporaryStorage()
+        doReturn(DefaultApiClientStorage())
+            .`when`(client).getStorage()
 
         collect.setClient(client)
 
