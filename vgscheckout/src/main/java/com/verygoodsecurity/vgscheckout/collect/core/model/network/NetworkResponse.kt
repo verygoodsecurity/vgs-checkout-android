@@ -7,7 +7,8 @@ internal data class NetworkResponse(
     val body: String? = null,
     val code: Int = -1,
     val message: String? = null,
-    val error: VGSError? = null
+    val error: VGSError? = null,
+    val latency: Long = 0
 )
 
 internal fun NetworkResponse.toVGSResponse(

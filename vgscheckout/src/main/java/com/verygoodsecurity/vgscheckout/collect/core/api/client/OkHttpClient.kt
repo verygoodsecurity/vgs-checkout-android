@@ -73,7 +73,8 @@ internal class OkHttpClient(printLogs: Boolean = true) : ApiClient {
                             response.code.isCodeSuccessful(),
                             response.body?.string(),
                             response.code,
-                            response.message
+                            response.message,
+                            latency = response.latency()
                         )
                     )
                 }
@@ -106,7 +107,12 @@ internal class OkHttpClient(printLogs: Boolean = true) : ApiClient {
                 .newCall(okHttpRequest).execute()
 
             if (response.isSuccessful) {
-                NetworkResponse(response.isSuccessful, response.body?.string(), response.code)
+                NetworkResponse(
+                    response.isSuccessful,
+                    response.body?.string(),
+                    response.code,
+                    latency = response.latency()
+                )
             } else {
                 NetworkResponse(message = response.message, code = response.code)
             }
