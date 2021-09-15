@@ -22,6 +22,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.annotation.IntRange
 import androidx.annotation.RequiresApi
 import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgscheckout.R
@@ -1318,6 +1319,12 @@ internal abstract class InputFieldView @JvmOverloads constructor(
      */
     override fun setOnKeyListener(l: OnKeyListener?) {
         inputField.setOnKeyListener(l)
+    }
+
+    fun setDrawablesAlpha(@IntRange(from = 0, to = 255) alpha: Int) {
+        inputField.compoundDrawables.forEach {
+            it?.alpha = alpha
+        }
     }
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)

@@ -40,7 +40,8 @@
     <string name="vgs_checkout_address_info_postal_code_empty_error">Postal code is empty</string>
     <string name="vgs_checkout_address_info_postal_code_invalid_error">Postal code is invalid</string>
 
-    <string name="vgs_checkout_save_button_title">Save card</string>
+    <string name="vgs_checkout_save_button_save_card_title">Save card</string>
+    <string name="vgs_checkout_save_button_processing_title">Processing</string>
 
     <string name="vgs_checkout_retry">Retry</string>
     <string name="vgs_checkout_network_connection_error">Your network is unavailable.</string>

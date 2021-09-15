@@ -30,6 +30,7 @@
             android:orientation="vertical">
 
             <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/llCardDetails"
                 style="@style/VGSCheckout.Form"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -37,6 +38,7 @@
                 android:padding="@dimen/vgs_checkout_margin_padding_size_medium">
 
                 <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/mtvCardDetailsTitle"
                     style="@style/VGSCheckout.Title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -135,6 +137,7 @@
                 android:padding="@dimen/vgs_checkout_margin_padding_size_medium">
 
                 <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/mtvBillingAddressTitle"
                     style="@style/VGSCheckout.Title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -241,7 +244,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/vgs_checkout_margin_padding_size_medium"
-                android:text="@string/vgs_checkout_save_button_title" />
+                android:text="@string/vgs_checkout_save_button_save_card_title" />
         </androidx.appcompat.widget.LinearLayoutCompat>
     </ScrollView>
 </androidx.appcompat.widget.LinearLayoutCompat>

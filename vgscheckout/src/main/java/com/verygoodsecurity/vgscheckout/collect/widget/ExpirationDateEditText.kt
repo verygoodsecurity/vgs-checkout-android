@@ -47,7 +47,7 @@ internal class ExpirationDateEditText @JvmOverloads constructor(
                 val fieldName = getString(R.styleable.ExpirationDateEditText_fieldName)
                 val hint = getString(R.styleable.ExpirationDateEditText_hint)
                 val textSize = getDimension(R.styleable.ExpirationDateEditText_textSize, -1f)
-                val textColor = getColor(R.styleable.ExpirationDateEditText_textColor, Color.BLACK)
+                val textColor = getColor(R.styleable.ExpirationDateEditText_textColor, -1)
                 val text = getString(R.styleable.ExpirationDateEditText_text)
                 val textStyle = getInt(R.styleable.ExpirationDateEditText_textStyle, -1)
                 val cursorVisible =
@@ -65,7 +65,7 @@ internal class ExpirationDateEditText @JvmOverloads constructor(
 
                 setFieldName(fieldName)
                 setHint(hint)
-                setTextColor(textColor)
+                if (textColor > 0) setTextColor(textColor)
                 setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize)
                 setCursorVisible(cursorVisible)
                 setGravity(gravity)

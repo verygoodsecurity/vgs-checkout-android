@@ -2,4 +2,7 @@
 <resources>
 
     <integer name="vgs_checkout_single_line">1</integer>
+
+    <integer name="vgs_checkout_input_icon_alpha_enabled">255</integer>
+    <integer name="vgs_checkout_input_icon_alpha_disabled">125</integer>
 </resources>
