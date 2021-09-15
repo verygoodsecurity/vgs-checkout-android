@@ -53,7 +53,7 @@ internal class VGSCardNumberEditText @JvmOverloads constructor(
                 val fieldName = getString(R.styleable.VGSCardNumberEditText_fieldName)
                 val hint = getString(R.styleable.VGSCardNumberEditText_hint)
                 val textSize = getDimension(R.styleable.VGSCardNumberEditText_textSize, -1f)
-                val textColor = getColor(R.styleable.VGSCardNumberEditText_textColor, Color.BLACK)
+                val textColor = getColor(R.styleable.VGSCardNumberEditText_textColor, -1)
                 val text = getString(R.styleable.VGSCardNumberEditText_text)
                 val textStyle = getInt(R.styleable.VGSCardNumberEditText_textStyle, -1)
                 val cursorVisible =
@@ -75,7 +75,7 @@ internal class VGSCardNumberEditText @JvmOverloads constructor(
 
                 setFieldName(fieldName)
                 setHint(hint)
-                setTextColor(textColor)
+                if (textColor > 0) setTextColor(textColor)
                 setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize)
                 setCursorVisible(cursorVisible)
                 setGravity(gravity)

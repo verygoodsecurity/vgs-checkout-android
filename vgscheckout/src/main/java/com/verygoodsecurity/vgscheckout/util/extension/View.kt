@@ -8,15 +8,17 @@ import androidx.annotation.*
 import androidx.core.content.ContextCompat
 import com.google.android.material.textview.MaterialTextView
 
-internal fun ViewGroup.setEnabled(enabled: Boolean, recursively: Boolean) {
+internal fun ViewGroup.setEnabled(
+    enabled: Boolean,
+    recursively: Boolean,
+    vararg except: View = arrayOf()
+) {
     isEnabled = enabled
     if (recursively) {
         for (i in 0 until childCount) {
             val child = getChildAt(i)
-            child.isEnabled = enabled
-            if (child is ViewGroup) {
-                child.setEnabled(enabled, recursively)
-            }
+            if (!except.contains(child)) child.isEnabled = enabled
+            if (child is ViewGroup) child.setEnabled(enabled, recursively, *except)
         }
     }
 }

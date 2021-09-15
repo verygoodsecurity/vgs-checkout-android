@@ -31,7 +31,7 @@ internal class PersonNameEditText @JvmOverloads constructor(
                 val fieldName = getString(R.styleable.PersonNameEditText_fieldName)
                 val hint = getString(R.styleable.PersonNameEditText_hint)
                 val textSize = getDimension(R.styleable.PersonNameEditText_textSize, -1f)
-                val textColor = getColor(R.styleable.PersonNameEditText_textColor, Color.BLACK)
+                val textColor = getColor(R.styleable.PersonNameEditText_textColor, -1)
                 val text = getString(R.styleable.PersonNameEditText_text)
                 val textStyle = getInt(R.styleable.PersonNameEditText_textStyle, -1)
                 val cursorVisible = getBoolean(R.styleable.PersonNameEditText_cursorVisible, true)
@@ -51,7 +51,7 @@ internal class PersonNameEditText @JvmOverloads constructor(
 
                 setFieldName(fieldName)
                 setHint(hint)
-                setTextColor(textColor)
+                if (textColor > 0) setTextColor(textColor)
                 setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize)
                 setCursorVisible(cursorVisible)
                 setGravity(gravity)

@@ -33,7 +33,7 @@ internal class CardVerificationCodeEditText @JvmOverloads constructor(
                 val hint = getString(R.styleable.CardVerificationCodeEditText_hint)
                 val textSize = getDimension(R.styleable.CardVerificationCodeEditText_textSize, -1f)
                 val textColor =
-                    getColor(R.styleable.CardVerificationCodeEditText_textColor, Color.BLACK)
+                    getColor(R.styleable.CardVerificationCodeEditText_textColor, -1)
                 val text = getString(R.styleable.CardVerificationCodeEditText_text)
                 val textStyle = getInt(R.styleable.CardVerificationCodeEditText_textStyle, -1)
                 val cursorVisible =
@@ -64,7 +64,7 @@ internal class CardVerificationCodeEditText @JvmOverloads constructor(
 
                 setFieldName(fieldName)
                 setHint(hint)
-                setTextColor(textColor)
+                if (textColor > 0) setTextColor(textColor)
                 setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize)
                 setCursorVisible(cursorVisible)
                 setGravity(gravity)
