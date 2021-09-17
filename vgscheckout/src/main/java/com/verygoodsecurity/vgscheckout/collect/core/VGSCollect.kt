@@ -13,8 +13,8 @@ import com.verygoodsecurity.vgscheckout.collect.VGSCollectLogger
 import com.verygoodsecurity.vgscheckout.collect.app.BaseTransmitActivity
 import com.verygoodsecurity.vgscheckout.collect.core.api.*
 import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.AnalyticTracker
-import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.CollectActionTracker
-import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.action.*
+import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.DefaultAnalyticsTracker
+import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.*
 import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.utils.toAnalyticStatus
 import com.verygoodsecurity.vgscheckout.collect.core.api.client.ApiClient
 import com.verygoodsecurity.vgscheckout.collect.core.api.client.extension.isHttpStatusCode
@@ -87,7 +87,7 @@ internal class VGSCollect {
         this.externalDependencyDispatcher = DependencyReceiver()
         this.client = ApiClient.create()
         this.baseURL = generateBaseUrl(id, environment, url, port)
-        this.tracker = CollectActionTracker(id, environment, UUID.randomUUID().toString())
+        this.tracker = DefaultAnalyticsTracker(id, environment, UUID.randomUUID().toString())
         cname?.let { configureHostname(it, id) }
         updateAgentHeader()
         addOnResponseListeners(analyticListener)
@@ -500,7 +500,7 @@ internal class VGSCollect {
     }
 
     private fun initEvent() {
-        tracker.logEvent(InitAction(emptyMap()))
+        tracker.log(Init(emptyMap()))
     }
 
     private fun scanEvent(status: String, type: String, id: String?) {
@@ -511,7 +511,7 @@ internal class VGSCollect {
 
             this
         }
-        tracker.logEvent(ScanEvent(m))
+        tracker.log(Scan(m))
     }
 
     private fun responseEvent(code: Int, latency: Long, message: String? = null) {
@@ -524,7 +524,7 @@ internal class VGSCollect {
 
                 this
             }
-            tracker.logEvent(ResponseEvent(m))
+            tracker.log(Response(m))
         }
     }
 
@@ -606,8 +606,8 @@ internal class VGSCollect {
             this
         }
 
-        tracker.logEvent(
-            HostNameValidationEvent(m)
+        tracker.log(
+            HostnameValidation(m)
         )
     }
 

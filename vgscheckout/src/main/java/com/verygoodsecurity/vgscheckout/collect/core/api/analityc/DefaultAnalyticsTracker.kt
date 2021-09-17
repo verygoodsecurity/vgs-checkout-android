@@ -5,7 +5,7 @@ import android.util.Log
 import com.verygoodsecurity.vgscheckout.BuildConfig
 import com.verygoodsecurity.vgscheckout.collect.core.HTTPMethod
 import com.verygoodsecurity.vgscheckout.collect.core.api.VGSHttpBodyFormat
-import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.action.Event
+import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.Event
 import com.verygoodsecurity.vgscheckout.collect.core.api.client.ApiClient
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSRequest
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.toAnalyticRequest
@@ -13,7 +13,7 @@ import com.verygoodsecurity.vgscheckout.collect.util.extension.toIso8601
 import java.util.*
 import java.util.concurrent.Executors
 
-internal class CollectActionTracker(
+internal class DefaultAnalyticsTracker(
     val tnt: String,
     val environment: String,
     val formId: String
@@ -21,23 +21,19 @@ internal class CollectActionTracker(
 
     override var isEnabled: Boolean = true
 
-    internal object Sid {
-        val id = "${UUID.randomUUID()}"
-    }
-
     private val client: ApiClient by lazy {
         return@lazy ApiClient.create(false)
     }
 
-    override fun logEvent(event: Event) {
+    override fun log(event: Event) {
         if (isEnabled) {
-            val event = event.run {
+            val runnable = event.run {
                 val sender = EventRunnable(client, tnt, environment, formId)
                 sender.map = getAttributes()
                 sender
             }
 
-            Executors.newSingleThreadExecutor().submit(event)
+            Executors.newSingleThreadExecutor().submit(runnable)
         }
     }
 
