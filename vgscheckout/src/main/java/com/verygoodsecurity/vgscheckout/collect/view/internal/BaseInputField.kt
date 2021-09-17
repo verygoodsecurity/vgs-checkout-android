@@ -367,18 +367,7 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
 
     override fun autofill(value: AutofillValue?) {
         super.autofill(value)
-        logAutofillAction()
-    }
-
-    private fun logAutofillAction() {
-        val m = with(mutableMapOf<String, String>()) {
-            put("field", fieldType.getAnalyticName())
-            this
-        }
-
-        tracker?.log(
-            Autofill(m)
-        )
+        tracker?.log(Autofill(fieldType.getAnalyticName()))
     }
 
     protected fun printWarning(tag: String, resId: Int) {

@@ -3,6 +3,8 @@ package com.verygoodsecurity.vgscheckout.collect.core.api.client
 import com.verygoodsecurity.vgscheckout.collect.core.api.ApiClientStorage
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.NetworkRequest
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.NetworkResponse
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 
 internal interface ApiClient {
 
@@ -18,6 +20,9 @@ internal interface ApiClient {
 
     companion object Factory {
 
-        fun create(printLogs: Boolean = true) = OkHttpClient(printLogs)
+        fun create(
+            printLogs: Boolean = true,
+            executor: ExecutorService = Executors.newSingleThreadExecutor()
+        ) = OkHttpClient(printLogs, executor)
     }
 }

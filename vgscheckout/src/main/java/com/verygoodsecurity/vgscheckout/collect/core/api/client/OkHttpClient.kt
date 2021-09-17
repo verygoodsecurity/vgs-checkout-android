@@ -13,11 +13,15 @@ import okio.Buffer
 import java.io.IOException
 import java.io.InterruptedIOException
 import java.util.*
+import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeoutException
 
-internal class OkHttpClient(printLogs: Boolean = true) : ApiClient {
+internal class OkHttpClient(
+    printLogs: Boolean = true,
+    executor: ExecutorService = Executors.newSingleThreadExecutor()
+) : ApiClient {
 
     private val storage: ApiClientStorage = DefaultApiClientStorage()
 
@@ -26,7 +30,7 @@ internal class OkHttpClient(printLogs: Boolean = true) : ApiClient {
     private val client: OkHttpClient by lazy {
         OkHttpClient().newBuilder()
             .addInterceptor(hostInterceptor)
-            .dispatcher(Dispatcher(Executors.newSingleThreadExecutor())).also {
+            .dispatcher(Dispatcher(executor)).also {
                 if (printLogs) it.addInterceptor(HttpLoggingInterceptor())
             }
             .build()

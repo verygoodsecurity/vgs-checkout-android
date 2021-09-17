@@ -91,7 +91,7 @@ internal class VGSCollect {
         cname?.let { configureHostname(it, id) }
         updateAgentHeader()
         addOnResponseListeners(analyticListener)
-        initEvent()
+        tracker.log(Init())
     }
 
     constructor(
@@ -418,10 +418,12 @@ internal class VGSCollect {
             ) ?: VGSHashMapWrapper()
 
             when (map.get(BaseTransmitActivity.RESULT_TYPE)) {
-                BaseTransmitActivity.SCAN -> scanEvent(
-                    map.get(BaseTransmitActivity.RESULT_STATUS).toString(),
-                    map.get(BaseTransmitActivity.RESULT_NAME).toString(),
-                    map.get(BaseTransmitActivity.RESULT_ID) as? String
+                BaseTransmitActivity.SCAN -> tracker.log(
+                    Scan(
+                        map.get(BaseTransmitActivity.RESULT_STATUS).toString(),
+                        map.get(BaseTransmitActivity.RESULT_NAME).toString(),
+                        map.get(BaseTransmitActivity.RESULT_ID) as? String
+                    )
                 )
             }
         }
@@ -499,32 +501,16 @@ internal class VGSCollect {
         client = c
     }
 
-    private fun initEvent() {
-        tracker.log(Init(emptyMap()))
-    }
-
-    private fun scanEvent(status: String, type: String, id: String?) {
-        val m = with(mutableMapOf<String, String>()) {
-            put("status", status)
-            put("scannerType", type)
-            if (!id.isNullOrEmpty()) put("scanId", id.toString())
-
-            this
-        }
-        tracker.log(Scan(m))
-    }
-
     private fun responseEvent(code: Int, latency: Long, message: String? = null) {
         if (code.isHttpStatusCode()) {
-            val m = with(mutableMapOf<String, Any>()) {
-                put("statusCode", code)
-                put("latency", latency)
-                put("status", BaseTransmitActivity.Status.SUCCESS.raw)
-                if (!message.isNullOrEmpty()) put("error", message)
-
-                this
-            }
-            tracker.log(Response(m))
+            tracker.log(
+                Response(
+                    BaseTransmitActivity.Status.SUCCESS.raw,
+                    code,
+                    latency,
+                    message
+                )
+            )
         }
     }
 
@@ -589,26 +575,9 @@ internal class VGSCollect {
                         )
                     }
                 }
-
-                hostnameValidationEvent(hasCustomHostname, host)
+                tracker.log(HostnameValidation(hasCustomHostname.toAnalyticStatus(), host))
             }
         }
-    }
-
-    private fun hostnameValidationEvent(
-        isSuccess: Boolean,
-        hostname: String = ""
-    ) {
-        val m = with(mutableMapOf<String, Any>()) {
-            put("status", isSuccess.toAnalyticStatus())
-            put("hostname", hostname)
-
-            this
-        }
-
-        tracker.log(
-            HostnameValidation(m)
-        )
     }
 
     private fun updateAgentHeader(isAnalyticsEnabled: Boolean = true) {

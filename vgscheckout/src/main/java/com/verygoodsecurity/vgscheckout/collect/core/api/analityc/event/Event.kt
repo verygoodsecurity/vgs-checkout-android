@@ -1,13 +1,14 @@
 package com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event
 
-internal abstract class Event {
+internal abstract class Event constructor(type: String) {
 
-    abstract val type: String
+    protected abstract val params: Map<String, Any>
 
-    abstract fun getAttributes(): MutableMap<String, Any>
+    val payload: Map<String, Any> = mapOf(KEY_TYPE to type)
+        get() = field + params
 
     companion object {
 
-        internal const val KEY_TYPE = "type"
+        private const val KEY_TYPE = "type"
     }
 }

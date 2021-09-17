@@ -1,48 +1,51 @@
 package com.verygoodsecurity.vgscheckout.collect.core.api.analityc
 
 import android.os.Build
-import android.util.Log
 import com.verygoodsecurity.vgscheckout.BuildConfig
 import com.verygoodsecurity.vgscheckout.collect.core.HTTPMethod
 import com.verygoodsecurity.vgscheckout.collect.core.api.VGSHttpBodyFormat
 import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.Event
 import com.verygoodsecurity.vgscheckout.collect.core.api.client.ApiClient
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSRequest
-import com.verygoodsecurity.vgscheckout.collect.core.model.network.toAnalyticRequest
+import com.verygoodsecurity.vgscheckout.collect.core.model.network.toNetworkRequest
 import com.verygoodsecurity.vgscheckout.collect.util.extension.toIso8601
-import java.util.*
+import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 internal class DefaultAnalyticsTracker(
-    val tnt: String,
-    val environment: String,
-    val formId: String
+    private val vaultID: String,
+    private val environment: String,
+    private val formID: String
 ) : AnalyticTracker {
 
     override var isEnabled: Boolean = true
 
-    private val client: ApiClient by lazy {
-        return@lazy ApiClient.create(false)
-    }
+    private val client: ApiClient by lazy { ApiClient.create(false, getExecutor()) }
 
     override fun log(event: Event) {
-        if (isEnabled) {
-            val runnable = event.run {
-                val sender = EventRunnable(client, tnt, environment, formId)
-                sender.map = getAttributes()
-                sender
-            }
-
-            Executors.newSingleThreadExecutor().submit(runnable)
+        if (isEnabled.not()) {
+            return
         }
+        val evenWrapper = EventWrapper(vaultID, environment, formID)
+        evenWrapper.map = event.payload.toMutableMap()
+        client.enqueue(
+            VGSRequest.VGSRequestBuilder()
+                .setPath(PATH)
+                .setMethod(HTTPMethod.POST)
+                .setCustomData(evenWrapper.map)
+                .setFormat(VGSHttpBodyFormat.X_WWW_FORM_URLENCODED)
+                .build().toNetworkRequest(BASE_URL)
+        )
     }
 
-    private class EventRunnable(
-        private val client: ApiClient,
+    private fun getExecutor(): ExecutorService =
+        Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors())
+
+    private class EventWrapper(
         private val tnt: String,
         private val environment: String,
         private val formId: String
-    ) : Runnable {
+    ) {
 
         var map: MutableMap<String, Any> = mutableMapOf()
             set(value) {
@@ -75,18 +78,6 @@ internal class DefaultAnalyticsTracker(
             }
         }
 
-        override fun run() {
-            Log.d("Test", map.toString())
-            val r = VGSRequest.VGSRequestBuilder()
-                .setPath(ENDPOINT)
-                .setMethod(HTTPMethod.POST)
-                .setCustomData(map)
-                .setFormat(VGSHttpBodyFormat.X_WWW_FORM_URLENCODED)
-                .build()
-
-            client.enqueue(r.toAnalyticRequest(URL))
-        }
-
         companion object {
             private const val FORM_ID = "formId"
             private const val TIMESTAMP = "localTimestamp"
@@ -108,7 +99,9 @@ internal class DefaultAnalyticsTracker(
     }
 
     companion object {
-        private const val ENDPOINT = "/vgs"
-        private const val URL = "https://vgs-collect-keeper.apps.verygood.systems"
+
+
+        private const val BASE_URL = "https://vgs-collect-keeper.apps.verygood.systems"
+        private const val PATH = "/vgs"
     }
 }

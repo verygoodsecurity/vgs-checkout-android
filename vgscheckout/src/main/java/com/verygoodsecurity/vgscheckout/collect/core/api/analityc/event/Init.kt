@@ -1,16 +1,8 @@
 package com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event
 
-internal data class Init(val params: Map<String, Any>) : Event() {
+internal class Init : Event(TYPE) {
 
-    override val type: String = TYPE
-
-    override fun getAttributes(): MutableMap<String, Any> {
-        return with(mutableMapOf<String, Any>()) {
-            putAll(params)
-            put(KEY_TYPE, type)
-            this
-        }
-    }
+    override val params: Map<String, Any> = emptyMap()
 
     companion object {
 

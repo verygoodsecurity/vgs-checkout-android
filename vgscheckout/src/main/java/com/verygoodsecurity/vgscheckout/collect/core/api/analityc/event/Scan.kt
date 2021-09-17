@@ -1,19 +1,22 @@
 package com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event
 
-internal data class Scan(val params: Map<String, Any>) : Event() {
+internal data class Scan(
+    val status: String,
+    val scannerType: String,
+    val scanId: String?
+) : Event(TYPE) {
 
-    override val type: String = TYPE
-
-    override fun getAttributes(): MutableMap<String, Any> {
-        return with(mutableMapOf<String, Any>()) {
-            putAll(params)
-            put(KEY_TYPE, type)
-            this
-        }
-    }
+    override val params: Map<String, Any> = mutableMapOf(
+        KEY_STATUS to status,
+        KEY_SCANNER_TYPE to scannerType,
+    ).also { map -> scanId?.let { map[KEY_SCAN_ID] = it } }
 
     companion object {
 
         private const val TYPE = "Scan"
+
+        private const val KEY_STATUS = "status"
+        private const val KEY_SCANNER_TYPE = "scannerType"
+        private const val KEY_SCAN_ID = "scanId"
     }
 }
