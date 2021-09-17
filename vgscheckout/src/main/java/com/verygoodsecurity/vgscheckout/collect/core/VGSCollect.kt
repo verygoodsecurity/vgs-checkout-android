@@ -511,7 +511,7 @@ internal class VGSCollect {
 
             this
         }
-        tracker.logEvent(ScanAction(m))
+        tracker.logEvent(ScanEvent(m))
     }
 
     private fun responseEvent(code: Int, latency: Long, message: String? = null) {
@@ -524,7 +524,7 @@ internal class VGSCollect {
 
                 this
             }
-            tracker.logEvent(ResponseAction(m))
+            tracker.logEvent(ResponseEvent(m))
         }
     }
 
@@ -607,7 +607,7 @@ internal class VGSCollect {
         }
 
         tracker.logEvent(
-            HostNameValidationAction(m)
+            HostNameValidationEvent(m)
         )
     }
 

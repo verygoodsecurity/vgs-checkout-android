@@ -1,13 +1,13 @@
 package com.verygoodsecurity.vgscheckout.collect.core.api.analityc.action
 
-internal class ScanAction(
+internal class HostNameValidationEvent(
     val params:Map<String, Any>
-): Action {
+): Event {
 
     override fun getAttributes(): MutableMap<String, Any> {
         return with(mutableMapOf<String, Any>()) {
             putAll(params)
-            put(EVENT, SCAN)
+            put(EVENT, INIT)
 
             this
         }
@@ -15,6 +15,6 @@ internal class ScanAction(
 
     companion object {
         private const val EVENT = "type"
-        private const val SCAN = "Scan"
+        private const val INIT = "HostNameValidation"
     }
 }

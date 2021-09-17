@@ -1,13 +1,13 @@
 package com.verygoodsecurity.vgscheckout.collect.core.api.analityc.action
 
-internal class AutofillAction(
+internal class ScanEvent(
     val params:Map<String, Any>
-): Action {
+): Event {
 
     override fun getAttributes(): MutableMap<String, Any> {
         return with(mutableMapOf<String, Any>()) {
             putAll(params)
-            put(EVENT, INIT)
+            put(EVENT, SCAN)
 
             this
         }
@@ -15,6 +15,6 @@ internal class AutofillAction(
 
     companion object {
         private const val EVENT = "type"
-        private const val INIT = "Autofill"
+        private const val SCAN = "Scan"
     }
 }

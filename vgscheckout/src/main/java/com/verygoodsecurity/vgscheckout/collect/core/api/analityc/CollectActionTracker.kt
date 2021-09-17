@@ -5,7 +5,7 @@ import android.util.Log
 import com.verygoodsecurity.vgscheckout.BuildConfig
 import com.verygoodsecurity.vgscheckout.collect.core.HTTPMethod
 import com.verygoodsecurity.vgscheckout.collect.core.api.VGSHttpBodyFormat
-import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.action.Action
+import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.action.Event
 import com.verygoodsecurity.vgscheckout.collect.core.api.client.ApiClient
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSRequest
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.toAnalyticRequest
@@ -29,10 +29,10 @@ internal class CollectActionTracker(
         return@lazy ApiClient.create(false)
     }
 
-    override fun logEvent(action: Action) {
+    override fun logEvent(event: Event) {
         if (isEnabled) {
-            val event = action.run {
-                val sender = Event(client, tnt, environment, formId)
+            val event = event.run {
+                val sender = EventRunnable(client, tnt, environment, formId)
                 sender.map = getAttributes()
                 sender
             }
@@ -41,7 +41,7 @@ internal class CollectActionTracker(
         }
     }
 
-    private class Event(
+    private class EventRunnable(
         private val client: ApiClient,
         private val tnt: String,
         private val environment: String,

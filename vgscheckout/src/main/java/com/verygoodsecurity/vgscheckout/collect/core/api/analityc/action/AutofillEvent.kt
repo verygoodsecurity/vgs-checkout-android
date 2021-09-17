@@ -1,8 +1,8 @@
 package com.verygoodsecurity.vgscheckout.collect.core.api.analityc.action
 
-internal class HostNameValidationAction(
+internal class AutofillEvent(
     val params:Map<String, Any>
-): Action {
+): Event {
 
     override fun getAttributes(): MutableMap<String, Any> {
         return with(mutableMapOf<String, Any>()) {
@@ -15,6 +15,6 @@ internal class HostNameValidationAction(
 
     companion object {
         private const val EVENT = "type"
-        private const val INIT = "HostNameValidation"
+        private const val INIT = "Autofill"
     }
 }
