@@ -268,8 +268,8 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
 
     private fun updatePostalAddressView() {
         postalAddressTil.setHint(getString(getPostalAddressHint()))
+        postalAddressTil.setError(null)
         postalAddressEt.addRule(getPostalAddressValidationRule())
-        postalAddressEt.setText(null)
     }
 
     @StringRes
