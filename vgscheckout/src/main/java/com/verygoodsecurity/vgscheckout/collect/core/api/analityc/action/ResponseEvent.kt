@@ -2,7 +2,7 @@ package com.verygoodsecurity.vgscheckout.collect.core.api.analityc.action
 
 internal class ResponseEvent(
     val params:Map<String, Any>
-): Event {
+): Event() {
 
     override fun getAttributes(): MutableMap<String, Any> {
         return with(mutableMapOf<String, Any>()) {

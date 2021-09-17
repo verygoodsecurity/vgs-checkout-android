@@ -1,8 +1,8 @@
 package com.verygoodsecurity.vgscheckout.collect.core.api.analityc.action
 
 internal class HostNameValidationEvent(
-    val params:Map<String, Any>
-): Event {
+    val params: Map<String, Any>
+) : Event() {
 
     override fun getAttributes(): MutableMap<String, Any> {
         return with(mutableMapOf<String, Any>()) {
