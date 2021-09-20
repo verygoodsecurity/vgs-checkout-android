@@ -25,7 +25,13 @@ class VGSCheckoutMultiplexingConfiguration private constructor(
 
     init {
 
-        CheckoutMultiplexingCredentialsValidator.validateJWT(vaultID, token)
+        try {
+            CheckoutMultiplexingCredentialsValidator.validateJWT(vaultID, token)
+            // TODO: Log JWT validation event
+        } catch (e: IllegalArgumentException) {
+            // TODO: Log JWT validation event
+            throw e
+        }
     }
 
     /**
