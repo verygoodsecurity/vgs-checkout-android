@@ -6,7 +6,7 @@ import com.verygoodsecurity.vgscheckout.collect.util.extension.toIso8601
 
 internal abstract class Event constructor(type: String, params: Map<String, Any>) {
 
-    private val payload: MutableMap<String, Any> = mutableMapOf(
+    private val data: MutableMap<String, Any> = mutableMapOf(
         KEY_TYPE to type,
         KEY_TIMESTAMP to System.currentTimeMillis(),
         KEY_CLIENT_TIMESTAMP to System.currentTimeMillis().toIso8601(),
@@ -21,8 +21,8 @@ internal abstract class Event constructor(type: String, params: Map<String, Any>
         )
     ).also { it.putAll(params) }
 
-    fun getPayload(vaultID: String, formID: String, environment: String): Map<String, Any> {
-        return payload.apply {
+    fun getData(vaultID: String, formID: String, environment: String): Map<String, Any> {
+        return data.apply {
             put(KEY_VAULT_ID, vaultID)
             put(KEY_FORM_ID, formID)
             put(KEY_ENVIRONMENT, environment)

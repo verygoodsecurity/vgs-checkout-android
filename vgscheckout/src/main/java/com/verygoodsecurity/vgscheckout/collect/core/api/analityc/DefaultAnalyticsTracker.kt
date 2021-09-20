@@ -4,8 +4,9 @@ import com.verygoodsecurity.vgscheckout.collect.core.HTTPMethod
 import com.verygoodsecurity.vgscheckout.collect.core.api.VGSHttpBodyFormat
 import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.Event
 import com.verygoodsecurity.vgscheckout.collect.core.api.client.ApiClient
-import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSRequest
-import com.verygoodsecurity.vgscheckout.collect.core.model.network.toAnalyticRequest
+import com.verygoodsecurity.vgscheckout.collect.core.model.network.NetworkRequest
+import com.verygoodsecurity.vgscheckout.collect.util.extension.toBase64
+import com.verygoodsecurity.vgscheckout.collect.util.extension.toJSON
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -23,13 +24,18 @@ internal class DefaultAnalyticsTracker(
         if (isEnabled.not()) {
             return
         }
+        val payload = event.getData(vaultID, formID, environment).toJSON().toString().toBase64()
         client.enqueue(
-            VGSRequest.VGSRequestBuilder()
-                .setPath(PATH)
-                .setMethod(HTTPMethod.POST)
-                .setCustomData(event.getPayload(vaultID, formID, environment))
-                .setFormat(VGSHttpBodyFormat.X_WWW_FORM_URLENCODED)
-                .build().toAnalyticRequest(BASE_URL)
+            NetworkRequest(
+                method = HTTPMethod.POST,
+                url = API_URL,
+                customHeader = emptyMap(),
+                customData = payload,
+                fieldsIgnore = false,
+                fileIgnore = false,
+                format = VGSHttpBodyFormat.X_WWW_FORM_URLENCODED,
+                requestTimeoutInterval = ANALYTICS_REQUEST_TIMEOUT
+            )
         )
     }
 
@@ -39,7 +45,8 @@ internal class DefaultAnalyticsTracker(
 
     companion object {
 
-        private const val BASE_URL = "https://vgs-collect-keeper.apps.verygood.systems"
-        private const val PATH = "/vgs"
+        private const val API_URL = "https://vgs-collect-keeper.apps.verygood.systems/vgs"
+
+        private const val ANALYTICS_REQUEST_TIMEOUT = 60L
     }
 }
