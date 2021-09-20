@@ -14,7 +14,7 @@ import com.verygoodsecurity.vgscheckout.VGSCheckoutCallback
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingConfiguration
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 
-class MultiplexingActivity : AppCompatActivity(), VGSCheckoutCallback {
+class MainActivity : AppCompatActivity(), VGSCheckoutCallback {
 
     private val vaultId: String by lazy { getString(R.string.vault_id) }
 
@@ -28,7 +28,7 @@ class MultiplexingActivity : AppCompatActivity(), VGSCheckoutCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_multiplexing)
+        setContentView(R.layout.activity_main)
 
         refreshToken { code, body ->
             if (code.isSuccessHttpCode()) accessToken = parseToken(body)

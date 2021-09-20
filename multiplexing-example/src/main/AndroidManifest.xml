@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.VGSCheckoutDemo">
         <activity
-            android:name=".example.MultiplexingActivity"
+            android:name=".example.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

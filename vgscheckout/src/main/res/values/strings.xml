@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">Multiplexing example</string>
 
     <string name="vgs_checkout_sdk_name">VGS Checkout</string>
 
