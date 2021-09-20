@@ -14,7 +14,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "checkout-example/build.gradle" }}
       - run:
           name: Download Dependencies
           command: |
@@ -23,7 +23,7 @@ jobs:
       - save_cache:
           paths:
             - ~/.gradle
-          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "checkout-example/build.gradle" }}
       - run:
           name: Run Lint
           command: ./gradlew lintDebug
@@ -36,7 +36,7 @@ jobs:
       - persist_to_workspace:
           root: ~/code
           paths:
-            - app
+            - checkout-example
 
 workflows:
   main:
