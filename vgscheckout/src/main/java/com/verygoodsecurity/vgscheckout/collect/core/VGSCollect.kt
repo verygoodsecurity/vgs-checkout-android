@@ -13,7 +13,6 @@ import com.verygoodsecurity.vgscheckout.collect.VGSCollectLogger
 import com.verygoodsecurity.vgscheckout.collect.app.BaseTransmitActivity
 import com.verygoodsecurity.vgscheckout.collect.core.api.*
 import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.AnalyticTracker
-import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.DefaultAnalyticsTracker
 import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.*
 import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.utils.toAnalyticStatus
 import com.verygoodsecurity.vgscheckout.collect.core.api.client.ApiClient
@@ -92,7 +91,6 @@ internal class VGSCollect {
         cname?.let { configureHostname(it, id) }
         updateAgentHeader()
         addOnResponseListeners(analyticListener)
-        tracker?.log(Init())
     }
 
     constructor(
