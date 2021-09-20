@@ -1,4 +1,4 @@
-package com.verygoodsecurity.democheckout.util.extension
+package com.verygoodsecurity.multiplexing.example.util.extension
 
 import android.app.Activity
 import android.widget.Toast
