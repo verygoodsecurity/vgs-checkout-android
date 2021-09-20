@@ -3,14 +3,12 @@ package com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event
 import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.core.Event
 
 internal data class Response(
-    val status: String,
     val code: Int,
     val latency: Long,
     val errorMsg: String?
 ) : Event(
     TYPE,
-    mutableMapOf(
-        KEY_STATUS to status,
+    mutableMapOf<String, Any>(
         KEY_CODE to code,
         KEY_LATENCY to latency
     ).also { map -> errorMsg?.let { map[KEY_ERROR_MSG] = it } }

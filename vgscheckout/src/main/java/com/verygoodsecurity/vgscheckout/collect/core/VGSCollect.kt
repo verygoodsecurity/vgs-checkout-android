@@ -502,14 +502,7 @@ internal class VGSCollect {
 
     private fun responseEvent(code: Int, latency: Long, message: String? = null) {
         if (code.isHttpStatusCode()) {
-            tracker?.log(
-                Response(
-                    BaseTransmitActivity.Status.SUCCESS.raw,
-                    code,
-                    latency,
-                    message
-                )
-            )
+            tracker?.log(Response(code, latency, message))
         }
     }
 
