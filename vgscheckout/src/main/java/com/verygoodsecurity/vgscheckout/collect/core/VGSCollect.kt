@@ -46,7 +46,7 @@ internal class VGSCollect {
 
     private val externalDependencyDispatcher: ExternalDependencyDispatcher
 
-    private val tracker: AnalyticTracker
+    private val tracker: AnalyticTracker?
 
     private var client: ApiClient
     private val mainHandler: Handler = Handler(Looper.getMainLooper())
@@ -80,18 +80,19 @@ internal class VGSCollect {
         id: String,
         environment: String,
         url: String?,
-        port: Int?
+        port: Int?,
+        tracker: AnalyticTracker?
     ) {
         this.context = context
         this.storage = InternalStorage(context, storageErrorListener)
         this.externalDependencyDispatcher = DependencyReceiver()
         this.client = ApiClient.create()
         this.baseURL = generateBaseUrl(id, environment, url, port)
-        this.tracker = DefaultAnalyticsTracker(id, environment, UUID.randomUUID().toString())
+        this.tracker = tracker
         cname?.let { configureHostname(it, id) }
         updateAgentHeader()
         addOnResponseListeners(analyticListener)
-        tracker.log(Init())
+        tracker?.log(Init())
     }
 
     constructor(
@@ -103,7 +104,7 @@ internal class VGSCollect {
 
         /** Type of Vault */
         environment: String
-    ) : this(context, id, environment, null, null)
+    ) : this(context, id, environment, null, null, null)
 
     constructor(
         /** Activity context */
@@ -114,7 +115,7 @@ internal class VGSCollect {
 
         /** Type of Vault */
         environment: Environment = Environment.SANDBOX
-    ) : this(context, id, environment.rawValue, null, null)
+    ) : this(context, id, environment.rawValue, null, null, null)
 
     constructor(
         /** Activity context */
@@ -128,7 +129,7 @@ internal class VGSCollect {
 
         /** Region identifier */
         suffix: String
-    ) : this(context, id, environmentType concatWithDash suffix, null, null)
+    ) : this(context, id, environmentType concatWithDash suffix, null, null, null)
 
     /**
      * Adds a listener to the list of those whose methods are called whenever the VGSCollect receive response from Server.
@@ -417,8 +418,8 @@ internal class VGSCollect {
                 BaseTransmitActivity.RESULT_DATA
             ) ?: VGSHashMapWrapper()
 
-            when (map.get(BaseTransmitActivity.RESULT_TYPE)) {
-                BaseTransmitActivity.SCAN -> tracker.log(
+            if (map.get(BaseTransmitActivity.RESULT_TYPE) == BaseTransmitActivity.SCAN) {
+                tracker?.log(
                     Scan(
                         map.get(BaseTransmitActivity.RESULT_STATUS).toString(),
                         map.get(BaseTransmitActivity.RESULT_NAME).toString(),
@@ -482,7 +483,7 @@ internal class VGSCollect {
      * Warning: if this option is set to false, it will increase resolving time for possible incidents.
      */
     fun setAnalyticsEnabled(isEnabled: Boolean) {
-        tracker.isEnabled = isEnabled
+        tracker?.isEnabled = isEnabled
         updateAgentHeader(isEnabled)
     }
 
@@ -503,7 +504,7 @@ internal class VGSCollect {
 
     private fun responseEvent(code: Int, latency: Long, message: String? = null) {
         if (code.isHttpStatusCode()) {
-            tracker.log(
+            tracker?.log(
                 Response(
                     BaseTransmitActivity.Status.SUCCESS.raw,
                     code,
@@ -575,7 +576,7 @@ internal class VGSCollect {
                         )
                     }
                 }
-                tracker.log(HostnameValidation(hasCustomHostname.toAnalyticStatus(), host))
+                tracker?.log(HostnameValidation(hasCustomHostname.toAnalyticStatus(), host))
             }
         }
     }
@@ -612,6 +613,7 @@ internal class VGSCollect {
         private var environment: String = Environment.SANDBOX.rawValue
         private var host: String? = null
         private var port: Int? = null
+        private var analyticsTracker: AnalyticTracker? = null
 
         /** Specify Environment for the VGSCollect instance. */
         fun setEnvironment(env: Environment, region: String = ""): Builder = this.apply {
@@ -654,9 +656,18 @@ internal class VGSCollect {
         ) = this.apply { this.port = port }
 
         /**
+         * Sets the VGSCollect analytics tracker.
+         *
+         * @param tracker Implementation of AnalyticTracker.
+         */
+        fun setAnalyticTracker(tracker: AnalyticTracker?) = this.apply {
+            this.analyticsTracker = tracker
+        }
+
+        /**
          * Creates an VGSCollect with the arguments supplied to this
          * builder.
          */
-        fun create() = VGSCollect(context, id, environment, host, port)
+        fun create() = VGSCollect(context, id, environment, host, port, analyticsTracker)
     }
 }

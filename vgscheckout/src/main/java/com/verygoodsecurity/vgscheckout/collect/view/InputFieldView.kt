@@ -146,7 +146,7 @@ internal abstract class InputFieldView @JvmOverloads constructor(
 
         override fun getDependencyListener(): DependencyListener = notifier
 
-        override fun setAnalyticTracker(tr: AnalyticTracker) {
+        override fun setAnalyticTracker(tr: AnalyticTracker?) {
             inputField.tracker = tr
         }
 
