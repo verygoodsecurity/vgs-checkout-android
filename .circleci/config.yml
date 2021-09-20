@@ -36,7 +36,7 @@ jobs:
       - persist_to_workspace:
           root: ~/code
           paths:
-            - app
+            - checkout-example
 
 workflows:
   main:
