@@ -18,6 +18,7 @@ import com.google.android.material.textview.MaterialTextView
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.core.VGSCollect
 import com.verygoodsecurity.vgscheckout.collect.core.VgsCollectResponseListener
+import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.Cancel
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSError
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
@@ -104,6 +105,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
     override fun onBackPressed() {
         handleBackPressWithConfirmation {
             super.onBackPressed()
+            config.analyticTracker.log(Cancel)
             setResult(Activity.RESULT_CANCELED)
         }
     }
