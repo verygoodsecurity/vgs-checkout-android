@@ -18,7 +18,7 @@ internal class DefaultAnalyticsTracker(
 
     override var isEnabled: Boolean = true
 
-    private val client: ApiClient by lazy { ApiClient.create(true, getExecutor()) }
+    private val client: ApiClient by lazy { ApiClient.create(false, getExecutor()) }
 
     override fun log(event: Event) {
         if (isEnabled.not()) {
@@ -47,6 +47,6 @@ internal class DefaultAnalyticsTracker(
 
         private const val API_URL = "https://vgs-collect-keeper.apps.verygood.systems/vgs"
 
-        private const val ANALYTICS_REQUEST_TIMEOUT = 60L
+        private const val ANALYTICS_REQUEST_TIMEOUT = 60_000L
     }
 }
