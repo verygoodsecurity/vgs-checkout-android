@@ -2,7 +2,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
 }
-apply from: rootProject.file('gradle/util.gradle')
+apply from: '../gradle/util.gradle'
 
 android {
     compileSdkVersion 30
