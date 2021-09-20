@@ -31,12 +31,12 @@ internal abstract class Event constructor(type: String, params: Map<String, Any>
 
     companion object {
 
+        internal const val KEY_STATUS = "status"
         private const val KEY_TYPE = "type"
         private const val KEY_TIMESTAMP = "localTimestamp"
         private const val KEY_CLIENT_TIMESTAMP = "clientTimestamp"
         private const val KEY_SOURCE = "source"
         private const val KEY_VERSION = "version"
-        private const val KEY_STATUS = "status"
         private const val KEY_USER_AGENT = "ua"
         private const val KEY_PLATFORM = "source"
         private const val KEY_DEVICE = "device"

@@ -9,7 +9,6 @@ internal data class HostnameValidation(
 
     companion object {
 
-        private const val KEY_STATUS = "status"
         private const val KEY_HOSTNAME = "hostname"
 
         private const val TYPE = "HostNameValidation"

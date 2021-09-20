@@ -20,7 +20,6 @@ internal data class Response(
 
         private const val TYPE = "Submit"
 
-        private const val KEY_STATUS = "status"
         private const val KEY_CODE = "statusCode"
         private const val KEY_LATENCY = "latency"
         private const val KEY_ERROR_MSG = "error"

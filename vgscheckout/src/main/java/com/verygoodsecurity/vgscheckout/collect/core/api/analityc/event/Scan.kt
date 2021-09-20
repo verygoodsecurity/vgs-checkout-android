@@ -18,7 +18,6 @@ internal data class Scan(
 
         private const val TYPE = "Scan"
 
-        private const val KEY_STATUS = "status"
         private const val KEY_SCANNER_TYPE = "scannerType"
         private const val KEY_SCAN_ID = "scanId"
     }
