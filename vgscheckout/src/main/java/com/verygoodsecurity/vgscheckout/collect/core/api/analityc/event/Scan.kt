@@ -11,9 +11,7 @@ internal data class Scan(
     mutableMapOf(
         KEY_STATUS to status,
         KEY_SCANNER_TYPE to scannerType,
-    ).also { map ->
-        scanId?.let { map[KEY_SCAN_ID] = it }
-    }
+    ).also { map -> scanId?.let { map[KEY_SCAN_ID] = it } }
 ) {
 
     companion object {

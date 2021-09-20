@@ -13,9 +13,7 @@ internal data class Response(
         KEY_STATUS to status,
         KEY_CODE to code,
         KEY_LATENCY to latency
-    ).also { map ->
-        errorMsg?.let { map[KEY_ERROR_MSG] = it }
-    }
+    ).also { map -> errorMsg?.let { map[KEY_ERROR_MSG] = it } }
 ) {
 
     companion object {
