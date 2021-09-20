@@ -5,7 +5,7 @@ import com.verygoodsecurity.vgscheckout.collect.core.api.VGSHttpBodyFormat
 import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.Event
 import com.verygoodsecurity.vgscheckout.collect.core.api.client.ApiClient
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSRequest
-import com.verygoodsecurity.vgscheckout.collect.core.model.network.toNetworkRequest
+import com.verygoodsecurity.vgscheckout.collect.core.model.network.toAnalyticRequest
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -17,7 +17,7 @@ internal class DefaultAnalyticsTracker(
 
     override var isEnabled: Boolean = true
 
-    private val client: ApiClient by lazy { ApiClient.create(false, getExecutor()) }
+    private val client: ApiClient by lazy { ApiClient.create(true, getExecutor()) }
 
     override fun log(event: Event) {
         if (isEnabled.not()) {
@@ -29,7 +29,7 @@ internal class DefaultAnalyticsTracker(
                 .setMethod(HTTPMethod.POST)
                 .setCustomData(event.getPayload(vaultID, formID, environment))
                 .setFormat(VGSHttpBodyFormat.X_WWW_FORM_URLENCODED)
-                .build().toNetworkRequest(BASE_URL)
+                .build().toAnalyticRequest(BASE_URL)
         )
     }
 
