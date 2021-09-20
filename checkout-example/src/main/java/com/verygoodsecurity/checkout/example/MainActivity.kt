@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.button.MaterialButton
 import com.verygoodsecurity.checkout.R
-import com.verygoodsecurity.checkout.util.extension.showShort
+import com.verygoodsecurity.checkout.example.util.extension.showShort
 import com.verygoodsecurity.vgscheckout.VGSCheckout
 import com.verygoodsecurity.vgscheckout.VGSCheckoutCallback
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutConfiguration
@@ -25,9 +25,7 @@ import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult.*
 
 class MainActivity : AppCompatActivity(), VGSCheckoutCallback {
 
-    //todo replace hardcoded vault IDs with this one
     private val vaultId: String by lazy { getString(R.string.vault_id) }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +48,7 @@ class MainActivity : AppCompatActivity(), VGSCheckoutCallback {
 
     //region Checkout config
     private fun getCheckoutConfig() = VGSCheckoutConfiguration(
-        vaultID = "tntpszqgikn",
+        vaultID = vaultId,
         routeConfig = getCheckoutRouteConfig(),
         formConfig = getCheckoutFormConfig()
     )
