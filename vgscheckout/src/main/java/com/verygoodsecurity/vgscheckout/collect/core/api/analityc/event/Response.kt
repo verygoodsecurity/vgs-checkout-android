@@ -5,13 +5,16 @@ internal data class Response(
     val code: Int,
     val latency: Long,
     val errorMsg: String?
-) : Event(TYPE) {
-
-    override val params: Map<String, Any> = mutableMapOf(
+) : Event(
+    TYPE,
+    mutableMapOf(
         KEY_STATUS to status,
         KEY_CODE to code,
         KEY_LATENCY to latency
-    ).also { map -> errorMsg?.let { map[KEY_ERROR_MSG] = it } }
+    ).also { map ->
+        errorMsg?.let { map[KEY_ERROR_MSG] = it }
+    }
+) {
 
     companion object {
 

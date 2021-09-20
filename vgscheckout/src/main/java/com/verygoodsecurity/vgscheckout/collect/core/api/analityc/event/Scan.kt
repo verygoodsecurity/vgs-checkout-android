@@ -4,12 +4,13 @@ internal data class Scan(
     val status: String,
     val scannerType: String,
     val scanId: String?
-) : Event(TYPE) {
-
-    override val params: Map<String, Any> = mutableMapOf(
+) : Event(
+    TYPE,
+    mutableMapOf(
         KEY_STATUS to status,
         KEY_SCANNER_TYPE to scannerType,
     ).also { map -> scanId?.let { map[KEY_SCAN_ID] = it } }
+) {
 
     companion object {
 

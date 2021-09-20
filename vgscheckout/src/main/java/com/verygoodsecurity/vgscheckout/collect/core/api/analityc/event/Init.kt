@@ -1,8 +1,6 @@
 package com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event
 
-internal class Init : Event(TYPE) {
-
-    override val params: Map<String, Any> = emptyMap()
+internal class Init : Event(TYPE, emptyMap()) {
 
     companion object {
 
