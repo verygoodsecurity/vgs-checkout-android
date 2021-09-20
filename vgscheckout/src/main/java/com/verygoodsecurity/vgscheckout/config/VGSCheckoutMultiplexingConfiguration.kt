@@ -4,19 +4,29 @@ import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfiguration
 import com.verygoodsecurity.vgscheckout.config.core.DEFAULT_ENVIRONMENT
 import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutRouteConfiguration
 import com.verygoodsecurity.vgscheckout.config.networking.request.VGSCheckoutRequestOptions
-import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutMultiplexingFormConfiguration
-import com.verygoodsecurity.vgscheckout.util.extension.decodeJwtPayload
-import com.verygoodsecurity.vgscheckout.util.extension.toJson
+import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutFormConfiguration
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.VGSCheckoutCardOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.VGSCheckoutCardHolderOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.VGSCheckoutCardNumberOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.VGSCheckoutCVCOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.VGSCheckoutExpirationDateOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.model.VGSDateSeparateSerializer
 import kotlinx.parcelize.Parcelize
 
+@Suppress("MemberVisibilityCanBePrivate", "CanBeParameter")
 @Parcelize
 class VGSCheckoutMultiplexingConfiguration private constructor(
     internal val token: String,
     override val vaultID: String,
     override val environment: String,
     override val routeConfig: VGSCheckoutRouteConfiguration,
-    override val formConfig: VGSCheckoutMultiplexingFormConfiguration
+    override val formConfig: VGSCheckoutFormConfiguration
 ) : CheckoutConfiguration() {
+
+    init {
+
+        CheckoutMultiplexingCredentialsValidator.validateJWT(vaultID, token)
+    }
 
     /**
      * @throws IllegalArgumentException if token is not valid.
@@ -24,20 +34,21 @@ class VGSCheckoutMultiplexingConfiguration private constructor(
     @JvmOverloads
     @Throws(IllegalArgumentException::class)
     constructor(
-        vaultID: String,
         token: String,
+        vaultID: String,
         environment: String = DEFAULT_ENVIRONMENT
     ) : this(
-        VGSCheckoutMultiplexingCredentialsValidator.validateJWT(vaultID, token),
+        token,
         vaultID,
         environment,
-        getVGSCheckoutRouteConfiguration(token),
-        VGSCheckoutMultiplexingFormConfiguration()
+        getRouteConfiguration(token),
+        getFormConfig()
     )
 
     companion object {
-        private fun getVGSCheckoutRouteConfiguration(token: String) =
-            VGSCheckoutRouteConfiguration(
+
+        private fun getRouteConfiguration(token: String): VGSCheckoutRouteConfiguration {
+            return VGSCheckoutRouteConfiguration(
                 "/financial_instruments",
                 requestOptions = VGSCheckoutRequestOptions(
                     extraHeaders = mapOf(
@@ -46,32 +57,24 @@ class VGSCheckoutMultiplexingConfiguration private constructor(
                     )
                 )
             )
-    }
-}
+        }
 
-internal object VGSCheckoutMultiplexingCredentialsValidator {
-
-    private const val RESTRICTED_TOKEN_ROLE_SCOPE = "transfers:write"
-
-    private const val RESOURCE_ACCESS_KEY = "resource_access"
-    private const val APP_ID_KEY_PREFIX = "multiplexing-app-"
-    private const val ROLES_KEY = "roles"
-
-    @Throws(IllegalArgumentException::class)
-    fun validateJWT(vaultID: String, token: String): String {
-        val payload = token.decodeJwtPayload()?.toJson()
-            ?: throw IllegalArgumentException("Can't parse invalid JWT token.")
-
-        val roles = payload.optJSONObject(RESOURCE_ACCESS_KEY)
-            ?.optJSONObject(APP_ID_KEY_PREFIX + vaultID)
-            ?.optJSONArray(ROLES_KEY)
-            ?: throw IllegalArgumentException("JWT token doesn't contains roles.")
-
-        //todo uncomment before release or testing
-//        if (roles.contains(RESTRICTED_TOKEN_ROLE_SCOPE)) {
-//            throw IllegalArgumentException("JWT token contains restricted role [$RESTRICTED_TOKEN_ROLE_SCOPE].")
-//        }
-
-        return token
+        private fun getFormConfig(): VGSCheckoutFormConfiguration {
+            return VGSCheckoutFormConfiguration(
+                cardOptions = VGSCheckoutCardOptions(
+                    VGSCheckoutCardNumberOptions("card.number"),
+                    VGSCheckoutCardHolderOptions("card.name"),
+                    VGSCheckoutCVCOptions("card.cvc"),
+                    VGSCheckoutExpirationDateOptions(
+                        "card.expDate",
+                        VGSDateSeparateSerializer(
+                            "card.exp_month",
+                            "card.exp_year"
+                        ),
+                        outputFormatRegex = "MM/YYYY"
+                    )
+                )
+            )
+        }
     }
 }

@@ -50,8 +50,8 @@ class MultiplexingActivity : AppCompatActivity(), VGSCheckoutCallback {
     }
 
     private fun getCheckoutConfig() = VGSCheckoutMultiplexingConfiguration(
-        vaultID = vaultId,
         token = accessToken,
+        vaultID = vaultId
     )
 
     override fun onCheckoutResult(result: VGSCheckoutResult) {
