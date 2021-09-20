@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgscheckout.collect.core.api.analityc
 
-import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.Event
+import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.core.Event
 
 internal interface AnalyticTracker {
     var isEnabled: Boolean

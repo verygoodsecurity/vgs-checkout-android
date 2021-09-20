@@ -2,7 +2,7 @@ package com.verygoodsecurity.vgscheckout.collect.core.api.analityc
 
 import com.verygoodsecurity.vgscheckout.collect.core.HTTPMethod
 import com.verygoodsecurity.vgscheckout.collect.core.api.VGSHttpBodyFormat
-import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.Event
+import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.core.Event
 import com.verygoodsecurity.vgscheckout.collect.core.api.client.ApiClient
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.NetworkRequest
 import com.verygoodsecurity.vgscheckout.collect.util.extension.toBase64

@@ -1,5 +1,7 @@
 package com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event
 
+import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.core.Event
+
 internal data class HostnameValidation(
     val status: String,
     val hostname: String

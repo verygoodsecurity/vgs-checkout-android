@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event
+package com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.core
 
 import android.os.Build
 import com.verygoodsecurity.vgscheckout.BuildConfig
