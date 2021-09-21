@@ -1,5 +1,7 @@
 package com.verygoodsecurity.vgscheckout.config
 
+import android.os.Parcel
+import android.os.Parcelable
 import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.JWTValidation
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfiguration
 import com.verygoodsecurity.vgscheckout.config.core.DEFAULT_ENVIRONMENT
@@ -12,28 +14,30 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.VGSChecko
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.VGSCheckoutCVCOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.VGSCheckoutExpirationDateOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.model.VGSDateSeparateSerializer
-import kotlinx.parcelize.Parcelize
 
 @Suppress("MemberVisibilityCanBePrivate", "CanBeParameter")
-@Parcelize
 class VGSCheckoutMultiplexingConfiguration private constructor(
     internal val token: String,
     override val vaultID: String,
     override val environment: String,
     override val routeConfig: VGSCheckoutRouteConfiguration,
-    override val formConfig: VGSCheckoutFormConfiguration
+    override val formConfig: VGSCheckoutFormConfiguration,
+    private val createdFromParcel: Boolean
 ) : CheckoutConfiguration() {
 
     init {
 
-        try {
-            CheckoutMultiplexingCredentialsValidator.validateJWT(vaultID, token)
-            analyticTracker.log(JWTValidation(true))
-        } catch (e: IllegalArgumentException) {
-            analyticTracker.log(JWTValidation(false))
-            throw e
-        }
+        if (!createdFromParcel) validateToken()
     }
+
+    constructor(parcel: Parcel) : this(
+        parcel.readString()!!,
+        parcel.readString()!!,
+        parcel.readString()!!,
+        parcel.readParcelable(VGSCheckoutRouteConfiguration::class.java.classLoader)!!,
+        parcel.readParcelable(VGSCheckoutFormConfiguration::class.java.classLoader)!!,
+        true
+    )
 
     /**
      * @throws IllegalArgumentException if token is not valid.
@@ -49,10 +53,43 @@ class VGSCheckoutMultiplexingConfiguration private constructor(
         vaultID,
         environment,
         getRouteConfiguration(token),
-        getFormConfig()
+        getFormConfig(),
+        false
     )
 
-    companion object {
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(token)
+        parcel.writeString(vaultID)
+        parcel.writeString(environment)
+        parcel.writeParcelable(routeConfig, flags)
+        parcel.writeParcelable(formConfig, flags)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+
+    @Throws(IllegalArgumentException::class)
+    private fun validateToken() {
+        try {
+            CheckoutMultiplexingCredentialsValidator.validateJWT(vaultID, token)
+            analyticTracker.log(JWTValidation(true))
+        } catch (e: IllegalArgumentException) {
+            analyticTracker.log(JWTValidation(false))
+            throw e
+        }
+    }
+
+    companion object CREATOR : Parcelable.Creator<VGSCheckoutMultiplexingConfiguration> {
+
+        override fun createFromParcel(parcel: Parcel): VGSCheckoutMultiplexingConfiguration {
+            return VGSCheckoutMultiplexingConfiguration(parcel)
+        }
+
+        override fun newArray(size: Int): Array<VGSCheckoutMultiplexingConfiguration?> {
+            return arrayOfNulls(size)
+        }
 
         private fun getRouteConfiguration(token: String): VGSCheckoutRouteConfiguration {
             return VGSCheckoutRouteConfiguration(
