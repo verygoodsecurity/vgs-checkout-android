@@ -48,7 +48,7 @@ class TransactionDialogFragment : DialogFragment() {
                         }
                         retryBtn.setOnClickListener {
                             transactionDialog.dismiss()
-                            (activity as MultiplexingActivity).tryAgainCheckout()
+                            (activity as MainActivity).tryAgainCheckout()
                         }
                     }
                 }
