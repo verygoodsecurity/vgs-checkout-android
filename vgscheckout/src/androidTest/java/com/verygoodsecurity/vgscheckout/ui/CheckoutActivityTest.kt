@@ -355,7 +355,6 @@ class CheckoutActivityTest {
     }
 
     companion object {
-
         private const val VAULT_ID = "tnt1a2b3c4y"
 
         private const val CHECKOUT_RESULT_CONTRACT_NAME =
