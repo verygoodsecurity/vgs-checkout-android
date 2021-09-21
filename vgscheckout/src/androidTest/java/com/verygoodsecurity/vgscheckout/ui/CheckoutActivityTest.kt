@@ -36,7 +36,7 @@ class CheckoutActivityTest {
 
     private val defaultIntent = Intent(context, CheckoutActivity::class.java).apply {
         putExtra(
-            "com.verygoodsecurity.vgscheckout.model.extra_checkout_args",
+            CHECKOUT_RESULT_CONTRACT_NAME,
             CheckoutResultContract.Args(VGSCheckoutConfiguration(VAULT_ID))
         )
     }
@@ -54,7 +54,7 @@ class CheckoutActivityTest {
         // Arrange
         val intent = Intent(context, CheckoutActivity::class.java).apply {
             putExtra(
-                "com.verygoodsecurity.vgscheckout.model.extra_checkout_args",
+                CHECKOUT_RESULT_CONTRACT_NAME,
                 CheckoutResultContract.Args(
                     VGSCheckoutConfiguration(
                         vaultID = VAULT_ID,
@@ -237,7 +237,7 @@ class CheckoutActivityTest {
         // Arrange
         val intent = Intent(context, CheckoutActivity::class.java).apply {
             putExtra(
-                "com.verygoodsecurity.vgscheckout.model.extra_checkout_args",
+                CHECKOUT_RESULT_CONTRACT_NAME,
                 CheckoutResultContract.Args(
                     VGSCheckoutConfiguration(
                         vaultID = VAULT_ID,
@@ -357,6 +357,9 @@ class CheckoutActivityTest {
     companion object {
 
         private const val VAULT_ID = "tnt1a2b3c4y"
+
+        private const val CHECKOUT_RESULT_CONTRACT_NAME =
+            "com.verygoodsecurity.vgscheckout.model.extra_checkout_args"
 
         // Fields data
         private const val VALID_CARD_HOLDER = "John Doe"
