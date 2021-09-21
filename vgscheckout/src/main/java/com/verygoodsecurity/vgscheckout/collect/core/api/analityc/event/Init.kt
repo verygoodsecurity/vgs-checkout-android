@@ -2,9 +2,9 @@ package com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event
 
 import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.core.Event
 
-internal data class Init constructor(
-    val type: ConfigType
-): Event(TYPE, mapOf(KEY_CONFIG_TYPE to type.name.lowercase())) {
+internal data class Init constructor(val type: ConfigType) : Event(TYPE) {
+
+    override val attributes: Map<String, Any> = mapOf(KEY_CONFIG_TYPE to type.name.lowercase())
 
     companion object {
 

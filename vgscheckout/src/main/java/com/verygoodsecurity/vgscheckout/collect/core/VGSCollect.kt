@@ -14,7 +14,6 @@ import com.verygoodsecurity.vgscheckout.collect.app.BaseTransmitActivity
 import com.verygoodsecurity.vgscheckout.collect.core.api.*
 import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.AnalyticTracker
 import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.*
-import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.utils.toAnalyticStatus
 import com.verygoodsecurity.vgscheckout.collect.core.api.client.ApiClient
 import com.verygoodsecurity.vgscheckout.collect.core.api.client.extension.isHttpStatusCode
 import com.verygoodsecurity.vgscheckout.collect.core.model.VGSCollectFieldNameMappingPolicy.*
@@ -508,6 +507,8 @@ internal class VGSCollect {
 
     private var hasCustomHostname = false
 
+    fun hasCustomHostname() = hasCustomHostname
+
     private fun generateBaseUrl(id: String, environment: String, url: String?, port: Int?): String {
 
         fun printPortDenied() {
@@ -567,7 +568,7 @@ internal class VGSCollect {
                         )
                     }
                 }
-                tracker?.log(HostnameValidation(hasCustomHostname.toAnalyticStatus(), host))
+                tracker?.log(HostnameValidation(hasCustomHostname, host))
             }
         }
     }

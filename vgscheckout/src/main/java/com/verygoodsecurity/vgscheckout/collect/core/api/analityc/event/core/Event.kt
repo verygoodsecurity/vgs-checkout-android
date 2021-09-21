@@ -4,7 +4,9 @@ import android.os.Build
 import com.verygoodsecurity.vgscheckout.BuildConfig
 import com.verygoodsecurity.vgscheckout.collect.util.extension.toIso8601
 
-internal abstract class Event constructor(type: String, params: Map<String, Any>) {
+internal abstract class Event constructor(type: String) {
+
+    protected abstract val attributes: Map<String, Any>
 
     private val data: MutableMap<String, Any> = mutableMapOf(
         KEY_TYPE to type,
@@ -12,14 +14,15 @@ internal abstract class Event constructor(type: String, params: Map<String, Any>
         KEY_CLIENT_TIMESTAMP to System.currentTimeMillis().toIso8601(),
         KEY_SOURCE to SOURCE,
         KEY_VERSION to BuildConfig.VERSION_NAME,
-        KEY_STATUS to DEFAULT_STATUS,
+        KEY_STATUS to STATUS_OK,
         KEY_USER_AGENT to mapOf<String, Any>(
             KEY_PLATFORM to PLATFORM,
             KEY_DEVICE to Build.BRAND,
             KEY_DEVICE_MODEL to Build.MODEL,
             KEY_OS to Build.VERSION.SDK_INT.toString()
         )
-    ).also { it.putAll(params) }
+    )
+        get() = field + attributes
 
     fun getData(vaultID: String, formID: String, environment: String): Map<String, Any> {
         return data.apply {
@@ -28,6 +31,9 @@ internal abstract class Event constructor(type: String, params: Map<String, Any>
             put(KEY_ENVIRONMENT, environment)
         }
     }
+
+    private operator fun <K, V> Map<out K, V>.plus(map: Map<out K, V>): MutableMap<K, V> =
+        LinkedHashMap(this).apply { putAll(map) }
 
     companion object {
 
@@ -48,6 +54,7 @@ internal abstract class Event constructor(type: String, params: Map<String, Any>
 
         private const val SOURCE = "checkout-android"
         private const val PLATFORM = "android"
-        private const val DEFAULT_STATUS = "Ok"
+        internal const val STATUS_OK = "Ok"
+        internal const val STATUS_FAILED = "Failed"
     }
 }

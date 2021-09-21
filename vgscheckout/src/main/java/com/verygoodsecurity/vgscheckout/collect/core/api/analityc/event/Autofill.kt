@@ -2,9 +2,9 @@ package com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event
 
 import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.core.Event
 
-internal data class Autofill(
-    val fieldAnalyticsName: String
-) : Event(TYPE, mapOf(KEY_FIELD to fieldAnalyticsName)) {
+internal data class Autofill(val fieldAnalyticsName: String) : Event(TYPE) {
+
+    override val attributes: Map<String, Any> = mapOf(KEY_FIELD to fieldAnalyticsName)
 
     companion object {
 

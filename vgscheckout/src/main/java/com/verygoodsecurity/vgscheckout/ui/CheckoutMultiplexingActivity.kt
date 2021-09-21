@@ -33,6 +33,8 @@ internal class CheckoutMultiplexingActivity :
         }
     }
 
+    override fun hasCustomHeaders() = false
+
     override fun initView(savedInstanceState: Bundle?) {
         super.initView(savedInstanceState)
         config.analyticTracker.log(Init(Init.ConfigType.MULTIPLEXING))

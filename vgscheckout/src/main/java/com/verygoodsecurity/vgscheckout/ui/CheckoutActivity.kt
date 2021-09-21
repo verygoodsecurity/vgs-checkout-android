@@ -31,6 +31,8 @@ internal class CheckoutActivity : BaseCheckoutActivity<VGSCheckoutConfiguration>
         }
     }
 
+    override fun hasCustomHeaders() = config.routeConfig.requestOptions.extraHeaders.isNotEmpty()
+
     override fun initView(savedInstanceState: Bundle?) {
         super.initView(savedInstanceState)
         config.analyticTracker.log(Init(Init.ConfigType.CUSTOM))

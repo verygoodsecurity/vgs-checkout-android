@@ -6,13 +6,13 @@ internal data class Scan(
     val status: String,
     val scannerType: String,
     val scanId: String?
-) : Event(
-    TYPE,
-    mutableMapOf(
-        KEY_STATUS to status,
-        KEY_SCANNER_TYPE to scannerType,
-    ).also { map -> scanId?.let { map[KEY_SCAN_ID] = it } }
-) {
+) : Event(TYPE) {
+
+    override val attributes: Map<String, Any> = LinkedHashMap<String, Any>().apply {
+        put(KEY_STATUS, status)
+        put(KEY_SCANNER_TYPE, scannerType)
+        scanId?.let { put(KEY_SCAN_ID, scanId) }
+    }
 
     companion object {
 
