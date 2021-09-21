@@ -1,5 +1,6 @@
 package com.verygoodsecurity.vgscheckout.config
 
+import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.JWTValidation
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfiguration
 import com.verygoodsecurity.vgscheckout.config.core.DEFAULT_ENVIRONMENT
 import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutRouteConfiguration
@@ -27,9 +28,9 @@ class VGSCheckoutMultiplexingConfiguration private constructor(
 
         try {
             CheckoutMultiplexingCredentialsValidator.validateJWT(vaultID, token)
-            // TODO: Log JWT validation event
+            analyticTracker.log(JWTValidation(true))
         } catch (e: IllegalArgumentException) {
-            // TODO: Log JWT validation event
+            analyticTracker.log(JWTValidation(false))
             throw e
         }
     }
