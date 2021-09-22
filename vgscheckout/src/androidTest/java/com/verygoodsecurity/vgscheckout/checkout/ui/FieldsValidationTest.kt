@@ -12,12 +12,6 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.widget.*
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutConfiguration
-import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutFormConfiguration
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillingAddressOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillingAddressVisibility
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.VGSCheckoutCardOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.VGSCheckoutCardHolderOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.core.VGSCheckoutFieldVisibility
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.ui.CheckoutActivity
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -25,7 +19,6 @@ import com.verygoodsecurity.vgscheckout.util.ActionHelper
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers.withError
 import com.verygoodsecurity.vgscheckout.util.ViewInteraction.onViewWithScrollTo
-import org.hamcrest.CoreMatchers
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -40,33 +33,6 @@ class FieldsValidationTest {
             CHECKOUT_RESULT_CONTRACT_NAME,
             CheckoutResultContract.Args(VGSCheckoutConfiguration(VAULT_ID))
         )
-    }
-
-    @Test
-    fun performCheckout_hidePersonName() {
-        // Arrange
-        val intent = Intent(context, CheckoutActivity::class.java).apply {
-            putExtra(
-                CHECKOUT_RESULT_CONTRACT_NAME,
-                CheckoutResultContract.Args(
-                    VGSCheckoutConfiguration(
-                        vaultID = VAULT_ID,
-                        formConfig = VGSCheckoutFormConfiguration(
-                            cardOptions = VGSCheckoutCardOptions(
-                                cardHolderOptions = VGSCheckoutCardHolderOptions(
-                                    visibility = VGSCheckoutFieldVisibility.HIDDEN
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-        }
-        launch<CheckoutActivity>(intent).use {
-            //Assert
-            Espresso.onView(ViewMatchers.withId(R.id.vgsTilCardHolder))
-                .check(matches(CoreMatchers.not(ViewMatchers.isDisplayed())))
-        }
     }
 
     @Test
@@ -173,33 +139,6 @@ class FieldsValidationTest {
                     )
                 )
             )
-        }
-    }
-
-    @Test
-    fun performCheckout_hideAddress() {
-        // Arrange
-        val intent = Intent(context, CheckoutActivity::class.java).apply {
-            putExtra(
-                CHECKOUT_RESULT_CONTRACT_NAME,
-                CheckoutResultContract.Args(
-                    VGSCheckoutConfiguration(
-                        vaultID = VAULT_ID,
-                        formConfig = VGSCheckoutFormConfiguration(
-                            addressOptions =
-                            VGSCheckoutBillingAddressOptions(
-                                visibility =
-                                VGSCheckoutBillingAddressVisibility.HIDDEN
-                            )
-                        )
-                    )
-                )
-            )
-        }
-        launch<CheckoutActivity>(intent).use {
-            //Assert
-            Espresso.onView(ViewMatchers.withId(R.id.llBillingAddress))
-                .check(matches(CoreMatchers.not(ViewMatchers.isDisplayed())))
         }
     }
 
