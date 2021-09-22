@@ -90,13 +90,27 @@ class VGSCheckoutMultiplexingConfiguration private constructor(
             return arrayOfNulls(size)
         }
 
+        private const val PATH = "/financial_instruments"
+        private const val CONTENT_TYPE_HEADER_NAME = "Content-Type"
+        private const val CONTENT_TYPE = "application/json"
+        private const val AUTHORIZATION_HEADER_NAME = "Authorization"
+        private const val BEARER_TOKEN_TYPE = "Bearer"
+
+        private const val CARD_NUMBER_FIELD_NAME = "card.number"
+        private const val CARD_HOLDER_FIELD_NAME = "card.name"
+        private const val CVC_FIELD_NAME = "card.cvc"
+        private const val EXPIRY_DATE_FIELD_NAME = "card.expDate"
+        private const val MONTH_FIELD_NAME = "card.exp_month"
+        private const val YEAR_FIELD_NAME = "card.exp_year"
+        private const val EXPIRY_DATE_OUTPUT_FORMAT = "MM/YYYY"
+
         private fun getRouteConfiguration(token: String): VGSCheckoutRouteConfiguration {
             return VGSCheckoutRouteConfiguration(
-                "/financial_instruments",
+                PATH,
                 requestOptions = VGSCheckoutRequestOptions(
                     extraHeaders = mapOf(
-                        "Content-Type" to "application/json",
-                        "Authorization" to "Bearer $token"
+                        CONTENT_TYPE_HEADER_NAME to CONTENT_TYPE,
+                        AUTHORIZATION_HEADER_NAME to "$BEARER_TOKEN_TYPE $token"
                     )
                 )
             )
@@ -105,16 +119,16 @@ class VGSCheckoutMultiplexingConfiguration private constructor(
         private fun getFormConfig(): VGSCheckoutFormConfiguration {
             return VGSCheckoutFormConfiguration(
                 cardOptions = VGSCheckoutCardOptions(
-                    VGSCheckoutCardNumberOptions("card.number"),
-                    VGSCheckoutCardHolderOptions("card.name"),
-                    VGSCheckoutCVCOptions("card.cvc"),
+                    VGSCheckoutCardNumberOptions(CARD_NUMBER_FIELD_NAME),
+                    VGSCheckoutCardHolderOptions(CARD_HOLDER_FIELD_NAME),
+                    VGSCheckoutCVCOptions(CVC_FIELD_NAME),
                     VGSCheckoutExpirationDateOptions(
-                        "card.expDate",
+                        EXPIRY_DATE_FIELD_NAME,
                         VGSDateSeparateSerializer(
-                            "card.exp_month",
-                            "card.exp_year"
+                            MONTH_FIELD_NAME,
+                            YEAR_FIELD_NAME
                         ),
-                        outputFormatRegex = "MM/YYYY"
+                        outputFormatRegex = EXPIRY_DATE_OUTPUT_FORMAT
                     )
                 )
             )
