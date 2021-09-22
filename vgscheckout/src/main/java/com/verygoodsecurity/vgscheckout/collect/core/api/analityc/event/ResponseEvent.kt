@@ -2,7 +2,7 @@ package com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event
 
 import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.core.Event
 
-internal data class Response(
+internal data class ResponseEvent(
     val code: Int,
     val latency: Long,
     val errorMsg: String?

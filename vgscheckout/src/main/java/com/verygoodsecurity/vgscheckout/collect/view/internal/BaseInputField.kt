@@ -16,7 +16,7 @@ import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.VGSCollectLogger
 import com.verygoodsecurity.vgscheckout.collect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.AnalyticTracker
-import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.Autofill
+import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.AutofillEvent
 import com.verygoodsecurity.vgscheckout.collect.core.model.state.*
 import com.verygoodsecurity.vgscheckout.collect.core.storage.DependencyListener
 import com.verygoodsecurity.vgscheckout.collect.core.storage.DependencyType
@@ -367,7 +367,7 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
 
     override fun autofill(value: AutofillValue?) {
         super.autofill(value)
-        tracker?.log(Autofill(fieldType.getAnalyticName()))
+        tracker?.log(AutofillEvent(fieldType.getAnalyticName()))
     }
 
     protected fun printWarning(tag: String, resId: Int) {

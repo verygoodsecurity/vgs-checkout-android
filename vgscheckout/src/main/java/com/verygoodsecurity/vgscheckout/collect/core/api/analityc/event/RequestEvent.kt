@@ -3,7 +3,7 @@ package com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event
 import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.core.Event
 import com.verygoodsecurity.vgscheckout.config.networking.request.core.VGSCheckoutDataMergePolicy
 
-internal data class Request(
+internal data class RequestEvent(
     val isSuccessFull: Boolean,
     val hasCustomHostname: Boolean,
     val hasCustomData: Boolean,

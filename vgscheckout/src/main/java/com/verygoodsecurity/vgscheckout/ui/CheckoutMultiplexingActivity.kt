@@ -2,7 +2,7 @@ package com.verygoodsecurity.vgscheckout.ui
 
 import android.content.Intent
 import android.os.Bundle
-import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.Init
+import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.InitEvent
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSRequest
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingConfiguration
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
@@ -37,6 +37,6 @@ internal class CheckoutMultiplexingActivity :
 
     override fun initView(savedInstanceState: Bundle?) {
         super.initView(savedInstanceState)
-        config.analyticTracker.log(Init(Init.ConfigType.MULTIPLEXING))
+        config.analyticTracker.log(InitEvent(InitEvent.ConfigType.MULTIPLEXING))
     }
 }

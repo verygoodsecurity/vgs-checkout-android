@@ -4,7 +4,7 @@ import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.core.Eve
 
 private const val TYPE = "Cancel"
 
-internal object Cancel : Event(TYPE) {
+internal object CancelEvent : Event(TYPE) {
 
     override val attributes: Map<String, Any> = emptyMap()
 }

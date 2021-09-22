@@ -417,7 +417,7 @@ internal class VGSCollect {
 
             if (map.get(BaseTransmitActivity.RESULT_TYPE) == BaseTransmitActivity.SCAN) {
                 tracker?.log(
-                    Scan(
+                    ScanEvent(
                         map.get(BaseTransmitActivity.RESULT_STATUS).toString(),
                         map.get(BaseTransmitActivity.RESULT_NAME).toString(),
                         map.get(BaseTransmitActivity.RESULT_ID) as? String
@@ -501,7 +501,7 @@ internal class VGSCollect {
 
     private fun responseEvent(code: Int, latency: Long, message: String? = null) {
         if (code.isHttpStatusCode()) {
-            tracker?.log(Response(code, latency, message))
+            tracker?.log(ResponseEvent(code, latency, message))
         }
     }
 
@@ -568,7 +568,7 @@ internal class VGSCollect {
                         )
                     }
                 }
-                tracker?.log(HostnameValidation(hasCustomHostname, host))
+                tracker?.log(HostnameValidationEvent(hasCustomHostname, host))
             }
         }
     }

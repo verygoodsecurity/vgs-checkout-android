@@ -18,8 +18,8 @@ import com.google.android.material.textview.MaterialTextView
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.core.VGSCollect
 import com.verygoodsecurity.vgscheckout.collect.core.VgsCollectResponseListener
-import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.Cancel
-import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.Request
+import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.CancelEvent
+import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.RequestEvent
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSError
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
@@ -110,7 +110,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
     override fun onBackPressed() {
         handleBackPressWithConfirmation {
             super.onBackPressed()
-            config.analyticTracker.log(Cancel)
+            config.analyticTracker.log(CancelEvent)
             setResult(Activity.RESULT_CANCELED)
         }
     }
@@ -487,7 +487,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
     private fun sendRequestEvent(isSuccessful: Boolean, invalidFields: List<String>) {
         with(config) {
             analyticTracker.log(
-                Request(
+                RequestEvent(
                     isSuccessful,
                     collect.hasCustomHostname(),
                     routeConfig.requestOptions.extraData.isNotEmpty(),

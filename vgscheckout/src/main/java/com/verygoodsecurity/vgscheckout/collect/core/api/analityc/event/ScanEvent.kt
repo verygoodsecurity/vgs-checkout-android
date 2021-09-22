@@ -2,7 +2,7 @@ package com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event
 
 import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.core.Event
 
-internal data class Scan(
+internal data class ScanEvent(
     val status: String,
     val scannerType: String,
     val scanId: String?

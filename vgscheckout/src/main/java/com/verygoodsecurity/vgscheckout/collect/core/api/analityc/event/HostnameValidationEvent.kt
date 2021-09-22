@@ -2,7 +2,7 @@ package com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event
 
 import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.core.Event
 
-internal data class HostnameValidation(
+internal data class HostnameValidationEvent(
     val isSuccessful: Boolean,
     val hostname: String
 ) : Event(TYPE) {

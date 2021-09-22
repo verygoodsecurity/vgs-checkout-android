@@ -2,7 +2,7 @@ package com.verygoodsecurity.vgscheckout.config
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.JWTValidation
+import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.JWTValidationEvent
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfiguration
 import com.verygoodsecurity.vgscheckout.config.core.DEFAULT_ENVIRONMENT
 import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutRouteConfiguration
@@ -74,9 +74,9 @@ class VGSCheckoutMultiplexingConfiguration private constructor(
     private fun validateToken() {
         try {
             CheckoutMultiplexingCredentialsValidator.validateJWT(vaultID, token)
-            analyticTracker.log(JWTValidation(true))
+            analyticTracker.log(JWTValidationEvent(true))
         } catch (e: IllegalArgumentException) {
-            analyticTracker.log(JWTValidation(false))
+            analyticTracker.log(JWTValidationEvent(false))
             throw e
         }
     }

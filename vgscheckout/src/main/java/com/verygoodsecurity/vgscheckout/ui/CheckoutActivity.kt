@@ -2,7 +2,7 @@ package com.verygoodsecurity.vgscheckout.ui
 
 import android.content.Intent
 import android.os.Bundle
-import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.Init
+import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.InitEvent
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSRequest
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutConfiguration
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
@@ -35,6 +35,6 @@ internal class CheckoutActivity : BaseCheckoutActivity<VGSCheckoutConfiguration>
 
     override fun initView(savedInstanceState: Bundle?) {
         super.initView(savedInstanceState)
-        config.analyticTracker.log(Init(Init.ConfigType.CUSTOM))
+        config.analyticTracker.log(InitEvent(InitEvent.ConfigType.CUSTOM))
     }
 }
