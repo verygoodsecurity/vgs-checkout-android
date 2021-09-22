@@ -6,7 +6,6 @@ import androidx.test.core.app.ActivityScenario.launch
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.matcher.RootMatchers
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.verygoodsecurity.vgscheckout.R
@@ -15,8 +14,20 @@ import com.verygoodsecurity.vgscheckout.config.VGSCheckoutConfiguration
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.ui.CheckoutActivity
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import com.verygoodsecurity.vgscheckout.Constants.CHECKOUT_RESULT_CONTRACT_NAME
+import com.verygoodsecurity.vgscheckout.Constants.INVALID_CARD_NUMBER
+import com.verygoodsecurity.vgscheckout.Constants.INVALID_EXP_DATE
+import com.verygoodsecurity.vgscheckout.Constants.INVALID_POSTAL_ADDRESS
+import com.verygoodsecurity.vgscheckout.Constants.INVALID_SECURITY_CODE
+import com.verygoodsecurity.vgscheckout.Constants.VALID_ADDRESS
+import com.verygoodsecurity.vgscheckout.Constants.VALID_CARD_HOLDER
+import com.verygoodsecurity.vgscheckout.Constants.VALID_CARD_NUMBER
+import com.verygoodsecurity.vgscheckout.Constants.VALID_CITY
+import com.verygoodsecurity.vgscheckout.Constants.VALID_EXP_DATE
+import com.verygoodsecurity.vgscheckout.Constants.VALID_POSTAL_ADDRESS
+import com.verygoodsecurity.vgscheckout.Constants.VALID_SECURITY_CODE
+import com.verygoodsecurity.vgscheckout.Constants.VAULT_ID
 import com.verygoodsecurity.vgscheckout.util.ActionHelper
-import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers.withError
 import com.verygoodsecurity.vgscheckout.util.ViewInteraction.onViewWithScrollTo
 import org.junit.Test
@@ -143,43 +154,6 @@ class FieldsValidationTest {
     }
 
     @Test
-    fun countrySelect_dialogShowed() {
-        launch<CheckoutActivity>(defaultIntent).use {
-            // Act
-            onViewWithScrollTo(R.id.vgsTilCountry).perform(click())
-            //Assert
-            Espresso.onView(ViewMatchers.isRoot())
-                .inRoot(RootMatchers.isDialog()).check(matches(ViewMatchers.isDisplayed()))
-        }
-    }
-
-    @Test
-    fun countrySelect_selectCanada_countryChanged() {
-        launch<CheckoutActivity>(defaultIntent).use {
-            // Act
-            onViewWithScrollTo(R.id.vgsTilCountry).perform(click())
-            Espresso.onView(ViewMatchers.withText("Canada")).perform(click())
-            Espresso.onView(ViewMatchers.withText("Ok")).perform(click())
-            //Assert
-            Espresso.onView(ViewMatchers.withId(R.id.vgsEtCountry))
-                .check(matches(VGSViewMatchers.withText("Canada")))
-        }
-    }
-
-    @Test
-    fun countrySelect_selectCanada_postalAddressHintChanged() {
-        launch<CheckoutActivity>(defaultIntent).use {
-            // Act
-            onViewWithScrollTo(R.id.vgsTilCountry).perform(click())
-            Espresso.onView(ViewMatchers.withText("Canada")).perform(click())
-            Espresso.onView(ViewMatchers.withText("Ok")).perform(click())
-            //Assert
-            onViewWithScrollTo(R.id.vgsTilPostalAddress)
-                .check(matches(VGSViewMatchers.withHint("Postal Code")))
-        }
-    }
-
-    @Test
     fun countrySelect_selectCanada_postalAddressErrorChanged() {
         launch<CheckoutActivity>(defaultIntent).use {
             // Act
@@ -278,26 +252,4 @@ class FieldsValidationTest {
                 it.setText(postalAddress)
             })
     }
-
-    companion object {
-        private const val VAULT_ID = "tnt1a2b3c4y"
-
-        private const val CHECKOUT_RESULT_CONTRACT_NAME =
-            "com.verygoodsecurity.vgscheckout.model.extra_checkout_args"
-
-        // Fields data
-        private const val VALID_CARD_HOLDER = "John Doe"
-        private const val VALID_CARD_NUMBER = "4111111111111111"
-        private const val INVALID_CARD_NUMBER = "0000000000000000"
-        private const val VALID_EXP_DATE = "10/22"
-        private const val INVALID_EXP_DATE = "10/2"
-        private const val VALID_SECURITY_CODE = "111"
-        private const val INVALID_SECURITY_CODE = "11"
-
-        private const val VALID_ADDRESS = "Somewhere st."
-        private const val VALID_CITY = "New York"
-        private const val VALID_POSTAL_ADDRESS = "12345"
-        private const val INVALID_POSTAL_ADDRESS = "1234"
-    }
-
 }

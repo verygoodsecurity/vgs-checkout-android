@@ -8,6 +8,8 @@ import androidx.test.espresso.Espresso
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.verygoodsecurity.vgscheckout.Constants.CHECKOUT_RESULT_CONTRACT_NAME
+import com.verygoodsecurity.vgscheckout.Constants.VAULT_ID
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutConfiguration
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutFormConfiguration
@@ -79,12 +81,5 @@ class HideComponentTest {
             Espresso.onView(ViewMatchers.withId(R.id.llBillingAddress))
                 .check(ViewAssertions.matches(CoreMatchers.not(ViewMatchers.isDisplayed())))
         }
-    }
-
-    companion object {
-        private const val VAULT_ID = "tnt1a2b3c4y"
-
-        private const val CHECKOUT_RESULT_CONTRACT_NAME =
-            "com.verygoodsecurity.vgscheckout.model.extra_checkout_args"
     }
 }

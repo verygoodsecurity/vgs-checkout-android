@@ -14,6 +14,11 @@ import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
+import com.verygoodsecurity.vgscheckout.Constants.CHECKOUT_RESULT_CONTRACT_NAME
+import com.verygoodsecurity.vgscheckout.Constants.CORRECT_TOKEN
+import com.verygoodsecurity.vgscheckout.Constants.INCORRECT_TOKEN
+import com.verygoodsecurity.vgscheckout.Constants.VALID_CARD_HOLDER
+import com.verygoodsecurity.vgscheckout.Constants.VAULT_ID
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.widget.PersonNameEditText
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingConfiguration
@@ -121,28 +126,4 @@ class MultiplexingActivityTest {
         }
     }
 
-    companion object {
-        private const val VAULT_ID = "tnt1a2b3c4y"
-        private const val INCORRECT_TOKEN =
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MjkzNzAyMjUsImlhdCI6MTYyOTM2OTkyNSwicmVzb3VyY2VfYWNjZXNzIjp7Im11bHRpcGxleGluZy1hcHAtdG50MWEyYjNjNHkiOiJURVNUIn19.5rtUsrLnS_gBHKTugiM9h9wuI9t4afupSbbdgmFHbSU"
-        private const val CORRECT_TOKEN =
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MjkzNzAyMjUsImlhdCI6MTYyOTM2OTkyNSwicmVzb3VyY2VfYWNjZXNzIjp7Im11bHRpcGxleGluZy1hcHAtdG50MWEyYjNjNHkiOnsicm9sZXMiOlsiZmluYW5jaWFsLWluc3RydW1lbnRzOndyaXRlIl19fX0.n7uQ77pOMtBY99iGVg_EtXBUsgO5GZXEKSTv4kchov0"
-
-        private const val CHECKOUT_RESULT_CONTRACT_NAME =
-            "com.verygoodsecurity.vgscheckout.model.extra_checkout_args"
-
-        // Fields data
-        private const val VALID_CARD_HOLDER = "John Doe"
-        private const val VALID_CARD_NUMBER = "4111111111111111"
-        private const val INVALID_CARD_NUMBER = "0000000000000000"
-        private const val VALID_EXP_DATE = "10/22"
-        private const val INVALID_EXP_DATE = "10/2"
-        private const val VALID_SECURITY_CODE = "111"
-        private const val INVALID_SECURITY_CODE = "11"
-
-        private const val VALID_ADDRESS = "Somewhere st."
-        private const val VALID_CITY = "New York"
-        private const val VALID_POSTAL_ADDRESS = "12345"
-        private const val INVALID_POSTAL_ADDRESS = "1234"
-    }
 }
