@@ -75,9 +75,8 @@ class VGSCheckoutMultiplexingConfiguration private constructor(
         try {
             CheckoutMultiplexingCredentialsValidator.validateJWT(vaultID, token)
             analyticTracker.log(JWTValidationEvent(true))
-        } catch (e: IllegalArgumentException) {
+        } finally {
             analyticTracker.log(JWTValidationEvent(false))
-            throw e
         }
     }
 
