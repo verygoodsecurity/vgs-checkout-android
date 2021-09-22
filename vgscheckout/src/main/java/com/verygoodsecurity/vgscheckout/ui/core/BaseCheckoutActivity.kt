@@ -44,6 +44,8 @@ import com.verygoodsecurity.vgscheckout.util.country.model.PostalAddressType
 import com.verygoodsecurity.vgscheckout.util.extension.*
 
 private const val BILLING_ADDRESS_MIN_CHARS_COUNT = 1
+private const val ICON_ALPHA_ENABLED = 1f
+private const val ICON_ALPHA_DISABLED = 0.5f
 
 internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
     AppCompatActivity(), VgsCollectResponseListener, InputFieldView.OnTextChangedListener {
@@ -413,13 +415,9 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
     private fun setInputViewsEnabled(isEnabled: Boolean) {
         cardDetailsLL.setEnabled(isEnabled, true, cardDetailsMtv)
         billingAddressLL.setEnabled(isEnabled, true, billingAddressMtv)
-        val alpha = if (isEnabled) {
-            resources.getInteger(R.integer.vgs_checkout_input_icon_alpha_enabled)
-        } else {
-            resources.getInteger(R.integer.vgs_checkout_input_icon_alpha_disabled)
-        }
-        cardNumberEt.setDrawablesAlpha(alpha)
-        securityCodeEt.setDrawablesAlpha(alpha)
+        val alpha = if (isEnabled) ICON_ALPHA_ENABLED else ICON_ALPHA_DISABLED
+        cardNumberEt.setDrawablesAlphaColorFilter(alpha)
+        securityCodeEt.setDrawablesAlphaColorFilter(alpha)
     }
 
     private fun updateSaveButtonState(isLoading: Boolean) {
