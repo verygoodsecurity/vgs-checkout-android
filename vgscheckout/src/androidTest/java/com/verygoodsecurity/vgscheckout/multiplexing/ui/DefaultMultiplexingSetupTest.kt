@@ -36,7 +36,37 @@ class DefaultMultiplexingSetupTest {
     }
 
     @Test
-    fun performCheckoutFieldPresets() {
+    fun performCheckout_defaultVisibleFields() {
+        ActivityScenario.launch<CheckoutMultiplexingActivity>(defaultIntent).use {
+            //Assert
+            Espresso.onView(ViewMatchers.withId(R.id.vgsTilCardHolder))
+                .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+            Espresso.onView(ViewMatchers.withId(R.id.vgsTilCardNumber))
+                .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+            Espresso.onView(ViewMatchers.withId(R.id.vgsTilExpirationDate))
+                .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+            Espresso.onView(ViewMatchers.withId(R.id.vgsTilSecurityCode))
+                .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+            Espresso.onView(ViewMatchers.withId(R.id.vgsTilCountry))
+                .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+            ViewInteraction.onViewWithScrollTo(R.id.vgsTilAddress)
+                .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+            ViewInteraction.onViewWithScrollTo(R.id.vgsTilAddressOptional)
+                .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+            ViewInteraction.onViewWithScrollTo(R.id.vgsTilAddress)
+                .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+            ViewInteraction.onViewWithScrollTo(R.id.vgsTilCity)
+                .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+            ViewInteraction.onViewWithScrollTo(R.id.vgsTilPostalAddress)
+                .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+
+            ViewInteraction.onViewWithScrollTo(R.id.mbSaveCard)
+                .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        }
+    }
+
+    @Test
+    fun performCheckout_defaultFieldContent() {
         ActivityScenario.launch<CheckoutMultiplexingActivity>(defaultIntent).use {
             //Assert
             Espresso.onView(ViewMatchers.withId(R.id.vgsEtCardHolder))
@@ -79,16 +109,18 @@ class DefaultMultiplexingSetupTest {
     }
 
     @Test
-    fun performCheckout_saveButtonIsEnabled() {
+    fun performCheckout_saveButtonInteractive() {
         ActivityScenario.launch<CheckoutMultiplexingActivity>(defaultIntent).use {
             //Assert
             Espresso.onView(ViewMatchers.withId(R.id.mbSaveCard))
                 .check(ViewAssertions.matches(ViewMatchers.isEnabled()))
+            ViewInteraction.onViewWithScrollTo(R.id.mbSaveCard)
+                .check(ViewAssertions.matches(ViewMatchers.isClickable()))
         }
     }
 
     @Test
-    fun preformCheckout_noErrorMessagesDisplayed() {
+    fun performCheckout_noErrorMessagesDisplayed() {
         ActivityScenario.launch<CheckoutMultiplexingActivity>(defaultIntent).use {
             // Assert
             ViewInteraction.onViewWithScrollTo(R.id.vgsTilCardHolder)
@@ -108,15 +140,6 @@ class DefaultMultiplexingSetupTest {
         }
     }
 
-    @Test
-    fun performCheckout_addressIsVisible() {
-        ActivityScenario.launch<CheckoutMultiplexingActivity>(defaultIntent).use {
-            //Assert
-            Espresso.onView(ViewMatchers.withId(R.id.llBillingAddress))
-                .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        }
-    }
-
     companion object {
         private const val VAULT_ID = "tnt1a2b3c4y"
         private const val TOKEN =
@@ -125,18 +148,5 @@ class DefaultMultiplexingSetupTest {
         private const val CHECKOUT_RESULT_CONTRACT_NAME =
             "com.verygoodsecurity.vgscheckout.model.extra_checkout_args"
 
-        // Fields data
-        private const val VALID_CARD_HOLDER = "John Doe"
-        private const val VALID_CARD_NUMBER = "4111111111111111"
-        private const val INVALID_CARD_NUMBER = "0000000000000000"
-        private const val VALID_EXP_DATE = "10/22"
-        private const val INVALID_EXP_DATE = "10/2"
-        private const val VALID_SECURITY_CODE = "111"
-        private const val INVALID_SECURITY_CODE = "11"
-
-        private const val VALID_ADDRESS = "Somewhere st."
-        private const val VALID_CITY = "New York"
-        private const val VALID_POSTAL_ADDRESS = "12345"
-        private const val INVALID_POSTAL_ADDRESS = "1234"
     }
 }

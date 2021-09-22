@@ -12,6 +12,7 @@ import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutConfiguration
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.ui.CheckoutActivity
+import com.verygoodsecurity.vgscheckout.ui.CheckoutMultiplexingActivity
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers.withError
 import com.verygoodsecurity.vgscheckout.util.ViewInteraction.onViewWithScrollTo
@@ -31,7 +32,37 @@ class DefaultCheckoutSetupTest {
     }
 
     @Test
-    fun performCheckoutFieldPresets() {
+    fun performCheckout_defaultVisibleFields() {
+        launch<CheckoutMultiplexingActivity>(defaultIntent).use {
+            //Assert
+            onView(withId(R.id.vgsTilCardHolder))
+                .check(matches(isDisplayed()))
+            onView(withId(R.id.vgsTilCardNumber))
+                .check(matches(isDisplayed()))
+            onView(withId(R.id.vgsTilExpirationDate))
+                .check(matches(isDisplayed()))
+            onView(withId(R.id.vgsTilSecurityCode))
+                .check(matches(isDisplayed()))
+            onView(withId(R.id.vgsTilCountry))
+                .check(matches(isDisplayed()))
+            onViewWithScrollTo(R.id.vgsTilAddress)
+                .check(matches(isDisplayed()))
+            onViewWithScrollTo(R.id.vgsTilAddressOptional)
+                .check(matches(isDisplayed()))
+            onViewWithScrollTo(R.id.vgsTilAddress)
+                .check(matches(isDisplayed()))
+            onViewWithScrollTo(R.id.vgsTilCity)
+                .check(matches(isDisplayed()))
+            onViewWithScrollTo(R.id.vgsTilPostalAddress)
+                .check(matches(isDisplayed()))
+
+            onViewWithScrollTo(R.id.mbSaveCard)
+                .check(matches(isDisplayed()))
+        }
+    }
+
+    @Test
+    fun performCheckout_defaultFieldContent() {
         launch<CheckoutActivity>(defaultIntent).use {
             //Assert
             onView(withId(R.id.vgsEtCardHolder))
@@ -74,10 +105,13 @@ class DefaultCheckoutSetupTest {
     }
 
     @Test
-    fun performCheckout_saveButtonIsEnabled() {
-        launch<CheckoutActivity>(defaultIntent).use {
+    fun performCheckout_saveButtonInteractive() {
+        launch<CheckoutMultiplexingActivity>(defaultIntent).use {
             //Assert
-            onView(withId(R.id.mbSaveCard)).check(matches(isEnabled()))
+            onView(withId(R.id.mbSaveCard))
+                .check(matches(isEnabled()))
+            onViewWithScrollTo(R.id.mbSaveCard)
+                .check(matches(isClickable()))
         }
     }
 
