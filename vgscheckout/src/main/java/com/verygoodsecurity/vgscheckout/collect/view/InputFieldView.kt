@@ -3,9 +3,7 @@ package com.verygoodsecurity.vgscheckout.collect.view
 import android.content.Context
 import android.content.res.ColorStateList
 import android.content.res.TypedArray
-import android.graphics.Color
-import android.graphics.Rect
-import android.graphics.Typeface
+import android.graphics.*
 import android.os.Build
 import android.os.Parcel
 import android.os.Parcelable
@@ -22,7 +20,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.annotation.IntRange
+import androidx.annotation.FloatRange
 import androidx.annotation.RequiresApi
 import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgscheckout.R
@@ -1321,9 +1319,15 @@ internal abstract class InputFieldView @JvmOverloads constructor(
         inputField.setOnKeyListener(l)
     }
 
-    fun setDrawablesAlpha(@IntRange(from = 0, to = 255) alpha: Int) {
+    fun setDrawablesAlphaColorFilter(@FloatRange(from = 0.0, to = 1.0) alpha: Float) {
+        val matrix = floatArrayOf(
+            1f, 0f, 0f, 0f, 0f,
+            0f, 1f, 0f, 0f, 0f,
+            0f, 0f, 1f, 0f, 0f,
+            0f, 0f, 0f, alpha, 0f
+        )
         inputField.compoundDrawables.forEach {
-            it?.alpha = alpha
+            it?.colorFilter = ColorMatrixColorFilter(matrix)
         }
     }
 
