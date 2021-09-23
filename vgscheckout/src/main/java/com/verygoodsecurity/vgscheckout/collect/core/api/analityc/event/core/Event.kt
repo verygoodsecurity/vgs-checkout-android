@@ -2,7 +2,9 @@ package com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.core
 
 import android.os.Build
 import com.verygoodsecurity.vgscheckout.BuildConfig
-import com.verygoodsecurity.vgscheckout.collect.util.extension.toIso8601
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.LinkedHashMap
 
 internal abstract class Event constructor(type: String) {
 
@@ -11,7 +13,7 @@ internal abstract class Event constructor(type: String) {
     private val data: MutableMap<String, Any> = mutableMapOf(
         KEY_TYPE to type,
         KEY_TIMESTAMP to System.currentTimeMillis(),
-        KEY_CLIENT_TIMESTAMP to System.currentTimeMillis().toIso8601(),
+        KEY_CLIENT_TIMESTAMP to getClientTime(),
         KEY_SOURCE to SOURCE,
         KEY_VERSION to BuildConfig.VERSION_NAME,
         KEY_STATUS to STATUS_OK,
@@ -32,10 +34,16 @@ internal abstract class Event constructor(type: String) {
         }
     }
 
+    private fun getClientTime(): String {
+        return SimpleDateFormat(ISO_8601, Locale.US).format(System.currentTimeMillis())
+    }
+
     private operator fun <K, V> Map<out K, V>.plus(map: Map<out K, V>): MutableMap<K, V> =
         LinkedHashMap(this).apply { putAll(map) }
 
     companion object {
+
+        private const val ISO_8601 = "yyyy-MM-dd'T'HH:mm:ss'Z'"
 
         internal const val KEY_STATUS = "status"
         private const val KEY_TYPE = "type"
