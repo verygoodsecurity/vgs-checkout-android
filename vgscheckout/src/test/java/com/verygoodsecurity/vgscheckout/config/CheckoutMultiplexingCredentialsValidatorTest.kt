@@ -3,8 +3,6 @@ package com.verygoodsecurity.vgscheckout.config
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 
 private const val VAULT_ID = "tntxxxxxxx"
 private const val VALID_JWT =
@@ -15,7 +13,6 @@ private const val JWT_WITH_RESTRICTED_ROLES =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MjkzNzAyMjUsImlhdCI6MTYyOTM2OTkyNSwicmVzb3VyY2VfYWNjZXNzIjp7Im11bHRpcGxleGluZy1hcHAtdG50eHh4eHh4eCI6eyJyb2xlcyI6WyJmaW5hbmNpYWwtaW5zdHJ1bWVudHM6d3JpdGUiLCJ0cmFuc2ZlcnM6d3JpdGUiXX19fQ.4MLpBR9-zgVAulInJq4iHLL_c7A79v_b-W7BWjr2fJU"
 private const val EMPTY_JWT = ""
 
-@RunWith(RobolectricTestRunner::class)
 class CheckoutMultiplexingCredentialsValidatorTest {
 
     @Test
