@@ -13,22 +13,25 @@ import okio.Buffer
 import java.io.IOException
 import java.io.InterruptedIOException
 import java.util.*
+import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeoutException
 
 internal class OkHttpClient(
-    isLogsVisible: Boolean,
-    private val tempStore: VgsApiTemporaryStorage
+    printLogs: Boolean = true,
+    executor: ExecutorService = Executors.newSingleThreadExecutor()
 ) : ApiClient {
+
+    private val storage: ApiClientStorage = DefaultApiClientStorage()
 
     private val hostInterceptor: HostInterceptor = HostInterceptor()
 
     private val client: OkHttpClient by lazy {
         OkHttpClient().newBuilder()
             .addInterceptor(hostInterceptor)
-            .dispatcher(Dispatcher(Executors.newSingleThreadExecutor())).also {
-                if (isLogsVisible) it.addInterceptor(HttpLoggingInterceptor())
+            .dispatcher(Dispatcher(executor)).also {
+                if (printLogs) it.addInterceptor(HttpLoggingInterceptor())
             }
             .build()
     }
@@ -71,10 +74,11 @@ internal class OkHttpClient(
                 override fun onResponse(call: Call, response: Response) {
                     callback?.invoke(
                         NetworkResponse(
-                            response.code.isCodeSuccessful(),
-                            response.body?.string(),
+                            response.isSuccessful,
                             response.code,
-                            response.message
+                            response.body?.string(),
+                            response.message,
+                            latency = response.latency()
                         )
                     )
                 }
@@ -106,11 +110,13 @@ internal class OkHttpClient(
                 .build()
                 .newCall(okHttpRequest).execute()
 
-            if (response.isSuccessful) {
-                NetworkResponse(response.isSuccessful, response.body?.string(), response.code)
-            } else {
-                NetworkResponse(message = response.message, code = response.code)
-            }
+            NetworkResponse(
+                response.isSuccessful,
+                response.code,
+                response.body?.string(),
+                response.message,
+                latency = response.latency()
+            )
         } catch (e: InterruptedIOException) {
             NetworkResponse(error = VGSError.TIME_OUT)
         } catch (e: TimeoutException) {
@@ -124,7 +130,7 @@ internal class OkHttpClient(
         client.dispatcher.cancelAll()
     }
 
-    override fun getTemporaryStorage(): VgsApiTemporaryStorage = tempStore
+    override fun getStorage(): ApiClientStorage = storage
 
     private fun buildRequest(
         url: String,
@@ -146,7 +152,7 @@ internal class OkHttpClient(
         headers?.forEach {
             this.addHeader(it.key, it.value)
         }
-        tempStore.getCustomHeaders().forEach {
+        storage.getCustomHeaders().forEach {
             this.addHeader(it.key, it.value)
         }
 

@@ -7,18 +7,15 @@ import android.os.Handler
 import android.os.Looper
 import androidx.annotation.IntRange
 import androidx.annotation.VisibleForTesting
+import com.verygoodsecurity.vgscheckout.BuildConfig
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.VGSCollectLogger
 import com.verygoodsecurity.vgscheckout.collect.app.BaseTransmitActivity
 import com.verygoodsecurity.vgscheckout.collect.core.api.*
 import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.AnalyticTracker
-import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.CollectActionTracker
-import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.action.*
-import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.utils.toAnalyticStatus
+import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.*
 import com.verygoodsecurity.vgscheckout.collect.core.api.client.ApiClient
-import com.verygoodsecurity.vgscheckout.collect.core.api.client.ApiClient.Companion.generateAgentHeader
 import com.verygoodsecurity.vgscheckout.collect.core.api.client.extension.isHttpStatusCode
-import com.verygoodsecurity.vgscheckout.collect.core.model.VGSCollectFieldNameMappingPolicy
 import com.verygoodsecurity.vgscheckout.collect.core.model.VGSCollectFieldNameMappingPolicy.*
 import com.verygoodsecurity.vgscheckout.collect.core.model.VGSHashMapWrapper
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.*
@@ -34,7 +31,6 @@ import com.verygoodsecurity.vgscheckout.collect.util.*
 import com.verygoodsecurity.vgscheckout.collect.util.extension.*
 import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
 import com.verygoodsecurity.vgscheckout.collect.view.VGSCollectView
-import com.verygoodsecurity.vgscheckout.collect.view.card.getAnalyticName
 import java.util.*
 
 /**
@@ -48,7 +44,7 @@ internal class VGSCollect {
 
     private val externalDependencyDispatcher: ExternalDependencyDispatcher
 
-    private val tracker: AnalyticTracker
+    private val tracker: AnalyticTracker?
 
     private var client: ApiClient
     private val mainHandler: Handler = Handler(Looper.getMainLooper())
@@ -58,8 +54,7 @@ internal class VGSCollect {
         override fun onStorageError(error: VGSError) {
             error.toVGSResponse(context).also { r ->
                 notifyAllListeners(r)
-                VGSCollectLogger.warn(InputFieldView.TAG, r.localizeMessage)
-                submitEvent(false, code = r.errorCode)
+                VGSCollectLogger.warn(InputFieldView.TAG, r.message)
             }
         }
     }
@@ -67,12 +62,8 @@ internal class VGSCollect {
     private val responseListeners = mutableListOf<VgsCollectResponseListener>()
     private val analyticListener = object : VgsCollectResponseListener {
         override fun onResponse(response: VGSResponse?) {
-            when (response) {
-                is VGSResponse.ErrorResponse -> responseEvent(
-                    response.code,
-                    response.localizeMessage
-                )
-                is VGSResponse.SuccessResponse -> responseEvent(response.code)
+            response?.let {
+                responseEvent(it.code, it.latency, (it as? VGSResponse.ErrorResponse)?.message)
             }
         }
     }
@@ -81,22 +72,21 @@ internal class VGSCollect {
     private val context: Context
 
     private var cname: String? = null
-    private var isSatelliteMode: Boolean = false
 
     private constructor(
         context: Context,
         id: String,
         environment: String,
         url: String?,
-        port: Int?
+        port: Int?,
+        tracker: AnalyticTracker?
     ) {
         this.context = context
         this.storage = InternalStorage(context, storageErrorListener)
         this.externalDependencyDispatcher = DependencyReceiver()
-        this.client = ApiClient.newHttpClient()
+        this.client = ApiClient.create()
         this.baseURL = generateBaseUrl(id, environment, url, port)
-        this.tracker =
-            CollectActionTracker(id, environment, UUID.randomUUID().toString(), isSatelliteMode)
+        this.tracker = tracker
         cname?.let { configureHostname(it, id) }
         updateAgentHeader()
         addOnResponseListeners(analyticListener)
@@ -111,7 +101,7 @@ internal class VGSCollect {
 
         /** Type of Vault */
         environment: String
-    ) : this(context, id, environment, null, null)
+    ) : this(context, id, environment, null, null, null)
 
     constructor(
         /** Activity context */
@@ -122,7 +112,7 @@ internal class VGSCollect {
 
         /** Type of Vault */
         environment: Environment = Environment.SANDBOX
-    ) : this(context, id, environment.rawValue, null, null)
+    ) : this(context, id, environment.rawValue, null, null, null)
 
     constructor(
         /** Activity context */
@@ -136,7 +126,7 @@ internal class VGSCollect {
 
         /** Region identifier */
         suffix: String
-    ) : this(context, id, environmentType concatWithDash suffix, null, null)
+    ) : this(context, id, environmentType concatWithDash suffix, null, null, null)
 
     /**
      * Adds a listener to the list of those whose methods are called whenever the VGSCollect receive response from Server.
@@ -184,8 +174,6 @@ internal class VGSCollect {
         }
 
         storage.performSubscription(view)
-
-        initField(view)
     }
 
     /**
@@ -326,19 +314,7 @@ internal class VGSCollect {
                 notifyAllListeners(VGSError.NO_NETWORK_CONNECTIONS.toVGSResponse(context))
             !context.isConnectionAvailable() ->
                 notifyAllListeners(VGSError.NO_NETWORK_CONNECTIONS.toVGSResponse(context))
-            else -> {
-                val data = mergeData(request)
-                submitEvent(
-                    true,
-                    !request.fileIgnore && storage.getFileStorage().getItems().isNotEmpty(),
-                    !request.fieldsIgnore && storage.getFieldsStorage().getItems().isNotEmpty(),
-                    request.customHeader.isNotEmpty(),
-                    data.isNotEmpty(),
-                    hasCustomHostname,
-                    request.fieldNameMappingPolicy
-                )
-                submitRequest(data)
-            }
+            else -> submitRequest(mergeData(request))
         }
     }
 
@@ -368,8 +344,7 @@ internal class VGSCollect {
             if (it.isValid.not()) {
                 VGSError.INPUT_DATA_NOT_VALID.toVGSResponse(context, it.fieldName).also { r ->
                     notifyAllListeners(r)
-                    VGSCollectLogger.warn(InputFieldView.TAG, r.localizeMessage)
-                    submitEvent(false, code = r.errorCode)
+                    VGSCollectLogger.warn(InputFieldView.TAG, r.message)
                 }
 
                 isValid = false
@@ -387,7 +362,7 @@ internal class VGSCollect {
             NESTED_JSON_WITH_ARRAYS_OVERWRITE -> true to ArrayMergePolicy.OVERWRITE
         }
 
-        return with(client.getTemporaryStorage().getCustomData()) { // Static additional data
+        return with(client.getStorage().getCustomData().toMutableMap()) { // Static additional data
             // Merge dynamic additional data
             deepMerge(request.customData, mergeArraysPolicy)
 
@@ -440,17 +415,15 @@ internal class VGSCollect {
                 BaseTransmitActivity.RESULT_DATA
             ) ?: VGSHashMapWrapper()
 
-            when (map.get(BaseTransmitActivity.RESULT_TYPE)) {
-                BaseTransmitActivity.SCAN -> scanEvent(
-                    map.get(BaseTransmitActivity.RESULT_STATUS).toString(),
-                    map.get(BaseTransmitActivity.RESULT_NAME).toString(),
-                    map.get(BaseTransmitActivity.RESULT_ID) as? String
-                )
-                BaseTransmitActivity.ATTACH -> attachFileEvent(
-                    map.get(BaseTransmitActivity.RESULT_STATUS).toString()
+            if (map.get(BaseTransmitActivity.RESULT_TYPE) == BaseTransmitActivity.SCAN) {
+                tracker?.log(
+                    ScanEvent(
+                        map.get(BaseTransmitActivity.RESULT_STATUS).toString(),
+                        map.get(BaseTransmitActivity.RESULT_NAME).toString(),
+                        map.get(BaseTransmitActivity.RESULT_ID) as? String
+                    )
                 )
             }
-
         }
     }
 
@@ -460,8 +433,8 @@ internal class VGSCollect {
      *
      * @param headers The headers to save for request.
      */
-    fun setCustomHeaders(headers: Map<String, String>?) {
-        client.getTemporaryStorage().setCustomHeaders(headers)
+    fun setCustomHeaders(headers: Map<String, String>) {
+        client.getStorage().setCustomHeaders(headers)
     }
 
     /**
@@ -469,7 +442,7 @@ internal class VGSCollect {
      * This method has no impact on all custom data that were added with [VGSRequest]
      */
     fun resetCustomHeaders() {
-        client.getTemporaryStorage().resetCustomHeaders()
+        client.getStorage().resetCustomHeaders()
     }
 
     /**
@@ -478,8 +451,8 @@ internal class VGSCollect {
      *
      * @param data The Map to save for request.
      */
-    fun setCustomData(data: Map<String, Any>?) {
-        client.getTemporaryStorage().setCustomData(data)
+    fun setCustomData(data: Map<String, Any>) {
+        client.getStorage().setCustomData(data)
     }
 
     /**
@@ -487,7 +460,7 @@ internal class VGSCollect {
      * This method has no impact on all custom data that were added with [VGSRequest]
      */
     fun resetCustomData() {
-        client.getTemporaryStorage().resetCustomData()
+        client.getStorage().resetCustomData()
     }
 
     /**
@@ -507,8 +480,8 @@ internal class VGSCollect {
      * Warning: if this option is set to false, it will increase resolving time for possible incidents.
      */
     fun setAnalyticsEnabled(isEnabled: Boolean) {
-        tracker.isEnabled = isEnabled
-        updateAgentHeader()
+        tracker?.isEnabled = isEnabled
+        updateAgentHeader(isEnabled)
     }
 
     @VisibleForTesting
@@ -526,100 +499,14 @@ internal class VGSCollect {
         client = c
     }
 
-    private fun initField(view: VGSCollectView?) {
-        val m = view?.getFieldType()?.getAnalyticName()?.run {
-            with(mutableMapOf<String, String>()) {
-                put("field", this@run)
-                this
-            }
-        } ?: mutableMapOf()
-
-        tracker.logEvent(
-            InitAction(m)
-        )
-    }
-
-    private fun scanEvent(status: String, type: String, id: String?) {
-        val m = with(mutableMapOf<String, String>()) {
-            put("status", status)
-            put("scannerType", type)
-            if (!id.isNullOrEmpty()) put("scanId", id.toString())
-
-            this
-        }
-        tracker.logEvent(
-            ScanAction(m)
-        )
-    }
-
-    private fun submitEvent(
-        isSuccess: Boolean,
-        hasFiles: Boolean = false,
-        hasFields: Boolean = false,
-        hasCustomHeader: Boolean = false,
-        hasCustomData: Boolean = false,
-        hasCustomHostname: Boolean = false,
-        mappingPolicy: VGSCollectFieldNameMappingPolicy = NESTED_JSON,
-        code: Int = 200
-    ) {
+    private fun responseEvent(code: Int, latency: Long, message: String? = null) {
         if (code.isHttpStatusCode()) {
-            val m = with(mutableMapOf<String, Any>()) {
-                put("status", isSuccess.toAnalyticStatus())
-
-                put("statusCode", code)
-
-                val arr = with(mutableListOf<String>()) {
-                    if (hasCustomHostname) add("custom_hostname")
-                    if (hasFiles) add("file")
-                    if (hasFields) add("textField")
-                    if (hasCustomHeader ||
-                        client.getTemporaryStorage().getCustomHeaders().isNotEmpty()
-                    ) add("custom_header")
-                    if (hasCustomData ||
-                        client.getTemporaryStorage().getCustomData().isNotEmpty()
-                    ) add("custom_data")
-                    add(mappingPolicy.analyticsName)
-                    this
-                }
-
-                put("content", arr)
-
-                this
-            }
-
-            tracker.logEvent(
-                SubmitAction(m)
-            )
+            tracker?.log(ResponseEvent(code, latency, message))
         }
     }
 
-    private fun responseEvent(code: Int, message: String? = null) {
-        if (code.isHttpStatusCode()) {
-            val m = with(mutableMapOf<String, Any>()) {
-                put("statusCode", code)
-                put("status", BaseTransmitActivity.Status.SUCCESS.raw)
-                if (!message.isNullOrEmpty()) put("error", message)
-
-                this
-            }
-            tracker.logEvent(
-                ResponseAction(m)
-            )
-        }
-    }
-
-    private fun attachFileEvent(status: String) {//MIME, success
-        val m = with(mutableMapOf<String, Any>()) {
-            put("status", status)
-
-            this
-        }
-        tracker.logEvent(
-            AttachFileAction(m)
-        )
-    }
-
-    private var hasCustomHostname = false
+    var hasCustomHostname = false
+    private set
 
     private fun generateBaseUrl(id: String, environment: String, url: String?, port: Int?): String {
 
@@ -640,7 +527,6 @@ internal class VGSCollect {
                     VGSCollectLogger.warn(message = context.getString(R.string.vgs_checkout_error_env_incorrect))
                     return id.setupURL(environment)
                 }
-                isSatelliteMode = true
                 return host.setupLocalhostURL(port)
             } else {
                 printPortDenied()
@@ -681,30 +567,29 @@ internal class VGSCollect {
                         )
                     }
                 }
-
-                hostnameValidationEvent(hasCustomHostname, host)
+                tracker?.log(HostnameValidationEvent(hasCustomHostname, host))
             }
         }
     }
 
-    private fun hostnameValidationEvent(
-        isSuccess: Boolean,
-        hostname: String = ""
-    ) {
-        val m = with(mutableMapOf<String, Any>()) {
-            put("status", isSuccess.toAnalyticStatus())
-            put("hostname", hostname)
-
-            this
-        }
-
-        tracker.logEvent(
-            HostNameValidationAction(m)
+    private fun updateAgentHeader(isAnalyticsEnabled: Boolean = true) {
+        client.getStorage().setCustomHeaders(
+            mapOf(
+                AGENT to String.format(
+                    AGENT_FORMAT,
+                    BuildConfig.VERSION_NAME,
+                    if (isAnalyticsEnabled) AGENT_ANALYTICS_ENABLED else AGENT_ANALYTICS_DISABLED
+                )
+            )
         )
     }
 
-    private fun updateAgentHeader() {
-        client.getTemporaryStorage().setCustomHeaders(mapOf(generateAgentHeader(tracker.isEnabled)))
+    companion object {
+
+        private const val AGENT = "VGS-Client"
+        private const val AGENT_FORMAT = "source=vgs-checkout&medium=vgs-checkout&content=%s&tr=%s"
+        private const val AGENT_ANALYTICS_ENABLED = "default"
+        private const val AGENT_ANALYTICS_DISABLED = "none"
     }
 
     /**
@@ -719,6 +604,7 @@ internal class VGSCollect {
         private var environment: String = Environment.SANDBOX.rawValue
         private var host: String? = null
         private var port: Int? = null
+        private var analyticsTracker: AnalyticTracker? = null
 
         /** Specify Environment for the VGSCollect instance. */
         fun setEnvironment(env: Environment, region: String = ""): Builder = this.apply {
@@ -761,9 +647,18 @@ internal class VGSCollect {
         ) = this.apply { this.port = port }
 
         /**
+         * Sets the VGSCollect analytics tracker.
+         *
+         * @param tracker Implementation of AnalyticTracker.
+         */
+        fun setAnalyticTracker(tracker: AnalyticTracker?) = this.apply {
+            this.analyticsTracker = tracker
+        }
+
+        /**
          * Creates an VGSCollect with the arguments supplied to this
          * builder.
          */
-        fun create() = VGSCollect(context, id, environment, host, port)
+        fun create() = VGSCollect(context, id, environment, host, port, analyticsTracker)
     }
 }

@@ -5,9 +5,7 @@ package com.verygoodsecurity.vgscheckout.collect.view.card
  *
  * @since 1.0.1
  */
-internal enum class FieldType(
-    val raw:String
-) {
+internal enum class FieldType(val raw: String) {
 
     /**
      * Represents field with card number input in '####-####-####-####' format.
@@ -42,8 +40,8 @@ internal enum class FieldType(
 
 }
 
-internal fun FieldType.getAnalyticName():String {
-    return when(this) {
+internal fun FieldType.getAnalyticName(): String {
+    return when (this) {
         FieldType.CARD_NUMBER -> "card-number"
         FieldType.CVC -> "card-security-code"
         FieldType.CARD_EXPIRATION_DATE -> "card-expiration-date"

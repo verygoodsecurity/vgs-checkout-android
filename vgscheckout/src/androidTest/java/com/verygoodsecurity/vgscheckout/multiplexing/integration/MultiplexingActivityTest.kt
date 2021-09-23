@@ -42,8 +42,8 @@ class MultiplexingActivityTest {
             CHECKOUT_RESULT_CONTRACT_NAME,
             CheckoutResultContract.Args(
                 VGSCheckoutMultiplexingConfiguration(
+                    CORRECT_TOKEN,
                     VAULT_ID,
-                    CORRECT_TOKEN
                 )
             )
         )
@@ -63,8 +63,8 @@ class MultiplexingActivityTest {
                 CHECKOUT_RESULT_CONTRACT_NAME,
                 CheckoutResultContract.Args(
                     VGSCheckoutMultiplexingConfiguration(
+                        INCORRECT_TOKEN,
                         VAULT_ID,
-                        INCORRECT_TOKEN
                     )
                 )
             )
@@ -87,23 +87,6 @@ class MultiplexingActivityTest {
         ActivityScenario.launch<CheckoutMultiplexingActivity>(defaultIntent).use {
             // Act
             device.pressBack()
-            //Assert
-            assertEquals(Activity.RESULT_CANCELED, it.result.resultCode)
-        }
-    }
-
-    @Test
-    fun performMultiplexing_cancelActivityResult_withContent_ok() {
-        ActivityScenario.launch<CheckoutMultiplexingActivity>(defaultIntent).use {
-            // Act
-            onView(ViewMatchers.withId(R.id.vgsEtCardHolder))
-                .perform(ActionHelper.doAction<PersonNameEditText> {
-                    it.setText(VALID_CARD_HOLDER)
-                })
-
-            device.pressBack()
-
-            onView(withText("OK")).perform(click())
             //Assert
             assertEquals(Activity.RESULT_CANCELED, it.result.resultCode)
         }

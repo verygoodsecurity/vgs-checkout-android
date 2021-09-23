@@ -1,9 +1,9 @@
 package com.verygoodsecurity.vgscheckout.util
 
 import android.content.Context
+import com.verygoodsecurity.vgscheckout.collect.core.VGSCollect
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutConfiguration
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingConfiguration
-import com.verygoodsecurity.vgscheckout.collect.core.VGSCollect
 
 /**
  * Helper class that responsible for providing VGSCollect instance with different setup, depending on RouteConfig.
@@ -17,6 +17,7 @@ internal class CollectProvider {
     ): VGSCollect {
         return VGSCollect.Builder(context, config.vaultID)
             .setEnvironment(config.environment)
+            .setAnalyticTracker(config.analyticTracker)
             .create()
     }
 
@@ -26,6 +27,7 @@ internal class CollectProvider {
     ): VGSCollect {
         return VGSCollect.Builder(context, config.vaultID)
             .setEnvironment(config.environment)
+            .setAnalyticTracker(config.analyticTracker)
             .create()
     }
 }

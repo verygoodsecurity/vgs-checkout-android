@@ -31,8 +31,8 @@ class DefaultMultiplexingSetupTest {
             CHECKOUT_RESULT_CONTRACT_NAME,
             CheckoutResultContract.Args(
                 VGSCheckoutMultiplexingConfiguration(
+                    CORRECT_TOKEN,
                     VAULT_ID,
-                    CORRECT_TOKEN
                 )
             )
         )

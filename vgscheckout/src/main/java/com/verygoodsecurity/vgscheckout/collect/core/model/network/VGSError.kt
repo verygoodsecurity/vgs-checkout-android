@@ -36,12 +36,15 @@ internal enum class VGSError(val code:Int, val messageResId:Int) {
     )
 }
 
-internal fun VGSError.toVGSResponse(context: Context, vararg params: String?): VGSResponse.ErrorResponse {
+internal fun VGSError.toVGSResponse(
+    context: Context,
+    vararg params: String?
+): VGSResponse.ErrorResponse {
     val message = if (params.isEmpty()) {
         context.getString(this.messageResId)
     } else {
         String.format(context.getString(this.messageResId), *params)
     }
 
-    return VGSResponse.ErrorResponse(localizeMessage = message, errorCode = this.code)
+    return VGSResponse.ErrorResponse(message, this.code)
 }
