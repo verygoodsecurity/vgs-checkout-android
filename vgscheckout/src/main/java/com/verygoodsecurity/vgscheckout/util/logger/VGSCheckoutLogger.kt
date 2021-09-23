@@ -6,9 +6,9 @@ import com.verygoodsecurity.vgscheckout.util.logger.VGSCheckoutLogger.Level.*
 /**
  * This object is used to log messages in VGS Collect SDK.
  */
-internal object VGSCheckoutLogger {
+object VGSCheckoutLogger {
 
-    const val TAG = "VGSCollect"
+    const val TAG = "VGSCheckout"
 
     /** Current priority level for filtering debugging logs */
     var logLevel: Level = DEBUG
