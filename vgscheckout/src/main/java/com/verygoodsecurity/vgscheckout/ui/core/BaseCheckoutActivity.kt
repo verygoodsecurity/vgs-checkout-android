@@ -18,6 +18,8 @@ import com.google.android.material.textview.MaterialTextView
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.core.VGSCollect
 import com.verygoodsecurity.vgscheckout.collect.core.VgsCollectResponseListener
+import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.CancelEvent
+import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.RequestEvent
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSError
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
@@ -50,7 +52,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
 
     protected val config: C by lazy { resolveConfig(intent) }
 
-    protected val collect by lazy {
+    protected val collect: VGSCollect by lazy {
         resolveCollect().apply {
             addOnResponseListeners(this@BaseCheckoutActivity)
         }
@@ -96,6 +98,8 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
 
     abstract fun handleSaveCard()
 
+    abstract fun hasCustomHeaders(): Boolean
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         disableScreenshots()
@@ -106,6 +110,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
     override fun onBackPressed() {
         handleBackPressWithConfirmation {
             super.onBackPressed()
+            config.analyticTracker.log(CancelEvent)
             setResult(Activity.RESULT_CANCELED)
         }
     }
@@ -117,7 +122,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
 
     override fun onResponse(response: VGSResponse?) {
         (response as? VGSResponse.ErrorResponse)?.let {
-            if (it.errorCode == VGSError.NO_NETWORK_CONNECTIONS.code) {
+            if (it.code == VGSError.NO_NETWORK_CONNECTIONS.code) {
                 setInputViewsEnabled(true)
                 updateSaveButtonState(false)
                 showNetworkConnectionErrorSnackBar()
@@ -302,25 +307,31 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
 
     private fun saveCard() {
         hideSoftKeyboard()
-        if (isInputValid()) {
+        val invalidFields = getInvalidFieldsTypes()
+        val isInputValid = invalidFields.isEmpty()
+        if (isInputValid) {
             setInputViewsEnabled(false)
             updateSaveButtonState(true)
             handleSaveCard()
         }
+        sendRequestEvent(isInputValid, invalidFields)
     }
 
-    private fun isInputValid(): Boolean {
-        val isCardDetailsValid = isCardDetailsValid()
-        val isBillingAddressValid = isBillingAddressValid()
-        return isCardDetailsValid && isBillingAddressValid
+    private fun getInvalidFieldsTypes(): List<String> {
+        val cardDetailsInvalidFields = getCardDetailsInvalidFields()
+        val billingAddressInvalidFields = getBillingAddressInvalidFields()
+        return cardDetailsInvalidFields + billingAddressInvalidFields
     }
 
-    private fun isCardDetailsValid(): Boolean {
+    private fun getCardDetailsInvalidFields(): List<String> {
+        val result = mutableListOf<String>()
+
         val isCardHolderValid = config.isCardHolderHidden() || validate(
             cardHolderEt,
             cardHolderTil,
             R.string.vgs_checkout_card_holder_empty_error
         )
+        result.addIf(!isCardHolderValid, "cardHolder")
 
         val isCardNumberValid = validate(
             cardNumberEt,
@@ -328,6 +339,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
             R.string.vgs_checkout_card_number_empty_error,
             R.string.vgs_checkout_card_number_invalid_error
         )
+        result.addIf(!isCardNumberValid, "cardNumber")
 
         val isExpirationDateValid = validate(
             expirationDateEt,
@@ -335,6 +347,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
             R.string.vgs_checkout_card_expiration_date_empty_error,
             R.string.vgs_checkout_card_expiration_date_invalid_error
         )
+        result.addIf(!isExpirationDateValid, "expDate")
 
         val isSecurityCodeValid = validate(
             securityCodeEt,
@@ -342,26 +355,31 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
             R.string.vgs_checkout_card_verification_code_empty_error,
             R.string.vgs_checkout_card_verification_code_invalid_error
         )
+        result.addIf(!isSecurityCodeValid, "cvc")
 
-        return isCardHolderValid && isCardNumberValid && isExpirationDateValid && isSecurityCodeValid
+        return result
     }
 
-    private fun isBillingAddressValid(): Boolean {
+    private fun getBillingAddressInvalidFields(): List<String> {
         if (config.formConfig.addressOptions.visibility == VGSCheckoutBillingAddressVisibility.HIDDEN) {
-            return true
+            return emptyList()
         }
+
+        val result = mutableListOf<String>()
 
         val isAddressValid = validate(
             addressEt,
             addressTil,
             R.string.vgs_checkout_address_info_address_line1_empty_error
         )
+        result.addIf(!isAddressValid, "addressLine1")
 
         val isCityValid = validate(
             cityEt,
             cityTil,
             R.string.vgs_checkout_address_info_city_empty_error
         )
+        result.addIf(!isCityValid, "city")
 
         val postalAddressValid = validate(
             postalAddressEt,
@@ -369,8 +387,9 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
             getPostalAddressEmptyErrorMessage(),
             getPostalAddressInvalidErrorMessage()
         )
+        result.addIf(!postalAddressValid, "postalCode")
 
-        return isAddressValid && isCityValid && postalAddressValid
+        return result
     }
 
     private fun validate(
@@ -463,5 +482,20 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
         Snackbar.make(findViewById(R.id.llRoot), message, Snackbar.LENGTH_LONG)
             .setAction(getString(R.string.vgs_checkout_retry)) { saveCard() }
             .show()
+    }
+
+    private fun sendRequestEvent(isSuccessful: Boolean, invalidFields: List<String>) {
+        with(config) {
+            analyticTracker.log(
+                RequestEvent(
+                    isSuccessful,
+                    collect.hasCustomHostname,
+                    routeConfig.requestOptions.extraData.isNotEmpty(),
+                    hasCustomHeaders(),
+                    routeConfig.requestOptions.mergePolicy,
+                    invalidFields
+                )
+            )
+        }
     }
 }

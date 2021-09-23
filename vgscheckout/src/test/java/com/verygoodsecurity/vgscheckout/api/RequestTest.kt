@@ -83,19 +83,19 @@ class RequestTest {
         val CODE = 200
 
         val exampleRequest = VGSResponse.SuccessResponse(
-            rawResponse = BODY,
-            successCode = CODE
+            body = BODY,
+            code = CODE
         )
 
         val r = NetworkResponse(
             true,
-            BODY,
-            CODE
+            CODE,
+            BODY
         ).toVGSResponse() as VGSResponse.SuccessResponse
 
-        assertEquals(exampleRequest.rawResponse, r.rawResponse)
         assertEquals(exampleRequest.body, r.body)
-        assertEquals(exampleRequest.successCode, r.successCode)
+        assertEquals(exampleRequest.body, r.body)
+        assertEquals(exampleRequest.code, r.code)
     }
 
     @Test
@@ -113,7 +113,7 @@ class RequestTest {
             message = MESSAGE
         ).toVGSResponse() as VGSResponse.ErrorResponse
 
-        assertEquals(exampleRequest.localizeMessage, r.localizeMessage)
+        assertEquals(exampleRequest.message, r.message)
         assertEquals(exampleRequest.code, r.code)
         assertEquals(exampleRequest.body, r.body)
     }

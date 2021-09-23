@@ -8,6 +8,12 @@ import kotlinx.parcelize.Parcelize
 class VGSCheckoutExpirationDateOptions constructor(
     override val fieldName: String = "",
     val dateSeparateSerializer: VGSDateSeparateSerializer? = null,
-    val inputFormatRegex: String = "MM/yy",
-    val outputFormatRegex: String = "MM/yy"
-) : ViewOptions()
+    val inputFormatRegex: String = DATE_FORMAT,
+    val outputFormatRegex: String = DATE_FORMAT
+) : ViewOptions() {
+
+    companion object {
+
+        private const val DATE_FORMAT = "MM/yy"
+    }
+}

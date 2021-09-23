@@ -12,4 +12,5 @@ class VGSCheckoutConfiguration @JvmOverloads constructor(
     override val environment: String = DEFAULT_ENVIRONMENT,
     override val routeConfig: VGSCheckoutRouteConfiguration = VGSCheckoutRouteConfiguration(),
     override val formConfig: VGSCheckoutFormConfiguration = VGSCheckoutFormConfiguration(),
+    override val isAnalyticsEnabled: Boolean = true
 ) : CheckoutConfiguration()

@@ -169,19 +169,6 @@ internal data class VGSRequest private constructor(
     }
 }
 
-internal fun VGSRequest.toAnalyticRequest(url: String): NetworkRequest {
-    return NetworkRequest(
-        method,
-        url concatWithSlash path,
-        customHeader,
-        customData.toJSON().toString().toBase64(),
-        fieldsIgnore,
-        fileIgnore,
-        format,
-        requestTimeoutInterval
-    )
-}
-
 internal fun VGSRequest.toNetworkRequest(url: String, requestData: Map<String, Any>? = null): NetworkRequest {
     return NetworkRequest(
         method,

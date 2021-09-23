@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgscheckout.api
 
-import com.verygoodsecurity.vgscheckout.collect.core.api.VgsApiTemporaryStorageImpl
+import com.verygoodsecurity.vgscheckout.collect.core.api.DefaultApiClientStorage
 import org.junit.Assert
 import org.junit.Test
 
@@ -8,7 +8,7 @@ class VgsApiTemporaryStorageTest {
 
     @Test
     fun testTempStoreCustomData() {
-        val storage = VgsApiTemporaryStorageImpl()
+        val storage = DefaultApiClientStorage()
 
         Assert.assertEquals(0, storage.getCustomData().size)
 
@@ -21,7 +21,7 @@ class VgsApiTemporaryStorageTest {
 
     @Test
     fun testTempStoreCustomHeaders() {
-        val storage = VgsApiTemporaryStorageImpl()
+        val storage = DefaultApiClientStorage()
 
         Assert.assertEquals(0, storage.getCustomHeaders().size)
 
@@ -34,7 +34,7 @@ class VgsApiTemporaryStorageTest {
 
     @Test
     fun testTempStoreCustomDataReset() {
-        val storage = VgsApiTemporaryStorageImpl()
+        val storage = DefaultApiClientStorage()
 
         val data = HashMap<String, String>()
         data["key"] = "value"
@@ -47,7 +47,7 @@ class VgsApiTemporaryStorageTest {
 
     @Test
     fun testTempStoreCustomHeadersReset() {
-        val storage = VgsApiTemporaryStorageImpl()
+        val storage = DefaultApiClientStorage()
 
         val data = HashMap<String, String>()
         data["key"] = "value"
@@ -63,7 +63,7 @@ class VgsApiTemporaryStorageTest {
         val key = "anyKey"
         val value = "anyValue"
 
-        val storage = VgsApiTemporaryStorageImpl()
+        val storage = DefaultApiClientStorage()
 
         Assert.assertEquals(0, storage.getCustomData().size)
 
@@ -81,7 +81,7 @@ class VgsApiTemporaryStorageTest {
         val key = "anyKey"
         val value = "anyValue"
 
-        val storage = VgsApiTemporaryStorageImpl()
+        val storage = DefaultApiClientStorage()
 
         Assert.assertEquals(0, storage.getCustomHeaders().size)
 

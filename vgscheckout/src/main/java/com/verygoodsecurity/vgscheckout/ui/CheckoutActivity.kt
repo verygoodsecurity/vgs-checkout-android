@@ -1,6 +1,8 @@
 package com.verygoodsecurity.vgscheckout.ui
 
 import android.content.Intent
+import android.os.Bundle
+import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.InitEvent
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSRequest
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutConfiguration
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
@@ -17,10 +19,6 @@ internal class CheckoutActivity : BaseCheckoutActivity<VGSCheckoutConfiguration>
     override fun resolveCollect() = CollectProvider().get(this, config)
 
     override fun handleSaveCard() {
-        asyncSubmit()
-    }
-
-    private fun asyncSubmit() {
         with(config.routeConfig) {
             collect.asyncSubmit(
                 VGSRequest.VGSRequestBuilder()
@@ -31,5 +29,12 @@ internal class CheckoutActivity : BaseCheckoutActivity<VGSCheckoutConfiguration>
                     .build()
             )
         }
+    }
+
+    override fun hasCustomHeaders() = config.routeConfig.requestOptions.extraHeaders.isNotEmpty()
+
+    override fun initView(savedInstanceState: Bundle?) {
+        super.initView(savedInstanceState)
+        config.analyticTracker.log(InitEvent(InitEvent.ConfigType.CUSTOM))
     }
 }

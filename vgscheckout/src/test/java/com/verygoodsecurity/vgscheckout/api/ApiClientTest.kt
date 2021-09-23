@@ -62,8 +62,8 @@ class ApiClientTest {
     @Test
     fun getStore() {
         val client = Mockito.mock(ApiClient::class.java)
-        client.getTemporaryStorage()
+        client.getStorage()
 
-        Mockito.verify(client).getTemporaryStorage()
+        Mockito.verify(client).getStorage()
     }
 }

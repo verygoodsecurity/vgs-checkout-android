@@ -11,5 +11,5 @@ internal interface AccessibilityStatePreparer {
     fun unsubscribe()
     fun getDependencyListener(): DependencyListener
 
-    fun setAnalyticTracker(tr: AnalyticTracker)
+    fun setAnalyticTracker(tr: AnalyticTracker?)
 }
