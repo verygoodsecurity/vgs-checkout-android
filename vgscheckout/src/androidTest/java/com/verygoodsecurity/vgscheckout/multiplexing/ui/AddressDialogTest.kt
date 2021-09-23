@@ -57,17 +57,4 @@ class AddressDialogTest {
                 .check(ViewAssertions.matches(VGSViewMatchers.withText("Canada")))
         }
     }
-
-    @Test
-    fun countrySelect_selectCanada_postalAddressHintChanged() {
-        ActivityScenario.launch<CheckoutMultiplexingActivity>(defaultIntent).use {
-            // Act
-            ViewInteraction.onViewWithScrollTo(R.id.vgsTilCountry).perform(ViewActions.click())
-            Espresso.onView(ViewMatchers.withText("Canada")).perform(ViewActions.click())
-            Espresso.onView(ViewMatchers.withText("Ok")).perform(ViewActions.click())
-            //Assert
-            ViewInteraction.onViewWithScrollTo(R.id.vgsTilPostalAddress)
-                .check(ViewAssertions.matches(VGSViewMatchers.withHint("Postal Code")))
-        }
-    }
 }
