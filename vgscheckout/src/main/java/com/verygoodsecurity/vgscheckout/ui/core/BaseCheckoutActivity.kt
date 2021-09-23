@@ -38,6 +38,7 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.VGSCheckoutCVCOp
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.VGSCheckoutExpirationDateOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.core.VGSCheckoutFieldVisibility
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
+import com.verygoodsecurity.vgscheckout.util.CollectProvider
 import com.verygoodsecurity.vgscheckout.util.country.CountriesHelper
 import com.verygoodsecurity.vgscheckout.util.country.model.Country
 import com.verygoodsecurity.vgscheckout.util.country.model.PostalAddressType
@@ -53,7 +54,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
     protected val config: C by lazy { resolveConfig(intent) }
 
     protected val collect: VGSCollect by lazy {
-        resolveCollect().apply {
+        CollectProvider().get(this, config).apply {
             addOnResponseListeners(this@BaseCheckoutActivity)
         }
     }
@@ -93,8 +94,6 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
     private var selectedCountry: Country = CountriesHelper.countries.first()
 
     abstract fun resolveConfig(intent: Intent): C
-
-    abstract fun resolveCollect(): VGSCollect
 
     abstract fun handleSaveCard()
 
