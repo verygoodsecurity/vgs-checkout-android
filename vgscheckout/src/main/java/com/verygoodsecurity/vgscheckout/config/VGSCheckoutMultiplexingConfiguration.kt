@@ -22,6 +22,7 @@ class VGSCheckoutMultiplexingConfiguration private constructor(
     override val environment: String,
     override val routeConfig: VGSCheckoutRouteConfiguration,
     override val formConfig: VGSCheckoutFormConfiguration,
+    override val isAnalyticsEnabled: Boolean,
     private val createdFromParcel: Boolean
 ) : CheckoutConfiguration() {
 
@@ -36,6 +37,7 @@ class VGSCheckoutMultiplexingConfiguration private constructor(
         parcel.readString()!!,
         parcel.readParcelable(VGSCheckoutRouteConfiguration::class.java.classLoader)!!,
         parcel.readParcelable(VGSCheckoutFormConfiguration::class.java.classLoader)!!,
+        parcel.readInt() == 1,
         true
     )
 
@@ -47,13 +49,15 @@ class VGSCheckoutMultiplexingConfiguration private constructor(
     constructor(
         token: String,
         vaultID: String,
-        environment: String = DEFAULT_ENVIRONMENT
+        environment: String = DEFAULT_ENVIRONMENT,
+        isAnalyticsEnabled: Boolean = true
     ) : this(
         token,
         vaultID,
         environment,
         getRouteConfiguration(token),
         getFormConfig(),
+        isAnalyticsEnabled,
         false
     )
 
@@ -63,6 +67,7 @@ class VGSCheckoutMultiplexingConfiguration private constructor(
         parcel.writeString(environment)
         parcel.writeParcelable(routeConfig, flags)
         parcel.writeParcelable(formConfig, flags)
+        parcel.writeInt(if (isAnalyticsEnabled) 1 else 0)
     }
 
     override fun describeContents(): Int {

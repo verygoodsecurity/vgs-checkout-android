@@ -19,7 +19,11 @@ abstract class CheckoutConfiguration internal constructor() : Parcelable {
 
     abstract val formConfig: VGSCheckoutFormConfiguration
 
+    abstract val isAnalyticsEnabled: Boolean
+
     internal val analyticTracker: AnalyticTracker by lazy {
-        DefaultAnalyticsTracker(vaultID, environment, UUID.randomUUID().toString())
+        DefaultAnalyticsTracker(vaultID, environment, UUID.randomUUID().toString()).apply {
+            isEnabled = isAnalyticsEnabled
+        }
     }
 }
