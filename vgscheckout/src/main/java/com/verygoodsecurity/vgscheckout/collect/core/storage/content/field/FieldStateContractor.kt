@@ -4,7 +4,7 @@ import android.content.Context
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSError
 import com.verygoodsecurity.vgscheckout.collect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscheckout.collect.core.storage.StorageContractor
-import com.verygoodsecurity.vgscheckout.collect.VGSCollectLogger
+import com.verygoodsecurity.vgscheckout.util.logger.VGSCollectLogger
 import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
 
 /** @suppress */

@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.google.android.material.textfield.TextInputLayout
-import com.verygoodsecurity.vgscheckout.collect.VGSCollectLogger
+import com.verygoodsecurity.vgscheckout.util.logger.VGSCollectLogger
 import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
 import com.verygoodsecurity.vgscheckout.collect.view.internal.BaseInputField
 import com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout

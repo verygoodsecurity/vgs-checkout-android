@@ -9,7 +9,7 @@ import androidx.annotation.IntRange
 import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgscheckout.BuildConfig
 import com.verygoodsecurity.vgscheckout.R
-import com.verygoodsecurity.vgscheckout.collect.VGSCollectLogger
+import com.verygoodsecurity.vgscheckout.util.logger.VGSCollectLogger
 import com.verygoodsecurity.vgscheckout.collect.app.BaseTransmitActivity
 import com.verygoodsecurity.vgscheckout.collect.core.api.*
 import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.AnalyticTracker

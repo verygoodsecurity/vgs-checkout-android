@@ -1,7 +1,7 @@
 package com.verygoodsecurity.vgscheckout.collect.core.api
 
 import androidx.core.util.PatternsCompat
-import com.verygoodsecurity.vgscheckout.collect.VGSCollectLogger
+import com.verygoodsecurity.vgscheckout.util.logger.VGSCollectLogger
 import java.net.MalformedURLException
 import java.net.URL
 import java.util.regex.Pattern

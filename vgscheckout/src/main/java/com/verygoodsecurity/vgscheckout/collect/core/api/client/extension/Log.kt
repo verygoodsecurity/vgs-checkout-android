@@ -1,7 +1,7 @@
 package com.verygoodsecurity.vgscheckout.collect.core.api.client.extension
 
-import com.verygoodsecurity.vgscheckout.collect.VGSCollectLogger
-import com.verygoodsecurity.vgscheckout.collect.VGSCollectLogger.warn
+import com.verygoodsecurity.vgscheckout.util.logger.VGSCollectLogger
+import com.verygoodsecurity.vgscheckout.util.logger.VGSCollectLogger.warn
 
 internal fun Any.logException(e: Exception, tag: String? = null) {
     warn(tag ?: this::class.java.simpleName, "e: ${e::class.java}, message: ${e.message}")

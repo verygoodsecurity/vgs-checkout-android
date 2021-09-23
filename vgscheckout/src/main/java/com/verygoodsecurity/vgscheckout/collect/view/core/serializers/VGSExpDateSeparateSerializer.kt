@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgscheckout.collect.view.core.serializers
 
-import com.verygoodsecurity.vgscheckout.collect.VGSCollectLogger
+import com.verygoodsecurity.vgscheckout.util.logger.VGSCollectLogger
 import com.verygoodsecurity.vgscheckout.collect.core.api.client.extension.logException
 import java.text.SimpleDateFormat
 import java.util.*
