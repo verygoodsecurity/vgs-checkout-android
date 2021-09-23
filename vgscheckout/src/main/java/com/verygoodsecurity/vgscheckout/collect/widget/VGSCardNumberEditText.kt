@@ -6,7 +6,7 @@ import android.util.TypedValue
 import android.view.Gravity
 import android.view.inputmethod.EditorInfo
 import com.verygoodsecurity.vgscheckout.R
-import com.verygoodsecurity.vgscheckout.util.logger.VGSCollectLogger
+import com.verygoodsecurity.vgscheckout.util.logger.VGSCheckoutLogger
 import com.verygoodsecurity.vgscheckout.collect.core.model.state.FieldState
 import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
 import com.verygoodsecurity.vgscheckout.collect.view.card.BrandParams
@@ -158,7 +158,7 @@ internal class VGSCardNumberEditText @JvmOverloads constructor(
         if (c.params.rangeNumber.contains(digitCount)) {
             applyCardBrand(c)
         } else {
-            VGSCollectLogger.warn(
+            VGSCheckoutLogger.warn(
                 BrandParams::class.qualifiedName.toString(),
                 context.getString(R.string.vgs_checkout_error_custom_brand_mask_length, c.cardBrandName)
             )

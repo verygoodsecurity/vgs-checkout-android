@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgscheckout.collect.view.core.serializers
 
-import com.verygoodsecurity.vgscheckout.util.logger.VGSCollectLogger
+import com.verygoodsecurity.vgscheckout.util.logger.VGSCheckoutLogger
 import com.verygoodsecurity.vgscheckout.collect.core.api.client.extension.logException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -25,7 +25,7 @@ internal class VGSExpDateSeparateSerializer constructor(
         return try {
             val date = SimpleDateFormat(params.dateFormat, Locale.US).parse(params.date)
             if (date == null) {
-                VGSCollectLogger.debug(
+                VGSCheckoutLogger.debug(
                     VGSExpDateSeparateSerializer::class.java.simpleName,
                     "Can't parse date!"
                 )

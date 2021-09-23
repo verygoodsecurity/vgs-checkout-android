@@ -1,7 +1,7 @@
 package com.verygoodsecurity.vgscheckout.collect.core.api.client.extension
 
-import com.verygoodsecurity.vgscheckout.util.logger.VGSCollectLogger
-import com.verygoodsecurity.vgscheckout.util.logger.VGSCollectLogger.warn
+import com.verygoodsecurity.vgscheckout.util.logger.VGSCheckoutLogger
+import com.verygoodsecurity.vgscheckout.util.logger.VGSCheckoutLogger.warn
 
 internal fun Any.logException(e: Exception, tag: String? = null) {
     warn(tag ?: this::class.java.simpleName, "e: ${e::class.java}, message: ${e.message}")
@@ -15,7 +15,7 @@ internal fun Any.logRequest(
     payload: String?,
     tag: String? = null
 ) {
-    VGSCollectLogger.debug(
+    VGSCheckoutLogger.debug(
         tag ?: this::class.java.simpleName,
         """
             --> Send VGSCollectSDK request id: $requestId
@@ -35,7 +35,7 @@ internal fun Any.logResponse(
     headers: Map<String, String>,
     tag: String? = null
 ) {
-    VGSCollectLogger.debug(
+    VGSCheckoutLogger.debug(
         tag ?: this::class.java.simpleName,
         """
             <-- VGSCollectSDK request id: $requestId

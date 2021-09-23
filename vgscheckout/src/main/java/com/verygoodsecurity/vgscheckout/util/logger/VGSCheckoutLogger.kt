@@ -1,12 +1,12 @@
 package com.verygoodsecurity.vgscheckout.util.logger
 
 import android.util.Log
-import com.verygoodsecurity.vgscheckout.util.logger.VGSCollectLogger.Level.*
+import com.verygoodsecurity.vgscheckout.util.logger.VGSCheckoutLogger.Level.*
 
 /**
  * This object is used to log messages in VGS Collect SDK.
  */
-internal object VGSCollectLogger {
+internal object VGSCheckoutLogger {
 
     const val TAG = "VGSCollect"
 

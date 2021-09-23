@@ -9,7 +9,7 @@ import androidx.annotation.IntRange
 import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgscheckout.BuildConfig
 import com.verygoodsecurity.vgscheckout.R
-import com.verygoodsecurity.vgscheckout.util.logger.VGSCollectLogger
+import com.verygoodsecurity.vgscheckout.util.logger.VGSCheckoutLogger
 import com.verygoodsecurity.vgscheckout.collect.app.BaseTransmitActivity
 import com.verygoodsecurity.vgscheckout.collect.core.api.*
 import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.AnalyticTracker
@@ -54,7 +54,7 @@ internal class VGSCollect {
         override fun onStorageError(error: VGSError) {
             error.toVGSResponse(context).also { r ->
                 notifyAllListeners(r)
-                VGSCollectLogger.warn(InputFieldView.TAG, r.message)
+                VGSCheckoutLogger.warn(InputFieldView.TAG, r.message)
             }
         }
     }
@@ -344,7 +344,7 @@ internal class VGSCollect {
             if (it.isValid.not()) {
                 VGSError.INPUT_DATA_NOT_VALID.toVGSResponse(context, it.fieldName).also { r ->
                     notifyAllListeners(r)
-                    VGSCollectLogger.warn(InputFieldView.TAG, r.message)
+                    VGSCheckoutLogger.warn(InputFieldView.TAG, r.message)
                 }
 
                 isValid = false
@@ -513,7 +513,7 @@ internal class VGSCollect {
 
         fun printPortDenied() {
             if (port.isValidPort()) {
-                VGSCollectLogger.warn(message = context.getString(R.string.vgs_checkout_error_custom_port_is_not_allowed))
+                VGSCheckoutLogger.warn(message = context.getString(R.string.vgs_checkout_error_custom_port_is_not_allowed))
             }
         }
 
@@ -521,11 +521,11 @@ internal class VGSCollect {
             val host = getHost(url)
             if (host.isValidIp()) {
                 if (!host.isIpAllowed()) {
-                    VGSCollectLogger.warn(message = context.getString(R.string.vgs_checkout_error_custom_ip_is_not_allowed))
+                    VGSCheckoutLogger.warn(message = context.getString(R.string.vgs_checkout_error_custom_ip_is_not_allowed))
                     return id.setupURL(environment)
                 }
                 if (!environment.isSandbox()) {
-                    VGSCollectLogger.warn(message = context.getString(R.string.vgs_checkout_error_env_incorrect))
+                    VGSCheckoutLogger.warn(message = context.getString(R.string.vgs_checkout_error_env_incorrect))
                     return id.setupURL(environment)
                 }
                 return host.setupLocalhostURL(port)
@@ -542,7 +542,7 @@ internal class VGSCollect {
 
     private fun getHost(url: String) = url.toHost().also {
         if (it != url) {
-            VGSCollectLogger.debug(message = "Hostname will be normalized to the $it")
+            VGSCheckoutLogger.debug(message = "Hostname will be normalized to the $it")
         }
     }
 
@@ -560,7 +560,7 @@ internal class VGSCollect {
                     client.setHost(it.body)
                 } else {
                     context.run {
-                        VGSCollectLogger.warn(
+                        VGSCheckoutLogger.warn(
                             message = String.format(
                                 getString(R.string.vgs_checkout_error_custom_host_wrong),
                                 host
@@ -631,7 +631,7 @@ internal class VGSCollect {
          */
         fun setHostname(cname: String): Builder = this.apply {
             if (!cname.isURLValid()) {
-                VGSCollectLogger.warn(message = context.getString(R.string.vgs_checkout_error_custom_host_wrong_short))
+                VGSCheckoutLogger.warn(message = context.getString(R.string.vgs_checkout_error_custom_host_wrong_short))
                 return@apply
             }
             this.host = cname
