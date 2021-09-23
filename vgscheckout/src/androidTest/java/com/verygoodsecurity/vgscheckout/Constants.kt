@@ -3,6 +3,8 @@ package com.verygoodsecurity.vgscheckout
 object Constants {
 
     const val VAULT_ID = "tnt1a2b3c4y"
+    const val VAULT_ID_2 = "tntshmljla7"
+    const val VAULT_ID_3 = "tntpszqgikn"
     const val CHECKOUT_RESULT_CONTRACT_NAME =
         "com.verygoodsecurity.vgscheckout.model.extra_checkout_args"
 
