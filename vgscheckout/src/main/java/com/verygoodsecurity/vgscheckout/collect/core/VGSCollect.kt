@@ -505,9 +505,8 @@ internal class VGSCollect {
         }
     }
 
-    private var hasCustomHostname = false
-
-    fun hasCustomHostname() = hasCustomHostname
+    var hasCustomHostname = false
+    private set
 
     private fun generateBaseUrl(id: String, environment: String, url: String?, port: Int?): String {
 

@@ -489,7 +489,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
             analyticTracker.log(
                 RequestEvent(
                     isSuccessful,
-                    collect.hasCustomHostname(),
+                    collect.hasCustomHostname,
                     routeConfig.requestOptions.extraData.isNotEmpty(),
                     hasCustomHeaders(),
                     routeConfig.requestOptions.mergePolicy,
