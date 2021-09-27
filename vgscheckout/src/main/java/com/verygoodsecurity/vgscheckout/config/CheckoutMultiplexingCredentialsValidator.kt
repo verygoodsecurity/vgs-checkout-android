@@ -1,5 +1,6 @@
 package com.verygoodsecurity.vgscheckout.config
 
+import android.util.Log
 import com.verygoodsecurity.vgscheckout.util.extension.decodeJwtPayload
 import com.verygoodsecurity.vgscheckout.util.extension.toJson
 
@@ -13,6 +14,7 @@ internal object CheckoutMultiplexingCredentialsValidator {
 
     @Throws(IllegalArgumentException::class)
     fun validateJWT(vaultID: String, token: String): String {
+        Log.e("test", "$vaultID - $token")
         val payload = token.decodeJwtPayload()?.toJson()
             ?: throw IllegalArgumentException("Can't parse invalid JWT token.")
 
