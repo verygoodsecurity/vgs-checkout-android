@@ -1,5 +1,6 @@
 package com.verygoodsecurity.vgscheckout.collect.core.api.analityc
 
+import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgscheckout.collect.core.HTTPMethod
 import com.verygoodsecurity.vgscheckout.collect.core.api.VGSHttpBodyFormat
 import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.core.Event
@@ -10,15 +11,21 @@ import com.verygoodsecurity.vgscheckout.collect.util.extension.toJSON
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
-internal class DefaultAnalyticsTracker(
+internal class DefaultAnalyticsTracker @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE) constructor(
     private val vaultID: String,
     private val environment: String,
-    private val formID: String
+    private val formID: String,
+    private val client: ApiClient
 ) : AnalyticTracker {
 
     override var isEnabled: Boolean = true
 
-    private val client: ApiClient by lazy { ApiClient.create(false, getExecutor()) }
+    constructor(vaultID: String, environment: String, formID: String) : this(
+        vaultID,
+        environment,
+        formID,
+        ApiClient.create(false, getExecutor())
+    )
 
     override fun log(event: Event) {
         if (isEnabled.not()) {
@@ -39,14 +46,14 @@ internal class DefaultAnalyticsTracker(
         )
     }
 
-    private fun getExecutor(): ExecutorService {
-        return Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors())
-    }
-
     companion object {
 
         private const val API_URL = "https://vgs-collect-keeper.apps.verygood.systems/vgs"
 
         private const val ANALYTICS_REQUEST_TIMEOUT = 60_000L
+
+        private fun getExecutor(): ExecutorService {
+            return Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors())
+        }
     }
 }

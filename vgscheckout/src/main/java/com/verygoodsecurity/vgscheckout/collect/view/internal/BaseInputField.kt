@@ -13,7 +13,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.widget.addTextChangedListener
 import com.google.android.material.textfield.TextInputEditText
 import com.verygoodsecurity.vgscheckout.R
-import com.verygoodsecurity.vgscheckout.collect.VGSCollectLogger
+import com.verygoodsecurity.vgscheckout.util.logger.VGSCheckoutLogger
 import com.verygoodsecurity.vgscheckout.collect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.AnalyticTracker
 import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.AutofillEvent
@@ -371,7 +371,7 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
     }
 
     protected fun printWarning(tag: String, resId: Int) {
-        VGSCollectLogger.warn(tag, context.getString(resId))
+        VGSCheckoutLogger.warn(tag, context.getString(resId))
     }
 
     open fun applyValidationRule(rule: ValidationRule) {

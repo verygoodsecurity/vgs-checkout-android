@@ -1,18 +1,18 @@
 package com.verygoodsecurity.vgscheckout.config
 
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 
 private const val VAULT_ID = "tntxxxxxxx"
 private const val VALID_JWT =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzA1MjIyODcsImlhdCI6MTYzMDUyMTk4NywianRpIjoiNWVjZGVyMzItOWM2My00YzAyLWE1MjMtYWE4MjRjYzI3NDRjIiwiaXNzIjoiaHR0cHM6Ly9hdXRoLnZlcnlnb29kc2VjdXJpdHkuY29tL2F1dGgvcmVhbG1zL3ZncyIsImF1ZCI6Im11bHRpcGxleGluZy1hcHAtdG50c2htbGpsYTciLCJzdWIiOiI3ZmZmZDFkZS1hM2UyLTRkMDAtYjAzZi00Mjg4MjJhMmFlOWYiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJtdWx0aXBsZXhpbmctYXBwLXRudHh4eHh4eHgtVVM2YmRQR3BGaGhqYml0eVFQd3JrZWNOIiwic2Vzc2lvbl9zdGF0ZSI6IjQzMTJkODcyLTNmZWUtNDlhMy05OGNmLTc1YjAwMDA5N2U0NiIsImFjciI6IjEiLCJyZXNvdXJjZV9hY2Nlc3MiOnsibXVsdGlwbGV4aW5nLWFwcC10bnR4eHh4eHh4Ijp7InJvbGVzIjpbImZpbmFuY2lhbC1pbnN0cnVtZW50czp3cml0ZSJdfX0sInNjb3BlIjoidXNlcl9pZCBzZXJ2aWNlLWFjY291bnQiLCJzZXJ2aWNlX2FjY291bnQiOnRydWUsImNsaWVudElkIjoibXVsdGlwbGV4aW5nLWFwcC10bnR4eHh4eHh4LVVTNmJkUEdwRmhoamJpdHlRUHdya2VjTiIsImNsaWVudEhvc3QiOiIxNzYuMTAwLjEwNS4yMzUiLCJjbGllbnRBZGRyZXNzIjoiMTc2LjEwMC4xMDUuMjM1In0.CBnEWsQb4fOjpI2T1SUcZ2OWqWIE1omnGwUnrjQQ604"
-private const val INVALID_JWT =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyJleHAiOjE2MzA1MjIyODcsImlhdCI6MTYzMDUyMTk4NywianRpIjoiNWVjZGVyMzItOWM2My00YzAyLWE1MjMtYWE4MjRjYzI3NDRjIiwiaXNzIjoiaHR0cHM6Ly9hdXRoLnZlcnlnb29kc2VjdXJpdHkuY29tL2F1dGgvcmVhbG1zL3ZncyIsImF1ZCI6Im11bHRpcGxleGluZy1hcHAtdG50c2htbGpsYTciLCJzdWIiOiI3ZmZmZDFkZS1hM2UyLTRkMDAtYjAzZi00Mjg4MjJhMmFlOWYiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJtdWx0aXBsZXhpbmctYXBwLXRudHh4eHh4eHgtVVM2YmRQR3BGaGhqYml0eVFQd3JrZWNOIiwic2Vzc2lvbl9zdGF0ZSI6IjQzMTJkODcyLTNmZWUtNDlhMy05OGNmLTc1YjAwMDA5N2U0NiIsImFjciI6IjEiLCJyZXNvdXJjZV9hY2Nlc3MiOnsibXVsdGlwbGV4aW5nLWFwcC10bnR4eHh4eHh4Ijp7InJvbGVzIjpbImZpbmFuY2lhbC1pbnN0cnVtZW50czp3cml0ZSIsInRyYW5zZmVyczp3cml0ZSJdfX0sInNjb3BlIjoidXNlcl9pZCBzZXJ2aWNlLWFjY291bnQiLCJzZXJ2aWNlX2FjY291bnQiOnRydWUsImNsaWVudElkIjoibXVsdGlwbGV4aW5nLWFwcC10bnR4eHh4eHh4LVVTNmJkUEdwRmhoamJpdHlRUHdya2VjTiIsImNsaWVudEhvc3QiOiIxNzYuMTAwLjEwNS4yMzUiLCJjbGllbnRBZGRyZXNzIjoiMTc2LjEwMC4xMDUuMjM1In0SPLLms7ed5aLOEo3LLQzU0r-D_eTAx-GNrdsDLCLCu4"
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MjkzNzAyMjUsImlhdCI6MTYyOTM2OTkyNSwicmVzb3VyY2VfYWNjZXNzIjp7Im11bHRpcGxleGluZy1hcHAtdG50eHh4eHh4eCI6eyJyb2xlcyI6WyJmaW5hbmNpYWwtaW5zdHJ1bWVudHM6d3JpdGUiXX19fQ.-zjySsFy3G3cy-wkw1VpHRUS10OmKlI_rElg_4_3lsw"
+private const val JWT_WITHOUT_ROLES =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MjkzNzAyMjUsImlhdCI6MTYyOTM2OTkyNSwicmVzb3VyY2VfYWNjZXNzIjp7Im11bHRpcGxleGluZy1hcHAtdG50eHh4eHh4eCI6IlRFU1QifX0.WmsmpplJ9G6IW-D9RaZV9XS4yuXw6-7k0c28bEP7YCY"
+private const val JWT_WITH_RESTRICTED_ROLES =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MjkzNzAyMjUsImlhdCI6MTYyOTM2OTkyNSwicmVzb3VyY2VfYWNjZXNzIjp7Im11bHRpcGxleGluZy1hcHAtdG50eHh4eHh4eCI6eyJyb2xlcyI6WyJmaW5hbmNpYWwtaW5zdHJ1bWVudHM6d3JpdGUiLCJ0cmFuc2ZlcnM6d3JpdGUiXX19fQ.4MLpBR9-zgVAulInJq4iHLL_c7A79v_b-W7BWjr2fJU"
 private const val EMPTY_JWT = ""
 
-@RunWith(RobolectricTestRunner::class)
 class CheckoutMultiplexingCredentialsValidatorTest {
 
     @Test
@@ -24,14 +24,69 @@ class CheckoutMultiplexingCredentialsValidatorTest {
     }
 
     @Test(expected = IllegalArgumentException::class)
-    fun createMultiplexingConfig_invalidJWT_exceptionThrown() {
-        // Act
-        VGSCheckoutMultiplexingConfiguration(INVALID_JWT, VAULT_ID)
-    }
-
-    @Test(expected = IllegalArgumentException::class)
     fun createMultiplexingConfig_emptyJWT_exceptionThrown() {
         // Act
         VGSCheckoutMultiplexingConfiguration(EMPTY_JWT, VAULT_ID)
     }
+
+    @Test
+    fun createMultiplexingConfig_emptyJWT_correctMessage() {
+        // Arrange
+        val expectedMessage = "Can't parse invalid JWT token."
+        var exception: Exception? = null
+        // Act
+        try {
+            VGSCheckoutMultiplexingConfiguration(EMPTY_JWT, VAULT_ID)
+        } catch (e: Exception) {
+            exception = e
+        }
+        // Assert
+        assertNotNull(exception)
+        assertEquals(expectedMessage, exception?.message)
+    }
+
+    @Test(expected = IllegalArgumentException::class)
+    fun createMultiplexingConfig_JWTWithoutRoles_exceptionThrown() {
+        // Act
+        VGSCheckoutMultiplexingConfiguration(JWT_WITHOUT_ROLES, VAULT_ID)
+    }
+
+    @Test
+    fun createMultiplexingConfig_JWTWithoutRoles_correctMessage() {
+        // Arrange
+        val expectedMessage = "JWT token doesn't contains roles."
+        var exception: Exception? = null
+        // Act
+        try {
+            VGSCheckoutMultiplexingConfiguration(JWT_WITHOUT_ROLES, VAULT_ID)
+        } catch (e: Exception) {
+            exception = e
+        }
+        // Assert
+        assertNotNull(exception)
+        assertEquals(expectedMessage, exception?.message)
+    }
+
+//    TODO: Uncomment before public release
+//    @Test(expected = IllegalArgumentException::class)
+//    fun createMultiplexingConfig_JWTWithRestrictedRole_exceptionThrown() {
+//        // Act
+//        VGSCheckoutMultiplexingConfiguration(JWT_WITH_RESTRICTED_ROLES, VAULT_ID)
+//    }
+//
+//    @Test
+//    fun createMultiplexingConfig_JWTWithRestrictedRole_correctMessage() {
+//        // Arrange
+//        val expectedMessage = "JWT token contains restricted role [transfers:write]."
+//        var exception: Exception? = null
+//        // Act
+//        try {
+//            VGSCheckoutMultiplexingConfiguration(JWT_WITH_RESTRICTED_ROLES, VAULT_ID)
+//        } catch (e: Exception) {
+//            exception = e
+//        }
+//        // Assert
+//        assertNotNull(exception)
+//        assertEquals(expectedMessage, exception?.message)
+//    }
 }

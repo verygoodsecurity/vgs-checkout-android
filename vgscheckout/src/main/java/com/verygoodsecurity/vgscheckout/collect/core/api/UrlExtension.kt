@@ -1,7 +1,7 @@
 package com.verygoodsecurity.vgscheckout.collect.core.api
 
 import androidx.core.util.PatternsCompat
-import com.verygoodsecurity.vgscheckout.collect.VGSCollectLogger
+import com.verygoodsecurity.vgscheckout.util.logger.VGSCheckoutLogger
 import java.net.MalformedURLException
 import java.net.URL
 import java.util.regex.Pattern
@@ -12,7 +12,7 @@ internal fun String.setupLocalhostURL(port: Int?): String {
     val SCHEME = "http://"
 
     val prt = if (!port.isValidPort()) {
-        VGSCollectLogger.warn(message = "Port is not specified")
+        VGSCheckoutLogger.warn(message = "Port is not specified")
         ""
     } else {
         DIVIDER + port
@@ -27,11 +27,11 @@ internal fun String.setupLocalhostURL(port: Int?): String {
 internal fun String.setupURL(rawValue: String): String {
     return when {
         this.isEmpty() || !isTennantIdValid() -> {
-            VGSCollectLogger.warn(message = "Vault ID is not valid")
+            VGSCheckoutLogger.warn(message = "Vault ID is not valid")
             return ""
         }
         rawValue.isEmpty() || !rawValue.isEnvironmentValid() -> {
-            VGSCollectLogger.warn(message = "Environment is not valid")
+            VGSCheckoutLogger.warn(message = "Environment is not valid")
             return ""
         }
         else -> this.buildURL(rawValue)

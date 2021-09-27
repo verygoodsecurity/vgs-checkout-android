@@ -51,7 +51,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/vgs_checkout_margin_padding_size_xsmall"
                     android:layout_marginBottom="@dimen/vgs_checkout_margin_padding_size_micro"
-                    app:hint="@string/vgs_checkout_card_holder_subtitle">
+                    app:hint="@string/vgs_checkout_card_holder_hint">
 
                     <com.verygoodsecurity.vgscheckout.collect.widget.PersonNameEditText
                         android:id="@+id/vgsEtCardHolder"
@@ -66,7 +66,7 @@
                     style="@style/VGSCheckout.TextInputLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:hint="@string/vgs_checkout_card_number_subtitle">
+                    app:hint="@string/vgs_checkout_card_number_hint">
 
                     <com.verygoodsecurity.vgscheckout.collect.widget.VGSCardNumberEditText
                         android:id="@+id/vgsEtCardNumber"
@@ -90,7 +90,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        app:hint="@string/vgs_checkout_card_expiration_date_subtitle">
+                        app:hint="@string/vgs_checkout_card_expiration_date_hint">
 
                         <com.verygoodsecurity.vgscheckout.collect.widget.ExpirationDateEditText
                             android:id="@+id/vgsEtExpirationDate"
@@ -113,7 +113,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        app:hint="@string/vgs_checkout_card_verification_code_subtitle">
+                        app:hint="@string/vgs_checkout_security_code_hint">
 
                         <com.verygoodsecurity.vgscheckout.collect.widget.CardVerificationCodeEditText
                             android:id="@+id/vgsEtSecurityCode"
@@ -151,7 +151,7 @@
                     android:layout_marginTop="@dimen/vgs_checkout_margin_padding_size_xsmall"
                     app:endIconDrawable="@drawable/vgs_checkout_ic_baseline_arrow_drop_down_white_24"
                     app:endIconModes="custom"
-                    app:hint="@string/vgs_checkout_address_info_country_subtitle">
+                    app:hint="@string/vgs_checkout_address_info_country_hint">
 
                     <com.verygoodsecurity.vgscheckout.collect.widget.VGSEditText
                         android:id="@+id/vgsEtCountry"
@@ -168,7 +168,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/vgs_checkout_margin_padding_size_micro"
-                    app:hint="@string/vgs_checkout_address_info_address_line1_subtitle">
+                    app:hint="@string/vgs_checkout_address_info_address_line1_hint">
 
                     <com.verygoodsecurity.vgscheckout.collect.widget.VGSEditText
                         android:id="@+id/vgsEtAddress"
@@ -184,7 +184,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/vgs_checkout_margin_padding_size_micro"
-                    app:hint="@string/vgs_checkout_address_info_address_line2_subtitle">
+                    app:hint="@string/vgs_checkout_address_info_address_line2_hint">
 
                     <com.verygoodsecurity.vgscheckout.collect.widget.VGSEditText
                         android:id="@+id/vgsEtAddressOptional"
@@ -226,7 +226,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        app:hint="@string/vgs_checkout_address_info_zip_subtitle">
+                        app:hint="@string/vgs_checkout_address_info_zip_hint">
 
                         <com.verygoodsecurity.vgscheckout.collect.widget.VGSEditText
                             android:id="@+id/vgsEtPostalAddress"
