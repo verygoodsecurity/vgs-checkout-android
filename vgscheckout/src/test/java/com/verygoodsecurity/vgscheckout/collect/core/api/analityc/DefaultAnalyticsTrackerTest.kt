@@ -35,7 +35,7 @@ class DefaultAnalyticsTrackerTest {
         // Act
         tracker.log(event)
         // Assert
-        verify(mockApiClient, atMostOnce()).enqueue(
+        verify(mockApiClient, times(1)).enqueue(
             capture(networkRequestCaptor),
             capture(callbackCaptor)
         )
@@ -81,7 +81,7 @@ class DefaultAnalyticsTrackerTest {
         // Act
         tracker.log(event)
         // Assert
-        verify(mockApiClient, atMostOnce()).enqueue(
+        verify(mockApiClient, times(1)).enqueue(
             capture(networkRequestCaptor),
             capture(callbackCaptor)
         )
