@@ -66,7 +66,7 @@ class AddressDialogTest {
             Espresso.onView(ViewMatchers.withText("Ok")).perform(ViewActions.click())
             //Assert
             ViewInteraction.onViewWithScrollTo(R.id.vgsTilPostalAddress)
-                .check(ViewAssertions.matches(VGSViewMatchers.withHint("Postal Code")))
+                .check(ViewAssertions.matches(VGSViewMatchers.withHint("Postal code")))
         }
     }
 }

@@ -71,7 +71,8 @@ class MultiplexingAddressDialogTest {
             Espresso.onView(ViewMatchers.withText("Ok")).perform(ViewActions.click())
             //Assert
             ViewInteraction.onViewWithScrollTo(R.id.vgsTilPostalAddress)
-                .check(ViewAssertions.matches(VGSViewMatchers.withHint("Postal Code")))
+            ViewInteraction.onViewWithScrollTo(R.id.vgsTilPostalAddress)
+                .check(ViewAssertions.matches(VGSViewMatchers.withHint("Postal code")))
         }
     }
 }
