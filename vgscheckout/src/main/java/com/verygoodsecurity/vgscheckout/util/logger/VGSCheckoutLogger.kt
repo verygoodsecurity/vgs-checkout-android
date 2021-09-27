@@ -1,14 +1,14 @@
-package com.verygoodsecurity.vgscheckout.collect
+package com.verygoodsecurity.vgscheckout.util.logger
 
 import android.util.Log
-import com.verygoodsecurity.vgscheckout.collect.VGSCollectLogger.Level.*
+import com.verygoodsecurity.vgscheckout.util.logger.VGSCheckoutLogger.Level.*
 
 /**
  * This object is used to log messages in VGS Collect SDK.
  */
-internal object VGSCollectLogger {
+object VGSCheckoutLogger {
 
-    const val TAG = "VGSCollect"
+    const val TAG = "VGSCheckout"
 
     /** Current priority level for filtering debugging logs */
     var logLevel: Level = DEBUG
@@ -51,8 +51,8 @@ internal object VGSCollectLogger {
             val log: String = if (prefix.isNullOrEmpty()) message else "$prefix: $message"
 
             when (level) {
-                DEBUG -> Log.d(this.tag, log)
-                WARN -> Log.w(this.tag, log)
+                DEBUG -> Log.d(tag, log)
+                WARN -> Log.w(tag, log)
                 NONE -> {
                 }
             }

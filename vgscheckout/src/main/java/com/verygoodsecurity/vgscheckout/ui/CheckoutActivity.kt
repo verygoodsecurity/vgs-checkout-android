@@ -16,8 +16,6 @@ internal class CheckoutActivity : BaseCheckoutActivity<VGSCheckoutConfiguration>
     override fun resolveConfig(intent: Intent) =
         CheckoutResultContract.Args.fromIntent<VGSCheckoutConfiguration>(intent).config
 
-    override fun resolveCollect() = CollectProvider().get(this, config)
-
     override fun handleSaveCard() {
         with(config.routeConfig) {
             collect.asyncSubmit(

@@ -38,6 +38,7 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.VGSCheckoutCVCOp
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.VGSCheckoutExpirationDateOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.core.VGSCheckoutFieldVisibility
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
+import com.verygoodsecurity.vgscheckout.util.CollectProvider
 import com.verygoodsecurity.vgscheckout.util.country.CountriesHelper
 import com.verygoodsecurity.vgscheckout.util.country.model.Country
 import com.verygoodsecurity.vgscheckout.util.country.model.PostalAddressType
@@ -53,7 +54,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
     protected val config: C by lazy { resolveConfig(intent) }
 
     protected val collect: VGSCollect by lazy {
-        resolveCollect().apply {
+        CollectProvider().get(this, config).apply {
             addOnResponseListeners(this@BaseCheckoutActivity)
         }
     }
@@ -93,8 +94,6 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
     private var selectedCountry: Country = CountriesHelper.countries.first()
 
     abstract fun resolveConfig(intent: Intent): C
-
-    abstract fun resolveCollect(): VGSCollect
 
     abstract fun handleSaveCard()
 
@@ -281,8 +280,8 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
 
     @StringRes
     private fun getPostalAddressHint() = when (selectedCountry.postalAddressType) {
-        PostalAddressType.ZIP -> R.string.vgs_checkout_address_info_zip_subtitle
-        PostalAddressType.POSTAL -> R.string.vgs_checkout_address_info_postal_code_subtitle
+        PostalAddressType.ZIP -> R.string.vgs_checkout_address_info_zip_hint
+        PostalAddressType.POSTAL -> R.string.vgs_checkout_address_info_postal_code_hint
     }
 
     @StringRes
@@ -352,8 +351,8 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
         val isSecurityCodeValid = validate(
             securityCodeEt,
             securityCodeTil,
-            R.string.vgs_checkout_card_verification_code_empty_error,
-            R.string.vgs_checkout_card_verification_code_invalid_error
+            R.string.vgs_checkout_security_code_empty_error,
+            R.string.vgs_checkout_security_code_invalid_error
         )
         result.addIf(!isSecurityCodeValid, "cvc")
 
@@ -370,7 +369,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
         val isAddressValid = validate(
             addressEt,
             addressTil,
-            R.string.vgs_checkout_address_info_address_line1_empty_error
+            R.string.vgs_checkout_address_info_line1_empty_error
         )
         result.addIf(!isAddressValid, "addressLine1")
 
@@ -453,8 +452,8 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
         MaterialAlertDialogBuilder(this)
             .setTitle(R.string.vgs_checkout_close_dialog_title)
             .setMessage(R.string.vgs_checkout_close_dialog_description)
-            .setNegativeButton(R.string.vgs_checkout_close_dialog_cancel, null)
-            .setPositiveButton(R.string.vgs_checkout_close_dialog_ok) { _, _ -> onConfirmed.invoke() }
+            .setNegativeButton(R.string.vgs_checkout_close_dialog_negative_button_title, null)
+            .setPositiveButton(R.string.vgs_checkout_close_dialog_positive_button_title) { _, _ -> onConfirmed.invoke() }
             .show()
     }
 
@@ -466,8 +465,8 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
         MaterialAlertDialogBuilder(this)
             .setTitle(R.string.vgs_checkout_select_country_dialog_title)
             .setSingleChoiceItems(countryNames, selectedIndex) { _, which -> selected = which }
-            .setNegativeButton(R.string.vgs_checkout_close_dialog_cancel, null)
-            .setPositiveButton(R.string.vgs_checkout_close_dialog_ok) { _, _ ->
+            .setNegativeButton(R.string.vgs_checkout_close_dialog_negative_button_title, null)
+            .setPositiveButton(R.string.vgs_checkout_close_dialog_positive_button_title) { _, _ ->
                 countries.getOrNull(selected)?.let {
                     selectedCountry = it
                     updateCountryView()
@@ -478,9 +477,9 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
     }
 
     private fun showNetworkConnectionErrorSnackBar() {
-        val message = getString(R.string.vgs_checkout_network_connection_error)
+        val message = getString(R.string.vgs_checkout_no_network_error)
         Snackbar.make(findViewById(R.id.llRoot), message, Snackbar.LENGTH_LONG)
-            .setAction(getString(R.string.vgs_checkout_retry)) { saveCard() }
+            .setAction(getString(R.string.vgs_checkout_no_network_retry)) { saveCard() }
             .show()
     }
 

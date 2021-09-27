@@ -1,7 +1,7 @@
 package com.verygoodsecurity.vgscheckout.collect.core.api.client.extension
 
-import com.verygoodsecurity.vgscheckout.collect.VGSCollectLogger
-import com.verygoodsecurity.vgscheckout.collect.VGSCollectLogger.warn
+import com.verygoodsecurity.vgscheckout.util.logger.VGSCheckoutLogger
+import com.verygoodsecurity.vgscheckout.util.logger.VGSCheckoutLogger.warn
 
 internal fun Any.logException(e: Exception, tag: String? = null) {
     warn(tag ?: this::class.java.simpleName, "e: ${e::class.java}, message: ${e.message}")
@@ -15,14 +15,14 @@ internal fun Any.logRequest(
     payload: String?,
     tag: String? = null
 ) {
-    VGSCollectLogger.debug(
+    VGSCheckoutLogger.debug(
         tag ?: this::class.java.simpleName,
         """
-            --> Send VGSCollectSDK request id: $requestId
-            --> Send VGSCollectSDK request url: $requestUrl
-            --> Send VGSCollectSDK method: $method
-            --> Send VGSCollectSDK request headers: $headers
-            --> Send VGSCollectSDK request payload: $payload
+            --> Send VGSCheckout request id: $requestId
+            --> Send VGSCheckout request url: $requestUrl
+            --> Send VGSCheckout method: $method
+            --> Send VGSCheckout request headers: $headers
+            --> Send VGSCheckout request payload: $payload
         """
     )
 }
@@ -35,14 +35,14 @@ internal fun Any.logResponse(
     headers: Map<String, String>,
     tag: String? = null
 ) {
-    VGSCollectLogger.debug(
+    VGSCheckoutLogger.debug(
         tag ?: this::class.java.simpleName,
         """
-            <-- VGSCollectSDK request id: $requestId
-            <-- VGSCollectSDK request url: $requestUrl
-            <-- VGSCollectSDK response code: $responseCode
-            <-- VGSCollectSDK response message: $responseMessage
-            <-- VGSCollectSDK response headers: $headers
+            <-- VGSCheckout request id: $requestId
+            <-- VGSCheckout request url: $requestUrl
+            <-- VGSCheckout response code: $responseCode
+            <-- VGSCheckout response message: $responseMessage
+            <-- VGSCheckout response headers: $headers
         """
     )
 }

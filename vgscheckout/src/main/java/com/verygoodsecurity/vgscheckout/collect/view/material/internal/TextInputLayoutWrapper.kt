@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.google.android.material.textfield.TextInputLayout
-import com.verygoodsecurity.vgscheckout.collect.VGSCollectLogger
+import com.verygoodsecurity.vgscheckout.util.logger.VGSCheckoutLogger
 import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
 import com.verygoodsecurity.vgscheckout.collect.view.internal.BaseInputField
 import com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout
@@ -116,7 +116,7 @@ internal class TextInputLayoutWrapper @JvmOverloads constructor(
                 }
                 is ViewGroup -> this
                 else -> {
-                    VGSCollectLogger.warn(VGSTextInputLayout.TAG, "${this::class.java.name} is not VGS EditText")
+                    VGSCheckoutLogger.warn(VGSTextInputLayout.TAG, "${this::class.java.name} is not VGS EditText")
                     null
                 }
             }
