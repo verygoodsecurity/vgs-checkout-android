@@ -83,31 +83,26 @@ class DefaultMultiplexingSetupTest {
             Espresso.onView(ViewMatchers.withId(R.id.vgsEtCountry))
                 .check(ViewAssertions.matches(VGSViewMatchers.withText("United States")))
 
-            ViewInteraction.onViewWithScrollTo(R.id.vgsTilAddress).also {
-                Espresso.onView(ViewMatchers.withId(R.id.vgsEtAddress)).check(
-                    ViewAssertions.matches(VGSViewMatchers.withText(""))
-                )
-            }
-            ViewInteraction.onViewWithScrollTo(R.id.vgsTilAddressOptional).also {
-                Espresso.onView(ViewMatchers.withId(R.id.vgsEtAddressOptional)).check(
-                    ViewAssertions.matches(VGSViewMatchers.withText(""))
-                )
-            }
-            ViewInteraction.onViewWithScrollTo(R.id.vgsTilAddress).also {
-                Espresso.onView(ViewMatchers.withId(R.id.vgsEtAddress)).check(
-                    ViewAssertions.matches(VGSViewMatchers.withText(""))
-                )
-            }
-            ViewInteraction.onViewWithScrollTo(R.id.vgsTilCity).also {
-                Espresso.onView(ViewMatchers.withId(R.id.vgsEtCity)).check(
-                    ViewAssertions.matches(VGSViewMatchers.withText(""))
-                )
-            }
-            ViewInteraction.onViewWithScrollTo(R.id.vgsTilPostalAddress).also {
-                Espresso.onView(ViewMatchers.withId(R.id.vgsEtPostalAddress)).check(
-                    ViewAssertions.matches(VGSViewMatchers.withText(""))
-                )
-            }
+            ViewInteraction.onViewWithScrollTo(R.id.vgsTilAddress)
+            Espresso.onView(ViewMatchers.withId(R.id.vgsEtAddress)).check(
+                ViewAssertions.matches(VGSViewMatchers.withText(""))
+            )
+            ViewInteraction.onViewWithScrollTo(R.id.vgsTilAddressOptional)
+            Espresso.onView(ViewMatchers.withId(R.id.vgsEtAddressOptional)).check(
+                ViewAssertions.matches(VGSViewMatchers.withText(""))
+            )
+            ViewInteraction.onViewWithScrollTo(R.id.vgsTilAddress)
+            Espresso.onView(ViewMatchers.withId(R.id.vgsEtAddress)).check(
+                ViewAssertions.matches(VGSViewMatchers.withText(""))
+            )
+            ViewInteraction.onViewWithScrollTo(R.id.vgsTilCity)
+            Espresso.onView(ViewMatchers.withId(R.id.vgsEtCity)).check(
+                ViewAssertions.matches(VGSViewMatchers.withText(""))
+            )
+            ViewInteraction.onViewWithScrollTo(R.id.vgsTilPostalAddress)
+            Espresso.onView(ViewMatchers.withId(R.id.vgsEtPostalAddress)).check(
+                ViewAssertions.matches(VGSViewMatchers.withText(""))
+            )
         }
     }
 

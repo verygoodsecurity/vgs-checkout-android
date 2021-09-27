@@ -78,31 +78,26 @@ class DefaultCheckoutSetupTest {
             onView(withId(R.id.vgsEtCountry))
                 .check(matches(VGSViewMatchers.withText("United States")))
 
-            onViewWithScrollTo(R.id.vgsTilAddress).also {
-                onView(withId(R.id.vgsEtAddress)).check(
-                    matches(VGSViewMatchers.withText(""))
-                )
-            }
-            onViewWithScrollTo(R.id.vgsTilAddressOptional).also {
-                onView(withId(R.id.vgsEtAddressOptional)).check(
-                    matches(VGSViewMatchers.withText(""))
-                )
-            }
-            onViewWithScrollTo(R.id.vgsTilAddress).also {
-                onView(withId(R.id.vgsEtAddress)).check(
-                    matches(VGSViewMatchers.withText(""))
-                )
-            }
-            onViewWithScrollTo(R.id.vgsTilCity).also {
-                onView(withId(R.id.vgsEtCity)).check(
-                    matches(VGSViewMatchers.withText(""))
-                )
-            }
-            onViewWithScrollTo(R.id.vgsTilPostalAddress).also {
-                onView(withId(R.id.vgsEtPostalAddress)).check(
-                    matches(VGSViewMatchers.withText(""))
-                )
-            }
+            onViewWithScrollTo(R.id.vgsTilAddress)
+            onView(withId(R.id.vgsEtAddress)).check(
+                matches(VGSViewMatchers.withText(""))
+            )
+            onViewWithScrollTo(R.id.vgsTilAddressOptional)
+            onView(withId(R.id.vgsEtAddressOptional)).check(
+                matches(VGSViewMatchers.withText(""))
+            )
+            onViewWithScrollTo(R.id.vgsTilAddress)
+            onView(withId(R.id.vgsEtAddress)).check(
+                matches(VGSViewMatchers.withText(""))
+            )
+            onViewWithScrollTo(R.id.vgsTilCity)
+            onView(withId(R.id.vgsEtCity)).check(
+                matches(VGSViewMatchers.withText(""))
+            )
+            onViewWithScrollTo(R.id.vgsTilPostalAddress)
+            onView(withId(R.id.vgsEtPostalAddress)).check(
+                matches(VGSViewMatchers.withText(""))
+            )
         }
     }
 
