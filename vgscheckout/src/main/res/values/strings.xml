@@ -6,11 +6,6 @@
 
     <string name="vgs_checkout_add_card_title">Add Card</string>
 
-    <string name="vgs_checkout_close_dialog_title">Close this page?</string>
-    <string name="vgs_checkout_close_dialog_description">Entered data will be cleared after closing.</string>
-    <string name="vgs_checkout_close_dialog_negative_button_title">Cancel</string>
-    <string name="vgs_checkout_close_dialog_positive_button_title" tools:ignore="ButtonCase,Typos">Ok</string>
-
     <!--Card info-->
     <string name="vgs_checkout_form_card_details_title">Card Details</string>
 
@@ -34,6 +29,8 @@
 
     <string name="vgs_checkout_address_info_country_hint">Country</string>
     <string name="vgs_checkout_select_country_dialog_title">Select country</string>
+    <string name="vgs_checkout_select_country_dialog_negative_button_title">Cancel</string>
+    <string name="vgs_checkout_select_country_dialog_positive_button_title" tools:ignore="ButtonCase,Typos">Ok</string>
 
     <string name="vgs_checkout_address_info_city_subtitle">City</string>
     <string name="vgs_checkout_address_info_city_empty_error">City is empty</string>
