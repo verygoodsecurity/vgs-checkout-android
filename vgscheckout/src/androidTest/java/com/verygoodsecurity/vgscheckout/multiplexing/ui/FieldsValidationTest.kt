@@ -11,7 +11,6 @@ import androidx.test.espresso.matcher.RootMatchers
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.verygoodsecurity.vgscheckout.R
-import com.verygoodsecurity.vgscheckout.collect.widget.*
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingConfiguration
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.ui.CheckoutMultiplexingActivity
@@ -30,10 +29,11 @@ import com.verygoodsecurity.vgscheckout.Constants.VALID_EXP_DATE
 import com.verygoodsecurity.vgscheckout.Constants.VALID_POSTAL_ADDRESS
 import com.verygoodsecurity.vgscheckout.Constants.VALID_SECURITY_CODE
 import com.verygoodsecurity.vgscheckout.Constants.VAULT_ID
-import com.verygoodsecurity.vgscheckout.util.ActionHelper
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers.withError
 import com.verygoodsecurity.vgscheckout.util.ViewInteraction.onViewWithScrollTo
+import com.verygoodsecurity.vgscheckout.util.extension.fillAddressFields
+import com.verygoodsecurity.vgscheckout.util.extension.fillCardFields
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -254,48 +254,5 @@ class FieldsValidationTest {
             onViewWithScrollTo(R.id.vgsTilCity).check(matches(withError(null)))
             onViewWithScrollTo(R.id.vgsTilPostalAddress).check(matches(withError(null)))
         }
-    }
-
-    private fun fillCardFields(
-        cardHolderName: String = VALID_CARD_HOLDER,
-        cardNumber: String = VALID_CARD_NUMBER,
-        expirationDate: String = VALID_EXP_DATE,
-        cvc: String = VALID_SECURITY_CODE,
-    ) {
-        onView(ViewMatchers.withId(R.id.vgsEtCardHolder))
-            .perform(ActionHelper.doAction<PersonNameEditText> {
-                it.setText(cardHolderName)
-            })
-        onView(ViewMatchers.withId(R.id.vgsEtCardNumber))
-            .perform(ActionHelper.doAction<VGSCardNumberEditText> {
-                it.setText(cardNumber)
-            })
-        onView(ViewMatchers.withId(R.id.vgsEtExpirationDate))
-            .perform(ActionHelper.doAction<ExpirationDateEditText> {
-                it.setText(expirationDate)
-            })
-        onView(ViewMatchers.withId(R.id.vgsEtSecurityCode))
-            .perform(ActionHelper.doAction<CardVerificationCodeEditText> {
-                it.setText(cvc)
-            })
-    }
-
-    private fun fillAddressFields(
-        address: String = VALID_ADDRESS,
-        city: String = VALID_CITY,
-        postalAddress: String = VALID_POSTAL_ADDRESS
-    ) {
-        onView(ViewMatchers.withId(R.id.vgsEtAddress))
-            .perform(ActionHelper.doAction<VGSEditText> {
-                it.setText(address)
-            })
-        onView(ViewMatchers.withId(R.id.vgsEtCity))
-            .perform(ActionHelper.doAction<VGSEditText> {
-                it.setText(city)
-            })
-        onView(ViewMatchers.withId(R.id.vgsEtPostalAddress))
-            .perform(ActionHelper.doAction<VGSEditText> {
-                it.setText(postalAddress)
-            })
     }
 }

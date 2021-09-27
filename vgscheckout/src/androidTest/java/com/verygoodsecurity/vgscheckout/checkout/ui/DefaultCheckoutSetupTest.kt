@@ -110,7 +110,7 @@ class DefaultCheckoutSetupTest {
     fun performCheckout_saveButtonInteractive() {
         launch<CheckoutMultiplexingActivity>(defaultIntent).use {
             //Assert
-            onView(withId(R.id.mbSaveCard))
+            onViewWithScrollTo(R.id.mbSaveCard)
                 .check(matches(isEnabled()))
             onViewWithScrollTo(R.id.mbSaveCard)
                 .check(matches(isClickable()))

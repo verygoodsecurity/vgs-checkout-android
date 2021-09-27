@@ -115,7 +115,7 @@ class DefaultMultiplexingSetupTest {
     fun performCheckout_saveButtonInteractive() {
         ActivityScenario.launch<CheckoutMultiplexingActivity>(defaultIntent).use {
             //Assert
-            Espresso.onView(ViewMatchers.withId(R.id.mbSaveCard))
+            ViewInteraction.onViewWithScrollTo(R.id.mbSaveCard)
                 .check(ViewAssertions.matches(ViewMatchers.isEnabled()))
             ViewInteraction.onViewWithScrollTo(R.id.mbSaveCard)
                 .check(ViewAssertions.matches(ViewMatchers.isClickable()))

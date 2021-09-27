@@ -13,7 +13,6 @@ import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
 import com.verygoodsecurity.vgscheckout.Constants
 import com.verygoodsecurity.vgscheckout.R
-import com.verygoodsecurity.vgscheckout.collect.widget.*
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutConfiguration
 import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutRouteConfiguration
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutFormConfiguration
@@ -24,8 +23,9 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.VGSCheckoutCVCOp
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.VGSCheckoutExpirationDateOptions
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.ui.CheckoutActivity
-import com.verygoodsecurity.vgscheckout.util.ActionHelper
 import com.verygoodsecurity.vgscheckout.util.ViewInteraction
+import com.verygoodsecurity.vgscheckout.util.extension.fillAddressFields
+import com.verygoodsecurity.vgscheckout.util.extension.fillCardFields
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -39,7 +39,7 @@ class CheckoutActivityResultTest {
     private val defaultIntent = Intent(context, CheckoutActivity::class.java).apply {
         putExtra(
             Constants.CHECKOUT_RESULT_CONTRACT_NAME,
-            CheckoutResultContract.Args(VGSCheckoutConfiguration(Constants.VAULT_ID))
+            CheckoutResultContract.Args(VGSCheckoutConfiguration(Constants.VAULT_ID_3))
         )
     }
 
@@ -50,42 +50,21 @@ class CheckoutActivityResultTest {
         device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
     }
 
-    @Test
+    @Test(timeout = 60000L)
     fun performCheckout_saveCard_unsuccessfulResponse_resultOk() {
         ActivityScenario.launch<CheckoutActivity>(defaultIntent).use {
             // Act
-            Espresso.onView(ViewMatchers.withId(R.id.vgsEtCardHolder))
-                .perform(ActionHelper.doAction<PersonNameEditText> {
-                    it.setText(Constants.VALID_CARD_HOLDER)
-                })
-            Espresso.onView(ViewMatchers.withId(R.id.vgsEtCardNumber))
-                .perform(ActionHelper.doAction<VGSCardNumberEditText> {
-                    it.setText(Constants.VALID_CARD_NUMBER)
-                })
-            Espresso.onView(ViewMatchers.withId(R.id.vgsEtExpirationDate))
-                .perform(ActionHelper.doAction<ExpirationDateEditText> {
-                    it.setText(Constants.VALID_EXP_DATE)
-                })
-            Espresso.onView(ViewMatchers.withId(R.id.vgsEtSecurityCode))
-                .perform(ActionHelper.doAction<CardVerificationCodeEditText> {
-                    it.setText(Constants.VALID_SECURITY_CODE)
-                })
-            Espresso.onView(ViewMatchers.withId(R.id.vgsEtAddress))
-                .perform(ActionHelper.doAction<VGSEditText> {
-                    it.setText(Constants.VALID_ADDRESS)
-                })
-            Espresso.onView(ViewMatchers.withId(R.id.vgsEtAddressOptional))
-                .perform(ActionHelper.doAction<VGSEditText> {
-                    it.setText(Constants.VALID_ADDRESS)
-                })
-            Espresso.onView(ViewMatchers.withId(R.id.vgsEtCity))
-                .perform(ActionHelper.doAction<VGSEditText> {
-                    it.setText(Constants.VALID_CITY)
-                })
-            Espresso.onView(ViewMatchers.withId(R.id.vgsEtPostalAddress))
-                .perform(ActionHelper.doAction<VGSEditText> {
-                    it.setText(Constants.VALID_POSTAL_ADDRESS)
-                })
+            fillCardFields(
+                Constants.VALID_CARD_HOLDER,
+                Constants.VALID_CARD_NUMBER,
+                Constants.VALID_EXP_DATE,
+                Constants.VALID_SECURITY_CODE
+            )
+            fillAddressFields(
+                Constants.VALID_ADDRESS,
+                Constants.VALID_CITY,
+                Constants.VALID_POSTAL_ADDRESS
+            )
 
             ViewInteraction.onViewWithScrollTo(R.id.mbSaveCard)
                 .perform(ViewActions.click())
@@ -95,7 +74,7 @@ class CheckoutActivityResultTest {
         }
     }
 
-    @Test
+    @Test(timeout = 60000L)
     fun performCheckout_saveCard_successfulResponse_resultOk() {
         val intent = Intent(context, CheckoutActivity::class.java).apply {
             putExtra(
@@ -119,38 +98,17 @@ class CheckoutActivityResultTest {
         }
         ActivityScenario.launch<CheckoutActivity>(intent).use {
             // Act
-            Espresso.onView(ViewMatchers.withId(R.id.vgsEtCardHolder))
-                .perform(ActionHelper.doAction<PersonNameEditText> {
-                    it.setText(Constants.VALID_CARD_HOLDER)
-                })
-            Espresso.onView(ViewMatchers.withId(R.id.vgsEtCardNumber))
-                .perform(ActionHelper.doAction<VGSCardNumberEditText> {
-                    it.setText(Constants.VALID_CARD_NUMBER)
-                })
-            Espresso.onView(ViewMatchers.withId(R.id.vgsEtExpirationDate))
-                .perform(ActionHelper.doAction<ExpirationDateEditText> {
-                    it.setText(Constants.VALID_EXP_DATE)
-                })
-            Espresso.onView(ViewMatchers.withId(R.id.vgsEtSecurityCode))
-                .perform(ActionHelper.doAction<CardVerificationCodeEditText> {
-                    it.setText(Constants.VALID_SECURITY_CODE)
-                })
-            Espresso.onView(ViewMatchers.withId(R.id.vgsEtAddress))
-                .perform(ActionHelper.doAction<VGSEditText> {
-                    it.setText(Constants.VALID_ADDRESS)
-                })
-            Espresso.onView(ViewMatchers.withId(R.id.vgsEtAddressOptional))
-                .perform(ActionHelper.doAction<VGSEditText> {
-                    it.setText(Constants.VALID_ADDRESS)
-                })
-            Espresso.onView(ViewMatchers.withId(R.id.vgsEtCity))
-                .perform(ActionHelper.doAction<VGSEditText> {
-                    it.setText(Constants.VALID_CITY)
-                })
-            Espresso.onView(ViewMatchers.withId(R.id.vgsEtPostalAddress))
-                .perform(ActionHelper.doAction<VGSEditText> {
-                    it.setText(Constants.VALID_POSTAL_ADDRESS)
-                })
+            fillCardFields(
+                Constants.VALID_CARD_HOLDER,
+                Constants.VALID_CARD_NUMBER,
+                Constants.VALID_EXP_DATE,
+                Constants.VALID_SECURITY_CODE
+            )
+            fillAddressFields(
+                Constants.VALID_ADDRESS,
+                Constants.VALID_CITY,
+                Constants.VALID_POSTAL_ADDRESS
+            )
 
             ViewInteraction.onViewWithScrollTo(R.id.mbSaveCard)
                 .perform(ViewActions.click())
