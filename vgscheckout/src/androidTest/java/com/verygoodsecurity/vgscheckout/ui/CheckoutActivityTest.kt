@@ -112,14 +112,14 @@ class CheckoutActivityTest {
             onViewWithScrollTo(R.id.vgsTilExpirationDate).check(
                 matches(
                     withError(
-                        "Expiration date is empty"
+                        "Expiry date is empty"
                     )
                 )
             )
             onViewWithScrollTo(R.id.vgsTilSecurityCode).check(
                 matches(
                     withError(
-                        "CVC is empty"
+                        "CVC/CVV is empty"
                     )
                 )
             )
@@ -168,21 +168,21 @@ class CheckoutActivityTest {
             onViewWithScrollTo(R.id.vgsTilCardNumber).check(
                 matches(
                     withError(
-                        "Enter a valid card number"
+                        "Invalid card number"
                     )
                 )
             )
             onViewWithScrollTo(R.id.vgsTilExpirationDate).check(
                 matches(
                     withError(
-                        "Expiration date is not valid"
+                        "Invalid expiry date"
                     )
                 )
             )
             onViewWithScrollTo(R.id.vgsTilSecurityCode).check(
                 matches(
                     withError(
-                        "CVC is not valid"
+                        "Invalid CVC/CVV format"
                     )
                 )
             )
@@ -288,7 +288,7 @@ class CheckoutActivityTest {
             onView(withText("Canada")).perform(click())
             onView(withText("Ok")).perform(click())
             //Assert
-            onViewWithScrollTo(R.id.vgsTilPostalAddress).check(matches(VGSViewMatchers.withHint("Postal Code")))
+            onViewWithScrollTo(R.id.vgsTilPostalAddress).check(matches(VGSViewMatchers.withHint("Postal code")))
         }
     }
 
