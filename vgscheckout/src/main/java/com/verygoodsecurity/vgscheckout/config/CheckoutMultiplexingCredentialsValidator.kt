@@ -21,7 +21,7 @@ internal object CheckoutMultiplexingCredentialsValidator {
             ?.optJSONArray(ROLES_KEY)
             ?: throw IllegalArgumentException("JWT token doesn't contains roles.")
 
-        //todo uncomment before release or testing
+//        TODO: Uncomment before public release, also uncomment tests
 //        if (roles.contains(RESTRICTED_TOKEN_ROLE_SCOPE)) {
 //            throw IllegalArgumentException("JWT token contains restricted role [$RESTRICTED_TOKEN_ROLE_SCOPE].")
 //        }
