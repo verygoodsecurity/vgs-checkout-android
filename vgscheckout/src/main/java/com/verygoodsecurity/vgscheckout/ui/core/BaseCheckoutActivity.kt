@@ -107,11 +107,9 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
     }
 
     override fun onBackPressed() {
-        handleBackPressWithConfirmation {
-            super.onBackPressed()
-            config.analyticTracker.log(CancelEvent)
-            setResult(Activity.RESULT_CANCELED)
-        }
+        config.analyticTracker.log(CancelEvent)
+        setResult(Activity.RESULT_CANCELED)
+        super.onBackPressed()
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -433,30 +431,6 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
         }
     }
 
-    private fun handleBackPressWithConfirmation(onBackPressed: () -> Unit) {
-        if (isBackPressRequireConfirmation()) {
-            showBackPressConfirmationDialog(onBackPressed)
-        } else {
-            onBackPressed.invoke()
-        }
-    }
-
-    private fun isBackPressRequireConfirmation(): Boolean {
-        return cardHolderEt.isContentNotEmpty() ||
-                cardNumberEt.isContentNotEmpty() ||
-                expirationDateEt.isContentNotEmpty() ||
-                securityCodeEt.isContentNotEmpty()
-    }
-
-    private fun showBackPressConfirmationDialog(onConfirmed: () -> Unit) {
-        MaterialAlertDialogBuilder(this)
-            .setTitle(R.string.vgs_checkout_close_dialog_title)
-            .setMessage(R.string.vgs_checkout_close_dialog_description)
-            .setNegativeButton(R.string.vgs_checkout_close_dialog_negative_button_title, null)
-            .setPositiveButton(R.string.vgs_checkout_close_dialog_positive_button_title) { _, _ -> onConfirmed.invoke() }
-            .show()
-    }
-
     private fun showCountrySelectionDialog() {
         val countries = CountriesHelper.countries
         val countryNames = countries.map { it.name }.toTypedArray()
@@ -465,8 +439,11 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
         MaterialAlertDialogBuilder(this)
             .setTitle(R.string.vgs_checkout_select_country_dialog_title)
             .setSingleChoiceItems(countryNames, selectedIndex) { _, which -> selected = which }
-            .setNegativeButton(R.string.vgs_checkout_close_dialog_negative_button_title, null)
-            .setPositiveButton(R.string.vgs_checkout_close_dialog_positive_button_title) { _, _ ->
+            .setNegativeButton(
+                R.string.vgs_checkout_select_country_dialog_negative_button_title,
+                null
+            )
+            .setPositiveButton(R.string.vgs_checkout_select_country_dialog_positive_button_title) { _, _ ->
                 countries.getOrNull(selected)?.let {
                     selectedCountry = it
                     updateCountryView()
