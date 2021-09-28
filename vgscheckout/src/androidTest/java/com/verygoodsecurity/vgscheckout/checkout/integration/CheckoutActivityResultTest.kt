@@ -22,6 +22,7 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.VGSChecko
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.VGSCheckoutCVCOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.VGSCheckoutExpirationDateOptions
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
+import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
 import com.verygoodsecurity.vgscheckout.ui.CheckoutActivity
 import com.verygoodsecurity.vgscheckout.util.ViewInteraction
 import com.verygoodsecurity.vgscheckout.util.extension.fillAddressFields
@@ -82,7 +83,7 @@ class CheckoutActivityResultTest {
                 CheckoutResultContract.Args(
                     VGSCheckoutConfiguration(
                         vaultID = Constants.VAULT_ID_3,
-                        "sandbox",
+                        VGSCheckoutEnvironment.Sandbox(),
                         VGSCheckoutRouteConfiguration("/post"),
                         VGSCheckoutFormConfiguration(
                             cardOptions = VGSCheckoutCardOptions(

@@ -2,7 +2,6 @@ package com.verygoodsecurity.vgscheckout.util
 
 import android.content.Context
 import com.verygoodsecurity.vgscheckout.collect.core.VGSCollect
-import com.verygoodsecurity.vgscheckout.config.VGSCheckoutConfiguration
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfiguration
 import com.verygoodsecurity.vgscheckout.util.extension.applyHostnamePolicy
 
@@ -16,7 +15,7 @@ internal class CollectProvider {
         config: CheckoutConfiguration
     ): VGSCollect {
         return VGSCollect.Builder(context, config.vaultID)
-            .setEnvironment(config.environment)
+            .setEnvironment(config.environment.value)
             .setAnalyticTracker(config.analyticTracker)
             .applyHostnamePolicy(config.routeConfig.hostnamePolicy)
             .create()
