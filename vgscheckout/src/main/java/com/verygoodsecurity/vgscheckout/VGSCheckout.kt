@@ -4,8 +4,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResultLauncher
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingConfiguration
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfiguration
-import com.verygoodsecurity.vgscheckout.config.core.DEFAULT_ENVIRONMENT
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
+import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
 
 class VGSCheckout internal constructor(
     private val activityResultLauncher: ActivityResultLauncher<CheckoutResultContract.Args<CheckoutConfiguration>>
@@ -32,7 +32,7 @@ class VGSCheckout internal constructor(
     fun present(
         token: String,
         vaultID: String,
-        environment: String = DEFAULT_ENVIRONMENT,
+        environment: VGSCheckoutEnvironment = VGSCheckoutEnvironment.Sandbox(),
         isAnalyticsEnabled: Boolean = true
     ) {
         activityResultLauncher.launch(
