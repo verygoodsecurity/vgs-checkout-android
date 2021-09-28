@@ -4,7 +4,6 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.JWTValidationEvent
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfiguration
-import com.verygoodsecurity.vgscheckout.config.core.DEFAULT_ENVIRONMENT
 import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutRouteConfiguration
 import com.verygoodsecurity.vgscheckout.config.networking.request.VGSCheckoutRequestOptions
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutFormConfiguration
@@ -14,12 +13,13 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.VGSChecko
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.VGSCheckoutCVCOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.VGSCheckoutExpirationDateOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.model.VGSDateSeparateSerializer
+import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
 
 @Suppress("MemberVisibilityCanBePrivate", "CanBeParameter")
 class VGSCheckoutMultiplexingConfiguration private constructor(
     internal val token: String,
     override val vaultID: String,
-    override val environment: String,
+    override val environment: VGSCheckoutEnvironment,
     override val routeConfig: VGSCheckoutRouteConfiguration,
     override val formConfig: VGSCheckoutFormConfiguration,
     override val isAnalyticsEnabled: Boolean,
@@ -34,7 +34,7 @@ class VGSCheckoutMultiplexingConfiguration private constructor(
     constructor(parcel: Parcel) : this(
         parcel.readString()!!,
         parcel.readString()!!,
-        parcel.readString()!!,
+        parcel.readParcelable(VGSCheckoutEnvironment::class.java.classLoader)!!,
         parcel.readParcelable(VGSCheckoutRouteConfiguration::class.java.classLoader)!!,
         parcel.readParcelable(VGSCheckoutFormConfiguration::class.java.classLoader)!!,
         parcel.readInt() == 1,
@@ -49,7 +49,7 @@ class VGSCheckoutMultiplexingConfiguration private constructor(
     constructor(
         token: String,
         vaultID: String,
-        environment: String = DEFAULT_ENVIRONMENT,
+        environment: VGSCheckoutEnvironment = VGSCheckoutEnvironment.Sandbox(),
         isAnalyticsEnabled: Boolean = true
     ) : this(
         token,
@@ -64,7 +64,7 @@ class VGSCheckoutMultiplexingConfiguration private constructor(
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(token)
         parcel.writeString(vaultID)
-        parcel.writeString(environment)
+        parcel.writeParcelable(environment, flags)
         parcel.writeParcelable(routeConfig, flags)
         parcel.writeParcelable(formConfig, flags)
         parcel.writeInt(if (isAnalyticsEnabled) 1 else 0)
