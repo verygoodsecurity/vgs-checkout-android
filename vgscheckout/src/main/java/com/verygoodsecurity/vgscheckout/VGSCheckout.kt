@@ -9,7 +9,8 @@ class VGSCheckout internal constructor(
     private val activityResultLauncher: ActivityResultLauncher<CheckoutResultContract.Args<CheckoutConfiguration>>
 ) {
 
-    constructor(activity: ComponentActivity, callback: VGSCheckoutCallback) : this(
+    @JvmOverloads
+    constructor(activity: ComponentActivity, callback: VGSCheckoutCallback? = null) : this(
         registerActivityLauncher(activity, callback)
     )
 
@@ -21,10 +22,10 @@ class VGSCheckout internal constructor(
 
         private fun registerActivityLauncher(
             activity: ComponentActivity,
-            callback: VGSCheckoutCallback
+            callback: VGSCheckoutCallback?
         ): ActivityResultLauncher<CheckoutResultContract.Args<CheckoutConfiguration>> {
             return activity.registerForActivityResult(CheckoutResultContract()) {
-                callback.onCheckoutResult(it)
+                callback?.onCheckoutResult(it)
             }
         }
     }
