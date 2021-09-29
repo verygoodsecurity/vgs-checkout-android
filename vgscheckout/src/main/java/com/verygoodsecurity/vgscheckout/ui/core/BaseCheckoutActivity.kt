@@ -26,6 +26,7 @@ import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
 import com.verygoodsecurity.vgscheckout.collect.view.card.validation.rules.VGSInfoRule
 import com.verygoodsecurity.vgscheckout.collect.widget.*
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfiguration
+import com.verygoodsecurity.vgscheckout.config.networking.core.VGSCheckoutHostnamePolicy
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillingAddressVisibility
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.VGSCheckoutAddressOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.VGSCheckoutOptionalAddressOptions
@@ -465,7 +466,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
             analyticTracker.log(
                 RequestEvent(
                     isSuccessful,
-                    collect.hasCustomHostname,
+                    routeConfig.hostnamePolicy is VGSCheckoutHostnamePolicy.CustomHostname,
                     routeConfig.requestOptions.extraData.isNotEmpty(),
                     hasCustomHeaders(),
                     routeConfig.requestOptions.mergePolicy,
