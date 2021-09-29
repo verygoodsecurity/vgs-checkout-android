@@ -13,7 +13,6 @@ internal abstract class Event constructor(type: String) {
 
     private val data: MutableMap<String, Any> = mutableMapOf(
         KEY_TYPE to type,
-        KEY_TIMESTAMP to System.currentTimeMillis(),
         KEY_CLIENT_TIMESTAMP to getClientTime(),
         KEY_SESSION_ID to Session.id,
         KEY_SOURCE to SOURCE,
@@ -49,7 +48,6 @@ internal abstract class Event constructor(type: String) {
 
         internal const val KEY_STATUS = "status"
         private const val KEY_TYPE = "type"
-        private const val KEY_TIMESTAMP = "localTimestamp"
         private const val KEY_CLIENT_TIMESTAMP = "clientTimestamp"
         private const val KEY_SESSION_ID = "vgsCheckoutSessionId"
         private const val KEY_SOURCE = "source"
