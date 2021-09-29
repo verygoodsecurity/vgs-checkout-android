@@ -36,7 +36,7 @@ internal abstract class Event constructor(type: String) {
     }
 
     private fun getClientTime(): String {
-        return SimpleDateFormat(ISO_8601, Locale.getDefault()).format(System.currentTimeMillis())
+        return SimpleDateFormat(ISO_8601, Locale.US).format(System.currentTimeMillis())
     }
 
     private operator fun <K, V> Map<out K, V>.plus(map: Map<out K, V>): MutableMap<K, V> =
