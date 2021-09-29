@@ -6,6 +6,7 @@ import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingConfigurat
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfiguration
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
+import com.verygoodsecurity.vgscheckout.model.VGSCheckoutTransitionOptions
 
 class VGSCheckout internal constructor(
     private val activityResultLauncher: ActivityResultLauncher<CheckoutResultContract.Args<CheckoutConfiguration>>
@@ -16,8 +17,21 @@ class VGSCheckout internal constructor(
         registerActivityLauncher(activity, callback)
     )
 
-    fun present(config: CheckoutConfiguration) {
-        activityResultLauncher.launch(CheckoutResultContract.Args(config))
+    /**
+     * Start checkout.
+     *
+     * @param config specifying checkout form, networking configuration.
+     * @param transitionOptions specifying a custom animation to run when the checkout is displayed.
+     */
+    @JvmOverloads
+    fun present(
+        config: CheckoutConfiguration,
+        transitionOptions: VGSCheckoutTransitionOptions? = null
+    ) {
+        activityResultLauncher.launch(
+            CheckoutResultContract.Args(config),
+            transitionOptions?.options
+        )
     }
 
     /**
@@ -27,35 +41,34 @@ class VGSCheckout internal constructor(
      * @param vaultID VGS vault id.
      * @param environment type of vault to communicate with.
      * @param isAnalyticsEnabled true if checkout should send analytics events, false otherwise.
+     * @param transitionOptions specifying a custom animation to run when the checkout is displayed.
      */
     @JvmOverloads
     fun present(
         token: String,
         vaultID: String,
         environment: VGSCheckoutEnvironment = VGSCheckoutEnvironment.Sandbox(),
-        isAnalyticsEnabled: Boolean = true
+        isAnalyticsEnabled: Boolean = true,
+        transitionOptions: VGSCheckoutTransitionOptions? = null
     ) {
-        activityResultLauncher.launch(
-            CheckoutResultContract.Args(
-                VGSCheckoutMultiplexingConfiguration(
-                    token,
-                    vaultID,
-                    environment,
-                    isAnalyticsEnabled
-                )
-            )
+        present(
+            VGSCheckoutMultiplexingConfiguration(
+                token,
+                vaultID,
+                environment,
+                isAnalyticsEnabled
+            ),
+            transitionOptions
         )
     }
 
-    companion object {
+    private companion object {
 
         private fun registerActivityLauncher(
             activity: ComponentActivity,
             callback: VGSCheckoutCallback?
-        ): ActivityResultLauncher<CheckoutResultContract.Args<CheckoutConfiguration>> {
-            return activity.registerForActivityResult(CheckoutResultContract()) {
-                callback?.onCheckoutResult(it)
-            }
+        ) = activity.registerForActivityResult(CheckoutResultContract()) {
+            callback?.onCheckoutResult(it)
         }
     }
 }
