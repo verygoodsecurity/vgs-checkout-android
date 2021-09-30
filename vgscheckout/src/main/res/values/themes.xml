@@ -1,0 +1,60 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="VGSCheckout" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/vgs_checkout_denim</item>
+        <item name="colorOnPrimary">@color/vgs_checkout_white</item>
+        <item name="colorPrimaryDark">@color/vgs_checkout_white</item>
+        <item name="colorSecondary">@color/vgs_checkout_denim</item>
+        <item name="colorSurface">@color/vgs_checkout_white</item>
+        <item name="colorOnSurface">@color/vgs_checkout_nero</item>
+        <item name="colorError">@color/vgs_checkout_harley_davidson_orange</item>
+        <item name="android:textColorHint">@color/vgs_checkout_input_hint_text_color</item>
+        <item name="android:textColorPrimary">@color/vgs_checkout_primary_text_color</item>
+        <item name="android:windowBackground">@color/vgs_checkout_white_smoke</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+    </style>
+
+    <style name="VGSCheckout.Toolbar" parent="Widget.MaterialComponents.Toolbar.PrimarySurface">
+        <item name="android:background">?colorSurface</item>
+        <item name="titleTextColor">?colorOnSurface</item>
+        <item name="title">@string/vgs_checkout_add_card_title</item>
+        <item name="navigationIcon">@drawable/vgs_checkout_ic_baseline_close_white_24</item>
+        <item name="navigationIconTint">@color/vgs_checkout_nero</item>
+    </style>
+
+    <style name="VGSCheckout.Form">
+        <item name="android:background">@drawable/vgs_checkout_form_bg</item>
+    </style>
+
+    <style name="VGSCheckout.Title">
+        <item name="android:textSize">@dimen/vgs_checkout_title_text_size</item>
+    </style>
+
+    <style name="VGSCheckout.TextInputLayout">
+        <item name="endIconModes">clear_text</item>
+        <item name="endIconTint">@color/vgs_checkout_input_end_icon_tint</item>
+        <item name="endIconDrawable">@drawable/vgs_checkout_ic_round_cancel_white_24</item>
+        <item name="errorEnabled">true</item>
+        <item name="errorIconDrawable">@drawable/vgs_checkout_ic_error_white_24</item>
+        <item name="errorIconDrawableTint">?colorError</item>
+        <item name="hintTextColor">?colorPrimary</item>
+        <item name="boxCornerRadius">@dimen/vgs_checkout_margin_padding_size_micro</item>
+        <item name="boxStrokeColor">@color/vgs_checkout_input_box_stroke_color</item>
+    </style>
+
+    <style name="VGSCheckout.TextInputEditText">
+        <item name="textSize">@dimen/vgs_checkout_input_text_size</item>
+        <item name="android:paddingStart">@dimen/vgs_checkout_margin_padding_size_medium</item>
+        <item name="android:paddingEnd">@dimen/vgs_checkout_margin_padding_size_medium</item>
+        <item name="android:paddingTop">@dimen/vgs_checkout_margin_padding_size_xsmall</item>
+        <item name="android:paddingBottom">@dimen/vgs_checkout_margin_padding_size_xsmall</item>
+    </style>
+
+    <style name="VGSCheckout.SaveButton" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="android:paddingTop">@dimen/vgs_checkout_margin_padding_size_medium</item>
+        <item name="android:paddingBottom">@dimen/vgs_checkout_margin_padding_size_medium</item>
+        <item name="cornerRadius">@dimen/vgs_checkout_margin_padding_size_small</item>
+        <item name="textAppearance">?attr/textAppearanceBody2</item>
+        <item name="iconGravity">textStart</item>
+    </style>
+</resources>

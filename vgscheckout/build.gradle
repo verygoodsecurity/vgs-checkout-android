@@ -1,0 +1,66 @@
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'kotlin-parcelize'
+}
+
+android {
+    compileSdkVersion 30
+
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 30
+        versionCode VERSION_CODE.toInteger()
+        versionName VERSION_NAME
+
+        buildConfigField "String", "VERSION_NAME", "\"$VERSION_NAME\""
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+        vectorDrawables.useSupportLibrary = true
+        multiDexEnabled true
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+            returnDefaultValues = true
+        }
+    }
+}
+
+dependencies {
+    implementation "androidx.appcompat:appcompat:$app_compat"
+    implementation "androidx.core:core-ktx:$core_ktx"
+
+    api "com.google.android.material:material:$material"
+    api "com.squareup.okhttp3:okhttp:$okHttp"
+
+    testImplementation "junit:junit:$junit"
+    testImplementation "androidx.test.ext:junit-ktx:$junit_extension"
+    testImplementation "androidx.test:core-ktx:1.4.0"
+    testImplementation "org.robolectric:robolectric:4.5.1"
+    testImplementation "org.mockito:mockito-core:3.11.0"
+    testImplementation "org.mockito:mockito-inline:3.11.0"
+    testImplementation "org.json:json:20210307"
+    testImplementation "io.mockk:mockk:1.10.0"
+    testImplementation "org.skyscreamer:jsonassert:1.2.3"
+    androidTestImplementation "androidx.test.ext:junit:$junit_extension"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_core"
+    androidTestImplementation "org.mockito:mockito-android:3.5.10"
+    androidTestImplementation "androidx.test.ext:junit:$junit_extension"
+    androidTestImplementation "androidx.test.ext:junit-ktx:$junit_extension"
+    androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.2.0'
+}
