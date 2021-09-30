@@ -40,16 +40,16 @@ class VGSCheckout internal constructor(
      * @param token client backend access token.
      * @param vaultID VGS vault id.
      * @param environment type of vault to communicate with.
-     * @param isAnalyticsEnabled true if checkout should send analytics events, false otherwise.
      * @param transitionOptions specifying a custom animation to run when the checkout is displayed.
+     * @param isAnalyticsEnabled true if checkout should send analytics events, false otherwise.
      */
     @JvmOverloads
     fun present(
         token: String,
         vaultID: String,
         environment: VGSCheckoutEnvironment = VGSCheckoutEnvironment.Sandbox(),
-        isAnalyticsEnabled: Boolean = true,
-        transitionOptions: VGSCheckoutTransitionOptions? = null
+        transitionOptions: VGSCheckoutTransitionOptions? = null,
+        isAnalyticsEnabled: Boolean = true
     ) {
         present(
             VGSCheckoutMultiplexingConfiguration(
