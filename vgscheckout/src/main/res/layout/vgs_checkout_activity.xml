@@ -58,6 +58,7 @@
                         style="@style/VGSCheckout.TextInputEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        app:analyticsName="cardHolder"
                         app:imeOptions="actionNext" />
                 </com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout>
 
@@ -73,6 +74,7 @@
                         style="@style/VGSCheckout.TextInputEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        app:analyticsName="cardNumber"
                         app:cardBrandIconGravity="start"
                         app:imeOptions="actionNext"
                         app:numberDivider=" " />
@@ -97,6 +99,7 @@
                             style="@style/VGSCheckout.TextInputEditText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            app:analyticsName="expDate"
                             app:datePattern="MM/yy"
                             app:datePickerModes="input"
                             app:imeOptions="actionNext"
@@ -120,6 +123,7 @@
                             style="@style/VGSCheckout.TextInputEditText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            app:analyticsName="cvc"
                             app:imeOptions="actionNext"
                             app:previewIconGravity="start"
                             app:previewIconVisibility="always" />
@@ -158,6 +162,7 @@
                         style="@style/VGSCheckout.TextInputEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        app:analyticsName="country"
                         app:cursorVisible="false"
                         app:imeOptions="actionNext" />
                 </com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout>
@@ -175,6 +180,7 @@
                         style="@style/VGSCheckout.TextInputEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        app:analyticsName="addressLine1"
                         app:imeOptions="actionNext" />
                 </com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout>
 
@@ -191,6 +197,7 @@
                         style="@style/VGSCheckout.TextInputEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        app:analyticsName="addressLine2"
                         app:imeOptions="actionNext" />
                 </com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout>
 
@@ -213,6 +220,7 @@
                             style="@style/VGSCheckout.TextInputEditText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            app:analyticsName="city"
                             app:imeOptions="actionNext" />
                     </com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout>
 
@@ -233,6 +241,7 @@
                             style="@style/VGSCheckout.TextInputEditText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            app:analyticsName="postalCode"
                             app:imeOptions="actionDone" />
                     </com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout>
                 </androidx.appcompat.widget.LinearLayoutCompat>

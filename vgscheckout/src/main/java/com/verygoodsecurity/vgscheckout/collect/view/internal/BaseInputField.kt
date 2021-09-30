@@ -92,6 +92,8 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
 
     private var activeTextWatcher: TextWatcher? = null
 
+    private var analyticName: String? = null
+
     init {
         isListeningPermitted = true
         setupFocusChangeListener()
@@ -367,7 +369,7 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
 
     override fun autofill(value: AutofillValue?) {
         super.autofill(value)
-        tracker?.log(AutofillEvent(fieldType.getAnalyticName()))
+        tracker?.log(AutofillEvent(getAnalyticsName()))
     }
 
     protected fun printWarning(tag: String, resId: Int) {
@@ -392,6 +394,12 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         val otherData = otherContent?.rawData ?: otherContent?.data
         return thisData.equals(otherData)
     }
+
+    fun setAnalyticsName(name: String?) {
+        analyticName = name
+    }
+
+    fun getAnalyticsName(): String = analyticName ?: fieldType.getAnalyticName()
 }
 
 internal val TextInputEditText.localVisibleRect: Rect

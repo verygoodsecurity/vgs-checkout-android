@@ -2,6 +2,7 @@ package com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.core
 
 import android.os.Build
 import com.verygoodsecurity.vgscheckout.BuildConfig
+import com.verygoodsecurity.vgscheckout.util.Session
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.LinkedHashMap
@@ -14,6 +15,7 @@ internal abstract class Event constructor(type: String) {
         KEY_TYPE to type,
         KEY_TIMESTAMP to System.currentTimeMillis(),
         KEY_CLIENT_TIMESTAMP to getClientTime(),
+        KEY_SESSION_ID to Session.id,
         KEY_SOURCE to SOURCE,
         KEY_VERSION to BuildConfig.VERSION_NAME,
         KEY_STATUS to STATUS_OK,
@@ -49,6 +51,7 @@ internal abstract class Event constructor(type: String) {
         private const val KEY_TYPE = "type"
         private const val KEY_TIMESTAMP = "localTimestamp"
         private const val KEY_CLIENT_TIMESTAMP = "clientTimestamp"
+        private const val KEY_SESSION_ID = "vgsCheckoutSessionId"
         private const val KEY_SOURCE = "source"
         private const val KEY_VERSION = "version"
         private const val KEY_USER_AGENT = "ua"

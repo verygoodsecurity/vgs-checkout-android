@@ -55,6 +55,7 @@ internal abstract class InputFieldView @JvmOverloads constructor(
     private var textAppearance: Int = 0
     private var fontFamily: Typeface? = null
     private var enableValidation: Boolean? = null
+    private var analyticName: String? = null
 
     init {
         context.theme.obtainStyledAttributes(
@@ -70,6 +71,7 @@ internal abstract class InputFieldView @JvmOverloads constructor(
                         R.styleable.InputFieldView_imeOptions -> setupImeOptions(this)
                         R.styleable.InputFieldView_enableValidation -> setupEnableValidation(this)
                         R.styleable.InputFieldView_fontFamily -> setupFont(this)
+                        R.styleable.InputFieldView_analyticsName -> setAnalyticsName(this)
                     }
                 }
 
@@ -110,6 +112,12 @@ internal abstract class InputFieldView @JvmOverloads constructor(
                 Typeface.create(s, Typeface.NORMAL)
             }
         }
+    }
+
+    fun getAnalyticsName() = inputField.getAnalyticsName()
+
+    private fun setAnalyticsName(attrs: TypedArray) {
+        analyticName = attrs.getString(R.styleable.InputFieldView_analyticsName)
     }
 
     /**
@@ -754,6 +762,8 @@ internal abstract class InputFieldView @JvmOverloads constructor(
         } else {
             inputField.setTextAppearance(context, textAppearance)
         }
+
+        inputField.setAnalyticsName(analyticName)
 
         val bgDraw = background?.constantState?.newDrawable()
         if (bgDraw != null) {

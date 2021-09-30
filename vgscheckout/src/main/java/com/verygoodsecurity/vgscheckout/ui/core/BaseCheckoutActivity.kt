@@ -26,6 +26,7 @@ import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
 import com.verygoodsecurity.vgscheckout.collect.view.card.validation.rules.VGSInfoRule
 import com.verygoodsecurity.vgscheckout.collect.widget.*
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfiguration
+import com.verygoodsecurity.vgscheckout.config.networking.core.VGSCheckoutHostnamePolicy
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillingAddressVisibility
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.VGSCheckoutAddressOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.VGSCheckoutOptionalAddressOptions
@@ -328,7 +329,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
             cardHolderTil,
             R.string.vgs_checkout_card_holder_empty_error
         )
-        result.addIf(!isCardHolderValid, "cardHolder")
+        result.addIf(!isCardHolderValid, cardHolderEt.getAnalyticsName())
 
         val isCardNumberValid = validate(
             cardNumberEt,
@@ -336,7 +337,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
             R.string.vgs_checkout_card_number_empty_error,
             R.string.vgs_checkout_card_number_invalid_error
         )
-        result.addIf(!isCardNumberValid, "cardNumber")
+        result.addIf(!isCardNumberValid, cardNumberEt.getAnalyticsName())
 
         val isExpirationDateValid = validate(
             expirationDateEt,
@@ -344,7 +345,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
             R.string.vgs_checkout_card_expiration_date_empty_error,
             R.string.vgs_checkout_card_expiration_date_invalid_error
         )
-        result.addIf(!isExpirationDateValid, "expDate")
+        result.addIf(!isExpirationDateValid, expirationDateEt.getAnalyticsName())
 
         val isSecurityCodeValid = validate(
             securityCodeEt,
@@ -352,7 +353,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
             R.string.vgs_checkout_security_code_empty_error,
             R.string.vgs_checkout_security_code_invalid_error
         )
-        result.addIf(!isSecurityCodeValid, "cvc")
+        result.addIf(!isSecurityCodeValid, securityCodeEt.getAnalyticsName())
 
         return result
     }
@@ -369,14 +370,14 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
             addressTil,
             R.string.vgs_checkout_address_info_line1_empty_error
         )
-        result.addIf(!isAddressValid, "addressLine1")
+        result.addIf(!isAddressValid, addressEt.getAnalyticsName())
 
         val isCityValid = validate(
             cityEt,
             cityTil,
             R.string.vgs_checkout_address_info_city_empty_error
         )
-        result.addIf(!isCityValid, "city")
+        result.addIf(!isCityValid, cityEt.getAnalyticsName())
 
         val postalAddressValid = validate(
             postalAddressEt,
@@ -384,7 +385,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
             getPostalAddressEmptyErrorMessage(),
             getPostalAddressInvalidErrorMessage()
         )
-        result.addIf(!postalAddressValid, "postalCode")
+        result.addIf(!postalAddressValid, postalAddressEt.getAnalyticsName())
 
         return result
     }
@@ -465,7 +466,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
             analyticTracker.log(
                 RequestEvent(
                     isSuccessful,
-                    collect.hasCustomHostname,
+                    routeConfig.hostnamePolicy is VGSCheckoutHostnamePolicy.CustomHostname,
                     routeConfig.requestOptions.extraData.isNotEmpty(),
                     hasCustomHeaders(),
                     routeConfig.requestOptions.mergePolicy,
