@@ -982,6 +982,12 @@ internal abstract class InputFieldView @JvmOverloads constructor(
         }
     }
 
+    protected fun setFieldDataSerializer(serializer: FieldDataSerializer<*, *>?) {
+        if (fieldType == FieldType.INFO) {
+            (inputField as? InfoInputField)?.serializer = serializer
+        }
+    }
+
     /**
      * Sets the id of the view to use when the next focus is FOCUS_FORWARD.
      * @param nextFocusForwardId The next focus ID, or NO_ID if the framework should
