@@ -242,6 +242,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
 
     private fun updateCountryView() {
         countryEt.setText(selectedCountry.name)
+        countryTil.setError(null)
     }
 
     private fun initAddressView(options: VGSCheckoutAddressOptions) {
@@ -453,7 +454,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
     private fun showCountrySelectionDialog() {
         val countries = CountriesHelper.countries
         val countryNames = countries.map { it.name }.toTypedArray()
-        val selectedIndex = if(selectedCountry.name.equals(countryEt.getText())) {
+        val selectedIndex = if(selectedCountry.name == countryEt.getText().toString()) {
             countries.indexOf(selectedCountry)
         } else {
             -1
