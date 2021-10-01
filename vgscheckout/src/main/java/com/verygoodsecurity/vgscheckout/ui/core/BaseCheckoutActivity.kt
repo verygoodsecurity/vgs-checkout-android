@@ -87,8 +87,17 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
     private val saveCardButton: MaterialButton by lazy { findViewById(R.id.mbSaveCard) }
 
     private val billingAddressValidationRule: VGSInfoRule by lazy {
+        val countryValidationRegex = CountriesHelper.countries
+            .map { it.name to it.code }
+            .unzip()
+            .toList()
+            .flatten()
+            .joinTo(StringBuilder("\\b("), separator = "|", postfix = ")\\b")
+            .toString()
+
         VGSInfoRule.ValidationBuilder()
             .setAllowableMinLength(BILLING_ADDRESS_MIN_CHARS_COUNT)
+            .setRegex(countryValidationRegex)
             .build()
     }
 
@@ -138,6 +147,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
             R.id.vgsEtCardNumber -> cardNumberTil.setError(null)
             R.id.vgsEtExpirationDate -> expirationDateTil.setError(null)
             R.id.vgsEtSecurityCode -> securityCodeTil.setError(null)
+            R.id.vgsEtSecurityCode -> countryTil.setError(null)
             R.id.vgsEtAddress -> addressTil.setError(null)
             R.id.vgsEtAddressOptional -> optionalAddressTil.setError(null)
             R.id.vgsEtCity -> cityTil.setError(null)
@@ -387,6 +397,14 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
         )
         result.addIf(!postalAddressValid, postalAddressEt.getAnalyticsName())
 
+        val isCountryValid = validate(
+            countryEt,
+            countryTil,
+            R.string.vgs_checkout_address_info_country_empty_error,
+            R.string.vgs_checkout_address_info_country_invalid_error
+        )
+        result.addIf(!isCountryValid, countryEt.getAnalyticsName())
+
         return result
     }
 
@@ -435,7 +453,12 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
     private fun showCountrySelectionDialog() {
         val countries = CountriesHelper.countries
         val countryNames = countries.map { it.name }.toTypedArray()
-        val selectedIndex = countries.indexOf(selectedCountry)
+        val selectedIndex = if(selectedCountry.name.equals(countryEt.getText())) {
+            countries.indexOf(selectedCountry)
+        } else {
+            -1
+        }
+
         var selected = -1
         MaterialAlertDialogBuilder(this)
             .setTitle(R.string.vgs_checkout_select_country_dialog_title)
