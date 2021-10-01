@@ -5,9 +5,12 @@ import android.text.InputType
 import com.verygoodsecurity.vgscheckout.collect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscheckout.collect.view.card.FieldType
 import com.verygoodsecurity.vgscheckout.collect.view.card.conection.InputInfoConnection
+import com.verygoodsecurity.vgscheckout.collect.view.core.serializers.FieldDataSerializer
 
 /** @suppress */
 internal class InfoInputField(context: Context) : BaseInputField(context) {
+
+    var serializer: FieldDataSerializer<*, *>? = null
 
     override var fieldType: FieldType = FieldType.INFO
 
@@ -16,6 +19,7 @@ internal class InfoInputField(context: Context) : BaseInputField(context) {
 
         val str = text.toString()
         val stateContent = FieldContent.InfoContent().apply {
+            this.serializer = this@InfoInputField.serializer
             this.data = str
         }
         val state = collectCurrentState(stateContent)

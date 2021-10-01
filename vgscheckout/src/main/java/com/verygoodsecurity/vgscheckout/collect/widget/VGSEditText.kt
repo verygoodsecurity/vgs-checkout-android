@@ -1,7 +1,6 @@
 package com.verygoodsecurity.vgscheckout.collect.widget
 
 import android.content.Context
-import android.graphics.Color
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.Gravity
@@ -11,6 +10,7 @@ import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
 import com.verygoodsecurity.vgscheckout.collect.view.card.FieldType
 import com.verygoodsecurity.vgscheckout.collect.view.card.validation.rules.VGSInfoRule
+import com.verygoodsecurity.vgscheckout.collect.view.core.serializers.FieldDataSerializer
 
 /**
  * A user interface element that displays text.
@@ -94,5 +94,9 @@ internal open class VGSEditText @JvmOverloads constructor(
      */
     fun addRule(rule: VGSInfoRule) {
         applyValidationRule(rule)
+    }
+
+    fun setSerializer(serializer: FieldDataSerializer<*, *>) {
+        this.setFieldDataSerializer(serializer)
     }
 }

@@ -24,6 +24,7 @@ import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSError
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
 import com.verygoodsecurity.vgscheckout.collect.view.card.validation.rules.VGSInfoRule
+import com.verygoodsecurity.vgscheckout.collect.view.core.serializers.CountryNameToIsoSerializer
 import com.verygoodsecurity.vgscheckout.collect.widget.*
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfiguration
 import com.verygoodsecurity.vgscheckout.config.networking.core.VGSCheckoutHostnamePolicy
@@ -226,6 +227,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
         countryEt.isFocusable = false
         countryEt.setOnClickListener { showCountrySelectionDialog() }
         countryEt.addOnTextChangeListener(this)
+        countryEt.setSerializer(CountryNameToIsoSerializer())
         collect.bindView(countryEt)
         updateCountryView()
     }

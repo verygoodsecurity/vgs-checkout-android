@@ -57,7 +57,10 @@ internal sealed class FieldContent {
 
     class SSNContent:FieldContent()
 
-    class InfoContent:FieldContent()
+    class InfoContent : FieldContent() {
+
+        internal var serializer: FieldDataSerializer<*, *>? = null
+    }
 
     override fun hashCode(): Int {
         return data.hashCode()
