@@ -56,7 +56,7 @@ class VGSCheckout internal constructor(
                 token,
                 vaultID,
                 environment,
-                isAnalyticsEnabled
+                isAnalyticsEnabled = isAnalyticsEnabled
             ),
             transitionOptions
         )
