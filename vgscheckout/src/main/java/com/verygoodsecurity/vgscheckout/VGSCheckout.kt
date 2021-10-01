@@ -37,6 +37,8 @@ class VGSCheckout internal constructor(
     /**
      * Start checkout with multiplexing configuration.
      *
+     * @throws IllegalArgumentException if token is not valid.
+     *
      * @param token client backend access token.
      * @param vaultID VGS vault id.
      * @param environment type of vault to communicate with.
@@ -44,6 +46,7 @@ class VGSCheckout internal constructor(
      * @param isAnalyticsEnabled true if checkout should send analytics events, false otherwise.
      */
     @JvmOverloads
+    @Throws(IllegalArgumentException::class)
     fun present(
         token: String,
         vaultID: String,
