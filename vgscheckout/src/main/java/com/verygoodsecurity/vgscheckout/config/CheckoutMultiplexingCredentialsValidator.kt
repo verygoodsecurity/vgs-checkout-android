@@ -2,10 +2,11 @@ package com.verygoodsecurity.vgscheckout.config
 
 import com.verygoodsecurity.vgscheckout.util.extension.decodeJwtPayload
 import com.verygoodsecurity.vgscheckout.util.extension.toJson
+import com.verygoodsecurity.vgscheckout.util.extension.toStringList
 
 internal object CheckoutMultiplexingCredentialsValidator {
 
-    private const val RESTRICTED_TOKEN_ROLE_SCOPE = "transfers:write"
+    private const val RESTRICTED_TOKEN_ROLE_SCOPE = "transfers:"
 
     private const val RESOURCE_ACCESS_KEY = "resource_access"
     private const val APP_ID_KEY_PREFIX = "multiplexing-app-"
@@ -19,11 +20,10 @@ internal object CheckoutMultiplexingCredentialsValidator {
         val roles = payload.optJSONObject(RESOURCE_ACCESS_KEY)
             ?.optJSONObject(APP_ID_KEY_PREFIX + vaultID)
             ?.optJSONArray(ROLES_KEY)
-            ?: throw IllegalArgumentException("JWT token doesn't contains roles.")
+            ?.toStringList()
 
-//        TODO: Uncomment before public release, also uncomment tests
-//        if (roles.contains(RESTRICTED_TOKEN_ROLE_SCOPE)) {
-//            throw IllegalArgumentException("JWT token contains restricted role [$RESTRICTED_TOKEN_ROLE_SCOPE].")
+//        roles?.find { it.contains(RESTRICTED_TOKEN_ROLE_SCOPE) }?.let {
+//            throw IllegalArgumentException("JWT token contains restricted role [$it].")
 //        }
 
         return token
