@@ -56,6 +56,7 @@ sealed class VGSCheckoutCardBrand : Parcelable {
             Forbrugsforeningen(),
             Dankort(),
             Visa(),
+            Mastercard(),
             AmericanExpress(),
             Hipercard(),
             Dinclub(),
@@ -127,16 +128,16 @@ sealed class VGSCheckoutCardBrand : Parcelable {
     ) : VGSCheckoutCardBrand() {
 
         constructor(
-            @DrawableRes icon: Int = CardType.MASTERCARD.resId,
-            mask: String = CardType.MASTERCARD.mask
+            @DrawableRes icon: Int = CardType.MAESTRO.resId,
+            mask: String = CardType.MAESTRO.mask
         ) : this(
-            CardType.MASTERCARD.name,
+            CardType.MAESTRO.name,
             icon,
-            CardType.MASTERCARD.regex,
+            CardType.MAESTRO.regex,
             mask,
-            CardType.MASTERCARD.rangeNumber,
-            CardType.MASTERCARD.rangeCVV,
-            CardType.MASTERCARD.algorithm.toCheckoutChecksumAlgorithm(),
+            CardType.MAESTRO.rangeNumber,
+            CardType.MAESTRO.rangeCVV,
+            CardType.MAESTRO.algorithm.toCheckoutChecksumAlgorithm(),
         )
     }
 
