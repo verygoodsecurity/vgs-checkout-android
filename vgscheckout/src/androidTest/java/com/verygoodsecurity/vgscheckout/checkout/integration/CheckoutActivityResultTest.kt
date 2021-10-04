@@ -13,7 +13,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
 import com.verygoodsecurity.vgscheckout.Constants
 import com.verygoodsecurity.vgscheckout.R
-import com.verygoodsecurity.vgscheckout.config.VGSCheckoutConfiguration
+import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfiguration
 import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutRouteConfiguration
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutFormConfiguration
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.VGSCheckoutCardOptions
@@ -40,7 +40,7 @@ class CheckoutActivityResultTest {
     private val defaultIntent = Intent(context, CheckoutActivity::class.java).apply {
         putExtra(
             Constants.CHECKOUT_RESULT_CONTRACT_NAME,
-            CheckoutResultContract.Args(VGSCheckoutConfiguration(Constants.VAULT_ID_3))
+            CheckoutResultContract.Args(VGSCheckoutCustomConfiguration(Constants.VAULT_ID_3))
         )
     }
 
@@ -81,7 +81,7 @@ class CheckoutActivityResultTest {
             putExtra(
                 Constants.CHECKOUT_RESULT_CONTRACT_NAME,
                 CheckoutResultContract.Args(
-                    VGSCheckoutConfiguration(
+                    VGSCheckoutCustomConfiguration(
                         vaultID = Constants.VAULT_ID_3,
                         VGSCheckoutEnvironment.Sandbox(),
                         VGSCheckoutRouteConfiguration("/post"),

@@ -11,7 +11,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.verygoodsecurity.vgscheckout.Constants.CHECKOUT_RESULT_CONTRACT_NAME
 import com.verygoodsecurity.vgscheckout.Constants.VAULT_ID
 import com.verygoodsecurity.vgscheckout.R
-import com.verygoodsecurity.vgscheckout.config.VGSCheckoutConfiguration
+import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfiguration
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutFormConfiguration
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillingAddressOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillingAddressVisibility
@@ -36,7 +36,7 @@ class HideComponentTest {
             putExtra(
                 CHECKOUT_RESULT_CONTRACT_NAME,
                 CheckoutResultContract.Args(
-                    VGSCheckoutConfiguration(
+                    VGSCheckoutCustomConfiguration(
                         vaultID = VAULT_ID,
                         formConfig = VGSCheckoutFormConfiguration(
                             cardOptions = VGSCheckoutCardOptions(
@@ -63,7 +63,7 @@ class HideComponentTest {
             putExtra(
                 CHECKOUT_RESULT_CONTRACT_NAME,
                 CheckoutResultContract.Args(
-                    VGSCheckoutConfiguration(
+                    VGSCheckoutCustomConfiguration(
                         vaultID = VAULT_ID,
                         formConfig = VGSCheckoutFormConfiguration(
                             addressOptions =

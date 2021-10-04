@@ -10,7 +10,7 @@ import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.widget.*
-import com.verygoodsecurity.vgscheckout.config.VGSCheckoutConfiguration
+import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfiguration
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.ui.CheckoutActivity
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -42,7 +42,7 @@ class FieldsValidationTest {
     private val defaultIntent = Intent(context, CheckoutActivity::class.java).apply {
         putExtra(
             CHECKOUT_RESULT_CONTRACT_NAME,
-            CheckoutResultContract.Args(VGSCheckoutConfiguration(VAULT_ID))
+            CheckoutResultContract.Args(VGSCheckoutCustomConfiguration(VAULT_ID))
         )
     }
 

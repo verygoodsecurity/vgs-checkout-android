@@ -7,7 +7,7 @@ import com.verygoodsecurity.checkout.R
 import com.verygoodsecurity.checkout.example.util.extension.showShort
 import com.verygoodsecurity.vgscheckout.VGSCheckout
 import com.verygoodsecurity.vgscheckout.VGSCheckoutCallback
-import com.verygoodsecurity.vgscheckout.config.VGSCheckoutConfiguration
+import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfiguration
 import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutRouteConfiguration
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutFormConfiguration
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillingAddressOptions
@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity(), VGSCheckoutCallback {
     }
 
     //region Checkout config
-    private fun getCheckoutConfig() = VGSCheckoutConfiguration(
+    private fun getCheckoutConfig() = VGSCheckoutCustomConfiguration(
         vaultID = vaultId,
         routeConfig = getCheckoutRouteConfig(),
         formConfig = getCheckoutFormConfig()

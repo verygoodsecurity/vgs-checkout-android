@@ -7,7 +7,7 @@ import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-class VGSCheckoutConfiguration @JvmOverloads constructor(
+class VGSCheckoutCustomConfiguration @JvmOverloads constructor(
     override val vaultID: String,
     override val environment: VGSCheckoutEnvironment = VGSCheckoutEnvironment.Sandbox(),
     override val routeConfig: VGSCheckoutRouteConfiguration = VGSCheckoutRouteConfiguration(),
