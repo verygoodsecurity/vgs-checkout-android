@@ -21,6 +21,7 @@ import com.verygoodsecurity.vgscheckout.collect.core.VgsCollectResponseListener
 import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.CancelEvent
 import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.RequestEvent
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSError
+import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSRequest
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
 import com.verygoodsecurity.vgscheckout.collect.view.card.validation.rules.VGSInfoRule
@@ -96,8 +97,6 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
     private var selectedCountry: Country = CountriesHelper.countries.first()
 
     abstract fun resolveConfig(intent: Intent): C
-
-    abstract fun handleSaveCard()
 
     abstract fun hasCustomHeaders(): Boolean
 
@@ -312,9 +311,23 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
         if (isInputValid) {
             setInputViewsEnabled(false)
             updateSaveButtonState(true)
-            handleSaveCard()
+            saveCardRequest()
         }
         sendRequestEvent(isInputValid, invalidFields)
+    }
+
+    private fun saveCardRequest() {
+        with(config.routeConfig) {
+            collect.asyncSubmit(
+                VGSRequest.VGSRequestBuilder()
+                    .setPath(path)
+                    .setMethod(requestOptions.httpMethod.toCollectHTTPMethod())
+                    .setCustomData(requestOptions.extraData)
+                    .setCustomHeader(requestOptions.extraHeaders)
+                    .setFieldNameMappingPolicy(requestOptions.mergePolicy.toCollectMergePolicy())
+                    .build()
+            )
+        }
     }
 
     private fun getInvalidFieldsTypes(): List<String> {
