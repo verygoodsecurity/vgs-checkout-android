@@ -7,12 +7,7 @@ import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfiguration
 import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutRouteConfiguration
 import com.verygoodsecurity.vgscheckout.config.networking.request.VGSCheckoutRequestOptions
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutFormConfiguration
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.VGSCheckoutCardOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.VGSCheckoutCardHolderOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.VGSCheckoutCardNumberOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.VGSCheckoutCVCOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.VGSCheckoutExpirationDateOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.model.VGSDateSeparateSerializer
+import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutMultiplexingFormConfiguration
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
 
 @Suppress("MemberVisibilityCanBePrivate", "CanBeParameter")
@@ -21,7 +16,7 @@ class VGSCheckoutMultiplexingConfiguration private constructor(
     override val vaultID: String,
     override val environment: VGSCheckoutEnvironment,
     override val routeConfig: VGSCheckoutRouteConfiguration,
-    override val formConfig: VGSCheckoutFormConfiguration,
+    override val formConfig: VGSCheckoutMultiplexingFormConfiguration,
     override val isAnalyticsEnabled: Boolean,
     private val createdFromParcel: Boolean
 ) : CheckoutConfiguration() {
@@ -50,13 +45,14 @@ class VGSCheckoutMultiplexingConfiguration private constructor(
         token: String,
         vaultID: String,
         environment: VGSCheckoutEnvironment = VGSCheckoutEnvironment.Sandbox(),
+        formConfig: VGSCheckoutMultiplexingFormConfiguration = VGSCheckoutMultiplexingFormConfiguration(),
         isAnalyticsEnabled: Boolean = true
     ) : this(
         token,
         vaultID,
         environment,
         getRouteConfiguration(token),
-        getFormConfig(),
+        formConfig,
         isAnalyticsEnabled,
         false
     )
@@ -73,7 +69,6 @@ class VGSCheckoutMultiplexingConfiguration private constructor(
     override fun describeContents(): Int {
         return 0
     }
-
 
     @Throws(IllegalArgumentException::class)
     private fun validateToken() {
@@ -101,14 +96,6 @@ class VGSCheckoutMultiplexingConfiguration private constructor(
         private const val AUTHORIZATION_HEADER_NAME = "Authorization"
         private const val BEARER_TOKEN_TYPE = "Bearer"
 
-        private const val CARD_NUMBER_FIELD_NAME = "card.number"
-        private const val CARD_HOLDER_FIELD_NAME = "card.name"
-        private const val CVC_FIELD_NAME = "card.cvc"
-        private const val EXPIRY_DATE_FIELD_NAME = "card.expDate"
-        private const val MONTH_FIELD_NAME = "card.exp_month"
-        private const val YEAR_FIELD_NAME = "card.exp_year"
-        private const val EXPIRY_DATE_OUTPUT_FORMAT = "MM/YYYY"
-
         private fun getRouteConfiguration(token: String): VGSCheckoutRouteConfiguration {
             return VGSCheckoutRouteConfiguration(
                 PATH,
@@ -116,24 +103,6 @@ class VGSCheckoutMultiplexingConfiguration private constructor(
                     extraHeaders = mapOf(
                         CONTENT_TYPE_HEADER_NAME to CONTENT_TYPE,
                         AUTHORIZATION_HEADER_NAME to "$BEARER_TOKEN_TYPE $token"
-                    )
-                )
-            )
-        }
-
-        private fun getFormConfig(): VGSCheckoutFormConfiguration {
-            return VGSCheckoutFormConfiguration(
-                cardOptions = VGSCheckoutCardOptions(
-                    VGSCheckoutCardNumberOptions(CARD_NUMBER_FIELD_NAME),
-                    VGSCheckoutCardHolderOptions(CARD_HOLDER_FIELD_NAME),
-                    VGSCheckoutCVCOptions(CVC_FIELD_NAME),
-                    VGSCheckoutExpirationDateOptions(
-                        EXPIRY_DATE_FIELD_NAME,
-                        VGSDateSeparateSerializer(
-                            MONTH_FIELD_NAME,
-                            YEAR_FIELD_NAME
-                        ),
-                        outputFormatRegex = EXPIRY_DATE_OUTPUT_FORMAT
                     )
                 )
             )

@@ -11,6 +11,7 @@ import com.verygoodsecurity.vgscheckout.collect.core.storage.content.file.Tempor
 import com.verygoodsecurity.vgscheckout.collect.core.storage.content.file.VGSFileProvider
 import com.verygoodsecurity.vgscheckout.collect.util.extension.merge
 import com.verygoodsecurity.vgscheckout.collect.view.VGSCollectView
+import com.verygoodsecurity.vgscheckout.collect.view.core.serializers.CountryNameToIsoSerializer
 import com.verygoodsecurity.vgscheckout.collect.view.core.serializers.VGSExpDateSeparateSerializer
 
 /** @suppress */
@@ -105,7 +106,7 @@ internal class InternalStorage(
                     is CreditCardExpDateContent -> {
                         result.addAll(handleExpirationDateContent(state.fieldName!!, this))
                     }
-                    else -> result.add(state.fieldName!! to data!!)
+                    is InfoContent -> result.add(state.fieldName!! to handleInfoContent(this))
                 }
             }
         }
@@ -130,5 +131,10 @@ internal class InternalStorage(
             result.add(fieldName to data)
         }
         return result
+    }
+
+    private fun handleInfoContent(content: InfoContent): String {
+        val data = (content.rawData ?: content.data!!)
+        return (content.serializer as? CountryNameToIsoSerializer)?.serialize(data) ?: data
     }
 }
