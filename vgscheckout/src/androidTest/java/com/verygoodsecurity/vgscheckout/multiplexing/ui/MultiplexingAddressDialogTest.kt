@@ -12,9 +12,8 @@ import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.verygoodsecurity.vgscheckout.Constants
 import com.verygoodsecurity.vgscheckout.R
-import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingConfiguration
+import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingConfig
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
-import com.verygoodsecurity.vgscheckout.ui.CheckoutActivity
 import com.verygoodsecurity.vgscheckout.ui.CheckoutMultiplexingActivity
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers
 import com.verygoodsecurity.vgscheckout.util.ViewInteraction
@@ -30,7 +29,7 @@ class MultiplexingAddressDialogTest {
         putExtra(
             Constants.CHECKOUT_RESULT_CONTRACT_NAME,
             CheckoutResultContract.Args(
-                VGSCheckoutMultiplexingConfiguration(
+                VGSCheckoutMultiplexingConfig(
                 Constants.CORRECT_TOKEN,
                 Constants.VAULT_ID
             )

@@ -12,7 +12,7 @@ import com.verygoodsecurity.vgscheckout.Constants.CHECKOUT_RESULT_CONTRACT_NAME
 import com.verygoodsecurity.vgscheckout.Constants.CORRECT_TOKEN
 import com.verygoodsecurity.vgscheckout.Constants.VAULT_ID
 import com.verygoodsecurity.vgscheckout.R
-import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingConfiguration
+import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingConfig
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.ui.CheckoutMultiplexingActivity
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers
@@ -30,7 +30,7 @@ class DefaultMultiplexingSetupTest {
         putExtra(
             CHECKOUT_RESULT_CONTRACT_NAME,
             CheckoutResultContract.Args(
-                VGSCheckoutMultiplexingConfiguration(
+                VGSCheckoutMultiplexingConfig(
                     CORRECT_TOKEN,
                     VAULT_ID,
                 )

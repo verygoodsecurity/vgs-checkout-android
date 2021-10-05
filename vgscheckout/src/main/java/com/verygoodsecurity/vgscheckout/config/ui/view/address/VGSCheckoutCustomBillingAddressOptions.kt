@@ -9,7 +9,7 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.address.country.VGSChecko
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-class VGSCheckoutBillingAddressOptions @JvmOverloads constructor(
+class VGSCheckoutCustomBillingAddressOptions @JvmOverloads constructor(
     override val countryOptions: VGSCheckoutCountryOptions = VGSCheckoutCountryOptions(),
     override val cityOptions: VGSCheckoutCityOptions = VGSCheckoutCityOptions(),
     override val addressOptions: VGSCheckoutAddressOptions = VGSCheckoutAddressOptions(),

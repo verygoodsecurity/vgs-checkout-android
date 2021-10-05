@@ -27,7 +27,7 @@ import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
 import com.verygoodsecurity.vgscheckout.collect.view.card.validation.rules.VGSInfoRule
 import com.verygoodsecurity.vgscheckout.collect.view.core.serializers.CountryNameToIsoSerializer
 import com.verygoodsecurity.vgscheckout.collect.widget.*
-import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfiguration
+import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.config.networking.core.VGSCheckoutHostnamePolicy
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillingAddressVisibility
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.VGSCheckoutAddressOptions
@@ -51,7 +51,7 @@ private const val BILLING_ADDRESS_MIN_CHARS_COUNT = 1
 private const val ICON_ALPHA_ENABLED = 1f
 private const val ICON_ALPHA_DISABLED = 0.5f
 
-internal abstract class BaseCheckoutActivity<C : CheckoutConfiguration> :
+internal abstract class BaseCheckoutActivity<C : CheckoutConfig> :
     AppCompatActivity(), VgsCollectResponseListener, InputFieldView.OnTextChangedListener {
 
     protected val config: C by lazy { resolveConfig(intent) }

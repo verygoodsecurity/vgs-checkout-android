@@ -3,23 +3,21 @@ package com.verygoodsecurity.vgscheckout.config
 import android.os.Parcel
 import android.os.Parcelable
 import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.JWTValidationEvent
-import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfiguration
-import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutRouteConfiguration
-import com.verygoodsecurity.vgscheckout.config.networking.request.VGSCheckoutRequestOptions
-import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutFormConfiguration
-import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutMultiplexingFormConfiguration
+import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
+import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutMultiplexingRouteConfig
+import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutMultiplexingFormConfig
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
 
 @Suppress("MemberVisibilityCanBePrivate", "CanBeParameter")
-class VGSCheckoutMultiplexingConfiguration private constructor(
+class VGSCheckoutMultiplexingConfig private constructor(
     internal val token: String,
     override val vaultID: String,
     override val environment: VGSCheckoutEnvironment,
-    override val routeConfig: VGSCheckoutRouteConfiguration,
-    override val formConfig: VGSCheckoutMultiplexingFormConfiguration,
+    override val routeConfig: VGSCheckoutMultiplexingRouteConfig,
+    override val formConfig: VGSCheckoutMultiplexingFormConfig,
     override val isAnalyticsEnabled: Boolean,
     private val createdFromParcel: Boolean
-) : CheckoutConfiguration() {
+) : CheckoutConfig() {
 
     init {
 
@@ -30,8 +28,8 @@ class VGSCheckoutMultiplexingConfiguration private constructor(
         parcel.readString()!!,
         parcel.readString()!!,
         parcel.readParcelable(VGSCheckoutEnvironment::class.java.classLoader)!!,
-        parcel.readParcelable(VGSCheckoutRouteConfiguration::class.java.classLoader)!!,
-        parcel.readParcelable(VGSCheckoutFormConfiguration::class.java.classLoader)!!,
+        parcel.readParcelable(VGSCheckoutMultiplexingRouteConfig::class.java.classLoader)!!,
+        parcel.readParcelable(VGSCheckoutMultiplexingFormConfig::class.java.classLoader)!!,
         parcel.readInt() == 1,
         true
     )
@@ -45,13 +43,13 @@ class VGSCheckoutMultiplexingConfiguration private constructor(
         token: String,
         vaultID: String,
         environment: VGSCheckoutEnvironment = VGSCheckoutEnvironment.Sandbox(),
-        formConfig: VGSCheckoutMultiplexingFormConfiguration = VGSCheckoutMultiplexingFormConfiguration(),
+        formConfig: VGSCheckoutMultiplexingFormConfig = VGSCheckoutMultiplexingFormConfig(),
         isAnalyticsEnabled: Boolean = true
     ) : this(
         token,
         vaultID,
         environment,
-        getRouteConfiguration(token),
+        VGSCheckoutMultiplexingRouteConfig(token),
         formConfig,
         isAnalyticsEnabled,
         false
@@ -80,32 +78,14 @@ class VGSCheckoutMultiplexingConfiguration private constructor(
         }
     }
 
-    companion object CREATOR : Parcelable.Creator<VGSCheckoutMultiplexingConfiguration> {
+    companion object CREATOR : Parcelable.Creator<VGSCheckoutMultiplexingConfig> {
 
-        override fun createFromParcel(parcel: Parcel): VGSCheckoutMultiplexingConfiguration {
-            return VGSCheckoutMultiplexingConfiguration(parcel)
+        override fun createFromParcel(parcel: Parcel): VGSCheckoutMultiplexingConfig {
+            return VGSCheckoutMultiplexingConfig(parcel)
         }
 
-        override fun newArray(size: Int): Array<VGSCheckoutMultiplexingConfiguration?> {
+        override fun newArray(size: Int): Array<VGSCheckoutMultiplexingConfig?> {
             return arrayOfNulls(size)
-        }
-
-        private const val PATH = "/financial_instruments"
-        private const val CONTENT_TYPE_HEADER_NAME = "Content-Type"
-        private const val CONTENT_TYPE = "application/json"
-        private const val AUTHORIZATION_HEADER_NAME = "Authorization"
-        private const val BEARER_TOKEN_TYPE = "Bearer"
-
-        private fun getRouteConfiguration(token: String): VGSCheckoutRouteConfiguration {
-            return VGSCheckoutRouteConfiguration(
-                PATH,
-                requestOptions = VGSCheckoutRequestOptions(
-                    extraHeaders = mapOf(
-                        CONTENT_TYPE_HEADER_NAME to CONTENT_TYPE,
-                        AUTHORIZATION_HEADER_NAME to "$BEARER_TOKEN_TYPE $token"
-                    )
-                )
-            )
         }
     }
 }

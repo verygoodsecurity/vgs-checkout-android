@@ -2,14 +2,14 @@ package com.verygoodsecurity.vgscheckout
 
 import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResultLauncher
-import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingConfiguration
-import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfiguration
+import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingConfig
+import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutTransitionOptions
 
 class VGSCheckout internal constructor(
-    private val activityResultLauncher: ActivityResultLauncher<CheckoutResultContract.Args<CheckoutConfiguration>>
+    private val activityResultLauncher: ActivityResultLauncher<CheckoutResultContract.Args<CheckoutConfig>>
 ) {
 
     @JvmOverloads
@@ -25,7 +25,7 @@ class VGSCheckout internal constructor(
      */
     @JvmOverloads
     fun present(
-        config: CheckoutConfiguration,
+        config: CheckoutConfig,
         transitionOptions: VGSCheckoutTransitionOptions? = null
     ) {
         activityResultLauncher.launch(
@@ -55,7 +55,7 @@ class VGSCheckout internal constructor(
         isAnalyticsEnabled: Boolean = true
     ) {
         present(
-            VGSCheckoutMultiplexingConfiguration(
+            VGSCheckoutMultiplexingConfig(
                 token,
                 vaultID,
                 environment,

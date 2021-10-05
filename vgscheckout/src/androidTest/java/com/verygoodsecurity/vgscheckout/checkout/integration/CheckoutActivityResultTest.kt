@@ -13,10 +13,10 @@ import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
 import com.verygoodsecurity.vgscheckout.Constants
 import com.verygoodsecurity.vgscheckout.R
-import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfiguration
-import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutRouteConfiguration
-import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutFormConfiguration
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.VGSCheckoutCardOptions
+import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
+import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutCustomRouteConfig
+import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutCustomFormConfig
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.VGSCheckoutCustomCardOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.VGSCheckoutCardHolderOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.VGSCheckoutCardNumberOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.VGSCheckoutCVCOptions
@@ -40,7 +40,7 @@ class CheckoutActivityResultTest {
     private val defaultIntent = Intent(context, CheckoutActivity::class.java).apply {
         putExtra(
             Constants.CHECKOUT_RESULT_CONTRACT_NAME,
-            CheckoutResultContract.Args(VGSCheckoutCustomConfiguration(Constants.VAULT_ID_3))
+            CheckoutResultContract.Args(VGSCheckoutCustomConfig(Constants.VAULT_ID_3))
         )
     }
 
@@ -81,12 +81,12 @@ class CheckoutActivityResultTest {
             putExtra(
                 Constants.CHECKOUT_RESULT_CONTRACT_NAME,
                 CheckoutResultContract.Args(
-                    VGSCheckoutCustomConfiguration(
+                    VGSCheckoutCustomConfig(
                         vaultID = Constants.VAULT_ID_3,
                         VGSCheckoutEnvironment.Sandbox(),
-                        VGSCheckoutRouteConfiguration("/post"),
-                        VGSCheckoutFormConfiguration(
-                            cardOptions = VGSCheckoutCardOptions(
+                        VGSCheckoutCustomRouteConfig("/post"),
+                        VGSCheckoutCustomFormConfig(
+                            cardOptions = VGSCheckoutCustomCardOptions(
                                 VGSCheckoutCardNumberOptions("card_number"),
                                 VGSCheckoutCardHolderOptions("card_holder"),
                                 VGSCheckoutCVCOptions("card_cvc"),
