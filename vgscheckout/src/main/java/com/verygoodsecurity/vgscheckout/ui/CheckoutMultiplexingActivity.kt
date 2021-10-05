@@ -3,32 +3,15 @@ package com.verygoodsecurity.vgscheckout.ui
 import android.content.Intent
 import android.os.Bundle
 import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.InitEvent
-import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSRequest
-import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingConfiguration
+import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingConfig
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.ui.core.BaseCheckoutActivity
-import com.verygoodsecurity.vgscheckout.util.extension.toCollectHTTPMethod
-import com.verygoodsecurity.vgscheckout.util.extension.toCollectMergePolicy
 
 internal class CheckoutMultiplexingActivity :
-    BaseCheckoutActivity<VGSCheckoutMultiplexingConfiguration>() {
+    BaseCheckoutActivity<VGSCheckoutMultiplexingConfig>() {
 
     override fun resolveConfig(intent: Intent) =
-        CheckoutResultContract.Args.fromIntent<VGSCheckoutMultiplexingConfiguration>(intent).config
-
-    override fun handleSaveCard() {
-        with(config.routeConfig) {
-            collect.asyncSubmit(
-                VGSRequest.VGSRequestBuilder()
-                    .setPath(path)
-                    .setMethod(requestOptions.httpMethod.toCollectHTTPMethod())
-                    .setCustomData(requestOptions.extraData)
-                    .setCustomHeader(requestOptions.extraHeaders)
-                    .setFieldNameMappingPolicy(requestOptions.mergePolicy.toCollectMergePolicy())
-                    .build()
-            )
-        }
-    }
+        CheckoutResultContract.Args.fromIntent<VGSCheckoutMultiplexingConfig>(intent).config
 
     override fun hasCustomHeaders() = false
 

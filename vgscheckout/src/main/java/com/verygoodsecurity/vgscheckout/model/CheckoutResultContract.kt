@@ -7,9 +7,9 @@ import android.os.Bundle
 import android.os.Parcelable
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.core.os.bundleOf
-import com.verygoodsecurity.vgscheckout.config.VGSCheckoutConfiguration
-import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingConfiguration
-import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfiguration
+import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
+import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingConfig
+import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.ui.CheckoutActivity
 import com.verygoodsecurity.vgscheckout.ui.CheckoutMultiplexingActivity
 import com.verygoodsecurity.vgscheckout.ui.core.BaseCheckoutActivity
@@ -19,9 +19,9 @@ private const val EXTRA_KEY_ARGS = "com.verygoodsecurity.vgscheckout.model.extra
 private const val EXTRA_KEY_RESULT = "com.verygoodsecurity.vgscheckout.model.extra_checkout_result"
 
 internal class CheckoutResultContract :
-    ActivityResultContract<CheckoutResultContract.Args<CheckoutConfiguration>, VGSCheckoutResult>() {
+    ActivityResultContract<CheckoutResultContract.Args<CheckoutConfig>, VGSCheckoutResult>() {
 
-    override fun createIntent(context: Context, input: Args<CheckoutConfiguration>?): Intent {
+    override fun createIntent(context: Context, input: Args<CheckoutConfig>?): Intent {
         return Intent(context, getIntentTarget(input)).apply {
             putExtra(EXTRA_KEY_ARGS, input)
         }
@@ -36,20 +36,20 @@ internal class CheckoutResultContract :
         }
     }
 
-    private fun getIntentTarget(args: Args<CheckoutConfiguration>?): Class<out BaseCheckoutActivity<*>> {
+    private fun getIntentTarget(args: Args<CheckoutConfig>?): Class<out BaseCheckoutActivity<*>> {
         return when (args?.config) {
-            is VGSCheckoutConfiguration -> CheckoutActivity::class.java
-            is VGSCheckoutMultiplexingConfiguration -> CheckoutMultiplexingActivity::class.java
+            is VGSCheckoutCustomConfig -> CheckoutActivity::class.java
+            is VGSCheckoutMultiplexingConfig -> CheckoutMultiplexingActivity::class.java
             else -> throw IllegalArgumentException("Invalid checkout config.")
         }
     }
 
     @Parcelize
-    data class Args<C : CheckoutConfiguration>(val config: C) : Parcelable {
+    data class Args<C : CheckoutConfig>(val config: C) : Parcelable {
 
         companion object {
 
-            fun <C : CheckoutConfiguration> fromIntent(intent: Intent): Args<C> {
+            fun <C : CheckoutConfig> fromIntent(intent: Intent): Args<C> {
                 return intent.getParcelableExtra(EXTRA_KEY_ARGS)
                     ?: throw IllegalArgumentException("Failed to get arguments.")
             }

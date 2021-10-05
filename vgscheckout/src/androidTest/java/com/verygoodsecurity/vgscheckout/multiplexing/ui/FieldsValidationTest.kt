@@ -11,7 +11,7 @@ import androidx.test.espresso.matcher.RootMatchers
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.verygoodsecurity.vgscheckout.R
-import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingConfiguration
+import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingConfig
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.ui.CheckoutMultiplexingActivity
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -47,7 +47,7 @@ class FieldsValidationTest {
         putExtra(
             CHECKOUT_RESULT_CONTRACT_NAME,
             CheckoutResultContract.Args(
-                VGSCheckoutMultiplexingConfiguration(
+                VGSCheckoutMultiplexingConfig(
                     CORRECT_TOKEN,
                     VAULT_ID,
                 )

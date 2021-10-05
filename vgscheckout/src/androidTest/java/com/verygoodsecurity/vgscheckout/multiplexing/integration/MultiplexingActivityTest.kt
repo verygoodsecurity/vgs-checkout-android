@@ -16,7 +16,7 @@ import com.verygoodsecurity.vgscheckout.Constants.CORRECT_TOKEN
 import com.verygoodsecurity.vgscheckout.Constants.INCORRECT_TOKEN
 import com.verygoodsecurity.vgscheckout.Constants.VAULT_ID
 import com.verygoodsecurity.vgscheckout.R
-import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingConfiguration
+import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingConfig
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.ui.CheckoutMultiplexingActivity
 import org.junit.Assert.assertEquals
@@ -34,7 +34,7 @@ class MultiplexingActivityTest {
         putExtra(
             CHECKOUT_RESULT_CONTRACT_NAME,
             CheckoutResultContract.Args(
-                VGSCheckoutMultiplexingConfiguration(
+                VGSCheckoutMultiplexingConfig(
                     CORRECT_TOKEN,
                     VAULT_ID,
                 )
@@ -55,7 +55,7 @@ class MultiplexingActivityTest {
             putExtra(
                 CHECKOUT_RESULT_CONTRACT_NAME,
                 CheckoutResultContract.Args(
-                    VGSCheckoutMultiplexingConfiguration(
+                    VGSCheckoutMultiplexingConfig(
                         INCORRECT_TOKEN,
                         VAULT_ID,
                     )

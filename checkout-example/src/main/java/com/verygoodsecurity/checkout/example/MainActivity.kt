@@ -7,15 +7,15 @@ import com.verygoodsecurity.checkout.R
 import com.verygoodsecurity.checkout.example.util.extension.showShort
 import com.verygoodsecurity.vgscheckout.VGSCheckout
 import com.verygoodsecurity.vgscheckout.VGSCheckoutCallback
-import com.verygoodsecurity.vgscheckout.config.VGSCheckoutConfiguration
-import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutRouteConfiguration
-import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutFormConfiguration
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillingAddressOptions
+import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
+import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutCustomRouteConfig
+import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutCustomFormConfig
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutCustomBillingAddressOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.VGSCheckoutAddressOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.city.VGSCheckoutCityOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.code.VGSCheckoutPostalAddressOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.country.VGSCheckoutCountryOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.VGSCheckoutCardOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.VGSCheckoutCustomCardOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.VGSCheckoutCardHolderOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.VGSCheckoutCardNumberOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.VGSCheckoutCVCOptions
@@ -47,25 +47,25 @@ class MainActivity : AppCompatActivity(), VGSCheckoutCallback {
     }
 
     //region Checkout config
-    private fun getCheckoutConfig() = VGSCheckoutConfiguration(
+    private fun getCheckoutConfig() = VGSCheckoutCustomConfig(
         vaultID = vaultId,
         routeConfig = getCheckoutRouteConfig(),
         formConfig = getCheckoutFormConfig()
     )
 
-    private fun getCheckoutRouteConfig() = VGSCheckoutRouteConfiguration("post")
+    private fun getCheckoutRouteConfig() = VGSCheckoutCustomRouteConfig("post")
 
     private fun getCheckoutFormConfig() =
-        VGSCheckoutFormConfiguration(getCardOptions(), getAddressOptions())
+        VGSCheckoutCustomFormConfig(getCardOptions(), getAddressOptions())
 
-    private fun getCardOptions() = VGSCheckoutCardOptions(
+    private fun getCardOptions() = VGSCheckoutCustomCardOptions(
         VGSCheckoutCardNumberOptions("card_data.card_number"),
         VGSCheckoutCardHolderOptions("card_data.card_holder"),
         VGSCheckoutCVCOptions("card_data.card_cvc"),
         VGSCheckoutExpirationDateOptions("card_data.exp_date")
     )
 
-    private fun getAddressOptions() = VGSCheckoutBillingAddressOptions(
+    private fun getAddressOptions() = VGSCheckoutCustomBillingAddressOptions(
         VGSCheckoutCountryOptions("address_info.country"),
         VGSCheckoutCityOptions("address_info.city"),
         VGSCheckoutAddressOptions("address_info.address"),

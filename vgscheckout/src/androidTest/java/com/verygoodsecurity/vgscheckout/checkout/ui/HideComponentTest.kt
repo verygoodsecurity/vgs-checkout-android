@@ -11,11 +11,11 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.verygoodsecurity.vgscheckout.Constants.CHECKOUT_RESULT_CONTRACT_NAME
 import com.verygoodsecurity.vgscheckout.Constants.VAULT_ID
 import com.verygoodsecurity.vgscheckout.R
-import com.verygoodsecurity.vgscheckout.config.VGSCheckoutConfiguration
-import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutFormConfiguration
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillingAddressOptions
+import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
+import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutCustomFormConfig
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutCustomBillingAddressOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillingAddressVisibility
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.VGSCheckoutCardOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.VGSCheckoutCustomCardOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.VGSCheckoutCardHolderOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.core.VGSCheckoutFieldVisibility
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
@@ -36,10 +36,10 @@ class HideComponentTest {
             putExtra(
                 CHECKOUT_RESULT_CONTRACT_NAME,
                 CheckoutResultContract.Args(
-                    VGSCheckoutConfiguration(
+                    VGSCheckoutCustomConfig(
                         vaultID = VAULT_ID,
-                        formConfig = VGSCheckoutFormConfiguration(
-                            cardOptions = VGSCheckoutCardOptions(
+                        formConfig = VGSCheckoutCustomFormConfig(
+                            cardOptions = VGSCheckoutCustomCardOptions(
                                 cardHolderOptions = VGSCheckoutCardHolderOptions(
                                     visibility = VGSCheckoutFieldVisibility.HIDDEN
                                 )
@@ -63,11 +63,11 @@ class HideComponentTest {
             putExtra(
                 CHECKOUT_RESULT_CONTRACT_NAME,
                 CheckoutResultContract.Args(
-                    VGSCheckoutConfiguration(
+                    VGSCheckoutCustomConfig(
                         vaultID = VAULT_ID,
-                        formConfig = VGSCheckoutFormConfiguration(
+                        formConfig = VGSCheckoutCustomFormConfig(
                             addressOptions =
-                            VGSCheckoutBillingAddressOptions(
+                            VGSCheckoutCustomBillingAddressOptions(
                                 visibility =
                                 VGSCheckoutBillingAddressVisibility.HIDDEN
                             )

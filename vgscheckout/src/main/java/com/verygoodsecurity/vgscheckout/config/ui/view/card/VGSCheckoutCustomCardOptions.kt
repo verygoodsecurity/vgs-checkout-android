@@ -8,7 +8,7 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.VGSChecko
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-class VGSCheckoutCardOptions @JvmOverloads constructor(
+class VGSCheckoutCustomCardOptions @JvmOverloads constructor(
     override val cardNumberOptions: VGSCheckoutCardNumberOptions = VGSCheckoutCardNumberOptions(),
     override val cardHolderOptions: VGSCheckoutCardHolderOptions = VGSCheckoutCardHolderOptions(),
     override val cvcOptions: VGSCheckoutCVCOptions = VGSCheckoutCVCOptions(),
