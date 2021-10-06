@@ -64,7 +64,7 @@ dependencies {
 
   <tr>
     <td>
-      <b> To initialize VGS Checkout you have to set your <a href="https://www.verygoodsecurity.com/docs/payment-optimization/multiplexing/api/authentication/">access token</a>, <a href="https://www.verygoodsecurity.com/docs/terminology/nomenclature#vault">vault id</a> and <a href="https://www.verygoodsecurity.com/docs/getting-started/going-live#sandbox-vs-live">Environment</a> type.</b> 
+      <b> To initialize VGS Checkout you have to set your <a href="https://www.verygoodsecurity.com/docs/payment-optimization/multiplexing/api/authentication/">access token</a>, <a href="https://www.verygoodsecurity.com/docs/terminology/nomenclature#vault">vault id</a> and <a href="https://www.verygoodsecurity.com/docs/getting-started/going-live#sandbox-vs-live">environment</a> type.</b> 
       </br>You can find additional information about VGS Checkout configurations at the following <a href="https://www.verygoodsecurity.com/docs/payment-optimization/checkout/android-sdk/configuration/">section</a>.
     </td>
      <th rowspan="2"><img src="/img/vgs-field-setup-state.gif"></th>
