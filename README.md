@@ -75,7 +75,7 @@ dependencies {
 ```kotlin
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var checkout:VGSCheckout
+    private lateinit var checkout: VGSCheckout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -107,7 +107,7 @@ class MainActivity : AppCompatActivity() {
 ```kotlin
 class MainActivity : AppCompatActivity(), VGSCheckoutCallback {
 
-    private lateinit var checkout:VGSCheckout
+    private lateinit var checkout: VGSCheckout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
