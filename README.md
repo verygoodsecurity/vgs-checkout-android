@@ -105,7 +105,7 @@ class MainActivity : AppCompatActivity() {
     <td>
 
 ```kotlin
-class MainActivity : AppCompatActivity(), VGSCheckoutCallback {
+class MainActivity : AppCompatActivity() {
 
     private lateinit var checkout: VGSCheckout
 
@@ -113,19 +113,26 @@ class MainActivity : AppCompatActivity(), VGSCheckoutCallback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        checkout = VGSCheckout(this, this)
+        checkout = VGSCheckout(this, object : VGSCheckoutCallback {
+
+            override fun onCheckoutResult(result: VGSCheckoutResult) {
+                when (result) {
+                    is VGSCheckoutResult.Success -> {
+                        // TODO: Handle success
+                    }
+                    is VGSCheckoutResult.Failed -> {
+                        // TODO: Handle failed
+                    }
+                    is VGSCheckoutResult.Canceled -> {
+                        // TODO: Handle canceled
+                    }
+                }
+            }
+        })
     }
 
     private fun presentVGSCheckout() {
         checkout.present("<ACCESS_TOKEN>", "<VAULT_ID>", VGSCheckoutEnvironment.Sandbox())
-    }
-
-    override fun onCheckoutResult(result: VGSCheckoutResult) {
-        when (result) {
-            is Success -> handleSuccessResponse()
-            is Failed -> handleFailedResponse()
-            is Canceled -> handleCanceledActivity()
-        }
     }
 }
 ```
