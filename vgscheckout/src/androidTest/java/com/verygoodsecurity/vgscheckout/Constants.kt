@@ -15,6 +15,7 @@ object Constants {
     // Fields data
     const val VALID_CARD_HOLDER = "John Doe"
     const val VALID_CARD_NUMBER = "4111111111111111"
+    const val FORMATTED_CARD_NUMBER = "4111 1111 1111 1111"
     const val INVALID_CARD_NUMBER = "0000000000000000"
     const val VALID_EXP_DATE = "10/22"
     const val INVALID_EXP_DATE = "10/2"

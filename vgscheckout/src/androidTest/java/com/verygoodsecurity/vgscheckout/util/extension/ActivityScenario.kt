@@ -34,7 +34,6 @@ private fun awaitBlock(timeOut: Int = 10_000, block: () -> Boolean) {
     Assert.assertTrue("Couldn't await the condition", value)
 }
 
-
 fun fillCardFields(
     cardHolderName: String = Constants.VALID_CARD_HOLDER,
     cardNumber: String = Constants.VALID_CARD_NUMBER,
