@@ -71,7 +71,7 @@ class VGSCheckoutMultiplexingConfig private constructor(
     @Throws(IllegalArgumentException::class)
     private fun validateToken() {
         try {
-            CheckoutMultiplexingCredentialsValidator.validateJWT(vaultID, token)
+            CheckoutMultiplexingCredentialsValidator.validateJWT(token)
             analyticTracker.log(JWTValidationEvent(true))
         } finally {
             analyticTracker.log(JWTValidationEvent(false))
