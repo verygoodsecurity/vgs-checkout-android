@@ -1,5 +1,6 @@
 package com.verygoodsecurity.vgscheckout.checkout.integration
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.test.core.app.ActivityScenario.launch
@@ -32,7 +33,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class CheckoutActivityResultObjectTest {
+class CheckoutActivityResultTest {
 
     private val context: Context = ApplicationProvider.getApplicationContext()
 
@@ -51,8 +52,8 @@ class CheckoutActivityResultObjectTest {
     }
 
     @Test(timeout = 60000L)
-    fun performCheckout_saveCard_unsuccessfulResponse_resultFailed() {
-        //Arrange
+    fun performCheckout_saveCard_unsuccessfulResponse_resultOk() {
+        // Arrange
         launch<CheckoutActivity>(defaultIntent).use {
             fillCardFields(
                 Constants.VALID_CARD_HOLDER,
@@ -69,6 +70,7 @@ class CheckoutActivityResultObjectTest {
             onViewWithScrollTo(R.id.mbSaveCard).perform(click())
             //Assert
             val result = it?.getParcelableSafe<CheckoutResultContract.Result>(EXTRA_KEY_RESULT)
+            assertEquals(Activity.RESULT_OK, it.result.resultCode)
             assertTrue(result?.checkoutResult is VGSCheckoutResult.Failed)
         }
     }
@@ -108,12 +110,11 @@ class CheckoutActivityResultObjectTest {
                 Constants.VALID_CITY,
                 Constants.VALID_POSTAL_ADDRESS
             )
-
             // Act
             onViewWithScrollTo(R.id.mbSaveCard).perform(click())
-
             //Assert
             val result = it?.getParcelableSafe<CheckoutResultContract.Result>(EXTRA_KEY_RESULT)
+            assertEquals(Activity.RESULT_OK, it.result.resultCode)
             assertTrue(result?.checkoutResult is VGSCheckoutResult.Success)
             assertEquals(
                 Constants.SUCCESS_RESPONSE_CODE,
@@ -129,6 +130,7 @@ class CheckoutActivityResultObjectTest {
             onView(withContentDescription(R.string.abc_action_bar_up_description)).perform(click())
             //Assert
             val result = it.getParcelableSafe<CheckoutResultContract.Result>(EXTRA_KEY_RESULT)
+            assertEquals(Activity.RESULT_CANCELED, it.result.resultCode)
             assertNull(result?.checkoutResult)
         }
     }
@@ -140,6 +142,7 @@ class CheckoutActivityResultObjectTest {
             device.pressBack()
             //Assert
             val result = it?.getParcelableSafe<CheckoutResultContract.Result>(EXTRA_KEY_RESULT)
+            assertEquals(Activity.RESULT_CANCELED, it.result.resultCode)
             assertNull(result?.checkoutResult)
         }
     }

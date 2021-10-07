@@ -1,5 +1,6 @@
 package com.verygoodsecurity.vgscheckout.multiplexing.integration
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.test.core.app.ActivityScenario.launch
@@ -11,6 +12,8 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
 import com.verygoodsecurity.vgscheckout.Constants
+import com.verygoodsecurity.vgscheckout.Constants.CORRECT_TOKEN
+import com.verygoodsecurity.vgscheckout.Constants.VAULT_ID
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingConfig
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
@@ -18,18 +21,19 @@ import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_ARGS
 import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_RESULT
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 import com.verygoodsecurity.vgscheckout.ui.CheckoutMultiplexingActivity
-import com.verygoodsecurity.vgscheckout.util.ViewInteraction.onViewWithScrollTo
+import com.verygoodsecurity.vgscheckout.util.ViewInteraction
 import com.verygoodsecurity.vgscheckout.util.extension.fillAddressFields
 import com.verygoodsecurity.vgscheckout.util.extension.fillCardFields
 import com.verygoodsecurity.vgscheckout.util.extension.getParcelableSafe
-import junit.framework.TestCase.assertTrue
-import org.junit.Assert.assertNull
+import com.verygoodsecurity.vgscheckout.util.extension.safeResult
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 
+@Suppress("SameParameterValue")
 @RunWith(AndroidJUnit4::class)
-class MultiplexingActivityResultObjectTest {
+class MultiplexingActivityResultTest {
 
     private val context: Context = ApplicationProvider.getApplicationContext()
 
@@ -38,8 +42,8 @@ class MultiplexingActivityResultObjectTest {
             EXTRA_KEY_ARGS,
             CheckoutResultContract.Args(
                 VGSCheckoutMultiplexingConfig(
-                    Constants.CORRECT_TOKEN,
-                    Constants.VAULT_ID,
+                    CORRECT_TOKEN,
+                    VAULT_ID,
                 )
             )
         )
@@ -53,8 +57,8 @@ class MultiplexingActivityResultObjectTest {
     }
 
     @Test(timeout = 60000L)
-    fun performCheckout_saveCard_unsuccessfullyResponse_resultFailed() {
-        // Arrange
+    fun performCheckout_saveCard_unsuccessfulResponse_resultOk() {
+        //Arrange
         launch<CheckoutMultiplexingActivity>(defaultIntent).use {
             fillCardFields(
                 Constants.VALID_CARD_HOLDER,
@@ -68,31 +72,34 @@ class MultiplexingActivityResultObjectTest {
                 Constants.VALID_POSTAL_ADDRESS
             )
             // Act
-            onViewWithScrollTo(R.id.mbSaveCard).perform(click())
+            ViewInteraction.onViewWithScrollTo(R.id.mbSaveCard).perform(click())
             //Assert
             val result = it?.getParcelableSafe<CheckoutResultContract.Result>(EXTRA_KEY_RESULT)
+            assertEquals(Activity.RESULT_OK, it.safeResult.resultCode)
             assertTrue(result?.checkoutResult is VGSCheckoutResult.Failed)
         }
     }
 
     @Test
-    fun performCheckout_cancelActivityResult_withNavigationUp_resultCancel() {
+    fun performMultiplexing_cancelActivityResult_withNavigationUp() {
         launch<CheckoutMultiplexingActivity>(defaultIntent).use {
             // Act
             onView(withContentDescription(R.string.abc_action_bar_up_description)).perform(click())
             //Assert
             val result = it.getParcelableSafe<CheckoutResultContract.Result>(EXTRA_KEY_RESULT)
+            assertEquals(Activity.RESULT_CANCELED, it.result.resultCode)
             assertNull(result?.checkoutResult)
         }
     }
 
     @Test
-    fun performCheckout_cancelActivityResult_withBackPress_resultCancel() {
+    fun performMultiplexing_cancelActivityResult_withBackPress() {
         launch<CheckoutMultiplexingActivity>(defaultIntent).use {
             // Act
             device.pressBack()
             //Assert
             val result = it?.getParcelableSafe<CheckoutResultContract.Result>(EXTRA_KEY_RESULT)
+            assertEquals(Activity.RESULT_CANCELED, it.result.resultCode)
             assertNull(result?.checkoutResult)
         }
     }
