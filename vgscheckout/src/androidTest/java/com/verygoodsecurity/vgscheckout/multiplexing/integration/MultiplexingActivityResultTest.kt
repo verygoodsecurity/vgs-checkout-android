@@ -57,7 +57,7 @@ class MultiplexingActivityResultTest {
     }
 
     @Test(timeout = 60000L)
-    fun performCheckout_saveCard_unsuccessfulResponse_resultOk() {
+    fun performCheckout_saveCard_unsuccessfulResponse_resultFailed_codeOk() {
         //Arrange
         launch<CheckoutMultiplexingActivity>(defaultIntent).use {
             fillCardFields(
@@ -81,7 +81,7 @@ class MultiplexingActivityResultTest {
     }
 
     @Test
-    fun performMultiplexing_cancelActivityResult_withNavigationUp() {
+    fun performMultiplexing_cancelActivityResult_withNavigationUp_codeCanceled() {
         launch<CheckoutMultiplexingActivity>(defaultIntent).use {
             // Act
             onView(withContentDescription(R.string.abc_action_bar_up_description)).perform(click())
@@ -93,7 +93,7 @@ class MultiplexingActivityResultTest {
     }
 
     @Test
-    fun performMultiplexing_cancelActivityResult_withBackPress() {
+    fun performMultiplexing_cancelActivityResult_withBackPress_codeCanceled() {
         launch<CheckoutMultiplexingActivity>(defaultIntent).use {
             // Act
             device.pressBack()

@@ -52,7 +52,7 @@ class CheckoutActivityResultTest {
     }
 
     @Test(timeout = 60000L)
-    fun performCheckout_saveCard_unsuccessfulResponse_resultOk() {
+    fun performCheckout_saveCard_unsuccessfulResponse_resultFailed_codeOk() {
         // Arrange
         launch<CheckoutActivity>(defaultIntent).use {
             fillCardFields(
@@ -76,7 +76,7 @@ class CheckoutActivityResultTest {
     }
 
     @Test(timeout = 60000L)
-    fun performCheckout_saveCard_successfulResponse_resultOk() {
+    fun performCheckout_saveCard_successfulResponse_resultSuccess_codeOk() {
         // Arrange
         val intent = Intent(context, CheckoutActivity::class.java).apply {
             putExtra(
@@ -124,7 +124,7 @@ class CheckoutActivityResultTest {
     }
 
     @Test
-    fun performCheckout_cancelActivityResult_withNavigationUp_resultCancel() {
+    fun performCheckout_cancelActivityResult_withNavigationUp_codeCancel() {
         launch<CheckoutActivity>(defaultIntent).use {
             // Act
             onView(withContentDescription(R.string.abc_action_bar_up_description)).perform(click())
@@ -136,7 +136,7 @@ class CheckoutActivityResultTest {
     }
 
     @Test
-    fun performCheckout_cancelActivityResult_withBackPress_resultCancel() {
+    fun performCheckout_cancelActivityResult_withBackPress_codeCancel() {
         launch<CheckoutActivity>(defaultIntent).use {
             // Act
             device.pressBack()
