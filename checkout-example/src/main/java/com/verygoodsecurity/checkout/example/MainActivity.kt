@@ -1,10 +1,10 @@
 package com.verygoodsecurity.checkout.example
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.button.MaterialButton
 import com.verygoodsecurity.checkout.R
-import com.verygoodsecurity.checkout.example.util.extension.showShort
 import com.verygoodsecurity.vgscheckout.VGSCheckout
 import com.verygoodsecurity.vgscheckout.VGSCheckoutCallback
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
@@ -21,7 +21,6 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.VGSChecko
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.VGSCheckoutCVCOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.VGSCheckoutExpirationDateOptions
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
-import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult.*
 
 class MainActivity : AppCompatActivity(), VGSCheckoutCallback {
 
@@ -37,13 +36,7 @@ class MainActivity : AppCompatActivity(), VGSCheckoutCallback {
     }
 
     override fun onCheckoutResult(result: VGSCheckoutResult) {
-        showShort(
-            when (result) {
-                is Success -> "Checkout complete: code = ${result.code}, body = ${result.body}"
-                is Failed -> "Checkout failed: code = ${result.code}, body = ${result.body}"
-                is Canceled -> "Checkout canceled"
-            }
-        )
+        Log.d("VGSCheckout", result.toString())
     }
 
     //region Checkout config
