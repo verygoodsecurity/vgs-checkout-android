@@ -128,7 +128,7 @@ class TransactionDialogFragment : DialogFragment() {
     }
 
     private fun String.mapToJson(): String {
-        return "{\"fi_id\":\"$this\",\"tnt\":\"$tnt\"}"
+        return "{\"fi_id\":\"$this\",\"tnt\":\"$tnt\", \"amount\": 1}"
     }
 
     private fun parseUserId(): String {
