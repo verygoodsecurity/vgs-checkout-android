@@ -1,13 +1,12 @@
 package com.verygoodsecurity.vgscheckout.checkout.integration
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import androidx.test.core.app.ActivityScenario
+import androidx.test.core.app.ActivityScenario.launch
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.espresso.Espresso
-import androidx.test.espresso.action.ViewActions
-import androidx.test.espresso.matcher.ViewMatchers
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
@@ -21,20 +20,19 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.VGSChecko
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.VGSCheckoutCardNumberOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.VGSCheckoutCVCOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.VGSCheckoutExpirationDateOptions
-import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
-import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_ARGS
-import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
+import com.verygoodsecurity.vgscheckout.model.*
 import com.verygoodsecurity.vgscheckout.ui.CheckoutActivity
-import com.verygoodsecurity.vgscheckout.util.ViewInteraction
+import com.verygoodsecurity.vgscheckout.util.ViewInteraction.onViewWithScrollTo
 import com.verygoodsecurity.vgscheckout.util.extension.fillAddressFields
 import com.verygoodsecurity.vgscheckout.util.extension.fillCardFields
-import org.junit.Assert
+import com.verygoodsecurity.vgscheckout.util.extension.getParcelableSafe
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class CheckoutActivityResultTest {
+class CheckoutActivityResultObjectTest {
 
     private val context: Context = ApplicationProvider.getApplicationContext()
 
@@ -53,9 +51,9 @@ class CheckoutActivityResultTest {
     }
 
     @Test(timeout = 60000L)
-    fun performCheckout_saveCard_unsuccessfulResponse_resultOk() {
-        ActivityScenario.launch<CheckoutActivity>(defaultIntent).use {
-            // Act
+    fun performCheckout_saveCard_unsuccessfulResponse_resultFailed() {
+        //Arrange
+        launch<CheckoutActivity>(defaultIntent).use {
             fillCardFields(
                 Constants.VALID_CARD_HOLDER,
                 Constants.VALID_CARD_NUMBER,
@@ -67,17 +65,17 @@ class CheckoutActivityResultTest {
                 Constants.VALID_CITY,
                 Constants.VALID_POSTAL_ADDRESS
             )
-
-            ViewInteraction.onViewWithScrollTo(R.id.mbSaveCard)
-                .perform(ViewActions.click())
-
+            // Act
+            onViewWithScrollTo(R.id.mbSaveCard).perform(click())
             //Assert
-            Assert.assertEquals(Activity.RESULT_OK, it.result.resultCode)
+            val result = it?.getParcelableSafe<CheckoutResultContract.Result>(EXTRA_KEY_RESULT)
+            assertTrue(result?.checkoutResult is VGSCheckoutResult.Failed)
         }
     }
 
     @Test(timeout = 60000L)
     fun performCheckout_saveCard_successfulResponse_resultOk() {
+        // Arrange
         val intent = Intent(context, CheckoutActivity::class.java).apply {
             putExtra(
                 EXTRA_KEY_ARGS,
@@ -98,8 +96,7 @@ class CheckoutActivityResultTest {
                 )
             )
         }
-        ActivityScenario.launch<CheckoutActivity>(intent).use {
-            // Act
+        launch<CheckoutActivity>(intent).use {
             fillCardFields(
                 Constants.VALID_CARD_HOLDER,
                 Constants.VALID_CARD_NUMBER,
@@ -112,32 +109,38 @@ class CheckoutActivityResultTest {
                 Constants.VALID_POSTAL_ADDRESS
             )
 
-            ViewInteraction.onViewWithScrollTo(R.id.mbSaveCard)
-                .perform(ViewActions.click())
+            // Act
+            onViewWithScrollTo(R.id.mbSaveCard).perform(click())
 
             //Assert
-            Assert.assertEquals(Activity.RESULT_OK, it.result.resultCode)
+            val result = it?.getParcelableSafe<CheckoutResultContract.Result>(EXTRA_KEY_RESULT)
+            assertTrue(result?.checkoutResult is VGSCheckoutResult.Success)
+            assertEquals(
+                Constants.SUCCESS_RESPONSE_CODE,
+                (result?.checkoutResult as? VGSCheckoutResult.Success)?.code
+            )
         }
     }
 
     @Test
     fun performCheckout_cancelActivityResult_withNavigationUp_resultCancel() {
-        ActivityScenario.launch<CheckoutActivity>(defaultIntent).use {
+        launch<CheckoutActivity>(defaultIntent).use {
             // Act
-            Espresso.onView(ViewMatchers.withContentDescription(R.string.abc_action_bar_up_description))
-                .perform(ViewActions.click())
+            onView(withContentDescription(R.string.abc_action_bar_up_description)).perform(click())
             //Assert
-            Assert.assertEquals(Activity.RESULT_CANCELED, it.result.resultCode)
+            val result = it.getParcelableSafe<CheckoutResultContract.Result>(EXTRA_KEY_RESULT)
+            assertNull(result?.checkoutResult)
         }
     }
 
     @Test
     fun performCheckout_cancelActivityResult_withBackPress_resultCancel() {
-        ActivityScenario.launch<CheckoutActivity>(defaultIntent).use {
+        launch<CheckoutActivity>(defaultIntent).use {
             // Act
             device.pressBack()
             //Assert
-            Assert.assertEquals(Activity.RESULT_CANCELED, it.result.resultCode)
+            val result = it?.getParcelableSafe<CheckoutResultContract.Result>(EXTRA_KEY_RESULT)
+            assertNull(result?.checkoutResult)
         }
     }
 }

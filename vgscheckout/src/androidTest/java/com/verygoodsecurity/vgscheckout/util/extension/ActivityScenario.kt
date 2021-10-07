@@ -1,6 +1,7 @@
 package com.verygoodsecurity.vgscheckout.util.extension
 
 import android.app.Instrumentation
+import android.os.Parcelable
 import androidx.lifecycle.Lifecycle
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso
@@ -80,4 +81,10 @@ fun fillAddressFields(
         .perform(ActionHelper.doAction<VGSEditText> {
             it.setText(postalAddress)
         })
+}
+
+internal inline fun <reified T : Parcelable> ActivityScenario<*>.getParcelableSafe(key: String): T? {
+    val extras = safeResult.resultData?.extras
+    extras?.classLoader = T::class.java.classLoader
+    return extras?.getParcelable(key)
 }
