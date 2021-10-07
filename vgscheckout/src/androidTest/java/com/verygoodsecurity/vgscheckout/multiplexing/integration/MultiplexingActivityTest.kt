@@ -11,13 +11,13 @@ import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
-import com.verygoodsecurity.vgscheckout.Constants.CHECKOUT_RESULT_CONTRACT_NAME
 import com.verygoodsecurity.vgscheckout.Constants.CORRECT_TOKEN
 import com.verygoodsecurity.vgscheckout.Constants.INCORRECT_TOKEN
 import com.verygoodsecurity.vgscheckout.Constants.VAULT_ID
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingConfig
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
+import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_ARGS
 import com.verygoodsecurity.vgscheckout.ui.CheckoutMultiplexingActivity
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -32,7 +32,7 @@ class MultiplexingActivityTest {
 
     private val defaultIntent = Intent(context, CheckoutMultiplexingActivity::class.java).apply {
         putExtra(
-            CHECKOUT_RESULT_CONTRACT_NAME,
+            EXTRA_KEY_ARGS,
             CheckoutResultContract.Args(
                 VGSCheckoutMultiplexingConfig(
                     CORRECT_TOKEN,
@@ -53,7 +53,7 @@ class MultiplexingActivityTest {
     fun performMultiplexing_unsuccessfulStart() {
         val intent = Intent(context, CheckoutMultiplexingActivity::class.java).apply {
             putExtra(
-                CHECKOUT_RESULT_CONTRACT_NAME,
+                EXTRA_KEY_ARGS,
                 CheckoutResultContract.Args(
                     VGSCheckoutMultiplexingConfig(
                         INCORRECT_TOKEN,

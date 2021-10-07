@@ -22,6 +22,7 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.VGSChecko
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.VGSCheckoutCVCOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.VGSCheckoutExpirationDateOptions
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
+import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_ARGS
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
 import com.verygoodsecurity.vgscheckout.ui.CheckoutActivity
 import com.verygoodsecurity.vgscheckout.util.ViewInteraction
@@ -39,7 +40,7 @@ class CheckoutActivityResultTest {
 
     private val defaultIntent = Intent(context, CheckoutActivity::class.java).apply {
         putExtra(
-            Constants.CHECKOUT_RESULT_CONTRACT_NAME,
+            EXTRA_KEY_ARGS,
             CheckoutResultContract.Args(VGSCheckoutCustomConfig(Constants.VAULT_ID_3))
         )
     }
@@ -79,7 +80,7 @@ class CheckoutActivityResultTest {
     fun performCheckout_saveCard_successfulResponse_resultOk() {
         val intent = Intent(context, CheckoutActivity::class.java).apply {
             putExtra(
-                Constants.CHECKOUT_RESULT_CONTRACT_NAME,
+                EXTRA_KEY_ARGS,
                 CheckoutResultContract.Args(
                     VGSCheckoutCustomConfig(
                         vaultID = Constants.VAULT_ID_3,

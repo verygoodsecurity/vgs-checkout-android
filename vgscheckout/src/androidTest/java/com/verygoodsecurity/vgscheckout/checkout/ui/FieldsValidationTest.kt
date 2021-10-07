@@ -13,7 +13,6 @@ import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.ui.CheckoutActivity
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import com.verygoodsecurity.vgscheckout.Constants.CHECKOUT_RESULT_CONTRACT_NAME
 import com.verygoodsecurity.vgscheckout.Constants.INVALID_CARD_NUMBER
 import com.verygoodsecurity.vgscheckout.Constants.INVALID_EXP_DATE
 import com.verygoodsecurity.vgscheckout.Constants.INVALID_POSTAL_ADDRESS
@@ -26,6 +25,7 @@ import com.verygoodsecurity.vgscheckout.Constants.VALID_EXP_DATE
 import com.verygoodsecurity.vgscheckout.Constants.VALID_POSTAL_ADDRESS
 import com.verygoodsecurity.vgscheckout.Constants.VALID_SECURITY_CODE
 import com.verygoodsecurity.vgscheckout.Constants.VAULT_ID
+import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_ARGS
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers.withError
 import com.verygoodsecurity.vgscheckout.util.ViewInteraction.onViewWithScrollTo
 import com.verygoodsecurity.vgscheckout.util.extension.fillAddressFields
@@ -41,7 +41,7 @@ class FieldsValidationTest {
 
     private val defaultIntent = Intent(context, CheckoutActivity::class.java).apply {
         putExtra(
-            CHECKOUT_RESULT_CONTRACT_NAME,
+            EXTRA_KEY_ARGS,
             CheckoutResultContract.Args(VGSCheckoutCustomConfig(VAULT_ID))
         )
     }
