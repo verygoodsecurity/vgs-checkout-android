@@ -1,6 +1,7 @@
 package com.verygoodsecurity.vgscheckout.util.extension
 
 import android.app.Instrumentation
+import android.os.Parcelable
 import androidx.lifecycle.Lifecycle
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso
@@ -32,7 +33,6 @@ private fun awaitBlock(timeOut: Int = 10_000, block: () -> Boolean) {
     }
     Assert.assertTrue("Couldn't await the condition", value)
 }
-
 
 fun fillCardFields(
     cardHolderName: String = Constants.VALID_CARD_HOLDER,
@@ -80,4 +80,10 @@ fun fillAddressFields(
         .perform(ActionHelper.doAction<VGSEditText> {
             it.setText(postalAddress)
         })
+}
+
+internal inline fun <reified T : Parcelable> ActivityScenario<*>.getParcelableSafe(key: String): T? {
+    val extras = safeResult.resultData?.extras
+    extras?.classLoader = T::class.java.classLoader
+    return extras?.getParcelable(key)
 }

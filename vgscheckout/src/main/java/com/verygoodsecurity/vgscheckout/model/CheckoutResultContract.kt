@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
 import androidx.activity.result.contract.ActivityResultContract
+import androidx.annotation.VisibleForTesting
 import androidx.core.os.bundleOf
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingConfig
@@ -15,8 +16,11 @@ import com.verygoodsecurity.vgscheckout.ui.CheckoutMultiplexingActivity
 import com.verygoodsecurity.vgscheckout.ui.core.BaseCheckoutActivity
 import kotlinx.parcelize.Parcelize
 
-private const val EXTRA_KEY_ARGS = "com.verygoodsecurity.vgscheckout.model.extra_checkout_args"
-private const val EXTRA_KEY_RESULT = "com.verygoodsecurity.vgscheckout.model.extra_checkout_result"
+@VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+internal const val EXTRA_KEY_ARGS = "com.verygoodsecurity.vgscheckout.model.extra_checkout_args"
+
+@VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+internal const val EXTRA_KEY_RESULT = "com.verygoodsecurity.vgscheckout.model.extra_checkout_result"
 
 internal class CheckoutResultContract :
     ActivityResultContract<CheckoutResultContract.Args<CheckoutConfig>, VGSCheckoutResult>() {

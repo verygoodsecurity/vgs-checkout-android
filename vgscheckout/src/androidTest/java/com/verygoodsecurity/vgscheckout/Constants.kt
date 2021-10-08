@@ -5,8 +5,6 @@ object Constants {
     const val VAULT_ID = "tnt1a2b3c4y"
     const val VAULT_ID_2 = "tntshmljla7"
     const val VAULT_ID_3 = "tntpszqgikn"
-    const val CHECKOUT_RESULT_CONTRACT_NAME =
-        "com.verygoodsecurity.vgscheckout.model.extra_checkout_args"
 
     // Token
     const val INCORRECT_TOKEN =
@@ -17,6 +15,7 @@ object Constants {
     // Fields data
     const val VALID_CARD_HOLDER = "John Doe"
     const val VALID_CARD_NUMBER = "4111111111111111"
+    const val FORMATTED_CARD_NUMBER = "4111 1111 1111 1111"
     const val INVALID_CARD_NUMBER = "0000000000000000"
     const val VALID_EXP_DATE = "10/22"
     const val INVALID_EXP_DATE = "10/2"
@@ -26,4 +25,6 @@ object Constants {
     const val VALID_CITY = "New York"
     const val VALID_POSTAL_ADDRESS = "12345"
     const val INVALID_POSTAL_ADDRESS = "1234"
+
+    const val SUCCESS_RESPONSE_CODE = 200
 }
