@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscheckout.checkout.integration
+package com.verygoodsecurity.vgscheckout.custom.integration
 
 import android.app.Activity
 import android.content.Context
@@ -33,7 +33,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class CheckoutActivityResultTest {
+class CustomActivityResultTest {
 
     private val context: Context = ApplicationProvider.getApplicationContext()
 
