@@ -58,7 +58,7 @@ dependencies {
     implementation "androidx.core:core-ktx:$core_ktx"
     implementation "androidx.appcompat:appcompat:$app_compat"
     implementation "com.google.android.material:material:$material"
-    implementation "androidx.constraintlayout:constraintlayout:2.1.0"
+    implementation "androidx.constraintlayout:constraintlayout:2.1.1"
 
     api "com.squareup.okhttp3:okhttp:$okHttp"
 
