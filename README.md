@@ -20,7 +20,8 @@ Table of contents
 <!--te-->
 
 <p align="center">
-<img src="/img/vgs-checkout-android-state.png" width="200" alt="VGS Checkout States" hspace="20"><img src="/img/vgs-checkout-android-response.png" width="200" alt="VGS Checkout Response" hspace="20">
+<img src="/img/add-card-android.png" width="200" alt="VGS Checkout States" hspace="20">
+<img src="/img/add-card-android-2.png" width="200" alt="VGS Checkout Response" hspace="20">
 </p>
 
 
