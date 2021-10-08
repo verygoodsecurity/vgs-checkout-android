@@ -25,7 +25,7 @@ Table of contents
 
 
 ## Structure
-* **custom-example** - sample application of VGS Checkout with custom configuration.
+* **custom-example** - sample application of VGS Checkout with custom configuration for communication with VGS Proxy.
 * **multiplexing-example** - sample application of VGS Checkout with multiplexing configuration for communication with payment optimization solution.
 * **vgscheckout** - provides an API for interacting with the VGS services.
 
