@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscheckout.checkout.ui
+package com.verygoodsecurity.vgscheckout.custom.ui
 
 import android.content.Context
 import android.content.Intent
