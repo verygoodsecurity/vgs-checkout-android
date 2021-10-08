@@ -1,10 +1,10 @@
-package com.verygoodsecurity.checkout.example
+package com.verygoodsecurity.custom.example
 
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.button.MaterialButton
-import com.verygoodsecurity.checkout.R
+import com.verygoodsecurity.custom.R
 import com.verygoodsecurity.vgscheckout.VGSCheckout
 import com.verygoodsecurity.vgscheckout.VGSCheckoutCallback
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig

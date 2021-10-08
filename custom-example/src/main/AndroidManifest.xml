@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.verygoodsecurity.checkout">
+    package="com.verygoodsecurity.custom">
 
     <application
         android:icon="@mipmap/ic_launcher"
@@ -13,7 +13,7 @@
         tools:replace="android:networkSecurityConfig"
         tools:targetApi="n">
 
-        <activity android:name=".example.MainActivity">
+        <activity android:name="com.verygoodsecurity.custom.example.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
