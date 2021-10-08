@@ -1,5 +1,6 @@
 [![UT](https://img.shields.io/badge/Unit_Test-pass-green)]()
 [![license](https://img.shields.io/badge/License-MIT-green.svg)](https://github.com/verygoodsecurity/vgs-collect-android/blob/master/LICENSE)
+<img src="./img/ZeroDataLogo.png" width="55" hspace="8">
 
 
 # VGS Checkout
@@ -19,7 +20,8 @@ Table of contents
 <!--te-->
 
 <p align="center">
-<img src="/img/vgs-checkout-android-state.png" width="200" alt="VGS Checkout States" hspace="20"><img src="/img/vgs-checkout-android-response.png" width="200" alt="VGS Checkout Response" hspace="20">
+<img src="/img/add-card-android.png" width="200" alt="VGS Checkout States" hspace="20">
+<img src="/img/add-card-android-2.png" width="200" alt="VGS Checkout Response" hspace="20">
 </p>
 
 
