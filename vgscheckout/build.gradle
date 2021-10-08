@@ -56,7 +56,7 @@ dependencies {
     testImplementation "org.mockito:mockito-inline:3.12.4"
     testImplementation "org.json:json:20210307"
     testImplementation "io.mockk:mockk:1.12.0"
-    testImplementation "org.skyscreamer:jsonassert:1.2.3"
+    testImplementation "org.skyscreamer:jsonassert:1.5.0"
     androidTestImplementation "androidx.test.ext:junit:$junit_extension"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_core"
     androidTestImplementation "org.mockito:mockito-android:3.12.4"
