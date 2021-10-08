@@ -50,9 +50,6 @@ For integration you need to install the [Android Studio](http://developer.androi
 
 ```gradle
 dependencies {
-    implementation "androidx.appcompat:appcompat:<version>"
-    implementation "com.google.android.material:material:<version>"
-
     implementation "com.verygoodsecurity:checkout:<latest-version>"
 }
 ```
