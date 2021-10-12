@@ -53,7 +53,8 @@ class VGSCheckoutMultiplexingConfig private constructor(
      * @param vaultID unique organization vault id.
      * @param environment type of vault.
      * @param formConfig UI configuration.
-     * @param isAnalyticsEnabled If true, checkout will send analytics events that helps to debug issues if any occurs.
+     * @param isAnalyticsEnabled If true, checkout will send analytics events that helps to debug
+     * issues if any occurs. Default value is true.
      *
      * @throws IllegalArgumentException if token is not valid.
      */
