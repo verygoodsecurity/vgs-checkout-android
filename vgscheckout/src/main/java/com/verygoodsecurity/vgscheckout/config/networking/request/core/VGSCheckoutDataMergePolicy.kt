@@ -18,19 +18,18 @@ enum class VGSCheckoutDataMergePolicy {
      *
      * When you need to send data in a specific JSON structure you may do it by adding . notation to fieldName-string.
      * Each . in a fieldName represents a new level of nesting.
-     * New field name string could be set into app:fieldName or setFieldName method.
      */
     NESTED_JSON,
 
     /**
      * Map fieldName to JSON with arrays if index is specified. Also merge extra data array with
-     * collect array data at the same nested level if possible.
+     * checkout array data at the same nested level if possible.
      */
     NESTED_JSON_WITH_ARRAYS_OVERWRITE,
 
     /**
      * Map fieldName to JSON with arrays if index is specified. Completely overwrite extra data
-     * array with collect array data.
+     * array with checkout array data.
      */
     NESTED_JSON_WITH_ARRAYS_MERGE,
 }
