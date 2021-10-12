@@ -11,6 +11,7 @@ import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
 import com.verygoodsecurity.vgscheckout.collect.view.card.FieldType
 import com.verygoodsecurity.vgscheckout.collect.view.card.validation.rules.VGSInfoRule
 import com.verygoodsecurity.vgscheckout.collect.view.core.serializers.FieldDataSerializer
+import com.verygoodsecurity.vgscheckout.util.extension.getColor
 
 /**
  * A user interface element that displays text.
@@ -35,7 +36,7 @@ internal open class VGSEditText @JvmOverloads constructor(
                 val fieldName = getString(R.styleable.VGSEditText_fieldName)
                 val hint = getString(R.styleable.VGSEditText_hint)
                 val textSize = getDimension(R.styleable.VGSEditText_textSize, -1f)
-                val textColor = getColor(R.styleable.VGSEditText_textColor, -1)
+                val textColor = getColor(R.styleable.VGSEditText_textColor)
                 val text = getString(R.styleable.VGSEditText_text)
                 val textStyle = getInt(R.styleable.VGSEditText_textStyle, -1)
                 val cursorVisible = getBoolean(R.styleable.VGSEditText_cursorVisible, true)
@@ -51,7 +52,7 @@ internal open class VGSEditText @JvmOverloads constructor(
 
                 setFieldName(fieldName)
                 setHint(hint)
-                if (textColor > 0) setTextColor(textColor)
+                textColor?.let { setTextColor(it) }
                 setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize)
                 setCursorVisible(cursorVisible)
                 setGravity(gravity)

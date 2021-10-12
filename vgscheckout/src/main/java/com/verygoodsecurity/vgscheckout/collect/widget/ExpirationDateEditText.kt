@@ -1,7 +1,6 @@
 package com.verygoodsecurity.vgscheckout.collect.widget
 
 import android.content.Context
-import android.graphics.Color
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.Gravity
@@ -13,6 +12,7 @@ import com.verygoodsecurity.vgscheckout.collect.view.card.FieldType
 import com.verygoodsecurity.vgscheckout.collect.view.card.formatter.rules.FormatMode
 import com.verygoodsecurity.vgscheckout.collect.view.core.serializers.FieldDataSerializer
 import com.verygoodsecurity.vgscheckout.collect.view.date.DatePickerMode
+import com.verygoodsecurity.vgscheckout.util.extension.getColor
 
 /**
  * Provides a user interface element for date input. The range of dates supported by this field is not configurable.
@@ -47,7 +47,7 @@ internal class ExpirationDateEditText @JvmOverloads constructor(
                 val fieldName = getString(R.styleable.ExpirationDateEditText_fieldName)
                 val hint = getString(R.styleable.ExpirationDateEditText_hint)
                 val textSize = getDimension(R.styleable.ExpirationDateEditText_textSize, -1f)
-                val textColor = getColor(R.styleable.ExpirationDateEditText_textColor, -1)
+                val textColor = getColor(R.styleable.ExpirationDateEditText_textColor)
                 val text = getString(R.styleable.ExpirationDateEditText_text)
                 val textStyle = getInt(R.styleable.ExpirationDateEditText_textStyle, -1)
                 val cursorVisible =
@@ -65,7 +65,7 @@ internal class ExpirationDateEditText @JvmOverloads constructor(
 
                 setFieldName(fieldName)
                 setHint(hint)
-                if (textColor > 0) setTextColor(textColor)
+                textColor?.let { setTextColor(it) }
                 setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize)
                 setCursorVisible(cursorVisible)
                 setGravity(gravity)
