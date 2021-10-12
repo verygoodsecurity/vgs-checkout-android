@@ -6,7 +6,7 @@ import com.verygoodsecurity.vgscheckout.config.networking.core.CheckoutRouteConf
 import kotlinx.parcelize.Parcelize
 
 /**
- * Custom checkout request options.
+ * Custom checkout route configuration.
  *
  * @param path inbound rout path for your organization vault.
  * @param hostnamePolicy type of base url to send data.

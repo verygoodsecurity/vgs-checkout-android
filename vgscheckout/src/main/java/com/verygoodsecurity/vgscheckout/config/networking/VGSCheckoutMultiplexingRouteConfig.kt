@@ -6,7 +6,7 @@ import com.verygoodsecurity.vgscheckout.config.networking.request.VGSCheckoutMul
 import kotlinx.parcelize.Parcelize
 
 /**
- * Multiplexing checkout request options. Only for internal use, as multiplexing request have
+ * Multiplexing checkout route configuration. Only for internal use, as multiplexing request have
  * fixed structure.
  */
 @Parcelize
