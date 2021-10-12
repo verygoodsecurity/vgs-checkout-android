@@ -5,10 +5,7 @@ import com.verygoodsecurity.vgscheckout.collect.util.extension.concatWithDash
 import kotlinx.parcelize.Parcelize
 
 /**
- *
  * Type of vault to communicate with.
- *
- * @property value final type of vault with suffix.
  */
 sealed class VGSCheckoutEnvironment : Parcelable {
 
@@ -17,7 +14,9 @@ sealed class VGSCheckoutEnvironment : Parcelable {
     /**
      *  Live environment using live vault.
      *
-     *  @param suffix ex.: "-eu-2", value will be "live-eu-2" respectively.
+     *  @param suffix for example: "-eu-2", value will be "live-eu-2" respectively.
+     *
+     *  @property value final type of vault with suffix.
      */
     @Parcelize
     data class Live(val suffix: String = "") : VGSCheckoutEnvironment() {
@@ -34,7 +33,9 @@ sealed class VGSCheckoutEnvironment : Parcelable {
     /**
      *  Sandbox environment using sandbox vault.
      *
-     *  @param suffix ex.: "-eu-2", value will be "sandbox-eu-2" respectively.
+     *  @param suffix for example: "-eu-2", value will be "sandbox-eu-2" respectively.
+     *
+     *  @property value final type of vault with suffix.
      */
     @Parcelize
     data class Sandbox(val suffix: String = "") : VGSCheckoutEnvironment() {
