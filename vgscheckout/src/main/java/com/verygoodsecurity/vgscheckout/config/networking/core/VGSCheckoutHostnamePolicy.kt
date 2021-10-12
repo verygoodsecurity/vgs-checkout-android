@@ -28,7 +28,7 @@ sealed class VGSCheckoutHostnamePolicy : Parcelable {
      *  IMPORTANT: VGS-Satellite uses http protocol, starting from android 8.1(27) communication using
      *  http protocol is disabled by default, developer must add network security config to allow it
      *  or allow clear text traffic in manifest.
-     *  Read more [here](https://developer.android.com/training/articles/security-config#CleartextTrafficPermitted)
+     *  Read more https://developer.android.com/training/articles/security-config#CleartextTrafficPermitted.
      *
      *  @param localhost ip.
      *  @param port integer value from 1 to 65353.
