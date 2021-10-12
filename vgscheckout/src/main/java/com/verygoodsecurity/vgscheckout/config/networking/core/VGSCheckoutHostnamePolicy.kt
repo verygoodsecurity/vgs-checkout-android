@@ -4,7 +4,7 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 /**
- * Defines base url to send data.
+ * Define base url to send data.
  */
 sealed class VGSCheckoutHostnamePolicy : Parcelable {
 
