@@ -6,6 +6,10 @@ import com.verygoodsecurity.vgscheckout.config.networking.request.core.VGSChecko
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 
+/**
+ * Multiplexing checkout flow request option. Only for internal use, as multiplexing request have
+ * fixed structure.
+ */
 @Parcelize
 class VGSCheckoutMultiplexingRequestOptions private constructor(
     override val httpMethod: VGSCheckoutHTTPMethod,
