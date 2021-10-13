@@ -6,7 +6,7 @@ import com.verygoodsecurity.vgscheckout.config.networking.request.core.CheckoutR
 /**
  * Base networking configuration.
  */
-abstract class CheckoutRouteConfig : Parcelable {
+abstract class CheckoutRouteConfig internal constructor() : Parcelable {
 
     /**
      * Inbound rout path for your organization vault.
