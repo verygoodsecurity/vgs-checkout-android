@@ -11,10 +11,10 @@ import kotlinx.parcelize.Parcelize
 /**
  * Multiplexing flow checkout form card block UI options.
  *
- * @param cardNumberOptions holds card number input field UI options.
- * @param cardHolderOptions holds card holder name input field UI options.
- * @param cvcOptions holds card security code input field UI options.
- * @param expirationDateOptions holds expiration date input field UI options.
+ * @param cardNumberOptions card number input field UI options.
+ * @param cardHolderOptions card holder name input field UI options.
+ * @param cvcOptions card security code input field UI options.
+ * @param expirationDateOptions expiration date input field UI options.
  */
 @Parcelize
 class VGSCheckoutMultiplexingCardOptions private constructor(
