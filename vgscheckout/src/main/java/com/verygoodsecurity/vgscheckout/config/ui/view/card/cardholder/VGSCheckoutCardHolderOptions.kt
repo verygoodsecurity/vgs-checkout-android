@@ -4,6 +4,12 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.core.VGSCheckoutFieldVisi
 import com.verygoodsecurity.vgscheckout.config.ui.view.core.ViewOptions
 import kotlinx.parcelize.Parcelize
 
+/**
+ * Card holder input field options.
+ *
+ * @param fieldName text to be used for data transfer to VGS proxy.
+ * @param visibility defines if card holder name input field should be visible to user. Default is VISIBLE.
+ */
 @Parcelize
 class VGSCheckoutCardHolderOptions constructor(
     override val fieldName: String = "",
