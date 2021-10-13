@@ -7,6 +7,14 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.VGSCheckoutCVCOp
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.VGSCheckoutExpirationDateOptions
 import kotlinx.parcelize.Parcelize
 
+/**
+ * Custom flow checkout form card block UI options.
+ *
+ * @param cardNumberOptions holds card number input field UI options.
+ * @param cardHolderOptions holds card holder name input field UI options.
+ * @param cvcOptions holds card security code input field UI options.
+ * @param expirationDateOptions holds expiration date input field UI options.
+ */
 @Parcelize
 class VGSCheckoutCustomCardOptions @JvmOverloads constructor(
     override val cardNumberOptions: VGSCheckoutCardNumberOptions = VGSCheckoutCardNumberOptions(),
