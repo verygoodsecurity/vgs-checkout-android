@@ -9,7 +9,7 @@ import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
 import java.util.*
 
 /**
- * Base class for checkout config.
+ * Base class of checkout config.
  */
 abstract class CheckoutConfig internal constructor() : Parcelable {
 
