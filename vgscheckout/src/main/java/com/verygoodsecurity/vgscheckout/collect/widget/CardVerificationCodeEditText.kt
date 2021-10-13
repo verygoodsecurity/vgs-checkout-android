@@ -1,7 +1,6 @@
 package com.verygoodsecurity.vgscheckout.collect.widget
 
 import android.content.Context
-import android.graphics.Color
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.Gravity
@@ -12,6 +11,7 @@ import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
 import com.verygoodsecurity.vgscheckout.collect.view.card.FieldType
 import com.verygoodsecurity.vgscheckout.collect.view.cvc.CVCIconAdapter
 import com.verygoodsecurity.vgscheckout.collect.view.internal.CVCInputField
+import com.verygoodsecurity.vgscheckout.util.extension.getColor
 
 internal class CardVerificationCodeEditText @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -32,8 +32,7 @@ internal class CardVerificationCodeEditText @JvmOverloads constructor(
                 val fieldName = getString(R.styleable.CardVerificationCodeEditText_fieldName)
                 val hint = getString(R.styleable.CardVerificationCodeEditText_hint)
                 val textSize = getDimension(R.styleable.CardVerificationCodeEditText_textSize, -1f)
-                val textColor =
-                    getColor(R.styleable.CardVerificationCodeEditText_textColor, -1)
+                val textColor = getColor(R.styleable.CardVerificationCodeEditText_textColor)
                 val text = getString(R.styleable.CardVerificationCodeEditText_text)
                 val textStyle = getInt(R.styleable.CardVerificationCodeEditText_textStyle, -1)
                 val cursorVisible =
@@ -64,7 +63,7 @@ internal class CardVerificationCodeEditText @JvmOverloads constructor(
 
                 setFieldName(fieldName)
                 setHint(hint)
-                if (textColor > 0) setTextColor(textColor)
+                textColor?.let { setTextColor(it) }
                 setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize)
                 setCursorVisible(cursorVisible)
                 setGravity(gravity)

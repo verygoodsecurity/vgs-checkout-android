@@ -11,6 +11,7 @@ import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
 import com.verygoodsecurity.vgscheckout.collect.view.card.FieldType
 import com.verygoodsecurity.vgscheckout.collect.view.card.validation.rules.PersonNameRule
+import com.verygoodsecurity.vgscheckout.util.extension.getColor
 
 internal class PersonNameEditText @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -31,7 +32,7 @@ internal class PersonNameEditText @JvmOverloads constructor(
                 val fieldName = getString(R.styleable.PersonNameEditText_fieldName)
                 val hint = getString(R.styleable.PersonNameEditText_hint)
                 val textSize = getDimension(R.styleable.PersonNameEditText_textSize, -1f)
-                val textColor = getColor(R.styleable.PersonNameEditText_textColor, -1)
+                val textColor = getColor(R.styleable.PersonNameEditText_textColor)
                 val text = getString(R.styleable.PersonNameEditText_text)
                 val textStyle = getInt(R.styleable.PersonNameEditText_textStyle, -1)
                 val cursorVisible = getBoolean(R.styleable.PersonNameEditText_cursorVisible, true)
@@ -51,7 +52,7 @@ internal class PersonNameEditText @JvmOverloads constructor(
 
                 setFieldName(fieldName)
                 setHint(hint)
-                if (textColor > 0) setTextColor(textColor)
+                textColor?.let { setTextColor(it) }
                 setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize)
                 setCursorVisible(cursorVisible)
                 setGravity(gravity)
