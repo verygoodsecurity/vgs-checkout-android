@@ -342,7 +342,8 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> :
         val isCardHolderValid = config.isCardHolderHidden() || validate(
             cardHolderEt,
             cardHolderTil,
-            R.string.vgs_checkout_card_holder_empty_error
+            R.string.vgs_checkout_card_holder_empty_error,
+            R.string.vgs_checkout_card_holder_invalid_error
         )
         result.addIf(!isCardHolderValid, cardHolderEt.getAnalyticsName())
 

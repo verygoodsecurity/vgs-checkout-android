@@ -11,6 +11,7 @@
 
     <string name="vgs_checkout_card_holder_hint">Name on card</string>
     <string name="vgs_checkout_card_holder_empty_error">Name is empty</string>
+    <string name="vgs_checkout_card_holder_invalid_error">Invalid name</string>
 
     <string name="vgs_checkout_card_number_hint">Card number</string>
     <string name="vgs_checkout_card_number_empty_error">Card number is empty</string>
