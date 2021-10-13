@@ -3,7 +3,7 @@ package com.verygoodsecurity.vgscheckout.config.networking.request.core
 import android.os.Parcelable
 
 /**
- * Base checkout request options.
+ * Base class of checkout request options.
  */
 abstract class CheckoutRequestOptions internal constructor() : Parcelable {
 
