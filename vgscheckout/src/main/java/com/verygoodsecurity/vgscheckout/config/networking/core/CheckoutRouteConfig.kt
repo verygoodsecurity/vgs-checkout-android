@@ -4,7 +4,7 @@ import android.os.Parcelable
 import com.verygoodsecurity.vgscheckout.config.networking.request.core.CheckoutRequestOptions
 
 /**
- * Base networking configuration.
+ * Base class of networking configuration.
  */
 abstract class CheckoutRouteConfig internal constructor() : Parcelable {
 
