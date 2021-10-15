@@ -7,7 +7,7 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.VGSCheckoutCVCOp
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.VGSCheckoutExpirationDateOptions
 
 /**
- * Base class of card details block UI options.
+ * Base class of card details section UI options.
  */
 abstract class CheckoutCardOptions : Parcelable {
 

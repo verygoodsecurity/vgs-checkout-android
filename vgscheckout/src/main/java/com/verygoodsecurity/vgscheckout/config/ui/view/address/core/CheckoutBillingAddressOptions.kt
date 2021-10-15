@@ -9,7 +9,7 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.address.code.VGSCheckoutP
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.country.VGSCheckoutCountryOptions
 
 /**
- * Base class of address block UI options.
+ * Base class of address section UI options.
  */
 abstract class CheckoutBillingAddressOptions : Parcelable {
 

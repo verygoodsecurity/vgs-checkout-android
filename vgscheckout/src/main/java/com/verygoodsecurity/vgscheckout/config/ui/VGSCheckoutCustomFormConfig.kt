@@ -8,8 +8,8 @@ import kotlinx.parcelize.Parcelize
 /**
  * Custom flow checkout form configuration.
  *
- * @param cardOptions credit card details block UI options.
- * @param addressOptions address details block UI options.
+ * @param cardOptions card details section UI options.
+ * @param addressOptions address details section UI options.
  */
 @Parcelize
 class VGSCheckoutCustomFormConfig @JvmOverloads constructor(

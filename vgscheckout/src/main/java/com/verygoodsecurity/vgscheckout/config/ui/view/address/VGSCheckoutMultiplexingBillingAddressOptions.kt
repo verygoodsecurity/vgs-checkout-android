@@ -9,14 +9,14 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.address.country.VGSChecko
 import kotlinx.parcelize.Parcelize
 
 /**
- * Custom flow checkout form address block UI options.
+ * Custom flow checkout form address section UI options.
  *
  * @param countryOptions country input field UI options.
  * @param cityOptions city input field UI options.
  * @param addressOptions address input field UI options.
  * @param optionalAddressOptions optional address input field UI options.
  * @param postalAddressOptions postal address input field UI options.
- * @param visibility defines if address bock UI should be visible to user.
+ * @param visibility defines if address section UI should be visible to user.
  */
 @Parcelize
 class VGSCheckoutMultiplexingBillingAddressOptions private constructor(
@@ -31,7 +31,7 @@ class VGSCheckoutMultiplexingBillingAddressOptions private constructor(
     /**
      * Public constructor.
      *
-     * @param visibility defines if address bock UI should be visible to user.
+     * @param visibility defines if address section UI should be visible to user.
      */
     @JvmOverloads
     constructor(visibility: VGSCheckoutBillingAddressVisibility = VGSCheckoutBillingAddressVisibility.VISIBLE) : this(

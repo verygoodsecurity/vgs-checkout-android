@@ -8,7 +8,7 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.VGSChecko
 import kotlinx.parcelize.Parcelize
 
 /**
- * Custom flow checkout form card block UI options.
+ * Custom flow checkout form card details section UI options.
  *
  * @param cardNumberOptions card number input field UI options.
  * @param cardHolderOptions card holder name input field UI options.

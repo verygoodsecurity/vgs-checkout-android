@@ -8,8 +8,8 @@ import kotlinx.parcelize.Parcelize
 /**
  * Multiplexing flow checkout form configuration.
  *
- * @param cardOptions credit card details block UI options.
- * @param addressOptions address details block UI options.
+ * @param cardOptions card details section UI options.
+ * @param addressOptions address details section UI options.
  */
 @Parcelize
 class VGSCheckoutMultiplexingFormConfig private constructor(
@@ -20,7 +20,7 @@ class VGSCheckoutMultiplexingFormConfig private constructor(
     /**
      * Public constructor.
      *
-     * @param addressOptions address details block UI options.
+     * @param addressOptions address details section UI options.
      */
     @JvmOverloads
     constructor(
