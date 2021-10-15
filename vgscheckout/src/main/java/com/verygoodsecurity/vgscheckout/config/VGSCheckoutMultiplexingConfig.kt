@@ -8,6 +8,18 @@ import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutMultiplexin
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutMultiplexingFormConfig
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
 
+/**
+ * Holds configuration with predefined setup for work with payment orchestration/multiplexing app.
+ *
+ * @param token multiplexing app access token.
+ * @param vaultID unique organization vault id.
+ * @param environment type of vault.
+ * @param routeConfig Networking configuration, like http method, request headers etc.
+ * @param formConfig UI configuration.
+ * @param isAnalyticsEnabled If true, checkout will send analytics events that helps to debug issues if any occurs.
+ * @param createdFromParcel if true then object created form parcel. Used to determine if token
+ * validation event should be send.
+ */
 @Suppress("MemberVisibilityCanBePrivate", "CanBeParameter")
 class VGSCheckoutMultiplexingConfig private constructor(
     internal val token: String,
@@ -24,7 +36,7 @@ class VGSCheckoutMultiplexingConfig private constructor(
         if (!createdFromParcel) validateToken()
     }
 
-    constructor(parcel: Parcel) : this(
+    internal constructor(parcel: Parcel) : this(
         parcel.readString()!!,
         parcel.readString()!!,
         parcel.readParcelable(VGSCheckoutEnvironment::class.java.classLoader)!!,
@@ -35,6 +47,15 @@ class VGSCheckoutMultiplexingConfig private constructor(
     )
 
     /**
+     * Public constructor.
+     *
+     * @param token multiplexing app access token.
+     * @param vaultID unique organization vault id.
+     * @param environment type of vault.
+     * @param formConfig UI configuration.
+     * @param isAnalyticsEnabled If true, checkout will send analytics events that helps to debug
+     * issues if any occurs. Default value is true.
+     *
      * @throws IllegalArgumentException if token is not valid.
      */
     @JvmOverloads
@@ -78,7 +99,7 @@ class VGSCheckoutMultiplexingConfig private constructor(
         }
     }
 
-    companion object CREATOR : Parcelable.Creator<VGSCheckoutMultiplexingConfig> {
+    internal companion object CREATOR : Parcelable.Creator<VGSCheckoutMultiplexingConfig> {
 
         override fun createFromParcel(parcel: Parcel): VGSCheckoutMultiplexingConfig {
             return VGSCheckoutMultiplexingConfig(parcel)

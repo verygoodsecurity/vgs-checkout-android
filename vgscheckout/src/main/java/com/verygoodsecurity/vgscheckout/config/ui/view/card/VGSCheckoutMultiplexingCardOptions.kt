@@ -8,6 +8,14 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.VGSChecko
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.model.VGSDateSeparateSerializer
 import kotlinx.parcelize.Parcelize
 
+/**
+ * Multiplexing flow checkout form card details section UI options.
+ *
+ * @param cardNumberOptions card number input field UI options.
+ * @param cardHolderOptions card holder name input field UI options.
+ * @param cvcOptions card security code input field UI options.
+ * @param expirationDateOptions expiration date input field UI options.
+ */
 @Parcelize
 class VGSCheckoutMultiplexingCardOptions private constructor(
     override val cardNumberOptions: VGSCheckoutCardNumberOptions,
@@ -16,6 +24,12 @@ class VGSCheckoutMultiplexingCardOptions private constructor(
     override val expirationDateOptions: VGSCheckoutExpirationDateOptions
 ) : CheckoutCardOptions() {
 
+    /**
+     * Public constructor.
+     *
+     * Multiplexing flow has fixed requirements of payload etc. so this constructor does not allow to
+     * override card details section UI options.
+     */
     constructor() : this(
         VGSCheckoutCardNumberOptions(CARD_NUMBER_FIELD_NAME),
         VGSCheckoutCardHolderOptions(CARD_HOLDER_FIELD_NAME),

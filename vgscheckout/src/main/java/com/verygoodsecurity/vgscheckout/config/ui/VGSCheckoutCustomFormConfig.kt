@@ -5,6 +5,12 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutCustom
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.VGSCheckoutCustomCardOptions
 import kotlinx.parcelize.Parcelize
 
+/**
+ * Custom flow checkout form configuration.
+ *
+ * @param cardOptions card details section UI options.
+ * @param addressOptions address details section UI options.
+ */
 @Parcelize
 class VGSCheckoutCustomFormConfig @JvmOverloads constructor(
     override val cardOptions: VGSCheckoutCustomCardOptions = VGSCheckoutCustomCardOptions(),

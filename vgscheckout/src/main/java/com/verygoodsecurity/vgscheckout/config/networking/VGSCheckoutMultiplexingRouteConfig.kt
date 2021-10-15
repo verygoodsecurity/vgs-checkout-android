@@ -5,6 +5,10 @@ import com.verygoodsecurity.vgscheckout.config.networking.core.VGSCheckoutHostna
 import com.verygoodsecurity.vgscheckout.config.networking.request.VGSCheckoutMultiplexingRequestOptions
 import kotlinx.parcelize.Parcelize
 
+/**
+ * Multiplexing checkout route configuration. Only for internal use, as multiplexing request have
+ * fixed structure.
+ */
 @Parcelize
 class VGSCheckoutMultiplexingRouteConfig private constructor(
     override val path: String,

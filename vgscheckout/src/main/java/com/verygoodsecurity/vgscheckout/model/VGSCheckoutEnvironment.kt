@@ -5,25 +5,24 @@ import com.verygoodsecurity.vgscheckout.collect.util.extension.concatWithDash
 import kotlinx.parcelize.Parcelize
 
 /**
- *
  * Type of vault to communicate with.
+ *
+ * @param defaultValue default vault environment without data region.
+ * @param suffix organization vault region, for example: "-eu-2", value will be "live-eu-2" respectively.
  *
  * @property value final type of vault with suffix.
  */
-sealed class VGSCheckoutEnvironment : Parcelable {
+sealed class VGSCheckoutEnvironment constructor(defaultValue: String, suffix: String) : Parcelable {
 
-    abstract val value: String
+    val value: String = defaultValue concatWithDash suffix
 
     /**
      *  Live environment using live vault.
      *
-     *  @param suffix ex.: "-eu-2", value will be "live-eu-2" respectively.
+     *  @param suffix organization vault region, for example: "-eu-2", value will be "live-eu-2" respectively.
      */
     @Parcelize
-    data class Live(val suffix: String = "") : VGSCheckoutEnvironment() {
-
-        override val value: String
-            get() = DEFAULT_VALUE concatWithDash suffix
+    data class Live(val suffix: String = "") : VGSCheckoutEnvironment(DEFAULT_VALUE, suffix) {
 
         companion object {
 
@@ -34,13 +33,10 @@ sealed class VGSCheckoutEnvironment : Parcelable {
     /**
      *  Sandbox environment using sandbox vault.
      *
-     *  @param suffix ex.: "-eu-2", value will be "sandbox-eu-2" respectively.
+     *  @param suffix organization vault region, for example: "-eu-2", value will be "sandbox-eu-2" respectively.
      */
     @Parcelize
-    data class Sandbox(val suffix: String = "") : VGSCheckoutEnvironment() {
-
-        override val value: String
-            get() = DEFAULT_VALUE concatWithDash suffix
+    data class Sandbox(val suffix: String = "") : VGSCheckoutEnvironment(DEFAULT_VALUE, suffix) {
 
         companion object {
 

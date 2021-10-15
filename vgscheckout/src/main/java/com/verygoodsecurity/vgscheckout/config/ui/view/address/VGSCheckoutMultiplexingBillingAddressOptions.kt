@@ -8,6 +8,16 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.address.core.CheckoutBill
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.country.VGSCheckoutCountryOptions
 import kotlinx.parcelize.Parcelize
 
+/**
+ * Custom flow checkout form address section UI options.
+ *
+ * @param countryOptions country input field UI options.
+ * @param cityOptions city input field UI options.
+ * @param addressOptions address input field UI options.
+ * @param optionalAddressOptions optional address input field UI options.
+ * @param postalAddressOptions postal address input field UI options.
+ * @param visibility defines if address section UI should be visible to user.
+ */
 @Parcelize
 class VGSCheckoutMultiplexingBillingAddressOptions private constructor(
     override val countryOptions: VGSCheckoutCountryOptions,
@@ -18,6 +28,11 @@ class VGSCheckoutMultiplexingBillingAddressOptions private constructor(
     override val visibility: VGSCheckoutBillingAddressVisibility
 ) : CheckoutBillingAddressOptions() {
 
+    /**
+     * Public constructor.
+     *
+     * @param visibility defines if address section UI should be visible to user.
+     */
     @JvmOverloads
     constructor(visibility: VGSCheckoutBillingAddressVisibility = VGSCheckoutBillingAddressVisibility.VISIBLE) : this(
         VGSCheckoutCountryOptions(COUNTRY_FIELD_NAME),
