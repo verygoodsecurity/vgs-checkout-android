@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="vgs_checkout_white">#FFFFFF</color>
+    <color name="vgs_checkout_white_smoke">#F2F2F2</color>
+    <color name="vgs_checkout_gainsboro">#e3e3e3</color>
+    <color name="vgs_checkout_dodger_blue">#2196F3</color>
+    <color name="vgs_checkout_denim">#1565C0</color>
+    <color name="vgs_checkout_san_juan">#40545F</color>
+    <color name="vgs_checkout_black_r">#1C1C1E</color>
+    <color name="vgs_checkout_spun_pearl">#AEAEB2</color>
+    <color name="vgs_checkout_nero">#252525</color>
+    <color name="vgs_checkout_nobel">#9E9E9E</color>
+    <color name="vgs_checkout_silver">#BBBBBB</color>
+    <color name="vgs_checkout_gray">#787878</color>
+    <color name="vgs_checkout_dim_gray">#666666</color>
+    <color name="vgs_checkout_dark_gray">#a8a8a8</color>
+    <color name="vgs_checkout_zambezi">#5F5F5F</color>
+    <color name="vgs_checkout_outrageous_orange">#F05A38</color>
+    <color name="vgs_checkout_harley_davidson_orange">#DA3510</color>
+</resources>
