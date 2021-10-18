@@ -286,6 +286,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> :
 
     private fun updatePostalAddressView() {
         if (selectedCountry.postalAddressType == PostalAddressType.NOTHING) {
+            postalAddressEt.setText(null)
             postalAddressEt.setIsRequired(false)
             postalAddressTil.visibility = View.GONE
         } else {
