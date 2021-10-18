@@ -25,12 +25,17 @@ internal object CountriesHelper {
 
     private fun getPostalAddressRegex(iso: String) = when (iso) {
         ISO.USA -> "^([0-9]{5})(?:-([0-9]{4}))?\$"
+        ISO.CANADA -> "^([ABCEGHJKLMNPRSTVXY][0-9][ABCEGHJKLMNPRSTVWXYZ])\\s*([0-9][ABCEGHJKLMNPRSTVWXYZ][0-9])\$"
+        ISO.AUSTRALIA, ISO.NEW_ZEALAND -> "^\\d{4}\$"
         else -> ".+"
     }
 
     object ISO {
 
         internal const val USA = "US"
+        internal const val CANADA = "CA"
+        internal const val AUSTRALIA = "AU"
+        internal const val NEW_ZEALAND = "NZ"
 
         internal val COUNTRIES_ISO_WITHOUT_POSTAL_ADDRESS = arrayOf(
             "AE",
