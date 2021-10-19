@@ -586,7 +586,7 @@ internal class VGSCollect {
     companion object {
 
         private const val AGENT = "VGS-Client"
-        private const val AGENT_FORMAT = "source=vgs-checkout&medium=vgs-checkout&content=%s&tr=%s"
+        private const val AGENT_FORMAT = "source=checkout-android&medium=vgs-checkout&content=%s&tr=%s"
         private const val AGENT_ANALYTICS_ENABLED = "default"
         private const val AGENT_ANALYTICS_DISABLED = "none"
     }
