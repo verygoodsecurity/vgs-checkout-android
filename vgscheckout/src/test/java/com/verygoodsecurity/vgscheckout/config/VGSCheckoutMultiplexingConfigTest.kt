@@ -1,5 +1,6 @@
 package com.verygoodsecurity.vgscheckout.config
 
+import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
 import org.junit.Assert.*
 import org.junit.Test
 
@@ -16,6 +17,30 @@ class VGSCheckoutMultiplexingConfigTest {
         val config = VGSCheckoutMultiplexingConfig(VALID_JWT, "")
         // Assert
         assertNotNull(config)
+    }
+
+    @Test
+    fun createMultiplexingConfig_envSandboxEnabledByDefault() {
+        // Act
+        val config = VGSCheckoutMultiplexingConfig(VALID_JWT, "")
+        // Assert
+        assert(config.environment is VGSCheckoutEnvironment.Sandbox)
+    }
+
+    @Test
+    fun createMultiplexingConfig_screenshotsDisabledByDefault() {
+        // Act
+        val config = VGSCheckoutMultiplexingConfig(VALID_JWT, "")
+        // Assert
+        assertFalse(config.isScreenshotsAllowed)
+    }
+
+    @Test
+    fun createMultiplexingConfig_analyticsEnabledByDefault() {
+        // Act
+        val config = VGSCheckoutMultiplexingConfig(VALID_JWT, "")
+        // Assert
+        assertTrue(config.isAnalyticsEnabled)
     }
 
     @Test(expected = IllegalArgumentException::class)
