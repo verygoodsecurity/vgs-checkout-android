@@ -1,6 +1,7 @@
 package com.verygoodsecurity.vgscheckout.config
 
 import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutInvalidJwtException
+import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutJwtRestrictedRoleException
 import org.junit.Assert.*
 import org.junit.Test
 
@@ -25,7 +26,7 @@ class VGSCheckoutMultiplexingConfigTest {
         VGSCheckoutMultiplexingConfig("", "")
     }
 
-    @Test(expected = IllegalArgumentException::class)
+    @Test(expected = VGSCheckoutJwtRestrictedRoleException::class)
     fun createMultiplexingConfig_invalidJWT_exceptionThrown() {
         // Act
         VGSCheckoutMultiplexingConfig(INVALID_JWT, "")
