@@ -48,6 +48,7 @@ internal class VGSCollect {
     private val tracker: AnalyticTracker?
 
     private var client: ApiClient
+
     private val mainHandler: Handler = Handler(Looper.getMainLooper())
 
     private var storage: InternalStorage
@@ -499,6 +500,8 @@ internal class VGSCollect {
     internal fun setClient(c: ApiClient) {
         client = c
     }
+    @VisibleForTesting
+    internal fun getClient() = client
 
     private fun responseEvent(code: Int, latency: Long, message: String? = null) {
         if (code.isHttpStatusCode()) {
@@ -572,7 +575,8 @@ internal class VGSCollect {
         }
     }
 
-    private fun updateAgentHeader(isAnalyticsEnabled: Boolean = true) {
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    internal fun updateAgentHeader(isAnalyticsEnabled: Boolean = true) {
         client.getStorage().setCustomHeaders(
             mapOf(
                 AGENT to String.format(
