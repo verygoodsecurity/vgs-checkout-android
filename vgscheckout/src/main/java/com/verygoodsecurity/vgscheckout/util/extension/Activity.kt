@@ -6,7 +6,8 @@ import android.view.inputmethod.InputMethodManager
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 
-internal fun Activity.disableScreenshots() {
+internal fun Activity.setScreenshotsAllowed(isAllowed: Boolean) {
+    if (isAllowed) return
     window.setFlags(
         WindowManager.LayoutParams.FLAG_SECURE,
         WindowManager.LayoutParams.FLAG_SECURE
