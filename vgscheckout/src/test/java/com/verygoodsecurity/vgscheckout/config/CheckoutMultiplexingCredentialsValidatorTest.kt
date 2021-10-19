@@ -1,7 +1,7 @@
 package com.verygoodsecurity.vgscheckout.config
 
-import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutInvalidJwtException
-import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutJwtRestrictedRoleException
+import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutJWTParseException
+import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutJWTRestrictedRoleException
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Test
@@ -21,25 +21,25 @@ class CheckoutMultiplexingCredentialsValidatorTest {
     @Test
     fun validateJWT_validJWT_exceptionNotThrown() {
         // Act
-        jwtValidator.validateJwt(VALID_JWT)
+        jwtValidator.validateJWT(VALID_JWT)
     }
 
-    @Test(expected = VGSCheckoutInvalidJwtException::class)
+    @Test(expected = VGSCheckoutJWTParseException::class)
     fun validateJWT_emptyJWT_exceptionThrown() {
         // Act
-        jwtValidator.validateJwt(EMPTY_JWT)
+        jwtValidator.validateJWT(EMPTY_JWT)
     }
 
-    @Test(expected = VGSCheckoutJwtRestrictedRoleException::class)
+    @Test(expected = VGSCheckoutJWTRestrictedRoleException::class)
     fun validateJWT_JWTWithTransfersWriteRole_exceptionThrown() {
         // Act
-        jwtValidator.validateJwt(JWT_WITH_TRANSFERS_WRITE_ROLE)
+        jwtValidator.validateJWT(JWT_WITH_TRANSFERS_WRITE_ROLE)
     }
 
-    @Test(expected = VGSCheckoutJwtRestrictedRoleException::class)
+    @Test(expected = VGSCheckoutJWTRestrictedRoleException::class)
     fun validateJWT_JWTWithTransfersAnyRole_exceptionThrown() {
         // Act
-        jwtValidator.validateJwt(JWT_WITH_TRANSFERS_ANY_ROLE)
+        jwtValidator.validateJWT(JWT_WITH_TRANSFERS_ANY_ROLE)
     }
 
     @Test
@@ -49,7 +49,7 @@ class CheckoutMultiplexingCredentialsValidatorTest {
         var exception: Exception? = null
         // Act
         try {
-            jwtValidator.validateJwt(EMPTY_JWT)
+            jwtValidator.validateJWT(EMPTY_JWT)
         } catch (e: Exception) {
             exception = e
         }
@@ -65,7 +65,7 @@ class CheckoutMultiplexingCredentialsValidatorTest {
         var exception: Exception? = null
         // Act
         try {
-            jwtValidator.validateJwt(JWT_WITH_TRANSFERS_WRITE_ROLE)
+            jwtValidator.validateJWT(JWT_WITH_TRANSFERS_WRITE_ROLE)
         } catch (e: Exception) {
             exception = e
         }
@@ -81,7 +81,7 @@ class CheckoutMultiplexingCredentialsValidatorTest {
         var exception: Exception? = null
         // Act
         try {
-            jwtValidator.validateJwt(JWT_WITH_TRANSFERS_ANY_ROLE)
+            jwtValidator.validateJWT(JWT_WITH_TRANSFERS_ANY_ROLE)
         } catch (e: Exception) {
             exception = e
         }

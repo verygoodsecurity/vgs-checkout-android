@@ -2,12 +2,12 @@ package com.verygoodsecurity.vgscheckout.config
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.JwtValidationEvent
+import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.JWTValidationEvent
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutMultiplexingRouteConfig
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutMultiplexingFormConfig
-import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutInvalidJwtException
-import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutJwtRestrictedRoleException
+import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutJWTParseException
+import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutJWTRestrictedRoleException
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
 
 /**
@@ -62,12 +62,12 @@ class VGSCheckoutMultiplexingConfig private constructor(
      * @param isAnalyticsEnabled If true, checkout will send analytics events that helps to debug
      * issues if any occurs. Default value is true.
      *
-     * @throws com.verygoodsecurity.vgscheckout.exception.VGSCheckoutInvalidJwtException if token is not valid.
-     * @throws com.verygoodsecurity.vgscheckout.exception.VGSCheckoutJwtRestrictedRoleException if
+     * @throws com.verygoodsecurity.vgscheckout.exception.VGSCheckoutJWTParseException if token is not valid.
+     * @throws com.verygoodsecurity.vgscheckout.exception.VGSCheckoutJWTRestrictedRoleException if
      * token is contains restricted roles.
      */
     @JvmOverloads
-    @Throws(VGSCheckoutInvalidJwtException::class, VGSCheckoutJwtRestrictedRoleException::class)
+    @Throws(VGSCheckoutJWTParseException::class, VGSCheckoutJWTRestrictedRoleException::class)
     constructor(
         token: String,
         vaultID: String,
@@ -103,10 +103,10 @@ class VGSCheckoutMultiplexingConfig private constructor(
     @Throws(IllegalArgumentException::class)
     private fun validateToken() {
         try {
-            CheckoutMultiplexingCredentialsValidator.validateJwt(token)
-            analyticTracker.log(JwtValidationEvent(true))
+            CheckoutMultiplexingCredentialsValidator.validateJWT(token)
+            analyticTracker.log(JWTValidationEvent(true))
         } finally {
-            analyticTracker.log(JwtValidationEvent(false))
+            analyticTracker.log(JWTValidationEvent(false))
         }
     }
 

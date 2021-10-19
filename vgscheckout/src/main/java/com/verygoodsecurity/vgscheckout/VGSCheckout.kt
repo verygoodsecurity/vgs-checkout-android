@@ -5,8 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingConfig
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
-import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutInvalidJwtException
-import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutJwtRestrictedRoleException
+import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutJWTParseException
+import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutJWTRestrictedRoleException
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutTransitionOptions
@@ -66,12 +66,12 @@ class VGSCheckout internal constructor(
      * @param transitionOptions specifying a custom animation to run when the checkout is displayed.
      * @param isAnalyticsEnabled true if checkout should send analytics events, false otherwise.
      *
-     * @throws com.verygoodsecurity.vgscheckout.exception.VGSCheckoutInvalidJwtException if token is not valid.
-     * @throws com.verygoodsecurity.vgscheckout.exception.VGSCheckoutJwtRestrictedRoleException if
+     * @throws com.verygoodsecurity.vgscheckout.exception.VGSCheckoutJWTParseException if token is not valid.
+     * @throws com.verygoodsecurity.vgscheckout.exception.VGSCheckoutJWTRestrictedRoleException if
      * token is contains restricted roles.
      */
     @JvmOverloads
-    @Throws(VGSCheckoutInvalidJwtException::class, VGSCheckoutJwtRestrictedRoleException::class)
+    @Throws(VGSCheckoutJWTParseException::class, VGSCheckoutJWTRestrictedRoleException::class)
     fun present(
         token: String,
         vaultID: String,
