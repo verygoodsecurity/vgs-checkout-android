@@ -102,7 +102,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        disableScreenshots()
+        setScreenshotsAllowed(config.isScreenshotsAllowed)
         setContentView(R.layout.vgs_checkout_activity)
         initView(savedInstanceState)
     }
