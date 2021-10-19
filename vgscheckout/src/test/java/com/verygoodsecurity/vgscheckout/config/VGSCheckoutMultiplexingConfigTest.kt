@@ -1,5 +1,6 @@
 package com.verygoodsecurity.vgscheckout.config
 
+import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutInvalidJwtException
 import org.junit.Assert.*
 import org.junit.Test
 
@@ -18,7 +19,7 @@ class VGSCheckoutMultiplexingConfigTest {
         assertNotNull(config)
     }
 
-    @Test(expected = IllegalArgumentException::class)
+    @Test(expected = VGSCheckoutInvalidJwtException::class)
     fun createMultiplexingConfig_emptyJWT_exceptionThrown() {
         // Act
         VGSCheckoutMultiplexingConfig("", "")
