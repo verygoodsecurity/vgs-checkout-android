@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingConfig
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
+import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutInvalidJwtException
+import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutJwtRestrictedRoleException
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutTransitionOptions
@@ -58,16 +60,18 @@ class VGSCheckout internal constructor(
     /**
      * Start checkout with multiplexing configuration.
      *
-     * @throws IllegalArgumentException if token is not valid.
-     *
      * @param token client backend access token.
      * @param vaultID VGS vault id.
      * @param environment type of vault to communicate with.
      * @param transitionOptions specifying a custom animation to run when the checkout is displayed.
      * @param isAnalyticsEnabled true if checkout should send analytics events, false otherwise.
+     *
+     * @throws com.verygoodsecurity.vgscheckout.exception.VGSCheckoutInvalidJwtException if token is not valid.
+     * @throws com.verygoodsecurity.vgscheckout.exception.VGSCheckoutJwtRestrictedRoleException if
+     * token is contains restricted roles.
      */
     @JvmOverloads
-    @Throws(IllegalArgumentException::class)
+    @Throws(VGSCheckoutInvalidJwtException::class, VGSCheckoutJwtRestrictedRoleException::class)
     fun present(
         token: String,
         vaultID: String,

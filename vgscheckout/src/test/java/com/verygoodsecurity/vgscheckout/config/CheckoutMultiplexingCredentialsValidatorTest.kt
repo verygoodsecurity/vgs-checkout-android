@@ -21,25 +21,25 @@ class CheckoutMultiplexingCredentialsValidatorTest {
     @Test
     fun validateJWT_validJWT_exceptionNotThrown() {
         // Act
-        jwtValidator.validateJWT(VALID_JWT)
+        jwtValidator.validateJwt(VALID_JWT)
     }
 
     @Test(expected = IllegalArgumentException::class)
     fun validateJWT_emptyJWT_exceptionThrown() {
         // Act
-        jwtValidator.validateJWT(EMPTY_JWT)
+        jwtValidator.validateJwt(EMPTY_JWT)
     }
 
     @Test(expected = IllegalArgumentException::class)
     fun validateJWT_JWTWithTransfersWriteRole_exceptionThrown() {
         // Act
-        jwtValidator.validateJWT(JWT_WITH_TRANSFERS_WRITE_ROLE)
+        jwtValidator.validateJwt(JWT_WITH_TRANSFERS_WRITE_ROLE)
     }
 
     @Test(expected = IllegalArgumentException::class)
     fun validateJWT_JWTWithTransfersAnyRole_exceptionThrown() {
         // Act
-        jwtValidator.validateJWT(JWT_WITH_TRANSFERS_ANY_ROLE)
+        jwtValidator.validateJwt(JWT_WITH_TRANSFERS_ANY_ROLE)
     }
 
     @Test
@@ -49,7 +49,7 @@ class CheckoutMultiplexingCredentialsValidatorTest {
         var exception: Exception? = null
         // Act
         try {
-            jwtValidator.validateJWT(EMPTY_JWT)
+            jwtValidator.validateJwt(EMPTY_JWT)
         } catch (e: Exception) {
             exception = e
         }
@@ -65,7 +65,7 @@ class CheckoutMultiplexingCredentialsValidatorTest {
         var exception: Exception? = null
         // Act
         try {
-            jwtValidator.validateJWT(JWT_WITH_TRANSFERS_WRITE_ROLE)
+            jwtValidator.validateJwt(JWT_WITH_TRANSFERS_WRITE_ROLE)
         } catch (e: Exception) {
             exception = e
         }
@@ -81,7 +81,7 @@ class CheckoutMultiplexingCredentialsValidatorTest {
         var exception: Exception? = null
         // Act
         try {
-            jwtValidator.validateJWT(JWT_WITH_TRANSFERS_ANY_ROLE)
+            jwtValidator.validateJwt(JWT_WITH_TRANSFERS_ANY_ROLE)
         } catch (e: Exception) {
             exception = e
         }

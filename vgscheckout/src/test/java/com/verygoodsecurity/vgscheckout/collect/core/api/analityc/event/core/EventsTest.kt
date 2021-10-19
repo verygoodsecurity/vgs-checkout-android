@@ -167,7 +167,7 @@ class EventsTest {
     @Test
     fun getData_jwtValidationSuccessful_customDataAdded() {
         // Arrange
-        val event = JWTValidationEvent(true)
+        val event = JwtValidationEvent(true)
         // Act
         val data = event.getData(VAULT_ID, FORM_ID, ENVIRONMENT)
         // Assert
@@ -179,7 +179,7 @@ class EventsTest {
     @Test
     fun getData_jwtValidationFailed_customDataAdded() {
         // Arrange
-        val event = JWTValidationEvent(false)
+        val event = JwtValidationEvent(false)
         // Act
         val data = event.getData(VAULT_ID, FORM_ID, ENVIRONMENT)
         // Assert
