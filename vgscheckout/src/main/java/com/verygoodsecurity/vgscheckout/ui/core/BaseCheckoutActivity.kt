@@ -295,6 +295,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> :
             postalAddressTil.setHint(getString(getPostalAddressHint()))
             postalAddressTil.setError(null)
             postalAddressEt.addRule(getPostalAddressValidationRule())
+            postalAddressEt.resetText()
         }
     }
 
