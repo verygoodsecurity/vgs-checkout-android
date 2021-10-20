@@ -31,6 +31,7 @@ import com.verygoodsecurity.vgscheckout.collect.util.*
 import com.verygoodsecurity.vgscheckout.collect.util.extension.*
 import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
 import com.verygoodsecurity.vgscheckout.collect.view.VGSCollectView
+import com.verygoodsecurity.vgscheckout.util.Session
 import java.util.*
 
 /**
@@ -47,6 +48,7 @@ internal class VGSCollect {
     private val tracker: AnalyticTracker?
 
     private var client: ApiClient
+
     private val mainHandler: Handler = Handler(Looper.getMainLooper())
 
     private var storage: InternalStorage
@@ -498,6 +500,8 @@ internal class VGSCollect {
     internal fun setClient(c: ApiClient) {
         client = c
     }
+    @VisibleForTesting
+    internal fun getClient() = client
 
     private fun responseEvent(code: Int, latency: Long, message: String? = null) {
         if (code.isHttpStatusCode()) {
@@ -571,12 +575,15 @@ internal class VGSCollect {
         }
     }
 
-    private fun updateAgentHeader(isAnalyticsEnabled: Boolean = true) {
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    internal fun updateAgentHeader(isAnalyticsEnabled: Boolean = true) {
         client.getStorage().setCustomHeaders(
             mapOf(
                 AGENT to String.format(
                     AGENT_FORMAT,
                     BuildConfig.VERSION_NAME,
+                    android.os.Build.VERSION.SDK_INT,
+                    Session.id,
                     if (isAnalyticsEnabled) AGENT_ANALYTICS_ENABLED else AGENT_ANALYTICS_DISABLED
                 )
             )
@@ -586,7 +593,12 @@ internal class VGSCollect {
     companion object {
 
         private const val AGENT = "VGS-Client"
-        private const val AGENT_FORMAT = "source=vgs-checkout&medium=vgs-checkout&content=%s&tr=%s"
+        private const val AGENT_FORMAT = "source=checkout-android" +
+                "&medium=vgs-checkout" +
+                "&content=%s" +
+                "&osVersion=%s" +
+                "&vgsCheckoutSessionId=%s" +
+                "&tr=%s"
         private const val AGENT_ANALYTICS_ENABLED = "default"
         private const val AGENT_ANALYTICS_DISABLED = "none"
     }
