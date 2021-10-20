@@ -1,5 +1,7 @@
 package com.verygoodsecurity.vgscheckout.config
 
+import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutJWTParseException
+import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutJWTRestrictedRoleException
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
 import org.junit.Assert.*
 import org.junit.Test
@@ -43,13 +45,13 @@ class VGSCheckoutMultiplexingConfigTest {
         assertTrue(config.isAnalyticsEnabled)
     }
 
-    @Test(expected = IllegalArgumentException::class)
+    @Test(expected = VGSCheckoutJWTParseException::class)
     fun createMultiplexingConfig_emptyJWT_exceptionThrown() {
         // Act
         VGSCheckoutMultiplexingConfig("", "")
     }
 
-    @Test(expected = IllegalArgumentException::class)
+    @Test(expected = VGSCheckoutJWTRestrictedRoleException::class)
     fun createMultiplexingConfig_invalidJWT_exceptionThrown() {
         // Act
         VGSCheckoutMultiplexingConfig(INVALID_JWT, "")
