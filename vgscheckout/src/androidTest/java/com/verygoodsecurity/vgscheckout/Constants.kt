@@ -23,7 +23,7 @@ object Constants {
     const val INVALID_SECURITY_CODE = "11"
     const val VALID_ADDRESS = "Somewhere st."
     const val VALID_CITY = "New York"
-    const val VALID_POSTAL_ADDRESS = "12345"
+    const val USA_VALID_POSTAL_ADDRESS = "12345"
     const val INVALID_POSTAL_ADDRESS = "1234"
 
     const val SUCCESS_RESPONSE_CODE = 200

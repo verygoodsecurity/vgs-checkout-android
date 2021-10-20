@@ -2,13 +2,15 @@ package com.verygoodsecurity.vgscheckout.custom.ui
 
 import android.content.Context
 import android.content.Intent
-import androidx.test.core.app.ActivityScenario
+import androidx.test.core.app.ActivityScenario.launch
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.espresso.Espresso
-import androidx.test.espresso.action.ViewActions
-import androidx.test.espresso.assertion.ViewAssertions
-import androidx.test.espresso.matcher.RootMatchers
-import androidx.test.espresso.matcher.ViewMatchers
+import androidx.test.espresso.Espresso.onData
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.action.ViewActions.scrollTo
+import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.RootMatchers.isDialog
+import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.verygoodsecurity.vgscheckout.Constants.VAULT_ID
 import com.verygoodsecurity.vgscheckout.R
@@ -17,7 +19,9 @@ import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_ARGS
 import com.verygoodsecurity.vgscheckout.ui.CheckoutActivity
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers
-import com.verygoodsecurity.vgscheckout.util.ViewInteraction
+import com.verygoodsecurity.vgscheckout.util.ViewInteraction.onViewWithScrollTo
+import org.hamcrest.Matchers.hasToString
+import org.hamcrest.Matchers.startsWith
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -35,38 +39,51 @@ class AddressDialogTest {
 
     @Test
     fun countrySelect_dialogShowed() {
-        ActivityScenario.launch<CheckoutActivity>(defaultIntent).use {
+        launch<CheckoutActivity>(defaultIntent).use {
             // Act
-            ViewInteraction.onViewWithScrollTo(R.id.vgsTilCountry).perform(ViewActions.click())
+            onViewWithScrollTo(R.id.vgsTilCountry).perform(click())
             //Assert
-            Espresso.onView(ViewMatchers.isRoot())
-                .inRoot(RootMatchers.isDialog()).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+            onView(isRoot()).inRoot(isDialog()).check(matches(isDisplayed()))
+        }
+    }
+
+    @Test
+    fun countrySelect_usaByDefault() {
+        launch<CheckoutActivity>(defaultIntent).use {
+            //Assert
+            onView(withId(R.id.vgsEtCountry)).check(matches(VGSViewMatchers.withText("United States")))
+        }
+    }
+
+    @Test
+    fun countrySelect_zipCodeHintByDefault() {
+        launch<CheckoutActivity>(defaultIntent).use {
+            //Assert
+            onViewWithScrollTo(R.id.vgsTilPostalAddress).check(matches(VGSViewMatchers.withHint("Zip code")))
         }
     }
 
     @Test
     fun countrySelect_selectCanada_countryChanged() {
-        ActivityScenario.launch<CheckoutActivity>(defaultIntent).use {
+        launch<CheckoutActivity>(defaultIntent).use {
             // Act
-            ViewInteraction.onViewWithScrollTo(R.id.vgsTilCountry).perform(ViewActions.click())
-            Espresso.onView(ViewMatchers.withText("Canada")).perform(ViewActions.click())
-            Espresso.onView(ViewMatchers.withText("Ok")).perform(ViewActions.click())
+            onViewWithScrollTo(R.id.vgsTilCountry).perform(click())
+            onData(hasToString(startsWith("Canada"))).perform(scrollTo()).perform(click())
+            onView(withText("Ok")).perform(click())
             //Assert
-            Espresso.onView(ViewMatchers.withId(R.id.vgsEtCountry))
-                .check(ViewAssertions.matches(VGSViewMatchers.withText("Canada")))
+            onView(withId(R.id.vgsEtCountry)).check(matches(VGSViewMatchers.withText("Canada")))
         }
     }
 
     @Test
     fun countrySelect_selectCanada_postalAddressHintChanged() {
-        ActivityScenario.launch<CheckoutActivity>(defaultIntent).use {
+        launch<CheckoutActivity>(defaultIntent).use {
             // Act
-            ViewInteraction.onViewWithScrollTo(R.id.vgsTilCountry).perform(ViewActions.click())
-            Espresso.onView(ViewMatchers.withText("Canada")).perform(ViewActions.click())
-            Espresso.onView(ViewMatchers.withText("Ok")).perform(ViewActions.click())
+            onViewWithScrollTo(R.id.vgsTilCountry).perform(click())
+            onData(hasToString(startsWith("Canada"))).perform(scrollTo()).perform(click())
+            onView(withText("Ok")).perform(click())
             //Assert
-            ViewInteraction.onViewWithScrollTo(R.id.vgsTilPostalAddress)
-                .check(ViewAssertions.matches(VGSViewMatchers.withHint("Postal code")))
+            onViewWithScrollTo(R.id.vgsTilPostalAddress).check(matches(VGSViewMatchers.withHint("Postal code")))
         }
     }
 }
