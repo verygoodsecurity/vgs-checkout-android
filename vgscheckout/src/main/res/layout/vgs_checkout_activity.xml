@@ -157,7 +157,7 @@
                     app:endIconModes="custom"
                     app:hint="@string/vgs_checkout_address_info_country_hint">
 
-                    <com.verygoodsecurity.vgscheckout.collect.widget.VGSEditText
+                    <com.verygoodsecurity.vgscheckout.collect.widget.VGSCountryEditText
                         android:id="@+id/vgsEtCountry"
                         style="@style/VGSCheckout.TextInputEditText"
                         android:layout_width="match_parent"
