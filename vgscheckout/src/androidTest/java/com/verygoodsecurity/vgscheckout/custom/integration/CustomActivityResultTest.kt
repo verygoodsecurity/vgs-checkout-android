@@ -64,7 +64,7 @@ class CustomActivityResultTest {
             fillAddressFields(
                 Constants.VALID_ADDRESS,
                 Constants.VALID_CITY,
-                Constants.VALID_POSTAL_ADDRESS
+                Constants.USA_VALID_POSTAL_ADDRESS
             )
             // Act
             onViewWithScrollTo(R.id.mbSaveCard).perform(click())
@@ -108,7 +108,7 @@ class CustomActivityResultTest {
             fillAddressFields(
                 Constants.VALID_ADDRESS,
                 Constants.VALID_CITY,
-                Constants.VALID_POSTAL_ADDRESS
+                Constants.USA_VALID_POSTAL_ADDRESS
             )
             // Act
             onViewWithScrollTo(R.id.mbSaveCard).perform(click())

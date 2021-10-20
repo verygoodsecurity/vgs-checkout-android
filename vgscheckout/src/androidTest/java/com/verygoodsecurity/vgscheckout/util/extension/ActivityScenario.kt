@@ -61,7 +61,7 @@ fun fillCardFields(
 fun fillAddressFields(
     address: String = Constants.VALID_ADDRESS,
     city: String = Constants.VALID_CITY,
-    postalAddress: String = Constants.VALID_POSTAL_ADDRESS
+    postalAddress: String = Constants.USA_VALID_POSTAL_ADDRESS
 ) {
     Espresso.onView(ViewMatchers.withId(R.id.vgsEtAddress))
         .perform(ActionHelper.doAction<VGSEditText> {
