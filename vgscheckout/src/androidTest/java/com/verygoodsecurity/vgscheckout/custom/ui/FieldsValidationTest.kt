@@ -8,13 +8,13 @@ import androidx.test.espresso.Espresso.onData
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.scrollTo
-import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.ui.CheckoutActivity
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.verygoodsecurity.vgscheckout.Constants.INVALID_CARD_NUMBER
 import com.verygoodsecurity.vgscheckout.Constants.INVALID_EXP_DATE
 import com.verygoodsecurity.vgscheckout.Constants.INVALID_POSTAL_ADDRESS
@@ -32,8 +32,8 @@ import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers.withError
 import com.verygoodsecurity.vgscheckout.util.ViewInteraction.onViewWithScrollTo
 import com.verygoodsecurity.vgscheckout.util.extension.fillAddressFields
 import com.verygoodsecurity.vgscheckout.util.extension.fillCardFields
-import org.hamcrest.Matchers
 import org.hamcrest.Matchers.hasToString
+import org.hamcrest.Matchers.startsWith
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -191,8 +191,9 @@ class FieldsValidationTest {
             // Act
             onViewWithScrollTo(R.id.mbSaveCard).perform(click())
             onViewWithScrollTo(R.id.vgsTilCountry).perform(click())
-            onData(hasToString(Matchers.startsWith("Canada"))).perform(scrollTo()).perform(click())
-            onView(ViewMatchers.withText("Ok")).perform(click())
+            onData(hasToString(startsWith("Canada"))).perform(scrollTo()).perform(click())
+            onView(withText("Ok")).perform(click())
+            Thread.sleep(2000)
             //Assert
             onViewWithScrollTo(R.id.vgsTilPostalAddress).check(matches(withError(null)))
         }
@@ -215,8 +216,8 @@ class FieldsValidationTest {
             )
             // Act
             onViewWithScrollTo(R.id.vgsTilCountry).perform(click())
-            onData(hasToString(Matchers.startsWith("Canada"))).perform(scrollTo()).perform(click())
-            onView(ViewMatchers.withText("Ok")).perform(click())
+            onData(hasToString(startsWith("Canada"))).perform(scrollTo()).perform(click())
+            onView(withText("Ok")).perform(click())
 
             onViewWithScrollTo(R.id.mbSaveCard).perform(click())
             // Assert
