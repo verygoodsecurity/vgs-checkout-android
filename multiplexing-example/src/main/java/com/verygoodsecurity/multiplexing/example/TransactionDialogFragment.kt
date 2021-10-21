@@ -107,8 +107,9 @@ class TransactionDialogFragment : DialogFragment() {
 
         if (code in 200..299) {
             this@TransactionDialogFragment.activity?.runOnUiThread {
-                title.text = "Purchased Successful"
+                title.text = "Thank You"
                 message.visibility = View.VISIBLE
+                message.text = "Your purchased was successful"
                 transactionProgressView.visibility = View.INVISIBLE
                 successImgView.visibility = View.VISIBLE
                 okBtn.visibility = View.VISIBLE
@@ -117,8 +118,8 @@ class TransactionDialogFragment : DialogFragment() {
             this@TransactionDialogFragment.activity?.runOnUiThread {
                 title.text = "Transfer Failed"
                 message.visibility = View.VISIBLE
-                message.text = "Invalid transaction, please check" +
-                        "\\n the submitted card information and try again."
+                message.text = "Invalid transaction,\nplease check" +
+                        " the submitted card information and try again."
                 transactionProgressView.visibility = View.INVISIBLE
                 failedImgView.visibility = View.VISIBLE
                 retryBtn.visibility = View.VISIBLE
@@ -128,7 +129,11 @@ class TransactionDialogFragment : DialogFragment() {
     }
 
     private fun String.mapToJson(): String {
-        return "{\"fi_id\":\"$this\",\"tnt\":\"$tnt\", \"amount\": 1}"
+        return "{\"fi_id\":\"$this\"," +
+                "\"tnt\":\"$tnt\"," +
+                "\"amount\": 1," +
+                "\"currency\": \"usd\"" +
+                "}"
     }
 
     private fun parseUserId(): String {
