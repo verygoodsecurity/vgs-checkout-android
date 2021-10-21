@@ -4,15 +4,17 @@ import android.content.Context
 import android.content.Intent
 import androidx.test.core.app.ActivityScenario.launch
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.espresso.Espresso
+import androidx.test.espresso.Espresso.onData
+import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.matcher.ViewMatchers
+import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.ui.CheckoutActivity
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.verygoodsecurity.vgscheckout.Constants.INVALID_CARD_NUMBER
 import com.verygoodsecurity.vgscheckout.Constants.INVALID_EXP_DATE
 import com.verygoodsecurity.vgscheckout.Constants.INVALID_POSTAL_ADDRESS
@@ -22,7 +24,7 @@ import com.verygoodsecurity.vgscheckout.Constants.VALID_CARD_HOLDER
 import com.verygoodsecurity.vgscheckout.Constants.VALID_CARD_NUMBER
 import com.verygoodsecurity.vgscheckout.Constants.VALID_CITY
 import com.verygoodsecurity.vgscheckout.Constants.VALID_EXP_DATE
-import com.verygoodsecurity.vgscheckout.Constants.VALID_POSTAL_ADDRESS
+import com.verygoodsecurity.vgscheckout.Constants.USA_VALID_POSTAL_ADDRESS
 import com.verygoodsecurity.vgscheckout.Constants.VALID_SECURITY_CODE
 import com.verygoodsecurity.vgscheckout.Constants.VAULT_ID
 import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_ARGS
@@ -30,6 +32,8 @@ import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers.withError
 import com.verygoodsecurity.vgscheckout.util.ViewInteraction.onViewWithScrollTo
 import com.verygoodsecurity.vgscheckout.util.extension.fillAddressFields
 import com.verygoodsecurity.vgscheckout.util.extension.fillCardFields
+import org.hamcrest.Matchers.hasToString
+import org.hamcrest.Matchers.startsWith
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -154,35 +158,6 @@ class FieldsValidationTest {
     }
 
     @Test
-    fun countrySelect_selectCanada_postalAddressErrorChanged() {
-        launch<CheckoutActivity>(defaultIntent).use {
-            // Act
-            onViewWithScrollTo(R.id.vgsTilCountry).perform(click())
-            Espresso.onView(ViewMatchers.withText("Canada")).perform(click())
-            Espresso.onView(ViewMatchers.withText("Ok")).perform(click())
-            onViewWithScrollTo(R.id.mbSaveCard).perform(click())
-            //Assert
-            onViewWithScrollTo(R.id.vgsTilPostalAddress)
-                .check(matches(withError("Postal code is empty")))
-        }
-    }
-
-    //todo edit this test flow
-    @Test
-    fun showErrorMessage_countrySelect_selectCanada_postalAddressErrorMessageCleared() {
-        launch<CheckoutActivity>(defaultIntent).use {
-            // Act
-            onViewWithScrollTo(R.id.mbSaveCard).perform(click())
-            onViewWithScrollTo(R.id.vgsTilCountry).perform(click())
-            Espresso.onView(ViewMatchers.withText("Canada")).perform(click())
-            Espresso.onView(ViewMatchers.withText("Ok")).perform(click())
-            //Assert
-            onViewWithScrollTo(R.id.vgsTilPostalAddress)
-                .check(matches(withError(null)))
-        }
-    }
-
-    @Test
     fun saveCard_validInput_noErrorsDisplayed() {
         launch<CheckoutActivity>(defaultIntent).use {
             // Arrange
@@ -195,7 +170,7 @@ class FieldsValidationTest {
             fillAddressFields(
                 VALID_ADDRESS,
                 VALID_CITY,
-                VALID_POSTAL_ADDRESS
+                USA_VALID_POSTAL_ADDRESS
             )
             // Act
             onViewWithScrollTo(R.id.mbSaveCard).perform(click())
@@ -207,6 +182,46 @@ class FieldsValidationTest {
             onViewWithScrollTo(R.id.vgsTilAddress).check(matches(withError(null)))
             onViewWithScrollTo(R.id.vgsTilCity).check(matches(withError(null)))
             onViewWithScrollTo(R.id.vgsTilPostalAddress).check(matches(withError(null)))
+        }
+    }
+
+    @Test
+    fun showErrorMessage_countrySelect_selectCanada_postalAddressErrorMessageCleared() {
+        launch<CheckoutActivity>(defaultIntent).use {
+            // Act
+            onViewWithScrollTo(R.id.mbSaveCard).perform(click())
+            onViewWithScrollTo(R.id.vgsTilCountry).perform(click())
+            onData(hasToString(startsWith("Canada"))).perform(scrollTo()).perform(click())
+            onView(withText("Ok")).perform(click())
+            Thread.sleep(2000)
+            //Assert
+            onViewWithScrollTo(R.id.vgsTilPostalAddress).check(matches(withError(null)))
+        }
+    }
+
+    @Test
+    fun noError_selectCanada_postalAddressValidationRuleChange_errorDisplayed() {
+        launch<CheckoutActivity>(defaultIntent).use {
+            // Arrange
+            fillCardFields(
+                VALID_CARD_HOLDER,
+                VALID_CARD_NUMBER,
+                VALID_EXP_DATE,
+                VALID_SECURITY_CODE
+            )
+            fillAddressFields(
+                VALID_ADDRESS,
+                VALID_CITY,
+                USA_VALID_POSTAL_ADDRESS
+            )
+            // Act
+            onViewWithScrollTo(R.id.vgsTilCountry).perform(click())
+            onData(hasToString(startsWith("Canada"))).perform(scrollTo()).perform(click())
+            onView(withText("Ok")).perform(click())
+
+            onViewWithScrollTo(R.id.mbSaveCard).perform(click())
+            // Assert
+            onViewWithScrollTo(R.id.vgsTilPostalAddress).check(matches(withError("Postal code is invalid")))
         }
     }
 }
