@@ -9,6 +9,12 @@ import com.verygoodsecurity.vgscheckout.util.country.CountriesHelper
 
 internal class CountryInputField(context: Context) : InfoInputField(context) {
 
+    init {
+        isFocusable = false
+        isFocusableInTouchMode = false
+        isCursorVisible = false
+    }
+
     override fun autofill(value: AutofillValue?) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             autofillCountry(value)
