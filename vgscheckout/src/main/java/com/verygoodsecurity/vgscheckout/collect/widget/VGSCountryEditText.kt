@@ -20,6 +20,7 @@ internal class VGSCountryEditText @JvmOverloads constructor(
     var selectedCountry: Country = CountriesHelper.countries.first()
         set(value) {
             field = value
+            onCountrySelectedListener?.onCountrySelected(selectedCountry)
             setText(value.name)
         }
 
@@ -76,7 +77,6 @@ internal class VGSCountryEditText @JvmOverloads constructor(
             .setPositiveButton(R.string.vgs_checkout_select_country_dialog_positive_button_title) { _, _ ->
                 countries.getOrNull(selected)?.let {
                     selectedCountry = it
-                    onCountrySelectedListener?.onCountrySelected(selectedCountry)
                 }
             }
             .show()
