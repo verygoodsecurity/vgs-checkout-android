@@ -32,7 +32,7 @@ internal class VGSCountryEditText @JvmOverloads constructor(
     }
 
     init {
-        setupViewType(FieldType.INFO)
+        setupViewType(FieldType.COUNTRY)
 
         applyValidationRule(billingAddressValidationRule)
         isFocusable = false

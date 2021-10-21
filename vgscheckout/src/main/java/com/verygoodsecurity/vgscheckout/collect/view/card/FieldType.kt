@@ -38,6 +38,7 @@ internal enum class FieldType(val raw: String) {
      */
     SSN("ssn"),
 
+    COUNTRY("country"),
 }
 
 internal fun FieldType.getAnalyticName(): String {
@@ -48,5 +49,6 @@ internal fun FieldType.getAnalyticName(): String {
         FieldType.CARD_HOLDER_NAME -> "card-holder-name"
         FieldType.SSN -> "ssn"
         FieldType.INFO -> "text"
+        FieldType.COUNTRY -> "text"
     }
 }
