@@ -295,6 +295,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> :
         when (selectedCountry.postalAddressType) {
             PostalAddressType.ZIP -> R.string.vgs_checkout_address_info_zip_hint
             PostalAddressType.POSTAL -> R.string.vgs_checkout_address_info_postal_code_hint
+            PostalAddressType.NOTHING -> 0
         }
 
     @StringRes
@@ -302,6 +303,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> :
         when (selectedCountry.postalAddressType) {
             PostalAddressType.ZIP -> R.string.vgs_checkout_address_info_zipcode_empty_error
             PostalAddressType.POSTAL -> R.string.vgs_checkout_address_info_postal_code_empty_error
+            PostalAddressType.NOTHING -> 0
         }
 
     @StringRes
@@ -309,6 +311,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> :
         when (selectedCountry.postalAddressType) {
             PostalAddressType.ZIP -> R.string.vgs_checkout_address_info_zipcode_invalid_error
             PostalAddressType.POSTAL -> R.string.vgs_checkout_address_info_postal_code_invalid_error
+            PostalAddressType.NOTHING -> 0
         }
 
     private fun getPostalAddressValidationRule(selectedCountry: Country) =

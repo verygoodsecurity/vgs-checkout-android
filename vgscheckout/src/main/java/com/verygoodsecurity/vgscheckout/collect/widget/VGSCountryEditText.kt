@@ -17,7 +17,7 @@ internal class VGSCountryEditText @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : InputFieldView(context, attrs, defStyleAttr) {
 
-    var selectedCountry: Country = CountriesHelper.countries.first()
+    var selectedCountry: Country = CountriesHelper.getCountry(CountriesHelper.ISO.USA)
 
     internal var onCountrySelectedListener: OnCountrySelectedListener? = null
 
