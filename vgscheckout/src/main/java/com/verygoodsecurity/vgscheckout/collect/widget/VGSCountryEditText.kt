@@ -1,5 +1,6 @@
 package com.verygoodsecurity.vgscheckout.collect.widget
 
+import android.app.Dialog
 import android.content.Context
 import android.os.Parcelable
 import android.util.AttributeSet
@@ -62,24 +63,27 @@ internal class VGSCountryEditText @JvmOverloads constructor(
         }
     }
 
+    private var countryDialog: Dialog? = null
     private fun showCountrySelectionDialog() {
-        val countries = CountriesHelper.countries
-        val countryNames = countries.map { it.name }.toTypedArray()
-        val selectedIndex = countries.indexOf(selectedCountry)
-        var selected = -1
-        MaterialAlertDialogBuilder(context)
-            .setTitle(R.string.vgs_checkout_select_country_dialog_title)
-            .setSingleChoiceItems(countryNames, selectedIndex) { _, which -> selected = which }
-            .setNegativeButton(
-                R.string.vgs_checkout_select_country_dialog_negative_button_title,
-                null
-            )
-            .setPositiveButton(R.string.vgs_checkout_select_country_dialog_positive_button_title) { _, _ ->
-                countries.getOrNull(selected)?.let {
-                    selectedCountry = it
-                }
-            }
-            .show()
+        if (countryDialog == null || !countryDialog!!.isShowing) {
+            val countries = CountriesHelper.countries
+            val countryNames = countries.map { it.name }.toTypedArray()
+            val selectedIndex = countries.indexOf(selectedCountry)
+            var selected = -1
+            countryDialog = MaterialAlertDialogBuilder(context)
+                .setTitle(R.string.vgs_checkout_select_country_dialog_title)
+                .setSingleChoiceItems(countryNames, selectedIndex) { _, which -> selected = which }
+                .setNegativeButton(
+                    R.string.vgs_checkout_select_country_dialog_negative_button_title,
+                    null
+                )
+                .setPositiveButton(R.string.vgs_checkout_select_country_dialog_positive_button_title) { _, _ ->
+                    countries.getOrNull(selected)?.let {
+                        selectedCountry = it
+                    }
+                }.create()
+                .also { it.show() }
+        }
     }
 
     companion object {
