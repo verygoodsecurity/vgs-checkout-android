@@ -17,7 +17,11 @@ internal class VGSCountryEditText @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : InputFieldView(context, attrs, defStyleAttr) {
 
-    var selectedCountry: Country = CountriesHelper.getCountry(CountriesHelper.ISO.USA)
+    var selectedCountry: Country = CountriesHelper.countries.first()
+        set(value) {
+            field = value
+            setText(value.name)
+        }
 
     internal var onCountrySelectedListener: OnCountrySelectedListener? = null
 
@@ -38,7 +42,7 @@ internal class VGSCountryEditText @JvmOverloads constructor(
         isFocusable = false
         setOnClickListener { showCountrySelectionDialog() }
         setFieldDataSerializer(CountryNameToIsoSerializer())
-        setText(selectedCountry.name)
+        selectedCountry = CountriesHelper.getCountry(CountriesHelper.ISO.USA)
     }
 
     override fun onSaveInstanceState(): Parcelable {
@@ -72,7 +76,6 @@ internal class VGSCountryEditText @JvmOverloads constructor(
             .setPositiveButton(R.string.vgs_checkout_select_country_dialog_positive_button_title) { _, _ ->
                 countries.getOrNull(selected)?.let {
                     selectedCountry = it
-                    setText(selectedCountry.name)
                     onCountrySelectedListener?.onCountrySelected(selectedCountry)
                 }
             }
