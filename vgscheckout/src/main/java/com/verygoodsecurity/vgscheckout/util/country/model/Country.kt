@@ -9,4 +9,7 @@ internal data class Country(
     val code: String,
     val postalAddressType: PostalAddressType,
     val postalAddressRegex: String
-) : Parcelable
+) : Parcelable {
+
+    fun isValid() = !name.equals(code, true)
+}

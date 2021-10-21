@@ -24,7 +24,9 @@ internal class CountryInputField(context: Context) : InfoInputField(context) {
     @RequiresApi(Build.VERSION_CODES.O)
     private fun autofillCountry(value: AutofillValue?) {
         value?.textValue?.run {
-            CountriesHelper.findByCode(this.toString())
+            CountriesHelper.getCountry(this.toString())
+        }?.takeIf {
+            it.isValid()
         }?.let {
             (vgsParent as? VGSCountryEditText)?.selectedCountry = it
         }

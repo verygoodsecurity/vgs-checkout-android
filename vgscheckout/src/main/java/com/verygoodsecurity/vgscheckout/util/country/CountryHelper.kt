@@ -10,12 +10,6 @@ internal object CountriesHelper {
 
     val countries: List<Country> by lazy { Locale.getISOCountries().map { getCountry(it) } }
 
-    fun findByCode(code: String): Country? {
-        return Locale.getISOCountries().asSequence()
-            .mapNotNull { getCountry(code) }
-            .firstOrNull()
-    }
-
     fun getCountry(iso: String) = Country(
         Locale(EMPTY, iso).getDisplayCountry(Locale.US),
         iso,
