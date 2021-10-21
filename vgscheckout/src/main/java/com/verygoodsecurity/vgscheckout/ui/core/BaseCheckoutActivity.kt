@@ -91,6 +91,17 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> :
             .build()
     }
 
+    private val saveCardOnDoneImeOption = object : InputFieldView.OnEditorActionListener {
+
+        override fun onEditorAction(v: View?, actionId: Int, event: KeyEvent?): Boolean {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                saveCard()
+                return true
+            }
+            return false
+        }
+    }
+
     abstract fun resolveConfig(intent: Intent): C
 
     abstract fun hasCustomHeaders(): Boolean
@@ -217,11 +228,13 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> :
 
     private fun initCountryView(options: VGSCheckoutCountryOptions) {
         countryEt.setFieldName(options.fieldName)
-        countryEt.onCountrySelectedListener = object : VGSCountryEditText.OnCountrySelectedListener {
-            override fun onCountrySelected(country: Country) {
-                updatePostalAddressView(country)
+        countryEt.onCountrySelectedListener =
+            object : VGSCountryEditText.OnCountrySelectedListener {
+                override fun onCountrySelected(country: Country) {
+                    updatePostalAddressView(country)
+                    updateCityView(country)
+                }
             }
-        }
         collect.bindView(countryEt)
     }
 
@@ -243,28 +256,38 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> :
         cityEt.addRule(billingAddressValidationRule)
         cityEt.addOnTextChangeListener(this)
         collect.bindView(cityEt)
+        updateCityView(countryEt.selectedCountry)
+    }
+
+    private fun updateCityView(country: Country) {
+        if (country.postalAddressType == PostalAddressType.NOTHING) {
+            cityEt.setImeOptions(EditorInfo.IME_ACTION_DONE)
+        } else {
+            cityEt.setImeOptions(EditorInfo.IME_ACTION_NEXT)
+        }
     }
 
     private fun initPostalAddressView(options: VGSCheckoutPostalAddressOptions) {
         postalAddressEt.setFieldName(options.fieldName)
         postalAddressEt.addOnTextChangeListener(this)
-        postalAddressEt.setOnEditorActionListener(object : InputFieldView.OnEditorActionListener {
-            override fun onEditorAction(v: View?, actionId: Int, event: KeyEvent?): Boolean {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    saveCard()
-                    return true
-                }
-                return false
-            }
-        })
+        postalAddressEt.setOnEditorActionListener(saveCardOnDoneImeOption)
         collect.bindView(postalAddressEt)
         updatePostalAddressView(countryEt.selectedCountry)
     }
 
     private fun updatePostalAddressView(selectedCountry: Country) {
-        postalAddressTil.setHint(getString(getPostalAddressHint(selectedCountry)))
-        postalAddressTil.setError(null)
-        postalAddressEt.addRule(getPostalAddressValidationRule(selectedCountry))
+        if (selectedCountry.postalAddressType == PostalAddressType.NOTHING) {
+            postalAddressEt.setText(null)
+            postalAddressEt.setIsRequired(false)
+            postalAddressTil.visibility = View.GONE
+        } else {
+            postalAddressEt.setIsRequired(true)
+            postalAddressTil.visibility = View.VISIBLE
+            postalAddressTil.setHint(getString(getPostalAddressHint(countryEt.selectedCountry)))
+            postalAddressTil.setError(null)
+            postalAddressEt.addRule(getPostalAddressValidationRule(countryEt.selectedCountry))
+            postalAddressEt.resetText()
+        }
     }
 
     @StringRes
@@ -405,7 +428,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> :
         @StringRes emptyError: Int,
         @StringRes invalidError: Int? = null
     ): Boolean = when {
-        target.getFieldState()?.isEmpty == true -> {
+        target.isRequired() && target.getFieldState()?.isEmpty == true -> {
             parent.setError(emptyError)
             false
         }

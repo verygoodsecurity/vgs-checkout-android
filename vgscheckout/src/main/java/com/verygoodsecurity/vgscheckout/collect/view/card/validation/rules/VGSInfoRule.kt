@@ -11,13 +11,13 @@ internal class VGSInfoRule private constructor(
     class ValidationBuilder {
 
         /** The Regex for validation input. */
-        protected var regex: String? = null
+        private var regex: String? = null
 
         /** The minimum length of the person name which will support. */
-        protected var minLength = -1
+        private var minLength = -1
 
         /** The maximum length of the person name which will support. */
-        protected var maxLength = -1
+        private var maxLength = -1
 
         /** Configure Regex for validation input. */
         fun setRegex(regex: String): ValidationBuilder {

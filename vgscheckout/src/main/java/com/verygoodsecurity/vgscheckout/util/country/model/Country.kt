@@ -7,7 +7,6 @@ import kotlinx.parcelize.Parcelize
 internal data class Country(
     val name: String,
     val code: String,
-    val regionType: RegionType,
     val postalAddressType: PostalAddressType,
     val postalAddressRegex: String
 ) : Parcelable

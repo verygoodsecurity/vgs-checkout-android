@@ -1347,6 +1347,11 @@ internal abstract class InputFieldView @JvmOverloads constructor(
         }
     }
 
+    fun resetText() {
+        inputField.text = inputField.text
+        inputField.setSelection(inputField.text?.length ?: 0)
+    }
+
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     internal fun getText() = inputField.text
 

@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscheckout.custom.ui
+package com.verygoodsecurity.vgscheckout.multiplexing.ui
 
 import android.content.Context
 import android.content.Intent
@@ -12,12 +12,14 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.RootMatchers.isDialog
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.verygoodsecurity.vgscheckout.Constants
 import com.verygoodsecurity.vgscheckout.Constants.VAULT_ID
 import com.verygoodsecurity.vgscheckout.R
-import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
+import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingConfig
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_ARGS
 import com.verygoodsecurity.vgscheckout.ui.CheckoutActivity
+import com.verygoodsecurity.vgscheckout.ui.CheckoutMultiplexingActivity
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers
 import com.verygoodsecurity.vgscheckout.util.ViewInteraction.onViewWithScrollTo
 import org.hamcrest.Matchers.hasToString
@@ -30,10 +32,15 @@ class AddressDialogTest {
 
     private val context: Context = ApplicationProvider.getApplicationContext()
 
-    private val defaultIntent = Intent(context, CheckoutActivity::class.java).apply {
+    private val defaultIntent = Intent(context, CheckoutMultiplexingActivity::class.java).apply {
         putExtra(
             EXTRA_KEY_ARGS,
-            CheckoutResultContract.Args(VGSCheckoutCustomConfig(VAULT_ID))
+            CheckoutResultContract.Args(
+                VGSCheckoutMultiplexingConfig(
+                    Constants.CORRECT_TOKEN,
+                    VAULT_ID,
+                )
+            )
         )
     }
 

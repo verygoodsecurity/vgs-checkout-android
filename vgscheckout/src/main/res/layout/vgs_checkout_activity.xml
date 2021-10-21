@@ -225,12 +225,9 @@
                             app:imeOptions="actionNext" />
                     </com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout>
 
-                    <Space
-                        android:layout_width="@dimen/vgs_checkout_margin_padding_size_medium"
-                        android:layout_height="0dp" />
-
                     <com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout
                         android:id="@+id/vgsTilPostalAddress"
+                        android:layout_marginStart="@dimen/vgs_checkout_margin_padding_size_medium"
                         style="@style/VGSCheckout.TextInputLayout"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
