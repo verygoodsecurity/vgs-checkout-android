@@ -1,5 +1,8 @@
 package com.verygoodsecurity.vgscheckout.config
 
+import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutJWTParseException
+import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutJWTRestrictedRoleException
+import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
 import org.junit.Assert.*
 import org.junit.Test
 
@@ -18,13 +21,37 @@ class VGSCheckoutMultiplexingConfigTest {
         assertNotNull(config)
     }
 
-    @Test(expected = IllegalArgumentException::class)
+    @Test
+    fun createMultiplexingConfig_envSandboxEnabledByDefault() {
+        // Act
+        val config = VGSCheckoutMultiplexingConfig(VALID_JWT, "")
+        // Assert
+        assert(config.environment is VGSCheckoutEnvironment.Sandbox)
+    }
+
+    @Test
+    fun createMultiplexingConfig_screenshotsDisabledByDefault() {
+        // Act
+        val config = VGSCheckoutMultiplexingConfig(VALID_JWT, "")
+        // Assert
+        assertFalse(config.isScreenshotsAllowed)
+    }
+
+    @Test
+    fun createMultiplexingConfig_analyticsEnabledByDefault() {
+        // Act
+        val config = VGSCheckoutMultiplexingConfig(VALID_JWT, "")
+        // Assert
+        assertTrue(config.isAnalyticsEnabled)
+    }
+
+    @Test(expected = VGSCheckoutJWTParseException::class)
     fun createMultiplexingConfig_emptyJWT_exceptionThrown() {
         // Act
         VGSCheckoutMultiplexingConfig("", "")
     }
 
-    @Test(expected = IllegalArgumentException::class)
+    @Test(expected = VGSCheckoutJWTRestrictedRoleException::class)
     fun createMultiplexingConfig_invalidJWT_exceptionThrown() {
         // Act
         VGSCheckoutMultiplexingConfig(INVALID_JWT, "")

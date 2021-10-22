@@ -42,15 +42,15 @@ class DefaultMultiplexingSetupTest {
     fun performCheckout_defaultVisibleFields() {
         ActivityScenario.launch<CheckoutMultiplexingActivity>(defaultIntent).use {
             //Assert
-            Espresso.onView(ViewMatchers.withId(R.id.vgsTilCardHolder))
+            ViewInteraction.onViewWithScrollTo(R.id.vgsTilCardHolder)
                 .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-            Espresso.onView(ViewMatchers.withId(R.id.vgsTilCardNumber))
+            ViewInteraction.onViewWithScrollTo(R.id.vgsTilCardNumber)
                 .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-            Espresso.onView(ViewMatchers.withId(R.id.vgsTilExpirationDate))
+            ViewInteraction.onViewWithScrollTo(R.id.vgsTilExpirationDate)
                 .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-            Espresso.onView(ViewMatchers.withId(R.id.vgsTilSecurityCode))
+            ViewInteraction.onViewWithScrollTo(R.id.vgsTilSecurityCode)
                 .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-            Espresso.onView(ViewMatchers.withId(R.id.vgsTilCountry))
+            ViewInteraction.onViewWithScrollTo(R.id.vgsTilCountry)
                 .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
             ViewInteraction.onViewWithScrollTo(R.id.vgsTilAddress)
                 .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))

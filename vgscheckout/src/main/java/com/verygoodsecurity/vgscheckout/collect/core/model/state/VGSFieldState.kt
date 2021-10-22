@@ -30,6 +30,7 @@ internal data class VGSFieldState(
 internal fun VGSFieldState.mapToFieldState(): FieldState {
     val f = when (type) {
         FieldType.INFO -> FieldState.InfoState()
+        FieldType.COUNTRY -> FieldState.InfoState()
         FieldType.CVC -> FieldState.CVCState()
         FieldType.CARD_HOLDER_NAME -> FieldState.CardHolderNameState()
         FieldType.CARD_EXPIRATION_DATE -> FieldState.CardExpirationDateState()

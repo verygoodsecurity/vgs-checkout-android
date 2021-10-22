@@ -60,7 +60,7 @@ class ScreenRotationTest {
             fillAddressFields(
                 Constants.VALID_ADDRESS,
                 Constants.VALID_CITY,
-                Constants.VALID_POSTAL_ADDRESS
+                Constants.USA_VALID_POSTAL_ADDRESS
             )
             // Act
             device.setOrientationLeft()
@@ -71,7 +71,7 @@ class ScreenRotationTest {
             onView(withId(R.id.vgsEtSecurityCode)).check(matches(withText(Constants.VALID_SECURITY_CODE)))
             onView(withId(R.id.vgsEtAddress)).check(matches(withText(Constants.VALID_ADDRESS)))
             onView(withId(R.id.vgsEtCity)).check(matches(withText(Constants.VALID_CITY)))
-            onView(withId(R.id.vgsEtPostalAddress)).check(matches(withText(Constants.VALID_POSTAL_ADDRESS)))
+            onView(withId(R.id.vgsEtPostalAddress)).check(matches(withText(Constants.USA_VALID_POSTAL_ADDRESS)))
         }
     }
 }

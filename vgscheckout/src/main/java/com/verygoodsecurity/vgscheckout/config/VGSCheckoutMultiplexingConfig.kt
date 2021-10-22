@@ -6,6 +6,8 @@ import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.JWTValid
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutMultiplexingRouteConfig
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutMultiplexingFormConfig
+import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutJWTParseException
+import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutJWTRestrictedRoleException
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
 
 /**
@@ -16,6 +18,7 @@ import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
  * @param environment type of vault.
  * @param routeConfig Networking configuration, like http method, request headers etc.
  * @param formConfig UI configuration.
+ * @param isScreenshotsAllowed If true, checkout form will allow to make screenshots.
  * @param isAnalyticsEnabled If true, checkout will send analytics events that helps to debug issues if any occurs.
  * @param createdFromParcel if true then object created form parcel. Used to determine if token
  * validation event should be send.
@@ -27,6 +30,7 @@ class VGSCheckoutMultiplexingConfig private constructor(
     override val environment: VGSCheckoutEnvironment,
     override val routeConfig: VGSCheckoutMultiplexingRouteConfig,
     override val formConfig: VGSCheckoutMultiplexingFormConfig,
+    override val isScreenshotsAllowed: Boolean,
     override val isAnalyticsEnabled: Boolean,
     private val createdFromParcel: Boolean
 ) : CheckoutConfig() {
@@ -43,6 +47,7 @@ class VGSCheckoutMultiplexingConfig private constructor(
         parcel.readParcelable(VGSCheckoutMultiplexingRouteConfig::class.java.classLoader)!!,
         parcel.readParcelable(VGSCheckoutMultiplexingFormConfig::class.java.classLoader)!!,
         parcel.readInt() == 1,
+        parcel.readInt() == 1,
         true
     )
 
@@ -53,18 +58,22 @@ class VGSCheckoutMultiplexingConfig private constructor(
      * @param vaultID unique organization vault id.
      * @param environment type of vault.
      * @param formConfig UI configuration.
+     * @param isScreenshotsAllowed If true, checkout form will allow to make screenshots. Default is false.
      * @param isAnalyticsEnabled If true, checkout will send analytics events that helps to debug
      * issues if any occurs. Default value is true.
      *
-     * @throws IllegalArgumentException if token is not valid.
+     * @throws com.verygoodsecurity.vgscheckout.exception.VGSCheckoutJWTParseException if token is not valid.
+     * @throws com.verygoodsecurity.vgscheckout.exception.VGSCheckoutJWTRestrictedRoleException if
+     * token is contains restricted roles.
      */
     @JvmOverloads
-    @Throws(IllegalArgumentException::class)
+    @Throws(VGSCheckoutJWTParseException::class, VGSCheckoutJWTRestrictedRoleException::class)
     constructor(
         token: String,
         vaultID: String,
         environment: VGSCheckoutEnvironment = VGSCheckoutEnvironment.Sandbox(),
         formConfig: VGSCheckoutMultiplexingFormConfig = VGSCheckoutMultiplexingFormConfig(),
+        isScreenshotsAllowed: Boolean = false,
         isAnalyticsEnabled: Boolean = true
     ) : this(
         token,
@@ -72,6 +81,7 @@ class VGSCheckoutMultiplexingConfig private constructor(
         environment,
         VGSCheckoutMultiplexingRouteConfig(token),
         formConfig,
+        isScreenshotsAllowed,
         isAnalyticsEnabled,
         false
     )
@@ -82,6 +92,7 @@ class VGSCheckoutMultiplexingConfig private constructor(
         parcel.writeParcelable(environment, flags)
         parcel.writeParcelable(routeConfig, flags)
         parcel.writeParcelable(formConfig, flags)
+        parcel.writeInt(if (isScreenshotsAllowed) 1 else 0)
         parcel.writeInt(if (isAnalyticsEnabled) 1 else 0)
     }
 

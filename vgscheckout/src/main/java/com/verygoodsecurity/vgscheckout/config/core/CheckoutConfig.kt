@@ -36,6 +36,11 @@ abstract class CheckoutConfig internal constructor() : Parcelable {
     abstract val formConfig: CheckoutFormConfig
 
     /**
+     * If true, checkout form will allow to make screenshots.
+     */
+    abstract val isScreenshotsAllowed: Boolean
+
+    /**
      * If true, checkout will send analytics events that helps to debug issues if any occurs.
      */
     abstract val isAnalyticsEnabled: Boolean

@@ -1,5 +1,7 @@
 package com.verygoodsecurity.vgscheckout.config
 
+import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutJWTParseException
+import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutJWTRestrictedRoleException
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Test
@@ -12,8 +14,6 @@ private const val JWT_WITH_TRANSFERS_ANY_ROLE =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MjkzNzAyMjUsImlhdCI6MTYyOTM2OTkyNSwicmVzb3VyY2VfYWNjZXNzIjp7Im11bHRpcGxleGluZy1hcHAtdG50eHh4eHh4eCI6eyJyb2xlcyI6WyJmaW5hbmNpYWwtaW5zdHJ1bWVudHM6d3JpdGUiLCJ0cmFuc2ZlcnM6YW55Il19fX0.4YTKip8FIZ2VFfPlKFXSw6LMqoOGe2ai8eOH8QXfSxU"
 private const val EMPTY_JWT = ""
 
-// TODO: Uncomment tests before release
-
 class CheckoutMultiplexingCredentialsValidatorTest {
 
     private val jwtValidator = CheckoutMultiplexingCredentialsValidator
@@ -24,19 +24,19 @@ class CheckoutMultiplexingCredentialsValidatorTest {
         jwtValidator.validateJWT(VALID_JWT)
     }
 
-    @Test(expected = IllegalArgumentException::class)
+    @Test(expected = VGSCheckoutJWTParseException::class)
     fun validateJWT_emptyJWT_exceptionThrown() {
         // Act
         jwtValidator.validateJWT(EMPTY_JWT)
     }
 
-    @Test(expected = IllegalArgumentException::class)
+    @Test(expected = VGSCheckoutJWTRestrictedRoleException::class)
     fun validateJWT_JWTWithTransfersWriteRole_exceptionThrown() {
         // Act
         jwtValidator.validateJWT(JWT_WITH_TRANSFERS_WRITE_ROLE)
     }
 
-    @Test(expected = IllegalArgumentException::class)
+    @Test(expected = VGSCheckoutJWTRestrictedRoleException::class)
     fun validateJWT_JWTWithTransfersAnyRole_exceptionThrown() {
         // Act
         jwtValidator.validateJWT(JWT_WITH_TRANSFERS_ANY_ROLE)
