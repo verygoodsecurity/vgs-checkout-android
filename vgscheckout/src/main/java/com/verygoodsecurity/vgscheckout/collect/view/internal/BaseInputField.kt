@@ -44,6 +44,7 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
                 FieldType.CARD_HOLDER_NAME -> PersonNameInputField(context)
                 FieldType.SSN -> SSNInputField(context)
                 FieldType.INFO -> InfoInputField(context)
+                FieldType.COUNTRY -> CountryInputField(context)
             }
             field.vgsParent = parent
             return field

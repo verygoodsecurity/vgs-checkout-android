@@ -12,7 +12,6 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.LinearLayoutCompat
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textview.MaterialTextView
 import com.verygoodsecurity.vgscheckout.R
@@ -25,7 +24,6 @@ import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSRequest
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
 import com.verygoodsecurity.vgscheckout.collect.view.card.validation.rules.VGSInfoRule
-import com.verygoodsecurity.vgscheckout.collect.view.core.serializers.CountryNameToIsoSerializer
 import com.verygoodsecurity.vgscheckout.collect.widget.*
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.config.networking.core.VGSCheckoutHostnamePolicy
@@ -42,7 +40,6 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.VGSChecko
 import com.verygoodsecurity.vgscheckout.config.ui.view.core.VGSCheckoutFieldVisibility
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.util.CollectProvider
-import com.verygoodsecurity.vgscheckout.util.country.CountriesHelper
 import com.verygoodsecurity.vgscheckout.util.country.model.Country
 import com.verygoodsecurity.vgscheckout.util.country.model.PostalAddressType
 import com.verygoodsecurity.vgscheckout.util.extension.*
@@ -76,7 +73,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> :
     private val billingAddressMtv: MaterialTextView by lazy { findViewById(R.id.mtvBillingAddressTitle) }
     private val billingAddressLL: LinearLayoutCompat by lazy { findViewById(R.id.llBillingAddress) }
     private val countryTil: VGSTextInputLayout by lazy { findViewById(R.id.vgsTilCountry) }
-    private val countryEt: VGSEditText by lazy { findViewById(R.id.vgsEtCountry) }
+    private val countryEt: VGSCountryEditText by lazy { findViewById(R.id.vgsEtCountry) }
     private val addressTil: VGSTextInputLayout by lazy { findViewById(R.id.vgsTilAddress) }
     private val addressEt: VGSEditText by lazy { findViewById(R.id.vgsEtAddress) }
     private val optionalAddressTil: VGSTextInputLayout by lazy { findViewById(R.id.vgsTilAddressOptional) }
@@ -93,8 +90,6 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> :
             .setAllowableMinLength(BILLING_ADDRESS_MIN_CHARS_COUNT)
             .build()
     }
-
-    private var selectedCountry: Country = CountriesHelper.getCountry(CountriesHelper.ISO.USA)
 
     private val saveCardOnDoneImeOption = object : InputFieldView.OnEditorActionListener {
 
@@ -223,27 +218,24 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> :
             return
         }
         with(config.formConfig.addressOptions) {
-            initCountryView(countryOptions)
             initAddressView(addressOptions)
             initOptionalAddressView(optionalAddressOptions)
             initCityView(cityOptions)
             initPostalAddressView(postalAddressOptions)
+            initCountryView(countryOptions)
         }
     }
 
     private fun initCountryView(options: VGSCheckoutCountryOptions) {
         countryEt.setFieldName(options.fieldName)
-        countryEt.addRule(billingAddressValidationRule)
-        countryEt.isFocusable = false
-        countryEt.setOnClickListener { showCountrySelectionDialog() }
-        countryEt.addOnTextChangeListener(this)
-        countryEt.setSerializer(CountryNameToIsoSerializer())
+        countryEt.onCountrySelectedListener =
+            object : VGSCountryEditText.OnCountrySelectedListener {
+                override fun onCountrySelected(country: Country) {
+                    updatePostalAddressView(country)
+                    updateCityView(country)
+                }
+            }
         collect.bindView(countryEt)
-        updateCountryView()
-    }
-
-    private fun updateCountryView() {
-        countryEt.setText(selectedCountry.name)
     }
 
     private fun initAddressView(options: VGSCheckoutAddressOptions) {
@@ -263,13 +255,12 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> :
         cityEt.setFieldName(options.fieldName)
         cityEt.addRule(billingAddressValidationRule)
         cityEt.addOnTextChangeListener(this)
-        cityEt.setOnEditorActionListener(saveCardOnDoneImeOption)
         collect.bindView(cityEt)
-        updateCityView()
+        updateCityView(countryEt.selectedCountry)
     }
 
-    private fun updateCityView() {
-        if (selectedCountry.postalAddressType == PostalAddressType.NOTHING) {
+    private fun updateCityView(country: Country) {
+        if (country.postalAddressType == PostalAddressType.NOTHING) {
             cityEt.setImeOptions(EditorInfo.IME_ACTION_DONE)
         } else {
             cityEt.setImeOptions(EditorInfo.IME_ACTION_NEXT)
@@ -281,10 +272,10 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> :
         postalAddressEt.addOnTextChangeListener(this)
         postalAddressEt.setOnEditorActionListener(saveCardOnDoneImeOption)
         collect.bindView(postalAddressEt)
-        updatePostalAddressView()
+        updatePostalAddressView(countryEt.selectedCountry)
     }
 
-    private fun updatePostalAddressView() {
+    private fun updatePostalAddressView(selectedCountry: Country) {
         if (selectedCountry.postalAddressType == PostalAddressType.NOTHING) {
             postalAddressEt.setText(null)
             postalAddressEt.setIsRequired(false)
@@ -292,34 +283,41 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> :
         } else {
             postalAddressEt.setIsRequired(true)
             postalAddressTil.visibility = View.VISIBLE
-            postalAddressTil.setHint(getString(getPostalAddressHint()))
+            postalAddressTil.setHint(getString(getPostalAddressHint(selectedCountry)))
             postalAddressTil.setError(null)
-            postalAddressEt.addRule(getPostalAddressValidationRule())
+            postalAddressEt.addRule(getPostalAddressValidationRule(selectedCountry))
             postalAddressEt.resetText()
         }
     }
 
     @StringRes
-    private fun getPostalAddressHint() = when (selectedCountry.postalAddressType) {
-        PostalAddressType.ZIP -> R.string.vgs_checkout_address_info_zip_hint
-        else -> R.string.vgs_checkout_address_info_postal_code_hint
-    }
+    private fun getPostalAddressHint(selectedCountry: Country) =
+        when (selectedCountry.postalAddressType) {
+            PostalAddressType.ZIP -> R.string.vgs_checkout_address_info_zip_hint
+            PostalAddressType.POSTAL -> R.string.vgs_checkout_address_info_postal_code_hint
+            PostalAddressType.NOTHING -> R.string.empty
+        }
 
     @StringRes
-    private fun getPostalAddressEmptyErrorMessage() = when (selectedCountry.postalAddressType) {
-        PostalAddressType.ZIP -> R.string.vgs_checkout_address_info_zipcode_empty_error
-        else -> R.string.vgs_checkout_address_info_postal_code_empty_error
-    }
+    private fun getPostalAddressEmptyErrorMessage(selectedCountry: Country) =
+        when (selectedCountry.postalAddressType) {
+            PostalAddressType.ZIP -> R.string.vgs_checkout_address_info_zipcode_empty_error
+            PostalAddressType.POSTAL -> R.string.vgs_checkout_address_info_postal_code_empty_error
+            PostalAddressType.NOTHING -> R.string.empty
+        }
 
     @StringRes
-    private fun getPostalAddressInvalidErrorMessage() = when (selectedCountry.postalAddressType) {
-        PostalAddressType.ZIP -> R.string.vgs_checkout_address_info_zipcode_invalid_error
-        else -> R.string.vgs_checkout_address_info_postal_code_invalid_error
-    }
+    private fun getPostalAddressInvalidErrorMessage(selectedCountry: Country) =
+        when (selectedCountry.postalAddressType) {
+            PostalAddressType.ZIP -> R.string.vgs_checkout_address_info_zipcode_invalid_error
+            PostalAddressType.POSTAL -> R.string.vgs_checkout_address_info_postal_code_invalid_error
+            PostalAddressType.NOTHING -> R.string.empty
+        }
 
-    private fun getPostalAddressValidationRule() = VGSInfoRule.ValidationBuilder()
-        .setRegex(selectedCountry.postalAddressRegex)
-        .build()
+    private fun getPostalAddressValidationRule(selectedCountry: Country) =
+        VGSInfoRule.ValidationBuilder()
+            .setRegex(selectedCountry.postalAddressRegex)
+            .build()
 
     private fun initSaveButton() {
         saveCardButton.setOnClickListener { saveCard() }
@@ -419,8 +417,8 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> :
         val postalAddressValid = validate(
             postalAddressEt,
             postalAddressTil,
-            getPostalAddressEmptyErrorMessage(),
-            getPostalAddressInvalidErrorMessage()
+            getPostalAddressEmptyErrorMessage(countryEt.selectedCountry),
+            getPostalAddressInvalidErrorMessage(countryEt.selectedCountry)
         )
         result.addIf(!postalAddressValid, postalAddressEt.getAnalyticsName())
 
@@ -467,29 +465,6 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> :
                 icon = null
             }
         }
-    }
-
-    private fun showCountrySelectionDialog() {
-        val countries = CountriesHelper.countries
-        val countryNames = countries.map { it.name }.toTypedArray()
-        val selectedIndex = countries.indexOf(selectedCountry)
-        var selected = -1
-        MaterialAlertDialogBuilder(this)
-            .setTitle(R.string.vgs_checkout_select_country_dialog_title)
-            .setSingleChoiceItems(countryNames, selectedIndex) { _, which -> selected = which }
-            .setNegativeButton(
-                R.string.vgs_checkout_select_country_dialog_negative_button_title,
-                null
-            )
-            .setPositiveButton(R.string.vgs_checkout_select_country_dialog_positive_button_title) { _, _ ->
-                countries.getOrNull(selected)?.let {
-                    selectedCountry = it
-                    updateCountryView()
-                    updatePostalAddressView()
-                    updateCityView()
-                }
-            }
-            .show()
     }
 
     private fun showNetworkConnectionErrorSnackBar() {

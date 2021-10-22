@@ -81,4 +81,5 @@
 
     <string name="vgs_checkout_card_number_digits">0123456789</string>
     <string name="vgs_checkout_validation_regex_person">^[a-zA-Z0-9 ,\'.-]+$</string>
+    <string name="empty"> </string>
 </resources>
