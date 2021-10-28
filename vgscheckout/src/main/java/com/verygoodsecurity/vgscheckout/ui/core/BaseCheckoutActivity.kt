@@ -218,16 +218,17 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> :
             return
         }
         with(config.formConfig.addressOptions) {
+            initCountryView(countryOptions)
             initAddressView(addressOptions)
             initOptionalAddressView(optionalAddressOptions)
             initCityView(cityOptions)
             initPostalAddressView(postalAddressOptions)
-            initCountryView(countryOptions)
         }
     }
 
     private fun initCountryView(options: VGSCheckoutCountryOptions) {
         countryEt.setFieldName(options.fieldName)
+        countryEt.setSupportedCountries(options.supportedCountries)
         countryEt.onCountrySelectedListener =
             object : VGSCountryEditText.OnCountrySelectedListener {
                 override fun onCountrySelected(country: Country) {
