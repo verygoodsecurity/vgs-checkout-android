@@ -55,21 +55,12 @@ jobs:
           name: Test with Firebase Test Lab
           command: >
             sudo gcloud firebase test android run \
-              --app custom-example/build/outputs/apk/debug/custom-example-debug.apk \
-              --test custom-example/build/outputs/apk/androidTest/debug/custom-example-debug-androidTest.apk \
-              --device model=lv0,version=23,locale=en,orientation=portrait \
-              --device model=capricorn,version=26,locale=en,orientation=portrait \
+              --app vgscheckout/build/outputs/apk/debug/vgscheckout-debug.apk \
+              --test vgscheckout/build/outputs/apk/androidTest/debug/vgscheckout-debug-androidTest.apk \
+              --device model=zeroflte,version=23,locale=en,orientation=portrait \
+              --device model=htc_ocedugl,version=26,locale=en,orientation=portrait \
               --device model=tissot_sprout,version=28,locale=en,orientation=portrait \
               --device model=flame,version=30,locale=en,orientation=portrait \
-#          command: >
-#            sudo gcloud firebase test android run \
-#              --app app/build/outputs/apk/debug/app-debug.apk \
-#              --test app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk \
-#              --device model=lv0,version=23,locale=en,orientation=portrait \
-#              --device model=capricorn,version=26,locale=en,orientation=portrait \
-#              --device model=tissot_sprout,version=28,locale=en,orientation=portrait \
-#              --device model=flame,version=30,locale=en,orientation=portrait \
-
 workflows:
   main:
     jobs:
