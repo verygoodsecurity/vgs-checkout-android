@@ -37,8 +37,41 @@ jobs:
           root: ~/code
           paths:
             - custom-example
+  "Run_UI_Test":
+    <<: *environment
+    steps:
+      - attach_workspace:
+          at: ~/code
+      - run:
+          name: Check if release branch
+          command: |
+            if [[ $CIRCLE_BRANCH != *"release/"* ]] && [ $CIRCLE_BRANCH != master* ]; then
+              echo "Skipped, reason: UI tests should be running only on release branches or master!"
+              circleci-agent step halt
+            fi
+      - run:
+          name: Store Google Service Account
+          command: echo $GCLOUD_SERVICE_KEY | base64 -di > ${HOME}/gcloud-service-key.json
+      - run:
+          name: Authorize gcloud and set config defaults
+          command: |
+            sudo gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
+            sudo gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
+      - run:
+          name: Test with Firebase Test Lab
+          command: >
+            sudo gcloud firebase test android run \
+              --app app/build/outputs/apk/debug/app-debug.apk \
+              --test app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk \
+              --device model=lv0,version=23,locale=en,orientation=portrait \
+              --device model=capricorn,version=26,locale=en,orientation=portrait \
+              --device model=tissot_sprout,version=28,locale=en,orientation=portrait \
+              --device model=flame,version=30,locale=en,orientation=portrait \
 
 workflows:
   main:
     jobs:
       - "Run_Unit_Test_And_Build"
+      - "Run_UI_Test":
+          requires:
+            - "Run_Unit_Test_And_Build"
