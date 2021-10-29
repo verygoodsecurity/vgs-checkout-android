@@ -54,6 +54,7 @@ class MultiplexingActivityResultTest {
     @Before
     fun prepareDevice() {
         device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
+        device.setOrientationNatural()
     }
 
     @Test(timeout = 60000L)
