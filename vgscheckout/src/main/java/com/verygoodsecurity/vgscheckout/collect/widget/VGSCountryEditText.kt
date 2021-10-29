@@ -21,25 +21,23 @@ internal class VGSCountryEditText @JvmOverloads constructor(
 
     private var countries: List<Country> = CountriesHelper.countries
 
-    private var _selectedCountry: Country = CountriesHelper.getCountry(CountriesHelper.ISO.USA)
-    val selectedCountry: Country get() = _selectedCountry
+    var selectedCountry: Country = CountriesHelper.getCountry(CountriesHelper.ISO.USA)
+        private set(value) {
+            field = value
+            onCountrySelectedListener?.onCountrySelected(value)
+            setText(value.name)
+        }
 
-    internal var onCountrySelectedListener: OnCountrySelectedListener? = null
-
-    private val billingAddressValidationRule: VGSInfoRule by lazy {
-        VGSInfoRule.ValidationBuilder()
-            .setAllowableMinLength(BILLING_ADDRESS_MIN_CHARS_COUNT)
-            .build()
-    }
-
-    interface OnCountrySelectedListener {
-        fun onCountrySelected(country: Country)
-    }
+    var onCountrySelectedListener: OnCountrySelectedListener? = null
 
     init {
         setupViewType(FieldType.COUNTRY)
 
-        applyValidationRule(billingAddressValidationRule)
+        applyValidationRule(
+            VGSInfoRule.ValidationBuilder()
+                .setAllowableMinLength(BILLING_ADDRESS_MIN_CHARS_COUNT)
+                .build()
+        )
         isFocusable = false
         setOnClickListener { showCountrySelectionDialog() }
         setFieldDataSerializer(CountryNameToIsoSerializer())
@@ -49,35 +47,35 @@ internal class VGSCountryEditText @JvmOverloads constructor(
     override fun onSaveInstanceState(): Parcelable {
         return Bundle().apply {
             putParcelable(INSTANCE_STATE, super.onSaveInstanceState())
-            putParcelable(COUNTRY, _selectedCountry)
+            putParcelable(COUNTRY, selectedCountry)
         }
     }
 
     override fun onRestoreInstanceState(state: Parcelable?) {
         if (state is Bundle) {
-            _selectedCountry = state.getParcelable(COUNTRY)!!
+            selectedCountry = state.getParcelable(COUNTRY)!!
             super.onRestoreInstanceState(state.getParcelable(INSTANCE_STATE))
         } else {
             super.onRestoreInstanceState(state)
         }
     }
 
-    fun setSupportedCountries(iso: List<String>) {
-        val countries = CountriesHelper.getCountries(iso)
+    fun setCountries(codes: List<String>) {
+        if (codes.isEmpty()) return
+        val countries = CountriesHelper.getCountries(codes)
         val invalidCountries = countries.filter { !it.isValid() }
         val validCountries = countries - invalidCountries
         invalidCountries.takeIf { it.isNotEmpty() }?.let { logInvalidCountryCodes(it) }
         validCountries.takeIf { it.isNotEmpty() }?.let {
             this.countries = it
-            this._selectedCountry = it.first()
+            this.selectedCountry = it.first()
         }
     }
 
-    fun setSelectedCountry(country: Country) {
+    fun setSelectedCountry(code: String) {
+        val country = CountriesHelper.getCountry(code)
         if (country.isValid() && countries.contains(country)) {
-            _selectedCountry = country
-            onCountrySelectedListener?.onCountrySelected(country)
-            setText(country.name)
+            selectedCountry = country
         }
     }
 
@@ -99,9 +97,7 @@ internal class VGSCountryEditText @JvmOverloads constructor(
                     null
                 )
                 .setPositiveButton(R.string.vgs_checkout_select_country_dialog_positive_button_title) { _, _ ->
-                    countries.getOrNull(selected)?.let {
-                        setSelectedCountry(it)
-                    }
+                    countries.getOrNull(selected)?.let { selectedCountry = it }
                 }.create()
                 .also { it.show() }
         }
@@ -111,5 +107,9 @@ internal class VGSCountryEditText @JvmOverloads constructor(
         private const val BILLING_ADDRESS_MIN_CHARS_COUNT = 1
         private const val INSTANCE_STATE = "on_save_instance_state"
         private const val COUNTRY = "billing_country"
+    }
+
+    interface OnCountrySelectedListener {
+        fun onCountrySelected(country: Country)
     }
 }

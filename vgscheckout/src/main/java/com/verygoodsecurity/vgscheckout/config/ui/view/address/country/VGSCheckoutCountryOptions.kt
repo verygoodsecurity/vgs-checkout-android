@@ -11,5 +11,5 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 class VGSCheckoutCountryOptions @JvmOverloads constructor(
     override val fieldName: String = "",
-    val supportedCountries: List<String> = emptyList()
+    val validCountries: List<String> = emptyList()
 ) : ViewOptions()

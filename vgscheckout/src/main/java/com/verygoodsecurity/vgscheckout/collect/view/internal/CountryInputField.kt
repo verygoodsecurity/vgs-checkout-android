@@ -5,7 +5,6 @@ import android.os.Build
 import android.view.autofill.AutofillValue
 import androidx.annotation.RequiresApi
 import com.verygoodsecurity.vgscheckout.collect.widget.VGSCountryEditText
-import com.verygoodsecurity.vgscheckout.util.country.CountriesHelper
 
 internal class CountryInputField(context: Context) : InfoInputField(context) {
 
@@ -24,7 +23,7 @@ internal class CountryInputField(context: Context) : InfoInputField(context) {
     @RequiresApi(Build.VERSION_CODES.O)
     private fun autofillCountry(value: AutofillValue?) {
         value?.textValue?.let {
-            (vgsParent as? VGSCountryEditText)?.setSelectedCountry(CountriesHelper.getCountry(it.toString()))
+            (vgsParent as? VGSCountryEditText)?.setSelectedCountry(it.toString())
         }
     }
 }

@@ -228,7 +228,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> :
 
     private fun initCountryView(options: VGSCheckoutCountryOptions) {
         countryEt.setFieldName(options.fieldName)
-        countryEt.setSupportedCountries(options.supportedCountries)
+        countryEt.setCountries(options.validCountries)
         countryEt.onCountrySelectedListener =
             object : VGSCountryEditText.OnCountrySelectedListener {
                 override fun onCountrySelected(country: Country) {
@@ -276,17 +276,17 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> :
         updatePostalAddressView(countryEt.selectedCountry)
     }
 
-    private fun updatePostalAddressView(selectedCountry: Country) {
-        if (selectedCountry.postalAddressType == PostalAddressType.NOTHING) {
+    private fun updatePostalAddressView(country: Country) {
+        if (country.postalAddressType == PostalAddressType.NOTHING) {
             postalAddressEt.setText(null)
             postalAddressEt.setIsRequired(false)
             postalAddressTil.visibility = View.GONE
         } else {
             postalAddressEt.setIsRequired(true)
             postalAddressTil.visibility = View.VISIBLE
-            postalAddressTil.setHint(getString(getPostalAddressHint(selectedCountry)))
+            postalAddressTil.setHint(getString(getPostalAddressHint(country)))
             postalAddressTil.setError(null)
-            postalAddressEt.addRule(getPostalAddressValidationRule(selectedCountry))
+            postalAddressEt.addRule(getPostalAddressValidationRule(country))
             postalAddressEt.resetText()
         }
     }
