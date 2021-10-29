@@ -1,6 +1,5 @@
 package com.verygoodsecurity.vgscheckout.config.ui.view.address.city
 
-import com.verygoodsecurity.vgscheckout.config.ui.view.core.ViewOptions
 import kotlinx.parcelize.Parcelize
 
 /**
@@ -11,7 +10,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 class VGSCheckoutMultiplexingCityOptions private constructor(
     override val fieldName: String,
-) : ViewOptions() {
+) : CityOptions() {
 
     /**
      * Public constructor.

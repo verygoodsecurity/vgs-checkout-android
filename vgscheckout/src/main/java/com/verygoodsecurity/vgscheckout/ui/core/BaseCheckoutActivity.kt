@@ -28,11 +28,11 @@ import com.verygoodsecurity.vgscheckout.collect.widget.*
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.config.networking.core.VGSCheckoutHostnamePolicy
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillingAddressVisibility
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.VGSCheckoutAddressOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.VGSCheckoutOptionalAddressOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.city.VGSCheckoutCityOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.code.VGSCheckoutPostalAddressOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.country.VGSCheckoutCountryOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.AddressOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.OptionalAddressOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.city.CityOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.code.PostalAddressOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.country.CountryOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.VGSCheckoutCardHolderOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.VGSCheckoutCardNumberOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.VGSCheckoutCVCOptions
@@ -226,7 +226,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> :
         }
     }
 
-    private fun initCountryView(options: VGSCheckoutCountryOptions) {
+    private fun initCountryView(options: CountryOptions) {
         countryEt.setFieldName(options.fieldName)
         countryEt.setCountries(options.validCountries)
         countryEt.onCountrySelectedListener =
@@ -239,20 +239,20 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> :
         collect.bindView(countryEt)
     }
 
-    private fun initAddressView(options: VGSCheckoutAddressOptions) {
+    private fun initAddressView(options: AddressOptions) {
         addressEt.setFieldName(options.fieldName)
         addressEt.addRule(billingAddressValidationRule)
         addressEt.addOnTextChangeListener(this)
         collect.bindView(addressEt)
     }
 
-    private fun initOptionalAddressView(options: VGSCheckoutOptionalAddressOptions) {
+    private fun initOptionalAddressView(options: OptionalAddressOptions) {
         optionalAddressEt.setFieldName(options.fieldName)
         optionalAddressEt.addRule(billingAddressValidationRule)
         collect.bindView(optionalAddressEt)
     }
 
-    private fun initCityView(options: VGSCheckoutCityOptions) {
+    private fun initCityView(options: CityOptions) {
         cityEt.setFieldName(options.fieldName)
         cityEt.addRule(billingAddressValidationRule)
         cityEt.addOnTextChangeListener(this)
@@ -268,7 +268,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> :
         }
     }
 
-    private fun initPostalAddressView(options: VGSCheckoutPostalAddressOptions) {
+    private fun initPostalAddressView(options: PostalAddressOptions) {
         postalAddressEt.setFieldName(options.fieldName)
         postalAddressEt.addOnTextChangeListener(this)
         postalAddressEt.setOnEditorActionListener(saveCardOnDoneImeOption)
@@ -430,7 +430,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> :
         target: InputFieldView,
         parent: VGSTextInputLayout,
         @StringRes emptyError: Int,
-        @StringRes invalidError: Int? = null
+        @StringRes invalidError: Int? = null,
     ): Boolean = when {
         target.isRequired() && target.getFieldState()?.isEmpty == true -> {
             parent.setError(emptyError)
