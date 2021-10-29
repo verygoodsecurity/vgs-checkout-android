@@ -55,8 +55,8 @@ jobs:
           name: Test with Firebase Test Lab
           command: >
             sudo gcloud firebase test android run \
-              --app app/build/outputs/apk/debug/custom-example-debug.apk \
-              --test app/build/outputs/apk/androidTest/debug/custom-example-debug-androidTest.apk \
+              --app custom-example/build/outputs/apk/debug/custom-example-debug.apk \
+              --test custom-example/build/outputs/apk/androidTest/debug/custom-example-debug-androidTest.apk \
               --device model=lv0,version=23,locale=en,orientation=portrait \
               --device model=capricorn,version=26,locale=en,orientation=portrait \
               --device model=tissot_sprout,version=28,locale=en,orientation=portrait \
