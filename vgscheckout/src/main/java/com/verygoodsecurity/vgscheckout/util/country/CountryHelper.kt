@@ -17,7 +17,7 @@ internal object CountriesHelper {
         getPostalAddressRegex(iso)
     )
 
-    fun getCountries(iso: List<String>) = iso.map { getCountry(it) }
+    fun getCountries(isoCodes: List<String>) = isoCodes.map { getCountry(it) }
 
     private fun getPostalAddressType(iso: String) = when {
         iso == ISO.USA -> PostalAddressType.ZIP
