@@ -56,7 +56,7 @@ jobs:
           command: >
             sudo gcloud firebase test android run \
               --type instrumentation \
-              --app custom-example/build/outputs/apk/debug/custom-example-debug.apk \
+              --app vgscheckout/build/outputs/apk/debug/vgscheckout-debug.apk \
               --test vgscheckout/build/outputs/apk/androidTest/debug/vgscheckout-debug-androidTest.apk \
               --device model=zeroflte,version=23,locale=en,orientation=portrait \
               --device model=htc_ocedugl,version=26,locale=en,orientation=portrait \
