@@ -14,10 +14,8 @@ import com.verygoodsecurity.vgscheckout.collect.core.model.network.*
 import com.verygoodsecurity.vgscheckout.collect.core.storage.InternalStorage
 import com.verygoodsecurity.vgscheckout.collect.core.storage.OnFieldStateChangeListener
 import com.verygoodsecurity.vgscheckout.collect.core.storage.content.file.TemporaryFileStorage
-import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
 import com.verygoodsecurity.vgscheckout.collect.view.card.FieldType
 import com.verygoodsecurity.vgscheckout.collect.view.internal.BaseInputField
-import com.verygoodsecurity.vgscheckout.collect.widget.*
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -29,6 +27,7 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.Shadows
 import org.robolectric.android.controller.ActivityController
 import org.robolectric.annotation.Config
+import org.mockito.ArgumentCaptor
 
 @RunWith(RobolectricTestRunner::class)
 @Config(application = TestApplication::class)
@@ -92,7 +91,7 @@ class VGSCollectTest {
 
     @Test
     fun test_bind_view() {
-        val view = applyEditText(FieldType.INFO)
+        val view = activity.applyEditText(collect, FieldType.INFO)
 
         verify(view, times(1)).getFieldType()
         verify(view).getFieldName()
@@ -101,7 +100,7 @@ class VGSCollectTest {
 
     @Test
     fun test_unbind_view() {
-        val view = applyEditText(FieldType.INFO)
+        val view = activity.applyEditText(collect, FieldType.INFO, "data")
         assertEquals(1, collect.getAllStates().size)
         assertTrue(view.statePreparer.getView() is BaseInputField)
         assertNotNull((view.statePreparer.getView() as BaseInputField).stateListener)
@@ -132,18 +131,18 @@ class VGSCollectTest {
 
     @Test
     fun test_get_all_states() {
-        applyEditText(FieldType.CVC)
-        applyEditText(FieldType.CARD_NUMBER)
+        activity.applyEditText(collect, FieldType.CVC, "cvc", "123")
+        activity.applyEditText(collect, FieldType.CARD_NUMBER, "cardNumber", "4111111111111111")
 
         assertEquals(2, collect.getAllStates().size)
     }
 
     @Test
     fun test_get_all_states_4_fields() {
-        applyEditText(FieldType.CVC)
-        applyEditText(FieldType.CARD_NUMBER)
-        applyEditText(FieldType.CARD_EXPIRATION_DATE)
-        applyEditText(FieldType.CARD_HOLDER_NAME)
+        activity.applyEditText(collect, FieldType.CVC, "cvc")
+        activity.applyEditText(collect, FieldType.CARD_NUMBER, "cardNumber")
+        activity.applyEditText(collect, FieldType.CARD_EXPIRATION_DATE, "date")
+        activity.applyEditText(collect, FieldType.CARD_HOLDER_NAME, "holder")
 
         assertEquals(4, collect.getAllStates().size)
     }
@@ -421,55 +420,98 @@ class VGSCollectTest {
         verify(storage).getFileProvider()
     }
 
+    @Test
+    fun test_async_with_all_fields() {
+        val activityShadow = Shadows.shadowOf(activity)
+        activityShadow.grantPermissions(
+            Manifest.permission.INTERNET,
+            Manifest.permission.ACCESS_NETWORK_STATE
+        )
+
+        collect.bindView(activity.applyEditText(collect, FieldType.CVC, "card.cvc", "123"))
+        collect.bindView(
+            activity.applyEditText(
+                collect,
+                FieldType.CARD_NUMBER,
+                "card.number",
+                "4111111111111111"
+            )
+        )
+        collect.bindView(
+            activity.applyEditText(
+                collect,
+                FieldType.CARD_HOLDER_NAME,
+                "card.name",
+                "holder"
+            )
+        )
+        collect.bindView(
+            activity.applyEditText(
+                collect,
+                FieldType.CARD_EXPIRATION_DATE,
+                "card.expDate",
+                "12/2040"
+            )
+        )
+        collect.bindView(
+            activity.applyEditText(
+                collect,
+                FieldType.COUNTRY,
+                "card.billing_address.country",
+                "Canada"
+            )
+        )
+        collect.bindView(
+            activity.applyEditText(
+                collect,
+                FieldType.INFO,
+                "card.billing_address.address1",
+                "address 1"
+            )
+        )
+        collect.bindView(
+            activity.applyEditText(
+                collect,
+                FieldType.INFO,
+                "card.billing_address.postal_code",
+                "12345"
+            )
+        )
+        collect.bindView(
+            activity.applyEditText(
+                collect,
+                FieldType.INFO,
+                "card.billing_address.city",
+                "city"
+            )
+        )
+
+        val client = applyApiClient()
+
+        collect.asyncSubmit("/path", HTTPMethod.POST)
+
+        val argument: ArgumentCaptor<NetworkRequest> = ArgumentCaptor.forClass(
+            NetworkRequest::class.java
+        )
+
+        verify(client, after(500)).enqueue(
+            capture(argument),
+            any()
+        )
+
+        assertEquals(
+            "{\"card\":{\"cvc\":\"123\",\"number\":\"4111111111111111\",\"name\":\"holder\",\"expDate\":\"12\\/2040\",\"billing_address\":{\"country\":\"CA\",\"address1\":\"address 1\",\"postal_code\":\"12345\",\"city\":\"city\"}}}",
+            argument.value.customData
+        );
+    }
+
     private fun applyStorage(): InternalStorage {
-        val storage = spy( InternalStorage(activity) )
+        val storage = spy(InternalStorage(activity))
         collect.setStorage(storage)
 
         return storage
     }
 
-    private fun applyEditText(typeField: FieldType):InputFieldView {
-        val view = when(typeField) {
-            FieldType.CARD_NUMBER -> createCardNumber()
-            FieldType.CVC -> createCardCVC()
-            FieldType.CARD_EXPIRATION_DATE -> createCardExpDate()
-            FieldType.CARD_HOLDER_NAME -> createCardHolder()
-            else -> spy( VGSEditText(activity) ).apply {
-                setFieldName("createInfoField")
-            }
-        }
-
-        (view.statePreparer.getView() as? BaseInputField)?.prepareFieldTypeConnection()
-
-        collect.bindView(view)
-
-
-        return view
-    }
-
-    private fun createCardNumber():VGSCardNumberEditText {
-        return  spy( VGSCardNumberEditText(activity) ).apply {
-            setFieldName("createCardNumber")
-        }
-    }
-
-    private fun createCardCVC():CardVerificationCodeEditText {
-        return  spy( CardVerificationCodeEditText(activity) ).apply {
-            setFieldName("createCardCVC")
-        }
-    }
-
-    private fun createCardHolder():PersonNameEditText {
-        return  spy( PersonNameEditText(activity) ).apply {
-            setFieldName("createCardHolder")
-        }
-    }
-
-    private fun createCardExpDate():ExpirationDateEditText {
-        return  spy( ExpirationDateEditText(activity) ).apply {
-            setFieldName("createCardExpDate")
-        }
-    }
 
     private fun applyResponseListener(): VgsCollectResponseListener {
         val listener = mock(VgsCollectResponseListener::class.java)

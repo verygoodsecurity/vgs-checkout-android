@@ -983,7 +983,7 @@ internal abstract class InputFieldView @JvmOverloads constructor(
     }
 
     protected fun setFieldDataSerializer(serializer: FieldDataSerializer<*, *>?) {
-        if (fieldType == FieldType.INFO) {
+        if (fieldType == FieldType.INFO || fieldType == FieldType.COUNTRY) {
             (inputField as? InfoInputField)?.serializer = serializer
         }
     }
