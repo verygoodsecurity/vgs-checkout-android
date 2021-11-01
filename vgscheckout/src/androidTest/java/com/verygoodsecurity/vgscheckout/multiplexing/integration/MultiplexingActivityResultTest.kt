@@ -12,7 +12,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
 import com.verygoodsecurity.vgscheckout.Constants
-import com.verygoodsecurity.vgscheckout.Constants.CORRECT_TOKEN
+import com.verygoodsecurity.vgscheckout.Constants.VALID_JWT_TOKEN
 import com.verygoodsecurity.vgscheckout.Constants.VAULT_ID
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingConfig
@@ -42,7 +42,7 @@ class MultiplexingActivityResultTest {
             EXTRA_KEY_ARGS,
             CheckoutResultContract.Args(
                 VGSCheckoutMultiplexingConfig(
-                    CORRECT_TOKEN,
+                    VALID_JWT_TOKEN,
                     VAULT_ID,
                 )
             )

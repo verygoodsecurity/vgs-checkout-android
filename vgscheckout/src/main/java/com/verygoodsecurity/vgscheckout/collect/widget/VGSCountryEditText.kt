@@ -60,6 +60,8 @@ internal class VGSCountryEditText @JvmOverloads constructor(
         }
     }
 
+    fun getCountries() = countries
+
     fun setCountries(codes: List<String>) {
         if (codes.isEmpty()) return
         val countries = CountriesHelper.getCountries(codes)

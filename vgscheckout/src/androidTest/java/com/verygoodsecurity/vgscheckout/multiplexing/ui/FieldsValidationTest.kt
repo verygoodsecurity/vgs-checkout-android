@@ -11,7 +11,7 @@ import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.verygoodsecurity.vgscheckout.Constants.CORRECT_TOKEN
+import com.verygoodsecurity.vgscheckout.Constants.VALID_JWT_TOKEN
 import com.verygoodsecurity.vgscheckout.Constants.INVALID_CARD_NUMBER
 import com.verygoodsecurity.vgscheckout.Constants.INVALID_EXP_DATE
 import com.verygoodsecurity.vgscheckout.Constants.INVALID_POSTAL_ADDRESS
@@ -50,7 +50,7 @@ class FieldsValidationTest {
             EXTRA_KEY_ARGS,
             CheckoutResultContract.Args(
                 VGSCheckoutMultiplexingConfig(
-                    CORRECT_TOKEN,
+                    VALID_JWT_TOKEN,
                     VAULT_ID,
                 )
             )
