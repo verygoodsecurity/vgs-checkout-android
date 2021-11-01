@@ -36,8 +36,8 @@ class VGSCheckoutMultiplexingBillingAddressOptions private constructor(
      */
     @JvmOverloads
     constructor(
-        countryOptions: VGSCheckoutMultiplexingCountryOptions = VGSCheckoutMultiplexingCountryOptions(),
         visibility: VGSCheckoutBillingAddressVisibility = VGSCheckoutBillingAddressVisibility.VISIBLE,
+        countryOptions: VGSCheckoutMultiplexingCountryOptions = VGSCheckoutMultiplexingCountryOptions(),
     ) : this(
         countryOptions,
         VGSCheckoutMultiplexingCityOptions(),
