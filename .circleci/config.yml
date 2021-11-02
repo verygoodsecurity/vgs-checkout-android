@@ -27,10 +27,21 @@ jobs:
       - run:
           name: Generate apk
           command: ./gradlew assembleDebug vgscheckout:assembleDebug vgscheckout:assembleAndroidTest
-      - persist_to_workspace:
-          root: ~/code
-          paths:
-            - custom-example
+      - run:
+          name: Check if release branch
+          command: |
+            if [[ $CIRCLE_BRANCH != *"ANDROIDSDK-549"* ]] && [ $CIRCLE_BRANCH != master* ]; then
+              echo "Skipped, reason: UI tests should be running only on release branches or master!"
+              circleci-agent step halt
+            fi
+      - run:
+          name: Store Google Service Account
+          command: echo $GCLOUD_SERVICE_KEY | base64 -di > ${HOME}/gcloud-service-key.json
+      - run:
+          name: Authorize gcloud and set config defaults
+          command: |
+            sudo gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
+            sudo gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
   "Run_UI_Test":
     <<: *environment
     steps:
