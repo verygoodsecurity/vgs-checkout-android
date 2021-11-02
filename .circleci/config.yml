@@ -14,7 +14,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "custom-example/build.gradle" }}
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "vgscheckout/build.gradle" }}
       - run:
           name: Download Dependencies
           command: |
@@ -23,14 +23,14 @@ jobs:
       - save_cache:
           paths:
             - ~/.gradle
-          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "custom-example/build.gradle" }}
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "vgscheckout/build.gradle" }}
       - run:
           name: Generate apk
           command: ./gradlew assembleDebug assembleAndroidTest
       - persist_to_workspace:
           root: ~/code
           paths:
-            - custom-example
+            - vgscheckout
   "Run_UI_Test":
     <<: *environment
     steps:
@@ -55,7 +55,8 @@ jobs:
           name: Test with Firebase Test Lab
           command: >
             sudo gcloud firebase test android run \
-              --app custom-example/build/outputs/apk/debug/custom-example-debug.apk \
+              --app vgscheckout/build/outputs/apk/debug/vgscheckout-debug.apk \
+              --test vgscheckout/build/outputs/apk/androidTest/debug/vgscheckout-debug-androidTest.apk \
               --test vgscheckout/build/outputs/apk/androidTest/debug/vgscheckout-debug-androidTest.apk \
               --device model=flame,version=30,locale=en,orientation=portrait \
 workflows:
