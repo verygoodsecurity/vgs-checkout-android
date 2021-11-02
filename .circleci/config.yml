@@ -42,6 +42,13 @@ jobs:
           command: |
             sudo gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
             sudo gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
+      - run:
+          name: Test with Firebase Test Lab
+          command: >
+            sudo gcloud firebase test android run \
+              --app custom-example/build/outputs/apk/debug/custom-example-debug.apk \
+              --test vgscheckout/build/outputs/apk/androidTest/debug/vgscheckout-debug-androidTest.apk \
+              --device model=flame,version=30,locale=en,orientation=portrait \
   "Run_UI_Test":
     <<: *environment
     steps:
