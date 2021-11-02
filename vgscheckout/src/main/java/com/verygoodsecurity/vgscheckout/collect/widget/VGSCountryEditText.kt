@@ -66,12 +66,16 @@ internal class VGSCountryEditText @JvmOverloads constructor(
         if (codes.isEmpty()) return
         val countries = CountriesHelper.getCountries(codes)
         val invalidCountries = countries.filter { !it.isValid() }
-        val validCountries = countries - invalidCountries
-        invalidCountries.takeIf { it.isNotEmpty() }?.let { logInvalidCountryCodes(it) }
-        validCountries.takeIf { it.isNotEmpty() }?.let {
-            this.countries = it
-            this.selectedCountry = it.first()
+        if (invalidCountries.isNotEmpty()) {
+            logInvalidCountryCodes(invalidCountries)
         }
+        val validCountries = countries - invalidCountries
+        if (validCountries.isEmpty()) {
+            logNoValidCountries()
+            return
+        }
+        this.countries = validCountries
+        this.selectedCountry = validCountries.first()
     }
 
     fun setSelectedCountry(code: String) {
@@ -82,7 +86,16 @@ internal class VGSCountryEditText @JvmOverloads constructor(
     }
 
     private fun logInvalidCountryCodes(countries: List<Country>) {
-        VGSCheckoutLogger.debug(message = "TODO() ${countries.map { it.code }}")
+        VGSCheckoutLogger.debug(message = "Invalid country ISO Codes provided and will be ignored: ${countries.map { it.code }}")
+    }
+
+    private fun logNoValidCountries() {
+        VGSCheckoutLogger.debug(
+            message = """
+                No valid country ISO Codes provided. All countries will be used.
+                NOTE: Check valid country ISO codes here: https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2."
+            """.trimIndent()
+        )
     }
 
     private var countryDialog: Dialog? = null

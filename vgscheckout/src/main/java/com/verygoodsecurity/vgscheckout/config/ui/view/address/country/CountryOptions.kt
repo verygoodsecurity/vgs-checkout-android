@@ -8,7 +8,7 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.core.ViewOptions
 abstract class CountryOptions : ViewOptions() {
 
     /**
-     * List of countries that will be show in selection dialog.
+     * List of countries in ISO 3166-2 format that will be show in selection dialog.
      */
     abstract val validCountries: List<String>
 }

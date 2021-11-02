@@ -6,7 +6,7 @@ import kotlinx.parcelize.Parcelize
  * Multiplexing country input field options.
  *
  * @param fieldName text to be used for data transfer to VGS proxy.
- * @param validCountries list of countries that will be show in selection dialog.
+ * @param validCountries list of countries in ISO 3166-2 format that will be show in selection dialog.
  */
 @Parcelize
 class VGSCheckoutMultiplexingCountryOptions private constructor(
@@ -17,7 +17,7 @@ class VGSCheckoutMultiplexingCountryOptions private constructor(
     /**
      * Public constructor
      *
-     * @param validCountries list of countries that will be show in selection dialog.
+     * @param validCountries list of countries in ISO 3166-2 format that will be show in selection dialog.
      */
     @JvmOverloads
     constructor(validCountries: List<String> = emptyList()) : this(FIELD_NAME, validCountries)
