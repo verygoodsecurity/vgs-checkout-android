@@ -2,6 +2,7 @@ package com.verygoodsecurity.vgscheckout.collect.widget
 
 import android.app.Dialog
 import android.content.Context
+import android.os.Bundle
 import android.os.Parcelable
 import android.util.AttributeSet
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -12,35 +13,31 @@ import com.verygoodsecurity.vgscheckout.collect.view.card.validation.rules.VGSIn
 import com.verygoodsecurity.vgscheckout.collect.view.core.serializers.CountryNameToIsoSerializer
 import com.verygoodsecurity.vgscheckout.util.country.CountriesHelper
 import com.verygoodsecurity.vgscheckout.util.country.model.Country
-import android.os.Bundle
+import com.verygoodsecurity.vgscheckout.util.logger.VGSCheckoutLogger
 
 internal class VGSCountryEditText @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0,
 ) : InputFieldView(context, attrs, defStyleAttr) {
 
+    private var countries: List<Country> = CountriesHelper.countries
+
     var selectedCountry: Country = CountriesHelper.getCountry(CountriesHelper.ISO.USA)
-        set(value) {
+        private set(value) {
             field = value
-            onCountrySelectedListener?.onCountrySelected(selectedCountry)
+            onCountrySelectedListener?.onCountrySelected(value)
             setText(value.name)
         }
 
-    internal var onCountrySelectedListener: OnCountrySelectedListener? = null
-
-    private val billingAddressValidationRule: VGSInfoRule by lazy {
-        VGSInfoRule.ValidationBuilder()
-            .setAllowableMinLength(BILLING_ADDRESS_MIN_CHARS_COUNT)
-            .build()
-    }
-
-    interface OnCountrySelectedListener {
-        fun onCountrySelected(country: Country)
-    }
+    var onCountrySelectedListener: OnCountrySelectedListener? = null
 
     init {
         setupViewType(FieldType.COUNTRY)
 
-        applyValidationRule(billingAddressValidationRule)
+        applyValidationRule(
+            VGSInfoRule.ValidationBuilder()
+                .setAllowableMinLength(BILLING_ADDRESS_MIN_CHARS_COUNT)
+                .build()
+        )
         isFocusable = false
         setOnClickListener { showCountrySelectionDialog() }
         setFieldDataSerializer(CountryNameToIsoSerializer())
@@ -63,10 +60,47 @@ internal class VGSCountryEditText @JvmOverloads constructor(
         }
     }
 
+    fun getCountries() = countries
+
+    fun setCountries(codes: List<String>) {
+        if (codes.isEmpty()) return
+        val countries = CountriesHelper.getCountries(codes)
+        val invalidCountries = countries.filter { !it.isValid() }
+        if (invalidCountries.isNotEmpty()) {
+            logInvalidCountryCodes(invalidCountries)
+        }
+        val validCountries = countries - invalidCountries
+        if (validCountries.isEmpty()) {
+            logNoValidCountries()
+            return
+        }
+        this.countries = validCountries
+        this.selectedCountry = validCountries.first()
+    }
+
+    fun setSelectedCountry(code: String) {
+        val country = CountriesHelper.getCountry(code)
+        if (country.isValid() && countries.contains(country)) {
+            selectedCountry = country
+        }
+    }
+
+    private fun logInvalidCountryCodes(countries: List<Country>) {
+        VGSCheckoutLogger.debug(message = "Invalid country ISO Codes provided and will be ignored: ${countries.map { it.code }}")
+    }
+
+    private fun logNoValidCountries() {
+        VGSCheckoutLogger.debug(
+            message = """
+                No valid country ISO Codes provided. All countries will be used.
+                NOTE: Check valid country ISO codes here: https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2."
+            """.trimIndent()
+        )
+    }
+
     private var countryDialog: Dialog? = null
     private fun showCountrySelectionDialog() {
         if (countryDialog == null || !countryDialog!!.isShowing) {
-            val countries = CountriesHelper.countries
             val countryNames = countries.map { it.name }.toTypedArray()
             val selectedIndex = countries.indexOf(selectedCountry)
             var selected = -1
@@ -78,9 +112,7 @@ internal class VGSCountryEditText @JvmOverloads constructor(
                     null
                 )
                 .setPositiveButton(R.string.vgs_checkout_select_country_dialog_positive_button_title) { _, _ ->
-                    countries.getOrNull(selected)?.let {
-                        selectedCountry = it
-                    }
+                    countries.getOrNull(selected)?.let { selectedCountry = it }
                 }.create()
                 .also { it.show() }
         }
@@ -90,5 +122,9 @@ internal class VGSCountryEditText @JvmOverloads constructor(
         private const val BILLING_ADDRESS_MIN_CHARS_COUNT = 1
         private const val INSTANCE_STATE = "on_save_instance_state"
         private const val COUNTRY = "billing_country"
+    }
+
+    interface OnCountrySelectedListener {
+        fun onCountrySelected(country: Country)
     }
 }

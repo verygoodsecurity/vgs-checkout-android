@@ -33,7 +33,7 @@ class ScreenRotationTest {
             EXTRA_KEY_ARGS,
             CheckoutResultContract.Args(
                 VGSCheckoutMultiplexingConfig(
-                    Constants.CORRECT_TOKEN,
+                    Constants.VALID_JWT_TOKEN,
                     Constants.VAULT_ID,
                 )
             )
