@@ -52,7 +52,6 @@ jobs:
 workflows:
   main:
     jobs:
-      - "Run_Unit_Test_And_Build"
       - "Run_UI_Test":
           requires:
             - "Run_Unit_Test_And_Build"
