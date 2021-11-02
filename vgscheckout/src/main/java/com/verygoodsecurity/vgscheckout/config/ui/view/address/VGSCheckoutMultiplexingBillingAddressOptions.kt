@@ -31,8 +31,8 @@ class VGSCheckoutMultiplexingBillingAddressOptions private constructor(
     /**
      * Public constructor.
      *
-     * @param countryOptions country input field UI options.
      * @param visibility defines if address section UI should be visible to user.
+     * @param countryOptions country input field UI options.
      */
     @JvmOverloads
     constructor(
