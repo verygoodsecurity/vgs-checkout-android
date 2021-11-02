@@ -9,24 +9,33 @@ aliases:
       JVM_OPTS: -Xmx4608m
 
 jobs:
-  "Run_UI_Test":
+  "Run_Unit_Test_And_Build":
     <<: *environment
     steps:
       - checkout
       - restore_cache:
-      key: jars-{{ checksum "build.gradle" }}-{{ checksum  "custom-example/build.gradle" }}
-        - run:
-            name: Download Dependencies
-            command: |
-              sudo chmod +x gradlew
-              ./gradlew androidDependencies
-        - save_cache:
-            paths:
-              - ~/.gradle
-            key: jars-{{ checksum "build.gradle" }}-{{ checksum  "custom-example/build.gradle" }}
-        - run:
-            name: Generate apk
-            command: ./gradlew assembleDebug vgscheckout:assembleDebug vgscheckout:assembleAndroidTest
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "custom-example/build.gradle" }}
+      - run:
+          name: Download Dependencies
+          command: |
+            sudo chmod +x gradlew
+            ./gradlew androidDependencies
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "custom-example/build.gradle" }}
+      - run:
+          name: Generate apk
+          command: ./gradlew assembleDebug vgscheckout:assembleDebug vgscheckout:assembleAndroidTest
+      - persist_to_workspace:
+          root: ~/code
+          paths:
+            - custom-example
+  "Run_UI_Test":
+    <<: *environment
+    steps:
+      - attach_workspace:
+          at: ~/code
       - run:
           name: Check if release branch
           command: |
@@ -52,6 +61,4 @@ jobs:
 workflows:
   main:
     jobs:
-      - "Run_UI_Test":
-          requires:
-            - "Run_Unit_Test_And_Build"
+      - "Run_Unit_Test_And_Build"
