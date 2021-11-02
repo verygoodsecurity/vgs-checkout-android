@@ -55,6 +55,7 @@ jobs:
           name: Test with Firebase Test Lab
           command: >
             sudo gcloud firebase test android run \
+              --type instrumentation \
               --test vgscheckout/build/outputs/apk/androidTest/debug/vgscheckout-debug-androidTest.apk \
               --device model=flame,version=30,locale=en,orientation=portrait \
 workflows:
