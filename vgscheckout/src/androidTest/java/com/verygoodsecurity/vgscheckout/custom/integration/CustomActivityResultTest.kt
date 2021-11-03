@@ -27,6 +27,7 @@ import com.verygoodsecurity.vgscheckout.util.ViewInteraction.onViewWithScrollTo
 import com.verygoodsecurity.vgscheckout.util.extension.fillAddressFields
 import com.verygoodsecurity.vgscheckout.util.extension.fillCardFields
 import com.verygoodsecurity.vgscheckout.util.extension.getParcelableSafe
+import com.verygoodsecurity.vgscheckout.util.extension.pauseTestFor
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -52,6 +53,7 @@ class CustomActivityResultTest {
         device.setOrientationNatural()
     }
 
+    @Test
     fun performCheckout_saveCard_unsuccessfulResponse_resultFailed_codeOk() {
         // Arrange
         launch<CheckoutActivity>(defaultIntent).use {
@@ -75,6 +77,7 @@ class CustomActivityResultTest {
         }
     }
 
+    @Test
     fun performCheckout_saveCard_successfulResponse_resultSuccess_codeOk() {
         // Arrange
         val intent = Intent(context, CheckoutActivity::class.java).apply {
@@ -138,6 +141,7 @@ class CustomActivityResultTest {
     fun performCheckout_cancelActivityResult_withBackPress_codeCancel() {
         launch<CheckoutActivity>(defaultIntent).use {
             // Act
+            pauseTestFor(500)
             device.pressBack()
             //Assert
             val result = it?.getParcelableSafe<CheckoutResultContract.Result>(EXTRA_KEY_RESULT)

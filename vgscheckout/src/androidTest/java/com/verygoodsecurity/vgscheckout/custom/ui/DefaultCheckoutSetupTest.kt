@@ -49,16 +49,17 @@ class DefaultCheckoutSetupTest {
     fun performCheckout_defaultVisibleFields() {
         launch<CheckoutMultiplexingActivity>(defaultIntent).use {
             //Assert
-            onView(withId(R.id.vgsTilCardHolder))
+            onViewWithScrollTo(R.id.vgsTilCardHolder)
                 .check(matches(isDisplayed()))
-            onView(withId(R.id.vgsTilCardNumber))
+            onViewWithScrollTo(R.id.vgsTilCardNumber)
                 .check(matches(isDisplayed()))
-            onView(withId(R.id.vgsTilExpirationDate))
+            onViewWithScrollTo(R.id.vgsTilExpirationDate)
                 .check(matches(isDisplayed()))
-            onView(withId(R.id.vgsTilSecurityCode))
+            onViewWithScrollTo(R.id.vgsTilSecurityCode)
                 .check(matches(isDisplayed()))
-            onView(withId(R.id.vgsTilCountry))
+            onViewWithScrollTo(R.id.vgsTilCountry)
                 .check(matches(isDisplayed()))
+
             onViewWithScrollTo(R.id.vgsTilAddress)
                 .check(matches(isDisplayed()))
             onViewWithScrollTo(R.id.vgsTilAddressOptional)
@@ -79,14 +80,19 @@ class DefaultCheckoutSetupTest {
     fun performCheckout_defaultFieldContent() {
         launch<CheckoutActivity>(defaultIntent).use {
             //Assert
+            onViewWithScrollTo(R.id.vgsTilCardHolder)
             onView(withId(R.id.vgsEtCardHolder))
                 .check(matches(VGSViewMatchers.withText("")))
+            onViewWithScrollTo(R.id.vgsTilCardNumber)
             onView(withId(R.id.vgsEtCardNumber))
                 .check(matches(VGSViewMatchers.withText("")))
+            onViewWithScrollTo(R.id.vgsTilExpirationDate)
             onView(withId(R.id.vgsEtExpirationDate))
                 .check(matches(VGSViewMatchers.withText("")))
+            onViewWithScrollTo(R.id.vgsTilSecurityCode)
             onView(withId(R.id.vgsEtSecurityCode))
                 .check(matches(VGSViewMatchers.withText("")))
+            onViewWithScrollTo(R.id.vgsTilCountry)
             onView(withId(R.id.vgsEtCountry))
                 .check(matches(VGSViewMatchers.withText("United States")))
 

@@ -260,7 +260,7 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
             pattern
         }
 
-        fieldDateOutPutFormat = SimpleDateFormat(outputPattern, Locale.US)
+        fieldDateOutPutFormat = SimpleDateFormat(outputPattern, Locale.ENGLISH)
     }
 
     internal fun setDatePattern(pattern:String?) {
