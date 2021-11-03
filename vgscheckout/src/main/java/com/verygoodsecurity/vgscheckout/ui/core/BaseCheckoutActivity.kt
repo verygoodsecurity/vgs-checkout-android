@@ -483,6 +483,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> :
                     routeConfig.hostnamePolicy is VGSCheckoutHostnamePolicy.CustomHostname,
                     routeConfig.requestOptions.extraData.isNotEmpty(),
                     hasCustomHeaders(),
+                    formConfig.addressOptions.countryOptions.validCountries.isNotEmpty(),
                     routeConfig.requestOptions.mergePolicy,
                     invalidFields
                 )
