@@ -56,8 +56,7 @@ jobs:
               --test vgscheckout/build/outputs/apk/androidTest/debug/vgscheckout-debug-androidTest.apk \
               --device model=H9493,version=28,locale=en,orientation=portrait \
               --device model=starqltechn,version=26,locale=en,orientation=portrait \
-              --device model=taimen,version=30,locale=en,orientation=portrait \
-              --device model=tissot_sprout,version=30,locale=en,orientation=portrait \
+              --device model=cactus,version=26,locale=en,orientation=portrait \
 
 workflows:
   main:
