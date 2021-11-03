@@ -54,7 +54,7 @@ class CustomActivityResultTest {
     }
 
     @Test
-    fun performCheckout_saveCard_unsuccessfulResponse_resultFailed_codeOk() {
+    fun performCheckout_custom_saveCard_unsuccessfulResponse_resultFailed_codeOk() {
         // Arrange
         launch<CheckoutActivity>(defaultIntent).use {
             fillCardFields(

@@ -197,7 +197,7 @@ class FieldsValidationTest {
     }
 
     @Test
-    fun showErrorMessage_countrySelect_selectCanada_postalAddressErrorMessageCleared() {
+    fun showErrorMessage_custom_countrySelect_selectCanada_postalAddressErrorMessageCleared() {
         launch<CheckoutActivity>(defaultIntent).use {
             // Act
             onViewWithScrollTo(R.id.mbSaveCard).perform(click())

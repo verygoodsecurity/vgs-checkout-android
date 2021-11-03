@@ -58,7 +58,7 @@ class MultiplexingActivityResultTest {
     }
 
     @Test(timeout = 60000L)
-    fun performCheckout_saveCard_unsuccessfulResponse_resultFailed_codeOk() {
+    fun performCheckout_multiplexing_saveCard_unsuccessfulResponse_resultFailed_codeOk() {
         //Arrange
         launch<CheckoutMultiplexingActivity>(defaultIntent).use {
             fillCardFields(
