@@ -48,7 +48,7 @@ jobs:
             sudo gcloud firebase test android run \
               --app custom-example/build/outputs/apk/debug/custom-example-debug.apk \
               --test vgscheckout/build/outputs/apk/androidTest/debug/vgscheckout-debug-androidTest.apk \
-              --device model=lv0,version=23,locale=en,orientation=portrait \
+              --device model=greatlte,version=28,locale=en,orientation=portrait \
 
 workflows:
   main:
