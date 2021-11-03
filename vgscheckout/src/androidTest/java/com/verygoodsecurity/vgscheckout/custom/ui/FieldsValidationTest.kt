@@ -2,6 +2,7 @@ package com.verygoodsecurity.vgscheckout.custom.ui
 
 import android.content.Context
 import android.content.Intent
+import androidx.lifecycle.Lifecycle
 import androidx.test.core.app.ActivityScenario.launch
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onData
@@ -171,9 +172,8 @@ class FieldsValidationTest {
 
     @Test
     fun saveCard_custom_validInput_noErrorsDisplayed() {
-        pauseTestFor(1500)
         launch<CheckoutActivity>(defaultIntent).use {
-            pauseTestFor(1500)
+            it.moveToState(Lifecycle.State.RESUMED)
             // Arrange
             fillCardFields(
                 VALID_CARD_HOLDER,

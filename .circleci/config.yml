@@ -55,8 +55,8 @@ jobs:
               --app custom-example/build/outputs/apk/debug/custom-example-debug.apk \
               --test vgscheckout/build/outputs/apk/androidTest/debug/vgscheckout-debug-androidTest.apk \
               --device model=H9493,version=28,locale=en,orientation=portrait \
-              --device model=starqltechn,version=26,locale=en,orientation=portrait \
-              --device model=chiron,version=26,locale=en,orientation=portrait \
+#              --device model=sailfish,version=25,locale=en,orientation=portrait \
+#              --device model=redfin,version=30,locale=en,orientation=portrait \
 
 workflows:
   main:
