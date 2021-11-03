@@ -141,8 +141,8 @@ class CustomActivityResultTest {
     fun performCheckout_cancelActivityResult_withBackPress_codeCancel() {
         launch<CheckoutActivity>(defaultIntent).use {
             // Act
-            pauseTestFor(500)
             device.pressBack()
+            pauseTestFor(500)
             //Assert
             val result = it?.getParcelableSafe<CheckoutResultContract.Result>(EXTRA_KEY_RESULT)
             assertEquals(Activity.RESULT_CANCELED, it.result.resultCode)

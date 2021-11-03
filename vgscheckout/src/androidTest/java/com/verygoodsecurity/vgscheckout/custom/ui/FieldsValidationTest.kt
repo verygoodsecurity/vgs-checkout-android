@@ -34,6 +34,7 @@ import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers.withError
 import com.verygoodsecurity.vgscheckout.util.ViewInteraction.onViewWithScrollTo
 import com.verygoodsecurity.vgscheckout.util.extension.fillAddressFields
 import com.verygoodsecurity.vgscheckout.util.extension.fillCardFields
+import com.verygoodsecurity.vgscheckout.util.extension.pauseTestFor
 import org.hamcrest.Matchers.hasToString
 import org.hamcrest.Matchers.startsWith
 import org.junit.Before
@@ -170,6 +171,7 @@ class FieldsValidationTest {
 
     @Test
     fun saveCard_validInput_noErrorsDisplayed() {
+        pauseTestFor(500)
         launch<CheckoutActivity>(defaultIntent).use {
             // Arrange
             fillCardFields(
