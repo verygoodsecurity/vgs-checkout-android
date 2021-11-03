@@ -178,7 +178,7 @@ class FieldsValidationTest {
     }
 
     @Test
-    fun saveCard_validInput_noErrorsDisplayed() {
+    fun saveCard_multiplex_validInput_noErrorsDisplayed() {
         launch<CheckoutMultiplexingActivity>(defaultIntent).use {
             // Arrange
             fillCardFields(
