@@ -171,6 +171,7 @@ class FieldsValidationTest {
 
     @Test
     fun saveCard_custom_validInput_noErrorsDisplayed() {
+        pauseTestFor(1500)
         launch<CheckoutActivity>(defaultIntent).use {
             pauseTestFor(1500)
             // Arrange
