@@ -24,12 +24,6 @@ jobs:
           paths:
             - ~/.gradle
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "custom-example/build.gradle" }}
-#      - run:
-#          name: Run Lint
-#          command: ./gradlew lintDebug
-#      - run:
-#          name: Run Unit tests
-#          command: ./gradlew testDebugUnitTest
       - run:
           name: Generate apk
           command: ./gradlew assembleDebug vgscheckout:assembleDebug vgscheckout:assembleAndroidTest
@@ -54,8 +48,6 @@ jobs:
             sudo gcloud firebase test android run \
               --app custom-example/build/outputs/apk/debug/custom-example-debug.apk \
               --test vgscheckout/build/outputs/apk/androidTest/debug/vgscheckout-debug-androidTest.apk \
-#              --device model=H9493,version=28,locale=en,orientation=portrait \
-#              --device model=sailfish,version=25,locale=en,orientation=portrait \
               --device model=redfin,version=30,locale=en,orientation=portrait \
 
 workflows:
