@@ -8,6 +8,8 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.uiautomator.UiDevice
 import com.verygoodsecurity.vgscheckout.Constants.VAULT_ID
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
@@ -18,6 +20,8 @@ import com.verygoodsecurity.vgscheckout.ui.CheckoutMultiplexingActivity
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers.withError
 import com.verygoodsecurity.vgscheckout.util.ViewInteraction.onViewWithScrollTo
+import com.verygoodsecurity.vgscheckout.util.extension.pauseTestFor
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -31,6 +35,14 @@ class DefaultCheckoutSetupTest {
             EXTRA_KEY_ARGS,
             CheckoutResultContract.Args(VGSCheckoutCustomConfig(VAULT_ID))
         )
+    }
+
+    private lateinit var device: UiDevice
+
+    @Before
+    fun prepareDevice() {
+        device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
+        device.setOrientationNatural()
     }
 
     @Test

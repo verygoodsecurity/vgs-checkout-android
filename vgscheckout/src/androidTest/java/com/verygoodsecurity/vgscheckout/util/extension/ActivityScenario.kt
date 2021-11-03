@@ -87,3 +87,11 @@ internal inline fun <reified T : Parcelable> ActivityScenario<*>.getParcelableSa
     extras?.classLoader = T::class.java.classLoader
     return extras?.getParcelable(key)
 }
+
+fun pauseTestFor(milliseconds: Long) {
+    try {
+        Thread.sleep(milliseconds)
+    } catch (e: InterruptedException) {
+        e.printStackTrace()
+    }
+}

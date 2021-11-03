@@ -11,6 +11,8 @@ import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.uiautomator.UiDevice
 import com.verygoodsecurity.vgscheckout.Constants.CORRECT_TOKEN
 import com.verygoodsecurity.vgscheckout.Constants.INVALID_CARD_NUMBER
 import com.verygoodsecurity.vgscheckout.Constants.INVALID_EXP_DATE
@@ -34,8 +36,10 @@ import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers.withError
 import com.verygoodsecurity.vgscheckout.util.ViewInteraction.onViewWithScrollTo
 import com.verygoodsecurity.vgscheckout.util.extension.fillAddressFields
 import com.verygoodsecurity.vgscheckout.util.extension.fillCardFields
+import com.verygoodsecurity.vgscheckout.util.extension.pauseTestFor
 import org.hamcrest.CoreMatchers.startsWith
 import org.hamcrest.Matchers.hasToString
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -55,6 +59,15 @@ class FieldsValidationTest {
                 )
             )
         )
+    }
+
+    private lateinit var device: UiDevice
+
+    @Before
+    fun prepareDevice() {
+        device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
+        device.setOrientationNatural()
+
     }
 
     @Test

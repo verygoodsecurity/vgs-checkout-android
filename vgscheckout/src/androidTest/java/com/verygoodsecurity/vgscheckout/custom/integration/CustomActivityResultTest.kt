@@ -52,7 +52,6 @@ class CustomActivityResultTest {
         device.setOrientationNatural()
     }
 
-    @Test(timeout = 60000L)
     fun performCheckout_saveCard_unsuccessfulResponse_resultFailed_codeOk() {
         // Arrange
         launch<CheckoutActivity>(defaultIntent).use {
@@ -76,7 +75,6 @@ class CustomActivityResultTest {
         }
     }
 
-    @Test(timeout = 60000L)
     fun performCheckout_saveCard_successfulResponse_resultSuccess_codeOk() {
         // Arrange
         val intent = Intent(context, CheckoutActivity::class.java).apply {

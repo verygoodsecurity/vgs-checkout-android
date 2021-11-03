@@ -15,6 +15,8 @@ import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.ui.CheckoutActivity
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.uiautomator.UiDevice
 import com.verygoodsecurity.vgscheckout.Constants.INVALID_CARD_NUMBER
 import com.verygoodsecurity.vgscheckout.Constants.INVALID_EXP_DATE
 import com.verygoodsecurity.vgscheckout.Constants.INVALID_POSTAL_ADDRESS
@@ -34,6 +36,7 @@ import com.verygoodsecurity.vgscheckout.util.extension.fillAddressFields
 import com.verygoodsecurity.vgscheckout.util.extension.fillCardFields
 import org.hamcrest.Matchers.hasToString
 import org.hamcrest.Matchers.startsWith
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -48,6 +51,14 @@ class FieldsValidationTest {
             EXTRA_KEY_ARGS,
             CheckoutResultContract.Args(VGSCheckoutCustomConfig(VAULT_ID))
         )
+    }
+
+    private lateinit var device: UiDevice
+
+    @Before
+    fun prepareDevice() {
+        device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
+        device.setOrientationNatural()
     }
 
     @Test
