@@ -25,6 +25,12 @@ jobs:
             - ~/.gradle
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "custom-example/build.gradle" }}
       - run:
+          name: Run Lint
+          command: ./gradlew lintDebug
+      - run:
+          name: Run Unit tests
+          command: ./gradlew testDebugUnitTest
+      - run:
           name: Generate apk
           command: ./gradlew assembleDebug vgscheckout:assembleDebug vgscheckout:assembleAndroidTest
       - run:
@@ -49,6 +55,9 @@ jobs:
               --app custom-example/build/outputs/apk/debug/custom-example-debug.apk \
               --test vgscheckout/build/outputs/apk/androidTest/debug/vgscheckout-debug-androidTest.apk \
               --device model=H9493,version=28,locale=en,orientation=portrait \
+              --device model=starqltechn,version=26,locale=en,orientation=portrait \
+              --device model=taimen,version=30,locale=en,orientation=portrait \
+              --device model=tissot_sprout,version=30,locale=en,orientation=portrait \
 
 workflows:
   main:
