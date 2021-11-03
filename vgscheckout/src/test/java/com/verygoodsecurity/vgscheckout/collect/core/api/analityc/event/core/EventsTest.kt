@@ -195,6 +195,7 @@ class EventsTest {
             hasCustomHostname = false,
             hasCustomData = false,
             hasCustomHeaders = false,
+            hasValidCountries = false,
             mergingPolicy = VGSCheckoutDataMergePolicy.FLAT_JSON,
             invalidFieldTypes = emptyList()
         )
@@ -215,6 +216,7 @@ class EventsTest {
             hasCustomHostname = false,
             hasCustomData = false,
             hasCustomHeaders = false,
+            hasValidCountries = false,
             mergingPolicy = VGSCheckoutDataMergePolicy.FLAT_JSON,
             invalidFieldTypes = emptyList()
         )
@@ -225,6 +227,31 @@ class EventsTest {
         assertEquals(data["status"], "Failed")
         assertEquals(data["fieldTypes"], null)
         assertEquals((data["content"] as ArrayList<*>).size, 1)
+    }
+
+    @Test
+    fun getData_requestFailed_contentAdded() {
+        // Arrange
+        val event = RequestEvent(
+            isSuccessFull = false,
+            hasCustomHostname = true,
+            hasCustomData = true,
+            hasCustomHeaders = true,
+            hasValidCountries = true,
+            mergingPolicy = VGSCheckoutDataMergePolicy.FLAT_JSON,
+            invalidFieldTypes = emptyList()
+        )
+        // Act
+        val data = event.getData(VAULT_ID, FORM_ID, ENVIRONMENT)
+        val content = data["content"] as ArrayList<*>
+        // Assert
+        assertEquals(data["type"], "BeforeSubmit")
+        assertEquals(data["status"], "Failed")
+        assertEquals(data["fieldTypes"], null)
+        assertTrue(content.contains("custom_hostname"))
+        assertTrue(content.contains("custom_data"))
+        assertTrue(content.contains("custom_header"))
+        assertTrue(content.contains("valid_countries"))
     }
 
     @Test
