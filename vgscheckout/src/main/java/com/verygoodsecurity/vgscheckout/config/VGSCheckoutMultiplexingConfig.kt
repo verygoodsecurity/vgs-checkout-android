@@ -13,19 +13,19 @@ import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
 /**
  * Holds configuration with predefined setup for work with payment orchestration/multiplexing app.
  *
- * @param token multiplexing app access token.
+ * @param accessToken multiplexing app access token.
  * @param vaultID unique organization vault id.
  * @param environment type of vault.
  * @param routeConfig Networking configuration, like http method, request headers etc.
  * @param formConfig UI configuration.
  * @param isScreenshotsAllowed If true, checkout form will allow to make screenshots.
  * @param isAnalyticsEnabled If true, checkout will send analytics events that helps to debug issues if any occurs.
- * @param createdFromParcel if true then object created form parcel. Used to determine if token
+ * @param createdFromParcel if true then object created form parcel. Used to determine if access token
  * validation event should be send.
  */
 @Suppress("MemberVisibilityCanBePrivate", "CanBeParameter")
 class VGSCheckoutMultiplexingConfig private constructor(
-    internal val token: String,
+    internal val accessToken: String,
     override val vaultID: String,
     override val environment: VGSCheckoutEnvironment,
     override val routeConfig: VGSCheckoutMultiplexingRouteConfig,
@@ -36,7 +36,6 @@ class VGSCheckoutMultiplexingConfig private constructor(
 ) : CheckoutConfig() {
 
     init {
-
         if (!createdFromParcel) validateToken()
     }
 
@@ -54,7 +53,7 @@ class VGSCheckoutMultiplexingConfig private constructor(
     /**
      * Public constructor.
      *
-     * @param token multiplexing app access token.
+     * @param accessToken multiplexing app access token.
      * @param vaultID unique organization vault id.
      * @param environment type of vault.
      * @param formConfig UI configuration.
@@ -62,24 +61,24 @@ class VGSCheckoutMultiplexingConfig private constructor(
      * @param isAnalyticsEnabled If true, checkout will send analytics events that helps to debug
      * issues if any occurs. Default value is true.
      *
-     * @throws com.verygoodsecurity.vgscheckout.exception.VGSCheckoutJWTParseException if token is not valid.
+     * @throws com.verygoodsecurity.vgscheckout.exception.VGSCheckoutJWTParseException if access token is not valid.
      * @throws com.verygoodsecurity.vgscheckout.exception.VGSCheckoutJWTRestrictedRoleException if
-     * token is contains restricted roles.
+     * access token is contains restricted roles.
      */
     @JvmOverloads
     @Throws(VGSCheckoutJWTParseException::class, VGSCheckoutJWTRestrictedRoleException::class)
     constructor(
-        token: String,
+        accessToken: String,
         vaultID: String,
         environment: VGSCheckoutEnvironment = VGSCheckoutEnvironment.Sandbox(),
         formConfig: VGSCheckoutMultiplexingFormConfig = VGSCheckoutMultiplexingFormConfig(),
         isScreenshotsAllowed: Boolean = false,
         isAnalyticsEnabled: Boolean = true
     ) : this(
-        token,
+        accessToken,
         vaultID,
         environment,
-        VGSCheckoutMultiplexingRouteConfig(token),
+        VGSCheckoutMultiplexingRouteConfig(accessToken),
         formConfig,
         isScreenshotsAllowed,
         isAnalyticsEnabled,
@@ -87,7 +86,7 @@ class VGSCheckoutMultiplexingConfig private constructor(
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString(token)
+        parcel.writeString(accessToken)
         parcel.writeString(vaultID)
         parcel.writeParcelable(environment, flags)
         parcel.writeParcelable(routeConfig, flags)
@@ -103,7 +102,7 @@ class VGSCheckoutMultiplexingConfig private constructor(
     @Throws(IllegalArgumentException::class)
     private fun validateToken() {
         try {
-            CheckoutMultiplexingCredentialsValidator.validateJWT(token)
+            CheckoutMultiplexingCredentialsValidator.validateJWT(accessToken)
             analyticTracker.log(JWTValidationEvent(true))
         } finally {
             analyticTracker.log(JWTValidationEvent(false))
