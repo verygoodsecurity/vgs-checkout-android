@@ -60,20 +60,20 @@ class VGSCheckout internal constructor(
     /**
      * Start checkout with multiplexing configuration.
      *
-     * @param token client backend access token.
+     * @param accessToken client backend access token.
      * @param vaultID VGS vault id.
      * @param environment type of vault to communicate with.
      * @param transitionOptions specifying a custom animation to run when the checkout is displayed.
      * @param isAnalyticsEnabled true if checkout should send analytics events, false otherwise.
      *
-     * @throws com.verygoodsecurity.vgscheckout.exception.VGSCheckoutJWTParseException if token is not valid.
+     * @throws com.verygoodsecurity.vgscheckout.exception.VGSCheckoutJWTParseException if access token is not valid.
      * @throws com.verygoodsecurity.vgscheckout.exception.VGSCheckoutJWTRestrictedRoleException if
-     * token is contains restricted roles.
+     * access token is contains restricted roles.
      */
     @JvmOverloads
     @Throws(VGSCheckoutJWTParseException::class, VGSCheckoutJWTRestrictedRoleException::class)
     fun present(
-        token: String,
+        accessToken: String,
         vaultID: String,
         environment: VGSCheckoutEnvironment = VGSCheckoutEnvironment.Sandbox(),
         transitionOptions: VGSCheckoutTransitionOptions? = null,
@@ -81,7 +81,7 @@ class VGSCheckout internal constructor(
     ) {
         present(
             VGSCheckoutMultiplexingConfig(
-                token,
+                accessToken,
                 vaultID,
                 environment,
                 isAnalyticsEnabled = isAnalyticsEnabled
