@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity(), VGSCheckoutCallback {
         VGSCheckoutCustomCountryOptions("address_info.country"),
         VGSCheckoutCustomCityOptions("address_info.city"),
         VGSCheckoutCustomAddressOptions("address_info.address"),
-        postalCodeOptions = VGSCheckoutCustomPostalCodeOptions("address_info.postal_address"),
+        postalCodeOptions = VGSCheckoutCustomPostalCodeOptions("address_info.postal_code"),
     )
     //endregion
 }
