@@ -21,7 +21,7 @@ internal object CountriesHelper {
 
     private fun getPostalCodeType(iso: String) = when {
         iso == ISO.USA -> PostalCodeType.ZIP
-        ISO.COUNTRIES_ISO_WITHOUT_POSTAL_ADDRESS.contains(iso) -> PostalCodeType.NOTHING
+        ISO.COUNTRIES_ISO_WITHOUT_POSTAL_CODE.contains(iso) -> PostalCodeType.NOTHING
         else -> PostalCodeType.POSTAL
     }
 
@@ -39,7 +39,7 @@ internal object CountriesHelper {
         internal const val AUSTRALIA = "AU"
         internal const val NEW_ZEALAND = "NZ"
 
-        internal val COUNTRIES_ISO_WITHOUT_POSTAL_ADDRESS = arrayOf(
+        internal val COUNTRIES_ISO_WITHOUT_POSTAL_CODE = arrayOf(
             "AE",
             "AG",
             "AN",
