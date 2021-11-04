@@ -60,7 +60,7 @@ class DefaultMultiplexingSetupTest {
                 .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
             ViewInteraction.onViewWithScrollTo(R.id.vgsTilCity)
                 .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-            ViewInteraction.onViewWithScrollTo(R.id.vgsTilPostalAddress)
+            ViewInteraction.onViewWithScrollTo(R.id.vgsTilPostalCode)
                 .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
 
             ViewInteraction.onViewWithScrollTo(R.id.mbSaveCard)
@@ -99,8 +99,8 @@ class DefaultMultiplexingSetupTest {
             Espresso.onView(ViewMatchers.withId(R.id.vgsEtCity)).check(
                 ViewAssertions.matches(VGSViewMatchers.withText(""))
             )
-            ViewInteraction.onViewWithScrollTo(R.id.vgsTilPostalAddress)
-            Espresso.onView(ViewMatchers.withId(R.id.vgsEtPostalAddress)).check(
+            ViewInteraction.onViewWithScrollTo(R.id.vgsTilPostalCode)
+            Espresso.onView(ViewMatchers.withId(R.id.vgsEtPostalCode)).check(
                 ViewAssertions.matches(VGSViewMatchers.withText(""))
             )
         }
@@ -133,7 +133,7 @@ class DefaultMultiplexingSetupTest {
                 .check(ViewAssertions.matches(VGSViewMatchers.withError(null)))
             ViewInteraction.onViewWithScrollTo(R.id.vgsTilCity)
                 .check(ViewAssertions.matches(VGSViewMatchers.withError(null)))
-            ViewInteraction.onViewWithScrollTo(R.id.vgsTilPostalAddress)
+            ViewInteraction.onViewWithScrollTo(R.id.vgsTilPostalCode)
                 .check(ViewAssertions.matches(VGSViewMatchers.withError(null)))
         }
     }

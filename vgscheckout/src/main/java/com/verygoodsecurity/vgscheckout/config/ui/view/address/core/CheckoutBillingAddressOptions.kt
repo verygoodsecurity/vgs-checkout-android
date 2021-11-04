@@ -5,7 +5,7 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillin
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.AddressOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.OptionalAddressOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.city.CityOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.code.PostalAddressOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.code.PostalCodeOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.country.CountryOptions
 
 /**
@@ -34,9 +34,9 @@ abstract class CheckoutBillingAddressOptions : Parcelable {
     abstract val optionalAddressOptions: OptionalAddressOptions
 
     /**
-     * Holds postal address input field UI options.
+     * Holds postal code input field UI options.
      */
-    abstract val postalAddressOptions: PostalAddressOptions
+    abstract val postalCodeOptions: PostalCodeOptions
 
     /**
      * Address block visibility.

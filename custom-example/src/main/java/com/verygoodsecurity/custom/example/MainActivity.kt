@@ -13,7 +13,7 @@ import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutCustomFormConfig
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutCustomBillingAddressOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.VGSCheckoutCustomAddressOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.city.VGSCheckoutCustomCityOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.code.VGSCheckoutCustomPostalAddressOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.code.VGSCheckoutCustomPostalCodeOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.country.VGSCheckoutCustomCountryOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.VGSCheckoutCustomCardOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.VGSCheckoutCustomCardHolderOptions
@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity(), VGSCheckoutCallback {
         VGSCheckoutCustomCountryOptions("address_info.country"),
         VGSCheckoutCustomCityOptions("address_info.city"),
         VGSCheckoutCustomAddressOptions("address_info.address"),
-        postalAddressOptions = VGSCheckoutCustomPostalAddressOptions("address_info.postal_address"),
+        postalCodeOptions = VGSCheckoutCustomPostalCodeOptions("address_info.postal_code"),
     )
     //endregion
 }
