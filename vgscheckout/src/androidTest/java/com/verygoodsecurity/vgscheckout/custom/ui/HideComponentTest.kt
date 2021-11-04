@@ -15,7 +15,7 @@ import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutCustomFormConfig
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutCustomBillingAddressOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillingAddressVisibility
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.VGSCheckoutCustomCardOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.VGSCheckoutCardHolderOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.VGSCheckoutCustomCardHolderOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.core.VGSCheckoutFieldVisibility
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_ARGS
@@ -40,7 +40,7 @@ class HideComponentTest {
                         vaultID = VAULT_ID,
                         formConfig = VGSCheckoutCustomFormConfig(
                             cardOptions = VGSCheckoutCustomCardOptions(
-                                cardHolderOptions = VGSCheckoutCardHolderOptions(
+                                cardHolderOptions = VGSCheckoutCustomCardHolderOptions(
                                     visibility = VGSCheckoutFieldVisibility.HIDDEN
                                 )
                             )

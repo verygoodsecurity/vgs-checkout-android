@@ -9,7 +9,7 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.address.country.VGSChecko
 import kotlinx.parcelize.Parcelize
 
 /**
- * Custom flow checkout form address section UI options.
+ * Multiplexing flow checkout form address section UI options.
  *
  * @param countryOptions country input field UI options.
  * @param cityOptions city input field UI options.

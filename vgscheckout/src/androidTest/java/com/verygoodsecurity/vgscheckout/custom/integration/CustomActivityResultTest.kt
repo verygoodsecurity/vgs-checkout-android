@@ -17,10 +17,10 @@ import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
 import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutCustomRouteConfig
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutCustomFormConfig
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.VGSCheckoutCustomCardOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.VGSCheckoutCardHolderOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.VGSCheckoutCardNumberOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.VGSCheckoutCVCOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.VGSCheckoutExpirationDateOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.VGSCheckoutCustomCardHolderOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.VGSCheckoutCustomCardNumberOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.VGSCheckoutCustomCVCOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.VGSCheckoutCustomExpirationDateOptions
 import com.verygoodsecurity.vgscheckout.model.*
 import com.verygoodsecurity.vgscheckout.ui.CheckoutActivity
 import com.verygoodsecurity.vgscheckout.util.ViewInteraction.onViewWithScrollTo
@@ -88,10 +88,10 @@ class CustomActivityResultTest {
                         VGSCheckoutCustomRouteConfig("/post"),
                         VGSCheckoutCustomFormConfig(
                             cardOptions = VGSCheckoutCustomCardOptions(
-                                VGSCheckoutCardNumberOptions("card_number"),
-                                VGSCheckoutCardHolderOptions("card_holder"),
-                                VGSCheckoutCVCOptions("card_cvc"),
-                                VGSCheckoutExpirationDateOptions("card_expDate")
+                                VGSCheckoutCustomCardNumberOptions("card_number"),
+                                VGSCheckoutCustomCardHolderOptions("card_holder"),
+                                VGSCheckoutCustomCVCOptions("card_cvc"),
+                                VGSCheckoutCustomExpirationDateOptions("card_expDate")
                             )
                         )
                     )

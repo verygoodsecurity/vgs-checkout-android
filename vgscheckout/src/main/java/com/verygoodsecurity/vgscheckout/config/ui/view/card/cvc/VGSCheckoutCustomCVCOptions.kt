@@ -1,6 +1,5 @@
 package com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc
 
-import com.verygoodsecurity.vgscheckout.config.ui.view.core.ViewOptions
 import kotlinx.parcelize.Parcelize
 
 /**
@@ -10,7 +9,7 @@ import kotlinx.parcelize.Parcelize
  * @param isIconHidden defines if card brand icon should be hidden.
  */
 @Parcelize
-class VGSCheckoutCVCOptions constructor(
+class VGSCheckoutCustomCVCOptions constructor(
     override val fieldName: String = "",
-    val isIconHidden: Boolean = false
-) : ViewOptions()
+    override val isIconHidden: Boolean = false,
+) : CVCOptions()

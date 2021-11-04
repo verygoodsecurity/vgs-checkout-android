@@ -1,7 +1,6 @@
 package com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder
 
 import com.verygoodsecurity.vgscheckout.config.ui.view.core.VGSCheckoutFieldVisibility
-import com.verygoodsecurity.vgscheckout.config.ui.view.core.ViewOptions
 import kotlinx.parcelize.Parcelize
 
 /**
@@ -11,7 +10,7 @@ import kotlinx.parcelize.Parcelize
  * @param visibility defines if card holder name input field should be visible to user.
  */
 @Parcelize
-class VGSCheckoutCardHolderOptions constructor(
+class VGSCheckoutCustomCardHolderOptions constructor(
     override val fieldName: String = "",
-    val visibility: VGSCheckoutFieldVisibility = VGSCheckoutFieldVisibility.VISIBLE
-) : ViewOptions()
+    override val visibility: VGSCheckoutFieldVisibility = VGSCheckoutFieldVisibility.VISIBLE
+) : CardHolderOptions()
