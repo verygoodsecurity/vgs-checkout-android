@@ -33,10 +33,10 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.OptionalA
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.city.CityOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.code.PostalAddressOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.country.CountryOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.VGSCheckoutCardHolderOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.VGSCheckoutCardNumberOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.VGSCheckoutCVCOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.VGSCheckoutExpirationDateOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.CardHolderOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.CardNumberOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.CVCOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.ExpirationDateOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.core.VGSCheckoutFieldVisibility
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.util.CollectProvider
@@ -176,7 +176,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> :
         }
     }
 
-    private fun initCardHolderView(options: VGSCheckoutCardHolderOptions) {
+    private fun initCardHolderView(options: CardHolderOptions) {
         if (options.visibility == VGSCheckoutFieldVisibility.HIDDEN) {
             cardHolderTil.gone()
             return
@@ -186,7 +186,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> :
         collect.bindView(cardHolderEt)
     }
 
-    private fun initCardNumberView(options: VGSCheckoutCardNumberOptions) {
+    private fun initCardNumberView(options: CardNumberOptions) {
         cardNumberEt.setFieldName(options.fieldName)
         cardNumberEt.setValidCardBrands(options.cardBrands)
         cardNumberEt.setIsCardBrandPreviewHidden(options.isIconHidden)
@@ -194,7 +194,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> :
         collect.bindView(cardNumberEt)
     }
 
-    private fun initExpirationDateView(options: VGSCheckoutExpirationDateOptions) {
+    private fun initExpirationDateView(options: ExpirationDateOptions) {
         expirationDateEt.setDateRegex(options.inputFormatRegex)
         expirationDateEt.setOutputRegex(options.outputFormatRegex)
         expirationDateEt.setSerializer(
@@ -205,7 +205,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> :
         collect.bindView(expirationDateEt)
     }
 
-    private fun initSecurityCodeView(options: VGSCheckoutCVCOptions) {
+    private fun initSecurityCodeView(options: CVCOptions) {
         securityCodeEt.setFieldName(options.fieldName)
         securityCodeEt.setIsPreviewIconHidden(options.isIconHidden)
         securityCodeEt.addOnTextChangeListener(this)

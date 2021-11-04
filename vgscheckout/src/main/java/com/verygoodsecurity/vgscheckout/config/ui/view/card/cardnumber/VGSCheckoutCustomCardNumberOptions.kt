@@ -2,23 +2,22 @@ package com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber
 
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.model.VGSCheckoutCardBrand
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.model.VGSCheckoutSetCardBrandsMode
-import com.verygoodsecurity.vgscheckout.config.ui.view.core.ViewOptions
 import com.verygoodsecurity.vgscheckout.util.extension.addAllWithReplace
 import kotlinx.parcelize.Parcelize
 
 /**
- * Card number input field options.
+ * Custom flow card number input field options.
  *
  * @param fieldName text to be used for data transfer to VGS proxy.
  * @param isIconHidden defines if card brand icon should be hidden.
  * @param cardBrands list of brands that can be detected.
  */
 @Parcelize
-class VGSCheckoutCardNumberOptions private constructor(
+class VGSCheckoutCustomCardNumberOptions private constructor(
     override val fieldName: String,
-    val isIconHidden: Boolean,
-    val cardBrands: Set<VGSCheckoutCardBrand>
-) : ViewOptions() {
+    override val isIconHidden: Boolean,
+    override val cardBrands: Set<VGSCheckoutCardBrand>,
+) : CardNumberOptions() {
 
     /**
      * Public constructor. Allow to specify set card brands mode.
@@ -33,7 +32,7 @@ class VGSCheckoutCardNumberOptions private constructor(
         fieldName: String = "",
         isIconHidden: Boolean = false,
         vararg brand: VGSCheckoutCardBrand = emptyArray(),
-        mode: VGSCheckoutSetCardBrandsMode = VGSCheckoutSetCardBrandsMode.MODIFY
+        mode: VGSCheckoutSetCardBrandsMode = VGSCheckoutSetCardBrandsMode.MODIFY,
     ) : this(
         fieldName,
         isIconHidden,

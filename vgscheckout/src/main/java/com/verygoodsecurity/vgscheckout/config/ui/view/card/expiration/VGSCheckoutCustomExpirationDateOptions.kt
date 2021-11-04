@@ -1,7 +1,6 @@
 package com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration
 
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.model.VGSDateSeparateSerializer
-import com.verygoodsecurity.vgscheckout.config.ui.view.core.ViewOptions
 import kotlinx.parcelize.Parcelize
 
 /**
@@ -13,12 +12,12 @@ import kotlinx.parcelize.Parcelize
  * @param outputFormatRegex ISO 8601 format in which date will be sent to proxy.
  */
 @Parcelize
-class VGSCheckoutExpirationDateOptions constructor(
+class VGSCheckoutCustomExpirationDateOptions constructor(
     override val fieldName: String = "",
-    val dateSeparateSerializer: VGSDateSeparateSerializer? = null,
-    val inputFormatRegex: String = DATE_FORMAT,
-    val outputFormatRegex: String = DATE_FORMAT
-) : ViewOptions() {
+    override val dateSeparateSerializer: VGSDateSeparateSerializer? = null,
+    override val inputFormatRegex: String = DATE_FORMAT,
+    override val outputFormatRegex: String = DATE_FORMAT
+) : ExpirationDateOptions() {
 
     companion object {
 
