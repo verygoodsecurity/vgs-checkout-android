@@ -1,6 +1,5 @@
 package com.verygoodsecurity.vgscheckout.config.ui.view.address.city
 
-import com.verygoodsecurity.vgscheckout.config.ui.view.core.ViewOptions
 import kotlinx.parcelize.Parcelize
 
 /**
@@ -9,6 +8,6 @@ import kotlinx.parcelize.Parcelize
  * @param fieldName text to be used for data transfer to VGS proxy.
  */
 @Parcelize
-class VGSCheckoutCityOptions @JvmOverloads constructor(
-    override val fieldName: String = ""
-) : ViewOptions()
+class VGSCheckoutCustomCityOptions @JvmOverloads constructor(
+    override val fieldName: String = "",
+) : CityOptions()

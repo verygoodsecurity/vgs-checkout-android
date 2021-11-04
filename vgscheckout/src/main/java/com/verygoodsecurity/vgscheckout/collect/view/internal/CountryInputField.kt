@@ -4,10 +4,12 @@ import android.content.Context
 import android.os.Build
 import android.view.autofill.AutofillValue
 import androidx.annotation.RequiresApi
+import com.verygoodsecurity.vgscheckout.collect.view.card.FieldType
 import com.verygoodsecurity.vgscheckout.collect.widget.VGSCountryEditText
-import com.verygoodsecurity.vgscheckout.util.country.CountriesHelper
 
 internal class CountryInputField(context: Context) : InfoInputField(context) {
+
+    override var fieldType: FieldType = FieldType.COUNTRY
 
     init {
         isFocusable = false
@@ -23,12 +25,8 @@ internal class CountryInputField(context: Context) : InfoInputField(context) {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun autofillCountry(value: AutofillValue?) {
-        value?.textValue?.run {
-            CountriesHelper.getCountry(this.toString())
-        }?.takeIf {
-            it.isValid()
-        }?.let {
-            (vgsParent as? VGSCountryEditText)?.selectedCountry = it
+        value?.textValue?.let {
+            (vgsParent as? VGSCountryEditText)?.setSelectedCountry(it.toString())
         }
     }
 }

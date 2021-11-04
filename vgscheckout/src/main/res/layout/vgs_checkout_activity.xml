@@ -226,7 +226,7 @@
                     </com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout>
 
                     <com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout
-                        android:id="@+id/vgsTilPostalAddress"
+                        android:id="@+id/vgsTilPostalCode"
                         android:layout_marginStart="@dimen/vgs_checkout_margin_padding_size_medium"
                         style="@style/VGSCheckout.TextInputLayout"
                         android:layout_width="0dp"
@@ -235,7 +235,7 @@
                         app:hint="@string/vgs_checkout_address_info_zip_hint">
 
                         <com.verygoodsecurity.vgscheckout.collect.widget.VGSEditText
-                            android:id="@+id/vgsEtPostalAddress"
+                            android:id="@+id/vgsEtPostalCode"
                             style="@style/VGSCheckout.TextInputEditText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"

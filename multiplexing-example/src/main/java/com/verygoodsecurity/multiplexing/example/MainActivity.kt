@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity(), VGSCheckoutCallback {
     }
 
     private fun getCheckoutConfig() = VGSCheckoutMultiplexingConfig(
-        token = accessToken,
+        accessToken = accessToken,
         vaultID = vaultId
     )
 

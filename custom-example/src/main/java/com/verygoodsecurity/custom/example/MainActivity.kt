@@ -11,15 +11,15 @@ import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
 import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutCustomRouteConfig
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutCustomFormConfig
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutCustomBillingAddressOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.VGSCheckoutAddressOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.city.VGSCheckoutCityOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.code.VGSCheckoutPostalAddressOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.country.VGSCheckoutCountryOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.VGSCheckoutCustomAddressOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.city.VGSCheckoutCustomCityOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.code.VGSCheckoutCustomPostalCodeOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.country.VGSCheckoutCustomCountryOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.VGSCheckoutCustomCardOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.VGSCheckoutCardHolderOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.VGSCheckoutCardNumberOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.VGSCheckoutCVCOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.VGSCheckoutExpirationDateOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.VGSCheckoutCustomCardHolderOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.VGSCheckoutCustomCardNumberOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.VGSCheckoutCustomCVCOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.VGSCheckoutCustomExpirationDateOptions
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 
 class MainActivity : AppCompatActivity(), VGSCheckoutCallback {
@@ -52,17 +52,17 @@ class MainActivity : AppCompatActivity(), VGSCheckoutCallback {
         VGSCheckoutCustomFormConfig(getCardOptions(), getAddressOptions())
 
     private fun getCardOptions() = VGSCheckoutCustomCardOptions(
-        VGSCheckoutCardNumberOptions("card_data.card_number"),
-        VGSCheckoutCardHolderOptions("card_data.card_holder"),
-        VGSCheckoutCVCOptions("card_data.card_cvc"),
-        VGSCheckoutExpirationDateOptions("card_data.exp_date")
+        VGSCheckoutCustomCardNumberOptions("card_data.card_number"),
+        VGSCheckoutCustomCardHolderOptions("card_data.card_holder"),
+        VGSCheckoutCustomCVCOptions("card_data.card_cvc"),
+        VGSCheckoutCustomExpirationDateOptions("card_data.exp_date")
     )
 
     private fun getAddressOptions() = VGSCheckoutCustomBillingAddressOptions(
-        VGSCheckoutCountryOptions("address_info.country"),
-        VGSCheckoutCityOptions("address_info.city"),
-        VGSCheckoutAddressOptions("address_info.address"),
-        postalAddressOptions = VGSCheckoutPostalAddressOptions("address_info.postal_address"),
+        VGSCheckoutCustomCountryOptions("address_info.country"),
+        VGSCheckoutCustomCityOptions("address_info.city"),
+        VGSCheckoutCustomAddressOptions("address_info.address"),
+        postalCodeOptions = VGSCheckoutCustomPostalCodeOptions("address_info.postal_code"),
     )
     //endregion
 }

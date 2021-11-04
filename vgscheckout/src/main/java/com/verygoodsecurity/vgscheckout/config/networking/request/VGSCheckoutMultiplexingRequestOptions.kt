@@ -18,11 +18,11 @@ class VGSCheckoutMultiplexingRequestOptions private constructor(
     override val mergePolicy: VGSCheckoutDataMergePolicy
 ) : CheckoutRequestOptions() {
 
-    internal constructor(token: String) : this(
+    internal constructor(accessToken: String) : this(
         VGSCheckoutHTTPMethod.POST,
         mapOf(
             CONTENT_TYPE_HEADER_NAME to CONTENT_TYPE,
-            AUTHORIZATION_HEADER_NAME to "$BEARER_TOKEN_TYPE $token"
+            AUTHORIZATION_HEADER_NAME to "$BEARER_TOKEN_TYPE $accessToken"
         ),
         emptyMap(),
         VGSCheckoutDataMergePolicy.NESTED_JSON

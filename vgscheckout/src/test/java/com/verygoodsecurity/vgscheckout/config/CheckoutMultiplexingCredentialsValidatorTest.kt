@@ -45,7 +45,7 @@ class CheckoutMultiplexingCredentialsValidatorTest {
     @Test
     fun validateJWT_emptyJWT_correctMessage() {
         // Arrange
-        val expectedMessage = "Can't parse invalid JWT token."
+        val expectedMessage = "Can't parse invalid access token."
         var exception: Exception? = null
         // Act
         try {
@@ -61,7 +61,7 @@ class CheckoutMultiplexingCredentialsValidatorTest {
     @Test
     fun validateJWT_JWTWithTransfersWriteRole_correctMessage() {
         // Arrange
-        val expectedMessage = "JWT token contains restricted role [transfers:write]."
+        val expectedMessage = "Access token contains restricted role [transfers:write]."
         var exception: Exception? = null
         // Act
         try {
@@ -77,7 +77,7 @@ class CheckoutMultiplexingCredentialsValidatorTest {
     @Test
     fun validateJWT_JWTWithTransfersAnyRole_correctMessage() {
         // Arrange
-        val expectedMessage = "JWT token contains restricted role [transfers:any]."
+        val expectedMessage = "Access token contains restricted role [transfers:any]."
         var exception: Exception? = null
         // Act
         try {

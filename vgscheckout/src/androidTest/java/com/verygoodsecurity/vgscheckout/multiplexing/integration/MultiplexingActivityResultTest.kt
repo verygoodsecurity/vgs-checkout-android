@@ -12,7 +12,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
 import com.verygoodsecurity.vgscheckout.Constants
-import com.verygoodsecurity.vgscheckout.Constants.CORRECT_TOKEN
+import com.verygoodsecurity.vgscheckout.Constants.VALID_JWT_TOKEN
 import com.verygoodsecurity.vgscheckout.Constants.VAULT_ID
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingConfig
@@ -42,7 +42,7 @@ class MultiplexingActivityResultTest {
             EXTRA_KEY_ARGS,
             CheckoutResultContract.Args(
                 VGSCheckoutMultiplexingConfig(
-                    CORRECT_TOKEN,
+                    VALID_JWT_TOKEN,
                     VAULT_ID,
                 )
             )
@@ -69,7 +69,7 @@ class MultiplexingActivityResultTest {
             fillAddressFields(
                 Constants.VALID_ADDRESS,
                 Constants.VALID_CITY,
-                Constants.USA_VALID_POSTAL_ADDRESS
+                Constants.USA_VALID_ZIP_CODE
             )
             // Act
             ViewInteraction.onViewWithScrollTo(R.id.mbSaveCard).perform(click())

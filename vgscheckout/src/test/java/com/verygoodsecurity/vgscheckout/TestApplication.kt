@@ -1,9 +1,10 @@
 package com.verygoodsecurity.vgscheckout
 
 import android.app.Application
+import org.mockito.ArgumentCaptor
 import org.mockito.Mockito
 
-internal class TestApplication: Application() {
+internal class TestApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         setTheme(R.style.VGSCheckout)
@@ -11,3 +12,6 @@ internal class TestApplication: Application() {
 }
 
 fun <T> any(): T = Mockito.any()
+
+fun <T> capture(argumentCaptor: ArgumentCaptor<T>): T = argumentCaptor.capture()
+
