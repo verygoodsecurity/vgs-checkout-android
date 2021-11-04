@@ -8,6 +8,6 @@ import kotlinx.parcelize.Parcelize
  * @param fieldName text to be used for data transfer to VGS proxy.
  */
 @Parcelize
-class VGSCheckoutPostalAddressOptions @JvmOverloads constructor(
+class VGSCheckoutCustomPostalAddressOptions @JvmOverloads constructor(
     override val fieldName: String = "",
 ) : PostalAddressOptions()

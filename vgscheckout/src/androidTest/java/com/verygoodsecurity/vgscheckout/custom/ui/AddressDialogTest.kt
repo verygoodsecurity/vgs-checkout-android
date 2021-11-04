@@ -18,7 +18,7 @@ import com.verygoodsecurity.vgscheckout.collect.widget.VGSCountryEditText
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutCustomFormConfig
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutCustomBillingAddressOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.country.VGSCheckoutCountryOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.country.VGSCheckoutCustomCountryOptions
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_ARGS
 import com.verygoodsecurity.vgscheckout.ui.CheckoutActivity
@@ -170,7 +170,7 @@ class AddressDialogTest {
                         VAULT_ID,
                         formConfig = VGSCheckoutCustomFormConfig(
                             addressOptions = VGSCheckoutCustomBillingAddressOptions(
-                                countryOptions = VGSCheckoutCountryOptions(
+                                countryOptions = VGSCheckoutCustomCountryOptions(
                                     validCountries = countries
                                 )
                             )

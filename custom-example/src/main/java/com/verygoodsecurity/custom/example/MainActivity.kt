@@ -11,10 +11,10 @@ import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
 import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutCustomRouteConfig
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutCustomFormConfig
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutCustomBillingAddressOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.VGSCheckoutAddressOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.city.VGSCheckoutCityOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.code.VGSCheckoutPostalAddressOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.country.VGSCheckoutCountryOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.VGSCheckoutCustomAddressOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.city.VGSCheckoutCustomCityOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.code.VGSCheckoutCustomPostalAddressOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.country.VGSCheckoutCustomCountryOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.VGSCheckoutCustomCardOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.VGSCheckoutCustomCardHolderOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.VGSCheckoutCustomCardNumberOptions
@@ -59,10 +59,10 @@ class MainActivity : AppCompatActivity(), VGSCheckoutCallback {
     )
 
     private fun getAddressOptions() = VGSCheckoutCustomBillingAddressOptions(
-        VGSCheckoutCountryOptions("address_info.country"),
-        VGSCheckoutCityOptions("address_info.city"),
-        VGSCheckoutAddressOptions("address_info.address"),
-        postalAddressOptions = VGSCheckoutPostalAddressOptions("address_info.postal_address"),
+        VGSCheckoutCustomCountryOptions("address_info.country"),
+        VGSCheckoutCustomCityOptions("address_info.city"),
+        VGSCheckoutCustomAddressOptions("address_info.address"),
+        postalAddressOptions = VGSCheckoutCustomPostalAddressOptions("address_info.postal_address"),
     )
     //endregion
 }

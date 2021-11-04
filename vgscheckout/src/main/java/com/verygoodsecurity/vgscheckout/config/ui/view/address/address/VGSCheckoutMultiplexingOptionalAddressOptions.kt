@@ -3,7 +3,7 @@ package com.verygoodsecurity.vgscheckout.config.ui.view.address.address
 import kotlinx.parcelize.Parcelize
 
 /**
- * Multiplexing optional address input field options.
+ * Optional address input field options.
  *
  * @param fieldName text to be used for data transfer to VGS proxy.
  */
