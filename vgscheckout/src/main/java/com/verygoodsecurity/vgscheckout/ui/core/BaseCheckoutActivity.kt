@@ -91,7 +91,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> :
             .build()
     }
 
-    private val saveCardOnDoneImeOption = object : InputFieldView.OnEditorActionListener {
+    private val saveCardOnDoneEditorListener = object : InputFieldView.OnEditorActionListener {
 
         override fun onEditorAction(v: View?, actionId: Int, event: KeyEvent?): Boolean {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -256,6 +256,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> :
         cityEt.setFieldName(options.fieldName)
         cityEt.addRule(billingAddressValidationRule)
         cityEt.addOnTextChangeListener(this)
+        cityEt.setOnEditorActionListener(saveCardOnDoneEditorListener)
         collect.bindView(cityEt)
         updateCityView(countryEt.selectedCountry)
     }
@@ -271,7 +272,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> :
     private fun initPostalAddressView(options: PostalAddressOptions) {
         postalAddressEt.setFieldName(options.fieldName)
         postalAddressEt.addOnTextChangeListener(this)
-        postalAddressEt.setOnEditorActionListener(saveCardOnDoneImeOption)
+        postalAddressEt.setOnEditorActionListener(saveCardOnDoneEditorListener)
         collect.bindView(postalAddressEt)
         updatePostalAddressView(countryEt.selectedCountry)
     }
@@ -483,6 +484,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> :
                     routeConfig.hostnamePolicy is VGSCheckoutHostnamePolicy.CustomHostname,
                     routeConfig.requestOptions.extraData.isNotEmpty(),
                     hasCustomHeaders(),
+                    formConfig.addressOptions.countryOptions.validCountries.isNotEmpty(),
                     routeConfig.requestOptions.mergePolicy,
                     invalidFields
                 )

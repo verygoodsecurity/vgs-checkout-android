@@ -8,6 +8,7 @@ internal data class RequestEvent(
     val hasCustomHostname: Boolean,
     val hasCustomData: Boolean,
     val hasCustomHeaders: Boolean,
+    val hasValidCountries: Boolean,
     val mergingPolicy: VGSCheckoutDataMergePolicy,
     val invalidFieldTypes: List<String>,
 ) : Event(TYPE) {
@@ -18,6 +19,7 @@ internal data class RequestEvent(
             if (hasCustomHostname) add(CUSTOM_HOSTNAME)
             if (hasCustomData) add(CUSTOM_DATA)
             if (hasCustomHeaders) add(CUSTOM_HEADER)
+            if (hasValidCountries) add(VALID_COUNTRIES)
             add(mergingPolicy.name.lowercase())
         })
         if (invalidFieldTypes.isNotEmpty()) put(KEY_INVALID_FIELDS, invalidFieldTypes)
@@ -33,5 +35,6 @@ internal data class RequestEvent(
         private const val CUSTOM_HOSTNAME = "custom_hostname"
         private const val CUSTOM_DATA = "custom_data"
         private const val CUSTOM_HEADER = "custom_header"
+        private const val VALID_COUNTRIES = "valid_countries"
     }
 }
