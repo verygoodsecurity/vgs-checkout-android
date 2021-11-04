@@ -24,7 +24,7 @@ object Constants {
     const val VALID_ADDRESS = "Somewhere st."
     const val VALID_CITY = "New York"
     const val USA_VALID_ZIP_CODE = "12345"
-    const val INVALID_POSTAL_ADDRESS = "1234"
+    const val USA_INVALID_ZIP_CODE = "1234"
 
     const val SUCCESS_RESPONSE_CODE = 200
 }

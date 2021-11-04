@@ -14,7 +14,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.verygoodsecurity.vgscheckout.Constants.VALID_JWT_TOKEN
 import com.verygoodsecurity.vgscheckout.Constants.INVALID_CARD_NUMBER
 import com.verygoodsecurity.vgscheckout.Constants.INVALID_EXP_DATE
-import com.verygoodsecurity.vgscheckout.Constants.INVALID_POSTAL_ADDRESS
+import com.verygoodsecurity.vgscheckout.Constants.USA_INVALID_ZIP_CODE
 import com.verygoodsecurity.vgscheckout.Constants.INVALID_SECURITY_CODE
 import com.verygoodsecurity.vgscheckout.Constants.USA_VALID_ZIP_CODE
 import com.verygoodsecurity.vgscheckout.Constants.VALID_ADDRESS
@@ -128,7 +128,7 @@ class FieldsValidationTest {
             fillAddressFields(
                 VALID_ADDRESS,
                 VALID_CITY,
-                INVALID_POSTAL_ADDRESS
+                USA_INVALID_ZIP_CODE
             )
             // Act
             onViewWithScrollTo(R.id.mbSaveCard).perform(click())
