@@ -66,7 +66,7 @@ class AddressDialogTest {
     fun countrySelect_zipCodeHintByDefault() {
         launch<CheckoutActivity>(defaultIntent).use {
             //Assert
-            onViewWithScrollTo(R.id.vgsTilPostalAddress).check(matches(VGSViewMatchers.withHint("Zip code")))
+            onViewWithScrollTo(R.id.vgsTilPostalCode).check(matches(VGSViewMatchers.withHint("Zip code")))
         }
     }
 
@@ -83,14 +83,14 @@ class AddressDialogTest {
     }
 
     @Test
-    fun countrySelect_selectCanada_postalAddressHintChanged() {
+    fun countrySelect_selectCanada_postalCodeHintChanged() {
         launch<CheckoutActivity>(defaultIntent).use {
             // Act
             onViewWithScrollTo(R.id.vgsTilCountry).perform(click())
             onData(hasToString(startsWith("Canada"))).perform(scrollTo()).perform(click())
             onView(withText("Ok")).perform(click())
             //Assert
-            onViewWithScrollTo(R.id.vgsTilPostalAddress).check(matches(VGSViewMatchers.withHint("Postal code")))
+            onViewWithScrollTo(R.id.vgsTilPostalCode).check(matches(VGSViewMatchers.withHint("Postal code")))
         }
     }
 

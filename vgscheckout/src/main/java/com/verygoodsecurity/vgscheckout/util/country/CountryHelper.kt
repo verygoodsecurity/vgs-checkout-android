@@ -1,7 +1,7 @@
 package com.verygoodsecurity.vgscheckout.util.country
 
 import com.verygoodsecurity.vgscheckout.util.country.model.Country
-import com.verygoodsecurity.vgscheckout.util.country.model.PostalAddressType
+import com.verygoodsecurity.vgscheckout.util.country.model.PostalCodeType
 import java.util.*
 
 private const val EMPTY = ""
@@ -13,19 +13,19 @@ internal object CountriesHelper {
     fun getCountry(iso: String) = Country(
         Locale(EMPTY, iso).getDisplayCountry(Locale.US),
         iso,
-        getPostalAddressType(iso),
-        getPostalAddressRegex(iso)
+        getPostalCodeType(iso),
+        getPostalCodeRegex(iso)
     )
 
     fun getCountries(isoCodes: List<String>) = isoCodes.map { getCountry(it) }
 
-    private fun getPostalAddressType(iso: String) = when {
-        iso == ISO.USA -> PostalAddressType.ZIP
-        ISO.COUNTRIES_ISO_WITHOUT_POSTAL_ADDRESS.contains(iso) -> PostalAddressType.NOTHING
-        else -> PostalAddressType.POSTAL
+    private fun getPostalCodeType(iso: String) = when {
+        iso == ISO.USA -> PostalCodeType.ZIP
+        ISO.COUNTRIES_ISO_WITHOUT_POSTAL_ADDRESS.contains(iso) -> PostalCodeType.NOTHING
+        else -> PostalCodeType.POSTAL
     }
 
-    private fun getPostalAddressRegex(iso: String) = when (iso) {
+    private fun getPostalCodeRegex(iso: String) = when (iso) {
         ISO.USA -> "^([0-9]{5})(?:-([0-9]{4}))?\$"
         ISO.CANADA -> "^([ABCEGHJKLMNPRSTVXY][0-9][ABCEGHJKLMNPRSTVWXYZ])\\s*([0-9][ABCEGHJKLMNPRSTVWXYZ][0-9])\$"
         ISO.AUSTRALIA, ISO.NEW_ZEALAND -> "^\\d{4}\$"
