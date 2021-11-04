@@ -1,9 +1,9 @@
 package com.verygoodsecurity.vgscheckout.exception
 
-private const val MESSAGE = "JWT token contains restricted role [%s]."
+private const val MESSAGE = "Access token contains restricted role [%s]."
 
 /**
- * Throws to indicate that JWT token contains restricted access roles.
+ * Throws to indicate that access token contains restricted access roles.
  */
 class VGSCheckoutJWTRestrictedRoleException internal constructor(
     role: String,

@@ -16,10 +16,10 @@ class VGSCheckoutMultiplexingRouteConfig private constructor(
     override val requestOptions: VGSCheckoutMultiplexingRequestOptions
 ) : CheckoutRouteConfig() {
 
-    internal constructor(token: String) : this(
+    internal constructor(accessToken: String) : this(
         PATH,
         VGSCheckoutHostnamePolicy.Vault,
-        VGSCheckoutMultiplexingRequestOptions(token)
+        VGSCheckoutMultiplexingRequestOptions(accessToken)
     )
 
     private companion object {
