@@ -36,6 +36,7 @@ import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers.withError
 import com.verygoodsecurity.vgscheckout.util.ViewInteraction.onViewWithScrollTo
 import com.verygoodsecurity.vgscheckout.util.extension.fillAddressFields
 import com.verygoodsecurity.vgscheckout.util.extension.fillCardFields
+import com.verygoodsecurity.vgscheckout.util.extension.waitFor
 import org.hamcrest.CoreMatchers.startsWith
 import org.hamcrest.Matchers.hasToString
 import org.junit.Before
@@ -184,7 +185,7 @@ class FieldsValidationTest {
     @Test
     fun saveCard_multiplex_validInput_noErrorsDisplayed() {
         launch<CheckoutMultiplexingActivity>(defaultIntent).use {
-            it.moveToState(Lifecycle.State.RESUMED)
+            waitFor(1500)
             // Arrange
             fillCardFields(
                 VALID_CARD_HOLDER,
@@ -199,9 +200,6 @@ class FieldsValidationTest {
             )
             // Act
             onViewWithScrollTo(R.id.mbSaveCard).perform(click())
-//            it.onActivity { activity ->
-//                activity.validate()
-//            }
             // Assert
             onViewWithScrollTo(R.id.vgsTilCardHolder).check(matches(withError(null)))
             onViewWithScrollTo(R.id.vgsTilCardNumber).check(matches(withError(null)))

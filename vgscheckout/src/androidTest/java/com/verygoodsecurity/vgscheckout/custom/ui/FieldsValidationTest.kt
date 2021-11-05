@@ -186,7 +186,7 @@ class FieldsValidationTest {
     @Test
     fun saveCard_custom_validInput_noErrorsDisplayed() {
         launch<CheckoutActivity>(defaultIntent).use {
-            it.moveToState(Lifecycle.State.RESUMED)
+            waitFor(1500)
             // Arrange
             fillCardFields(
                 VALID_CARD_HOLDER,
@@ -201,9 +201,6 @@ class FieldsValidationTest {
             )
             // Act
             onViewWithScrollTo(R.id.mbSaveCard).perform(click())
-//            it.onActivity { activity ->
-//                activity.validate()
-//            }
             // Assert
             onViewWithScrollTo(R.id.vgsTilCardHolder).check(matches(withError(null)))
             onViewWithScrollTo(R.id.vgsTilCardNumber).check(matches(withError(null)))
