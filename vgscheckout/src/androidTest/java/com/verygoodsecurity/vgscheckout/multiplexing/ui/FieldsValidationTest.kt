@@ -7,9 +7,11 @@ import androidx.test.core.app.ActivityScenario.launch
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onData
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
@@ -215,9 +217,11 @@ class FieldsValidationTest {
     fun showErrorMessage_multiplexing_countrySelect_selectCanada_postalAddressErrorMessageCleared() {
         launch<CheckoutMultiplexingActivity>(defaultIntent).use {
             // Act
-            it.onActivity { activity ->
-                activity.validate()
-            }
+            waitFor(500)
+            onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard())
+
+            onViewWithScrollTo(R.id.mbSaveCard).perform(click())
+
             onViewWithScrollTo(R.id.vgsTilCountry).perform(click())
             onData(hasToString(startsWith("Canada"))).perform(scrollTo()).perform(click())
             onView(withText("Ok")).perform(click())
