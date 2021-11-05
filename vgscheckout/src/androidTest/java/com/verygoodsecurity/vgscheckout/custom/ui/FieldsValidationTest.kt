@@ -67,11 +67,7 @@ class FieldsValidationTest {
     fun saveCard_noInput_emptyErrorsDisplayed() {
         launch<CheckoutActivity>(defaultIntent).use {
             // Act
-//            onView(isRoot()).perform(waitId(R.id.dialogEditor, TimeUnit.SECONDS.toMillis(15)));
-
             waitFor(2000)
-//            onView(isRoot()).perform(waitFor(2000))
-
             onViewWithScrollTo(R.id.mbSaveCard)
                 .perform(click())
 
@@ -186,7 +182,7 @@ class FieldsValidationTest {
     @Test
     fun saveCard_custom_validInput_noErrorsDisplayed() {
         launch<CheckoutActivity>(defaultIntent).use {
-            waitFor(1500)
+            it.moveToState(Lifecycle.State.RESUMED)
             // Arrange
             fillCardFields(
                 VALID_CARD_HOLDER,
@@ -200,6 +196,7 @@ class FieldsValidationTest {
                 USA_VALID_POSTAL_ADDRESS
             )
             // Act
+            waitFor(2000)
             onViewWithScrollTo(R.id.mbSaveCard).perform(click())
             // Assert
             onViewWithScrollTo(R.id.vgsTilCardHolder).check(matches(withError(null)))
