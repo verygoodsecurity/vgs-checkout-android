@@ -491,7 +491,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> :
     }
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    internal fun validate() {
+    private fun validate() {
         getInvalidFieldsTypes()
     }
 }
