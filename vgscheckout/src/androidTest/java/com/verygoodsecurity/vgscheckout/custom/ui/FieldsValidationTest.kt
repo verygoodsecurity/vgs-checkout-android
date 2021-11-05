@@ -2,7 +2,6 @@ package com.verygoodsecurity.vgscheckout.custom.ui
 
 import android.content.Context
 import android.content.Intent
-import androidx.lifecycle.Lifecycle
 import androidx.test.core.app.ActivityScenario.launch
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onData
@@ -51,7 +50,10 @@ class FieldsValidationTest {
     private val defaultIntent = Intent(context, CheckoutActivity::class.java).apply {
         putExtra(
             EXTRA_KEY_ARGS,
-            CheckoutResultContract.Args(VGSCheckoutCustomConfig(VAULT_ID))
+            CheckoutResultContract.Args(VGSCheckoutCustomConfig(
+                VAULT_ID,
+                isScreenshotsAllowed = true
+            ))
         )
     }
 
@@ -70,9 +72,9 @@ class FieldsValidationTest {
             onViewWithScrollTo(R.id.mbSaveCard)
                 .perform(click())
 
-            it.onActivity { activity ->
-                activity.validate()
-            }
+//            it.onActivity { activity ->
+//                activity.validate()
+//            }
             // Assert
             onViewWithScrollTo(R.id.vgsTilCardHolder).check(
                 matches(

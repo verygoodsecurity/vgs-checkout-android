@@ -6,7 +6,9 @@ import android.content.Intent
 import androidx.test.core.app.ActivityScenario.launch
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
@@ -96,8 +98,8 @@ class MultiplexingActivityResultTest {
     fun performMultiplexing_cancelActivityResult_withBackPress_codeCanceled() {
         launch<CheckoutMultiplexingActivity>(defaultIntent).use {
             // Act
+            onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard())
             device.pressBack()
-            pauseTestFor(500)
             //Assert
             val result = it?.getParcelableSafe<CheckoutResultContract.Result>(EXTRA_KEY_RESULT)
             assertEquals(Activity.RESULT_CANCELED, it.result.resultCode)
