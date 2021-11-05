@@ -183,6 +183,7 @@ class FieldsValidationTest {
     fun saveCard_custom_validInput_noErrorsDisplayed() {
         launch<CheckoutActivity>(defaultIntent).use {
             it.moveToState(Lifecycle.State.RESUMED)
+            waitFor(2000)
             // Arrange
             fillCardFields(
                 VALID_CARD_HOLDER,
