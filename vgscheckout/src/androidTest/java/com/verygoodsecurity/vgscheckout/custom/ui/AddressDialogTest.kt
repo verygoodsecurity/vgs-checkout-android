@@ -20,7 +20,6 @@ import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_ARGS
 import com.verygoodsecurity.vgscheckout.ui.CheckoutActivity
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers
 import com.verygoodsecurity.vgscheckout.util.ViewInteraction.onViewWithScrollTo
-import com.verygoodsecurity.vgscheckout.util.extension.pauseTestFor
 import org.hamcrest.Matchers.hasToString
 import org.hamcrest.Matchers.startsWith
 import org.junit.Test
@@ -70,7 +69,6 @@ class AddressDialogTest {
             // Act
             onViewWithScrollTo(R.id.vgsTilCountry)
             onView(withId(R.id.vgsTilCountry)).perform(click())
-            pauseTestFor(500)
             onData(hasToString(startsWith("Canada"))).perform(scrollTo()).perform(click())
             onView(withText("Ok")).perform(click())
             //Assert

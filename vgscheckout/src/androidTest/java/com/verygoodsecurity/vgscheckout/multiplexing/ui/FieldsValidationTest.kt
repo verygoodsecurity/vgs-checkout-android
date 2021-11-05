@@ -36,7 +36,6 @@ import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers.withError
 import com.verygoodsecurity.vgscheckout.util.ViewInteraction.onViewWithScrollTo
 import com.verygoodsecurity.vgscheckout.util.extension.fillAddressFields
 import com.verygoodsecurity.vgscheckout.util.extension.fillCardFields
-import com.verygoodsecurity.vgscheckout.util.extension.pauseTestFor
 import org.hamcrest.CoreMatchers.startsWith
 import org.hamcrest.Matchers.hasToString
 import org.junit.Before
@@ -67,7 +66,6 @@ class FieldsValidationTest {
     fun prepareDevice() {
         device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
         device.setOrientationNatural()
-        pauseTestFor(500)
     }
 
     @Test

@@ -490,8 +490,8 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> :
         }
     }
 
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    private fun validate() {
-        getInvalidFieldsTypes()
-    }
+//    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+//    private fun validate() {
+//        getInvalidFieldsTypes()
+//    }
 }
