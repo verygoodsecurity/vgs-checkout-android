@@ -108,3 +108,11 @@ fun waitFor(milliseconds: Long) {
 
     })
 }
+
+fun pauseTestFor(milliseconds: Long) {
+    try {
+        Thread.sleep(milliseconds)
+    } catch (e: InterruptedException) {
+        e.printStackTrace()
+    }
+}

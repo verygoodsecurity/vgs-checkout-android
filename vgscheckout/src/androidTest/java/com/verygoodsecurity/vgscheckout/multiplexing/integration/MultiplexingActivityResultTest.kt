@@ -95,9 +95,8 @@ class MultiplexingActivityResultTest {
     fun performMultiplexing_cancelActivityResult_withBackPress_codeCanceled() {
         launch<CheckoutMultiplexingActivity>(defaultIntent).use {
             // Act
-            waitFor(1500)
             device.pressBack()
-            waitFor(500)
+            pauseTestFor(500)
             //Assert
             val result = it?.getParcelableSafe<CheckoutResultContract.Result>(EXTRA_KEY_RESULT)
             assertEquals(Activity.RESULT_CANCELED, it.result.resultCode)
