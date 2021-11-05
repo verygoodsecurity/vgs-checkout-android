@@ -66,9 +66,10 @@ class FieldsValidationTest {
     fun saveCard_noInput_emptyErrorsDisplayed() {
         launch<CheckoutActivity>(defaultIntent).use {
             // Act
-            it.onActivity { activity ->
-                activity.validate()
-            }
+            onViewWithScrollTo(R.id.mbSaveCard).perform(click())
+//            it.onActivity { activity ->
+//                activity.validate()
+//            }
             // Assert
             onViewWithScrollTo(R.id.vgsTilCardHolder).check(
                 matches(
