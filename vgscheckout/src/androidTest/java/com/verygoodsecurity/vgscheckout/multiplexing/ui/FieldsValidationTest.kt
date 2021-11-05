@@ -31,7 +31,6 @@ import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingConfig
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_ARGS
-import com.verygoodsecurity.vgscheckout.ui.CheckoutActivity
 import com.verygoodsecurity.vgscheckout.ui.CheckoutMultiplexingActivity
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers.withError
 import com.verygoodsecurity.vgscheckout.util.ViewInteraction.onViewWithScrollTo
@@ -75,7 +74,9 @@ class FieldsValidationTest {
     fun saveCard_noInput_emptyErrorsDisplayed() {
         launch<CheckoutMultiplexingActivity>(defaultIntent).use {
             // Act
-            onViewWithScrollTo(R.id.mbSaveCard).perform(click())
+            it.onActivity { activity ->
+                activity.validate()
+            }
             // Assert
             onViewWithScrollTo(R.id.vgsTilCardHolder).check(
                 matches(
@@ -145,7 +146,9 @@ class FieldsValidationTest {
                 INVALID_POSTAL_ADDRESS
             )
             // Act
-            onViewWithScrollTo(R.id.mbSaveCard).perform(click())
+            it.onActivity { activity ->
+                activity.validate()
+            }
             // Assert
             onViewWithScrollTo(R.id.vgsTilCardNumber).check(
                 matches(
@@ -195,7 +198,9 @@ class FieldsValidationTest {
                 USA_VALID_POSTAL_ADDRESS
             )
             // Act
-            onViewWithScrollTo(R.id.mbSaveCard).perform(click())
+            it.onActivity { activity ->
+                activity.validate()
+            }
             // Assert
             onViewWithScrollTo(R.id.vgsTilCardHolder).check(matches(withError(null)))
             onViewWithScrollTo(R.id.vgsTilCardNumber).check(matches(withError(null)))
@@ -211,7 +216,9 @@ class FieldsValidationTest {
     fun showErrorMessage_multiplexing_countrySelect_selectCanada_postalAddressErrorMessageCleared() {
         launch<CheckoutMultiplexingActivity>(defaultIntent).use {
             // Act
-            onViewWithScrollTo(R.id.mbSaveCard).perform(click())
+            it.onActivity { activity ->
+                activity.validate()
+            }
             onViewWithScrollTo(R.id.vgsTilCountry).perform(click())
             onData(hasToString(startsWith("Canada"))).perform(scrollTo()).perform(click())
             onView(withText("Ok")).perform(click())
@@ -222,7 +229,7 @@ class FieldsValidationTest {
 
     @Test
     fun noError_selectCanada_postalAddressValidationRuleChange_errorDisplayed() {
-        launch<CheckoutActivity>(defaultIntent).use {
+        launch<CheckoutMultiplexingActivity>(defaultIntent).use {
             // Arrange
             fillCardFields(
                 VALID_CARD_HOLDER,
@@ -240,7 +247,9 @@ class FieldsValidationTest {
             onData(hasToString(startsWith("Canada"))).perform(scrollTo()).perform(click())
             onView(withText("Ok")).perform(click())
 
-            onViewWithScrollTo(R.id.mbSaveCard).perform(click())
+            it.onActivity { activity ->
+                activity.validate()
+            }
             // Assert
             onViewWithScrollTo(R.id.vgsTilPostalAddress).check(matches(withError("Postal code is invalid")))
         }

@@ -35,7 +35,6 @@ import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers.withError
 import com.verygoodsecurity.vgscheckout.util.ViewInteraction.onViewWithScrollTo
 import com.verygoodsecurity.vgscheckout.util.extension.fillAddressFields
 import com.verygoodsecurity.vgscheckout.util.extension.fillCardFields
-import com.verygoodsecurity.vgscheckout.util.extension.pauseTestFor
 import org.hamcrest.Matchers.hasToString
 import org.hamcrest.Matchers.startsWith
 import org.junit.Before
@@ -67,7 +66,9 @@ class FieldsValidationTest {
     fun saveCard_noInput_emptyErrorsDisplayed() {
         launch<CheckoutActivity>(defaultIntent).use {
             // Act
-            onViewWithScrollTo(R.id.mbSaveCard).perform(click())
+            it.onActivity { activity ->
+                activity.validate()
+            }
             // Assert
             onViewWithScrollTo(R.id.vgsTilCardHolder).check(
                 matches(
@@ -137,7 +138,9 @@ class FieldsValidationTest {
                 INVALID_POSTAL_ADDRESS
             )
             // Act
-            onViewWithScrollTo(R.id.mbSaveCard).perform(click())
+            it.onActivity { activity ->
+                activity.validate()
+            }
             // Assert
             onViewWithScrollTo(R.id.vgsTilCardNumber).check(
                 matches(
@@ -187,7 +190,9 @@ class FieldsValidationTest {
                 USA_VALID_POSTAL_ADDRESS
             )
             // Act
-            onViewWithScrollTo(R.id.mbSaveCard).perform(click())
+            it.onActivity { activity ->
+                activity.validate()
+            }
             // Assert
             onViewWithScrollTo(R.id.vgsTilCardHolder).check(matches(withError(null)))
             onViewWithScrollTo(R.id.vgsTilCardNumber).check(matches(withError(null)))
@@ -203,7 +208,9 @@ class FieldsValidationTest {
     fun showErrorMessage_custom_countrySelect_selectCanada_postalAddressErrorMessageCleared() {
         launch<CheckoutActivity>(defaultIntent).use {
             // Act
-            onViewWithScrollTo(R.id.mbSaveCard).perform(click())
+            it.onActivity { activity ->
+                activity.validate()
+            }
             onViewWithScrollTo(R.id.vgsTilCountry).perform(click())
             onData(hasToString(startsWith("Canada"))).perform(scrollTo()).perform(click())
             onView(withText("Ok")).perform(click())
@@ -233,7 +240,9 @@ class FieldsValidationTest {
             onData(hasToString(startsWith("Canada"))).perform(scrollTo()).perform(click())
             onView(withText("Ok")).perform(click())
 
-            onViewWithScrollTo(R.id.mbSaveCard).perform(click())
+            it.onActivity { activity ->
+                activity.validate()
+            }
             // Assert
             onViewWithScrollTo(R.id.vgsTilPostalAddress).check(matches(withError("Postal code is invalid")))
         }
