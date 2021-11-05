@@ -49,6 +49,7 @@ jobs:
               --app custom-example/build/outputs/apk/debug/custom-example-debug.apk \
               --test vgscheckout/build/outputs/apk/androidTest/debug/vgscheckout-debug-androidTest.apk \
               --device model=redfin,version=30,locale=en,orientation=portrait \
+              --device model=F8332,version=26,locale=en,orientation=portrait \
 workflows:
   main:
     jobs:

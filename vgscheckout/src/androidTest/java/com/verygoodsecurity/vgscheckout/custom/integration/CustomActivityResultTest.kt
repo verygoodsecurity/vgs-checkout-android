@@ -39,7 +39,10 @@ class CustomActivityResultTest {
     private val defaultIntent = Intent(context, CheckoutActivity::class.java).apply {
         putExtra(
             EXTRA_KEY_ARGS,
-            CheckoutResultContract.Args(VGSCheckoutCustomConfig(Constants.VAULT_ID_3))
+            CheckoutResultContract.Args(VGSCheckoutCustomConfig(
+                Constants.VAULT_ID_3,
+                isScreenshotsAllowed = true
+            ))
         )
     }
 

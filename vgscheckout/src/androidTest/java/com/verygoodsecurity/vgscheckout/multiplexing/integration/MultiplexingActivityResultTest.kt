@@ -42,6 +42,7 @@ class MultiplexingActivityResultTest {
                 VGSCheckoutMultiplexingConfig(
                     CORRECT_TOKEN,
                     VAULT_ID,
+                    isScreenshotsAllowed = true
                 )
             )
         )

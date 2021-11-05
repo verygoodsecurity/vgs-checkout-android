@@ -56,6 +56,7 @@ class FieldsValidationTest {
                 VGSCheckoutMultiplexingConfig(
                     CORRECT_TOKEN,
                     VAULT_ID,
+                    isScreenshotsAllowed = true
                 )
             )
         )
