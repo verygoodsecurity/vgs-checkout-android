@@ -27,6 +27,7 @@ import com.verygoodsecurity.vgscheckout.util.ViewInteraction.onViewWithScrollTo
 import com.verygoodsecurity.vgscheckout.util.extension.fillAddressFields
 import com.verygoodsecurity.vgscheckout.util.extension.fillCardFields
 import com.verygoodsecurity.vgscheckout.util.extension.getParcelableSafe
+import com.verygoodsecurity.vgscheckout.util.extension.waitFor
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -140,7 +141,9 @@ class CustomActivityResultTest {
     fun performCheckout_cancelActivityResult_withBackPress_codeCancel() {
         launch<CheckoutActivity>(defaultIntent).use {
             // Act
+            waitFor(1500)
             device.pressBack()
+            waitFor(500)
             //Assert
             val result = it?.getParcelableSafe<CheckoutResultContract.Result>(EXTRA_KEY_RESULT)
             assertEquals(Activity.RESULT_CANCELED, it.result.resultCode)

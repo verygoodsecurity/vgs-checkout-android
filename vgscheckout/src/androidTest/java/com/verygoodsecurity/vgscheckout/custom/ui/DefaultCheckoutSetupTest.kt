@@ -20,6 +20,7 @@ import com.verygoodsecurity.vgscheckout.ui.CheckoutMultiplexingActivity
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers.withError
 import com.verygoodsecurity.vgscheckout.util.ViewInteraction.onViewWithScrollTo
+import com.verygoodsecurity.vgscheckout.util.extension.waitFor
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -47,6 +48,7 @@ class DefaultCheckoutSetupTest {
     @Test
     fun performCheckout_defaultVisibleFields() {
         launch<CheckoutMultiplexingActivity>(defaultIntent).use {
+            waitFor(1500)
             //Assert
             onViewWithScrollTo(R.id.vgsTilCardHolder)
                 .check(matches(isDisplayed()))
@@ -78,6 +80,7 @@ class DefaultCheckoutSetupTest {
     @Test
     fun performCheckout_defaultFieldContent() {
         launch<CheckoutActivity>(defaultIntent).use {
+            waitFor(1500)
             //Assert
             onViewWithScrollTo(R.id.vgsTilCardHolder)
             onView(withId(R.id.vgsEtCardHolder))

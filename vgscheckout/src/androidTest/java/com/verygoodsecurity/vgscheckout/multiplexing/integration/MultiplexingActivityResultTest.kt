@@ -22,10 +22,8 @@ import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_RESULT
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 import com.verygoodsecurity.vgscheckout.ui.CheckoutMultiplexingActivity
 import com.verygoodsecurity.vgscheckout.util.ViewInteraction
-import com.verygoodsecurity.vgscheckout.util.extension.fillAddressFields
-import com.verygoodsecurity.vgscheckout.util.extension.fillCardFields
+import com.verygoodsecurity.vgscheckout.util.extension.*
 import com.verygoodsecurity.vgscheckout.util.extension.getParcelableSafe
-import com.verygoodsecurity.vgscheckout.util.extension.safeResult
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -97,7 +95,9 @@ class MultiplexingActivityResultTest {
     fun performMultiplexing_cancelActivityResult_withBackPress_codeCanceled() {
         launch<CheckoutMultiplexingActivity>(defaultIntent).use {
             // Act
+            waitFor(1500)
             device.pressBack()
+            waitFor(500)
             //Assert
             val result = it?.getParcelableSafe<CheckoutResultContract.Result>(EXTRA_KEY_RESULT)
             assertEquals(Activity.RESULT_CANCELED, it.result.resultCode)

@@ -17,6 +17,7 @@ import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_ARGS
 import com.verygoodsecurity.vgscheckout.ui.CheckoutMultiplexingActivity
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers
 import com.verygoodsecurity.vgscheckout.util.ViewInteraction
+import com.verygoodsecurity.vgscheckout.util.extension.waitFor
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -41,6 +42,7 @@ class DefaultMultiplexingSetupTest {
     @Test
     fun performCheckout_defaultVisibleFields() {
         ActivityScenario.launch<CheckoutMultiplexingActivity>(defaultIntent).use {
+            waitFor(1500)
             //Assert
             ViewInteraction.onViewWithScrollTo(R.id.vgsTilCardHolder)
                 .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
