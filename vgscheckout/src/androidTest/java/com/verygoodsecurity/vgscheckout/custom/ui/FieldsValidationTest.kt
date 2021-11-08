@@ -134,6 +134,9 @@ class FieldsValidationTest {
     fun saveCard_invalidInput_invalidInputErrorsDisplayed() {
         launch<CheckoutActivity>(defaultIntent).use {
             // Arrange
+            waitFor(500)
+            onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard())
+
             fillCardFields(
                 VALID_CARD_HOLDER,
                 INVALID_CARD_NUMBER,
@@ -146,9 +149,7 @@ class FieldsValidationTest {
                 INVALID_POSTAL_ADDRESS
             )
             // Act
-            it.onActivity { activity ->
-                activity.validate()
-            }
+            onViewWithScrollTo(R.id.mbSaveCard).perform(click())
             // Assert
             onViewWithScrollTo(R.id.vgsTilCardNumber).check(
                 matches(
@@ -185,6 +186,9 @@ class FieldsValidationTest {
     fun saveCard_custom_validInput_noErrorsDisplayed() {
         launch<CheckoutActivity>(defaultIntent).use {
             // Arrange
+            waitFor(500)
+            onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard())
+
             fillCardFields(
                 VALID_CARD_HOLDER,
                 VALID_CARD_NUMBER,
@@ -197,9 +201,7 @@ class FieldsValidationTest {
                 USA_VALID_POSTAL_ADDRESS
             )
             // Act
-            it.onActivity { activity ->
-                activity.validate()
-            }
+            onViewWithScrollTo(R.id.mbSaveCard).perform(click())
             // Assert
             onViewWithScrollTo(R.id.vgsTilCardHolder).check(matches(withError(null)))
             onViewWithScrollTo(R.id.vgsTilCardNumber).check(matches(withError(null)))
@@ -233,6 +235,9 @@ class FieldsValidationTest {
     fun noError_selectCanada_postalAddressValidationRuleChange_errorDisplayed() {
         launch<CheckoutActivity>(defaultIntent).use {
             // Arrange
+            waitFor(500)
+            onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard())
+
             fillCardFields(
                 VALID_CARD_HOLDER,
                 VALID_CARD_NUMBER,
@@ -249,9 +254,7 @@ class FieldsValidationTest {
             onData(hasToString(startsWith("Canada"))).perform(scrollTo()).perform(click())
             onView(withText("Ok")).perform(click())
 
-            it.onActivity { activity ->
-                activity.validate()
-            }
+            onViewWithScrollTo(R.id.mbSaveCard).perform(click())
             // Assert
             onViewWithScrollTo(R.id.vgsTilPostalAddress).check(matches(withError("Postal code is invalid")))
         }

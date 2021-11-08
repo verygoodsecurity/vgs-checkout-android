@@ -2,7 +2,6 @@ package com.verygoodsecurity.vgscheckout.multiplexing.ui
 
 import android.content.Context
 import android.content.Intent
-import androidx.lifecycle.Lifecycle
 import androidx.test.core.app.ActivityScenario.launch
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onData
@@ -76,9 +75,10 @@ class FieldsValidationTest {
     fun saveCard_noInput_emptyErrorsDisplayed() {
         launch<CheckoutMultiplexingActivity>(defaultIntent).use {
             // Act
-            it.onActivity { activity ->
-                activity.validate()
-            }
+            waitFor(500)
+            onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard())
+
+            onViewWithScrollTo(R.id.mbSaveCard).perform(click())
             // Assert
             onViewWithScrollTo(R.id.vgsTilCardHolder).check(
                 matches(
@@ -136,6 +136,9 @@ class FieldsValidationTest {
     fun saveCard_invalidInput_invalidInputErrorsDisplayed() {
         launch<CheckoutMultiplexingActivity>(defaultIntent).use {
             // Arrange
+            waitFor(500)
+            onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard())
+
             fillCardFields(
                 VALID_CARD_HOLDER,
                 INVALID_CARD_NUMBER,
@@ -148,9 +151,7 @@ class FieldsValidationTest {
                 INVALID_POSTAL_ADDRESS
             )
             // Act
-            it.onActivity { activity ->
-                activity.validate()
-            }
+            onViewWithScrollTo(R.id.mbSaveCard).perform(click())
             // Assert
             onViewWithScrollTo(R.id.vgsTilCardNumber).check(
                 matches(
@@ -187,6 +188,9 @@ class FieldsValidationTest {
     fun saveCard_multiplex_validInput_noErrorsDisplayed() {
         launch<CheckoutMultiplexingActivity>(defaultIntent).use {
             // Arrange
+            waitFor(500)
+            onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard())
+
             fillCardFields(
                 VALID_CARD_HOLDER,
                 VALID_CARD_NUMBER,
@@ -199,9 +203,7 @@ class FieldsValidationTest {
                 USA_VALID_POSTAL_ADDRESS
             )
             // Act
-            it.onActivity { activity ->
-                activity.validate()
-            }
+            onViewWithScrollTo(R.id.mbSaveCard).perform(click())
             // Assert
             onViewWithScrollTo(R.id.vgsTilCardHolder).check(matches(withError(null)))
             onViewWithScrollTo(R.id.vgsTilCardNumber).check(matches(withError(null)))
@@ -234,6 +236,9 @@ class FieldsValidationTest {
     fun noError_selectCanada_postalAddressValidationRuleChange_errorDisplayed() {
         launch<CheckoutMultiplexingActivity>(defaultIntent).use {
             // Arrange
+            waitFor(500)
+            onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard())
+
             fillCardFields(
                 VALID_CARD_HOLDER,
                 VALID_CARD_NUMBER,
@@ -250,9 +255,7 @@ class FieldsValidationTest {
             onData(hasToString(startsWith("Canada"))).perform(scrollTo()).perform(click())
             onView(withText("Ok")).perform(click())
 
-            it.onActivity { activity ->
-                activity.validate()
-            }
+            onViewWithScrollTo(R.id.mbSaveCard).perform(click())
             // Assert
             onViewWithScrollTo(R.id.vgsTilPostalAddress).check(matches(withError("Postal code is invalid")))
         }

@@ -9,7 +9,6 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.annotation.CallSuper
 import androidx.annotation.StringRes
-import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.LinearLayoutCompat
 import com.google.android.material.button.MaterialButton
@@ -488,10 +487,5 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> :
                 )
             )
         }
-    }
-
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    internal fun validate() {
-        getInvalidFieldsTypes()
     }
 }
