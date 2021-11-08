@@ -138,6 +138,8 @@ class DefaultCheckoutSetupTest {
     @Test
     fun preformCheckout_noErrorMessagesDisplayed() {
         launch<CheckoutActivity>(defaultIntent).use {
+            waitFor(500)
+            onView(isRoot()).perform(ViewActions.closeSoftKeyboard())
             // Assert
             onViewWithScrollTo(R.id.vgsTilCardHolder).check(matches(withError(null)))
             onViewWithScrollTo(R.id.vgsTilCardNumber).check(matches(withError(null)))
