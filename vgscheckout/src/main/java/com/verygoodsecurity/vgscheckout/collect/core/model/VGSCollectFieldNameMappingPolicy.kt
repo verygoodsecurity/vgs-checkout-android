@@ -8,7 +8,6 @@ internal enum class VGSCollectFieldNameMappingPolicy constructor(internal val an
     /**
      * Map fieldName to JSON. A value uses in JSON without any changes before submitting.
      * Completely overwrite extra data.
-     * VGS Checkout supports this format by default.
      */
     FLAT_JSON("flat_json"),
 
