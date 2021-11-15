@@ -30,6 +30,9 @@ import com.verygoodsecurity.vgscheckout.Constants.VALID_SECURITY_CODE
 import com.verygoodsecurity.vgscheckout.Constants.VAULT_ID
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingConfig
+import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutMultiplexingFormConfig
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillingAddressVisibility
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutMultiplexingBillingAddressOptions
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_ARGS
 import com.verygoodsecurity.vgscheckout.ui.CheckoutMultiplexingActivity
@@ -57,6 +60,11 @@ class FieldsValidationTest {
                 VGSCheckoutMultiplexingConfig(
                     VALID_JWT_TOKEN,
                     VAULT_ID,
+                    formConfig = VGSCheckoutMultiplexingFormConfig(
+                        VGSCheckoutMultiplexingBillingAddressOptions(
+                            visibility = VGSCheckoutBillingAddressVisibility.VISIBLE
+                        )
+                    ),
                     isScreenshotsAllowed = true
                 )
             )
@@ -224,6 +232,7 @@ class FieldsValidationTest {
             onViewWithScrollTo(R.id.vgsTilCountry).perform(click())
             onData(hasToString(startsWith("Canada"))).perform(scrollTo()).perform(click())
             onView(withText("Ok")).perform(click())
+            waitFor(1000)
             //Assert
             onViewWithScrollTo(R.id.vgsTilPostalCode).check(matches(withError(null)))
         }
