@@ -2,14 +2,18 @@ package com.verygoodsecurity.vgscheckout.util.extension
 
 import android.app.Instrumentation
 import android.os.Parcelable
+import android.view.View
 import androidx.lifecycle.Lifecycle
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso
+import androidx.test.espresso.UiController
+import androidx.test.espresso.ViewAction
 import androidx.test.espresso.matcher.ViewMatchers
 import com.verygoodsecurity.vgscheckout.Constants
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.widget.*
 import com.verygoodsecurity.vgscheckout.util.ActionHelper
+import org.hamcrest.Matcher
 import org.junit.Assert
 
 /**
@@ -86,4 +90,29 @@ internal inline fun <reified T : Parcelable> ActivityScenario<*>.getParcelableSa
     val extras = safeResult.resultData?.extras
     extras?.classLoader = T::class.java.classLoader
     return extras?.getParcelable(key)
+}
+
+fun waitFor(milliseconds: Long) {
+    Espresso.onView(ViewMatchers.isRoot()).perform(object : ViewAction {
+        override fun getConstraints(): Matcher<View> {
+            return ViewMatchers.isRoot()
+        }
+
+        override fun getDescription(): String {
+            return "Wait for $milliseconds milliseconds."
+        }
+
+        override fun perform(uiController: UiController?, view: View?) {
+            uiController?.loopMainThreadForAtLeast(milliseconds)
+        }
+
+    })
+}
+
+fun pauseTestFor(milliseconds: Long) {
+    try {
+        Thread.sleep(milliseconds)
+    } catch (e: InterruptedException) {
+        e.printStackTrace()
+    }
 }

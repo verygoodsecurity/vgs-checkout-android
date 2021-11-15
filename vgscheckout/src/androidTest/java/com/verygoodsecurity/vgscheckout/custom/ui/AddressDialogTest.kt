@@ -25,6 +25,7 @@ import com.verygoodsecurity.vgscheckout.ui.CheckoutActivity
 import com.verygoodsecurity.vgscheckout.util.ActionHelper
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers
 import com.verygoodsecurity.vgscheckout.util.ViewInteraction.onViewWithScrollTo
+import com.verygoodsecurity.vgscheckout.util.extension.waitFor
 import com.verygoodsecurity.vgscheckout.util.country.CountriesHelper
 import com.verygoodsecurity.vgscheckout.util.country.model.Country
 import org.hamcrest.Matchers.hasToString

@@ -5,6 +5,7 @@ import android.content.Intent
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso
+import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -17,6 +18,7 @@ import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_ARGS
 import com.verygoodsecurity.vgscheckout.ui.CheckoutMultiplexingActivity
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers
 import com.verygoodsecurity.vgscheckout.util.ViewInteraction
+import com.verygoodsecurity.vgscheckout.util.extension.waitFor
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -33,6 +35,7 @@ class DefaultMultiplexingSetupTest {
                 VGSCheckoutMultiplexingConfig(
                     VALID_JWT_TOKEN,
                     VAULT_ID,
+                    isScreenshotsAllowed = true
                 )
             )
         )
@@ -41,6 +44,7 @@ class DefaultMultiplexingSetupTest {
     @Test
     fun performCheckout_defaultVisibleFields() {
         ActivityScenario.launch<CheckoutMultiplexingActivity>(defaultIntent).use {
+            waitFor(1500)
             //Assert
             ViewInteraction.onViewWithScrollTo(R.id.vgsTilCardHolder)
                 .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
@@ -120,6 +124,8 @@ class DefaultMultiplexingSetupTest {
     @Test
     fun performCheckout_noErrorMessagesDisplayed() {
         ActivityScenario.launch<CheckoutMultiplexingActivity>(defaultIntent).use {
+            waitFor(500)
+            Espresso.onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard())
             // Assert
             ViewInteraction.onViewWithScrollTo(R.id.vgsTilCardHolder)
                 .check(ViewAssertions.matches(VGSViewMatchers.withError(null)))
