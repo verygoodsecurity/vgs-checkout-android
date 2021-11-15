@@ -36,7 +36,7 @@ jobs:
       - run:
           name: Check if release branch
           command: |
-            if [[ $CIRCLE_BRANCH != *"release/"* ]] && [ $CIRCLE_BRANCH != master* ]; then
+            if [[ $CIRCLE_BRANCH != *"ANDROIDSDK-549"* ]] && [ $CIRCLE_BRANCH != master* ]; then
               echo "Skipped, reason: UI tests should be running only on release branches or master!"
               circleci-agent step halt
             fi
