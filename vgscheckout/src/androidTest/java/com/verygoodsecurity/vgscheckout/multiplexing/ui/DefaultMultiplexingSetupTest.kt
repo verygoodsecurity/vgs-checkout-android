@@ -9,7 +9,7 @@ import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.verygoodsecurity.vgscheckout.Constants.CORRECT_TOKEN
+import com.verygoodsecurity.vgscheckout.Constants.VALID_JWT_TOKEN
 import com.verygoodsecurity.vgscheckout.Constants.VAULT_ID
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingConfig
@@ -33,7 +33,7 @@ class DefaultMultiplexingSetupTest {
             EXTRA_KEY_ARGS,
             CheckoutResultContract.Args(
                 VGSCheckoutMultiplexingConfig(
-                    CORRECT_TOKEN,
+                    VALID_JWT_TOKEN,
                     VAULT_ID,
                     isScreenshotsAllowed = true
                 )
@@ -64,7 +64,7 @@ class DefaultMultiplexingSetupTest {
                 .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
             ViewInteraction.onViewWithScrollTo(R.id.vgsTilCity)
                 .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-            ViewInteraction.onViewWithScrollTo(R.id.vgsTilPostalAddress)
+            ViewInteraction.onViewWithScrollTo(R.id.vgsTilPostalCode)
                 .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
 
             ViewInteraction.onViewWithScrollTo(R.id.mbSaveCard)
@@ -103,8 +103,8 @@ class DefaultMultiplexingSetupTest {
             Espresso.onView(ViewMatchers.withId(R.id.vgsEtCity)).check(
                 ViewAssertions.matches(VGSViewMatchers.withText(""))
             )
-            ViewInteraction.onViewWithScrollTo(R.id.vgsTilPostalAddress)
-            Espresso.onView(ViewMatchers.withId(R.id.vgsEtPostalAddress)).check(
+            ViewInteraction.onViewWithScrollTo(R.id.vgsTilPostalCode)
+            Espresso.onView(ViewMatchers.withId(R.id.vgsEtPostalCode)).check(
                 ViewAssertions.matches(VGSViewMatchers.withText(""))
             )
         }
@@ -139,7 +139,7 @@ class DefaultMultiplexingSetupTest {
                 .check(ViewAssertions.matches(VGSViewMatchers.withError(null)))
             ViewInteraction.onViewWithScrollTo(R.id.vgsTilCity)
                 .check(ViewAssertions.matches(VGSViewMatchers.withError(null)))
-            ViewInteraction.onViewWithScrollTo(R.id.vgsTilPostalAddress)
+            ViewInteraction.onViewWithScrollTo(R.id.vgsTilPostalCode)
                 .check(ViewAssertions.matches(VGSViewMatchers.withError(null)))
         }
     }

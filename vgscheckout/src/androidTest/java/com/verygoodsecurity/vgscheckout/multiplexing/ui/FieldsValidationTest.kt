@@ -15,12 +15,12 @@ import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
-import com.verygoodsecurity.vgscheckout.Constants.CORRECT_TOKEN
+import com.verygoodsecurity.vgscheckout.Constants.VALID_JWT_TOKEN
 import com.verygoodsecurity.vgscheckout.Constants.INVALID_CARD_NUMBER
 import com.verygoodsecurity.vgscheckout.Constants.INVALID_EXP_DATE
-import com.verygoodsecurity.vgscheckout.Constants.INVALID_POSTAL_ADDRESS
+import com.verygoodsecurity.vgscheckout.Constants.USA_INVALID_ZIP_CODE
 import com.verygoodsecurity.vgscheckout.Constants.INVALID_SECURITY_CODE
-import com.verygoodsecurity.vgscheckout.Constants.USA_VALID_POSTAL_ADDRESS
+import com.verygoodsecurity.vgscheckout.Constants.USA_VALID_ZIP_CODE
 import com.verygoodsecurity.vgscheckout.Constants.VALID_ADDRESS
 import com.verygoodsecurity.vgscheckout.Constants.VALID_CARD_HOLDER
 import com.verygoodsecurity.vgscheckout.Constants.VALID_CARD_NUMBER
@@ -55,7 +55,7 @@ class FieldsValidationTest {
             EXTRA_KEY_ARGS,
             CheckoutResultContract.Args(
                 VGSCheckoutMultiplexingConfig(
-                    CORRECT_TOKEN,
+                    VALID_JWT_TOKEN,
                     VAULT_ID,
                     isScreenshotsAllowed = true
                 )
@@ -122,7 +122,7 @@ class FieldsValidationTest {
                     )
                 )
             )
-            onViewWithScrollTo(R.id.vgsTilPostalAddress).check(
+            onViewWithScrollTo(R.id.vgsTilPostalCode).check(
                 matches(
                     withError(
                         "ZIP is empty"
@@ -136,9 +136,6 @@ class FieldsValidationTest {
     fun saveCard_invalidInput_invalidInputErrorsDisplayed() {
         launch<CheckoutMultiplexingActivity>(defaultIntent).use {
             // Arrange
-            waitFor(500)
-            onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard())
-
             fillCardFields(
                 VALID_CARD_HOLDER,
                 INVALID_CARD_NUMBER,
@@ -148,7 +145,7 @@ class FieldsValidationTest {
             fillAddressFields(
                 VALID_ADDRESS,
                 VALID_CITY,
-                INVALID_POSTAL_ADDRESS
+                USA_INVALID_ZIP_CODE
             )
             // Act
             onViewWithScrollTo(R.id.mbSaveCard).perform(click())
@@ -174,7 +171,7 @@ class FieldsValidationTest {
                     )
                 )
             )
-            onViewWithScrollTo(R.id.vgsTilPostalAddress).check(
+            onViewWithScrollTo(R.id.vgsTilPostalCode).check(
                 matches(
                     withError(
                         "ZIP is invalid"
@@ -201,7 +198,7 @@ class FieldsValidationTest {
             fillAddressFields(
                 VALID_ADDRESS,
                 VALID_CITY,
-                USA_VALID_POSTAL_ADDRESS
+                USA_VALID_ZIP_CODE
             )
             // Act
             onViewWithScrollTo(R.id.mbSaveCard).perform(click())
@@ -212,29 +209,28 @@ class FieldsValidationTest {
             onViewWithScrollTo(R.id.vgsTilSecurityCode).check(matches(withError(null)))
             onViewWithScrollTo(R.id.vgsTilAddress).check(matches(withError(null)))
             onViewWithScrollTo(R.id.vgsTilCity).check(matches(withError(null)))
-            onViewWithScrollTo(R.id.vgsTilPostalAddress).check(matches(withError(null)))
+            onViewWithScrollTo(R.id.vgsTilPostalCode).check(matches(withError(null)))
         }
     }
 
     @Test
-    fun showErrorMessage_multiplexing_countrySelect_selectCanada_postalAddressErrorMessageCleared() {
+    fun showErrorMessage_countrySelect_selectCanada_postalCodeErrorMessageCleared() {
         launch<CheckoutMultiplexingActivity>(defaultIntent).use {
             // Act
             waitFor(500)
             onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard())
 
             onViewWithScrollTo(R.id.mbSaveCard).perform(click())
-
             onViewWithScrollTo(R.id.vgsTilCountry).perform(click())
             onData(hasToString(startsWith("Canada"))).perform(scrollTo()).perform(click())
             onView(withText("Ok")).perform(click())
             //Assert
-            onViewWithScrollTo(R.id.vgsTilPostalAddress).check(matches(withError(null)))
+            onViewWithScrollTo(R.id.vgsTilPostalCode).check(matches(withError(null)))
         }
     }
 
     @Test
-    fun noError_selectCanada_postalAddressValidationRuleChange_errorDisplayed() {
+    fun noError_selectCanada_postalCodeValidationRuleChange_errorDisplayed() {
         launch<CheckoutMultiplexingActivity>(defaultIntent).use {
             // Arrange
             waitFor(500)
@@ -249,7 +245,7 @@ class FieldsValidationTest {
             fillAddressFields(
                 VALID_ADDRESS,
                 VALID_CITY,
-                USA_VALID_POSTAL_ADDRESS
+                USA_VALID_ZIP_CODE
             )
             // Act
             onViewWithScrollTo(R.id.vgsTilCountry).perform(click())
@@ -258,7 +254,7 @@ class FieldsValidationTest {
 
             onViewWithScrollTo(R.id.mbSaveCard).perform(click())
             // Assert
-            onViewWithScrollTo(R.id.vgsTilPostalAddress).check(matches(withError("Postal code is invalid")))
+            onViewWithScrollTo(R.id.vgsTilPostalCode).check(matches(withError("Postal code is invalid")))
         }
     }
 }

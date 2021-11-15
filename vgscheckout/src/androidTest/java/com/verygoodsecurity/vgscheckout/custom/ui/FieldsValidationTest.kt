@@ -21,14 +21,14 @@ import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
 import com.verygoodsecurity.vgscheckout.Constants.INVALID_CARD_NUMBER
 import com.verygoodsecurity.vgscheckout.Constants.INVALID_EXP_DATE
-import com.verygoodsecurity.vgscheckout.Constants.INVALID_POSTAL_ADDRESS
+import com.verygoodsecurity.vgscheckout.Constants.USA_INVALID_ZIP_CODE
 import com.verygoodsecurity.vgscheckout.Constants.INVALID_SECURITY_CODE
 import com.verygoodsecurity.vgscheckout.Constants.VALID_ADDRESS
 import com.verygoodsecurity.vgscheckout.Constants.VALID_CARD_HOLDER
 import com.verygoodsecurity.vgscheckout.Constants.VALID_CARD_NUMBER
 import com.verygoodsecurity.vgscheckout.Constants.VALID_CITY
 import com.verygoodsecurity.vgscheckout.Constants.VALID_EXP_DATE
-import com.verygoodsecurity.vgscheckout.Constants.USA_VALID_POSTAL_ADDRESS
+import com.verygoodsecurity.vgscheckout.Constants.USA_VALID_ZIP_CODE
 import com.verygoodsecurity.vgscheckout.Constants.VALID_SECURITY_CODE
 import com.verygoodsecurity.vgscheckout.Constants.VAULT_ID
 import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_ARGS
@@ -73,10 +73,6 @@ class FieldsValidationTest {
             // Act
             onViewWithScrollTo(R.id.mbSaveCard)
                 .perform(click())
-
-//            it.onActivity { activity ->
-//                activity.validate()
-//            }
             // Assert
             onViewWithScrollTo(R.id.vgsTilCardHolder).check(
                 matches(
@@ -120,7 +116,7 @@ class FieldsValidationTest {
                     )
                 )
             )
-            onViewWithScrollTo(R.id.vgsTilPostalAddress).check(
+            onViewWithScrollTo(R.id.vgsTilPostalCode).check(
                 matches(
                     withError(
                         "ZIP is empty"
@@ -146,7 +142,7 @@ class FieldsValidationTest {
             fillAddressFields(
                 VALID_ADDRESS,
                 VALID_CITY,
-                INVALID_POSTAL_ADDRESS
+                USA_INVALID_ZIP_CODE
             )
             // Act
             onViewWithScrollTo(R.id.mbSaveCard).perform(click())
@@ -172,7 +168,7 @@ class FieldsValidationTest {
                     )
                 )
             )
-            onViewWithScrollTo(R.id.vgsTilPostalAddress).check(
+            onViewWithScrollTo(R.id.vgsTilPostalCode).check(
                 matches(
                     withError(
                         "ZIP is invalid"
@@ -199,7 +195,7 @@ class FieldsValidationTest {
             fillAddressFields(
                 VALID_ADDRESS,
                 VALID_CITY,
-                USA_VALID_POSTAL_ADDRESS
+                USA_VALID_ZIP_CODE
             )
             // Act
             onViewWithScrollTo(R.id.mbSaveCard).perform(click())
@@ -210,30 +206,29 @@ class FieldsValidationTest {
             onViewWithScrollTo(R.id.vgsTilSecurityCode).check(matches(withError(null)))
             onViewWithScrollTo(R.id.vgsTilAddress).check(matches(withError(null)))
             onViewWithScrollTo(R.id.vgsTilCity).check(matches(withError(null)))
-            onViewWithScrollTo(R.id.vgsTilPostalAddress).check(matches(withError(null)))
+            onViewWithScrollTo(R.id.vgsTilPostalCode).check(matches(withError(null)))
         }
     }
 
     @Test
-    fun showErrorMessage_custom_countrySelect_selectCanada_postalAddressErrorMessageCleared() {
+    fun showErrorMessage_countrySelect_selectCanada_postalCodeErrorMessageCleared() {
         launch<CheckoutActivity>(defaultIntent).use {
             // Act
             waitFor(500)
             onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard())
 
             onViewWithScrollTo(R.id.mbSaveCard).perform(click())
-
             onViewWithScrollTo(R.id.vgsTilCountry).perform(click())
             onData(hasToString(startsWith("Canada"))).perform(scrollTo()).perform(click())
             onView(withText("Ok")).perform(click())
             Thread.sleep(2000)
             //Assert
-            onViewWithScrollTo(R.id.vgsTilPostalAddress).check(matches(withError(null)))
+            onViewWithScrollTo(R.id.vgsTilPostalCode).check(matches(withError(null)))
         }
     }
 
     @Test
-    fun noError_selectCanada_postalAddressValidationRuleChange_errorDisplayed() {
+    fun noError_selectCanada_postalCodeValidationRuleChange_errorDisplayed() {
         launch<CheckoutActivity>(defaultIntent).use {
             // Arrange
             waitFor(500)
@@ -248,7 +243,7 @@ class FieldsValidationTest {
             fillAddressFields(
                 VALID_ADDRESS,
                 VALID_CITY,
-                USA_VALID_POSTAL_ADDRESS
+                USA_VALID_ZIP_CODE
             )
             // Act
             onViewWithScrollTo(R.id.vgsTilCountry).perform(click())
@@ -257,7 +252,7 @@ class FieldsValidationTest {
 
             onViewWithScrollTo(R.id.mbSaveCard).perform(click())
             // Assert
-            onViewWithScrollTo(R.id.vgsTilPostalAddress).check(matches(withError("Postal code is invalid")))
+            onViewWithScrollTo(R.id.vgsTilPostalCode).check(matches(withError("Postal code is invalid")))
         }
     }
 }

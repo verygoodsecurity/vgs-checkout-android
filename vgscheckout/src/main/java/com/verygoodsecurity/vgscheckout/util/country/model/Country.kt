@@ -7,8 +7,8 @@ import kotlinx.parcelize.Parcelize
 internal data class Country(
     val name: String,
     val code: String,
-    val postalAddressType: PostalAddressType,
-    val postalAddressRegex: String
+    val postalCodeType: PostalCodeType,
+    val postalCodeRegex: String
 ) : Parcelable {
 
     fun isValid() = !name.equals(code, true)

@@ -1,10 +1,10 @@
 package com.verygoodsecurity.vgscheckout.config.ui.view.card
 
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.VGSCheckoutCardHolderOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.VGSCheckoutCardNumberOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.VGSCheckoutCustomCardHolderOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.VGSCheckoutCustomCardNumberOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.core.CheckoutCardOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.VGSCheckoutCVCOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.VGSCheckoutExpirationDateOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.VGSCheckoutCustomCVCOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.VGSCheckoutCustomExpirationDateOptions
 import kotlinx.parcelize.Parcelize
 
 /**
@@ -17,8 +17,8 @@ import kotlinx.parcelize.Parcelize
  */
 @Parcelize
 class VGSCheckoutCustomCardOptions @JvmOverloads constructor(
-    override val cardNumberOptions: VGSCheckoutCardNumberOptions = VGSCheckoutCardNumberOptions(),
-    override val cardHolderOptions: VGSCheckoutCardHolderOptions = VGSCheckoutCardHolderOptions(),
-    override val cvcOptions: VGSCheckoutCVCOptions = VGSCheckoutCVCOptions(),
-    override val expirationDateOptions: VGSCheckoutExpirationDateOptions = VGSCheckoutExpirationDateOptions()
+    override val cardNumberOptions: VGSCheckoutCustomCardNumberOptions = VGSCheckoutCustomCardNumberOptions(),
+    override val cardHolderOptions: VGSCheckoutCustomCardHolderOptions = VGSCheckoutCustomCardHolderOptions(),
+    override val cvcOptions: VGSCheckoutCustomCVCOptions = VGSCheckoutCustomCVCOptions(),
+    override val expirationDateOptions: VGSCheckoutCustomExpirationDateOptions = VGSCheckoutCustomExpirationDateOptions()
 ) : CheckoutCardOptions()

@@ -71,7 +71,7 @@ class DefaultCheckoutSetupTest {
                 .check(matches(isDisplayed()))
             onViewWithScrollTo(R.id.vgsTilCity)
                 .check(matches(isDisplayed()))
-            onViewWithScrollTo(R.id.vgsTilPostalAddress)
+            onViewWithScrollTo(R.id.vgsTilPostalCode)
                 .check(matches(isDisplayed()))
 
             onViewWithScrollTo(R.id.mbSaveCard)
@@ -117,8 +117,8 @@ class DefaultCheckoutSetupTest {
             onView(withId(R.id.vgsEtCity)).check(
                 matches(VGSViewMatchers.withText(""))
             )
-            onViewWithScrollTo(R.id.vgsTilPostalAddress)
-            onView(withId(R.id.vgsEtPostalAddress)).check(
+            onViewWithScrollTo(R.id.vgsTilPostalCode)
+            onView(withId(R.id.vgsEtPostalCode)).check(
                 matches(VGSViewMatchers.withText(""))
             )
         }
@@ -147,7 +147,7 @@ class DefaultCheckoutSetupTest {
             onViewWithScrollTo(R.id.vgsTilSecurityCode).check(matches(withError(null)))
             onViewWithScrollTo(R.id.vgsTilAddress).check(matches(withError(null)))
             onViewWithScrollTo(R.id.vgsTilCity).check(matches(withError(null)))
-            onViewWithScrollTo(R.id.vgsTilPostalAddress).check(matches(withError(null)))
+            onViewWithScrollTo(R.id.vgsTilPostalCode).check(matches(withError(null)))
         }
     }
 

@@ -65,7 +65,7 @@ fun fillCardFields(
 fun fillAddressFields(
     address: String = Constants.VALID_ADDRESS,
     city: String = Constants.VALID_CITY,
-    postalAddress: String = Constants.USA_VALID_POSTAL_ADDRESS
+    postalCode: String = Constants.USA_VALID_ZIP_CODE
 ) {
     Espresso.onView(ViewMatchers.withId(R.id.vgsEtAddress))
         .perform(ActionHelper.doAction<VGSEditText> {
@@ -80,9 +80,9 @@ fun fillAddressFields(
         .perform(ActionHelper.doAction<VGSEditText> {
             it.setText(city)
         })
-    Espresso.onView(ViewMatchers.withId(R.id.vgsEtPostalAddress))
+    Espresso.onView(ViewMatchers.withId(R.id.vgsEtPostalCode))
         .perform(ActionHelper.doAction<VGSEditText> {
-            it.setText(postalAddress)
+            it.setText(postalCode)
         })
 }
 
