@@ -23,6 +23,7 @@ import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers.withError
 import com.verygoodsecurity.vgscheckout.util.ViewInteraction.onViewWithScrollTo
 import com.verygoodsecurity.vgscheckout.util.extension.waitFor
+import org.hamcrest.CoreMatchers.not
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -60,19 +61,12 @@ class DefaultCheckoutSetupTest {
                 .check(matches(isDisplayed()))
             onViewWithScrollTo(R.id.vgsTilSecurityCode)
                 .check(matches(isDisplayed()))
-            onViewWithScrollTo(R.id.vgsTilCountry)
-                .check(matches(isDisplayed()))
 
-            onViewWithScrollTo(R.id.vgsTilAddress)
-                .check(matches(isDisplayed()))
-            onViewWithScrollTo(R.id.vgsTilAddressOptional)
-                .check(matches(isDisplayed()))
-            onViewWithScrollTo(R.id.vgsTilAddress)
-                .check(matches(isDisplayed()))
-            onViewWithScrollTo(R.id.vgsTilCity)
-                .check(matches(isDisplayed()))
-            onViewWithScrollTo(R.id.vgsTilPostalCode)
-                .check(matches(isDisplayed()))
+            onView(withId(R.id.vgsTilCountry)).check(matches(not(isCompletelyDisplayed())))
+            onView(withId(R.id.vgsTilAddressOptional)).check(matches(not(isCompletelyDisplayed())))
+            onView(withId(R.id.vgsTilAddress)).check(matches(not(isCompletelyDisplayed())))
+            onView(withId(R.id.vgsTilCity)).check(matches(not(isCompletelyDisplayed())))
+            onView(withId(R.id.vgsTilPostalCode)).check(matches(not(isCompletelyDisplayed())))
 
             onViewWithScrollTo(R.id.mbSaveCard)
                 .check(matches(isDisplayed()))
@@ -97,30 +91,6 @@ class DefaultCheckoutSetupTest {
             onViewWithScrollTo(R.id.vgsTilSecurityCode)
             onView(withId(R.id.vgsEtSecurityCode))
                 .check(matches(VGSViewMatchers.withText("")))
-            onViewWithScrollTo(R.id.vgsTilCountry)
-            onView(withId(R.id.vgsEtCountry))
-                .check(matches(VGSViewMatchers.withText("United States")))
-
-            onViewWithScrollTo(R.id.vgsTilAddress)
-            onView(withId(R.id.vgsEtAddress)).check(
-                matches(VGSViewMatchers.withText(""))
-            )
-            onViewWithScrollTo(R.id.vgsTilAddressOptional)
-            onView(withId(R.id.vgsEtAddressOptional)).check(
-                matches(VGSViewMatchers.withText(""))
-            )
-            onViewWithScrollTo(R.id.vgsTilAddress)
-            onView(withId(R.id.vgsEtAddress)).check(
-                matches(VGSViewMatchers.withText(""))
-            )
-            onViewWithScrollTo(R.id.vgsTilCity)
-            onView(withId(R.id.vgsEtCity)).check(
-                matches(VGSViewMatchers.withText(""))
-            )
-            onViewWithScrollTo(R.id.vgsTilPostalCode)
-            onView(withId(R.id.vgsEtPostalCode)).check(
-                matches(VGSViewMatchers.withText(""))
-            )
         }
     }
 
@@ -145,9 +115,6 @@ class DefaultCheckoutSetupTest {
             onViewWithScrollTo(R.id.vgsTilCardNumber).check(matches(withError(null)))
             onViewWithScrollTo(R.id.vgsTilExpirationDate).check(matches(withError(null)))
             onViewWithScrollTo(R.id.vgsTilSecurityCode).check(matches(withError(null)))
-            onViewWithScrollTo(R.id.vgsTilAddress).check(matches(withError(null)))
-            onViewWithScrollTo(R.id.vgsTilCity).check(matches(withError(null)))
-            onViewWithScrollTo(R.id.vgsTilPostalCode).check(matches(withError(null)))
         }
     }
 
@@ -155,7 +122,7 @@ class DefaultCheckoutSetupTest {
     fun performCheckout_addressIsVisible() {
         launch<CheckoutActivity>(defaultIntent).use {
             //Assert
-            onView(withId(R.id.llBillingAddress)).check(matches(isDisplayed()))
+            onView(withId(R.id.llBillingAddress)).check(matches(not(isCompletelyDisplayed())))
         }
     }
 }

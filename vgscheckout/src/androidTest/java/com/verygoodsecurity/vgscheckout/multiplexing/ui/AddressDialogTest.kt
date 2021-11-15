@@ -20,6 +20,7 @@ import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.widget.VGSCountryEditText
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingConfig
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutMultiplexingFormConfig
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillingAddressVisibility
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutMultiplexingBillingAddressOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.country.VGSCheckoutMultiplexingCountryOptions
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
@@ -48,6 +49,11 @@ class AddressDialogTest {
                 VGSCheckoutMultiplexingConfig(
                     Constants.VALID_JWT_TOKEN,
                     VAULT_ID,
+                    formConfig = VGSCheckoutMultiplexingFormConfig(
+                        addressOptions = VGSCheckoutMultiplexingBillingAddressOptions(
+                            VGSCheckoutBillingAddressVisibility.VISIBLE
+                        )
+                    )
                 )
             )
         )
@@ -98,9 +104,11 @@ class AddressDialogTest {
     fun countrySelect_selectCanada_postalCodeHintChanged() {
         launch<CheckoutMultiplexingActivity>(defaultIntent).use {
             // Act
+            waitFor(500)
             onViewWithScrollTo(R.id.vgsTilCountry).perform(click())
             onData(hasToString(startsWith("Canada"))).perform(scrollTo()).perform(click())
             onView(withText("Ok")).perform(click())
+            waitFor(1000)
             //Assert
             onViewWithScrollTo(R.id.vgsTilPostalCode).check(matches(VGSViewMatchers.withHint("Postal code")))
         }
@@ -185,7 +193,8 @@ class AddressDialogTest {
                             addressOptions = VGSCheckoutMultiplexingBillingAddressOptions(
                                 countryOptions = VGSCheckoutMultiplexingCountryOptions(
                                     validCountries = countries
-                                )
+                                ),
+                                visibility = VGSCheckoutBillingAddressVisibility.VISIBLE
                             )
                         )
                     )
