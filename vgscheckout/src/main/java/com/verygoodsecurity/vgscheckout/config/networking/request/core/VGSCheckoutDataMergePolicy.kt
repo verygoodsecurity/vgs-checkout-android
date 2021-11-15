@@ -8,13 +8,13 @@ enum class VGSCheckoutDataMergePolicy {
     /**
      * Map fieldName to JSON. A value uses in JSON without any changes before submitting.
      * Completely overwrite extra data.
+     * VGS Checkout supports this format by default.
      */
     FLAT_JSON,
 
     /**
      * Map fieldName to JSON. Deep nested key format is supported. Completely overwrite extra data.
      * Arrays are not supported.
-     * VGSCollect supports this format by default.
      *
      * When you need to send data in a specific JSON structure you may do it by adding . notation to fieldName-string.
      * Each . in a fieldName represents a new level of nesting.
