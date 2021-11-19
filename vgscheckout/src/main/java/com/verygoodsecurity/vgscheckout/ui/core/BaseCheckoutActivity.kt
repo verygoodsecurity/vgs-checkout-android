@@ -94,6 +94,9 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
 
     @CallSuper
     protected open fun initView(savedInstanceState: Bundle?) {
+        if (savedInstanceState != null) {
+            return
+        }
         initToolbar()
         showManualInputFragment()
     }
