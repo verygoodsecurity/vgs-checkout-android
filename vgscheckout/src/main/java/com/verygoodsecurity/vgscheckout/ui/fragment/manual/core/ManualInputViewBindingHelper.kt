@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscheckout.ui.fragment.core
+package com.verygoodsecurity.vgscheckout.ui.fragment.manual.core
 
 import android.view.LayoutInflater
 import android.view.View

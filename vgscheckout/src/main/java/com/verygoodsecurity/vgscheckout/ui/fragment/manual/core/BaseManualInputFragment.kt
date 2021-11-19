@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscheckout.ui.fragment.core
+package com.verygoodsecurity.vgscheckout.ui.fragment.manual.core
 
 import android.content.Context
 import android.os.Bundle
@@ -25,8 +25,7 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.CardNumbe
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.CVCOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.ExpirationDateOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.core.VGSCheckoutFieldVisibility
-import com.verygoodsecurity.vgscheckout.ui.core.CheckoutResolver
-import com.verygoodsecurity.vgscheckout.ui.fragment.ManualInputStaticValidationFragment
+import com.verygoodsecurity.vgscheckout.ui.fragment.manual.ManualInputStaticValidationFragment
 import com.verygoodsecurity.vgscheckout.util.country.model.Country
 import com.verygoodsecurity.vgscheckout.util.country.model.PostalCodeType
 import com.verygoodsecurity.vgscheckout.util.extension.*
@@ -39,9 +38,14 @@ internal abstract class BaseManualInputFragment : Fragment(), InputFieldView.OnT
     protected val inputFieldErrors = mutableMapOf<InputFieldView, String>()
 
     protected lateinit var binding: ManualInputViewBindingHelper
-    protected lateinit var resolver: CheckoutResolver
+    protected lateinit var inputViewBinder: InputViewBinder
+    protected lateinit var validationListener: ValidationResultListener
 
-    abstract fun handleSaveClicked()
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        inputViewBinder = requireActivity() as InputViewBinder
+        validationListener = requireActivity() as ValidationResultListener
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -60,12 +64,6 @@ internal abstract class BaseManualInputFragment : Fragment(), InputFieldView.OnT
         initViews(view)
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        resolver = (activity as? CheckoutResolver)
-            ?: throw IllegalArgumentException("Activity must implement CheckoutResolver")
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         unbindAllViews()
@@ -74,7 +72,7 @@ internal abstract class BaseManualInputFragment : Fragment(), InputFieldView.OnT
 
     //region Implemented interfaces
     override fun onTextChange(view: InputFieldView, isEmpty: Boolean) {
-        view.setMaterialError(null)
+        clearError(view)
     }
 
     override fun onCountrySelected(country: Country) {
@@ -98,6 +96,17 @@ internal abstract class BaseManualInputFragment : Fragment(), InputFieldView.OnT
         initCardDetailsViews()
         bindAllViews()
         initSaveButton()
+    }
+
+    open fun handleSaveClicked() {
+        requireActivity().hideSoftKeyboard()
+        validate()
+        updateErrors()
+        if (inputFieldErrors.isEmpty()) {
+            validationListener.onSuccess()
+        } else {
+            validationListener.onFailed(getInvalidInputAnalyticsNames())
+        }
     }
 
     //region Init card details views
@@ -227,7 +236,7 @@ internal abstract class BaseManualInputFragment : Fragment(), InputFieldView.OnT
     //region Bind & unbind views
     private fun bindAllViews() {
         with(binding) {
-            resolver.bind(cardHolderEt,
+            inputViewBinder.bind(cardHolderEt,
                 cardNumberEt,
                 expirationDateEt,
                 securityCodeEt,
@@ -241,7 +250,7 @@ internal abstract class BaseManualInputFragment : Fragment(), InputFieldView.OnT
 
     private fun unbindAllViews() {
         with(binding) {
-            resolver.unbind(cardHolderEt,
+            inputViewBinder.unbind(cardHolderEt,
                 cardNumberEt,
                 expirationDateEt,
                 securityCodeEt,
@@ -281,7 +290,22 @@ internal abstract class BaseManualInputFragment : Fragment(), InputFieldView.OnT
         inputFieldErrors[input] = getErrorMessage(input)
     }
 
-    protected fun getErrorMessage(
+    protected fun updateErrors() {
+        inputFieldErrors.forEach {
+            it.key.setMaterialError(it.value)
+        }
+    }
+
+    protected fun updateError(input: InputFieldView) {
+        input.setMaterialError(inputFieldErrors[input])
+    }
+
+    protected fun clearError(input: InputFieldView) {
+        inputFieldErrors[input] = ""
+        updateError(input)
+    }
+
+    private fun getErrorMessage(
         input: InputFieldView,
     ): String = getString(when {
         input.isInputEmpty() -> getEmptyErrorMessage(input)
@@ -290,7 +314,7 @@ internal abstract class BaseManualInputFragment : Fragment(), InputFieldView.OnT
     })
 
     @StringRes
-    protected fun getEmptyErrorMessage(input: InputFieldView): Int = when (input.id) {
+    private fun getEmptyErrorMessage(input: InputFieldView): Int = when (input.id) {
         R.id.vgsEtCardHolder -> R.string.vgs_checkout_card_holder_empty_error
         R.id.vgsEtCardNumber -> R.string.vgs_checkout_card_number_empty_error
         R.id.vgsEtExpirationDate -> R.string.vgs_checkout_card_expiration_date_empty_error
@@ -302,7 +326,7 @@ internal abstract class BaseManualInputFragment : Fragment(), InputFieldView.OnT
     }
 
     @StringRes
-    protected fun getInvalidErrorMessage(input: InputFieldView): Int = when (input.id) {
+    private fun getInvalidErrorMessage(input: InputFieldView): Int = when (input.id) {
         R.id.vgsEtCardHolder -> R.string.vgs_checkout_card_holder_invalid_error
         R.id.vgsEtCardNumber -> R.string.vgs_checkout_card_number_invalid_error
         R.id.vgsEtExpirationDate -> R.string.vgs_checkout_card_expiration_date_invalid_error
@@ -312,7 +336,7 @@ internal abstract class BaseManualInputFragment : Fragment(), InputFieldView.OnT
     }
 
     @StringRes
-    protected fun getPostalCodeEmptyErrorMessage(country: Country) =
+    private fun getPostalCodeEmptyErrorMessage(country: Country) =
         when (country.postalCodeType) {
             PostalCodeType.ZIP -> R.string.vgs_checkout_address_info_zipcode_empty_error
             PostalCodeType.POSTAL -> R.string.vgs_checkout_address_info_postal_code_empty_error
@@ -320,24 +344,14 @@ internal abstract class BaseManualInputFragment : Fragment(), InputFieldView.OnT
         }
 
     @StringRes
-    protected fun getPostalCodeInvalidErrorMessage(country: Country) =
+    private fun getPostalCodeInvalidErrorMessage(country: Country) =
         when (country.postalCodeType) {
             PostalCodeType.ZIP -> R.string.vgs_checkout_address_info_zipcode_invalid_error
             PostalCodeType.POSTAL -> R.string.vgs_checkout_address_info_postal_code_invalid_error
             PostalCodeType.NOTHING -> R.string.empty
         }
 
-    protected fun updateErrors() {
-        inputFieldErrors.forEach {
-            it.key.setMaterialError(it.value)
-        }
-    }
-
-    protected fun updateError(input: InputFieldView) {
-        input.setMaterialError(inputFieldErrors[input])
-    }
-
-    protected fun getInvalidInputAnalyticsNames(): List<String> =
+    private fun getInvalidInputAnalyticsNames(): List<String> =
         inputFieldErrors.map { if (it.value.isEmpty()) null else it.key.getAnalyticsName() }
             .filterNotNull()
     //endregion

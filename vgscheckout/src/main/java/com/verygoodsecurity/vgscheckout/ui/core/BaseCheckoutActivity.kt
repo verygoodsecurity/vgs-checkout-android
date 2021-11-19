@@ -19,12 +19,14 @@ import com.verygoodsecurity.vgscheckout.collect.widget.*
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.config.networking.core.VGSCheckoutHostnamePolicy
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
-import com.verygoodsecurity.vgscheckout.ui.fragment.core.BaseManualInputFragment
+import com.verygoodsecurity.vgscheckout.ui.fragment.manual.core.BaseManualInputFragment
+import com.verygoodsecurity.vgscheckout.ui.fragment.manual.core.InputViewBinder
+import com.verygoodsecurity.vgscheckout.ui.fragment.manual.core.ValidationResultListener
 import com.verygoodsecurity.vgscheckout.util.CollectProvider
 import com.verygoodsecurity.vgscheckout.util.extension.*
 
 internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActivity(),
-    CheckoutResolver, VgsCollectResponseListener {
+    InputViewBinder, ValidationResultListener, VgsCollectResponseListener {
 
     protected val config: C by lazy { resolveConfig(intent) }
 
@@ -56,30 +58,6 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
         return true
     }
 
-    override fun bind(vararg view: InputFieldView) {
-        collect.bindView(*view)
-    }
-
-    override fun unbind(vararg view: InputFieldView) {
-        collect.unbindView(*view)
-    }
-
-    override fun checkout(invalidFields: List<String>) {
-        if (invalidFields.isEmpty()) {
-            with(config.routeConfig) {
-                collect.asyncSubmit(
-                    VGSRequest.VGSRequestBuilder()
-                        .setPath(path)
-                        .setMethod(requestOptions.httpMethod.toCollectHTTPMethod())
-                        .setCustomData(requestOptions.extraData)
-                        .setCustomHeader(requestOptions.extraHeaders)
-                        .setFieldNameMappingPolicy(requestOptions.mergePolicy.toCollectMergePolicy())
-                        .build()
-                )
-            }
-        }
-    }
-
     override fun onResponse(response: VGSResponse?) {
         (response as? VGSResponse.ErrorResponse)?.let {
             if (it.code == VGSError.NO_NETWORK_CONNECTIONS.code) {
@@ -90,6 +68,22 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
         val resultBundle = CheckoutResultContract.Result(response?.toCheckoutResult()).toBundle()
         setResult(Activity.RESULT_OK, Intent().putExtras(resultBundle))
         finish()
+    }
+
+    override fun bind(vararg view: InputFieldView) {
+        collect.bindView(*view)
+    }
+
+    override fun unbind(vararg view: InputFieldView) {
+        collect.unbindView(*view)
+    }
+
+    override fun onFailed(invalidFields: List<String>) {
+        sendRequestEvent(invalidFields)
+    }
+
+    override fun onSuccess() {
+        makeRequest()
     }
 
     @CallSuper
@@ -110,18 +104,26 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
             .commit()
     }
 
-    private fun showNetworkConnectionErrorSnackBar() {
-        val message = getString(R.string.vgs_checkout_no_network_error)
-        Snackbar.make(window.decorView.rootView, message, Snackbar.LENGTH_LONG)
-            .setAction(getString(R.string.vgs_checkout_no_network_retry)) { checkout(emptyList()) }
-            .show()
+    private fun makeRequest() {
+        with(config.routeConfig) {
+            collect.asyncSubmit(
+                VGSRequest.VGSRequestBuilder()
+                    .setPath(path)
+                    .setMethod(requestOptions.httpMethod.toCollectHTTPMethod())
+                    .setCustomData(requestOptions.extraData)
+                    .setCustomHeader(requestOptions.extraHeaders)
+                    .setFieldNameMappingPolicy(requestOptions.mergePolicy.toCollectMergePolicy())
+                    .build()
+            )
+        }
+        sendRequestEvent()
     }
 
-    private fun sendRequestEvent(isSuccessful: Boolean, invalidFields: List<String>) {
+    private fun sendRequestEvent(invalidFields: List<String> = emptyList()) {
         with(config) {
             analyticTracker.log(
                 RequestEvent(
-                    isSuccessful,
+                    invalidFields.isEmpty(),
                     routeConfig.hostnamePolicy is VGSCheckoutHostnamePolicy.CustomHostname,
                     routeConfig.requestOptions.extraData.isNotEmpty(),
                     hasCustomHeaders(),
@@ -131,5 +133,12 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
                 )
             )
         }
+    }
+
+    private fun showNetworkConnectionErrorSnackBar() {
+        val message = getString(R.string.vgs_checkout_no_network_error)
+        Snackbar.make(window.decorView.rootView, message, Snackbar.LENGTH_LONG)
+            .setAction(getString(R.string.vgs_checkout_no_network_retry)) { makeRequest() }
+            .show()
     }
 }
