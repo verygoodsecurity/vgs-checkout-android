@@ -25,7 +25,7 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.CardNumbe
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.CVCOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.ExpirationDateOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.core.VGSCheckoutFieldVisibility
-import com.verygoodsecurity.vgscheckout.ui.fragment.manual.ManualInputStaticValidationFragment
+import com.verygoodsecurity.vgscheckout.ui.fragment.manual.ManualInputDynamicValidationFragment
 import com.verygoodsecurity.vgscheckout.util.country.model.Country
 import com.verygoodsecurity.vgscheckout.util.country.model.PostalCodeType
 import com.verygoodsecurity.vgscheckout.util.extension.*
@@ -365,7 +365,7 @@ internal abstract class BaseManualInputFragment : Fragment(), InputFieldView.OnT
         fun create(formConfig: CheckoutFormConfig): BaseManualInputFragment {
             // TODO: Create different implementation of manual input fragment depends on config
             val bundle = Bundle().apply { putParcelable(KEY_BUNDLE_CONFIG, formConfig) }
-            return ManualInputStaticValidationFragment().apply {
+            return ManualInputDynamicValidationFragment().apply {
                 arguments = bundle
             }
         }
