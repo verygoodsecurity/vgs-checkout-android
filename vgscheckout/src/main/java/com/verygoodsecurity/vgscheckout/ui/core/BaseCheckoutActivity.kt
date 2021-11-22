@@ -78,8 +78,8 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
         collect.unbindView(*view)
     }
 
-    override fun onFailed(invalidFields: List<String>) {
-        sendRequestEvent(invalidFields)
+    override fun onFailed(invalidFieldsAnalyticsNames: List<String>) {
+        sendRequestEvent(invalidFieldsAnalyticsNames)
     }
 
     override fun onSuccess() {

@@ -4,5 +4,5 @@ internal interface ValidationResultListener {
 
     fun onSuccess()
 
-    fun onFailed(invalidFields: List<String>)
+    fun onFailed(invalidFieldsAnalyticsNames: List<String>)
 }
