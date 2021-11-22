@@ -5,9 +5,13 @@ import android.content.Intent
 import androidx.test.core.app.ActivityScenario.launch
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.uiautomator.UiDevice
 import com.verygoodsecurity.vgscheckout.Constants.VAULT_ID
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
@@ -18,6 +22,9 @@ import com.verygoodsecurity.vgscheckout.ui.CheckoutMultiplexingActivity
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers.withError
 import com.verygoodsecurity.vgscheckout.util.ViewInteraction.onViewWithScrollTo
+import com.verygoodsecurity.vgscheckout.util.extension.waitFor
+import org.hamcrest.CoreMatchers.not
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -33,30 +40,33 @@ class DefaultCheckoutSetupTest {
         )
     }
 
+    private lateinit var device: UiDevice
+
+    @Before
+    fun prepareDevice() {
+        device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
+        device.setOrientationNatural()
+    }
+
     @Test
     fun performCheckout_defaultVisibleFields() {
         launch<CheckoutMultiplexingActivity>(defaultIntent).use {
+            waitFor(1500)
             //Assert
-            onView(withId(R.id.vgsTilCardHolder))
+            onViewWithScrollTo(R.id.vgsTilCardHolder)
                 .check(matches(isDisplayed()))
-            onView(withId(R.id.vgsTilCardNumber))
+            onViewWithScrollTo(R.id.vgsTilCardNumber)
                 .check(matches(isDisplayed()))
-            onView(withId(R.id.vgsTilExpirationDate))
+            onViewWithScrollTo(R.id.vgsTilExpirationDate)
                 .check(matches(isDisplayed()))
-            onView(withId(R.id.vgsTilSecurityCode))
+            onViewWithScrollTo(R.id.vgsTilSecurityCode)
                 .check(matches(isDisplayed()))
-            onView(withId(R.id.vgsTilCountry))
-                .check(matches(isDisplayed()))
-            onViewWithScrollTo(R.id.vgsTilAddress)
-                .check(matches(isDisplayed()))
-            onViewWithScrollTo(R.id.vgsTilAddressOptional)
-                .check(matches(isDisplayed()))
-            onViewWithScrollTo(R.id.vgsTilAddress)
-                .check(matches(isDisplayed()))
-            onViewWithScrollTo(R.id.vgsTilCity)
-                .check(matches(isDisplayed()))
-            onViewWithScrollTo(R.id.vgsTilPostalCode)
-                .check(matches(isDisplayed()))
+
+            onView(withId(R.id.vgsTilCountry)).check(matches(not(isCompletelyDisplayed())))
+            onView(withId(R.id.vgsTilAddressOptional)).check(matches(not(isCompletelyDisplayed())))
+            onView(withId(R.id.vgsTilAddress)).check(matches(not(isCompletelyDisplayed())))
+            onView(withId(R.id.vgsTilCity)).check(matches(not(isCompletelyDisplayed())))
+            onView(withId(R.id.vgsTilPostalCode)).check(matches(not(isCompletelyDisplayed())))
 
             onViewWithScrollTo(R.id.mbSaveCard)
                 .check(matches(isDisplayed()))
@@ -66,38 +76,21 @@ class DefaultCheckoutSetupTest {
     @Test
     fun performCheckout_defaultFieldContent() {
         launch<CheckoutActivity>(defaultIntent).use {
+            //Act
+            onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard())
             //Assert
+            onViewWithScrollTo(R.id.vgsTilCardHolder)
             onView(withId(R.id.vgsEtCardHolder))
                 .check(matches(VGSViewMatchers.withText("")))
+            onViewWithScrollTo(R.id.vgsTilCardNumber)
             onView(withId(R.id.vgsEtCardNumber))
                 .check(matches(VGSViewMatchers.withText("")))
+            onViewWithScrollTo(R.id.vgsTilExpirationDate)
             onView(withId(R.id.vgsEtExpirationDate))
                 .check(matches(VGSViewMatchers.withText("")))
+            onViewWithScrollTo(R.id.vgsTilSecurityCode)
             onView(withId(R.id.vgsEtSecurityCode))
                 .check(matches(VGSViewMatchers.withText("")))
-            onView(withId(R.id.vgsEtCountry))
-                .check(matches(VGSViewMatchers.withText("United States")))
-
-            onViewWithScrollTo(R.id.vgsTilAddress)
-            onView(withId(R.id.vgsEtAddress)).check(
-                matches(VGSViewMatchers.withText(""))
-            )
-            onViewWithScrollTo(R.id.vgsTilAddressOptional)
-            onView(withId(R.id.vgsEtAddressOptional)).check(
-                matches(VGSViewMatchers.withText(""))
-            )
-            onViewWithScrollTo(R.id.vgsTilAddress)
-            onView(withId(R.id.vgsEtAddress)).check(
-                matches(VGSViewMatchers.withText(""))
-            )
-            onViewWithScrollTo(R.id.vgsTilCity)
-            onView(withId(R.id.vgsEtCity)).check(
-                matches(VGSViewMatchers.withText(""))
-            )
-            onViewWithScrollTo(R.id.vgsTilPostalCode)
-            onView(withId(R.id.vgsEtPostalCode)).check(
-                matches(VGSViewMatchers.withText(""))
-            )
         }
     }
 
@@ -115,14 +108,13 @@ class DefaultCheckoutSetupTest {
     @Test
     fun preformCheckout_noErrorMessagesDisplayed() {
         launch<CheckoutActivity>(defaultIntent).use {
+            waitFor(500)
+            onView(isRoot()).perform(ViewActions.closeSoftKeyboard())
             // Assert
             onViewWithScrollTo(R.id.vgsTilCardHolder).check(matches(withError(null)))
             onViewWithScrollTo(R.id.vgsTilCardNumber).check(matches(withError(null)))
             onViewWithScrollTo(R.id.vgsTilExpirationDate).check(matches(withError(null)))
             onViewWithScrollTo(R.id.vgsTilSecurityCode).check(matches(withError(null)))
-            onViewWithScrollTo(R.id.vgsTilAddress).check(matches(withError(null)))
-            onViewWithScrollTo(R.id.vgsTilCity).check(matches(withError(null)))
-            onViewWithScrollTo(R.id.vgsTilPostalCode).check(matches(withError(null)))
         }
     }
 
@@ -130,7 +122,7 @@ class DefaultCheckoutSetupTest {
     fun performCheckout_addressIsVisible() {
         launch<CheckoutActivity>(defaultIntent).use {
             //Assert
-            onView(withId(R.id.llBillingAddress)).check(matches(isDisplayed()))
+            onView(withId(R.id.llBillingAddress)).check(matches(not(isCompletelyDisplayed())))
         }
     }
 }

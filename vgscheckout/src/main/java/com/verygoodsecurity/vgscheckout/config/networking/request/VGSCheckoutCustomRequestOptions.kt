@@ -20,5 +20,5 @@ class VGSCheckoutCustomRequestOptions @JvmOverloads constructor(
     override val httpMethod: VGSCheckoutHTTPMethod = VGSCheckoutHTTPMethod.POST,
     override val extraHeaders: Map<String, String> = emptyMap(),
     override val extraData: Map<String, @RawValue Any> = emptyMap(),
-    override val mergePolicy: VGSCheckoutDataMergePolicy = VGSCheckoutDataMergePolicy.NESTED_JSON
+    override val mergePolicy: VGSCheckoutDataMergePolicy = VGSCheckoutDataMergePolicy.FLAT_JSON
 ) : CheckoutRequestOptions()

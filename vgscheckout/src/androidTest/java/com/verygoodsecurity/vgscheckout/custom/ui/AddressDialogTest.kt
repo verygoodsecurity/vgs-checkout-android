@@ -17,6 +17,7 @@ import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.widget.VGSCountryEditText
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutCustomFormConfig
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillingAddressVisibility
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutCustomBillingAddressOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.country.VGSCheckoutCustomCountryOptions
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
@@ -25,6 +26,7 @@ import com.verygoodsecurity.vgscheckout.ui.CheckoutActivity
 import com.verygoodsecurity.vgscheckout.util.ActionHelper
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers
 import com.verygoodsecurity.vgscheckout.util.ViewInteraction.onViewWithScrollTo
+import com.verygoodsecurity.vgscheckout.util.extension.waitFor
 import com.verygoodsecurity.vgscheckout.util.country.CountriesHelper
 import com.verygoodsecurity.vgscheckout.util.country.model.Country
 import org.hamcrest.Matchers.hasToString
@@ -40,7 +42,16 @@ class AddressDialogTest {
     private val defaultIntent = Intent(context, CheckoutActivity::class.java).apply {
         putExtra(
             EXTRA_KEY_ARGS,
-            CheckoutResultContract.Args(VGSCheckoutCustomConfig(VAULT_ID))
+            CheckoutResultContract.Args(
+                VGSCheckoutCustomConfig(
+                    VAULT_ID,
+                    formConfig = VGSCheckoutCustomFormConfig(
+                        addressOptions = VGSCheckoutCustomBillingAddressOptions(
+                            visibility = VGSCheckoutBillingAddressVisibility.VISIBLE
+                        )
+                    )
+                )
+            )
         )
     }
 
@@ -95,7 +106,7 @@ class AddressDialogTest {
     }
 
     @Test
-    fun limitCountries_setOnlyUnitedKingdom_otherCountriesDoesNotPresent() {
+    fun limitCountries_setOnlyUnitedKingdom_otherCountriesDoesNotPresent() {//
         // Arrange
         val validCountriesList = listOf("GB")
         val intent = getLimitCountriesIntent(validCountriesList)
@@ -172,7 +183,8 @@ class AddressDialogTest {
                             addressOptions = VGSCheckoutCustomBillingAddressOptions(
                                 countryOptions = VGSCheckoutCustomCountryOptions(
                                     validCountries = countries
-                                )
+                                ),
+                                visibility = VGSCheckoutBillingAddressVisibility.VISIBLE
                             )
                         )
                     )

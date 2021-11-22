@@ -19,6 +19,7 @@ import com.verygoodsecurity.vgscheckout.ui.CheckoutActivity
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers.withText
 import com.verygoodsecurity.vgscheckout.util.extension.fillAddressFields
 import com.verygoodsecurity.vgscheckout.util.extension.fillCardFields
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -40,6 +41,11 @@ class ScreenRotationTest {
     @Before
     fun prepareDevice() {
         device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
+    }
+
+    @After
+    fun restoreDevice() {
+        device.setOrientationNatural()
     }
 
     @Test

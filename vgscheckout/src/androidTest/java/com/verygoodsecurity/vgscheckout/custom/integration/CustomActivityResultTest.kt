@@ -6,7 +6,9 @@ import android.content.Intent
 import androidx.test.core.app.ActivityScenario.launch
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
@@ -24,8 +26,7 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.VGSChecko
 import com.verygoodsecurity.vgscheckout.model.*
 import com.verygoodsecurity.vgscheckout.ui.CheckoutActivity
 import com.verygoodsecurity.vgscheckout.util.ViewInteraction.onViewWithScrollTo
-import com.verygoodsecurity.vgscheckout.util.extension.fillAddressFields
-import com.verygoodsecurity.vgscheckout.util.extension.fillCardFields
+import com.verygoodsecurity.vgscheckout.util.extension.*
 import com.verygoodsecurity.vgscheckout.util.extension.getParcelableSafe
 import org.junit.Assert.*
 import org.junit.Before
@@ -40,7 +41,10 @@ class CustomActivityResultTest {
     private val defaultIntent = Intent(context, CheckoutActivity::class.java).apply {
         putExtra(
             EXTRA_KEY_ARGS,
-            CheckoutResultContract.Args(VGSCheckoutCustomConfig(Constants.VAULT_ID_3))
+            CheckoutResultContract.Args(VGSCheckoutCustomConfig(
+                Constants.VAULT_ID_3,
+                isScreenshotsAllowed = true
+            ))
         )
     }
 
@@ -49,10 +53,11 @@ class CustomActivityResultTest {
     @Before
     fun prepareDevice() {
         device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
+        device.setOrientationNatural()
     }
 
-    @Test(timeout = 60000L)
-    fun performCheckout_saveCard_unsuccessfulResponse_resultFailed_codeOk() {
+    @Test
+    fun performCheckout_custom_saveCard_unsuccessfulResponse_resultFailed_codeOk() {
         // Arrange
         launch<CheckoutActivity>(defaultIntent).use {
             fillCardFields(
@@ -75,7 +80,7 @@ class CustomActivityResultTest {
         }
     }
 
-    @Test(timeout = 60000L)
+    @Test
     fun performCheckout_saveCard_successfulResponse_resultSuccess_codeOk() {
         // Arrange
         val intent = Intent(context, CheckoutActivity::class.java).apply {
@@ -139,6 +144,7 @@ class CustomActivityResultTest {
     fun performCheckout_cancelActivityResult_withBackPress_codeCancel() {
         launch<CheckoutActivity>(defaultIntent).use {
             // Act
+            onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard())
             device.pressBack()
             //Assert
             val result = it?.getParcelableSafe<CheckoutResultContract.Result>(EXTRA_KEY_RESULT)
