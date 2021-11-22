@@ -35,7 +35,7 @@ internal abstract class BaseManualInputFragment : Fragment(), InputFieldView.OnT
     VGSCountryEditText.OnCountrySelectedListener, InputFieldView.OnEditorActionListener {
 
     protected val formConfig: CheckoutFormConfig by lazy { requireArgument(KEY_BUNDLE_CONFIG) }
-    protected val inputFieldErrors = mutableMapOf<InputFieldView, String?>()
+    protected val inputFieldErrors = mutableMapOf<InputFieldView, String>()
 
     protected lateinit var binding: ManualInputViewBindingHelper
     protected lateinit var inputViewBinder: InputViewBinder
@@ -102,7 +102,7 @@ internal abstract class BaseManualInputFragment : Fragment(), InputFieldView.OnT
         requireActivity().hideSoftKeyboard()
         validate()
         updateErrors()
-        if (inputFieldErrors.isEmpty()) {
+        if (inputFieldErrors.filter { it.value.isNotEmpty() }.isEmpty()) {
             validationListener.onSuccess()
         } else {
             validationListener.onFailed(getInvalidInputAnalyticsNames())
@@ -352,7 +352,7 @@ internal abstract class BaseManualInputFragment : Fragment(), InputFieldView.OnT
         }
 
     private fun getInvalidInputAnalyticsNames(): List<String> =
-        inputFieldErrors.map { if (it.value.isNullOrEmpty()) null else it.key.getAnalyticsName() }
+        inputFieldErrors.map { if (it.value.isEmpty()) null else it.key.getAnalyticsName() }
             .filterNotNull()
     //endregion
 
