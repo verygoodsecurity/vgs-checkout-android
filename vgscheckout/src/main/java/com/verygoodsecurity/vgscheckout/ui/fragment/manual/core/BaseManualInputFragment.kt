@@ -1,6 +1,7 @@
 package com.verygoodsecurity.vgscheckout.ui.fragment.manual.core
 
 import android.content.Context
+import android.graphics.drawable.Animatable
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -15,6 +16,7 @@ import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
 import com.verygoodsecurity.vgscheckout.collect.view.card.validation.rules.VGSInfoRule
 import com.verygoodsecurity.vgscheckout.collect.widget.VGSCountryEditText
 import com.verygoodsecurity.vgscheckout.config.ui.core.CheckoutFormConfig
+import com.verygoodsecurity.vgscheckout.config.ui.core.VGSCheckoutFormValidationBehaviour
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.AddressOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.OptionalAddressOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.city.CityOptions
@@ -27,6 +29,7 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.Expiratio
 import com.verygoodsecurity.vgscheckout.config.ui.view.core.VGSCheckoutFieldVisibility
 import com.verygoodsecurity.vgscheckout.ui.fragment.core.LoadingHandler
 import com.verygoodsecurity.vgscheckout.ui.fragment.manual.ManualInputDynamicValidationFragment
+import com.verygoodsecurity.vgscheckout.ui.fragment.manual.ManualInputStaticValidationFragment
 import com.verygoodsecurity.vgscheckout.util.country.model.Country
 import com.verygoodsecurity.vgscheckout.util.country.model.PostalCodeType
 import com.verygoodsecurity.vgscheckout.util.extension.*
@@ -72,7 +75,8 @@ internal abstract class BaseManualInputFragment : Fragment(), LoadingHandler,
     }
 
     override fun setIsLoading(isLoading: Boolean) {
-
+        setInputViewsEnabled(!isLoading)
+        setSaveButtonIsLoading(isLoading)
     }
 
     override fun onTextChange(view: InputFieldView, isEmpty: Boolean) {
@@ -347,18 +351,43 @@ internal abstract class BaseManualInputFragment : Fragment(), LoadingHandler,
         inputFieldErrors.map { if (it.value.isEmpty()) null else it.key.getAnalyticsName() }
             .filterNotNull()
 
+    private fun setInputViewsEnabled(isEnabled: Boolean) {
+        binding.cardDetailsLL.setEnabled(isEnabled, true, binding.cardDetailsMtv)
+        binding.billingAddressLL.setEnabled(isEnabled, true, binding.billingAddressMtv)
+        val alpha = if (isEnabled) ICON_ALPHA_ENABLED else ICON_ALPHA_DISABLED
+        binding.cardNumberEt.setDrawablesAlphaColorFilter(alpha)
+        binding.securityCodeEt.setDrawablesAlphaColorFilter(alpha)
+    }
+
+    private fun setSaveButtonIsLoading(isLoading: Boolean) {
+        with(binding.saveCardButton) {
+            isClickable = !isLoading
+            if (isLoading) {
+                text = getString(R.string.vgs_checkout_save_button_processing_title)
+                icon = getDrawableCompat(R.drawable.vgs_checkout_ic_loading_animated_white_16)
+                (icon as? Animatable)?.start()
+            } else {
+                text = getString(R.string.vgs_checkout_save_button_save_card_title)
+                icon = null
+            }
+        }
+    }
+
     companion object {
 
+        private const val ICON_ALPHA_ENABLED = 1f
+        private const val ICON_ALPHA_DISABLED = 0.5f
         private const val BILLING_ADDRESS_MIN_CHARS_COUNT = 1
-
         private const val KEY_BUNDLE_CONFIG = "key_bundle_from_config"
 
         fun create(formConfig: CheckoutFormConfig): BaseManualInputFragment {
-            // TODO: Create different implementation of manual input fragment depends on config
             val bundle = Bundle().apply { putParcelable(KEY_BUNDLE_CONFIG, formConfig) }
-            return ManualInputDynamicValidationFragment().apply {
-                arguments = bundle
+            val fragment = when (formConfig.validationBehaviour) {
+                VGSCheckoutFormValidationBehaviour.ON_SUBMIT -> ManualInputStaticValidationFragment()
+                VGSCheckoutFormValidationBehaviour.ON_FOCUS -> ManualInputDynamicValidationFragment()
             }
+            fragment.arguments = bundle
+            return fragment
         }
     }
 }

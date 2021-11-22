@@ -51,6 +51,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
         super.onCreate(savedInstanceState)
         setScreenshotsAllowed(config.isScreenshotsAllowed)
         setContentView(R.layout.vgs_checkout_activity)
+        supportFragmentManager.addFragmentOnAttachListener(this)
         initView(savedInstanceState)
     }
 
@@ -150,7 +151,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
 
     private fun showNetworkConnectionErrorSnackBar() {
         val message = getString(R.string.vgs_checkout_no_network_error)
-        Snackbar.make(window.decorView.rootView, message, Snackbar.LENGTH_LONG)
+        Snackbar.make(findViewById(R.id.llRootView), message, Snackbar.LENGTH_LONG)
             .setAction(getString(R.string.vgs_checkout_no_network_retry)) { makeRequest() }
             .show()
     }
