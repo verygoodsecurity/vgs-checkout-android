@@ -25,14 +25,16 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.CardNumbe
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.CVCOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.ExpirationDateOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.core.VGSCheckoutFieldVisibility
+import com.verygoodsecurity.vgscheckout.ui.fragment.core.LoadingHandler
 import com.verygoodsecurity.vgscheckout.ui.fragment.manual.ManualInputDynamicValidationFragment
 import com.verygoodsecurity.vgscheckout.util.country.model.Country
 import com.verygoodsecurity.vgscheckout.util.country.model.PostalCodeType
 import com.verygoodsecurity.vgscheckout.util.extension.*
 
 @Suppress("MemberVisibilityCanBePrivate")
-internal abstract class BaseManualInputFragment : Fragment(), InputFieldView.OnTextChangedListener,
-    VGSCountryEditText.OnCountrySelectedListener, InputFieldView.OnEditorActionListener {
+internal abstract class BaseManualInputFragment : Fragment(), LoadingHandler,
+    InputFieldView.OnTextChangedListener, VGSCountryEditText.OnCountrySelectedListener,
+    InputFieldView.OnEditorActionListener {
 
     protected val formConfig: CheckoutFormConfig by lazy { requireArgument(KEY_BUNDLE_CONFIG) }
     protected val inputFieldErrors = mutableMapOf<InputFieldView, String>()
@@ -68,9 +70,11 @@ internal abstract class BaseManualInputFragment : Fragment(), InputFieldView.OnT
         super.onDestroyView()
         unbindAllViews()
     }
-    //endregion
 
-    //region Implemented interfaces
+    override fun setIsLoading(isLoading: Boolean) {
+
+    }
+
     override fun onTextChange(view: InputFieldView, isEmpty: Boolean) {
         clearError(view)
     }
@@ -87,9 +91,7 @@ internal abstract class BaseManualInputFragment : Fragment(), InputFieldView.OnT
         }
         return false
     }
-    //endregion
 
-    //region Init views
     @CallSuper
     protected open fun initViews(view: View) {
         initBillingAddressViews()
@@ -109,7 +111,6 @@ internal abstract class BaseManualInputFragment : Fragment(), InputFieldView.OnT
         }
     }
 
-    //region Init card details views
     private fun initCardDetailsViews() {
         with(formConfig.cardOptions) {
             initCardHolderView(cardHolderOptions)
@@ -150,9 +151,7 @@ internal abstract class BaseManualInputFragment : Fragment(), InputFieldView.OnT
         binding.securityCodeEt.setIsPreviewIconHidden(options.isIconHidden)
         binding.securityCodeEt.addOnTextChangeListener(this)
     }
-    //endregion
 
-    //region Init billing address views
     private fun initBillingAddressViews() {
         if (formConfig.isBillingAddressHidden()) {
             binding.billingAddressLL.gone()
@@ -201,14 +200,11 @@ internal abstract class BaseManualInputFragment : Fragment(), InputFieldView.OnT
         binding.postalCodeEt.setOnEditorActionListener(this)
         updatePostalCodeView(binding.countryEt.selectedCountry)
     }
-    //endregion
 
     private fun initSaveButton() {
         binding.saveCardButton.setOnClickListener { handleSaveClicked() }
     }
-    //endregion
 
-    //region Update views
     private fun updateCityView(country: Country) {
         if (country.postalCodeType == PostalCodeType.NOTHING) {
             binding.cityEt.setImeOptions(EditorInfo.IME_ACTION_DONE)
@@ -231,9 +227,7 @@ internal abstract class BaseManualInputFragment : Fragment(), InputFieldView.OnT
             binding.postalCodeTil.visible()
         }
     }
-    //endregion
 
-    //region Bind & unbind views
     private fun bindAllViews() {
         with(binding) {
             inputViewBinder.bind(cardHolderEt,
@@ -261,9 +255,7 @@ internal abstract class BaseManualInputFragment : Fragment(), InputFieldView.OnT
                 postalCodeEt)
         }
     }
-    //endregion
 
-    //region Helper functions
     @StringRes
     private fun getPostalCodeHint(country: Country) =
         when (country.postalCodeType) {
@@ -354,7 +346,6 @@ internal abstract class BaseManualInputFragment : Fragment(), InputFieldView.OnT
     private fun getInvalidInputAnalyticsNames(): List<String> =
         inputFieldErrors.map { if (it.value.isEmpty()) null else it.key.getAnalyticsName() }
             .filterNotNull()
-    //endregion
 
     companion object {
 

@@ -5,6 +5,9 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentOnAttachListener
 import com.google.android.material.snackbar.Snackbar
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.core.VGSCollect
@@ -19,6 +22,7 @@ import com.verygoodsecurity.vgscheckout.collect.widget.*
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.config.networking.core.VGSCheckoutHostnamePolicy
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
+import com.verygoodsecurity.vgscheckout.ui.fragment.core.LoadingHandler
 import com.verygoodsecurity.vgscheckout.ui.fragment.manual.core.BaseManualInputFragment
 import com.verygoodsecurity.vgscheckout.ui.fragment.manual.core.InputViewBinder
 import com.verygoodsecurity.vgscheckout.ui.fragment.manual.core.ValidationResultListener
@@ -26,7 +30,8 @@ import com.verygoodsecurity.vgscheckout.util.CollectProvider
 import com.verygoodsecurity.vgscheckout.util.extension.*
 
 internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActivity(),
-    InputViewBinder, ValidationResultListener, VgsCollectResponseListener {
+    FragmentOnAttachListener, InputViewBinder, ValidationResultListener,
+    VgsCollectResponseListener {
 
     protected val config: C by lazy { resolveConfig(intent) }
 
@@ -35,6 +40,8 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
             addOnResponseListeners(this@BaseCheckoutActivity)
         }
     }
+
+    private lateinit var loadingHandler: LoadingHandler
 
     abstract fun resolveConfig(intent: Intent): C
 
@@ -58,16 +65,8 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
         return true
     }
 
-    override fun onResponse(response: VGSResponse?) {
-        (response as? VGSResponse.ErrorResponse)?.let {
-            if (it.code == VGSError.NO_NETWORK_CONNECTIONS.code) {
-                showNetworkConnectionErrorSnackBar()
-                return
-            }
-        }
-        val resultBundle = CheckoutResultContract.Result(response?.toCheckoutResult()).toBundle()
-        setResult(Activity.RESULT_OK, Intent().putExtras(resultBundle))
-        finish()
+    override fun onAttachFragment(fragmentManager: FragmentManager, fragment: Fragment) {
+        loadingHandler = fragment as LoadingHandler
     }
 
     override fun bind(vararg view: InputFieldView) {
@@ -83,7 +82,21 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
     }
 
     override fun onSuccess() {
+        loadingHandler.setIsLoading(true)
         makeRequest()
+    }
+
+    override fun onResponse(response: VGSResponse?) {
+        loadingHandler.setIsLoading(false)
+        (response as? VGSResponse.ErrorResponse)?.let {
+            if (it.code == VGSError.NO_NETWORK_CONNECTIONS.code) {
+                showNetworkConnectionErrorSnackBar()
+                return
+            }
+        }
+        val resultBundle = CheckoutResultContract.Result(response?.toCheckoutResult()).toBundle()
+        setResult(Activity.RESULT_OK, Intent().putExtras(resultBundle))
+        finish()
     }
 
     @CallSuper
