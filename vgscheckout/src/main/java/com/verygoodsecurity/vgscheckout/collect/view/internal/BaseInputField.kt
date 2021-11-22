@@ -5,7 +5,6 @@ import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.text.TextWatcher
 import android.view.View
-import android.view.View.OnFocusChangeListener
 import android.view.autofill.AutofillValue
 import android.view.inputmethod.EditorInfo
 import androidx.annotation.VisibleForTesting
@@ -97,7 +96,6 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
 
     init {
         isListeningPermitted = true
-        setupFocusChangeListener()
         setupInputConnectionListener()
         setupEditorActionListener()
         setupOnKeyListener()
@@ -126,21 +124,6 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         id = ViewCompat.generateViewId()
 
         compoundDrawablePadding = resources.getDimension(R.dimen.vgs_checkout_margin_padding_size_small).toInt()
-    }
-
-    private fun setupFocusChangeListener() {
-        onFocusChangeListener = OnFocusChangeListener { _, hasFocus ->
-            inputConnection?.getOutput()?.apply {
-
-                userFocusChangeListener?.onFocusChange(vgsParent, hasFocus)
-
-                if (hasFocus != isFocusable) {
-                    isFocusable = hasFocus
-                    hasUserInteraction = true
-                    inputConnection?.run()
-                }
-            }
-        }
     }
 
     private fun setupInputConnectionListener() {
@@ -307,6 +290,20 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
     override fun requestFocus(direction: Int, previouslyFocusedRect: Rect?): Boolean {
         return super.requestFocus(direction, previouslyFocusedRect).also {
             setSelection(text?.length ?: 0)
+        }
+    }
+
+    override fun onFocusChanged(focused: Boolean, direction: Int, previouslyFocusedRect: Rect?) {
+        super.onFocusChanged(focused, direction, previouslyFocusedRect)
+        inputConnection?.getOutput()?.apply {
+
+            userFocusChangeListener?.onFocusChange(vgsParent, focused)
+
+            if (focused != isFocusable) {
+                isFocusable = focused
+                hasUserInteraction = true
+                inputConnection?.run()
+            }
         }
     }
 
