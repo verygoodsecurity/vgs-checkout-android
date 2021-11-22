@@ -13,11 +13,9 @@ internal class ManualInputDynamicValidationFragment : BaseManualInputFragment(),
     }
 
     override fun onFocusChange(v: View?, hasFocus: Boolean) {
-        if (hasFocus.not()) {
-            (v as? InputFieldView)?.let {
-                validate(it)
-                updateError(it)
-            }
+        if (v is InputFieldView && hasFocus.not() && v.isEdited()) {
+            validate(v)
+            updateError(v)
         }
     }
 
