@@ -1,10 +1,16 @@
 package com.verygoodsecurity.vgscheckout.util
 
 import android.view.View
+import androidx.annotation.IdRes
 import androidx.test.espresso.matcher.BoundedMatcher
+import androidx.test.espresso.matcher.ViewMatchers
 import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
 import com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout
+import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.Description
+import org.hamcrest.Matcher
+import org.hamcrest.Matchers
+import kotlin.reflect.KClass
 
 internal object VGSViewMatchers {
 
@@ -52,4 +58,14 @@ internal object VGSViewMatchers {
                 return item?.getText()?.toString().equals(text)
             }
         }
+
+    /**
+     * Matcher that matches InputField by it VGSTextInputLayout parent.
+     */
+    fun <T : View> withParent(@IdRes parentId: Int, klass: KClass<T>): Matcher<View> {
+        return allOf(
+            ViewMatchers.withClassName(Matchers.containsString(klass.simpleName)),
+            ViewMatchers.isDescendantOfA(ViewMatchers.withId(parentId))
+        )
+    }
 }

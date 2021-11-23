@@ -4,6 +4,7 @@ import android.view.View
 import androidx.test.espresso.UiController
 import androidx.test.espresso.ViewAction
 import androidx.test.espresso.matcher.ViewMatchers
+import com.verygoodsecurity.vgscheckout.collect.view.internal.BaseInputField
 import org.hamcrest.Matcher
 
 internal object ActionHelper {
@@ -12,7 +13,7 @@ internal object ActionHelper {
 
     inline fun <reified P : View> doAction(
         description: String = DESCRIPTION,
-        crossinline action: (view: P) -> Unit
+        crossinline action: (view: P) -> Unit,
     ) = object : ViewAction {
 
         override fun getDescription(): String = description
@@ -25,5 +26,9 @@ internal object ActionHelper {
             }
             action.invoke(view)
         }
+    }
+
+    inline fun <reified T : BaseInputField> setText(text: String?): ViewAction {
+        return doAction<T> { it.setText(text) }
     }
 }
