@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscheckout.ui.fragment.manual.core
+package com.verygoodsecurity.vgscheckout.ui.fragment.save.core
 
 internal interface ValidationResultListener {
 
