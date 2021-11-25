@@ -12,7 +12,6 @@ import androidx.core.view.ViewCompat
 import androidx.core.widget.addTextChangedListener
 import com.google.android.material.textfield.TextInputEditText
 import com.verygoodsecurity.vgscheckout.R
-import com.verygoodsecurity.vgscheckout.util.logger.VGSCheckoutLogger
 import com.verygoodsecurity.vgscheckout.collect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.AnalyticTracker
 import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.AutofillEvent
@@ -29,6 +28,7 @@ import com.verygoodsecurity.vgscheckout.collect.view.card.validation.LengthValid
 import com.verygoodsecurity.vgscheckout.collect.view.card.validation.MutableValidator
 import com.verygoodsecurity.vgscheckout.collect.view.card.validation.RegexValidator
 import com.verygoodsecurity.vgscheckout.collect.view.card.validation.rules.ValidationRule
+import com.verygoodsecurity.vgscheckout.util.logger.VGSCheckoutLogger
 
 /** @suppress */
 internal abstract class BaseInputField(context: Context) : TextInputEditText(context),
@@ -94,6 +94,9 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
 
     private var analyticName: String? = null
 
+    var isEdited: Boolean = false
+        private set
+
     init {
         isListeningPermitted = true
         setupInputConnectionListener()
@@ -128,6 +131,7 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
 
     private fun setupInputConnectionListener() {
         addTextChangedListener {
+            if (!isEdited) isEdited = it != null && it.isNotEmpty()
             updateTextChanged(it.toString())
             vgsParent?.notifyOnTextChanged(it.isNullOrEmpty())
         }

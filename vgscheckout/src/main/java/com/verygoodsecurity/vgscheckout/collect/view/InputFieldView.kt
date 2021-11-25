@@ -1352,6 +1352,8 @@ internal abstract class InputFieldView @JvmOverloads constructor(
         inputField.setSelection(inputField.text?.length ?: 0)
     }
 
+    fun isEdited() = inputField.isEdited
+
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     internal fun getText() = inputField.text
 

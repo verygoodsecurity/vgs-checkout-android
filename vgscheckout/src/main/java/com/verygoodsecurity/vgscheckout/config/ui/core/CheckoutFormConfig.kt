@@ -21,4 +21,9 @@ abstract class CheckoutFormConfig internal constructor() : Parcelable {
      * Options of address details block.
      */
     abstract val addressOptions: CheckoutBillingAddressOptions
+
+    /**
+     * Defines validation behavior.
+     */
+    abstract val validationBehaviour: VGSCheckoutFormValidationBehaviour
 }
