@@ -88,9 +88,9 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
     }
 
     override fun onResponse(response: VGSResponse?) {
-        loadingHandler.setIsLoading(false)
         (response as? VGSResponse.ErrorResponse)?.let {
             if (it.code == VGSError.NO_NETWORK_CONNECTIONS.code) {
+                loadingHandler.setIsLoading(false)
                 showNetworkConnectionErrorSnackBar()
                 return
             }
