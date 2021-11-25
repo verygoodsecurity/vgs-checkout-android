@@ -38,15 +38,14 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillin
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutMultiplexingBillingAddressOptions
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_ARGS
+import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_RESULT
+import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 import com.verygoodsecurity.vgscheckout.ui.CheckoutActivity
 import com.verygoodsecurity.vgscheckout.ui.CheckoutMultiplexingActivity
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers.withError
 import com.verygoodsecurity.vgscheckout.util.ViewInteraction.onViewWithScrollTo
-import com.verygoodsecurity.vgscheckout.util.extension.fillAddressFields
-import com.verygoodsecurity.vgscheckout.util.extension.fillCardFields
-import com.verygoodsecurity.vgscheckout.util.extension.safeResult
-import com.verygoodsecurity.vgscheckout.util.extension.waitFor
+import com.verygoodsecurity.vgscheckout.util.extension.*
 import org.hamcrest.Matchers
 import org.hamcrest.Matchers.hasToString
 import org.junit.Assert
@@ -242,7 +241,9 @@ class OnSubmitFieldsValidationTest {
             onViewWithScrollTo(R.id.vgsTilPostalCode).check(matches(withError("")))
 
             //Assert
-            Assert.assertEquals(Activity.RESULT_OK, it.safeResult.resultCode)
+            val result = it?.getParcelableSafe<CheckoutResultContract.Result>(EXTRA_KEY_RESULT)
+            Assert.assertEquals(Activity.RESULT_OK, it.result.resultCode)
+            Assert.assertTrue(result?.checkoutResult is VGSCheckoutResult.Success)
         }
     }
 

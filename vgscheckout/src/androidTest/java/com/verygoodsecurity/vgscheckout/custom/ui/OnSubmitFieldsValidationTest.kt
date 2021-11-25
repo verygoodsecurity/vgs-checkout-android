@@ -234,7 +234,9 @@ class OnSubmitFieldsValidationTest {
             onViewWithScrollTo(R.id.vgsTilPostalCode).check(matches(withError("")))
 
             //Assert
-            Assert.assertEquals(Activity.RESULT_OK, it.safeResult.resultCode)
+            val result = it?.getParcelableSafe<CheckoutResultContract.Result>(EXTRA_KEY_RESULT)
+            Assert.assertEquals(Activity.RESULT_OK, it.result.resultCode)
+            Assert.assertTrue(result?.checkoutResult is VGSCheckoutResult.Success)
         }
     }
 
