@@ -69,10 +69,8 @@ dependencies {
     androidTestImplementation "androidx.test.ext:junit:$junit_extension"
     androidTestImplementation "androidx.test.ext:junit-ktx:$junit_extension"
     androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.2.0'
-
-    dokkaHtmlPlugin("org.jetbrains.dokka:kotlin-as-java-plugin:$dokka_plugin")
 }
 
-tasks.dokkaJavadoc.configure {
+tasks.dokkaHtml.configure {
     outputDirectory.set(rootProject.file('docs'))
 }
