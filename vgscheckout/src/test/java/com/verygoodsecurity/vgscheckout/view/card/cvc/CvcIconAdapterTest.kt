@@ -61,22 +61,6 @@ class CvcIconAdapterTest {
     }
 
     @Test
-    fun getIcon_cardUnknown_defaultIconReturned() {
-        // Act
-        val item = adapter.getItem(CardType.UNKNOWN, "", 3, dummyRect)
-        // Assert
-        assertEquals(item.constantState, anyCardDrawable.constantState)
-    }
-
-    @Test
-    fun getIcon_amExCard_amExIconReturned() {
-        // Act
-        val item = adapter.getItem(CardType.AMERICAN_EXPRESS, "", 4, dummyRect)
-        // Assert
-        assertEquals(item.constantState, amExDrawable.constantState)
-    }
-
-    @Test
     fun getIcon_overrideIcon_overrideIconReturned() {
         // Arrange
         overrideIcon(overrideIconDrawable)
