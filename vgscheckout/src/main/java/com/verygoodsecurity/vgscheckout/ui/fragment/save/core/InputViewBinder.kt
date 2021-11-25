@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscheckout.ui.fragment.manual.core
+package com.verygoodsecurity.vgscheckout.ui.fragment.save.core
 
 import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
 

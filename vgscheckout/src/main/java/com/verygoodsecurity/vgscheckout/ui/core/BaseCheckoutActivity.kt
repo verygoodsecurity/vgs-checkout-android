@@ -23,9 +23,9 @@ import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.config.networking.core.VGSCheckoutHostnamePolicy
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.ui.fragment.core.LoadingHandler
-import com.verygoodsecurity.vgscheckout.ui.fragment.manual.core.BaseManualInputFragment
-import com.verygoodsecurity.vgscheckout.ui.fragment.manual.core.InputViewBinder
-import com.verygoodsecurity.vgscheckout.ui.fragment.manual.core.ValidationResultListener
+import com.verygoodsecurity.vgscheckout.ui.fragment.save.core.BaseSaveCardFragment
+import com.verygoodsecurity.vgscheckout.ui.fragment.save.core.InputViewBinder
+import com.verygoodsecurity.vgscheckout.ui.fragment.save.core.ValidationResultListener
 import com.verygoodsecurity.vgscheckout.util.CollectProvider
 import com.verygoodsecurity.vgscheckout.util.extension.*
 
@@ -104,7 +104,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
     protected open fun initView(savedInstanceState: Bundle?) {
         initToolbar()
         if (savedInstanceState == null) {
-            showManualInputFragment()
+            showSaveCardFragment()
         }
     }
 
@@ -112,9 +112,9 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
         setSupportActionBar(findViewById(R.id.mtToolbar))
     }
 
-    private fun showManualInputFragment() {
+    private fun showSaveCardFragment() {
         supportFragmentManager.beginTransaction()
-            .add(R.id.fcvContainer, BaseManualInputFragment.create(config.formConfig))
+            .add(R.id.fcvContainer, BaseSaveCardFragment.create(config.formConfig))
             .commit()
     }
 

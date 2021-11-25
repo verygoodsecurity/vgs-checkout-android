@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscheckout.ui.fragment.manual.core
+package com.verygoodsecurity.vgscheckout.ui.fragment.save.core
 
 import android.content.Context
 import android.graphics.drawable.Animatable
@@ -27,21 +27,21 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.CardNumbe
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.CVCOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.ExpirationDateOptions
 import com.verygoodsecurity.vgscheckout.ui.fragment.core.LoadingHandler
-import com.verygoodsecurity.vgscheckout.ui.fragment.manual.ManualInputDynamicValidationFragment
-import com.verygoodsecurity.vgscheckout.ui.fragment.manual.ManualInputStaticValidationFragment
+import com.verygoodsecurity.vgscheckout.ui.fragment.save.SaveCardDynamicValidationFragment
+import com.verygoodsecurity.vgscheckout.ui.fragment.save.SaveCardStaticValidationFragment
 import com.verygoodsecurity.vgscheckout.util.country.model.Country
 import com.verygoodsecurity.vgscheckout.util.country.model.PostalCodeType
 import com.verygoodsecurity.vgscheckout.util.extension.*
 
 @Suppress("MemberVisibilityCanBePrivate")
-internal abstract class BaseManualInputFragment : Fragment(), LoadingHandler,
+internal abstract class BaseSaveCardFragment : Fragment(), LoadingHandler,
     InputFieldView.OnTextChangedListener, VGSCountryEditText.OnCountrySelectedListener,
     InputFieldView.OnEditorActionListener {
 
     protected val formConfig: CheckoutFormConfig by lazy { requireArgument(KEY_BUNDLE_CONFIG) }
     protected val inputFieldErrors = mutableMapOf<InputFieldView, String>()
 
-    protected lateinit var binding: ManualInputViewBindingHelper
+    protected lateinit var binding: SaveCardViewBindingHelper
     protected lateinit var inputViewBinder: InputViewBinder
     protected lateinit var validationListener: ValidationResultListener
 
@@ -71,9 +71,9 @@ internal abstract class BaseManualInputFragment : Fragment(), LoadingHandler,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        binding = ManualInputViewBindingHelper(
+        binding = SaveCardViewBindingHelper(
             inflater,
-            R.layout.vgs_checkout_manual_input_fragment
+            R.layout.vgs_checkout_save_card_fragment
         )
         return binding.rootView
     }
@@ -384,11 +384,11 @@ internal abstract class BaseManualInputFragment : Fragment(), LoadingHandler,
         private const val BILLING_ADDRESS_MIN_CHARS_COUNT = 1
         private const val KEY_BUNDLE_CONFIG = "key_bundle_from_config"
 
-        fun create(formConfig: CheckoutFormConfig): BaseManualInputFragment {
+        fun create(formConfig: CheckoutFormConfig): BaseSaveCardFragment {
             val bundle = Bundle().apply { putParcelable(KEY_BUNDLE_CONFIG, formConfig) }
             val fragment = when (formConfig.validationBehaviour) {
-                VGSCheckoutFormValidationBehaviour.ON_SUBMIT -> ManualInputStaticValidationFragment()
-                VGSCheckoutFormValidationBehaviour.ON_FOCUS -> ManualInputDynamicValidationFragment()
+                VGSCheckoutFormValidationBehaviour.ON_SUBMIT -> SaveCardStaticValidationFragment()
+                VGSCheckoutFormValidationBehaviour.ON_FOCUS -> SaveCardDynamicValidationFragment()
             }
             fragment.arguments = bundle
             return fragment

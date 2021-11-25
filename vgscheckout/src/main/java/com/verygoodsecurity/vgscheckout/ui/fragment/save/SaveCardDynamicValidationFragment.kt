@@ -1,10 +1,10 @@
-package com.verygoodsecurity.vgscheckout.ui.fragment.manual
+package com.verygoodsecurity.vgscheckout.ui.fragment.save
 
 import android.view.View
 import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
-import com.verygoodsecurity.vgscheckout.ui.fragment.manual.core.BaseManualInputFragment
+import com.verygoodsecurity.vgscheckout.ui.fragment.save.core.BaseSaveCardFragment
 
-internal class ManualInputDynamicValidationFragment : BaseManualInputFragment(),
+internal class SaveCardDynamicValidationFragment : BaseSaveCardFragment(),
     View.OnFocusChangeListener {
 
     override fun initViews(view: View) {

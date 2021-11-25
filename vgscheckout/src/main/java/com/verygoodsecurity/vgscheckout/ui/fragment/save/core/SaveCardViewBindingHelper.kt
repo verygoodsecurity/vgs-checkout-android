@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscheckout.ui.fragment.manual.core
+package com.verygoodsecurity.vgscheckout.ui.fragment.save.core
 
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +11,7 @@ import com.verygoodsecurity.vgscheckout.collect.widget.*
 
 // TODO: Remove all unused views
 @Suppress("unused")
-internal class ManualInputViewBindingHelper(inflater: LayoutInflater, @LayoutRes layoutId: Int) {
+internal class SaveCardViewBindingHelper(inflater: LayoutInflater, @LayoutRes layoutId: Int) {
 
     val rootView: View = inflater.inflate(layoutId, null)
 
