@@ -26,7 +26,6 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.CardHolde
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.CardNumberOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.CVCOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.ExpirationDateOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.core.VGSCheckoutFieldVisibility
 import com.verygoodsecurity.vgscheckout.ui.fragment.core.LoadingHandler
 import com.verygoodsecurity.vgscheckout.ui.fragment.save.SaveCardDynamicValidationFragment
 import com.verygoodsecurity.vgscheckout.ui.fragment.save.SaveCardStaticValidationFragment
@@ -45,6 +44,21 @@ internal abstract class BaseSaveCardFragment : Fragment(), LoadingHandler,
     protected lateinit var binding: SaveCardViewBindingHelper
     protected lateinit var inputViewBinder: InputViewBinder
     protected lateinit var validationListener: ValidationResultListener
+
+    private val validationRequiredInputs: Array<InputFieldView> by lazy {
+        mutableListOf(
+            binding.cardNumberEt,
+            binding.expirationDateEt,
+            binding.securityCodeEt,
+        ).apply {
+            if (formConfig.isCardHolderVisible()) add(binding.cardHolderEt)
+            if (formConfig.isBillingAddressVisible()) {
+                add(binding.addressEt)
+                add(binding.cityEt)
+                add(binding.postalCodeEt)
+            }
+        }.toTypedArray()
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -98,8 +112,8 @@ internal abstract class BaseSaveCardFragment : Fragment(), LoadingHandler,
 
     @CallSuper
     protected open fun initViews(view: View) {
-        initBillingAddressViews()
         initCardDetailsViews()
+        initBillingAddressViews()
         bindAllViews()
         initSaveButton()
     }
@@ -125,7 +139,7 @@ internal abstract class BaseSaveCardFragment : Fragment(), LoadingHandler,
     }
 
     private fun initCardHolderView(options: CardHolderOptions) {
-        if (options.visibility == VGSCheckoutFieldVisibility.HIDDEN) {
+        if (formConfig.isCardHolderHidden()) {
             binding.cardHolderTil.gone()
             return
         }
@@ -268,17 +282,7 @@ internal abstract class BaseSaveCardFragment : Fragment(), LoadingHandler,
             PostalCodeType.NOTHING -> R.string.empty
         }
 
-    protected fun validate(
-        vararg input: InputFieldView = arrayOf(
-            binding.cardHolderEt,
-            binding.cardNumberEt,
-            binding.expirationDateEt,
-            binding.securityCodeEt,
-            binding.addressEt,
-            binding.cityEt,
-            binding.postalCodeEt
-        ),
-    ) {
+    protected fun validate(vararg input: InputFieldView = validationRequiredInputs) {
         input.forEach { validate(it) }
     }
 
