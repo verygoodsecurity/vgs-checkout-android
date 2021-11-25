@@ -1,5 +1,6 @@
 package com.verygoodsecurity.vgscheckout.multiplexing.ui
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.test.core.app.ActivityScenario.launch
@@ -44,9 +45,11 @@ import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers.withError
 import com.verygoodsecurity.vgscheckout.util.ViewInteraction.onViewWithScrollTo
 import com.verygoodsecurity.vgscheckout.util.extension.fillAddressFields
 import com.verygoodsecurity.vgscheckout.util.extension.fillCardFields
+import com.verygoodsecurity.vgscheckout.util.extension.safeResult
 import com.verygoodsecurity.vgscheckout.util.extension.waitFor
 import org.hamcrest.Matchers
 import org.hamcrest.Matchers.hasToString
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -213,9 +216,6 @@ class OnSubmitFieldsValidationTest {
     fun saveCard_custom_validInput_noErrorsDisplayed() {
         launch<CheckoutActivity>(intent).use {
             // Arrange
-            waitFor(500)
-            onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard())
-
             fillCardFields(
                 VALID_CARD_HOLDER,
                 VALID_CARD_NUMBER,
@@ -229,6 +229,8 @@ class OnSubmitFieldsValidationTest {
             )
 
             // Act
+            onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard())
+            waitFor(500)
             onViewWithScrollTo(R.id.mbSaveCard).perform(click())
             // Assert
             onViewWithScrollTo(R.id.vgsTilCardHolder).check(matches(withError("")))
@@ -239,7 +241,8 @@ class OnSubmitFieldsValidationTest {
             onViewWithScrollTo(R.id.vgsTilCity).check(matches(withError("")))
             onViewWithScrollTo(R.id.vgsTilPostalCode).check(matches(withError("")))
 
-            waitFor(2000)
+            //Assert
+            Assert.assertEquals(Activity.RESULT_OK, it.safeResult.resultCode)
         }
     }
 

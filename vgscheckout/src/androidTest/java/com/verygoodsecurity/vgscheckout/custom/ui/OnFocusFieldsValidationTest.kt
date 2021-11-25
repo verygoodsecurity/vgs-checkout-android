@@ -1,12 +1,16 @@
 package com.verygoodsecurity.vgscheckout.custom.ui
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.test.core.app.ActivityScenario.launch
 import androidx.test.core.app.ApplicationProvider
+import androidx.test.espresso.Espresso
+import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.typeText
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
@@ -25,6 +29,9 @@ import com.verygoodsecurity.vgscheckout.util.ActionHelper.setText
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers.withError
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers.withParent
 import com.verygoodsecurity.vgscheckout.util.ViewInteraction.onViewWithScrollTo
+import com.verygoodsecurity.vgscheckout.util.extension.safeResult
+import com.verygoodsecurity.vgscheckout.util.extension.waitFor
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -87,6 +94,14 @@ class OnFocusFieldsValidationTest {
             onViewWithScrollTo(R.id.vgsTilAddress).check(matches(withError("")))
             onViewWithScrollTo(R.id.vgsTilCity).check(matches(withError("")))
             onViewWithScrollTo(R.id.vgsTilPostalCode).check(matches(withError("")))
+
+            // Act
+            Espresso.onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard())
+            waitFor(500)
+            device.pressBack()
+
+            //Assert
+            Assert.assertEquals(Activity.RESULT_CANCELED, it.result.resultCode)
         }
     }
 

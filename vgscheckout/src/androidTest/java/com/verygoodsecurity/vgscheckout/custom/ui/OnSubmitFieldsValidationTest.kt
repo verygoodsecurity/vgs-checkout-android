@@ -1,11 +1,13 @@
 package com.verygoodsecurity.vgscheckout.custom.ui
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.test.core.app.ActivityScenario.launch
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onData
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isRoot
@@ -34,15 +36,17 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillin
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutCustomBillingAddressOptions
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_ARGS
+import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_RESULT
+import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 import com.verygoodsecurity.vgscheckout.ui.CheckoutActivity
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers.withError
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers.withParent
 import com.verygoodsecurity.vgscheckout.util.ViewInteraction.onViewWithScrollTo
-import com.verygoodsecurity.vgscheckout.util.extension.fillAddressFields
-import com.verygoodsecurity.vgscheckout.util.extension.fillCardFields
-import com.verygoodsecurity.vgscheckout.util.extension.waitFor
+import com.verygoodsecurity.vgscheckout.util.extension.*
+import com.verygoodsecurity.vgscheckout.util.extension.getParcelableSafe
 import org.hamcrest.Matchers.hasToString
 import org.hamcrest.Matchers.startsWith
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -205,9 +209,6 @@ class OnSubmitFieldsValidationTest {
     fun saveCard_custom_validInput_noErrorsDisplayed() {
         launch<CheckoutActivity>(intent).use {
             // Arrange
-            waitFor(500)
-            onView(isRoot()).perform(closeSoftKeyboard())
-
             fillCardFields(
                 VALID_CARD_HOLDER,
                 VALID_CARD_NUMBER,
@@ -219,9 +220,9 @@ class OnSubmitFieldsValidationTest {
                 VALID_CITY,
                 USA_VALID_ZIP_CODE
             )
-
-            waitFor(2000)
             // Act
+            onView(isRoot()).perform(closeSoftKeyboard())
+            waitFor(500)
             onViewWithScrollTo(R.id.mbSaveCard).perform(click())
             // Assert
             onViewWithScrollTo(R.id.vgsTilCardHolder).check(matches(withError("")))
@@ -232,6 +233,8 @@ class OnSubmitFieldsValidationTest {
             onViewWithScrollTo(R.id.vgsTilCity).check(matches(withError("")))
             onViewWithScrollTo(R.id.vgsTilPostalCode).check(matches(withError("")))
 
+            //Assert
+            Assert.assertEquals(Activity.RESULT_OK, it.safeResult.resultCode)
         }
     }
 
