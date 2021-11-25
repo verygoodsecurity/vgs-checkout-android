@@ -19,8 +19,6 @@ import org.robolectric.RobolectricTestRunner
 class CvcIconAdapterTest {
 
     private lateinit var adapter: IconAdapterFake
-    private lateinit var amExDrawable: Drawable
-    private lateinit var anyCardDrawable: Drawable
     private lateinit var overrideIconDrawable: Drawable
     private val dummyRect = Rect()
 
@@ -28,10 +26,6 @@ class CvcIconAdapterTest {
     fun setupAdapter() {
         with(Robolectric.buildActivity(Activity::class.java).get()) {
             adapter = IconAdapterFake(this)
-            amExDrawable =
-                AppCompatResources.getDrawable(this, R.drawable.vgs_checkout_ic_card_back_preview_dark_4)!!
-            anyCardDrawable =
-                AppCompatResources.getDrawable(this, R.drawable.vgs_checkout_ic_card_back_preview_dark)!!
             overrideIconDrawable =
                 AppCompatResources.getDrawable(this, R.drawable.vgs_checkout_ic_card_back_preview_light_4)!!
         }
@@ -58,22 +52,6 @@ class CvcIconAdapterTest {
         // Assert
         assertEquals(item.bounds.height(), height)
         assertEquals(item.bounds.width(), width)
-    }
-
-    @Test
-    fun getIcon_cardUnknown_defaultIconReturned() {
-        // Act
-        val item = adapter.getItem(CardType.UNKNOWN, "", 3, dummyRect)
-        // Assert
-        assertEquals(item.constantState, anyCardDrawable.constantState)
-    }
-
-    @Test
-    fun getIcon_amExCard_amExIconReturned() {
-        // Act
-        val item = adapter.getItem(CardType.AMERICAN_EXPRESS, "", 4, dummyRect)
-        // Assert
-        assertEquals(item.constantState, amExDrawable.constantState)
     }
 
     @Test
