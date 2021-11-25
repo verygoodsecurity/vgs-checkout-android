@@ -19,8 +19,6 @@ import org.robolectric.RobolectricTestRunner
 class CvcIconAdapterTest {
 
     private lateinit var adapter: IconAdapterFake
-    private lateinit var amExDrawable: Drawable
-    private lateinit var anyCardDrawable: Drawable
     private lateinit var overrideIconDrawable: Drawable
     private val dummyRect = Rect()
 
@@ -28,10 +26,6 @@ class CvcIconAdapterTest {
     fun setupAdapter() {
         with(Robolectric.buildActivity(Activity::class.java).get()) {
             adapter = IconAdapterFake(this)
-            amExDrawable =
-                AppCompatResources.getDrawable(this, R.drawable.vgs_checkout_ic_card_back_preview_dark_4)!!
-            anyCardDrawable =
-                AppCompatResources.getDrawable(this, R.drawable.vgs_checkout_ic_card_back_preview_dark)!!
             overrideIconDrawable =
                 AppCompatResources.getDrawable(this, R.drawable.vgs_checkout_ic_card_back_preview_light_4)!!
         }
