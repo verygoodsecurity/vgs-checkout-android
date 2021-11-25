@@ -105,13 +105,13 @@ class DefaultMultiplexingSetupTest {
             Espresso.onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard())
             // Assert
             ViewInteraction.onViewWithScrollTo(R.id.vgsTilCardHolder)
-                .check(ViewAssertions.matches(VGSViewMatchers.withError(null)))
+                .check(ViewAssertions.matches(VGSViewMatchers.withError("")))
             ViewInteraction.onViewWithScrollTo(R.id.vgsTilCardNumber)
-                .check(ViewAssertions.matches(VGSViewMatchers.withError(null)))
+                .check(ViewAssertions.matches(VGSViewMatchers.withError("")))
             ViewInteraction.onViewWithScrollTo(R.id.vgsTilExpirationDate)
-                .check(ViewAssertions.matches(VGSViewMatchers.withError(null)))
+                .check(ViewAssertions.matches(VGSViewMatchers.withError("")))
             ViewInteraction.onViewWithScrollTo(R.id.vgsTilSecurityCode)
-                .check(ViewAssertions.matches(VGSViewMatchers.withError(null)))
+                .check(ViewAssertions.matches(VGSViewMatchers.withError("")))
         }
     }
 }
