@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 30
+        targetSdkVersion 31
         versionCode VERSION_CODE.toInteger()
         versionName VERSION_NAME
 
@@ -69,4 +69,10 @@ dependencies {
     androidTestImplementation "androidx.test.ext:junit:$junit_extension"
     androidTestImplementation "androidx.test.ext:junit-ktx:$junit_extension"
     androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.2.0'
+
+    dokkaHtmlPlugin("org.jetbrains.dokka:kotlin-as-java-plugin:$dokka_plugin")
+}
+
+tasks.dokkaJavadoc.configure {
+    outputDirectory.set(rootProject.file('docs'))
 }
