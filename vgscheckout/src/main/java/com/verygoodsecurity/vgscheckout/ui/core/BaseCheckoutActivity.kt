@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.annotation.CallSuper
+import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -154,5 +155,10 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
         Snackbar.make(findViewById(R.id.llRootView), message, Snackbar.LENGTH_LONG)
             .setAction(getString(R.string.vgs_checkout_no_network_retry)) { makeRequest() }
             .show()
+    }
+
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    internal fun validateFields() {
+        collect.validateFields()
     }
 }

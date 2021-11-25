@@ -222,8 +222,10 @@ class OnSubmitFieldsValidationTest {
             )
             // Act
             onView(isRoot()).perform(closeSoftKeyboard())
-            waitFor(500)
-            onViewWithScrollTo(R.id.mbSaveCard).perform(click())
+            it.onActivity {
+                it.validateFields()
+            }
+
             // Assert
             onViewWithScrollTo(R.id.vgsTilCardHolder).check(matches(withError("")))
             onViewWithScrollTo(R.id.vgsTilCardNumber).check(matches(withError("")))
@@ -232,11 +234,6 @@ class OnSubmitFieldsValidationTest {
             onViewWithScrollTo(R.id.vgsTilAddress).check(matches(withError("")))
             onViewWithScrollTo(R.id.vgsTilCity).check(matches(withError("")))
             onViewWithScrollTo(R.id.vgsTilPostalCode).check(matches(withError("")))
-
-            //Assert
-            val result = it?.getParcelableSafe<CheckoutResultContract.Result>(EXTRA_KEY_RESULT)
-            Assert.assertEquals(Activity.RESULT_OK, it.result.resultCode)
-            Assert.assertTrue(result?.checkoutResult is VGSCheckoutResult.Success)
         }
     }
 

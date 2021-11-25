@@ -1,6 +1,5 @@
 package com.verygoodsecurity.vgscheckout.multiplexing.ui
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.test.core.app.ActivityScenario.launch
@@ -38,9 +37,6 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillin
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutMultiplexingBillingAddressOptions
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_ARGS
-import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_RESULT
-import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
-import com.verygoodsecurity.vgscheckout.ui.CheckoutActivity
 import com.verygoodsecurity.vgscheckout.ui.CheckoutMultiplexingActivity
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers.withError
@@ -48,7 +44,6 @@ import com.verygoodsecurity.vgscheckout.util.ViewInteraction.onViewWithScrollTo
 import com.verygoodsecurity.vgscheckout.util.extension.*
 import org.hamcrest.Matchers
 import org.hamcrest.Matchers.hasToString
-import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -87,7 +82,7 @@ class OnSubmitFieldsValidationTest {
 
     @Test
     fun validationFlow_staticByDefault() {
-        launch<CheckoutActivity>(intent).use {
+        launch<CheckoutMultiplexingActivity>(intent).use {
             // Act
             onViewWithScrollTo(VGSViewMatchers.withParent(R.id.vgsTilCardNumber,
                 CardInputField::class))
@@ -102,7 +97,7 @@ class OnSubmitFieldsValidationTest {
 
     @Test
     fun saveCardClicked_noInput_emptyErrorsDisplayed() {
-        launch<CheckoutActivity>(intent).use {
+        launch<CheckoutMultiplexingActivity>(intent).use {
             // Act
             onViewWithScrollTo(R.id.mbSaveCard)
                 .perform(click())
@@ -161,7 +156,7 @@ class OnSubmitFieldsValidationTest {
 
     @Test
     fun saveCardClicked_invalidInput_invalidInputErrorsDisplayed() {
-        launch<CheckoutActivity>(intent).use {
+        launch<CheckoutMultiplexingActivity>(intent).use {
             // Arrange
             waitFor(500)
             onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard())
@@ -213,7 +208,7 @@ class OnSubmitFieldsValidationTest {
 
     @Test
     fun saveCard_custom_validInput_noErrorsDisplayed() {
-        launch<CheckoutActivity>(intent).use {
+        launch<CheckoutMultiplexingActivity>(intent).use {
             // Arrange
             fillCardFields(
                 VALID_CARD_HOLDER,
@@ -229,8 +224,9 @@ class OnSubmitFieldsValidationTest {
 
             // Act
             onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard())
-            waitFor(500)
-            onViewWithScrollTo(R.id.mbSaveCard).perform(click())
+            it.onActivity {
+                it.validateFields()
+            }
             // Assert
             onViewWithScrollTo(R.id.vgsTilCardHolder).check(matches(withError("")))
             onViewWithScrollTo(R.id.vgsTilCardNumber).check(matches(withError("")))
@@ -239,17 +235,12 @@ class OnSubmitFieldsValidationTest {
             onViewWithScrollTo(R.id.vgsTilAddress).check(matches(withError("")))
             onViewWithScrollTo(R.id.vgsTilCity).check(matches(withError("")))
             onViewWithScrollTo(R.id.vgsTilPostalCode).check(matches(withError("")))
-
-            //Assert
-            val result = it?.getParcelableSafe<CheckoutResultContract.Result>(EXTRA_KEY_RESULT)
-            Assert.assertEquals(Activity.RESULT_OK, it.result.resultCode)
-            Assert.assertTrue(result?.checkoutResult is VGSCheckoutResult.Success)
         }
     }
 
     @Test
     fun showErrorMessage_countrySelect_selectCanada_postalCodeErrorMessageCleared() {
-        launch<CheckoutActivity>(intent).use {
+        launch<CheckoutMultiplexingActivity>(intent).use {
             // Act
             waitFor(500)
             onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard())
@@ -265,7 +256,7 @@ class OnSubmitFieldsValidationTest {
 
     @Test
     fun noError_selectCanada_postalCodeValidationRuleChange_errorDisplayed() {
-        launch<CheckoutActivity>(intent).use {
+        launch<CheckoutMultiplexingActivity>(intent).use {
             // Arrange
             waitFor(500)
             onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard())

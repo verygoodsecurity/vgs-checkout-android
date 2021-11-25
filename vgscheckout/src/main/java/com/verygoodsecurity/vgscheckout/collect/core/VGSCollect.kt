@@ -339,7 +339,8 @@ internal class VGSCollect {
         return isValid
     }
 
-    private fun validateFields(): Boolean {
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    internal fun validateFields(): Boolean {
         var isValid = true
 
         storage.getFieldsStorage().getItems().forEach {
