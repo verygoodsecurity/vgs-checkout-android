@@ -1,5 +1,6 @@
-package com.verygoodsecurity.vgscheckout.multiplexing.ui
+package com.verygoodsecurity.vgscheckout.custom.ui
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.test.core.app.ActivityScenario.launch
@@ -7,19 +8,17 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onData
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions
-import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.action.ViewActions.scrollTo
+import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers
+import androidx.test.espresso.matcher.ViewMatchers.isRoot
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
-import com.verygoodsecurity.vgscheckout.Constants.VALID_JWT_TOKEN
 import com.verygoodsecurity.vgscheckout.Constants.INVALID_CARD_NUMBER
 import com.verygoodsecurity.vgscheckout.Constants.INVALID_EXP_DATE
-import com.verygoodsecurity.vgscheckout.Constants.USA_INVALID_ZIP_CODE
 import com.verygoodsecurity.vgscheckout.Constants.INVALID_SECURITY_CODE
+import com.verygoodsecurity.vgscheckout.Constants.USA_INVALID_ZIP_CODE
 import com.verygoodsecurity.vgscheckout.Constants.USA_VALID_ZIP_CODE
 import com.verygoodsecurity.vgscheckout.Constants.VALID_ADDRESS
 import com.verygoodsecurity.vgscheckout.Constants.VALID_CARD_HOLDER
@@ -29,45 +28,48 @@ import com.verygoodsecurity.vgscheckout.Constants.VALID_EXP_DATE
 import com.verygoodsecurity.vgscheckout.Constants.VALID_SECURITY_CODE
 import com.verygoodsecurity.vgscheckout.Constants.VAULT_ID
 import com.verygoodsecurity.vgscheckout.R
-import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingConfig
-import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutMultiplexingFormConfig
+import com.verygoodsecurity.vgscheckout.collect.view.internal.CardInputField
+import com.verygoodsecurity.vgscheckout.collect.view.internal.PersonNameInputField
+import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
+import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutCustomFormConfig
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillingAddressVisibility
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutMultiplexingBillingAddressOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutCustomBillingAddressOptions
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_ARGS
-import com.verygoodsecurity.vgscheckout.ui.CheckoutMultiplexingActivity
+import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_RESULT
+import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
+import com.verygoodsecurity.vgscheckout.ui.CheckoutActivity
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers.withError
+import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers.withParent
 import com.verygoodsecurity.vgscheckout.util.ViewInteraction.onViewWithScrollTo
-import com.verygoodsecurity.vgscheckout.util.extension.fillAddressFields
-import com.verygoodsecurity.vgscheckout.util.extension.fillCardFields
-import com.verygoodsecurity.vgscheckout.util.extension.waitFor
-import org.hamcrest.CoreMatchers.startsWith
+import com.verygoodsecurity.vgscheckout.util.extension.*
+import com.verygoodsecurity.vgscheckout.util.extension.getParcelableSafe
 import org.hamcrest.Matchers.hasToString
+import org.hamcrest.Matchers.startsWith
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 
+
 @Suppress("SameParameterValue")
 @RunWith(AndroidJUnit4::class)
-class FieldsValidationTest {
+class OnSubmitFieldsValidationTest {
 
     private val context: Context = ApplicationProvider.getApplicationContext()
 
-    private val defaultIntent = Intent(context, CheckoutMultiplexingActivity::class.java).apply {
+    private var intent = Intent(context, CheckoutActivity::class.java).apply {
         putExtra(
             EXTRA_KEY_ARGS,
-            CheckoutResultContract.Args(
-                VGSCheckoutMultiplexingConfig(
-                    VALID_JWT_TOKEN,
-                    VAULT_ID,
-                    formConfig = VGSCheckoutMultiplexingFormConfig(
-                        VGSCheckoutMultiplexingBillingAddressOptions(
-                            visibility = VGSCheckoutBillingAddressVisibility.VISIBLE
-                        )
-                    ),
-                    isScreenshotsAllowed = true
-                )
-            )
+            CheckoutResultContract.Args(VGSCheckoutCustomConfig(
+                VAULT_ID,
+                formConfig = VGSCheckoutCustomFormConfig(
+                    addressOptions = VGSCheckoutCustomBillingAddressOptions(
+                        visibility = VGSCheckoutBillingAddressVisibility.VISIBLE
+                    )
+                ),
+                isScreenshotsAllowed = true
+            ))
         )
     }
 
@@ -80,13 +82,24 @@ class FieldsValidationTest {
     }
 
     @Test
-    fun saveCard_noInput_emptyErrorsDisplayed() {
-        launch<CheckoutMultiplexingActivity>(defaultIntent).use {
+    fun validationFlow_staticByDefault() {
+        launch<CheckoutActivity>(intent).use {
             // Act
-            waitFor(500)
-            onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard())
+            onViewWithScrollTo(withParent(R.id.vgsTilCardNumber, CardInputField::class))
+                .perform(typeText("4111"))
+            onViewWithScrollTo(withParent(R.id.vgsTilCardHolder, PersonNameInputField::class))
+                .perform(click())
+            // Assert
+            onViewWithScrollTo(R.id.vgsTilCardHolder).check(matches(withError("")))
+        }
+    }
 
-            onViewWithScrollTo(R.id.mbSaveCard).perform(click())
+    @Test
+    fun saveCardClicked_noInput_emptyErrorsDisplayed() {
+        launch<CheckoutActivity>(intent).use {
+            // Act
+            onViewWithScrollTo(R.id.mbSaveCard)
+                .perform(click())
             // Assert
             onViewWithScrollTo(R.id.vgsTilCardHolder).check(
                 matches(
@@ -141,9 +154,12 @@ class FieldsValidationTest {
     }
 
     @Test
-    fun saveCard_invalidInput_invalidInputErrorsDisplayed() {
-        launch<CheckoutMultiplexingActivity>(defaultIntent).use {
+    fun saveCardClicked_invalidInput_invalidInputErrorsDisplayed() {
+        launch<CheckoutActivity>(intent).use {
             // Arrange
+            waitFor(500)
+            onView(isRoot()).perform(closeSoftKeyboard())
+
             fillCardFields(
                 VALID_CARD_HOLDER,
                 INVALID_CARD_NUMBER,
@@ -189,14 +205,10 @@ class FieldsValidationTest {
         }
     }
 
-//    @Test
-//todo test need to be changed according to the new runtime-validation behaviour
-    fun saveCard_multiplex_validInput_noErrorsDisplayed() {
-        launch<CheckoutMultiplexingActivity>(defaultIntent).use {
+    @Test
+    fun saveCard_custom_validInput_noErrorsDisplayed() {
+        launch<CheckoutActivity>(intent).use {
             // Arrange
-            waitFor(500)
-            onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard())
-
             fillCardFields(
                 VALID_CARD_HOLDER,
                 VALID_CARD_NUMBER,
@@ -209,30 +221,33 @@ class FieldsValidationTest {
                 USA_VALID_ZIP_CODE
             )
             // Act
-            onViewWithScrollTo(R.id.mbSaveCard).perform(click())
+            onView(isRoot()).perform(closeSoftKeyboard())
+            it.onActivity {
+                it.validateFields()
+            }
+
             // Assert
-            onViewWithScrollTo(R.id.vgsTilCardHolder).check(matches(withError(null)))
-            onViewWithScrollTo(R.id.vgsTilCardNumber).check(matches(withError(null)))
-            onViewWithScrollTo(R.id.vgsTilExpirationDate).check(matches(withError(null)))
-            onViewWithScrollTo(R.id.vgsTilSecurityCode).check(matches(withError(null)))
-            onViewWithScrollTo(R.id.vgsTilAddress).check(matches(withError(null)))
-            onViewWithScrollTo(R.id.vgsTilCity).check(matches(withError(null)))
-            onViewWithScrollTo(R.id.vgsTilPostalCode).check(matches(withError(null)))
+            onViewWithScrollTo(R.id.vgsTilCardHolder).check(matches(withError("")))
+            onViewWithScrollTo(R.id.vgsTilCardNumber).check(matches(withError("")))
+            onViewWithScrollTo(R.id.vgsTilExpirationDate).check(matches(withError("")))
+            onViewWithScrollTo(R.id.vgsTilSecurityCode).check(matches(withError("")))
+            onViewWithScrollTo(R.id.vgsTilAddress).check(matches(withError("")))
+            onViewWithScrollTo(R.id.vgsTilCity).check(matches(withError("")))
+            onViewWithScrollTo(R.id.vgsTilPostalCode).check(matches(withError("")))
         }
     }
 
     @Test
     fun showErrorMessage_countrySelect_selectCanada_postalCodeErrorMessageCleared() {
-        launch<CheckoutMultiplexingActivity>(defaultIntent).use {
+        launch<CheckoutActivity>(intent).use {
             // Act
             waitFor(500)
-            onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard())
+            onView(isRoot()).perform(closeSoftKeyboard())
 
             onViewWithScrollTo(R.id.mbSaveCard).perform(click())
             onViewWithScrollTo(R.id.vgsTilCountry).perform(click())
             onData(hasToString(startsWith("Canada"))).perform(scrollTo()).perform(click())
             onView(withText("Ok")).perform(click())
-            waitFor(1000)
             //Assert
             onViewWithScrollTo(R.id.vgsTilPostalCode).check(matches(withError(null)))
         }
@@ -240,10 +255,10 @@ class FieldsValidationTest {
 
     @Test
     fun noError_selectCanada_postalCodeValidationRuleChange_errorDisplayed() {
-        launch<CheckoutMultiplexingActivity>(defaultIntent).use {
+        launch<CheckoutActivity>(intent).use {
             // Arrange
             waitFor(500)
-            onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard())
+            onView(isRoot()).perform(closeSoftKeyboard())
 
             fillCardFields(
                 VALID_CARD_HOLDER,
