@@ -219,6 +219,8 @@ class OnSubmitFieldsValidationTest {
                 VALID_CITY,
                 USA_VALID_ZIP_CODE
             )
+
+            waitFor(2000)
             // Act
             onViewWithScrollTo(R.id.mbSaveCard).perform(click())
             // Assert
@@ -229,6 +231,7 @@ class OnSubmitFieldsValidationTest {
             onViewWithScrollTo(R.id.vgsTilAddress).check(matches(withError("")))
             onViewWithScrollTo(R.id.vgsTilCity).check(matches(withError("")))
             onViewWithScrollTo(R.id.vgsTilPostalCode).check(matches(withError("")))
+
         }
     }
 
