@@ -32,12 +32,29 @@ jobs:
           command: ./gradlew testDebugUnitTest
       - run:
           name: Generate apk
-          command: ./gradlew assembleDebug assembleAndroidTest
-      - persist_to_workspace:
-          root: ~/code
-          paths:
-            - custom-example
-
+          command: ./gradlew assembleDebug vgscheckout:assembleDebug vgscheckout:assembleAndroidTest
+      - run:
+          name: Check if release branch
+          command: |
+            if [[ $CIRCLE_BRANCH != *"release/"* ]] && [ $CIRCLE_BRANCH != master* ]; then
+              echo "Skipped, reason: UI tests should be running only on release branches or master!"
+              circleci-agent step halt
+            fi
+      - run:
+          name: Store Google Service Account
+          command: echo $GCLOUD_SERVICE_KEY | base64 -di > ${HOME}/gcloud-service-key.json
+      - run:
+          name: Authorize gcloud and set config defaults
+          command: |
+            sudo gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
+            sudo gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
+      - run:
+          name: Test with Firebase Test Lab
+          command: >
+            sudo gcloud firebase test android run \
+              --app custom-example/build/outputs/apk/debug/custom-example-debug.apk \
+              --test vgscheckout/build/outputs/apk/androidTest/debug/vgscheckout-debug-androidTest.apk \
+              --device model=redfin,version=30,locale=en,orientation=portrait \
 workflows:
   main:
     jobs:

@@ -6,10 +6,12 @@ import androidx.test.core.app.ActivityScenario.launch
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onData
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.RootMatchers.isDialog
+import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.verygoodsecurity.vgscheckout.Constants
@@ -18,6 +20,7 @@ import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.widget.VGSCountryEditText
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingConfig
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutMultiplexingFormConfig
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillingAddressVisibility
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutMultiplexingBillingAddressOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.country.VGSCheckoutMultiplexingCountryOptions
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
@@ -26,6 +29,7 @@ import com.verygoodsecurity.vgscheckout.ui.CheckoutMultiplexingActivity
 import com.verygoodsecurity.vgscheckout.util.ActionHelper
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers
 import com.verygoodsecurity.vgscheckout.util.ViewInteraction.onViewWithScrollTo
+import com.verygoodsecurity.vgscheckout.util.extension.waitFor
 import com.verygoodsecurity.vgscheckout.util.country.CountriesHelper
 import com.verygoodsecurity.vgscheckout.util.country.model.Country
 import org.hamcrest.Matchers.hasToString
@@ -45,6 +49,11 @@ class AddressDialogTest {
                 VGSCheckoutMultiplexingConfig(
                     Constants.VALID_JWT_TOKEN,
                     VAULT_ID,
+                    formConfig = VGSCheckoutMultiplexingFormConfig(
+                        addressOptions = VGSCheckoutMultiplexingBillingAddressOptions(
+                            VGSCheckoutBillingAddressVisibility.VISIBLE
+                        )
+                    )
                 )
             )
         )
@@ -54,6 +63,9 @@ class AddressDialogTest {
     fun countrySelect_dialogShowed() {
         launch<CheckoutMultiplexingActivity>(defaultIntent).use {
             // Act
+            waitFor(500)
+            onView(isRoot()).perform(ViewActions.closeSoftKeyboard())
+
             onViewWithScrollTo(R.id.vgsTilCountry).perform(click())
             //Assert
             onView(isRoot()).inRoot(isDialog()).check(matches(isDisplayed()))
@@ -92,9 +104,11 @@ class AddressDialogTest {
     fun countrySelect_selectCanada_postalCodeHintChanged() {
         launch<CheckoutMultiplexingActivity>(defaultIntent).use {
             // Act
+            waitFor(500)
             onViewWithScrollTo(R.id.vgsTilCountry).perform(click())
             onData(hasToString(startsWith("Canada"))).perform(scrollTo()).perform(click())
             onView(withText("Ok")).perform(click())
+            waitFor(1000)
             //Assert
             onViewWithScrollTo(R.id.vgsTilPostalCode).check(matches(VGSViewMatchers.withHint("Postal code")))
         }
@@ -179,7 +193,8 @@ class AddressDialogTest {
                             addressOptions = VGSCheckoutMultiplexingBillingAddressOptions(
                                 countryOptions = VGSCheckoutMultiplexingCountryOptions(
                                     validCountries = countries
-                                )
+                                ),
+                                visibility = VGSCheckoutBillingAddressVisibility.VISIBLE
                             )
                         )
                     )

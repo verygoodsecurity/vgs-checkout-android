@@ -10,20 +10,24 @@ import androidx.core.content.ContextCompat
 internal fun ViewGroup.setEnabled(
     enabled: Boolean,
     recursively: Boolean,
-    vararg except: View = arrayOf()
+    vararg excluded: View = arrayOf()
 ) {
     isEnabled = enabled
     if (recursively) {
         for (i in 0 until childCount) {
             val child = getChildAt(i)
-            if (!except.contains(child)) child.isEnabled = enabled
-            if (child is ViewGroup) child.setEnabled(enabled, recursively, *except)
+            if (!excluded.contains(child)) child.isEnabled = enabled
+            if (child is ViewGroup) child.setEnabled(enabled, recursively, *excluded)
         }
     }
 }
 
 internal fun View.gone() {
     visibility = View.GONE
+}
+
+internal fun View.visible() {
+    visibility = View.VISIBLE
 }
 
 internal fun View.getString(@StringRes id: Int) = resources.getString(id)

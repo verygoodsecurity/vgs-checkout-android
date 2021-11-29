@@ -6,7 +6,9 @@ import android.content.Intent
 import androidx.test.core.app.ActivityScenario.launch
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
@@ -22,10 +24,8 @@ import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_RESULT
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 import com.verygoodsecurity.vgscheckout.ui.CheckoutMultiplexingActivity
 import com.verygoodsecurity.vgscheckout.util.ViewInteraction
-import com.verygoodsecurity.vgscheckout.util.extension.fillAddressFields
-import com.verygoodsecurity.vgscheckout.util.extension.fillCardFields
+import com.verygoodsecurity.vgscheckout.util.extension.*
 import com.verygoodsecurity.vgscheckout.util.extension.getParcelableSafe
-import com.verygoodsecurity.vgscheckout.util.extension.safeResult
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -44,6 +44,7 @@ class MultiplexingActivityResultTest {
                 VGSCheckoutMultiplexingConfig(
                     VALID_JWT_TOKEN,
                     VAULT_ID,
+                    isScreenshotsAllowed = true
                 )
             )
         )
@@ -54,10 +55,11 @@ class MultiplexingActivityResultTest {
     @Before
     fun prepareDevice() {
         device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
+        device.setOrientationNatural()
     }
 
     @Test(timeout = 60000L)
-    fun performCheckout_saveCard_unsuccessfulResponse_resultFailed_codeOk() {
+    fun performCheckout_multiplexing_saveCard_unsuccessfulResponse_resultFailed_codeOk() {
         //Arrange
         launch<CheckoutMultiplexingActivity>(defaultIntent).use {
             fillCardFields(
@@ -96,6 +98,7 @@ class MultiplexingActivityResultTest {
     fun performMultiplexing_cancelActivityResult_withBackPress_codeCanceled() {
         launch<CheckoutMultiplexingActivity>(defaultIntent).use {
             // Act
+            onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard())
             device.pressBack()
             //Assert
             val result = it?.getParcelableSafe<CheckoutResultContract.Result>(EXTRA_KEY_RESULT)

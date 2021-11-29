@@ -2,18 +2,14 @@ package com.verygoodsecurity.vgscheckout.ui.core
 
 import android.app.Activity
 import android.content.Intent
-import android.graphics.drawable.Animatable
 import android.os.Bundle
-import android.view.KeyEvent
-import android.view.View
-import android.view.inputmethod.EditorInfo
 import androidx.annotation.CallSuper
-import androidx.annotation.StringRes
+import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.LinearLayoutCompat
-import com.google.android.material.button.MaterialButton
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentOnAttachListener
 import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.textview.MaterialTextView
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.core.VGSCollect
 import com.verygoodsecurity.vgscheckout.collect.core.VgsCollectResponseListener
@@ -23,33 +19,20 @@ import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSError
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSRequest
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
-import com.verygoodsecurity.vgscheckout.collect.view.card.validation.rules.VGSInfoRule
 import com.verygoodsecurity.vgscheckout.collect.widget.*
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.config.networking.core.VGSCheckoutHostnamePolicy
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillingAddressVisibility
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.AddressOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.OptionalAddressOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.city.CityOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.code.PostalCodeOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.country.CountryOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.CardHolderOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.CardNumberOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.CVCOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.ExpirationDateOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.core.VGSCheckoutFieldVisibility
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
+import com.verygoodsecurity.vgscheckout.ui.fragment.core.LoadingHandler
+import com.verygoodsecurity.vgscheckout.ui.fragment.save.core.BaseSaveCardFragment
+import com.verygoodsecurity.vgscheckout.ui.fragment.save.core.InputViewBinder
+import com.verygoodsecurity.vgscheckout.ui.fragment.save.core.ValidationResultListener
 import com.verygoodsecurity.vgscheckout.util.CollectProvider
-import com.verygoodsecurity.vgscheckout.util.country.model.Country
-import com.verygoodsecurity.vgscheckout.util.country.model.PostalCodeType
 import com.verygoodsecurity.vgscheckout.util.extension.*
 
-private const val BILLING_ADDRESS_MIN_CHARS_COUNT = 1
-private const val ICON_ALPHA_ENABLED = 1f
-private const val ICON_ALPHA_DISABLED = 0.5f
-
-internal abstract class BaseCheckoutActivity<C : CheckoutConfig> :
-    AppCompatActivity(), VgsCollectResponseListener, InputFieldView.OnTextChangedListener {
+internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActivity(),
+    FragmentOnAttachListener, InputViewBinder, ValidationResultListener,
+    VgsCollectResponseListener {
 
     protected val config: C by lazy { resolveConfig(intent) }
 
@@ -59,48 +42,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> :
         }
     }
 
-    private val cardDetailsMtv: MaterialTextView by lazy { findViewById(R.id.mtvCardDetailsTitle) }
-    private val cardDetailsLL: LinearLayoutCompat by lazy { findViewById(R.id.llCardDetails) }
-    private val cardHolderTil: VGSTextInputLayout by lazy { findViewById(R.id.vgsTilCardHolder) }
-    private val cardHolderEt: PersonNameEditText by lazy { findViewById(R.id.vgsEtCardHolder) }
-    private val cardNumberTil: VGSTextInputLayout by lazy { findViewById(R.id.vgsTilCardNumber) }
-    private val cardNumberEt: VGSCardNumberEditText by lazy { findViewById(R.id.vgsEtCardNumber) }
-    private val expirationDateTil: VGSTextInputLayout by lazy { findViewById(R.id.vgsTilExpirationDate) }
-    private val expirationDateEt: ExpirationDateEditText by lazy { findViewById(R.id.vgsEtExpirationDate) }
-    private val securityCodeTil: VGSTextInputLayout by lazy { findViewById(R.id.vgsTilSecurityCode) }
-    private val securityCodeEt: CardVerificationCodeEditText by lazy { findViewById(R.id.vgsEtSecurityCode) }
-
-    private val billingAddressMtv: MaterialTextView by lazy { findViewById(R.id.mtvBillingAddressTitle) }
-    private val billingAddressLL: LinearLayoutCompat by lazy { findViewById(R.id.llBillingAddress) }
-    private val countryTil: VGSTextInputLayout by lazy { findViewById(R.id.vgsTilCountry) }
-    private val countryEt: VGSCountryEditText by lazy { findViewById(R.id.vgsEtCountry) }
-    private val addressTil: VGSTextInputLayout by lazy { findViewById(R.id.vgsTilAddress) }
-    private val addressEt: VGSEditText by lazy { findViewById(R.id.vgsEtAddress) }
-    private val optionalAddressTil: VGSTextInputLayout by lazy { findViewById(R.id.vgsTilAddressOptional) }
-    private val optionalAddressEt: VGSEditText by lazy { findViewById(R.id.vgsEtAddressOptional) }
-    private val cityTil: VGSTextInputLayout by lazy { findViewById(R.id.vgsTilCity) }
-    private val cityEt: VGSEditText by lazy { findViewById(R.id.vgsEtCity) }
-    private val postalCodeTil: VGSTextInputLayout by lazy { findViewById(R.id.vgsTilPostalCode) }
-    private val postalCodeEt: VGSEditText by lazy { findViewById(R.id.vgsEtPostalCode) }
-
-    private val saveCardButton: MaterialButton by lazy { findViewById(R.id.mbSaveCard) }
-
-    private val billingAddressValidationRule: VGSInfoRule by lazy {
-        VGSInfoRule.ValidationBuilder()
-            .setAllowableMinLength(BILLING_ADDRESS_MIN_CHARS_COUNT)
-            .build()
-    }
-
-    private val saveCardOnDoneEditorListener = object : InputFieldView.OnEditorActionListener {
-
-        override fun onEditorAction(v: View?, actionId: Int, event: KeyEvent?): Boolean {
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                saveCard()
-                return true
-            }
-            return false
-        }
-    }
+    private lateinit var loadingHandler: LoadingHandler
 
     abstract fun resolveConfig(intent: Intent): C
 
@@ -110,6 +52,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> :
         super.onCreate(savedInstanceState)
         setScreenshotsAllowed(config.isScreenshotsAllowed)
         setContentView(R.layout.vgs_checkout_activity)
+        supportFragmentManager.addFragmentOnAttachListener(this)
         initView(savedInstanceState)
     }
 
@@ -124,11 +67,31 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> :
         return true
     }
 
+    override fun onAttachFragment(fragmentManager: FragmentManager, fragment: Fragment) {
+        loadingHandler = fragment as LoadingHandler
+    }
+
+    override fun bind(vararg view: InputFieldView) {
+        collect.bindView(*view)
+    }
+
+    override fun unbind(vararg view: InputFieldView) {
+        collect.unbindView(*view)
+    }
+
+    override fun onFailed(invalidFieldsAnalyticsNames: List<String>) {
+        sendRequestEvent(invalidFieldsAnalyticsNames)
+    }
+
+    override fun onSuccess() {
+        loadingHandler.setIsLoading(true)
+        makeRequest()
+    }
+
     override fun onResponse(response: VGSResponse?) {
         (response as? VGSResponse.ErrorResponse)?.let {
             if (it.code == VGSError.NO_NETWORK_CONNECTIONS.code) {
-                setInputViewsEnabled(true)
-                updateSaveButtonState(false)
+                loadingHandler.setIsLoading(false)
                 showNetworkConnectionErrorSnackBar()
                 return
             }
@@ -138,206 +101,25 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> :
         finish()
     }
 
-    override fun onTextChange(view: InputFieldView, isEmpty: Boolean) {
-        when (view.id) {
-            R.id.vgsEtCardHolder -> cardHolderTil.setError(null)
-            R.id.vgsEtCardNumber -> cardNumberTil.setError(null)
-            R.id.vgsEtExpirationDate -> expirationDateTil.setError(null)
-            R.id.vgsEtSecurityCode -> securityCodeTil.setError(null)
-            R.id.vgsEtAddress -> addressTil.setError(null)
-            R.id.vgsEtAddressOptional -> optionalAddressTil.setError(null)
-            R.id.vgsEtCity -> cityTil.setError(null)
-            R.id.vgsEtPostalCode -> postalCodeTil.setError(null)
-        }
-    }
-
     @CallSuper
     protected open fun initView(savedInstanceState: Bundle?) {
         initToolbar()
-        initViews()
+        if (savedInstanceState == null) {
+            showSaveCardFragment()
+        }
     }
 
     private fun initToolbar() {
         setSupportActionBar(findViewById(R.id.mtToolbar))
     }
 
-    private fun initViews() {
-        initCardDetailsViews()
-        initBillingAddressViews()
-        initSaveButton()
+    private fun showSaveCardFragment() {
+        supportFragmentManager.beginTransaction()
+            .add(R.id.fcvContainer, BaseSaveCardFragment.create(config.formConfig))
+            .commit()
     }
 
-    private fun initCardDetailsViews() {
-        with(config.formConfig.cardOptions) {
-            initCardHolderView(cardHolderOptions)
-            initCardNumberView(cardNumberOptions)
-            initExpirationDateView(expirationDateOptions)
-            initSecurityCodeView(cvcOptions)
-        }
-    }
-
-    private fun initCardHolderView(options: CardHolderOptions) {
-        if (options.visibility == VGSCheckoutFieldVisibility.HIDDEN) {
-            cardHolderTil.gone()
-            return
-        }
-        cardHolderEt.setFieldName(options.fieldName)
-        cardHolderEt.addOnTextChangeListener(this)
-        collect.bindView(cardHolderEt)
-    }
-
-    private fun initCardNumberView(options: CardNumberOptions) {
-        cardNumberEt.setFieldName(options.fieldName)
-        cardNumberEt.setValidCardBrands(options.cardBrands)
-        cardNumberEt.setIsCardBrandPreviewHidden(options.isIconHidden)
-        cardNumberEt.addOnTextChangeListener(this)
-        collect.bindView(cardNumberEt)
-    }
-
-    private fun initExpirationDateView(options: ExpirationDateOptions) {
-        expirationDateEt.setDateRegex(options.inputFormatRegex)
-        expirationDateEt.setOutputRegex(options.outputFormatRegex)
-        expirationDateEt.setSerializer(
-            options.dateSeparateSerializer?.toCollectDateSeparateSerializer()
-        )
-        expirationDateEt.addOnTextChangeListener(this)
-        expirationDateEt.setFieldName(options.fieldName)
-        collect.bindView(expirationDateEt)
-    }
-
-    private fun initSecurityCodeView(options: CVCOptions) {
-        securityCodeEt.setFieldName(options.fieldName)
-        securityCodeEt.setIsPreviewIconHidden(options.isIconHidden)
-        securityCodeEt.addOnTextChangeListener(this)
-        collect.bindView(securityCodeEt)
-    }
-
-    private fun initBillingAddressViews() {
-        if (config.formConfig.addressOptions.visibility == VGSCheckoutBillingAddressVisibility.HIDDEN) {
-            findViewById<LinearLayoutCompat>(R.id.llBillingAddress).gone()
-            return
-        }
-        with(config.formConfig.addressOptions) {
-            initCountryView(countryOptions)
-            initAddressView(addressOptions)
-            initOptionalAddressView(optionalAddressOptions)
-            initCityView(cityOptions)
-            initPostalCodeView(postalCodeOptions)
-        }
-    }
-
-    private fun initCountryView(options: CountryOptions) {
-        countryEt.setFieldName(options.fieldName)
-        countryEt.setCountries(options.validCountries)
-        countryEt.onCountrySelectedListener =
-            object : VGSCountryEditText.OnCountrySelectedListener {
-                override fun onCountrySelected(country: Country) {
-                    updatePostalCodeView(country)
-                    updateCityView(country)
-                }
-            }
-        collect.bindView(countryEt)
-    }
-
-    private fun initAddressView(options: AddressOptions) {
-        addressEt.setFieldName(options.fieldName)
-        addressEt.addRule(billingAddressValidationRule)
-        addressEt.addOnTextChangeListener(this)
-        collect.bindView(addressEt)
-    }
-
-    private fun initOptionalAddressView(options: OptionalAddressOptions) {
-        optionalAddressEt.setFieldName(options.fieldName)
-        optionalAddressEt.addRule(billingAddressValidationRule)
-        collect.bindView(optionalAddressEt)
-    }
-
-    private fun initCityView(options: CityOptions) {
-        cityEt.setFieldName(options.fieldName)
-        cityEt.addRule(billingAddressValidationRule)
-        cityEt.addOnTextChangeListener(this)
-        cityEt.setOnEditorActionListener(saveCardOnDoneEditorListener)
-        collect.bindView(cityEt)
-        updateCityView(countryEt.selectedCountry)
-    }
-
-    private fun updateCityView(country: Country) {
-        if (country.postalCodeType == PostalCodeType.NOTHING) {
-            cityEt.setImeOptions(EditorInfo.IME_ACTION_DONE)
-        } else {
-            cityEt.setImeOptions(EditorInfo.IME_ACTION_NEXT)
-        }
-    }
-
-    private fun initPostalCodeView(options: PostalCodeOptions) {
-        postalCodeEt.setFieldName(options.fieldName)
-        postalCodeEt.addOnTextChangeListener(this)
-        postalCodeEt.setOnEditorActionListener(saveCardOnDoneEditorListener)
-        collect.bindView(postalCodeEt)
-        updatePostalCodeView(countryEt.selectedCountry)
-    }
-
-    private fun updatePostalCodeView(country: Country) {
-        if (country.postalCodeType == PostalCodeType.NOTHING) {
-            postalCodeEt.setText(null)
-            postalCodeEt.setIsRequired(false)
-            postalCodeTil.visibility = View.GONE
-        } else {
-            postalCodeEt.setIsRequired(true)
-            postalCodeTil.visibility = View.VISIBLE
-            postalCodeTil.setHint(getString(getPostalCodeHint(country)))
-            postalCodeTil.setError(null)
-            postalCodeEt.addRule(getPostalCodeValidationRule(country))
-            postalCodeEt.resetText()
-        }
-    }
-
-    @StringRes
-    private fun getPostalCodeHint(selectedCountry: Country) =
-        when (selectedCountry.postalCodeType) {
-            PostalCodeType.ZIP -> R.string.vgs_checkout_address_info_zip_hint
-            PostalCodeType.POSTAL -> R.string.vgs_checkout_address_info_postal_code_hint
-            PostalCodeType.NOTHING -> R.string.empty
-        }
-
-    @StringRes
-    private fun getPostalCodeEmptyErrorMessage(selectedCountry: Country) =
-        when (selectedCountry.postalCodeType) {
-            PostalCodeType.ZIP -> R.string.vgs_checkout_address_info_zipcode_empty_error
-            PostalCodeType.POSTAL -> R.string.vgs_checkout_address_info_postal_code_empty_error
-            PostalCodeType.NOTHING -> R.string.empty
-        }
-
-    @StringRes
-    private fun getPostalCodeInvalidErrorMessage(selectedCountry: Country) =
-        when (selectedCountry.postalCodeType) {
-            PostalCodeType.ZIP -> R.string.vgs_checkout_address_info_zipcode_invalid_error
-            PostalCodeType.POSTAL -> R.string.vgs_checkout_address_info_postal_code_invalid_error
-            PostalCodeType.NOTHING -> R.string.empty
-        }
-
-    private fun getPostalCodeValidationRule(selectedCountry: Country) =
-        VGSInfoRule.ValidationBuilder()
-            .setRegex(selectedCountry.postalCodeRegex)
-            .build()
-
-    private fun initSaveButton() {
-        saveCardButton.setOnClickListener { saveCard() }
-    }
-
-    private fun saveCard() {
-        hideSoftKeyboard()
-        val invalidFields = getInvalidFieldsTypes()
-        val isInputValid = invalidFields.isEmpty()
-        if (isInputValid) {
-            setInputViewsEnabled(false)
-            updateSaveButtonState(true)
-            saveCardRequest()
-        }
-        sendRequestEvent(isInputValid, invalidFields)
-    }
-
-    private fun saveCardRequest() {
+    private fun makeRequest() {
         with(config.routeConfig) {
             collect.asyncSubmit(
                 VGSRequest.VGSRequestBuilder()
@@ -349,138 +131,14 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> :
                     .build()
             )
         }
+        sendRequestEvent()
     }
 
-    private fun getInvalidFieldsTypes(): List<String> {
-        val cardDetailsInvalidFields = getCardDetailsInvalidFields()
-        val billingAddressInvalidFields = getBillingAddressInvalidFields()
-        return cardDetailsInvalidFields + billingAddressInvalidFields
-    }
-
-    private fun getCardDetailsInvalidFields(): List<String> {
-        val result = mutableListOf<String>()
-
-        val isCardHolderValid = config.isCardHolderHidden() || validate(
-            cardHolderEt,
-            cardHolderTil,
-            R.string.vgs_checkout_card_holder_empty_error,
-            R.string.vgs_checkout_card_holder_invalid_error
-        )
-        result.addIf(!isCardHolderValid, cardHolderEt.getAnalyticsName())
-
-        val isCardNumberValid = validate(
-            cardNumberEt,
-            cardNumberTil,
-            R.string.vgs_checkout_card_number_empty_error,
-            R.string.vgs_checkout_card_number_invalid_error
-        )
-        result.addIf(!isCardNumberValid, cardNumberEt.getAnalyticsName())
-
-        val isExpirationDateValid = validate(
-            expirationDateEt,
-            expirationDateTil,
-            R.string.vgs_checkout_card_expiration_date_empty_error,
-            R.string.vgs_checkout_card_expiration_date_invalid_error
-        )
-        result.addIf(!isExpirationDateValid, expirationDateEt.getAnalyticsName())
-
-        val isSecurityCodeValid = validate(
-            securityCodeEt,
-            securityCodeTil,
-            R.string.vgs_checkout_security_code_empty_error,
-            R.string.vgs_checkout_security_code_invalid_error
-        )
-        result.addIf(!isSecurityCodeValid, securityCodeEt.getAnalyticsName())
-
-        return result
-    }
-
-    private fun getBillingAddressInvalidFields(): List<String> {
-        if (config.formConfig.addressOptions.visibility == VGSCheckoutBillingAddressVisibility.HIDDEN) {
-            return emptyList()
-        }
-
-        val result = mutableListOf<String>()
-
-        val isAddressValid = validate(
-            addressEt,
-            addressTil,
-            R.string.vgs_checkout_address_info_line1_empty_error
-        )
-        result.addIf(!isAddressValid, addressEt.getAnalyticsName())
-
-        val isCityValid = validate(
-            cityEt,
-            cityTil,
-            R.string.vgs_checkout_address_info_city_empty_error
-        )
-        result.addIf(!isCityValid, cityEt.getAnalyticsName())
-
-        val isPostalCodeValid = validate(
-            postalCodeEt,
-            postalCodeTil,
-            getPostalCodeEmptyErrorMessage(countryEt.selectedCountry),
-            getPostalCodeInvalidErrorMessage(countryEt.selectedCountry)
-        )
-        result.addIf(!isPostalCodeValid, postalCodeEt.getAnalyticsName())
-
-        return result
-    }
-
-    private fun validate(
-        target: InputFieldView,
-        parent: VGSTextInputLayout,
-        @StringRes emptyError: Int,
-        @StringRes invalidError: Int? = null,
-    ): Boolean = when {
-        target.isRequired() && target.getFieldState()?.isEmpty == true -> {
-            parent.setError(emptyError)
-            false
-        }
-        target.getFieldState()?.isValid == false -> {
-            invalidError?.let { parent.setError(it) }
-            false
-        }
-        else -> {
-            parent.setError(null)
-            true
-        }
-    }
-
-    private fun setInputViewsEnabled(isEnabled: Boolean) {
-        cardDetailsLL.setEnabled(isEnabled, true, cardDetailsMtv)
-        billingAddressLL.setEnabled(isEnabled, true, billingAddressMtv)
-        val alpha = if (isEnabled) ICON_ALPHA_ENABLED else ICON_ALPHA_DISABLED
-        cardNumberEt.setDrawablesAlphaColorFilter(alpha)
-        securityCodeEt.setDrawablesAlphaColorFilter(alpha)
-    }
-
-    private fun updateSaveButtonState(isLoading: Boolean) {
-        with(saveCardButton) {
-            isClickable = !isLoading
-            if (isLoading) {
-                text = getString(R.string.vgs_checkout_save_button_processing_title)
-                icon = getDrawableCompat(R.drawable.vgs_checkout_ic_loading_animated_white_16)
-                (icon as? Animatable)?.start()
-            } else {
-                saveCardButton.text = getString(R.string.vgs_checkout_save_button_save_card_title)
-                icon = null
-            }
-        }
-    }
-
-    private fun showNetworkConnectionErrorSnackBar() {
-        val message = getString(R.string.vgs_checkout_no_network_error)
-        Snackbar.make(findViewById(R.id.llRoot), message, Snackbar.LENGTH_LONG)
-            .setAction(getString(R.string.vgs_checkout_no_network_retry)) { saveCard() }
-            .show()
-    }
-
-    private fun sendRequestEvent(isSuccessful: Boolean, invalidFields: List<String>) {
+    private fun sendRequestEvent(invalidFields: List<String> = emptyList()) {
         with(config) {
             analyticTracker.log(
                 RequestEvent(
-                    isSuccessful,
+                    invalidFields.isEmpty(),
                     routeConfig.hostnamePolicy is VGSCheckoutHostnamePolicy.CustomHostname,
                     routeConfig.requestOptions.extraData.isNotEmpty(),
                     hasCustomHeaders(),
@@ -490,5 +148,17 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> :
                 )
             )
         }
+    }
+
+    private fun showNetworkConnectionErrorSnackBar() {
+        val message = getString(R.string.vgs_checkout_no_network_error)
+        Snackbar.make(findViewById(R.id.llRootView), message, Snackbar.LENGTH_LONG)
+            .setAction(getString(R.string.vgs_checkout_no_network_retry)) { makeRequest() }
+            .show()
+    }
+
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    internal fun validateFields() {
+        collect.validateFields()
     }
 }

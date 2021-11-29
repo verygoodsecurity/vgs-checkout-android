@@ -5,7 +5,6 @@ import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.text.TextWatcher
 import android.view.View
-import android.view.View.OnFocusChangeListener
 import android.view.autofill.AutofillValue
 import android.view.inputmethod.EditorInfo
 import androidx.annotation.VisibleForTesting
@@ -13,7 +12,6 @@ import androidx.core.view.ViewCompat
 import androidx.core.widget.addTextChangedListener
 import com.google.android.material.textfield.TextInputEditText
 import com.verygoodsecurity.vgscheckout.R
-import com.verygoodsecurity.vgscheckout.util.logger.VGSCheckoutLogger
 import com.verygoodsecurity.vgscheckout.collect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.AnalyticTracker
 import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.AutofillEvent
@@ -30,6 +28,7 @@ import com.verygoodsecurity.vgscheckout.collect.view.card.validation.LengthValid
 import com.verygoodsecurity.vgscheckout.collect.view.card.validation.MutableValidator
 import com.verygoodsecurity.vgscheckout.collect.view.card.validation.RegexValidator
 import com.verygoodsecurity.vgscheckout.collect.view.card.validation.rules.ValidationRule
+import com.verygoodsecurity.vgscheckout.util.logger.VGSCheckoutLogger
 
 /** @suppress */
 internal abstract class BaseInputField(context: Context) : TextInputEditText(context),
@@ -95,9 +94,11 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
 
     private var analyticName: String? = null
 
+    var isEdited: Boolean = false
+        private set
+
     init {
         isListeningPermitted = true
-        setupFocusChangeListener()
         setupInputConnectionListener()
         setupEditorActionListener()
         setupOnKeyListener()
@@ -128,23 +129,9 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         compoundDrawablePadding = resources.getDimension(R.dimen.vgs_checkout_margin_padding_size_small).toInt()
     }
 
-    private fun setupFocusChangeListener() {
-        onFocusChangeListener = OnFocusChangeListener { _, hasFocus ->
-            inputConnection?.getOutput()?.apply {
-
-                userFocusChangeListener?.onFocusChange(vgsParent, hasFocus)
-
-                if (hasFocus != isFocusable) {
-                    isFocusable = hasFocus
-                    hasUserInteraction = true
-                    inputConnection?.run()
-                }
-            }
-        }
-    }
-
     private fun setupInputConnectionListener() {
         addTextChangedListener {
+            if (!isEdited) isEdited = it != null && it.isNotEmpty()
             updateTextChanged(it.toString())
             vgsParent?.notifyOnTextChanged(it.isNullOrEmpty())
         }
@@ -307,6 +294,20 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
     override fun requestFocus(direction: Int, previouslyFocusedRect: Rect?): Boolean {
         return super.requestFocus(direction, previouslyFocusedRect).also {
             setSelection(text?.length ?: 0)
+        }
+    }
+
+    override fun onFocusChanged(focused: Boolean, direction: Int, previouslyFocusedRect: Rect?) {
+        super.onFocusChanged(focused, direction, previouslyFocusedRect)
+        inputConnection?.getOutput()?.apply {
+
+            userFocusChangeListener?.onFocusChange(vgsParent, focused)
+
+            if (focused != isFocusable) {
+                isFocusable = focused
+                hasUserInteraction = true
+                inputConnection?.run()
+            }
         }
     }
 

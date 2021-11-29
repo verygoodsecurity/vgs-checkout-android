@@ -24,7 +24,7 @@ sealed class VGSCheckoutEnvironment constructor(defaultValue: String, suffix: St
     @Parcelize
     data class Live(val suffix: String = "") : VGSCheckoutEnvironment(DEFAULT_VALUE, suffix) {
 
-        companion object {
+        private companion object {
 
             private const val DEFAULT_VALUE = "live"
         }
@@ -38,7 +38,7 @@ sealed class VGSCheckoutEnvironment constructor(defaultValue: String, suffix: St
     @Parcelize
     data class Sandbox(val suffix: String = "") : VGSCheckoutEnvironment(DEFAULT_VALUE, suffix) {
 
-        companion object {
+        private companion object {
 
             private const val DEFAULT_VALUE = "sandbox"
         }

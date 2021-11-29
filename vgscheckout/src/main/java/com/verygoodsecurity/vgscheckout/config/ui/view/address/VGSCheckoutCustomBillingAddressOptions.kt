@@ -25,5 +25,5 @@ class VGSCheckoutCustomBillingAddressOptions @JvmOverloads constructor(
     override val addressOptions: VGSCheckoutCustomAddressOptions = VGSCheckoutCustomAddressOptions(),
     override val optionalAddressOptions: VGSCheckoutCustomOptionalAddressOptions = VGSCheckoutCustomOptionalAddressOptions(),
     override val postalCodeOptions: VGSCheckoutCustomPostalCodeOptions = VGSCheckoutCustomPostalCodeOptions(),
-    override val visibility: VGSCheckoutBillingAddressVisibility = VGSCheckoutBillingAddressVisibility.VISIBLE
+    override val visibility: VGSCheckoutBillingAddressVisibility = VGSCheckoutBillingAddressVisibility.HIDDEN
 ) : CheckoutBillingAddressOptions()
