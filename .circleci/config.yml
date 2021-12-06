@@ -13,9 +13,15 @@ jobs:
     <<: *environment
     steps:
       - checkout
-      - run: echo "JWT_TOKEN_WITHOUT_TRANSFERS=$JWT_TOKEN_WITHOUT_TRANSFERS" >> ~/code/local.properties
-      - run: echo "JWT_TOKEN_WITH_TRANSFERS_WRITE=$JWT_TOKEN_WITH_TRANSFERS_WRITE" >> ~/code/local.properties
-      - run: echo "JWT_TOKEN_WITH_TRANSFERS_ANY=$JWT_TOKEN_WITH_TRANSFERS_ANY" >> ~/code/local.properties
+      - run:
+          name: Write CI environment variables into local.properties
+          command: |
+            echo "JWT_TOKEN_WITHOUT_TRANSFERS=$JWT_TOKEN_WITHOUT_TRANSFERS" >> ~/code/local.properties
+            echo "JWT_TOKEN_WITHOUT_TRANSFERS = $JWT_TOKEN_WITHOUT_TRANSFERS"
+            echo "JWT_TOKEN_WITH_TRANSFERS_WRITE=$JWT_TOKEN_WITH_TRANSFERS_WRITE" >> ~/code/local.properties
+            echo "JWT_TOKEN_WITH_TRANSFERS_WRITE = $JWT_TOKEN_WITH_TRANSFERS_WRITE"
+            echo "JWT_TOKEN_WITH_TRANSFERS_ANY=$JWT_TOKEN_WITH_TRANSFERS_ANY" >> ~/code/local.properties
+            echo "JWT_TOKEN_WITH_TRANSFERS_ANY = $JWT_TOKEN_WITH_TRANSFERS_ANY"
       - restore_cache:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "custom-example/build.gradle" }}
       - run:
