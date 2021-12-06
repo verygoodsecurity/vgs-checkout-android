@@ -13,6 +13,7 @@ import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
+import com.verygoodsecurity.vgscheckout.BuildConfig
 import com.verygoodsecurity.vgscheckout.Constants
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.view.internal.*
@@ -28,9 +29,7 @@ import com.verygoodsecurity.vgscheckout.ui.CheckoutMultiplexingActivity
 import com.verygoodsecurity.vgscheckout.util.ActionHelper
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers.withError
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers.withParent
-import com.verygoodsecurity.vgscheckout.util.ViewInteraction
 import com.verygoodsecurity.vgscheckout.util.ViewInteraction.onViewWithScrollTo
-import com.verygoodsecurity.vgscheckout.util.extension.safeResult
 import com.verygoodsecurity.vgscheckout.util.extension.waitFor
 import org.junit.Assert
 import org.junit.Before
@@ -48,7 +47,7 @@ class OnFocusFieldsValidationTest {
             EXTRA_KEY_ARGS,
             CheckoutResultContract.Args(
                 VGSCheckoutMultiplexingConfig(
-                    Constants.VALID_JWT_TOKEN,
+                    BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS,
                     Constants.VAULT_ID,
                     formConfig = VGSCheckoutMultiplexingFormConfig(
                         VGSCheckoutMultiplexingBillingAddressOptions(

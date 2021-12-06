@@ -17,6 +17,11 @@ android {
 
         buildConfigField "String", "VERSION_NAME", "\"$VERSION_NAME\""
 
+        def properties = getLocalProperties()
+        buildConfigField "String", "JWT_TOKEN_WITHOUT_TRANSFERS", "\"${properties['JWT_TOKEN_WITHOUT_TRANSFERS']}\""
+        buildConfigField "String", "JWT_TOKEN_WITH_TRANSFERS_WRITE", "\"${properties['JWT_TOKEN_WITH_TRANSFERS_WRITE']}\""
+        buildConfigField "String", "JWT_TOKEN_WITH_TRANSFERS_ANY", "\"${properties['JWT_TOKEN_WITH_TRANSFERS_ANY']}\""
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
         vectorDrawables.useSupportLibrary = true
@@ -73,4 +78,15 @@ dependencies {
 
 tasks.dokkaHtml.configure {
     outputDirectory.set(rootProject.file('docs'))
+}
+
+static def getLocalProperties() {
+    def properties = new Properties()
+    def localPropertiesFile = new File('local.properties')
+    if (localPropertiesFile.exists()) {
+        properties.load(localPropertiesFile.newDataInputStream())
+    } else {
+        throw new GradleException("local.properties does not exists.")
+    }
+    return properties
 }

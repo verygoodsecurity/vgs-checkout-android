@@ -6,10 +6,6 @@ object Constants {
     const val VAULT_ID_2 = "tntshmljla7"
     const val VAULT_ID_3 = "tntpszqgikn"
 
-    // Token
-    const val VALID_JWT_TOKEN =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZXNvdXJjZV9hY2Nlc3MiOnsibXVsdGlwbGV4aW5nLWFwcC10bnR4eHh4eHh4Ijp7InJvbGVzIjpbImZpbmFuY2lhbC1pbnN0cnVtZW50czp3cml0ZSJdfX19.aYbxWSMXAkKRidfbMRnYVh2haHg03Y9tQUVo4CEuK58"
-
     // Fields data
     const val VALID_CARD_HOLDER = "John Doe"
     const val VALID_CARD_NUMBER = "4111111111111111"
