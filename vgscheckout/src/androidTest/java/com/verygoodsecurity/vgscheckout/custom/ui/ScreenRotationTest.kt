@@ -10,6 +10,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
+import com.verygoodsecurity.vgscheckout.BuildConfig
 import com.verygoodsecurity.vgscheckout.Constants
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
@@ -32,7 +33,7 @@ class ScreenRotationTest {
     private val defaultIntent = Intent(context, CheckoutActivity::class.java).apply {
         putExtra(
             EXTRA_KEY_ARGS,
-            CheckoutResultContract.Args(VGSCheckoutCustomConfig(Constants.VAULT_ID_3))
+            CheckoutResultContract.Args(VGSCheckoutCustomConfig(BuildConfig.VAULT_ID))
         )
     }
 

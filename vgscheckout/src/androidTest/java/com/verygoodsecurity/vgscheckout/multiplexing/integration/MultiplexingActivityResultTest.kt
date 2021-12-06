@@ -15,7 +15,6 @@ import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
 import com.verygoodsecurity.vgscheckout.BuildConfig
 import com.verygoodsecurity.vgscheckout.Constants
-import com.verygoodsecurity.vgscheckout.Constants.VAULT_ID
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingConfig
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
@@ -43,7 +42,7 @@ class MultiplexingActivityResultTest {
             CheckoutResultContract.Args(
                 VGSCheckoutMultiplexingConfig(
                     BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS,
-                    VAULT_ID,
+                    BuildConfig.VAULT_ID,
                     isScreenshotsAllowed = true
                 )
             )

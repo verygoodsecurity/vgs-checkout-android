@@ -27,7 +27,6 @@ import com.verygoodsecurity.vgscheckout.Constants.VALID_CARD_NUMBER
 import com.verygoodsecurity.vgscheckout.Constants.VALID_CITY
 import com.verygoodsecurity.vgscheckout.Constants.VALID_EXP_DATE
 import com.verygoodsecurity.vgscheckout.Constants.VALID_SECURITY_CODE
-import com.verygoodsecurity.vgscheckout.Constants.VAULT_ID
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.view.internal.CardInputField
 import com.verygoodsecurity.vgscheckout.collect.view.internal.PersonNameInputField
@@ -60,7 +59,7 @@ class OnSubmitFieldsValidationTest {
             CheckoutResultContract.Args(
                 VGSCheckoutMultiplexingConfig(
                     BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS,
-                    VAULT_ID,
+                    BuildConfig.VAULT_ID,
                     formConfig = VGSCheckoutMultiplexingFormConfig(
                         VGSCheckoutMultiplexingBillingAddressOptions(
                             visibility = VGSCheckoutBillingAddressVisibility.VISIBLE

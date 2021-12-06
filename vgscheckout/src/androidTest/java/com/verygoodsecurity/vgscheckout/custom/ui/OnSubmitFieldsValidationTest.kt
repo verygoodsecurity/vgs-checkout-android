@@ -1,13 +1,11 @@
 package com.verygoodsecurity.vgscheckout.custom.ui
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.test.core.app.ActivityScenario.launch
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onData
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isRoot
@@ -15,6 +13,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
+import com.verygoodsecurity.vgscheckout.BuildConfig
 import com.verygoodsecurity.vgscheckout.Constants.INVALID_CARD_NUMBER
 import com.verygoodsecurity.vgscheckout.Constants.INVALID_EXP_DATE
 import com.verygoodsecurity.vgscheckout.Constants.INVALID_SECURITY_CODE
@@ -26,7 +25,6 @@ import com.verygoodsecurity.vgscheckout.Constants.VALID_CARD_NUMBER
 import com.verygoodsecurity.vgscheckout.Constants.VALID_CITY
 import com.verygoodsecurity.vgscheckout.Constants.VALID_EXP_DATE
 import com.verygoodsecurity.vgscheckout.Constants.VALID_SECURITY_CODE
-import com.verygoodsecurity.vgscheckout.Constants.VAULT_ID
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.view.internal.CardInputField
 import com.verygoodsecurity.vgscheckout.collect.view.internal.PersonNameInputField
@@ -36,21 +34,16 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillin
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutCustomBillingAddressOptions
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_ARGS
-import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_RESULT
-import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 import com.verygoodsecurity.vgscheckout.ui.CheckoutActivity
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers.withError
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers.withParent
 import com.verygoodsecurity.vgscheckout.util.ViewInteraction.onViewWithScrollTo
 import com.verygoodsecurity.vgscheckout.util.extension.*
-import com.verygoodsecurity.vgscheckout.util.extension.getParcelableSafe
 import org.hamcrest.Matchers.hasToString
 import org.hamcrest.Matchers.startsWith
-import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-
 
 @Suppress("SameParameterValue")
 @RunWith(AndroidJUnit4::class)
@@ -62,7 +55,7 @@ class OnSubmitFieldsValidationTest {
         putExtra(
             EXTRA_KEY_ARGS,
             CheckoutResultContract.Args(VGSCheckoutCustomConfig(
-                VAULT_ID,
+                BuildConfig.VAULT_ID,
                 formConfig = VGSCheckoutCustomFormConfig(
                     addressOptions = VGSCheckoutCustomBillingAddressOptions(
                         visibility = VGSCheckoutBillingAddressVisibility.VISIBLE

@@ -2,10 +2,6 @@ package com.verygoodsecurity.vgscheckout
 
 object Constants {
 
-    const val VAULT_ID = "tnt1a2b3c4y"
-    const val VAULT_ID_2 = "tntshmljla7"
-    const val VAULT_ID_3 = "tntpszqgikn"
-
     // Fields data
     const val VALID_CARD_HOLDER = "John Doe"
     const val VALID_CARD_NUMBER = "4111111111111111"
