@@ -11,11 +11,9 @@ import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.RootMatchers.isDialog
-import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.verygoodsecurity.vgscheckout.Constants
-import com.verygoodsecurity.vgscheckout.Constants.VAULT_ID
+import com.verygoodsecurity.vgscheckout.BuildConfig
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.widget.VGSCountryEditText
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingConfig
@@ -47,8 +45,8 @@ class AddressDialogTest {
             EXTRA_KEY_ARGS,
             CheckoutResultContract.Args(
                 VGSCheckoutMultiplexingConfig(
-                    Constants.VALID_JWT_TOKEN,
-                    VAULT_ID,
+                    BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS,
+                    BuildConfig.VAULT_ID,
                     formConfig = VGSCheckoutMultiplexingFormConfig(
                         addressOptions = VGSCheckoutMultiplexingBillingAddressOptions(
                             VGSCheckoutBillingAddressVisibility.VISIBLE
@@ -187,8 +185,8 @@ class AddressDialogTest {
                 EXTRA_KEY_ARGS,
                 CheckoutResultContract.Args(
                     VGSCheckoutMultiplexingConfig(
-                        Constants.VALID_JWT_TOKEN,
-                        VAULT_ID,
+                        BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS,
+                        BuildConfig.VAULT_ID,
                         formConfig = VGSCheckoutMultiplexingFormConfig(
                             addressOptions = VGSCheckoutMultiplexingBillingAddressOptions(
                                 countryOptions = VGSCheckoutMultiplexingCountryOptions(

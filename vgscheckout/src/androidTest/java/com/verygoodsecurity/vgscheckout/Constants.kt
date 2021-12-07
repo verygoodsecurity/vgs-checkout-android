@@ -2,16 +2,6 @@ package com.verygoodsecurity.vgscheckout
 
 object Constants {
 
-    const val VAULT_ID = "tnt1a2b3c4y"
-    const val VAULT_ID_2 = "tntshmljla7"
-    const val VAULT_ID_3 = "tntpszqgikn"
-
-    // Token
-    const val INVALID_JWT_TOKEN =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MjkzNzAyMjUsImlhdCI6MTYyOTM2OTkyNSwicmVzb3VyY2VfYWNjZXNzIjp7Im11bHRpcGxleGluZy1hcHAtdG50MWEyYjNjNHkiOiJURVNUIn19.5rtUsrLnS_gBHKTugiM9h9wuI9t4afupSbbdgmFHbSU"
-    const val VALID_JWT_TOKEN =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MjkzNzAyMjUsImlhdCI6MTYyOTM2OTkyNSwicmVzb3VyY2VfYWNjZXNzIjp7Im11bHRpcGxleGluZy1hcHAtdG50MWEyYjNjNHkiOnsicm9sZXMiOlsiZmluYW5jaWFsLWluc3RydW1lbnRzOndyaXRlIl19fX0.n7uQ77pOMtBY99iGVg_EtXBUsgO5GZXEKSTv4kchov0"
-
     // Fields data
     const val VALID_CARD_HOLDER = "John Doe"
     const val VALID_CARD_NUMBER = "4111111111111111"

@@ -12,7 +12,7 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.RootMatchers.isDialog
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.verygoodsecurity.vgscheckout.Constants.VAULT_ID
+import com.verygoodsecurity.vgscheckout.BuildConfig
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.widget.VGSCountryEditText
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
@@ -26,7 +26,6 @@ import com.verygoodsecurity.vgscheckout.ui.CheckoutActivity
 import com.verygoodsecurity.vgscheckout.util.ActionHelper
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers
 import com.verygoodsecurity.vgscheckout.util.ViewInteraction.onViewWithScrollTo
-import com.verygoodsecurity.vgscheckout.util.extension.waitFor
 import com.verygoodsecurity.vgscheckout.util.country.CountriesHelper
 import com.verygoodsecurity.vgscheckout.util.country.model.Country
 import org.hamcrest.Matchers.hasToString
@@ -44,7 +43,7 @@ class AddressDialogTest {
             EXTRA_KEY_ARGS,
             CheckoutResultContract.Args(
                 VGSCheckoutCustomConfig(
-                    VAULT_ID,
+                    BuildConfig.VAULT_ID,
                     formConfig = VGSCheckoutCustomFormConfig(
                         addressOptions = VGSCheckoutCustomBillingAddressOptions(
                             visibility = VGSCheckoutBillingAddressVisibility.VISIBLE
@@ -178,7 +177,7 @@ class AddressDialogTest {
                 EXTRA_KEY_ARGS,
                 CheckoutResultContract.Args(
                     VGSCheckoutCustomConfig(
-                        VAULT_ID,
+                        BuildConfig.VAULT_ID,
                         formConfig = VGSCheckoutCustomFormConfig(
                             addressOptions = VGSCheckoutCustomBillingAddressOptions(
                                 countryOptions = VGSCheckoutCustomCountryOptions(
