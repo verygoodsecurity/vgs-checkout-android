@@ -11,6 +11,8 @@ import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutTransitionOptions
 
+// TODO: Remove this todo after tests
+
 /**
  *  A drop-in class that presents a checkout form.
  */
