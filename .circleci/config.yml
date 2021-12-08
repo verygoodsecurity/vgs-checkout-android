@@ -1,3 +1,4 @@
+#     TODO: Revert changes after tests
 version: 2.1
 
 aliases:
@@ -31,22 +32,22 @@ jobs:
           paths:
             - ~/.gradle
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "custom-example/build.gradle" }}
-      - run:
-          name: Run Lint
-          command: ./gradlew lintDebug
-      - run:
-          name: Run Unit tests
-          command: ./gradlew testDebugUnitTest
+#      - run:
+#          name: Run Lint
+#          command: ./gradlew lintDebug
+#      - run:
+#          name: Run Unit tests
+#          command: ./gradlew testDebugUnitTest
       - run:
           name: Generate apk
           command: ./gradlew assembleDebug vgscheckout:assembleDebug vgscheckout:assembleAndroidTest
-      - run:
-          name: Check if release branch
-          command: |
-            if [[ $CIRCLE_BRANCH != *"release/"* ]] && [ $CIRCLE_BRANCH != master* ]; then
-              echo "Skipped, reason: UI tests should be running only on release branches or master!"
-              circleci-agent step halt
-            fi
+#      - run:
+#          name: Check if release branch
+#          command: |
+#            if [[ $CIRCLE_BRANCH != *"release/"* ]] && [ $CIRCLE_BRANCH != master* ]; then
+#              echo "Skipped, reason: UI tests should be running only on release branches or master!"
+#              circleci-agent step halt
+#            fi
       - run:
           name: Store Google Service Account
           command: echo $GCLOUD_SERVICE_KEY | base64 -di > ${HOME}/gcloud-service-key.json
