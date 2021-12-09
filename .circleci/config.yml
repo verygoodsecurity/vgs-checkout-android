@@ -26,6 +26,9 @@ jobs:
           command: |
             echo $GOOGLE_SERVICES_JSON | base64 -di > vgscheckout/google-services.json
             echo "$(cat vgscheckout/google-services.json)"
+            echo "$(cat ~/code/local.properties)"
+            echo "Home = ${HOME}"
+            echo "Code = ${~/code}"
 #      - restore_cache:
 #          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "custom-example/build.gradle" }}
 #      - run:
@@ -53,11 +56,9 @@ jobs:
 #              echo "Skipped, reason: UI tests should be running only on release branches or master!"
 #              circleci-agent step halt
 #            fi
-      - run:
-          name: Store Google Service Account
-          command: |
-            echo $GCLOUD_SERVICE_KEY | base64 -di > ${HOME}/gcloud-service-key.json
-             echo "$(cat ${HOME}/gcloud-service-key.json)"
+#      - run:
+#          name: Store Google Service Account
+#          command: echo $GCLOUD_SERVICE_KEY | base64 -di > ${HOME}/gcloud-service-key.json
 #      - run:
 #          name: Authorize gcloud and set config defaults
 #          command: |
