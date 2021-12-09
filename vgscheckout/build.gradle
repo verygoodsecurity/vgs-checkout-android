@@ -100,6 +100,7 @@ static def getLocalProperties() {
 static def checkGoogleJsonFileExists() {
     def localPropertiesFile = new File('vgscheckout/google-services.json')
     if (localPropertiesFile.exists()) {
+        throw new GradleException(localPropertiesFile.readLines().toString())
     } else {
         throw new GradleException("google-services.json does not exists.")
     }
