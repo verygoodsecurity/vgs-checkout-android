@@ -14,13 +14,13 @@ jobs:
     <<: *environment
     steps:
       - checkout
-#      - run:
-#          name: Write tests variables into local.properties from CI env variables
-#          command: |
-#            echo "VAULT_ID=TEST_VAULT_ID" >> ~/code/local.properties
-#            echo "JWT_TOKEN_WITHOUT_TRANSFERS=$JWT_TOKEN_WITHOUT_TRANSFERS" >> ~/code/local.properties
-#            echo "JWT_TOKEN_WITH_TRANSFERS_WRITE=$JWT_TOKEN_WITH_TRANSFERS_WRITE" >> ~/code/local.properties
-#            echo "JWT_TOKEN_WITH_TRANSFERS_ANY=$JWT_TOKEN_WITH_TRANSFERS_ANY" >> ~/code/local.properties
+      - run:
+          name: Write tests variables into local.properties from CI env variables
+          command: |
+            echo "VAULT_ID=TEST_VAULT_ID" >> ~/code/local.properties
+            echo "JWT_TOKEN_WITHOUT_TRANSFERS=$JWT_TOKEN_WITHOUT_TRANSFERS" >> ~/code/local.properties
+            echo "JWT_TOKEN_WITH_TRANSFERS_WRITE=$JWT_TOKEN_WITH_TRANSFERS_WRITE" >> ~/code/local.properties
+            echo "JWT_TOKEN_WITH_TRANSFERS_ANY=$JWT_TOKEN_WITH_TRANSFERS_ANY" >> ~/code/local.properties
       - run:
           name: Create google-services.json
           command: |
@@ -43,9 +43,9 @@ jobs:
 #      - run:
 #          name: Run Unit tests
 #          command: ./gradlew testDebugUnitTest
-#      - run:
-#          name: Generate apk
-#          command: ./gradlew assembleDebug vgscheckout:assembleDebug vgscheckout:assembleAndroidTest
+      - run:
+          name: Generate apk
+          command: ./gradlew assembleDebug vgscheckout:assembleDebug vgscheckout:assembleAndroidTest
 #      - run:
 #          name: Check if release branch
 #          command: |
@@ -53,11 +53,9 @@ jobs:
 #              echo "Skipped, reason: UI tests should be running only on release branches or master!"
 #              circleci-agent step halt
 #            fi
-      - run:
-          name: Store Google Service Account
-          command: |
-            echo $GCLOUD_SERVICE_KEY | base64 -di > ${HOME}/gcloud-service-key.json
-            echo "$(cat ${HOME}/gcloud-service-key.json)"
+#      - run:
+#          name: Store Google Service Account
+#          command: echo $GCLOUD_SERVICE_KEY | base64 -di > ${HOME}/gcloud-service-key.json
 #      - run:
 #          name: Authorize gcloud and set config defaults
 #          command: |
