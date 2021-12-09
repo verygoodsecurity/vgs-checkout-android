@@ -25,20 +25,20 @@ jobs:
           name: Create google-services.json
           command: |
             echo "Home derictory = ${HOME}"
-            echo "GOOGLE_SERVICES_JSON = ${GOOGLE_SERVICES_JSON}"
+            echo "GOOGLE_SERVICES_JSON = $GOOGLE_SERVICES_JSON | base64 -di"
             echo $GOOGLE_SERVICES_JSON | base64 -di > vgscheckout/google-services.json
             echo "$(cat vgscheckout/google-services.json)"
-#      - restore_cache:
-#          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "custom-example/build.gradle" }}
-#      - run:
-#          name: Download Dependencies
-#          command: |
-#            sudo chmod +x gradlew
-#            ./gradlew androidDependencies
-#      - save_cache:
-#          paths:
-#            - ~/.gradle
-#          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "custom-example/build.gradle" }}
+      - restore_cache:
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "custom-example/build.gradle" }}
+      - run:
+          name: Download Dependencies
+          command: |
+            sudo chmod +x gradlew
+            ./gradlew androidDependencies
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "custom-example/build.gradle" }}
 #      - run:
 #          name: Run Lint
 #          command: ./gradlew lintDebug
