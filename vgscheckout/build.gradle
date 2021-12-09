@@ -18,7 +18,6 @@ android {
         buildConfigField "String", "VERSION_NAME", "\"$VERSION_NAME\""
 
         createTestsBuildConfigFields(it)
-        checkGoogleJsonFileExists()
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -95,13 +94,4 @@ static def getLocalProperties() {
         throw new GradleException("local.properties does not exists.")
     }
     return properties
-}
-
-static def checkGoogleJsonFileExists() {
-    def localPropertiesFile = new File('vgscheckout/google-services.json')
-    if (localPropertiesFile.exists()) {
-        throw new GradleException(localPropertiesFile.readLines().toString())
-    } else {
-        throw new GradleException("google-services.json does not exists.")
-    }
 }
