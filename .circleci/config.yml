@@ -18,12 +18,12 @@ jobs:
           name: Write tests variables into local.properties from CI env variables
           command: |
             echo "VAULT_ID=TEST_VAULT_ID" >> ~/code/local.properties
-            echo "JWT_TOKEN_WITHOUT_TRANSFERS=$JWT_TOKEN_WITHOUT_TRANSFERS" >> ~/code/local.properties
-            echo "JWT_TOKEN_WITH_TRANSFERS_WRITE=$JWT_TOKEN_WITH_TRANSFERS_WRITE" >> ~/code/local.properties
-            echo "JWT_TOKEN_WITH_TRANSFERS_ANY=$JWT_TOKEN_WITH_TRANSFERS_ANY" >> ~/code/local.properties
+            echo "JWT_TOKEN_WITHOUT_TRANSFERS=$JWT_TOKEN_WITHOUT_TRANSFERS" >> local.properties
+            echo "JWT_TOKEN_WITH_TRANSFERS_WRITE=$JWT_TOKEN_WITH_TRANSFERS_WRITE" >> local.properties
+            echo "JWT_TOKEN_WITH_TRANSFERS_ANY=$JWT_TOKEN_WITH_TRANSFERS_ANY" >> local.properties
       - run:
           name: Create google-services.json
-          command: echo $GOOGLE_SERVICES_JSON | base64 -di > ~/code/vgscheckout/google-services.json
+          command: echo $GOOGLE_SERVICES_JSON | base64 -di > vgscheckout/google-services.json
       - restore_cache:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "custom-example/build.gradle" }}
       - run:
