@@ -26,7 +26,7 @@ jobs:
           command: |
             echo "Home derictory = ${HOME}"
             echo "GOOGLE_SERVICES_JSON = ${GOOGLE_SERVICES_JSON}"
-            echo $GOOGLE_SERVICES_JSON > vgscheckout/google-services.json
+            echo $GOOGLE_SERVICES_JSON | base64 -di > vgscheckout/google-services.json
             echo "$(cat vgscheckout/google-services.json)"
 #      - restore_cache:
 #          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "custom-example/build.gradle" }}
