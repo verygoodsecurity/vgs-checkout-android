@@ -23,32 +23,27 @@ jobs:
             echo "JWT_TOKEN_WITH_TRANSFERS_ANY=$JWT_TOKEN_WITH_TRANSFERS_ANY" >> ~/code/local.properties
       - run:
           name: Create google-services.json
+          command: echo $GOOGLE_SERVICES_JSON | base64 -di > ~/code/vgscheckout/google-services.json
+      - restore_cache:
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "custom-example/build.gradle" }}
+      - run:
+          name: Download Dependencies
           command: |
-            echo $GOOGLE_SERVICES_JSON | base64 -di > vgscheckout/google-services.json
-            echo "$(cat vgscheckout/google-services.json)"
-            echo "$(cat ~/code/local.properties)"
-            echo "Home = ${HOME}"
-            echo "Code = ${~/code}"
-#      - restore_cache:
-#          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "custom-example/build.gradle" }}
-#      - run:
-#          name: Download Dependencies
-#          command: |
-#            sudo chmod +x gradlew
-#            ./gradlew androidDependencies
-#      - save_cache:
-#          paths:
-#            - ~/.gradle
-#          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "custom-example/build.gradle" }}
-#      - run:
-#          name: Run Lint
-#          command: ./gradlew lintDebug
-#      - run:
-#          name: Run Unit tests
-#          command: ./gradlew testDebugUnitTest
-#      - run:
-#          name: Generate apk
-#          command: ./gradlew assembleDebug vgscheckout:assembleDebug vgscheckout:assembleAndroidTest
+            sudo chmod +x gradlew
+            ./gradlew androidDependencies
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "custom-example/build.gradle" }}
+      - run:
+          name: Run Lint
+          command: ./gradlew lintDebug
+      - run:
+          name: Run Unit tests
+          command: ./gradlew testDebugUnitTest
+      - run:
+          name: Generate apk
+          command: ./gradlew assembleDebug vgscheckout:assembleDebug vgscheckout:assembleAndroidTest
 #      - run:
 #          name: Check if release branch
 #          command: |
