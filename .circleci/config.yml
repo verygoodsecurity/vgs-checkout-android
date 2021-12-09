@@ -43,9 +43,9 @@ jobs:
 #      - run:
 #          name: Run Unit tests
 #          command: ./gradlew testDebugUnitTest
-      - run:
-          name: Generate apk
-          command: ./gradlew assembleDebug vgscheckout:assembleDebug vgscheckout:assembleAndroidTest
+#      - run:
+#          name: Generate apk
+#          command: ./gradlew assembleDebug vgscheckout:assembleDebug vgscheckout:assembleAndroidTest
 #      - run:
 #          name: Check if release branch
 #          command: |
@@ -53,9 +53,11 @@ jobs:
 #              echo "Skipped, reason: UI tests should be running only on release branches or master!"
 #              circleci-agent step halt
 #            fi
-#      - run:
-#          name: Store Google Service Account
-#          command: echo $GCLOUD_SERVICE_KEY | base64 -di > ${HOME}/gcloud-service-key.json
+      - run:
+          name: Store Google Service Account
+          command: |
+            echo $GCLOUD_SERVICE_KEY | base64 -di > ${HOME}/gcloud-service-key.json
+             echo "$(cat ${HOME}/gcloud-service-key.json)"
 #      - run:
 #          name: Authorize gcloud and set config defaults
 #          command: |
