@@ -168,6 +168,10 @@ internal abstract class BaseSaveCardFragment : Fragment(), LoadingHandler,
         binding.securityCodeEt.setFieldName(options.fieldName)
         binding.securityCodeEt.setIsPreviewIconHidden(options.isIconHidden)
         binding.securityCodeEt.addOnTextChangeListener(this)
+        binding.securityCodeEt.setOnEditorActionListener(this)
+        binding.securityCodeEt.setImeOptions(
+            if (formConfig.isBillingAddressVisible()) EditorInfo.IME_ACTION_NEXT else EditorInfo.IME_ACTION_DONE
+        )
     }
 
     private fun initBillingAddressViews() {
@@ -224,15 +228,13 @@ internal abstract class BaseSaveCardFragment : Fragment(), LoadingHandler,
     }
 
     private fun updateCityView(country: Country) {
-        if (country.postalCodeType == PostalCodeType.NOTHING) {
-            binding.cityEt.setImeOptions(EditorInfo.IME_ACTION_DONE)
-        } else {
-            binding.cityEt.setImeOptions(EditorInfo.IME_ACTION_NEXT)
-        }
+        binding.cityEt.setImeOptions(
+            if (country.isPostalCodeUndefined()) EditorInfo.IME_ACTION_DONE else EditorInfo.IME_ACTION_NEXT
+        )
     }
 
     private fun updatePostalCodeView(country: Country) {
-        if (country.postalCodeType == PostalCodeType.NOTHING) {
+        if (country.isPostalCodeUndefined()) {
             binding.postalCodeEt.setText(null)
             binding.postalCodeEt.setIsRequired(false)
             binding.postalCodeTil.gone()
@@ -279,7 +281,7 @@ internal abstract class BaseSaveCardFragment : Fragment(), LoadingHandler,
         when (country.postalCodeType) {
             PostalCodeType.ZIP -> R.string.vgs_checkout_address_info_zip_hint
             PostalCodeType.POSTAL -> R.string.vgs_checkout_address_info_postal_code_hint
-            PostalCodeType.NOTHING -> R.string.empty
+            PostalCodeType.UNDEFINED -> R.string.empty
         }
 
     protected fun validate(vararg input: InputFieldView = validationRequiredInputs) {
@@ -340,7 +342,7 @@ internal abstract class BaseSaveCardFragment : Fragment(), LoadingHandler,
         when (country.postalCodeType) {
             PostalCodeType.ZIP -> R.string.vgs_checkout_address_info_zipcode_empty_error
             PostalCodeType.POSTAL -> R.string.vgs_checkout_address_info_postal_code_empty_error
-            PostalCodeType.NOTHING -> R.string.empty
+            PostalCodeType.UNDEFINED -> R.string.empty
         }
 
     @StringRes
@@ -348,7 +350,7 @@ internal abstract class BaseSaveCardFragment : Fragment(), LoadingHandler,
         when (country.postalCodeType) {
             PostalCodeType.ZIP -> R.string.vgs_checkout_address_info_zipcode_invalid_error
             PostalCodeType.POSTAL -> R.string.vgs_checkout_address_info_postal_code_invalid_error
-            PostalCodeType.NOTHING -> R.string.empty
+            PostalCodeType.UNDEFINED -> R.string.empty
         }
 
     private fun getInvalidInputAnalyticsNames(): List<String> =

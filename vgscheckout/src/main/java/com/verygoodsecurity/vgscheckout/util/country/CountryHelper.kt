@@ -21,7 +21,7 @@ internal object CountriesHelper {
 
     private fun getPostalCodeType(iso: String) = when {
         iso == ISO.USA -> PostalCodeType.ZIP
-        ISO.COUNTRIES_ISO_WITHOUT_POSTAL_CODE.contains(iso) -> PostalCodeType.NOTHING
+        ISO.COUNTRIES_ISO_WITHOUT_POSTAL_CODE.contains(iso) -> PostalCodeType.UNDEFINED
         else -> PostalCodeType.POSTAL
     }
 

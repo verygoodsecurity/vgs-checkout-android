@@ -12,4 +12,6 @@ internal data class Country(
 ) : Parcelable {
 
     fun isValid() = !name.equals(code, true)
+
+    fun isPostalCodeUndefined() = postalCodeType == PostalCodeType.UNDEFINED
 }
