@@ -114,6 +114,7 @@ internal abstract class BaseSaveCardFragment : Fragment(), LoadingHandler,
     protected open fun initViews(view: View) {
         initCardDetailsViews()
         initBillingAddressViews()
+        bindAllViews()
         initSaveButton()
     }
 
@@ -143,38 +144,34 @@ internal abstract class BaseSaveCardFragment : Fragment(), LoadingHandler,
             return
         }
         binding.cardHolderEt.setFieldName(options.fieldName)
-        inputViewBinder.bind(binding.cardHolderEt)
-        binding.cardHolderEt.addOnTextChangeListenerOnLayout(this)
+        binding.cardHolderEt.addOnTextChangeListener(this)
     }
 
     private fun initCardNumberView(options: CardNumberOptions) {
         binding.cardNumberEt.setFieldName(options.fieldName)
-        inputViewBinder.bind(binding.cardNumberEt)
         binding.cardNumberEt.setValidCardBrands(options.cardBrands)
         binding.cardNumberEt.setIsCardBrandPreviewHidden(options.isIconHidden)
-        binding.cardNumberEt.addOnTextChangeListenerOnLayout(this)
+        binding.cardNumberEt.addOnTextChangeListener(this)
     }
 
     private fun initExpirationDateView(options: ExpirationDateOptions) {
         binding.expirationDateEt.setFieldName(options.fieldName)
-        inputViewBinder.bind(binding.expirationDateEt)
         binding.expirationDateEt.setDateRegex(options.inputFormatRegex)
         binding.expirationDateEt.setOutputRegex(options.outputFormatRegex)
         binding.expirationDateEt.setSerializer(
             options.dateSeparateSerializer?.toCollectDateSeparateSerializer()
         )
-        binding.expirationDateEt.addOnTextChangeListenerOnLayout(this)
+        binding.expirationDateEt.addOnTextChangeListener(this)
     }
 
     private fun initSecurityCodeView(options: CVCOptions) {
         binding.securityCodeEt.setFieldName(options.fieldName)
-        inputViewBinder.bind(binding.securityCodeEt)
         binding.securityCodeEt.setIsPreviewIconHidden(options.isIconHidden)
+        binding.securityCodeEt.addOnTextChangeListener(this)
         binding.securityCodeEt.setOnEditorActionListener(this)
         binding.securityCodeEt.setImeOptions(
             if (formConfig.isBillingAddressVisible()) EditorInfo.IME_ACTION_NEXT else EditorInfo.IME_ACTION_DONE
         )
-        binding.securityCodeEt.addOnTextChangeListenerOnLayout(this)
     }
 
     private fun initBillingAddressViews() {
@@ -196,39 +193,34 @@ internal abstract class BaseSaveCardFragment : Fragment(), LoadingHandler,
 
     private fun initCountryView(options: CountryOptions) {
         binding.countryEt.setFieldName(options.fieldName)
-        inputViewBinder.bind(binding.countryEt)
         binding.countryEt.setCountries(options.validCountries)
         binding.countryEt.onCountrySelectedListener = this
     }
 
     private fun initAddressView(options: AddressOptions, rule: VGSInfoRule) {
         binding.addressEt.setFieldName(options.fieldName)
-        inputViewBinder.bind(binding.addressEt)
         binding.addressEt.addRule(rule)
-        binding.addressEt.addOnTextChangeListenerOnLayout(this)
+        binding.addressEt.addOnTextChangeListener(this)
     }
 
     private fun initOptionalAddressView(options: OptionalAddressOptions, rule: VGSInfoRule) {
         binding.optionalAddressEt.setFieldName(options.fieldName)
-        inputViewBinder.bind(binding.optionalAddressEt)
         binding.optionalAddressEt.addRule(rule)
     }
 
     private fun initCityView(options: CityOptions, rule: VGSInfoRule) {
         binding.cityEt.setFieldName(options.fieldName)
-        inputViewBinder.bind(binding.cityEt)
         binding.cityEt.addRule(rule)
+        binding.cityEt.addOnTextChangeListener(this)
         binding.cityEt.setOnEditorActionListener(this)
         updateCityView(binding.countryEt.selectedCountry)
-        binding.cityEt.addOnTextChangeListenerOnLayout(this)
     }
 
     private fun initPostalCodeView(options: PostalCodeOptions) {
         binding.postalCodeEt.setFieldName(options.fieldName)
-        inputViewBinder.bind(binding.postalCodeEt)
+        binding.postalCodeEt.addOnTextChangeListener(this)
         binding.postalCodeEt.setOnEditorActionListener(this)
         updatePostalCodeView(binding.countryEt.selectedCountry)
-        binding.postalCodeEt.addOnTextChangeListenerOnLayout(this)
     }
 
     private fun initSaveButton() {
@@ -253,6 +245,20 @@ internal abstract class BaseSaveCardFragment : Fragment(), LoadingHandler,
             binding.postalCodeTil.setHint(getString(getPostalCodeHint(country)))
             binding.postalCodeTil.setError(null)
             binding.postalCodeTil.visible()
+        }
+    }
+
+    private fun bindAllViews() {
+        with(binding) {
+            inputViewBinder.bind(cardHolderEt,
+                cardNumberEt,
+                expirationDateEt,
+                securityCodeEt,
+                countryEt,
+                addressEt,
+                optionalAddressEt,
+                cityEt,
+                postalCodeEt)
         }
     }
 
