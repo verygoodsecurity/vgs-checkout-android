@@ -170,11 +170,11 @@ internal abstract class BaseSaveCardFragment : Fragment(), LoadingHandler,
         binding.securityCodeEt.setFieldName(options.fieldName)
         inputViewBinder.bind(binding.securityCodeEt)
         binding.securityCodeEt.setIsPreviewIconHidden(options.isIconHidden)
-        binding.securityCodeEt.addOnTextChangeListener(this)
         binding.securityCodeEt.setOnEditorActionListener(this)
         binding.securityCodeEt.setImeOptions(
             if (formConfig.isBillingAddressVisible()) EditorInfo.IME_ACTION_NEXT else EditorInfo.IME_ACTION_DONE
         )
+        binding.securityCodeEt.addOnTextChangeListenerOnLayout(this)
     }
 
     private fun initBillingAddressViews() {
