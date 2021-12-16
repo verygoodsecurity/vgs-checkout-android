@@ -91,13 +91,13 @@ class OnFocusFieldsValidationTest {
                 .perform(ViewActions.click())
 
             // Assert
-            onViewWithScrollTo(R.id.vgsTilCardHolder).check(matches(withError("")))
-            onViewWithScrollTo(R.id.vgsTilCardNumber).check(matches(withError("")))
-            onViewWithScrollTo(R.id.vgsTilExpirationDate).check(matches(withError("")))
-            onViewWithScrollTo(R.id.vgsTilSecurityCode).check(matches(withError("")))
-            onViewWithScrollTo(R.id.vgsTilAddress).check(matches(withError("")))
-            onViewWithScrollTo(R.id.vgsTilCity).check(matches(withError("")))
-            onViewWithScrollTo(R.id.vgsTilPostalCode).check(matches(withError("")))
+            onViewWithScrollTo(R.id.vgsTilCardHolder).check(matches(withError(null)))
+            onViewWithScrollTo(R.id.vgsTilCardNumber).check(matches(withError(null)))
+            onViewWithScrollTo(R.id.vgsTilExpirationDate).check(matches(withError(null)))
+            onViewWithScrollTo(R.id.vgsTilSecurityCode).check(matches(withError(null)))
+            onViewWithScrollTo(R.id.vgsTilAddress).check(matches(withError(null)))
+            onViewWithScrollTo(R.id.vgsTilCity).check(matches(withError(null)))
+            onViewWithScrollTo(R.id.vgsTilPostalCode).check(matches(withError(null)))
 
             // Act
             Espresso.onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard())

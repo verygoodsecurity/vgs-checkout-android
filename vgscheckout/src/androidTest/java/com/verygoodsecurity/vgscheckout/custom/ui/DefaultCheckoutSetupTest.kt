@@ -110,10 +110,10 @@ class DefaultCheckoutSetupTest {
             waitFor(500)
             onView(isRoot()).perform(ViewActions.closeSoftKeyboard())
             // Assert
-            onViewWithScrollTo(R.id.vgsTilCardHolder).check(matches(withError("")))
-            onViewWithScrollTo(R.id.vgsTilCardNumber).check(matches(withError("")))
-            onViewWithScrollTo(R.id.vgsTilExpirationDate).check(matches(withError("")))
-            onViewWithScrollTo(R.id.vgsTilSecurityCode).check(matches(withError("")))
+            onViewWithScrollTo(R.id.vgsTilCardHolder).check(matches(withError(null)))
+            onViewWithScrollTo(R.id.vgsTilCardNumber).check(matches(withError(null)))
+            onViewWithScrollTo(R.id.vgsTilExpirationDate).check(matches(withError(null)))
+            onViewWithScrollTo(R.id.vgsTilSecurityCode).check(matches(withError(null)))
         }
     }
 

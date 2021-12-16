@@ -15,7 +15,6 @@ internal class SaveCardDynamicValidationFragment : BaseSaveCardFragment(),
     override fun onFocusChange(v: View?, hasFocus: Boolean) {
         if (v is InputFieldView && hasFocus.not() && v.isEdited()) {
             validate(v)
-            updateError(v)
         }
     }
 

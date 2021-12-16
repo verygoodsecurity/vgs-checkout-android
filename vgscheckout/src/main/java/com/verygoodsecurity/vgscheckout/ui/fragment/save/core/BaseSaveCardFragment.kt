@@ -39,13 +39,12 @@ internal abstract class BaseSaveCardFragment : Fragment(), LoadingHandler,
     InputFieldView.OnEditorActionListener {
 
     protected val formConfig: CheckoutFormConfig by lazy { requireArgument(KEY_BUNDLE_CONFIG) }
-    protected val inputFieldErrors = mutableMapOf<InputFieldView, String>()
 
     protected lateinit var binding: SaveCardViewBindingHelper
     protected lateinit var inputViewBinder: InputViewBinder
     protected lateinit var validationListener: ValidationResultListener
 
-    private val validationRequiredInputs: Array<InputFieldView> by lazy {
+    private val validationRequiredInputs: List<InputFieldView> by lazy {
         mutableListOf(
             binding.cardNumberEt,
             binding.expirationDateEt,
@@ -57,7 +56,7 @@ internal abstract class BaseSaveCardFragment : Fragment(), LoadingHandler,
                 add(binding.cityEt)
                 add(binding.postalCodeEt)
             }
-        }.toTypedArray()
+        }
     }
 
     override fun onAttach(context: Context) {
@@ -119,12 +118,11 @@ internal abstract class BaseSaveCardFragment : Fragment(), LoadingHandler,
 
     open fun handleSaveClicked() {
         requireActivity().hideSoftKeyboard()
-        validate()
-        updateErrors()
-        if (inputFieldErrors.filter { it.value.isNotEmpty() }.isEmpty()) {
+        val invalidFields = validate()
+        if (invalidFields.isEmpty()) {
             validationListener.onSuccess()
         } else {
-            validationListener.onFailed(getInvalidInputAnalyticsNames())
+            validationListener.onFailed(invalidFields.map { it.getAnalyticsName() })
         }
     }
 
@@ -278,36 +276,40 @@ internal abstract class BaseSaveCardFragment : Fragment(), LoadingHandler,
             PostalCodeType.UNDEFINED -> R.string.empty
         }
 
-    protected fun validate(vararg input: InputFieldView = validationRequiredInputs) {
-        input.forEach { validate(it) }
-    }
-
-    protected fun validate(input: InputFieldView) {
-        inputFieldErrors[input] = getErrorMessage(input)
-    }
-
-    protected fun updateErrors() {
-        inputFieldErrors.forEach {
-            it.key.setMaterialError(it.value)
+    /**
+     * Validate all inputs and update error messages.
+     *
+     * @return list of invalid input fields.
+     */
+    protected fun validate(): List<InputFieldView> {
+        val result = mutableListOf<InputFieldView>()
+        validationRequiredInputs.forEach {
+            val isValid = validate(it)
+            if (!isValid) result.add(it)
         }
+        return result
     }
 
-    protected fun updateError(input: InputFieldView) {
-        input.setMaterialError(inputFieldErrors[input])
+    /**
+     * Validate input field and update error message.
+     *
+     * @return true if field valid, false otherwise.
+     */
+    protected fun validate(input: InputFieldView): Boolean {
+        val message = getErrorMessage(input)
+        input.setMaterialError(message)
+        return message.isNullOrEmpty()
     }
 
-    protected fun clearError(input: InputFieldView) {
-        inputFieldErrors[input] = ""
-        updateError(input)
+    private fun clearError(input: InputFieldView) {
+        input.setMaterialError(null)
     }
 
-    private fun getErrorMessage(
-        input: InputFieldView,
-    ): String = getString(when {
-        input.isInputEmpty() -> getEmptyErrorMessage(input)
-        !input.isInputValid() -> getInvalidErrorMessage(input)
-        else -> R.string.empty
-    })
+    private fun getErrorMessage(input: InputFieldView): String? = when {
+        input.isInputEmpty() -> getString(getEmptyErrorMessage(input))
+        !input.isInputValid() -> getString(getInvalidErrorMessage(input))
+        else -> null
+    }
 
     @StringRes
     private fun getEmptyErrorMessage(input: InputFieldView): Int = when (input.id) {
@@ -347,10 +349,6 @@ internal abstract class BaseSaveCardFragment : Fragment(), LoadingHandler,
             PostalCodeType.UNDEFINED -> R.string.empty
         }
 
-    private fun getInvalidInputAnalyticsNames(): List<String> =
-        inputFieldErrors.map { if (it.value.isEmpty()) null else it.key.getAnalyticsName() }
-            .filterNotNull()
-
     private fun setInputViewsEnabled(isEnabled: Boolean) {
         binding.cardDetailsLL.setEnabled(isEnabled, true, binding.cardDetailsMtv)
         binding.billingAddressLL.setEnabled(isEnabled, true, binding.billingAddressMtv)
@@ -374,6 +372,8 @@ internal abstract class BaseSaveCardFragment : Fragment(), LoadingHandler,
     }
 
     companion object {
+
+        internal const val TAG = "BaseSaveCardFragment"
 
         private const val ICON_ALPHA_ENABLED = 1f
         private const val ICON_ALPHA_DISABLED = 0.5f
