@@ -25,6 +25,7 @@ import com.verygoodsecurity.vgscheckout.config.networking.core.VGSCheckoutHostna
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.ui.fragment.core.LoadingHandler
 import com.verygoodsecurity.vgscheckout.ui.fragment.save.core.BaseSaveCardFragment
+import com.verygoodsecurity.vgscheckout.ui.fragment.save.core.BaseSaveCardFragment.Companion.TAG
 import com.verygoodsecurity.vgscheckout.ui.fragment.save.core.InputViewBinder
 import com.verygoodsecurity.vgscheckout.ui.fragment.save.core.ValidationResultListener
 import com.verygoodsecurity.vgscheckout.util.CollectProvider
@@ -106,6 +107,8 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
         initToolbar()
         if (savedInstanceState == null) {
             showSaveCardFragment()
+        } else {
+            loadingHandler = supportFragmentManager.findFragmentByTag(TAG) as LoadingHandler
         }
     }
 
@@ -115,7 +118,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
 
     private fun showSaveCardFragment() {
         supportFragmentManager.beginTransaction()
-            .add(R.id.fcvContainer, BaseSaveCardFragment.create(config.formConfig))
+            .add(R.id.fcvContainer, BaseSaveCardFragment.create(config.formConfig), TAG)
             .commit()
     }
 
