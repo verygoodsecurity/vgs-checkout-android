@@ -24,15 +24,15 @@ class VGSCheckoutCustomCardNumberOptions private constructor(
      *
      * @param fieldName text to be used for data transfer to VGS proxy.
      * @param isIconHidden defines if card brand icon should be hidden.
-     * @param brand list of brands that can be detected. Does not allow duplicates.
      * @param mode defines if [brand] list should override default brands list or need to be merged with it.
+     * @param brand list of brands that can be detected. Does not allow duplicates.
      */
     @JvmOverloads
     constructor(
         fieldName: String = "",
         isIconHidden: Boolean = false,
-        vararg brand: VGSCheckoutCardBrand = emptyArray(),
         mode: VGSCheckoutSetCardBrandsMode = VGSCheckoutSetCardBrandsMode.MODIFY,
+        vararg brand: VGSCheckoutCardBrand = emptyArray(),
     ) : this(
         fieldName,
         isIconHidden,
