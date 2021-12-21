@@ -5,7 +5,7 @@ import com.verygoodsecurity.vgscheckout.config.networking.request.core.VGSChecko
 import org.junit.Assert.*
 import org.junit.Test
 
-private const val VAULT_ID = "test_vault_id"
+private const val ID = "test_vault_id"
 private const val FORM_ID = "test_form_id"
 private const val ENVIRONMENT = "test_env"
 
@@ -21,7 +21,7 @@ class EventsTest {
             override val attributes: Map<String, Any> = emptyMap()
         }
         // Act
-        val data = event.getData(VAULT_ID, FORM_ID, ENVIRONMENT)
+        val data = event.getData(ID, FORM_ID, ENVIRONMENT)
         // Assert
         assertNotNull(data["status"])
         assertNotNull(data["type"])
@@ -44,10 +44,10 @@ class EventsTest {
             override val attributes: Map<String, Any> = emptyMap()
         }
         // Act
-        val data = event.getData(VAULT_ID, FORM_ID, ENVIRONMENT)
+        val data = event.getData(ID, FORM_ID, ENVIRONMENT)
         // Assert
         assertEquals(data["type"], TEST_TYPE)
-        assertEquals(data["tnt"], VAULT_ID)
+        assertEquals(data["tnt"], ID)
         assertEquals(data["formId"], FORM_ID)
         assertEquals(data["env"], ENVIRONMENT)
     }
@@ -60,7 +60,7 @@ class EventsTest {
             override val attributes: Map<String, Any> = emptyMap()
         }
         // Act
-        val data = event.getData(VAULT_ID, FORM_ID, ENVIRONMENT)
+        val data = event.getData(ID, FORM_ID, ENVIRONMENT)
         // Assert
         assertEquals(data["status"], "Ok")
     }
@@ -74,7 +74,7 @@ class EventsTest {
             override val attributes: Map<String, Any> = mapOf("status" to testStatus)
         }
         // Act
-        val data = event.getData(VAULT_ID, FORM_ID, ENVIRONMENT)
+        val data = event.getData(ID, FORM_ID, ENVIRONMENT)
         // Assert
         assertEquals(data["status"], testStatus)
     }
@@ -89,7 +89,7 @@ class EventsTest {
             override val attributes: Map<String, Any> = mapOf(testKey to testValue)
         }
         // Act
-        val data = event.getData(VAULT_ID, FORM_ID, ENVIRONMENT)
+        val data = event.getData(ID, FORM_ID, ENVIRONMENT)
         // Assert
         assertEquals(data[testKey], testValue)
     }
@@ -100,7 +100,7 @@ class EventsTest {
         val testFieldName = "test_field_name"
         val event = AutofillEvent(testFieldName)
         // Act
-        val data = event.getData(VAULT_ID, FORM_ID, ENVIRONMENT)
+        val data = event.getData(ID, FORM_ID, ENVIRONMENT)
         // Assert
         assertEquals(data["type"], "Autofill")
         assertEquals(data["field"], testFieldName)
@@ -111,7 +111,7 @@ class EventsTest {
         // Arrange
         val event = CancelEvent
         // Act
-        val data = event.getData(VAULT_ID, FORM_ID, ENVIRONMENT)
+        val data = event.getData(ID, FORM_ID, ENVIRONMENT)
         // Assert
         assertEquals(data["type"], "Cancel")
     }
@@ -122,7 +122,7 @@ class EventsTest {
         val hostname = "test"
         val event = HostnameValidationEvent(true, hostname)
         // Act
-        val data = event.getData(VAULT_ID, FORM_ID, ENVIRONMENT)
+        val data = event.getData(ID, FORM_ID, ENVIRONMENT)
         // Assert
         assertEquals(data["type"], "HostNameValidation")
         assertEquals(data["hostname"], hostname)
@@ -135,7 +135,7 @@ class EventsTest {
         val hostname = "test"
         val event = HostnameValidationEvent(false, hostname)
         // Act
-        val data = event.getData(VAULT_ID, FORM_ID, ENVIRONMENT)
+        val data = event.getData(ID, FORM_ID, ENVIRONMENT)
         // Assert
         assertEquals(data["type"], "HostNameValidation")
         assertEquals(data["hostname"], hostname)
@@ -147,7 +147,7 @@ class EventsTest {
         // Arrange
         val event = InitEvent(InitEvent.ConfigType.CUSTOM)
         // Act
-        val data = event.getData(VAULT_ID, FORM_ID, ENVIRONMENT)
+        val data = event.getData(ID, FORM_ID, ENVIRONMENT)
         // Assert
         assertEquals(data["type"], "Init")
         assertEquals(data["config"], "custom")
@@ -158,7 +158,7 @@ class EventsTest {
         // Arrange
         val event = InitEvent(InitEvent.ConfigType.MULTIPLEXING)
         // Act
-        val data = event.getData(VAULT_ID, FORM_ID, ENVIRONMENT)
+        val data = event.getData(ID, FORM_ID, ENVIRONMENT)
         // Assert
         assertEquals(data["type"], "Init")
         assertEquals(data["config"], "multiplexing")
@@ -169,7 +169,7 @@ class EventsTest {
         // Arrange
         val event = JWTValidationEvent(true)
         // Act
-        val data = event.getData(VAULT_ID, FORM_ID, ENVIRONMENT)
+        val data = event.getData(ID, FORM_ID, ENVIRONMENT)
         // Assert
         assertEquals(data["type"], "JWTValidation")
         assertEquals(data["status"], "Ok")
@@ -181,7 +181,7 @@ class EventsTest {
         // Arrange
         val event = JWTValidationEvent(false)
         // Act
-        val data = event.getData(VAULT_ID, FORM_ID, ENVIRONMENT)
+        val data = event.getData(ID, FORM_ID, ENVIRONMENT)
         // Assert
         assertEquals(data["type"], "JWTValidation")
         assertEquals(data["status"], "Failed")
@@ -200,7 +200,7 @@ class EventsTest {
             invalidFieldTypes = emptyList()
         )
         // Act
-        val data = event.getData(VAULT_ID, FORM_ID, ENVIRONMENT)
+        val data = event.getData(ID, FORM_ID, ENVIRONMENT)
         // Assert
         assertEquals(data["type"], "BeforeSubmit")
         assertEquals(data["status"], "Ok")
@@ -221,7 +221,7 @@ class EventsTest {
             invalidFieldTypes = emptyList()
         )
         // Act
-        val data = event.getData(VAULT_ID, FORM_ID, ENVIRONMENT)
+        val data = event.getData(ID, FORM_ID, ENVIRONMENT)
         // Assert
         assertEquals(data["type"], "BeforeSubmit")
         assertEquals(data["status"], "Failed")
@@ -242,7 +242,7 @@ class EventsTest {
             invalidFieldTypes = emptyList()
         )
         // Act
-        val data = event.getData(VAULT_ID, FORM_ID, ENVIRONMENT)
+        val data = event.getData(ID, FORM_ID, ENVIRONMENT)
         val content = data["content"] as ArrayList<*>
         // Assert
         assertEquals(data["type"], "BeforeSubmit")
@@ -261,7 +261,7 @@ class EventsTest {
         val latency = 400L
         val event = ResponseEvent(code, latency, null)
         // Act
-        val data = event.getData(VAULT_ID, FORM_ID, ENVIRONMENT)
+        val data = event.getData(ID, FORM_ID, ENVIRONMENT)
         // Assert
         assertEquals(data["type"], "Submit")
         assertEquals(data["status"], "Ok")
@@ -278,7 +278,7 @@ class EventsTest {
         val error = "test"
         val event = ResponseEvent(code, latency, error)
         // Act
-        val data = event.getData(VAULT_ID, FORM_ID, ENVIRONMENT)
+        val data = event.getData(ID, FORM_ID, ENVIRONMENT)
         // Assert
         assertEquals(data["type"], "Submit")
         assertEquals(data["status"], "Ok")
@@ -294,7 +294,7 @@ class EventsTest {
         val scannerType = "Test"
         val event = ScanEvent("Ok", scannerType, null)
         // Act
-        val data = event.getData(VAULT_ID, FORM_ID, ENVIRONMENT)
+        val data = event.getData(ID, FORM_ID, ENVIRONMENT)
         // Assert
         assertEquals(data["type"], "Scan")
         assertEquals(data["status"], status)
@@ -310,7 +310,7 @@ class EventsTest {
         val scanId = "Test"
         val event = ScanEvent("Ok", scannerType, scanId)
         // Act
-        val data = event.getData(VAULT_ID, FORM_ID, ENVIRONMENT)
+        val data = event.getData(ID, FORM_ID, ENVIRONMENT)
         // Assert
         assertEquals(data["type"], "Scan")
         assertEquals(data["status"], status)

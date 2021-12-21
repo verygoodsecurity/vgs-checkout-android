@@ -46,7 +46,7 @@ class OnFocusFieldsValidationTest {
         putExtra(
             EXTRA_KEY_ARGS,
             CheckoutResultContract.Args(VGSCheckoutCustomConfig(
-                vaultID = BuildConfig.VAULT_ID,
+                vaultId = BuildConfig.VAULT_ID,
                 formConfig = VGSCheckoutCustomFormConfig(
                     addressOptions = VGSCheckoutCustomBillingAddressOptions(
                         visibility = VGSCheckoutBillingAddressVisibility.VISIBLE

@@ -44,8 +44,8 @@ android {
     }
 
     applicationVariants.all { variant ->
-        String vaultId = getLocalProperty("VGS_VAULT_ID")
-        variant.resValue "string", "vault_id", vaultId + ''
+        String tenantId = getLocalProperty("VGS_VAULT_ID")
+        variant.resValue "string", "tenant_id", tenantId + ''
     }
 }
 

@@ -16,7 +16,7 @@ import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 
 class MainActivity : AppCompatActivity(), VGSCheckoutCallback {
 
-    private val vaultId: String by lazy { getString(R.string.vault_id) }
+    private val tenantId: String by lazy { getString(R.string.tenant_id) }
 
     private val applicationClient: HttpClient by lazy {
         HttpClient()
@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity(), VGSCheckoutCallback {
 
     private fun getCheckoutConfig() = VGSCheckoutMultiplexingConfig(
         accessToken = accessToken,
-        vaultID = vaultId
+        tenantId = tenantId
     )
 
     override fun onCheckoutResult(result: VGSCheckoutResult) {
@@ -69,12 +69,12 @@ class MainActivity : AppCompatActivity(), VGSCheckoutCallback {
             arguments = when (result) {
                 is VGSCheckoutResult.Success -> Bundle().apply {
                     result.code?.let { putInt(TransactionDialogFragment.CODE, it) }
-                    putString(TransactionDialogFragment.TNT, vaultId)
+                    putString(TransactionDialogFragment.TNT, tenantId)
                     putString(TransactionDialogFragment.BODY, result.body)
                 }
                 is VGSCheckoutResult.Failed -> Bundle().apply {
                     result.code?.let { putInt(TransactionDialogFragment.CODE, it) }
-                    putString(TransactionDialogFragment.TNT, vaultId)
+                    putString(TransactionDialogFragment.TNT, tenantId)
                     putString(TransactionDialogFragment.BODY, result.body)
                 }
                 is VGSCheckoutResult.Canceled -> Bundle()

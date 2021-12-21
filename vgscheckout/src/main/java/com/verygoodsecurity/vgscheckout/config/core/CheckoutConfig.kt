@@ -13,7 +13,7 @@ import java.util.*
  *
  * @property id unique organization vault id.
  */
-abstract class CheckoutConfig internal constructor(val id: String) : Parcelable {
+abstract class CheckoutConfig internal constructor(internal val id: String) : Parcelable {
 
     /**
      * Type of vault.

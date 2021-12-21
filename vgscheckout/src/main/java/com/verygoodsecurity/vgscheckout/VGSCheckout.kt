@@ -61,7 +61,7 @@ class VGSCheckout internal constructor(
      * Start checkout with multiplexing configuration.
      *
      * @param accessToken client backend access token.
-     * @param vaultID VGS vault id.
+     * @param tenantId payment orchestration tenant id.
      * @param environment type of vault to communicate with.
      * @param transitionOptions specifying a custom animation to run when the checkout is displayed.
      * @param isAnalyticsEnabled true if checkout should send analytics events, false otherwise.
@@ -74,7 +74,7 @@ class VGSCheckout internal constructor(
     @Throws(VGSCheckoutJWTParseException::class, VGSCheckoutJWTRestrictedRoleException::class)
     fun present(
         accessToken: String,
-        vaultID: String,
+        tenantId: String,
         environment: VGSCheckoutEnvironment = VGSCheckoutEnvironment.Sandbox(),
         transitionOptions: VGSCheckoutTransitionOptions? = null,
         isAnalyticsEnabled: Boolean = true
@@ -82,7 +82,7 @@ class VGSCheckout internal constructor(
         present(
             VGSCheckoutMultiplexingConfig(
                 accessToken,
-                vaultID,
+                tenantId,
                 environment,
                 isAnalyticsEnabled = isAnalyticsEnabled
             ),

@@ -89,7 +89,7 @@ class CustomActivityResultTest {
                 EXTRA_KEY_ARGS,
                 CheckoutResultContract.Args(
                     VGSCheckoutCustomConfig(
-                        vaultID = BuildConfig.VAULT_ID,
+                        vaultId = BuildConfig.VAULT_ID,
                         VGSCheckoutEnvironment.Sandbox(),
                         VGSCheckoutCustomRouteConfig("/post"),
                         VGSCheckoutCustomFormConfig(
