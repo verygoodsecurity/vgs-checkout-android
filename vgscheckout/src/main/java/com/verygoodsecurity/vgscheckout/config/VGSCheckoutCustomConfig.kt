@@ -19,10 +19,10 @@ import kotlinx.parcelize.Parcelize
  */
 @Parcelize
 class VGSCheckoutCustomConfig @JvmOverloads constructor(
-    override val vaultID: String,
+    val vaultID: String,
     override val environment: VGSCheckoutEnvironment = VGSCheckoutEnvironment.Sandbox(),
     override val routeConfig: VGSCheckoutCustomRouteConfig = VGSCheckoutCustomRouteConfig(),
     override val formConfig: VGSCheckoutCustomFormConfig = VGSCheckoutCustomFormConfig(),
     override val isScreenshotsAllowed: Boolean = false,
     override val isAnalyticsEnabled: Boolean = true,
-) : CheckoutConfig()
+) : CheckoutConfig(vaultID)

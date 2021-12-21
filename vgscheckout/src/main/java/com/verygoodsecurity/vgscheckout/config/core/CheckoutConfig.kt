@@ -10,13 +10,10 @@ import java.util.*
 
 /**
  * Base class of checkout config.
+ *
+ * @property id unique organization vault id.
  */
-abstract class CheckoutConfig internal constructor() : Parcelable {
-
-    /**
-     * Unique organization vault id.
-     */
-    abstract val vaultID: String
+abstract class CheckoutConfig internal constructor(val id: String) : Parcelable {
 
     /**
      * Type of vault.
@@ -46,7 +43,7 @@ abstract class CheckoutConfig internal constructor() : Parcelable {
     abstract val isAnalyticsEnabled: Boolean
 
     internal val analyticTracker: AnalyticTracker by lazy {
-        DefaultAnalyticsTracker(vaultID, environment.value, UUID.randomUUID().toString()).apply {
+        DefaultAnalyticsTracker(id, environment.value, UUID.randomUUID().toString()).apply {
             isEnabled = isAnalyticsEnabled
         }
     }
