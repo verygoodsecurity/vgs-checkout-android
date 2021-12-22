@@ -14,7 +14,7 @@ internal class CollectProvider {
         context: Context,
         config: CheckoutConfig
     ): VGSCollect {
-        return VGSCollect.Builder(context, config.vaultID)
+        return VGSCollect.Builder(context, config.id)
             .setEnvironment(config.environment.value)
             .setAnalyticTracker(config.analyticTracker)
             .applyHostnamePolicy(config.routeConfig.hostnamePolicy)

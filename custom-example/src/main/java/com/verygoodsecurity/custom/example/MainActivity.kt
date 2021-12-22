@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity(), VGSCheckoutCallback {
 
     //region Checkout config
     private fun getCheckoutConfig() = VGSCheckoutCustomConfig(
-        vaultID = vaultId,
+        vaultId = vaultId,
         routeConfig = getCheckoutRouteConfig(),
         formConfig = getCheckoutFormConfig()
     )

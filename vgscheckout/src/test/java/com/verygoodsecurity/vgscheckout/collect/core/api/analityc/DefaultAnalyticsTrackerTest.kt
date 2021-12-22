@@ -14,7 +14,7 @@ import org.junit.Test
 import org.mockito.ArgumentCaptor
 import org.mockito.Mockito.*
 
-private const val VAULT_ID = "test_vault_id"
+private const val ID = "test_vault_id"
 private const val FORM_ID = "test_form_id"
 private const val ENVIRONMENT = "test_env"
 
@@ -22,7 +22,7 @@ class DefaultAnalyticsTrackerTest {
 
     private val mockApiClient: ApiClient = mock(OkHttpClient::class.java)
     private val callback: (NetworkResponse) -> Unit = {}
-    private var tracker = DefaultAnalyticsTracker(VAULT_ID, ENVIRONMENT, FORM_ID, mockApiClient)
+    private var tracker = DefaultAnalyticsTracker(ID, ENVIRONMENT, FORM_ID, mockApiClient)
 
     @Test
     fun log_analyticsEnabled_apiClientCalled() {
@@ -63,7 +63,7 @@ class DefaultAnalyticsTrackerTest {
     fun log_apiCalledWithCorrectData() {
         // Arrange
         val event = InitEvent(InitEvent.ConfigType.CUSTOM)
-        val payload = event.getData(VAULT_ID, FORM_ID, ENVIRONMENT).toJSON().toString().toBase64()
+        val payload = event.getData(ID, FORM_ID, ENVIRONMENT).toJSON().toString().toBase64()
         val expectedNetworkRequest = NetworkRequest(
             method = HTTPMethod.POST,
             url = "https://vgs-collect-keeper.apps.verygood.systems/vgs",

@@ -37,7 +37,7 @@ class HideComponentTest {
                 EXTRA_KEY_ARGS,
                 CheckoutResultContract.Args(
                     VGSCheckoutCustomConfig(
-                        vaultID = BuildConfig.VAULT_ID,
+                        vaultId = BuildConfig.VAULT_ID,
                         formConfig = VGSCheckoutCustomFormConfig(
                             cardOptions = VGSCheckoutCustomCardOptions(
                                 cardHolderOptions = VGSCheckoutCustomCardHolderOptions(
@@ -64,7 +64,7 @@ class HideComponentTest {
                 EXTRA_KEY_ARGS,
                 CheckoutResultContract.Args(
                     VGSCheckoutCustomConfig(
-                        vaultID = BuildConfig.VAULT_ID,
+                        vaultId = BuildConfig.VAULT_ID,
                         formConfig = VGSCheckoutCustomFormConfig(
                             addressOptions =
                             VGSCheckoutCustomBillingAddressOptions(

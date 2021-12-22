@@ -14,7 +14,7 @@ import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
  * Holds configuration with predefined setup for work with payment orchestration/multiplexing app.
  *
  * @param accessToken multiplexing app access token.
- * @param vaultID unique organization vault id.
+ * @param tenantId payment orchestration tenant id.
  * @param environment type of vault.
  * @param routeConfig Networking configuration, like http method, request headers etc.
  * @param formConfig UI configuration.
@@ -26,14 +26,14 @@ import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
 @Suppress("MemberVisibilityCanBePrivate", "CanBeParameter")
 class VGSCheckoutMultiplexingConfig private constructor(
     internal val accessToken: String,
-    override val vaultID: String,
+    val tenantId: String,
     override val environment: VGSCheckoutEnvironment,
     override val routeConfig: VGSCheckoutMultiplexingRouteConfig,
     override val formConfig: VGSCheckoutMultiplexingFormConfig,
     override val isScreenshotsAllowed: Boolean,
     override val isAnalyticsEnabled: Boolean,
     private val createdFromParcel: Boolean
-) : CheckoutConfig() {
+) : CheckoutConfig(tenantId) {
 
     init {
         if (!createdFromParcel) validateToken()
@@ -54,7 +54,7 @@ class VGSCheckoutMultiplexingConfig private constructor(
      * Public constructor.
      *
      * @param accessToken multiplexing app access token.
-     * @param vaultID unique organization vault id.
+     * @param tenantId payment orchestration tenant id.
      * @param environment type of vault.
      * @param formConfig UI configuration.
      * @param isScreenshotsAllowed If true, checkout form will allow to make screenshots. Default is false.
@@ -69,14 +69,14 @@ class VGSCheckoutMultiplexingConfig private constructor(
     @Throws(VGSCheckoutJWTParseException::class, VGSCheckoutJWTRestrictedRoleException::class)
     constructor(
         accessToken: String,
-        vaultID: String,
+        tenantId: String,
         environment: VGSCheckoutEnvironment = VGSCheckoutEnvironment.Sandbox(),
         formConfig: VGSCheckoutMultiplexingFormConfig = VGSCheckoutMultiplexingFormConfig(),
         isScreenshotsAllowed: Boolean = false,
         isAnalyticsEnabled: Boolean = true
     ) : this(
         accessToken,
-        vaultID,
+        tenantId,
         environment,
         VGSCheckoutMultiplexingRouteConfig(accessToken),
         formConfig,
@@ -87,7 +87,7 @@ class VGSCheckoutMultiplexingConfig private constructor(
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(accessToken)
-        parcel.writeString(vaultID)
+        parcel.writeString(tenantId)
         parcel.writeParcelable(environment, flags)
         parcel.writeParcelable(routeConfig, flags)
         parcel.writeParcelable(formConfig, flags)
