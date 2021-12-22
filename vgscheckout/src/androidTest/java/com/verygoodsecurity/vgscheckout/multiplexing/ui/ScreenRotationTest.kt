@@ -13,7 +13,7 @@ import androidx.test.uiautomator.UiDevice
 import com.verygoodsecurity.vgscheckout.BuildConfig
 import com.verygoodsecurity.vgscheckout.Constants
 import com.verygoodsecurity.vgscheckout.R
-import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingConfig
+import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingAddCardConfig
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_ARGS
 import com.verygoodsecurity.vgscheckout.ui.CheckoutMultiplexingActivity
@@ -34,7 +34,7 @@ class ScreenRotationTest {
         putExtra(
             EXTRA_KEY_ARGS,
             CheckoutResultContract.Args(
-                VGSCheckoutMultiplexingConfig(
+                VGSCheckoutMultiplexingAddCardConfig(
                     BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS,
                     BuildConfig.VAULT_ID,
                 )

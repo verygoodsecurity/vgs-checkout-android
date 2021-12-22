@@ -12,7 +12,7 @@ class VGSCheckoutMultiplexingConfigTest {
     @Test
     fun createMultiplexingConfig_validJWT_objectCreated() {
         // Act
-        val config = VGSCheckoutMultiplexingConfig(BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS, "")
+        val config = VGSCheckoutMultiplexingAddCardConfig(BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS, "")
         // Assert
         assertNotNull(config)
     }
@@ -20,7 +20,7 @@ class VGSCheckoutMultiplexingConfigTest {
     @Test
     fun createMultiplexingConfig_envSandboxEnabledByDefault() {
         // Act
-        val config = VGSCheckoutMultiplexingConfig(BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS, "")
+        val config = VGSCheckoutMultiplexingAddCardConfig(BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS, "")
         // Assert
         assert(config.environment is VGSCheckoutEnvironment.Sandbox)
     }
@@ -28,7 +28,7 @@ class VGSCheckoutMultiplexingConfigTest {
     @Test
     fun createMultiplexingConfig_screenshotsDisabledByDefault() {
         // Act
-        val config = VGSCheckoutMultiplexingConfig(BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS, "")
+        val config = VGSCheckoutMultiplexingAddCardConfig(BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS, "")
         // Assert
         assertFalse(config.isScreenshotsAllowed)
     }
@@ -36,7 +36,7 @@ class VGSCheckoutMultiplexingConfigTest {
     @Test
     fun createMultiplexingConfig_analyticsEnabledByDefault() {
         // Act
-        val config = VGSCheckoutMultiplexingConfig(BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS, "")
+        val config = VGSCheckoutMultiplexingAddCardConfig(BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS, "")
         // Assert
         assertTrue(config.isAnalyticsEnabled)
     }
@@ -44,12 +44,12 @@ class VGSCheckoutMultiplexingConfigTest {
     @Test(expected = VGSCheckoutJWTParseException::class)
     fun createMultiplexingConfig_emptyJWT_exceptionThrown() {
         // Act
-        VGSCheckoutMultiplexingConfig("", "")
+        VGSCheckoutMultiplexingAddCardConfig("", "")
     }
 
     @Test(expected = VGSCheckoutJWTRestrictedRoleException::class)
     fun createMultiplexingConfig_invalidJWT_exceptionThrown() {
         // Act
-        VGSCheckoutMultiplexingConfig(BuildConfig.JWT_TOKEN_WITH_TRANSFERS_WRITE, "")
+        VGSCheckoutMultiplexingAddCardConfig(BuildConfig.JWT_TOKEN_WITH_TRANSFERS_WRITE, "")
     }
 }

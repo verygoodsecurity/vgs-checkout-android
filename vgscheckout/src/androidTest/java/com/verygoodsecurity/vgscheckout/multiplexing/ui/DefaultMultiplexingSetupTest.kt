@@ -11,7 +11,7 @@ import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.verygoodsecurity.vgscheckout.BuildConfig
 import com.verygoodsecurity.vgscheckout.R
-import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingConfig
+import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingAddCardConfig
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_ARGS
 import com.verygoodsecurity.vgscheckout.ui.CheckoutMultiplexingActivity
@@ -32,7 +32,7 @@ class DefaultMultiplexingSetupTest {
         putExtra(
             EXTRA_KEY_ARGS,
             CheckoutResultContract.Args(
-                VGSCheckoutMultiplexingConfig(
+                VGSCheckoutMultiplexingAddCardConfig(
                     BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS,
                     BuildConfig.VAULT_ID,
                     isScreenshotsAllowed = true

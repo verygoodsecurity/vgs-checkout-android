@@ -17,7 +17,7 @@ import com.verygoodsecurity.vgscheckout.BuildConfig
 import com.verygoodsecurity.vgscheckout.Constants
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.view.internal.*
-import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingConfig
+import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingAddCardConfig
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutMultiplexingFormConfig
 import com.verygoodsecurity.vgscheckout.config.ui.core.VGSCheckoutFormValidationBehaviour
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillingAddressVisibility
@@ -46,7 +46,7 @@ class OnFocusFieldsValidationTest {
         putExtra(
             EXTRA_KEY_ARGS,
             CheckoutResultContract.Args(
-                VGSCheckoutMultiplexingConfig(
+                VGSCheckoutMultiplexingAddCardConfig(
                     BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS,
                     BuildConfig.VAULT_ID,
                     formConfig = VGSCheckoutMultiplexingFormConfig(
