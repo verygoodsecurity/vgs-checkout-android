@@ -9,17 +9,17 @@ import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutNetworkException
 import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutResponseParseException
 import com.verygoodsecurity.vgscheckout.util.command.AsynchronousCommand
 import com.verygoodsecurity.vgscheckout.util.command.Result
-import com.verygoodsecurity.vgscheckout.util.command.VGSCancellable
+import com.verygoodsecurity.vgscheckout.util.command.VGSCheckoutCancellable
 import org.json.JSONObject
 
-internal class GetOrderDetails : AsynchronousCommand<String, Result<OrderDetails>>, VGSCancellable {
+internal class GetOrderDetails : AsynchronousCommand<String, Result<OrderDetails>>, VGSCheckoutCancellable {
 
     private val client = ApiClient.create(false)
 
     override fun execute(
         parameter: String,
         onResult: (Result<OrderDetails>) -> Unit
-    ): VGSCancellable {
+    ): VGSCheckoutCancellable {
         client.enqueue(createOrderDetailsRequest(parameter)) {
             if (it.isSuccessful) {
                 try {

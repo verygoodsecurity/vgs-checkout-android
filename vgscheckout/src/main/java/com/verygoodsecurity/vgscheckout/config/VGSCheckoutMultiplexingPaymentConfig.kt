@@ -13,7 +13,7 @@ import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutJWTRestrictedRoleEx
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
 import com.verygoodsecurity.vgscheckout.util.command.Result
 import com.verygoodsecurity.vgscheckout.util.command.order.GetOrderDetails
-import com.verygoodsecurity.vgscheckout.util.command.VGSCancellable
+import com.verygoodsecurity.vgscheckout.util.command.VGSCheckoutCancellable
 import com.verygoodsecurity.vgscheckout.util.command.order.OrderDetails
 
 /**
@@ -93,6 +93,19 @@ class VGSCheckoutMultiplexingPaymentConfig private constructor(
             return arrayOfNulls(size)
         }
 
+        /**
+         * Check all parameters and create [VGSCheckoutMultiplexingPaymentConfig] asynchronously.
+         *
+         * @param accessToken multiplexing app access token.
+         * @param tenantId payment orchestration tenant id.
+         * @param callback initialization callback.
+         * @param environment type of vault.
+         * @param formConfig UI configuration.
+         * @param isScreenshotsAllowed If true, checkout form will allow to make screenshots.
+         * @param isAnalyticsEnabled If true, checkout will send analytics events that helps to debug issues if any occurs.
+         *
+         * @return [VGSCheckoutCancellable]
+         */
         @JvmStatic
         @JvmOverloads
         fun create(
@@ -104,7 +117,7 @@ class VGSCheckoutMultiplexingPaymentConfig private constructor(
             formConfig: VGSCheckoutMultiplexingFormConfig = VGSCheckoutMultiplexingFormConfig(),
             isScreenshotsAllowed: Boolean = false,
             isAnalyticsEnabled: Boolean = true,
-        ): VGSCancellable = GetOrderDetails().execute(orderId) {
+        ): VGSCheckoutCancellable = GetOrderDetails().execute(orderId) {
             try {
                 when(it) {
                     is Result.Success<OrderDetails> -> {
