@@ -17,7 +17,7 @@ android {
 
         buildConfigField "String", "VERSION_NAME", "\"$VERSION_NAME\""
 
-        createTestsBuildConfigFields(it)
+        createBuildConfigFields(it)
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -74,8 +74,9 @@ tasks.dokkaHtml.configure {
     outputDirectory.set(rootProject.file('docs'))
 }
 
-static def createTestsBuildConfigFields(buildConfig) {
+static def createBuildConfigFields(buildConfig) {
     def properties = getLocalProperties()
+    buildConfig.buildConfigField "String", "ORDER_DETAILS_URL", "\"${properties['ORDER_DETAILS_URL']}\""
     buildConfig.buildConfigField "String", "VAULT_ID", "\"${properties['VAULT_ID']}\""
     buildConfig.buildConfigField "String", "JWT_TOKEN_WITHOUT_TRANSFERS", "\"${properties['JWT_TOKEN_WITHOUT_TRANSFERS']}\""
     buildConfig.buildConfigField "String", "JWT_TOKEN_WITH_TRANSFERS_WRITE", "\"${properties['JWT_TOKEN_WITH_TRANSFERS_WRITE']}\""

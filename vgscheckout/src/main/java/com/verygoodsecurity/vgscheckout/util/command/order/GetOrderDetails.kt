@@ -1,5 +1,6 @@
 package com.verygoodsecurity.vgscheckout.util.command.order
 
+import com.verygoodsecurity.vgscheckout.BuildConfig
 import com.verygoodsecurity.vgscheckout.collect.core.HTTPMethod
 import com.verygoodsecurity.vgscheckout.collect.core.api.VGSHttpBodyFormat
 import com.verygoodsecurity.vgscheckout.collect.core.api.client.ApiClient
@@ -64,7 +65,7 @@ internal class GetOrderDetails : AsynchronousCommand<String, Result<OrderDetails
     private fun createOrderDetailsRequest(orderId: String): NetworkRequest {
         return NetworkRequest(
             method = HTTPMethod.GET,
-            url = URL + orderId,
+            url = BuildConfig.ORDER_DETAILS_URL + orderId,
             customHeader = emptyMap(),
             customData = Unit,
             fieldsIgnore = false,
@@ -75,8 +76,6 @@ internal class GetOrderDetails : AsynchronousCommand<String, Result<OrderDetails
     }
 
     companion object {
-
-        private const val URL = "https://multiplexing-demo.apps.verygood.systems/orders/"
 
         private const val REQUEST_TIMEOUT = 60_000L
 
