@@ -64,6 +64,9 @@ internal class OkHttpClient(
 
                 override fun onFailure(call: Call, e: IOException) {
                     logException(e)
+                    if (call.isCanceled()) {
+                        return
+                    }
                     if (e is InterruptedIOException || e is TimeoutException) {
                         callback?.invoke(NetworkResponse.create(VGSError.TIME_OUT))
                     } else {

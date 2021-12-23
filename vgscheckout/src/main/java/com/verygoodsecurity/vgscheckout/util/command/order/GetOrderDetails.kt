@@ -12,11 +12,12 @@ import com.verygoodsecurity.vgscheckout.util.command.Result
 import com.verygoodsecurity.vgscheckout.util.command.VGSCheckoutCancellable
 import org.json.JSONObject
 
-internal class GetOrderDetails : AsynchronousCommand<String, Result<OrderDetails>>, VGSCheckoutCancellable {
+internal class GetOrderDetails : AsynchronousCommand<String, Result<OrderDetails>>(),
+    VGSCheckoutCancellable {
 
     private val client = ApiClient.create(false)
 
-    override fun execute(
+    override fun run(
         parameter: String,
         onResult: (Result<OrderDetails>) -> Unit
     ): VGSCheckoutCancellable {
