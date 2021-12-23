@@ -34,7 +34,7 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillin
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutCustomBillingAddressOptions
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_ARGS
-import com.verygoodsecurity.vgscheckout.ui.CheckoutActivity
+import com.verygoodsecurity.vgscheckout.ui.CustomCheckoutActivity
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers.withError
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers.withParent
 import com.verygoodsecurity.vgscheckout.util.ViewInteraction.onViewWithScrollTo
@@ -51,7 +51,7 @@ class OnSubmitFieldsValidationTest {
 
     private val context: Context = ApplicationProvider.getApplicationContext()
 
-    private var intent = Intent(context, CheckoutActivity::class.java).apply {
+    private var intent = Intent(context, CustomCheckoutActivity::class.java).apply {
         putExtra(
             EXTRA_KEY_ARGS,
             CheckoutResultContract.Args(VGSCheckoutCustomConfig(
@@ -76,7 +76,7 @@ class OnSubmitFieldsValidationTest {
 
     @Test
     fun validationFlow_staticByDefault() {
-        launch<CheckoutActivity>(intent).use {
+        launch<CustomCheckoutActivity>(intent).use {
             // Act
             onViewWithScrollTo(withParent(R.id.vgsTilCardNumber, CardInputField::class))
                 .perform(typeText("4111"))
@@ -89,7 +89,7 @@ class OnSubmitFieldsValidationTest {
 
     @Test
     fun saveCardClicked_noInput_emptyErrorsDisplayed() {
-        launch<CheckoutActivity>(intent).use {
+        launch<CustomCheckoutActivity>(intent).use {
             // Act
             onViewWithScrollTo(R.id.mbSaveCard)
                 .perform(click())
@@ -148,7 +148,7 @@ class OnSubmitFieldsValidationTest {
 
     @Test
     fun saveCardClicked_invalidInput_invalidInputErrorsDisplayed() {
-        launch<CheckoutActivity>(intent).use {
+        launch<CustomCheckoutActivity>(intent).use {
             // Arrange
             waitFor(500)
             onView(isRoot()).perform(closeSoftKeyboard())
@@ -200,7 +200,7 @@ class OnSubmitFieldsValidationTest {
 
     @Test
     fun saveCard_custom_validInput_noErrorsDisplayed() {
-        launch<CheckoutActivity>(intent).use {
+        launch<CustomCheckoutActivity>(intent).use {
             // Arrange
             fillCardFields(
                 VALID_CARD_HOLDER,
@@ -232,7 +232,7 @@ class OnSubmitFieldsValidationTest {
 
     @Test
     fun showErrorMessage_countrySelect_selectCanada_postalCodeErrorMessageCleared() {
-        launch<CheckoutActivity>(intent).use {
+        launch<CustomCheckoutActivity>(intent).use {
             // Act
             waitFor(500)
             onView(isRoot()).perform(closeSoftKeyboard())
@@ -248,7 +248,7 @@ class OnSubmitFieldsValidationTest {
 
     @Test
     fun noError_selectCanada_postalCodeValidationRuleChange_errorDisplayed() {
-        launch<CheckoutActivity>(intent).use {
+        launch<CustomCheckoutActivity>(intent).use {
             // Arrange
             waitFor(500)
             onView(isRoot()).perform(closeSoftKeyboard())
