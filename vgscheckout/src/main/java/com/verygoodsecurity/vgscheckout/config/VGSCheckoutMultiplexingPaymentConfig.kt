@@ -7,6 +7,7 @@ import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.JWTValid
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutMultiplexingRouteConfig
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutMultiplexingFormConfig
+import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
 import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutJWTParseException
 import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutJWTRestrictedRoleException
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
@@ -14,7 +15,6 @@ import com.verygoodsecurity.vgscheckout.util.command.Result
 import com.verygoodsecurity.vgscheckout.util.command.order.GetOrderDetails
 import com.verygoodsecurity.vgscheckout.util.command.VGSCancellable
 import com.verygoodsecurity.vgscheckout.util.command.order.OrderDetails
-import java.lang.Exception
 
 /**
  * Holds configuration with predefined setup for work with payment orchestration/multiplexing app.
@@ -124,7 +124,7 @@ class VGSCheckoutMultiplexingPaymentConfig private constructor(
                     }
                     is Result.Error -> callback.onFailure(it.e)
                 }
-            } catch (e: Exception) {
+            } catch (e: VGSCheckoutException) {
                 callback.onFailure(e)
             }
         }
