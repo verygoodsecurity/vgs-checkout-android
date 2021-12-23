@@ -11,7 +11,7 @@ import com.verygoodsecurity.multiplexing.example.network.HttpClient
 import com.verygoodsecurity.multiplexing.example.network.util.isSuccessHttpCode
 import com.verygoodsecurity.vgscheckout.VGSCheckout
 import com.verygoodsecurity.vgscheckout.VGSCheckoutCallback
-import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingConfig
+import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingAddCardConfig
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 
 class MainActivity : AppCompatActivity(), VGSCheckoutCallback {
@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity(), VGSCheckoutCallback {
         )
     }
 
-    private fun getCheckoutConfig() = VGSCheckoutMultiplexingConfig(
+    private fun getCheckoutConfig() = VGSCheckoutMultiplexingAddCardConfig(
         accessToken = accessToken,
         tenantId = tenantId
     )

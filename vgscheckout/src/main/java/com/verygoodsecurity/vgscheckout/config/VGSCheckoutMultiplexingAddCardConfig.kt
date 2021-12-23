@@ -24,7 +24,7 @@ import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
  * validation event should be send.
  */
 @Suppress("MemberVisibilityCanBePrivate", "CanBeParameter")
-class VGSCheckoutMultiplexingConfig private constructor(
+class VGSCheckoutMultiplexingAddCardConfig private constructor(
     internal val accessToken: String,
     val tenantId: String,
     override val environment: VGSCheckoutEnvironment,
@@ -99,7 +99,7 @@ class VGSCheckoutMultiplexingConfig private constructor(
         return 0
     }
 
-    @Throws(IllegalArgumentException::class)
+    @Throws(VGSCheckoutJWTParseException::class, VGSCheckoutJWTRestrictedRoleException::class)
     private fun validateToken() {
         try {
             CheckoutMultiplexingCredentialsValidator.validateJWT(accessToken)
@@ -109,13 +109,13 @@ class VGSCheckoutMultiplexingConfig private constructor(
         }
     }
 
-    internal companion object CREATOR : Parcelable.Creator<VGSCheckoutMultiplexingConfig> {
+    internal companion object CREATOR : Parcelable.Creator<VGSCheckoutMultiplexingAddCardConfig> {
 
-        override fun createFromParcel(parcel: Parcel): VGSCheckoutMultiplexingConfig {
-            return VGSCheckoutMultiplexingConfig(parcel)
+        override fun createFromParcel(parcel: Parcel): VGSCheckoutMultiplexingAddCardConfig {
+            return VGSCheckoutMultiplexingAddCardConfig(parcel)
         }
 
-        override fun newArray(size: Int): Array<VGSCheckoutMultiplexingConfig?> {
+        override fun newArray(size: Int): Array<VGSCheckoutMultiplexingAddCardConfig?> {
             return arrayOfNulls(size)
         }
     }

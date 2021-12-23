@@ -7,4 +7,4 @@ private const val MESSAGE = "Access token contains restricted role [%s]."
  */
 class VGSCheckoutJWTRestrictedRoleException internal constructor(
     role: String,
-) : VGSCheckoutException(String.format(MESSAGE, role))
+) : VGSCheckoutException(String.format(MESSAGE, role), null)

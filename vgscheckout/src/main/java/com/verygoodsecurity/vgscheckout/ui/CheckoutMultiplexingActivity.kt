@@ -3,15 +3,15 @@ package com.verygoodsecurity.vgscheckout.ui
 import android.content.Intent
 import android.os.Bundle
 import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.InitEvent
-import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingConfig
+import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingAddCardConfig
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.ui.core.BaseCheckoutActivity
 
 internal class CheckoutMultiplexingActivity :
-    BaseCheckoutActivity<VGSCheckoutMultiplexingConfig>() {
+    BaseCheckoutActivity<VGSCheckoutMultiplexingAddCardConfig>() {
 
     override fun resolveConfig(intent: Intent) =
-        CheckoutResultContract.Args.fromIntent<VGSCheckoutMultiplexingConfig>(intent).config
+        CheckoutResultContract.Args.fromIntent<VGSCheckoutMultiplexingAddCardConfig>(intent).config
 
     override fun hasCustomHeaders() = false
 

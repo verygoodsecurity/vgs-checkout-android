@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgscheckout.exception
 
 abstract class VGSCheckoutException internal constructor(
-    message: String? = null,
-    cause: Throwable? = null,
+    message: String?,
+    cause: Throwable?,
 ) : Exception(message, cause)

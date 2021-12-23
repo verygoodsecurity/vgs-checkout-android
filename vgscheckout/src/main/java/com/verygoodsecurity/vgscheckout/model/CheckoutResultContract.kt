@@ -9,7 +9,7 @@ import androidx.activity.result.contract.ActivityResultContract
 import androidx.annotation.VisibleForTesting
 import androidx.core.os.bundleOf
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
-import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingConfig
+import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingAddCardConfig
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.ui.CheckoutActivity
 import com.verygoodsecurity.vgscheckout.ui.CheckoutMultiplexingActivity
@@ -43,7 +43,7 @@ internal class CheckoutResultContract :
     private fun getIntentTarget(args: Args<CheckoutConfig>?): Class<out BaseCheckoutActivity<*>> {
         return when (args?.config) {
             is VGSCheckoutCustomConfig -> CheckoutActivity::class.java
-            is VGSCheckoutMultiplexingConfig -> CheckoutMultiplexingActivity::class.java
+            is VGSCheckoutMultiplexingAddCardConfig -> CheckoutMultiplexingActivity::class.java
             else -> throw IllegalArgumentException("Invalid checkout config.")
         }
     }
