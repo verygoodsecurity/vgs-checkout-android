@@ -97,6 +97,7 @@ class VGSCheckoutMultiplexingPaymentConfig private constructor(
          * Check all parameters and create [VGSCheckoutMultiplexingPaymentConfig] asynchronously.
          *
          * @param accessToken multiplexing app access token.
+         * @param orderId id of order created on multiplexing.
          * @param tenantId payment orchestration tenant id.
          * @param callback initialization callback.
          * @param environment type of vault.
@@ -110,8 +111,8 @@ class VGSCheckoutMultiplexingPaymentConfig private constructor(
         @JvmOverloads
         fun create(
             accessToken: String,
-            tenantId: String,
             orderId: String,
+            tenantId: String,
             callback: VGSCheckoutConfigInitCallback<VGSCheckoutMultiplexingPaymentConfig>,
             environment: VGSCheckoutEnvironment = VGSCheckoutEnvironment.Sandbox(),
             formConfig: VGSCheckoutMultiplexingFormConfig = VGSCheckoutMultiplexingFormConfig(),
