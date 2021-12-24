@@ -7,20 +7,20 @@ import com.verygoodsecurity.vgscheckout.collect.core.api.client.ApiClient
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.NetworkRequest
 import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
 import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutNetworkException
-import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutResponseParseException
+import com.verygoodsecurity.vgscheckout.exception.internal.VGSCheckoutPaymentInfoParseException
 import com.verygoodsecurity.vgscheckout.util.command.AsynchronousCommand
 import com.verygoodsecurity.vgscheckout.util.command.Result
 import com.verygoodsecurity.vgscheckout.util.command.VGSCheckoutCancellable
 import org.json.JSONObject
 
-internal class GetOrderDetails : AsynchronousCommand<String, Result<OrderDetails>>(),
+internal class GetPaymentInfo : AsynchronousCommand<String, Result<PaymentInfo>>(),
     VGSCheckoutCancellable {
 
     private val client = ApiClient.create(false)
 
     override fun run(
         parameter: String,
-        onResult: (Result<OrderDetails>) -> Unit
+        onResult: (Result<PaymentInfo>) -> Unit
     ): VGSCheckoutCancellable {
         client.enqueue(createOrderDetailsRequest(parameter)) {
             if (it.isSuccessful) {
@@ -33,8 +33,8 @@ internal class GetOrderDetails : AsynchronousCommand<String, Result<OrderDetails
                 onResult.invoke(
                     Result.Error(
                         VGSCheckoutNetworkException(
-                            message = it.message,
                             code = it.code,
+                            message = it.message,
                             body = it.body
                         )
                     )
@@ -46,15 +46,12 @@ internal class GetOrderDetails : AsynchronousCommand<String, Result<OrderDetails
 
 
     @Throws(VGSCheckoutException::class)
-    private fun parseResponse(body: String?): OrderDetails {
-        if (body.isNullOrEmpty()) {
-            throw VGSCheckoutResponseParseException("Response body is null or empty.")
-        }
+    private fun parseResponse(body: String?): PaymentInfo {
         try {
-            val data = JSONObject(body).getJSONObject(JSON_KEY_DATA)
-            return OrderDetails(data.getInt(JSON_KEY_AMOUNT), data.getString(JSON_KEY_CURRENCY))
+            val data = JSONObject(body!!).getJSONObject(JSON_KEY_DATA)
+            return PaymentInfo(data.getInt(JSON_KEY_AMOUNT), data.getString(JSON_KEY_CURRENCY))
         } catch (e: Exception) {
-            throw VGSCheckoutResponseParseException("Can't parse response body.", e)
+            throw VGSCheckoutPaymentInfoParseException(e)
         }
     }
 
@@ -65,7 +62,7 @@ internal class GetOrderDetails : AsynchronousCommand<String, Result<OrderDetails
     private fun createOrderDetailsRequest(orderId: String): NetworkRequest {
         return NetworkRequest(
             method = HTTPMethod.GET,
-            url = BuildConfig.ORDER_DETAILS_URL + orderId,
+            url = BuildConfig.MULTIPLEXING_URL + ORDERS_PATH + orderId,
             customHeader = emptyMap(),
             customData = Unit,
             fieldsIgnore = false,
@@ -77,6 +74,7 @@ internal class GetOrderDetails : AsynchronousCommand<String, Result<OrderDetails
 
     companion object {
 
+        private const val ORDERS_PATH = "/orders/"
         private const val REQUEST_TIMEOUT = 60_000L
 
         private const val JSON_KEY_DATA = "data"

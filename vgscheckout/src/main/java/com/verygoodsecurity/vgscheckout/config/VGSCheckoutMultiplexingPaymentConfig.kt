@@ -8,13 +8,11 @@ import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutMultiplexingRouteConfig
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutMultiplexingFormConfig
 import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
-import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutJWTParseException
-import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutJWTRestrictedRoleException
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
 import com.verygoodsecurity.vgscheckout.util.command.Result
-import com.verygoodsecurity.vgscheckout.util.command.order.GetOrderDetails
+import com.verygoodsecurity.vgscheckout.util.command.order.GetPaymentInfo
 import com.verygoodsecurity.vgscheckout.util.command.VGSCheckoutCancellable
-import com.verygoodsecurity.vgscheckout.util.command.order.OrderDetails
+import com.verygoodsecurity.vgscheckout.util.command.order.PaymentInfo
 
 /**
  * Holds configuration with predefined setup for work with payment orchestration/multiplexing app.
@@ -33,7 +31,7 @@ import com.verygoodsecurity.vgscheckout.util.command.order.OrderDetails
 class VGSCheckoutMultiplexingPaymentConfig private constructor(
     internal val accessToken: String,
     val tenantId: String,
-    internal val orderDetails: OrderDetails,
+    internal val paymentInfo: PaymentInfo,
     override val environment: VGSCheckoutEnvironment,
     override val routeConfig: VGSCheckoutMultiplexingRouteConfig,
     override val formConfig: VGSCheckoutMultiplexingFormConfig,
@@ -49,7 +47,7 @@ class VGSCheckoutMultiplexingPaymentConfig private constructor(
     internal constructor(parcel: Parcel) : this(
         parcel.readString()!!,
         parcel.readString()!!,
-        parcel.readParcelable(OrderDetails::class.java.classLoader)!!,
+        parcel.readParcelable(PaymentInfo::class.java.classLoader)!!,
         parcel.readParcelable(VGSCheckoutEnvironment::class.java.classLoader)!!,
         parcel.readParcelable(VGSCheckoutMultiplexingRouteConfig::class.java.classLoader)!!,
         parcel.readParcelable(VGSCheckoutMultiplexingFormConfig::class.java.classLoader)!!,
@@ -61,7 +59,7 @@ class VGSCheckoutMultiplexingPaymentConfig private constructor(
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(accessToken)
         parcel.writeString(tenantId)
-        parcel.writeParcelable(orderDetails, flags)
+        parcel.writeParcelable(paymentInfo, flags)
         parcel.writeParcelable(environment, flags)
         parcel.writeParcelable(routeConfig, flags)
         parcel.writeParcelable(formConfig, flags)
@@ -73,7 +71,7 @@ class VGSCheckoutMultiplexingPaymentConfig private constructor(
         return 0
     }
 
-    @Throws(VGSCheckoutJWTParseException::class, VGSCheckoutJWTRestrictedRoleException::class)
+    @Throws(VGSCheckoutException::class)
     private fun validateToken() {
         try {
             CheckoutMultiplexingCredentialsValidator.validateJWT(accessToken)
@@ -118,10 +116,10 @@ class VGSCheckoutMultiplexingPaymentConfig private constructor(
             formConfig: VGSCheckoutMultiplexingFormConfig = VGSCheckoutMultiplexingFormConfig(),
             isScreenshotsAllowed: Boolean = false,
             isAnalyticsEnabled: Boolean = true,
-        ): VGSCheckoutCancellable = GetOrderDetails().execute(orderId) {
+        ): VGSCheckoutCancellable = GetPaymentInfo().execute(orderId) {
             try {
                 when(it) {
-                    is Result.Success<OrderDetails> -> {
+                    is Result.Success<PaymentInfo> -> {
                         callback.onSuccess(
                             VGSCheckoutMultiplexingPaymentConfig(
                                 accessToken,

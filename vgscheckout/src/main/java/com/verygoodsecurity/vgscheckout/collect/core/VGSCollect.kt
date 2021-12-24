@@ -63,9 +63,9 @@ internal class VGSCollect {
 
     private val responseListeners = mutableListOf<VgsCollectResponseListener>()
     private val analyticListener = object : VgsCollectResponseListener {
-        override fun onResponse(response: VGSResponse?) {
-            response?.let {
-                responseEvent(it.code, it.latency, (it as? VGSResponse.ErrorResponse)?.message)
+        override fun onResponse(response: VGSResponse) {
+            with(response) {
+                responseEvent(code, latency, (this as? VGSResponse.ErrorResponse)?.message)
             }
         }
     }
