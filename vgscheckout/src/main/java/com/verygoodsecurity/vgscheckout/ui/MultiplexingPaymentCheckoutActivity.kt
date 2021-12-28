@@ -2,6 +2,7 @@ package com.verygoodsecurity.vgscheckout.ui
 
 import android.content.Intent
 import com.verygoodsecurity.vgscheckout.BuildConfig
+import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.core.HTTPMethod
 import com.verygoodsecurity.vgscheckout.collect.core.api.VGSHttpBodyFormat
 import com.verygoodsecurity.vgscheckout.collect.core.api.client.ApiClient
@@ -15,6 +16,7 @@ import com.verygoodsecurity.vgscheckout.exception.internal.VGSCheckoutFinIdNotFo
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 import com.verygoodsecurity.vgscheckout.ui.core.BaseCheckoutActivity
+import com.verygoodsecurity.vgscheckout.util.CurrencyFormatter.format
 import com.verygoodsecurity.vgscheckout.util.extension.toCheckoutResult
 import org.json.JSONObject
 
@@ -27,6 +29,11 @@ internal class MultiplexingPaymentCheckoutActivity :
         CheckoutResultContract.Args.fromIntent<VGSCheckoutMultiplexingPaymentConfig>(intent).config
 
     override fun hasCustomHeaders() = false
+
+    override fun getButtonTitle(): String {
+        val amount = format(config.paymentInfo.amount, config.paymentInfo.currency)
+        return getString(R.string.vgs_checkout_button_pay_title, amount)
+    }
 
     override fun handleResponse(response: VGSResponse) {
         when (response) {

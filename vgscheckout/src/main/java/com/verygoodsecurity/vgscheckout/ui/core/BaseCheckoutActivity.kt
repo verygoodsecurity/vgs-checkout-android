@@ -106,6 +106,8 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
         finish()
     }
 
+    protected open fun getButtonTitle() = getString(R.string.vgs_checkout_button_save_card_title)
+
     @CallSuper
     protected open fun initView(savedInstanceState: Bundle?) {
         initToolbar()
@@ -121,8 +123,9 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
     }
 
     private fun showSaveCardFragment() {
+        val fragment = BaseSaveCardFragment.create(config.formConfig, getButtonTitle())
         supportFragmentManager.beginTransaction()
-            .add(R.id.fcvContainer, BaseSaveCardFragment.create(config.formConfig), TAG)
+            .add(R.id.fcvContainer, fragment, TAG)
             .commit()
     }
 
