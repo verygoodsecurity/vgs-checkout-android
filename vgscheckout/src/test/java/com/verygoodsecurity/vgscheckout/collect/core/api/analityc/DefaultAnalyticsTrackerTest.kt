@@ -1,5 +1,6 @@
 package com.verygoodsecurity.vgscheckout.collect.core.api.analityc
 
+import com.verygoodsecurity.vgscheckout.capture
 import com.verygoodsecurity.vgscheckout.collect.core.HTTPMethod
 import com.verygoodsecurity.vgscheckout.collect.core.api.VGSHttpBodyFormat
 import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.InitEvent
@@ -87,6 +88,4 @@ class DefaultAnalyticsTrackerTest {
         )
         assertEquals(expectedNetworkRequest, networkRequestCaptor.value)
     }
-
-    private fun <T> capture(argumentCaptor: ArgumentCaptor<T>): T = argumentCaptor.capture()
 }
