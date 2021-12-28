@@ -15,8 +15,6 @@ import com.verygoodsecurity.vgscheckout.collect.core.VGSCollect
 import com.verygoodsecurity.vgscheckout.collect.core.VgsCollectResponseListener
 import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.CancelEvent
 import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.RequestEvent
-import com.verygoodsecurity.vgscheckout.collect.core.api.client.ApiClient
-import com.verygoodsecurity.vgscheckout.collect.core.api.client.OkHttpClient
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSError
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSRequest
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSResponse
@@ -45,8 +43,6 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
             addOnResponseListeners(this@BaseCheckoutActivity)
         }
     }
-
-    protected val client: ApiClient = OkHttpClient()
 
     protected lateinit var loadingHandler: LoadingHandler
 

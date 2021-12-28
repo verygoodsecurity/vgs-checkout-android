@@ -4,6 +4,8 @@ import android.content.Intent
 import com.verygoodsecurity.vgscheckout.BuildConfig
 import com.verygoodsecurity.vgscheckout.collect.core.HTTPMethod
 import com.verygoodsecurity.vgscheckout.collect.core.api.VGSHttpBodyFormat
+import com.verygoodsecurity.vgscheckout.collect.core.api.client.ApiClient
+import com.verygoodsecurity.vgscheckout.collect.core.api.client.OkHttpClient
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.NetworkRequest
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.toVGSResponse
@@ -18,6 +20,8 @@ import org.json.JSONObject
 
 internal class MultiplexingPaymentCheckoutActivity :
     BaseCheckoutActivity<VGSCheckoutMultiplexingPaymentConfig>() {
+
+    private val client: ApiClient = OkHttpClient()
 
     override fun resolveConfig(intent: Intent) =
         CheckoutResultContract.Args.fromIntent<VGSCheckoutMultiplexingPaymentConfig>(intent).config
