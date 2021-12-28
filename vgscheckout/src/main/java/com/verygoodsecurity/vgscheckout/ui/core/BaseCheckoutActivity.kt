@@ -27,8 +27,6 @@ import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 import com.verygoodsecurity.vgscheckout.ui.fragment.core.LoadingHandler
 import com.verygoodsecurity.vgscheckout.ui.fragment.save.core.BaseSaveCardFragment
 import com.verygoodsecurity.vgscheckout.ui.fragment.save.core.BaseSaveCardFragment.Companion.TAG
-import com.verygoodsecurity.vgscheckout.ui.fragment.save.core.InputViewBinder
-import com.verygoodsecurity.vgscheckout.ui.fragment.save.core.ValidationResultListener
 import com.verygoodsecurity.vgscheckout.util.CollectProvider
 import com.verygoodsecurity.vgscheckout.util.extension.*
 
