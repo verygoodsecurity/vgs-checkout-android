@@ -86,8 +86,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
     }
 
     override fun onSuccess() {
-        loadingHandler.setIsLoading(true)
-        makeRequest()
+        saveCard()
     }
 
     override fun onResponse(response: VGSResponse) {
@@ -129,7 +128,9 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
             .commit()
     }
 
-    private fun makeRequest() {
+    private fun saveCard() {
+        loadingHandler.setIsLoading(true)
+        sendRequestEvent()
         with(config.routeConfig) {
             collect.asyncSubmit(
                 VGSRequest.VGSRequestBuilder()
@@ -141,7 +142,6 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
                     .build()
             )
         }
-        sendRequestEvent()
     }
 
     private fun sendRequestEvent(invalidFields: List<String> = emptyList()) {
@@ -166,7 +166,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
     private fun showNetworkConnectionErrorSnackBar() {
         val message = getString(R.string.vgs_checkout_no_network_error)
         Snackbar.make(findViewById(R.id.llRootView), message, Snackbar.LENGTH_LONG)
-            .setAction(getString(R.string.vgs_checkout_no_network_retry)) { makeRequest() }
+            .setAction(getString(R.string.vgs_checkout_no_network_retry)) { saveCard() }
             .show()
     }
 
