@@ -49,7 +49,7 @@ internal class GetPaymentInfo : AsynchronousCommand<String, Result<PaymentInfo>>
     private fun parseResponse(body: String?): PaymentInfo {
         try {
             val data = JSONObject(body!!).getJSONObject(JSON_KEY_DATA)
-            return PaymentInfo(data.getInt(JSON_KEY_AMOUNT), data.getString(JSON_KEY_CURRENCY))
+            return PaymentInfo(data.getLong(JSON_KEY_AMOUNT), data.getString(JSON_KEY_CURRENCY))
         } catch (e: Exception) {
             throw VGSCheckoutPaymentInfoParseException(e)
         }

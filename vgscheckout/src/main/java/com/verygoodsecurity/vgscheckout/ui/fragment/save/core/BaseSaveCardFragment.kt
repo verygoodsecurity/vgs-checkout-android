@@ -258,7 +258,8 @@ internal abstract class BaseSaveCardFragment : Fragment(), LoadingHandler,
 
     private fun unbindAllViews() {
         with(binding) {
-            inputViewBinder.unbind(cardHolderEt,
+            inputViewBinder.unbind(
+                cardHolderEt,
                 cardNumberEt,
                 expirationDateEt,
                 securityCodeEt,
@@ -266,7 +267,8 @@ internal abstract class BaseSaveCardFragment : Fragment(), LoadingHandler,
                 addressEt,
                 optionalAddressEt,
                 cityEt,
-                postalCodeEt)
+                postalCodeEt
+            )
         }
     }
 

@@ -73,7 +73,7 @@ internal class MultiplexingPaymentCheckoutActivity :
     private fun createPayload(findId: String): String {
         return "{\"fi_id\": \"$findId\"," +
                 "\"tnt\": \"${config.tenantId}\"," +
-                "\"amount\": ${config.paymentInfo.price}," +
+                "\"amount\": ${config.paymentInfo.amount}," +
                 "\"currency\": \"${config.paymentInfo.currency}\"" +
                 "}"
     }
