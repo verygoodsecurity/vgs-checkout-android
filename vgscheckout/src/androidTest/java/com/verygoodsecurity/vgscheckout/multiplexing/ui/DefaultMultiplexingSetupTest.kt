@@ -14,7 +14,7 @@ import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingAddCardConfig
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_ARGS
-import com.verygoodsecurity.vgscheckout.ui.CheckoutMultiplexingActivity
+import com.verygoodsecurity.vgscheckout.ui.MultiplexingSaveCardActivity
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers
 import com.verygoodsecurity.vgscheckout.util.ViewInteraction
 import com.verygoodsecurity.vgscheckout.util.extension.waitFor
@@ -28,7 +28,7 @@ class DefaultMultiplexingSetupTest {
 
     private val context: Context = ApplicationProvider.getApplicationContext()
 
-    private val defaultIntent = Intent(context, CheckoutMultiplexingActivity::class.java).apply {
+    private val defaultIntent = Intent(context, MultiplexingSaveCardActivity::class.java).apply {
         putExtra(
             EXTRA_KEY_ARGS,
             CheckoutResultContract.Args(
@@ -43,7 +43,7 @@ class DefaultMultiplexingSetupTest {
 
     @Test
     fun performCheckout_defaultVisibleFields() {
-        ActivityScenario.launch<CheckoutMultiplexingActivity>(defaultIntent).use {
+        ActivityScenario.launch<MultiplexingSaveCardActivity>(defaultIntent).use {
             waitFor(1500)
             //Assert
             ViewInteraction.onViewWithScrollTo(R.id.vgsTilCardHolder)
@@ -73,7 +73,7 @@ class DefaultMultiplexingSetupTest {
 
     @Test
     fun performCheckout_defaultFieldContent() {
-        ActivityScenario.launch<CheckoutMultiplexingActivity>(defaultIntent).use {
+        ActivityScenario.launch<MultiplexingSaveCardActivity>(defaultIntent).use {
             //Assert
             Espresso.onView(ViewMatchers.withId(R.id.vgsEtCardHolder))
                 .check(ViewAssertions.matches(VGSViewMatchers.withText("")))
@@ -88,7 +88,7 @@ class DefaultMultiplexingSetupTest {
 
     @Test
     fun performCheckout_saveButtonInteractive() {
-        ActivityScenario.launch<CheckoutMultiplexingActivity>(defaultIntent).use {
+        ActivityScenario.launch<MultiplexingSaveCardActivity>(defaultIntent).use {
             //Assert
             ViewInteraction.onViewWithScrollTo(R.id.mbSaveCard)
                 .check(ViewAssertions.matches(ViewMatchers.isEnabled()))
@@ -99,7 +99,7 @@ class DefaultMultiplexingSetupTest {
 
     @Test
     fun performCheckout_noErrorMessagesDisplayed() {
-        ActivityScenario.launch<CheckoutMultiplexingActivity>(defaultIntent).use {
+        ActivityScenario.launch<MultiplexingSaveCardActivity>(defaultIntent).use {
             waitFor(500)
             Espresso.onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard())
             // Assert

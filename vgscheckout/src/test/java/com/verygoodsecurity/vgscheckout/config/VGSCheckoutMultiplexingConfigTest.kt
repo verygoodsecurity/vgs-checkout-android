@@ -1,8 +1,8 @@
 package com.verygoodsecurity.vgscheckout.config
 
 import com.verygoodsecurity.vgscheckout.BuildConfig
-import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutJWTParseException
-import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutJWTRestrictedRoleException
+import com.verygoodsecurity.vgscheckout.exception.internal.VGSCheckoutJWTParseException
+import com.verygoodsecurity.vgscheckout.exception.internal.VGSCheckoutJWTRestrictedRoleException
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
 import org.junit.Assert.*
 import org.junit.Test

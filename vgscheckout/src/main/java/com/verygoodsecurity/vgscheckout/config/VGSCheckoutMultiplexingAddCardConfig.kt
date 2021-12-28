@@ -6,8 +6,7 @@ import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.JWTValid
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutMultiplexingRouteConfig
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutMultiplexingFormConfig
-import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutJWTParseException
-import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutJWTRestrictedRoleException
+import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
 
 /**
@@ -61,12 +60,10 @@ class VGSCheckoutMultiplexingAddCardConfig private constructor(
      * @param isAnalyticsEnabled If true, checkout will send analytics events that helps to debug
      * issues if any occurs. Default value is true.
      *
-     * @throws com.verygoodsecurity.vgscheckout.exception.VGSCheckoutJWTParseException if access token is not valid.
-     * @throws com.verygoodsecurity.vgscheckout.exception.VGSCheckoutJWTRestrictedRoleException if
-     * access token is contains restricted roles.
+     * @throws com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException if access token is not valid.
      */
     @JvmOverloads
-    @Throws(VGSCheckoutJWTParseException::class, VGSCheckoutJWTRestrictedRoleException::class)
+    @Throws(VGSCheckoutException::class)
     constructor(
         accessToken: String,
         tenantId: String,
@@ -99,7 +96,7 @@ class VGSCheckoutMultiplexingAddCardConfig private constructor(
         return 0
     }
 
-    @Throws(VGSCheckoutJWTParseException::class, VGSCheckoutJWTRestrictedRoleException::class)
+    @Throws(VGSCheckoutException::class)
     private fun validateToken() {
         try {
             CheckoutMultiplexingCredentialsValidator.validateJWT(accessToken)

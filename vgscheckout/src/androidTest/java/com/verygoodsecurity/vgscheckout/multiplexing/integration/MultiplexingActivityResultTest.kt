@@ -21,7 +21,7 @@ import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_ARGS
 import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_RESULT
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
-import com.verygoodsecurity.vgscheckout.ui.CheckoutMultiplexingActivity
+import com.verygoodsecurity.vgscheckout.ui.MultiplexingSaveCardActivity
 import com.verygoodsecurity.vgscheckout.util.ViewInteraction
 import com.verygoodsecurity.vgscheckout.util.extension.*
 import com.verygoodsecurity.vgscheckout.util.extension.getParcelableSafe
@@ -36,7 +36,7 @@ class MultiplexingActivityResultTest {
 
     private val context: Context = ApplicationProvider.getApplicationContext()
 
-    private val defaultIntent = Intent(context, CheckoutMultiplexingActivity::class.java).apply {
+    private val defaultIntent = Intent(context, MultiplexingSaveCardActivity::class.java).apply {
         putExtra(
             EXTRA_KEY_ARGS,
             CheckoutResultContract.Args(
@@ -60,7 +60,7 @@ class MultiplexingActivityResultTest {
     @Test(timeout = 60000L)
     fun performCheckout_multiplexing_saveCard_unsuccessfulResponse_resultFailed_codeOk() {
         //Arrange
-        launch<CheckoutMultiplexingActivity>(defaultIntent).use {
+        launch<MultiplexingSaveCardActivity>(defaultIntent).use {
             fillCardFields(
                 Constants.VALID_CARD_HOLDER,
                 Constants.VALID_CARD_NUMBER,
@@ -83,7 +83,7 @@ class MultiplexingActivityResultTest {
 
     @Test
     fun performMultiplexing_cancelActivityResult_withNavigationUp_codeCanceled() {
-        launch<CheckoutMultiplexingActivity>(defaultIntent).use {
+        launch<MultiplexingSaveCardActivity>(defaultIntent).use {
             // Act
             onView(withContentDescription(R.string.abc_action_bar_up_description)).perform(click())
             //Assert
@@ -95,7 +95,7 @@ class MultiplexingActivityResultTest {
 
     @Test
     fun performMultiplexing_cancelActivityResult_withBackPress_codeCanceled() {
-        launch<CheckoutMultiplexingActivity>(defaultIntent).use {
+        launch<MultiplexingSaveCardActivity>(defaultIntent).use {
             // Act
             onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard())
             device.pressBack()

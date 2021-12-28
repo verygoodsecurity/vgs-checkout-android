@@ -16,8 +16,8 @@ import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_ARGS
-import com.verygoodsecurity.vgscheckout.ui.CheckoutActivity
-import com.verygoodsecurity.vgscheckout.ui.CheckoutMultiplexingActivity
+import com.verygoodsecurity.vgscheckout.ui.CustomCheckoutActivity
+import com.verygoodsecurity.vgscheckout.ui.MultiplexingSaveCardActivity
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers.withError
 import com.verygoodsecurity.vgscheckout.util.ViewInteraction.onViewWithScrollTo
@@ -32,7 +32,7 @@ class DefaultCheckoutSetupTest {
 
     private val context: Context = ApplicationProvider.getApplicationContext()
 
-    private val defaultIntent = Intent(context, CheckoutActivity::class.java).apply {
+    private val defaultIntent = Intent(context, CustomCheckoutActivity::class.java).apply {
         putExtra(
             EXTRA_KEY_ARGS,
             CheckoutResultContract.Args(VGSCheckoutCustomConfig(BuildConfig.VAULT_ID))
@@ -49,7 +49,7 @@ class DefaultCheckoutSetupTest {
 
     @Test
     fun performCheckout_defaultVisibleFields() {
-        launch<CheckoutMultiplexingActivity>(defaultIntent).use {
+        launch<MultiplexingSaveCardActivity>(defaultIntent).use {
             waitFor(1500)
             //Assert
             onViewWithScrollTo(R.id.vgsTilCardHolder)
@@ -74,7 +74,7 @@ class DefaultCheckoutSetupTest {
 
     @Test
     fun performCheckout_defaultFieldContent() {
-        launch<CheckoutActivity>(defaultIntent).use {
+        launch<CustomCheckoutActivity>(defaultIntent).use {
             //Act
             onView(isRoot()).perform(ViewActions.closeSoftKeyboard())
             //Assert
@@ -95,7 +95,7 @@ class DefaultCheckoutSetupTest {
 
     @Test
     fun performCheckout_saveButtonInteractive() {
-        launch<CheckoutMultiplexingActivity>(defaultIntent).use {
+        launch<MultiplexingSaveCardActivity>(defaultIntent).use {
             //Assert
             onViewWithScrollTo(R.id.mbSaveCard)
                 .check(matches(isEnabled()))
@@ -106,7 +106,7 @@ class DefaultCheckoutSetupTest {
 
     @Test
     fun preformCheckout_noErrorMessagesDisplayed() {
-        launch<CheckoutActivity>(defaultIntent).use {
+        launch<CustomCheckoutActivity>(defaultIntent).use {
             waitFor(500)
             onView(isRoot()).perform(ViewActions.closeSoftKeyboard())
             // Assert
@@ -119,7 +119,7 @@ class DefaultCheckoutSetupTest {
 
     @Test
     fun performCheckout_addressIsVisible() {
-        launch<CheckoutActivity>(defaultIntent).use {
+        launch<CustomCheckoutActivity>(defaultIntent).use {
             //Assert
             onView(withId(R.id.llBillingAddress)).check(matches(not(isCompletelyDisplayed())))
         }

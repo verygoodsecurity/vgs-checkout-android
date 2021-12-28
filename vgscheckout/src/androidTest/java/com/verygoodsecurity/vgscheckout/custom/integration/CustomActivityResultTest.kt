@@ -25,7 +25,7 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.VGSChecko
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.VGSCheckoutCustomCVCOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.VGSCheckoutCustomExpirationDateOptions
 import com.verygoodsecurity.vgscheckout.model.*
-import com.verygoodsecurity.vgscheckout.ui.CheckoutActivity
+import com.verygoodsecurity.vgscheckout.ui.CustomCheckoutActivity
 import com.verygoodsecurity.vgscheckout.util.ViewInteraction.onViewWithScrollTo
 import com.verygoodsecurity.vgscheckout.util.extension.*
 import com.verygoodsecurity.vgscheckout.util.extension.getParcelableSafe
@@ -39,7 +39,7 @@ class CustomActivityResultTest {
 
     private val context: Context = ApplicationProvider.getApplicationContext()
 
-    private val defaultIntent = Intent(context, CheckoutActivity::class.java).apply {
+    private val defaultIntent = Intent(context, CustomCheckoutActivity::class.java).apply {
         putExtra(
             EXTRA_KEY_ARGS,
             CheckoutResultContract.Args(VGSCheckoutCustomConfig(
@@ -60,7 +60,7 @@ class CustomActivityResultTest {
     @Test
     fun performCheckout_custom_saveCard_unsuccessfulResponse_resultFailed_codeOk() {
         // Arrange
-        launch<CheckoutActivity>(defaultIntent).use {
+        launch<CustomCheckoutActivity>(defaultIntent).use {
             fillCardFields(
                 Constants.VALID_CARD_HOLDER,
                 Constants.VALID_CARD_NUMBER,
@@ -84,7 +84,7 @@ class CustomActivityResultTest {
     @Test
     fun performCheckout_saveCard_successfulResponse_resultSuccess_codeOk() {
         // Arrange
-        val intent = Intent(context, CheckoutActivity::class.java).apply {
+        val intent = Intent(context, CustomCheckoutActivity::class.java).apply {
             putExtra(
                 EXTRA_KEY_ARGS,
                 CheckoutResultContract.Args(
@@ -104,7 +104,7 @@ class CustomActivityResultTest {
                 )
             )
         }
-        launch<CheckoutActivity>(intent).use {
+        launch<CustomCheckoutActivity>(intent).use {
             fillCardFields(
                 Constants.VALID_CARD_HOLDER,
                 Constants.VALID_CARD_NUMBER,
@@ -131,7 +131,7 @@ class CustomActivityResultTest {
 
     @Test
     fun performCheckout_cancelActivityResult_withNavigationUp_codeCancel() {
-        launch<CheckoutActivity>(defaultIntent).use {
+        launch<CustomCheckoutActivity>(defaultIntent).use {
             // Act
             onView(withContentDescription(R.string.abc_action_bar_up_description)).perform(click())
             //Assert
@@ -143,7 +143,7 @@ class CustomActivityResultTest {
 
     @Test
     fun performCheckout_cancelActivityResult_withBackPress_codeCancel() {
-        launch<CheckoutActivity>(defaultIntent).use {
+        launch<CustomCheckoutActivity>(defaultIntent).use {
             // Act
             onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard())
             device.pressBack()

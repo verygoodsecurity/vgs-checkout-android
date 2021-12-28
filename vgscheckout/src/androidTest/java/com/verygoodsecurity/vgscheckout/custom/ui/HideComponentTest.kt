@@ -19,7 +19,7 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.VGSChecko
 import com.verygoodsecurity.vgscheckout.config.ui.view.core.VGSCheckoutFieldVisibility
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_ARGS
-import com.verygoodsecurity.vgscheckout.ui.CheckoutActivity
+import com.verygoodsecurity.vgscheckout.ui.CustomCheckoutActivity
 import org.hamcrest.CoreMatchers
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -32,7 +32,7 @@ class HideComponentTest {
     @Test
     fun performCheckout_hidePersonName() {
         // Arrange
-        val intent = Intent(context, CheckoutActivity::class.java).apply {
+        val intent = Intent(context, CustomCheckoutActivity::class.java).apply {
             putExtra(
                 EXTRA_KEY_ARGS,
                 CheckoutResultContract.Args(
@@ -49,7 +49,7 @@ class HideComponentTest {
                 )
             )
         }
-        ActivityScenario.launch<CheckoutActivity>(intent).use {
+        ActivityScenario.launch<CustomCheckoutActivity>(intent).use {
             //Assert
             Espresso.onView(ViewMatchers.withId(R.id.vgsTilCardHolder))
                 .check(ViewAssertions.matches(CoreMatchers.not(ViewMatchers.isDisplayed())))
@@ -59,7 +59,7 @@ class HideComponentTest {
     @Test
     fun performCheckout_hideAddress() {
         // Arrange
-        val intent = Intent(context, CheckoutActivity::class.java).apply {
+        val intent = Intent(context, CustomCheckoutActivity::class.java).apply {
             putExtra(
                 EXTRA_KEY_ARGS,
                 CheckoutResultContract.Args(
@@ -76,7 +76,7 @@ class HideComponentTest {
                 )
             )
         }
-        ActivityScenario.launch<CheckoutActivity>(intent).use {
+        ActivityScenario.launch<CustomCheckoutActivity>(intent).use {
             //Assert
             Espresso.onView(ViewMatchers.withId(R.id.llBillingAddress))
                 .check(ViewAssertions.matches(CoreMatchers.not(ViewMatchers.isDisplayed())))

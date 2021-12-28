@@ -23,6 +23,7 @@ import com.verygoodsecurity.vgscheckout.collect.widget.*
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.config.networking.core.VGSCheckoutHostnamePolicy
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
+import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 import com.verygoodsecurity.vgscheckout.ui.fragment.core.LoadingHandler
 import com.verygoodsecurity.vgscheckout.ui.fragment.save.core.BaseSaveCardFragment
 import com.verygoodsecurity.vgscheckout.ui.fragment.save.core.BaseSaveCardFragment.Companion.TAG
@@ -43,7 +44,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
         }
     }
 
-    private lateinit var loadingHandler: LoadingHandler
+    protected lateinit var loadingHandler: LoadingHandler
 
     abstract fun resolveConfig(intent: Intent): C
 
@@ -89,15 +90,21 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
         makeRequest()
     }
 
-    override fun onResponse(response: VGSResponse?) {
-        (response as? VGSResponse.ErrorResponse)?.let {
-            if (it.code == VGSError.NO_NETWORK_CONNECTIONS.code) {
-                loadingHandler.setIsLoading(false)
-                showNetworkConnectionErrorSnackBar()
-                return
-            }
+    override fun onResponse(response: VGSResponse) {
+        if (isNetworkConnectionError(response)) {
+            loadingHandler.setIsLoading(false)
+            showNetworkConnectionErrorSnackBar()
+            return
         }
-        val resultBundle = CheckoutResultContract.Result(response?.toCheckoutResult()).toBundle()
+        handleResponse(response)
+    }
+
+    protected open fun handleResponse(response: VGSResponse) {
+        sendResult(response.toCheckoutResult())
+    }
+
+    protected fun sendResult(response: VGSCheckoutResult) {
+        val resultBundle = CheckoutResultContract.Result(response).toBundle()
         setResult(Activity.RESULT_OK, Intent().putExtras(resultBundle))
         finish()
     }
@@ -152,6 +159,9 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
             )
         }
     }
+
+    private fun isNetworkConnectionError(response: VGSResponse): Boolean =
+        (response as? VGSResponse.ErrorResponse)?.code == VGSError.NO_NETWORK_CONNECTIONS.code
 
     private fun showNetworkConnectionErrorSnackBar() {
         val message = getString(R.string.vgs_checkout_no_network_error)

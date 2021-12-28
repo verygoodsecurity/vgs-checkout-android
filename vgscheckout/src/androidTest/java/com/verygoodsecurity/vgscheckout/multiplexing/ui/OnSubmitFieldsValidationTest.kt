@@ -36,7 +36,7 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillin
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutMultiplexingBillingAddressOptions
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_ARGS
-import com.verygoodsecurity.vgscheckout.ui.CheckoutMultiplexingActivity
+import com.verygoodsecurity.vgscheckout.ui.MultiplexingSaveCardActivity
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers.withError
 import com.verygoodsecurity.vgscheckout.util.ViewInteraction.onViewWithScrollTo
@@ -53,7 +53,7 @@ class OnSubmitFieldsValidationTest {
 
     private val context: Context = ApplicationProvider.getApplicationContext()
 
-    private val intent = Intent(context, CheckoutMultiplexingActivity::class.java).apply {
+    private val intent = Intent(context, MultiplexingSaveCardActivity::class.java).apply {
         putExtra(
             EXTRA_KEY_ARGS,
             CheckoutResultContract.Args(
@@ -81,7 +81,7 @@ class OnSubmitFieldsValidationTest {
 
     @Test
     fun validationFlow_staticByDefault() {
-        launch<CheckoutMultiplexingActivity>(intent).use {
+        launch<MultiplexingSaveCardActivity>(intent).use {
             // Act
             onViewWithScrollTo(VGSViewMatchers.withParent(R.id.vgsTilCardNumber,
                 CardInputField::class))
@@ -96,7 +96,7 @@ class OnSubmitFieldsValidationTest {
 
     @Test
     fun saveCardClicked_noInput_emptyErrorsDisplayed() {
-        launch<CheckoutMultiplexingActivity>(intent).use {
+        launch<MultiplexingSaveCardActivity>(intent).use {
             // Act
             onViewWithScrollTo(R.id.mbSaveCard)
                 .perform(click())
@@ -155,7 +155,7 @@ class OnSubmitFieldsValidationTest {
 
     @Test
     fun saveCardClicked_invalidInput_invalidInputErrorsDisplayed() {
-        launch<CheckoutMultiplexingActivity>(intent).use {
+        launch<MultiplexingSaveCardActivity>(intent).use {
             // Arrange
             waitFor(500)
             onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard())
@@ -207,7 +207,7 @@ class OnSubmitFieldsValidationTest {
 
     @Test
     fun saveCard_custom_validInput_noErrorsDisplayed() {
-        launch<CheckoutMultiplexingActivity>(intent).use {
+        launch<MultiplexingSaveCardActivity>(intent).use {
             // Arrange
             fillCardFields(
                 VALID_CARD_HOLDER,
@@ -239,7 +239,7 @@ class OnSubmitFieldsValidationTest {
 
     @Test
     fun showErrorMessage_countrySelect_selectCanada_postalCodeErrorMessageCleared() {
-        launch<CheckoutMultiplexingActivity>(intent).use {
+        launch<MultiplexingSaveCardActivity>(intent).use {
             // Act
             waitFor(500)
             onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard())
@@ -255,7 +255,7 @@ class OnSubmitFieldsValidationTest {
 
     @Test
     fun noError_selectCanada_postalCodeValidationRuleChange_errorDisplayed() {
-        launch<CheckoutMultiplexingActivity>(intent).use {
+        launch<MultiplexingSaveCardActivity>(intent).use {
             // Arrange
             waitFor(500)
             onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard())
