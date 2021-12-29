@@ -15,7 +15,7 @@
     <style name="VGSCheckout.Toolbar" parent="Widget.MaterialComponents.Toolbar.PrimarySurface">
         <item name="android:background">?colorSurface</item>
         <item name="titleTextColor">?colorOnSurface</item>
-        <item name="title">@string/vgs_checkout_add_card_title</item>
+        <item name="title">@string/vgs_checkout_title</item>
         <item name="navigationIcon">@drawable/vgs_checkout_ic_baseline_close_white_24</item>
         <item name="navigationIconTint">@color/vgs_checkout_gray</item>
     </style>
