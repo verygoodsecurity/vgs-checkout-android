@@ -33,10 +33,10 @@ jobs:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "custom-example/build.gradle" }}
       - run:
           name: Run Lint
-          command: ./gradlew lintDebug
+          command: ./gradlew vgscheckout:lintDebug
       - run:
           name: Run Unit tests
-          command: ./gradlew testDebugUnitTest
+          command: ./gradlew vgscheckout:testDebugUnitTest
       - run:
           name: Generate apk
           command: ./gradlew custom-example:assembleDebug vgscheckout:assembleDebug vgscheckout:assembleAndroidTest
