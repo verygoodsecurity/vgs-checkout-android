@@ -122,6 +122,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
 
     private fun initToolbar() {
         setSupportActionBar(findViewById(R.id.mtToolbar))
+        updateToolbarTitle(supportFragmentManager.findFragmentByTag(TAG))
     }
 
     private fun updateToolbarTitle(fragment: Fragment?) {
