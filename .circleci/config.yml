@@ -39,7 +39,7 @@ jobs:
           command: ./gradlew testDebugUnitTest
       - run:
           name: Generate apk
-          command: ./gradlew assembleDebug vgscheckout:assembleDebug vgscheckout:assembleAndroidTest
+          command: ./gradlew custom-example:assembleDebug vgscheckout:assembleDebug vgscheckout:assembleAndroidTest
       - run:
           name: Check if release branch
           command: |
