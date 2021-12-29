@@ -20,6 +20,7 @@ import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSRequest
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
 import com.verygoodsecurity.vgscheckout.collect.widget.*
+import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingPaymentConfig
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.config.networking.core.VGSCheckoutHostnamePolicy
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
@@ -69,6 +70,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
 
     override fun onAttachFragment(fragmentManager: FragmentManager, fragment: Fragment) {
         loadingHandler = fragment as LoadingHandler
+        updateToolbarTitle(fragment)
     }
 
     override fun bind(vararg view: InputFieldView) {
@@ -120,6 +122,20 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
 
     private fun initToolbar() {
         setSupportActionBar(findViewById(R.id.mtToolbar))
+    }
+
+    private fun updateToolbarTitle(fragment: Fragment?) {
+        supportActionBar?.title = getString(
+            if (config is VGSCheckoutMultiplexingPaymentConfig) {
+                if (fragment is BaseSaveCardFragment) {
+                    R.string.vgs_checkout_new_card_title
+                } else {
+                    R.string.vgs_checkout_title
+                }
+            } else {
+                R.string.vgs_checkout_add_card_title
+            }
+        )
     }
 
     private fun showSaveCardFragment() {
