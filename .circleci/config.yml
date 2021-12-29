@@ -6,7 +6,7 @@ aliases:
     docker:
       - image: cimg/android:2021.10.2
     environment:
-      JVM_OPTS: -Xmx4608m
+      JVM_OPTS: -Xmx$MAX_HEAP_SIZE
 
 jobs:
   "Run_Unit_Test_And_Build":
