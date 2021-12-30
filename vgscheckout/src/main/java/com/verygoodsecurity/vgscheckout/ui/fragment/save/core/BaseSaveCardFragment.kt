@@ -26,6 +26,8 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.CardHolde
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.CardNumberOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.CVCOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.ExpirationDateOptions
+import com.verygoodsecurity.vgscheckout.ui.core.InputViewBinder
+import com.verygoodsecurity.vgscheckout.ui.core.ValidationResultListener
 import com.verygoodsecurity.vgscheckout.ui.fragment.core.LoadingHandler
 import com.verygoodsecurity.vgscheckout.ui.fragment.save.SaveCardDynamicValidationFragment
 import com.verygoodsecurity.vgscheckout.ui.fragment.save.SaveCardStaticValidationFragment
@@ -38,7 +40,8 @@ internal abstract class BaseSaveCardFragment : Fragment(), LoadingHandler,
     InputFieldView.OnTextChangedListener, VGSCountryEditText.OnCountrySelectedListener,
     InputFieldView.OnEditorActionListener {
 
-    protected val formConfig: CheckoutFormConfig by lazy { requireArgument(KEY_BUNDLE_CONFIG) }
+    protected val formConfig: CheckoutFormConfig by lazy { requireParcelable(KEY_BUNDLE_CONFIG) }
+    protected val buttonTitle: String by lazy { requireString(KEY_BUNDLE_BUTTON_TITLE) }
 
     protected lateinit var binding: SaveCardViewBindingHelper
     protected lateinit var inputViewBinder: InputViewBinder
@@ -230,6 +233,7 @@ internal abstract class BaseSaveCardFragment : Fragment(), LoadingHandler,
     }
 
     private fun initSaveButton() {
+        binding.saveCardButton.text = buttonTitle
         binding.saveCardButton.setOnClickListener { handleSaveClicked() }
     }
 
@@ -256,7 +260,8 @@ internal abstract class BaseSaveCardFragment : Fragment(), LoadingHandler,
 
     private fun unbindAllViews() {
         with(binding) {
-            inputViewBinder.unbind(cardHolderEt,
+            inputViewBinder.unbind(
+                cardHolderEt,
                 cardNumberEt,
                 expirationDateEt,
                 securityCodeEt,
@@ -264,7 +269,8 @@ internal abstract class BaseSaveCardFragment : Fragment(), LoadingHandler,
                 addressEt,
                 optionalAddressEt,
                 cityEt,
-                postalCodeEt)
+                postalCodeEt
+            )
         }
     }
 
@@ -361,11 +367,11 @@ internal abstract class BaseSaveCardFragment : Fragment(), LoadingHandler,
         with(binding.saveCardButton) {
             isClickable = !isLoading
             if (isLoading) {
-                text = getString(R.string.vgs_checkout_save_button_processing_title)
+                text = getString(R.string.vgs_checkout_button_processing_title)
                 icon = getDrawableCompat(R.drawable.vgs_checkout_ic_loading_animated_white_16)
                 (icon as? Animatable)?.start()
             } else {
-                text = getString(R.string.vgs_checkout_save_button_save_card_title)
+                text = buttonTitle
                 icon = null
             }
         }
@@ -379,9 +385,13 @@ internal abstract class BaseSaveCardFragment : Fragment(), LoadingHandler,
         private const val ICON_ALPHA_DISABLED = 0.5f
         private const val BILLING_ADDRESS_MIN_CHARS_COUNT = 1
         private const val KEY_BUNDLE_CONFIG = "key_bundle_from_config"
+        private const val KEY_BUNDLE_BUTTON_TITLE = "key_bundle_button_title"
 
-        fun create(formConfig: CheckoutFormConfig): BaseSaveCardFragment {
-            val bundle = Bundle().apply { putParcelable(KEY_BUNDLE_CONFIG, formConfig) }
+        fun create(formConfig: CheckoutFormConfig, buttonTitle: String): BaseSaveCardFragment {
+            val bundle = Bundle().apply {
+                putParcelable(KEY_BUNDLE_CONFIG, formConfig)
+                putString(KEY_BUNDLE_BUTTON_TITLE, buttonTitle)
+            }
             val fragment = when (formConfig.validationBehaviour) {
                 VGSCheckoutFormValidationBehaviour.ON_SUBMIT -> SaveCardStaticValidationFragment()
                 VGSCheckoutFormValidationBehaviour.ON_FOCUS -> SaveCardDynamicValidationFragment()

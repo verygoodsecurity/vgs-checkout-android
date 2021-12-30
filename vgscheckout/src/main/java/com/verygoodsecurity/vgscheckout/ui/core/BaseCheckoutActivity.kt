@@ -27,8 +27,6 @@ import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 import com.verygoodsecurity.vgscheckout.ui.fragment.core.LoadingHandler
 import com.verygoodsecurity.vgscheckout.ui.fragment.save.core.BaseSaveCardFragment
 import com.verygoodsecurity.vgscheckout.ui.fragment.save.core.BaseSaveCardFragment.Companion.TAG
-import com.verygoodsecurity.vgscheckout.ui.fragment.save.core.InputViewBinder
-import com.verygoodsecurity.vgscheckout.ui.fragment.save.core.ValidationResultListener
 import com.verygoodsecurity.vgscheckout.util.CollectProvider
 import com.verygoodsecurity.vgscheckout.util.extension.*
 
@@ -86,8 +84,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
     }
 
     override fun onSuccess() {
-        loadingHandler.setIsLoading(true)
-        makeRequest()
+        saveCard()
     }
 
     override fun onResponse(response: VGSResponse) {
@@ -109,6 +106,8 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
         finish()
     }
 
+    protected open fun getButtonTitle() = getString(R.string.vgs_checkout_button_save_card_title)
+
     @CallSuper
     protected open fun initView(savedInstanceState: Bundle?) {
         initToolbar()
@@ -124,12 +123,15 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
     }
 
     private fun showSaveCardFragment() {
+        val fragment = BaseSaveCardFragment.create(config.formConfig, getButtonTitle())
         supportFragmentManager.beginTransaction()
-            .add(R.id.fcvContainer, BaseSaveCardFragment.create(config.formConfig), TAG)
+            .add(R.id.fcvContainer, fragment, TAG)
             .commit()
     }
 
-    private fun makeRequest() {
+    private fun saveCard() {
+        loadingHandler.setIsLoading(true)
+        sendRequestEvent()
         with(config.routeConfig) {
             collect.asyncSubmit(
                 VGSRequest.VGSRequestBuilder()
@@ -141,7 +143,6 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
                     .build()
             )
         }
-        sendRequestEvent()
     }
 
     private fun sendRequestEvent(invalidFields: List<String> = emptyList()) {
@@ -166,7 +167,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
     private fun showNetworkConnectionErrorSnackBar() {
         val message = getString(R.string.vgs_checkout_no_network_error)
         Snackbar.make(findViewById(R.id.llRootView), message, Snackbar.LENGTH_LONG)
-            .setAction(getString(R.string.vgs_checkout_no_network_retry)) { makeRequest() }
+            .setAction(getString(R.string.vgs_checkout_no_network_retry)) { saveCard() }
             .show()
     }
 
