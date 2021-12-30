@@ -4,7 +4,9 @@
 
     <string name="vgs_checkout_sdk_name">VGS Checkout</string>
 
+    <string name="vgs_checkout_title">Checkout</string>
     <string name="vgs_checkout_add_card_title">Add Card</string>
+    <string name="vgs_checkout_new_card_title">New Card</string>
 
     <!--Card info-->
     <string name="vgs_checkout_form_card_details_title">Card Details</string>
