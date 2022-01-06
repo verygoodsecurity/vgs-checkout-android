@@ -22,8 +22,21 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+            buildConfigField "String", "CLIENT_HOST", "\"https://orchestration-demo.apps.verygood.systems/\""
+            buildConfigField "String", "GET_TOKEN_ENDPOINT", "\"get-auth-token\""
+            buildConfigField "String", "TRANSFERS_ENDPOINT", "\"transfers\""
+        }
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+            buildConfigField "String", "CLIENT_HOST", "\"https://orchestration-demo.apps.verygood.systems/\""
+            buildConfigField "String", "GET_TOKEN_ENDPOINT", "\"get-auth-token\""
+            buildConfigField "String", "TRANSFERS_ENDPOINT", "\"transfers\""
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
