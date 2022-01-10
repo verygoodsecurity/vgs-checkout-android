@@ -1,14 +1,14 @@
-package com.verygoodsecurity.multiplexing.example
+package com.verygoodsecurity.orchestration.example
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.google.android.material.button.MaterialButton
 import com.google.gson.JsonParser
-import com.verygoodsecurity.multiplexing.BuildConfig.CLIENT_HOST
-import com.verygoodsecurity.multiplexing.BuildConfig.GET_TOKEN_ENDPOINT
-import com.verygoodsecurity.multiplexing.R
-import com.verygoodsecurity.multiplexing.example.network.HttpClient
-import com.verygoodsecurity.multiplexing.example.network.util.isSuccessHttpCode
+import com.verygoodsecurity.BuildConfig.CLIENT_HOST
+import com.verygoodsecurity.BuildConfig.GET_TOKEN_ENDPOINT
+import com.verygoodsecurity.R
+import com.verygoodsecurity.orchestration.example.network.HttpClient
+import com.verygoodsecurity.orchestration.example.network.util.isSuccessHttpCode
 import com.verygoodsecurity.vgscheckout.VGSCheckout
 import com.verygoodsecurity.vgscheckout.VGSCheckoutCallback
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingConfig

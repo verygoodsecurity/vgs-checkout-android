@@ -1,4 +1,4 @@
-package com.verygoodsecurity.multiplexing.example.util.extension
+package com.verygoodsecurity.orchestration.example.util.extension
 
 import android.app.Activity
 import android.widget.Toast

@@ -1,4 +1,4 @@
-package com.verygoodsecurity.multiplexing.example
+package com.verygoodsecurity.orchestration.example
 
 import android.app.Dialog
 import android.content.Context
@@ -9,10 +9,10 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.google.gson.JsonParser
-import com.verygoodsecurity.multiplexing.BuildConfig.CLIENT_HOST
-import com.verygoodsecurity.multiplexing.BuildConfig.TRANSFERS_ENDPOINT
-import com.verygoodsecurity.multiplexing.R
-import com.verygoodsecurity.multiplexing.example.network.HttpClient
+import com.verygoodsecurity.BuildConfig.CLIENT_HOST
+import com.verygoodsecurity.BuildConfig.TRANSFERS_ENDPOINT
+import com.verygoodsecurity.R
+import com.verygoodsecurity.orchestration.example.network.HttpClient
 
 class TransactionDialogFragment : DialogFragment() {
 

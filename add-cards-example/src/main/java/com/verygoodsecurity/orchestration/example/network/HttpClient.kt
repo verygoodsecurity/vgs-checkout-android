@@ -1,4 +1,4 @@
-package com.verygoodsecurity.multiplexing.example.network
+package com.verygoodsecurity.orchestration.example.network
 
 import okhttp3.*
 import java.io.IOException
