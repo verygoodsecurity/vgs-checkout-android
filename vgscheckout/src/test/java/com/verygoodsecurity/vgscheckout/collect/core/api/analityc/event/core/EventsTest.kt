@@ -156,7 +156,7 @@ class EventsTest {
     @Test
     fun getData_initMultiplexing_customDataAdded() {
         // Arrange
-        val event = InitEvent(InitEvent.ConfigType.MULTIPLEXING)
+        val event = InitEvent(InitEvent.ConfigType.PAYMENT_ORCHESTRATION)
         // Act
         val data = event.getData(VAULT_ID, FORM_ID, ENVIRONMENT)
         // Assert

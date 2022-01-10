@@ -2,21 +2,21 @@ package com.verygoodsecurity.vgscheckout.config.ui
 
 import com.verygoodsecurity.vgscheckout.config.ui.core.CheckoutFormConfig
 import com.verygoodsecurity.vgscheckout.config.ui.core.VGSCheckoutFormValidationBehaviour
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutMultiplexingBillingAddressOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.VGSCheckoutMultiplexingCardOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutPaymentBillingAddressOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.VGSCheckoutPaymentCardOptions
 import kotlinx.parcelize.Parcelize
 
 /**
- * Multiplexing flow checkout form configuration.
+ * Payment flow checkout form configuration.
  *
  * @param cardOptions card details section UI options.
  * @param addressOptions address details section UI options.
  * @param validationBehaviour defines validation behavior.
  */
 @Parcelize
-class VGSCheckoutMultiplexingFormConfig private constructor(
-    override val cardOptions: VGSCheckoutMultiplexingCardOptions,
-    override val addressOptions: VGSCheckoutMultiplexingBillingAddressOptions,
+class VGSCheckoutAddCardFormConfig private constructor(
+    override val cardOptions: VGSCheckoutPaymentCardOptions,
+    override val addressOptions: VGSCheckoutPaymentBillingAddressOptions,
     override val validationBehaviour: VGSCheckoutFormValidationBehaviour,
 ) : CheckoutFormConfig() {
 
@@ -28,7 +28,7 @@ class VGSCheckoutMultiplexingFormConfig private constructor(
      */
     @JvmOverloads
     constructor(
-        addressOptions: VGSCheckoutMultiplexingBillingAddressOptions = VGSCheckoutMultiplexingBillingAddressOptions(),
+        addressOptions: VGSCheckoutPaymentBillingAddressOptions = VGSCheckoutPaymentBillingAddressOptions(),
         validationBehaviour: VGSCheckoutFormValidationBehaviour = VGSCheckoutFormValidationBehaviour.ON_SUBMIT,
-    ) : this(VGSCheckoutMultiplexingCardOptions(), addressOptions, validationBehaviour)
+    ) : this(VGSCheckoutPaymentCardOptions(), addressOptions, validationBehaviour)
 }

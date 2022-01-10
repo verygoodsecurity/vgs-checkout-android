@@ -1,16 +1,16 @@
-package com.verygoodsecurity.vgscheckout.config.ui.view.address.city
+package com.verygoodsecurity.vgscheckout.config.ui.view.address.address
 
 import kotlinx.parcelize.Parcelize
 
 /**
- * City input field options.
+ * Optional address input field options.
  *
  * @param fieldName text to be used for data transfer to VGS proxy.
  */
 @Parcelize
-class VGSCheckoutMultiplexingCityOptions private constructor(
+class VGSCheckoutPaymentOptionalAddressOptions private constructor(
     override val fieldName: String,
-) : CityOptions() {
+) : OptionalAddressOptions() {
 
     /**
      * Public constructor.
@@ -19,6 +19,6 @@ class VGSCheckoutMultiplexingCityOptions private constructor(
 
     private companion object {
 
-        private const val FIELD_NAME = "card.billing_address.city"
+        private const val FIELD_NAME = "card.billing_address.address2"
     }
 }

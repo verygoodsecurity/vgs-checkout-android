@@ -12,10 +12,10 @@ import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
 import com.verygoodsecurity.vgscheckout.Constants
 import com.verygoodsecurity.vgscheckout.R
-import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingConfig
+import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_ARGS
-import com.verygoodsecurity.vgscheckout.ui.CheckoutMultiplexingActivity
+import com.verygoodsecurity.vgscheckout.ui.CheckoutPaymentOrchestrationActivity
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers.withText
 import com.verygoodsecurity.vgscheckout.util.extension.fillAddressFields
 import com.verygoodsecurity.vgscheckout.util.extension.fillCardFields
@@ -29,11 +29,11 @@ class ScreenRotationTest {
 
     private val context: Context = ApplicationProvider.getApplicationContext()
 
-    private val defaultIntent = Intent(context, CheckoutMultiplexingActivity::class.java).apply {
+    private val defaultIntent = Intent(context, CheckoutPaymentOrchestrationActivity::class.java).apply {
         putExtra(
             EXTRA_KEY_ARGS,
             CheckoutResultContract.Args(
-                VGSCheckoutMultiplexingConfig(
+                VGSCheckoutAddCardConfig(
                     Constants.VALID_JWT_TOKEN,
                     Constants.VAULT_ID,
                 )
@@ -56,7 +56,7 @@ class ScreenRotationTest {
     @Test
     fun screenRotation_inputNotCleared() {
         // Arrange
-        launch<CheckoutMultiplexingActivity>(defaultIntent).use {
+        launch<CheckoutPaymentOrchestrationActivity>(defaultIntent).use {
             fillCardFields(
                 Constants.VALID_CARD_HOLDER,
                 Constants.VALID_CARD_NUMBER,

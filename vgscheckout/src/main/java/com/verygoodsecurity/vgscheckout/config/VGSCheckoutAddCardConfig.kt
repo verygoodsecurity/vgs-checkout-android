@@ -4,16 +4,16 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.JWTValidationEvent
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
-import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutMultiplexingRouteConfig
-import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutMultiplexingFormConfig
+import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutPaymentRouteConfig
+import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutAddCardFormConfig
 import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutJWTParseException
 import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutJWTRestrictedRoleException
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
 
 /**
- * Holds configuration with predefined setup for work with payment orchestration/multiplexing app.
+ * Holds configuration with predefined setup for work with payment orchestration app.
  *
- * @param accessToken multiplexing app access token.
+ * @param accessToken payment orchestration app access token.
  * @param vaultID unique organization vault id.
  * @param environment type of vault.
  * @param routeConfig Networking configuration, like http method, request headers etc.
@@ -24,12 +24,12 @@ import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
  * validation event should be send.
  */
 @Suppress("MemberVisibilityCanBePrivate", "CanBeParameter")
-class VGSCheckoutMultiplexingConfig private constructor(
+class VGSCheckoutAddCardConfig private constructor(
     internal val accessToken: String,
     override val vaultID: String,
     override val environment: VGSCheckoutEnvironment,
-    override val routeConfig: VGSCheckoutMultiplexingRouteConfig,
-    override val formConfig: VGSCheckoutMultiplexingFormConfig,
+    override val routeConfig: VGSCheckoutPaymentRouteConfig,
+    override val formConfig: VGSCheckoutAddCardFormConfig,
     override val isScreenshotsAllowed: Boolean,
     override val isAnalyticsEnabled: Boolean,
     private val createdFromParcel: Boolean
@@ -43,8 +43,8 @@ class VGSCheckoutMultiplexingConfig private constructor(
         parcel.readString()!!,
         parcel.readString()!!,
         parcel.readParcelable(VGSCheckoutEnvironment::class.java.classLoader)!!,
-        parcel.readParcelable(VGSCheckoutMultiplexingRouteConfig::class.java.classLoader)!!,
-        parcel.readParcelable(VGSCheckoutMultiplexingFormConfig::class.java.classLoader)!!,
+        parcel.readParcelable(VGSCheckoutPaymentRouteConfig::class.java.classLoader)!!,
+        parcel.readParcelable(VGSCheckoutAddCardFormConfig::class.java.classLoader)!!,
         parcel.readInt() == 1,
         parcel.readInt() == 1,
         true
@@ -53,7 +53,7 @@ class VGSCheckoutMultiplexingConfig private constructor(
     /**
      * Public constructor.
      *
-     * @param accessToken multiplexing app access token.
+     * @param accessToken payment orchestration app access token.
      * @param vaultID unique organization vault id.
      * @param environment type of vault.
      * @param formConfig UI configuration.
@@ -71,14 +71,14 @@ class VGSCheckoutMultiplexingConfig private constructor(
         accessToken: String,
         vaultID: String,
         environment: VGSCheckoutEnvironment = VGSCheckoutEnvironment.Sandbox(),
-        formConfig: VGSCheckoutMultiplexingFormConfig = VGSCheckoutMultiplexingFormConfig(),
+        formConfig: VGSCheckoutAddCardFormConfig = VGSCheckoutAddCardFormConfig(),
         isScreenshotsAllowed: Boolean = false,
         isAnalyticsEnabled: Boolean = true
     ) : this(
         accessToken,
         vaultID,
         environment,
-        VGSCheckoutMultiplexingRouteConfig(accessToken),
+        VGSCheckoutPaymentRouteConfig(accessToken),
         formConfig,
         isScreenshotsAllowed,
         isAnalyticsEnabled,
@@ -102,20 +102,20 @@ class VGSCheckoutMultiplexingConfig private constructor(
     @Throws(IllegalArgumentException::class)
     private fun validateToken() {
         try {
-            CheckoutMultiplexingCredentialsValidator.validateJWT(accessToken)
+            CheckoutCredentialsValidator.validateJWT(accessToken)
             analyticTracker.log(JWTValidationEvent(true))
         } finally {
             analyticTracker.log(JWTValidationEvent(false))
         }
     }
 
-    internal companion object CREATOR : Parcelable.Creator<VGSCheckoutMultiplexingConfig> {
+    internal companion object CREATOR : Parcelable.Creator<VGSCheckoutAddCardConfig> {
 
-        override fun createFromParcel(parcel: Parcel): VGSCheckoutMultiplexingConfig {
-            return VGSCheckoutMultiplexingConfig(parcel)
+        override fun createFromParcel(parcel: Parcel): VGSCheckoutAddCardConfig {
+            return VGSCheckoutAddCardConfig(parcel)
         }
 
-        override fun newArray(size: Int): Array<VGSCheckoutMultiplexingConfig?> {
+        override fun newArray(size: Int): Array<VGSCheckoutAddCardConfig?> {
             return arrayOfNulls(size)
         }
     }

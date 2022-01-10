@@ -10,7 +10,7 @@ import kotlinx.parcelize.Parcelize
  * fixed structure.
  */
 @Parcelize
-class VGSCheckoutMultiplexingRouteConfig private constructor(
+class VGSCheckoutPaymentRouteConfig private constructor(
     override val path: String,
     override val hostnamePolicy: VGSCheckoutHostnamePolicy,
     override val requestOptions: VGSCheckoutMultiplexingRequestOptions

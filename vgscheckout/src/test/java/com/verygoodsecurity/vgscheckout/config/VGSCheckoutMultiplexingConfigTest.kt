@@ -16,7 +16,7 @@ class VGSCheckoutMultiplexingConfigTest {
     @Test
     fun createMultiplexingConfig_validJWT_objectCreated() {
         // Act
-        val config = VGSCheckoutMultiplexingConfig(VALID_JWT, "")
+        val config = VGSCheckoutAddCardConfig(VALID_JWT, "")
         // Assert
         assertNotNull(config)
     }
@@ -24,7 +24,7 @@ class VGSCheckoutMultiplexingConfigTest {
     @Test
     fun createMultiplexingConfig_envSandboxEnabledByDefault() {
         // Act
-        val config = VGSCheckoutMultiplexingConfig(VALID_JWT, "")
+        val config = VGSCheckoutAddCardConfig(VALID_JWT, "")
         // Assert
         assert(config.environment is VGSCheckoutEnvironment.Sandbox)
     }
@@ -32,7 +32,7 @@ class VGSCheckoutMultiplexingConfigTest {
     @Test
     fun createMultiplexingConfig_screenshotsDisabledByDefault() {
         // Act
-        val config = VGSCheckoutMultiplexingConfig(VALID_JWT, "")
+        val config = VGSCheckoutAddCardConfig(VALID_JWT, "")
         // Assert
         assertFalse(config.isScreenshotsAllowed)
     }
@@ -40,7 +40,7 @@ class VGSCheckoutMultiplexingConfigTest {
     @Test
     fun createMultiplexingConfig_analyticsEnabledByDefault() {
         // Act
-        val config = VGSCheckoutMultiplexingConfig(VALID_JWT, "")
+        val config = VGSCheckoutAddCardConfig(VALID_JWT, "")
         // Assert
         assertTrue(config.isAnalyticsEnabled)
     }
@@ -48,12 +48,12 @@ class VGSCheckoutMultiplexingConfigTest {
     @Test(expected = VGSCheckoutJWTParseException::class)
     fun createMultiplexingConfig_emptyJWT_exceptionThrown() {
         // Act
-        VGSCheckoutMultiplexingConfig("", "")
+        VGSCheckoutAddCardConfig("", "")
     }
 
     @Test(expected = VGSCheckoutJWTRestrictedRoleException::class)
     fun createMultiplexingConfig_invalidJWT_exceptionThrown() {
         // Act
-        VGSCheckoutMultiplexingConfig(INVALID_JWT, "")
+        VGSCheckoutAddCardConfig(INVALID_JWT, "")
     }
 }

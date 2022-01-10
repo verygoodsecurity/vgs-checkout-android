@@ -6,7 +6,7 @@ import com.verygoodsecurity.vgscheckout.util.extension.decodeJWTPayload
 import com.verygoodsecurity.vgscheckout.util.extension.toJson
 import com.verygoodsecurity.vgscheckout.util.extension.toStringList
 
-internal object CheckoutMultiplexingCredentialsValidator {
+internal object CheckoutCredentialsValidator {
 
     private const val RESTRICTED_TOKEN_ROLE_SCOPE = "transfers:"
 

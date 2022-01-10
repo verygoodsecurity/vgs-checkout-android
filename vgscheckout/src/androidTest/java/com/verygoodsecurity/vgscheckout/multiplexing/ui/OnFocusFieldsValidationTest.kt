@@ -16,21 +16,19 @@ import androidx.test.uiautomator.UiDevice
 import com.verygoodsecurity.vgscheckout.Constants
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.view.internal.*
-import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingConfig
-import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutMultiplexingFormConfig
+import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
+import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutAddCardFormConfig
 import com.verygoodsecurity.vgscheckout.config.ui.core.VGSCheckoutFormValidationBehaviour
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillingAddressVisibility
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutMultiplexingBillingAddressOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutPaymentBillingAddressOptions
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_ARGS
 import com.verygoodsecurity.vgscheckout.ui.CheckoutActivity
-import com.verygoodsecurity.vgscheckout.ui.CheckoutMultiplexingActivity
+import com.verygoodsecurity.vgscheckout.ui.CheckoutPaymentOrchestrationActivity
 import com.verygoodsecurity.vgscheckout.util.ActionHelper
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers.withError
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers.withParent
-import com.verygoodsecurity.vgscheckout.util.ViewInteraction
 import com.verygoodsecurity.vgscheckout.util.ViewInteraction.onViewWithScrollTo
-import com.verygoodsecurity.vgscheckout.util.extension.safeResult
 import com.verygoodsecurity.vgscheckout.util.extension.waitFor
 import org.junit.Assert
 import org.junit.Before
@@ -43,15 +41,15 @@ class OnFocusFieldsValidationTest {
 
     private val context: Context = ApplicationProvider.getApplicationContext()
 
-    private val intent = Intent(context, CheckoutMultiplexingActivity::class.java).apply {
+    private val intent = Intent(context, CheckoutPaymentOrchestrationActivity::class.java).apply {
         putExtra(
             EXTRA_KEY_ARGS,
             CheckoutResultContract.Args(
-                VGSCheckoutMultiplexingConfig(
+                VGSCheckoutAddCardConfig(
                     Constants.VALID_JWT_TOKEN,
                     Constants.VAULT_ID,
-                    formConfig = VGSCheckoutMultiplexingFormConfig(
-                        VGSCheckoutMultiplexingBillingAddressOptions(
+                    formConfig = VGSCheckoutAddCardFormConfig(
+                        VGSCheckoutPaymentBillingAddressOptions(
                             visibility = VGSCheckoutBillingAddressVisibility.VISIBLE
                         ),
                         VGSCheckoutFormValidationBehaviour.ON_FOCUS

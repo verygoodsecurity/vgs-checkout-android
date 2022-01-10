@@ -17,12 +17,12 @@ import com.verygoodsecurity.vgscheckout.Constants
 import com.verygoodsecurity.vgscheckout.Constants.VALID_JWT_TOKEN
 import com.verygoodsecurity.vgscheckout.Constants.VAULT_ID
 import com.verygoodsecurity.vgscheckout.R
-import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingConfig
+import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_ARGS
 import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_RESULT
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
-import com.verygoodsecurity.vgscheckout.ui.CheckoutMultiplexingActivity
+import com.verygoodsecurity.vgscheckout.ui.CheckoutPaymentOrchestrationActivity
 import com.verygoodsecurity.vgscheckout.util.ViewInteraction
 import com.verygoodsecurity.vgscheckout.util.extension.*
 import com.verygoodsecurity.vgscheckout.util.extension.getParcelableSafe
@@ -37,11 +37,11 @@ class MultiplexingActivityResultTest {
 
     private val context: Context = ApplicationProvider.getApplicationContext()
 
-    private val defaultIntent = Intent(context, CheckoutMultiplexingActivity::class.java).apply {
+    private val defaultIntent = Intent(context, CheckoutPaymentOrchestrationActivity::class.java).apply {
         putExtra(
             EXTRA_KEY_ARGS,
             CheckoutResultContract.Args(
-                VGSCheckoutMultiplexingConfig(
+                VGSCheckoutAddCardConfig(
                     VALID_JWT_TOKEN,
                     VAULT_ID,
                     isScreenshotsAllowed = true
@@ -61,7 +61,7 @@ class MultiplexingActivityResultTest {
     @Test(timeout = 60000L)
     fun performCheckout_multiplexing_saveCard_unsuccessfulResponse_resultFailed_codeOk() {
         //Arrange
-        launch<CheckoutMultiplexingActivity>(defaultIntent).use {
+        launch<CheckoutPaymentOrchestrationActivity>(defaultIntent).use {
             fillCardFields(
                 Constants.VALID_CARD_HOLDER,
                 Constants.VALID_CARD_NUMBER,
@@ -84,7 +84,7 @@ class MultiplexingActivityResultTest {
 
     @Test
     fun performMultiplexing_cancelActivityResult_withNavigationUp_codeCanceled() {
-        launch<CheckoutMultiplexingActivity>(defaultIntent).use {
+        launch<CheckoutPaymentOrchestrationActivity>(defaultIntent).use {
             // Act
             onView(withContentDescription(R.string.abc_action_bar_up_description)).perform(click())
             //Assert
@@ -96,7 +96,7 @@ class MultiplexingActivityResultTest {
 
     @Test
     fun performMultiplexing_cancelActivityResult_withBackPress_codeCanceled() {
-        launch<CheckoutMultiplexingActivity>(defaultIntent).use {
+        launch<CheckoutPaymentOrchestrationActivity>(defaultIntent).use {
             // Act
             onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard())
             device.pressBack()

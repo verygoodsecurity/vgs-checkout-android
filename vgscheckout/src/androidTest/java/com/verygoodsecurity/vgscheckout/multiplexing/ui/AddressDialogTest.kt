@@ -11,21 +11,20 @@ import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.RootMatchers.isDialog
-import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.verygoodsecurity.vgscheckout.Constants
 import com.verygoodsecurity.vgscheckout.Constants.VAULT_ID
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.widget.VGSCountryEditText
-import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingConfig
-import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutMultiplexingFormConfig
+import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
+import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutAddCardFormConfig
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillingAddressVisibility
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutMultiplexingBillingAddressOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.country.VGSCheckoutMultiplexingCountryOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutPaymentBillingAddressOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.country.VGSCheckoutPaymentCountryOptions
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_ARGS
-import com.verygoodsecurity.vgscheckout.ui.CheckoutMultiplexingActivity
+import com.verygoodsecurity.vgscheckout.ui.CheckoutPaymentOrchestrationActivity
 import com.verygoodsecurity.vgscheckout.util.ActionHelper
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers
 import com.verygoodsecurity.vgscheckout.util.ViewInteraction.onViewWithScrollTo
@@ -42,15 +41,15 @@ class AddressDialogTest {
 
     private val context: Context = ApplicationProvider.getApplicationContext()
 
-    private val defaultIntent = Intent(context, CheckoutMultiplexingActivity::class.java).apply {
+    private val defaultIntent = Intent(context, CheckoutPaymentOrchestrationActivity::class.java).apply {
         putExtra(
             EXTRA_KEY_ARGS,
             CheckoutResultContract.Args(
-                VGSCheckoutMultiplexingConfig(
+                VGSCheckoutAddCardConfig(
                     Constants.VALID_JWT_TOKEN,
                     VAULT_ID,
-                    formConfig = VGSCheckoutMultiplexingFormConfig(
-                        addressOptions = VGSCheckoutMultiplexingBillingAddressOptions(
+                    formConfig = VGSCheckoutAddCardFormConfig(
+                        addressOptions = VGSCheckoutPaymentBillingAddressOptions(
                             VGSCheckoutBillingAddressVisibility.VISIBLE
                         )
                     )
@@ -61,7 +60,7 @@ class AddressDialogTest {
 
     @Test
     fun countrySelect_dialogShowed() {
-        launch<CheckoutMultiplexingActivity>(defaultIntent).use {
+        launch<CheckoutPaymentOrchestrationActivity>(defaultIntent).use {
             // Act
             waitFor(500)
             onView(isRoot()).perform(ViewActions.closeSoftKeyboard())
@@ -74,7 +73,7 @@ class AddressDialogTest {
 
     @Test
     fun countrySelect_usaByDefault() {
-        launch<CheckoutMultiplexingActivity>(defaultIntent).use {
+        launch<CheckoutPaymentOrchestrationActivity>(defaultIntent).use {
             //Assert
             onView(withId(R.id.vgsEtCountry)).check(matches(VGSViewMatchers.withText("United States")))
         }
@@ -82,7 +81,7 @@ class AddressDialogTest {
 
     @Test
     fun countrySelect_zipCodeHintByDefault() {
-        launch<CheckoutMultiplexingActivity>(defaultIntent).use {
+        launch<CheckoutPaymentOrchestrationActivity>(defaultIntent).use {
             //Assert
             onViewWithScrollTo(R.id.vgsTilPostalCode).check(matches(VGSViewMatchers.withHint("Zip code")))
         }
@@ -90,7 +89,7 @@ class AddressDialogTest {
 
     @Test
     fun countrySelect_selectCanada_countryChanged() {
-        launch<CheckoutMultiplexingActivity>(defaultIntent).use {
+        launch<CheckoutPaymentOrchestrationActivity>(defaultIntent).use {
             // Act
             onViewWithScrollTo(R.id.vgsTilCountry).perform(click())
             onData(hasToString(startsWith("Canada"))).perform(scrollTo()).perform(click())
@@ -102,7 +101,7 @@ class AddressDialogTest {
 
     @Test
     fun countrySelect_selectCanada_postalCodeHintChanged() {
-        launch<CheckoutMultiplexingActivity>(defaultIntent).use {
+        launch<CheckoutPaymentOrchestrationActivity>(defaultIntent).use {
             // Act
             waitFor(500)
             onViewWithScrollTo(R.id.vgsTilCountry).perform(click())
@@ -119,7 +118,7 @@ class AddressDialogTest {
         // Arrange
         val validCountriesList = listOf("GB")
         val intent = getLimitCountriesIntent(validCountriesList)
-        launch<CheckoutMultiplexingActivity>(intent).use {
+        launch<CheckoutPaymentOrchestrationActivity>(intent).use {
             // Act
             var countries: List<Country>? = null
             onView(withId(R.id.vgsEtCountry)).perform(ActionHelper.doAction<VGSCountryEditText> {
@@ -136,7 +135,7 @@ class AddressDialogTest {
         val invalidCountries = listOf("USD")
         val validCountriesList = listOf("UA", "US", "GB")
         val intent = getLimitCountriesIntent(invalidCountries + validCountriesList)
-        launch<CheckoutMultiplexingActivity>(intent).use {
+        launch<CheckoutPaymentOrchestrationActivity>(intent).use {
             // Act
             var countries: List<Country>? = null
             onView(withId(R.id.vgsEtCountry)).perform(ActionHelper.doAction<VGSCountryEditText> {
@@ -153,7 +152,7 @@ class AddressDialogTest {
         val allCountries = CountriesHelper.countries
         val invalidCountriesList = listOf("USD")
         val intent = getLimitCountriesIntent(invalidCountriesList)
-        launch<CheckoutMultiplexingActivity>(intent).use {
+        launch<CheckoutPaymentOrchestrationActivity>(intent).use {
             // Act
             var countries: List<Country>? = null
             onView(withId(R.id.vgsEtCountry)).perform(ActionHelper.doAction<VGSCountryEditText> {
@@ -170,7 +169,7 @@ class AddressDialogTest {
         val allCountries = CountriesHelper.countries
         val emptyCountriesList = listOf<String>()
         val intent = getLimitCountriesIntent(emptyCountriesList)
-        launch<CheckoutMultiplexingActivity>(intent).use {
+        launch<CheckoutPaymentOrchestrationActivity>(intent).use {
             // Act
             var countries: List<Country>? = null
             onView(withId(R.id.vgsEtCountry)).perform(ActionHelper.doAction<VGSCountryEditText> {
@@ -182,16 +181,16 @@ class AddressDialogTest {
     }
 
     private fun getLimitCountriesIntent(countries: List<String>): Intent =
-        Intent(context, CheckoutMultiplexingActivity::class.java).apply {
+        Intent(context, CheckoutPaymentOrchestrationActivity::class.java).apply {
             putExtra(
                 EXTRA_KEY_ARGS,
                 CheckoutResultContract.Args(
-                    VGSCheckoutMultiplexingConfig(
+                    VGSCheckoutAddCardConfig(
                         Constants.VALID_JWT_TOKEN,
                         VAULT_ID,
-                        formConfig = VGSCheckoutMultiplexingFormConfig(
-                            addressOptions = VGSCheckoutMultiplexingBillingAddressOptions(
-                                countryOptions = VGSCheckoutMultiplexingCountryOptions(
+                        formConfig = VGSCheckoutAddCardFormConfig(
+                            addressOptions = VGSCheckoutPaymentBillingAddressOptions(
+                                countryOptions = VGSCheckoutPaymentCountryOptions(
                                     validCountries = countries
                                 ),
                                 visibility = VGSCheckoutBillingAddressVisibility.VISIBLE

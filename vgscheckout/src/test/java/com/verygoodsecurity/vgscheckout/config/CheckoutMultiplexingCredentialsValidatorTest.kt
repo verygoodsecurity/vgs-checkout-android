@@ -16,7 +16,7 @@ private const val EMPTY_JWT = ""
 
 class CheckoutMultiplexingCredentialsValidatorTest {
 
-    private val jwtValidator = CheckoutMultiplexingCredentialsValidator
+    private val jwtValidator = CheckoutCredentialsValidator
 
     @Test
     fun validateJWT_validJWT_exceptionNotThrown() {
