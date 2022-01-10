@@ -38,6 +38,6 @@ class VGSCheckoutMultiplexingExpirationDateOptions private constructor(
         private const val MONTH_FIELD_NAME = "card.exp_month"
         private const val YEAR_FIELD_NAME = "card.exp_year"
         private const val EXPIRY_DATE_INPUT_FORMAT = "MM/yy"
-        private const val EXPIRY_DATE_OUTPUT_FORMAT = "MM/YYYY"
+        private const val EXPIRY_DATE_OUTPUT_FORMAT = "MM/yyyy"
     }
 }
