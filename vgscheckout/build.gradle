@@ -5,6 +5,7 @@ plugins {
     id 'com.vanniktech.maven.publish'
     id 'org.jetbrains.dokka'
 }
+apply from: '../gradle/util.gradle'
 
 android {
     compileSdkVersion 31
@@ -16,6 +17,7 @@ android {
         versionName VERSION_NAME
 
         buildConfigField "String", "VERSION_NAME", "\"$VERSION_NAME\""
+        createBuildConfigFields(it)
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -71,6 +73,16 @@ dependencies {
     androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.2.0'
 }
 
+def createBuildConfigFields(buildConfig) {
+    def properties = getLocalProperties()
+    buildConfig.buildConfigField "String", "PAYMENT_ORCHESTRATION_URL", "\"${properties['PAYMENT_ORCHESTRATION_URL']}\""
+    buildConfig.buildConfigField "String", "VAULT_ID", "\"${properties['VAULT_ID']}\""
+    buildConfig.buildConfigField "String", "JWT_TOKEN_WITHOUT_TRANSFERS", "\"${properties['JWT_TOKEN_WITHOUT_TRANSFERS']}\""
+    buildConfig.buildConfigField "String", "JWT_TOKEN_WITH_TRANSFERS_WRITE", "\"${properties['JWT_TOKEN_WITH_TRANSFERS_WRITE']}\""
+    buildConfig.buildConfigField "String", "JWT_TOKEN_WITH_TRANSFERS_ANY", "\"${properties['JWT_TOKEN_WITH_TRANSFERS_ANY']}\""
+}
+
 tasks.dokkaHtml.configure {
     outputDirectory.set(rootProject.file('docs'))
 }
+

@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscheckout.custom.ui
+package com.verygoodsecurity.vgscheckout.payments.ui
 
 import android.content.Context
 import android.content.Intent
@@ -6,9 +6,11 @@ import androidx.test.core.app.ActivityScenario.launch
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onData
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.*
+import androidx.test.espresso.action.ViewActions
+import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.isRoot
+import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
@@ -28,23 +30,22 @@ import com.verygoodsecurity.vgscheckout.Constants.VALID_SECURITY_CODE
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.view.internal.CardInputField
 import com.verygoodsecurity.vgscheckout.collect.view.internal.PersonNameInputField
-import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
-import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutCustomFormConfig
+import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
+import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutAddCardFormConfig
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillingAddressVisibility
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutCustomBillingAddressOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutPaymentBillingAddressOptions
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_ARGS
-import com.verygoodsecurity.vgscheckout.ui.CheckoutActivity
+import com.verygoodsecurity.vgscheckout.ui.CheckoutPaymentOrchestrationActivity
+import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers.withError
-import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers.withParent
 import com.verygoodsecurity.vgscheckout.util.ViewInteraction.onViewWithScrollTo
 import com.verygoodsecurity.vgscheckout.util.extension.*
+import org.hamcrest.Matchers
 import org.hamcrest.Matchers.hasToString
-import org.hamcrest.Matchers.startsWith
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-
 
 @Suppress("SameParameterValue")
 @RunWith(AndroidJUnit4::class)
@@ -52,18 +53,21 @@ class OnSubmitFieldsValidationTest {
 
     private val context: Context = ApplicationProvider.getApplicationContext()
 
-    private var intent = Intent(context, CheckoutActivity::class.java).apply {
+    private val intent = Intent(context, CheckoutPaymentOrchestrationActivity::class.java).apply {
         putExtra(
             EXTRA_KEY_ARGS,
-            CheckoutResultContract.Args(VGSCheckoutCustomConfig(
-                BuildConfig.VAULT_ID,
-                formConfig = VGSCheckoutCustomFormConfig(
-                    addressOptions = VGSCheckoutCustomBillingAddressOptions(
-                        visibility = VGSCheckoutBillingAddressVisibility.VISIBLE
-                    )
-                ),
-                isScreenshotsAllowed = true
-            ))
+            CheckoutResultContract.Args(
+                VGSCheckoutAddCardConfig(
+                    BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS,
+                    BuildConfig.VAULT_ID,
+                    formConfig = VGSCheckoutAddCardFormConfig(
+                        VGSCheckoutPaymentBillingAddressOptions(
+                            visibility = VGSCheckoutBillingAddressVisibility.VISIBLE
+                        )
+                    ),
+                    isScreenshotsAllowed = true
+                )
+            )
         )
     }
 
@@ -77,11 +81,13 @@ class OnSubmitFieldsValidationTest {
 
     @Test
     fun validationFlow_staticByDefault() {
-        launch<CheckoutActivity>(intent).use {
+        launch<CheckoutPaymentOrchestrationActivity>(intent).use {
             // Act
-            onViewWithScrollTo(withParent(R.id.vgsTilCardNumber, CardInputField::class))
-                .perform(typeText("4111"))
-            onViewWithScrollTo(withParent(R.id.vgsTilCardHolder, PersonNameInputField::class))
+            onViewWithScrollTo(VGSViewMatchers.withParent(R.id.vgsTilCardNumber,
+                CardInputField::class))
+                .perform(ViewActions.typeText("4111"))
+            onViewWithScrollTo(VGSViewMatchers.withParent(R.id.vgsTilCardHolder,
+                PersonNameInputField::class))
                 .perform(click())
             // Assert
             onViewWithScrollTo(R.id.vgsTilCardHolder).check(matches(withError("")))
@@ -90,7 +96,7 @@ class OnSubmitFieldsValidationTest {
 
     @Test
     fun saveCardClicked_noInput_emptyErrorsDisplayed() {
-        launch<CheckoutActivity>(intent).use {
+        launch<CheckoutPaymentOrchestrationActivity>(intent).use {
             // Act
             onViewWithScrollTo(R.id.mbSaveCard)
                 .perform(click())
@@ -149,10 +155,10 @@ class OnSubmitFieldsValidationTest {
 
     @Test
     fun saveCardClicked_invalidInput_invalidInputErrorsDisplayed() {
-        launch<CheckoutActivity>(intent).use {
+        launch<CheckoutPaymentOrchestrationActivity>(intent).use {
             // Arrange
             waitFor(500)
-            onView(isRoot()).perform(closeSoftKeyboard())
+            onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard())
 
             fillCardFields(
                 VALID_CARD_HOLDER,
@@ -201,7 +207,7 @@ class OnSubmitFieldsValidationTest {
 
     @Test
     fun saveCard_custom_validInput_noErrorsDisplayed() {
-        launch<CheckoutActivity>(intent).use {
+        launch<CheckoutPaymentOrchestrationActivity>(intent).use {
             // Arrange
             fillCardFields(
                 VALID_CARD_HOLDER,
@@ -214,12 +220,12 @@ class OnSubmitFieldsValidationTest {
                 VALID_CITY,
                 USA_VALID_ZIP_CODE
             )
+
             // Act
-            onView(isRoot()).perform(closeSoftKeyboard())
+            onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard())
             it.onActivity {
                 it.validateFields()
             }
-
             // Assert
             onViewWithScrollTo(R.id.vgsTilCardHolder).check(matches(withError("")))
             onViewWithScrollTo(R.id.vgsTilCardNumber).check(matches(withError("")))
@@ -233,14 +239,14 @@ class OnSubmitFieldsValidationTest {
 
     @Test
     fun showErrorMessage_countrySelect_selectCanada_postalCodeErrorMessageCleared() {
-        launch<CheckoutActivity>(intent).use {
+        launch<CheckoutPaymentOrchestrationActivity>(intent).use {
             // Act
             waitFor(500)
-            onView(isRoot()).perform(closeSoftKeyboard())
+            onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard())
 
             onViewWithScrollTo(R.id.mbSaveCard).perform(click())
             onViewWithScrollTo(R.id.vgsTilCountry).perform(click())
-            onData(hasToString(startsWith("Canada"))).perform(scrollTo()).perform(click())
+            onData(hasToString(Matchers.startsWith("Canada"))).perform(scrollTo()).perform(click())
             onView(withText("Ok")).perform(click())
             //Assert
             onViewWithScrollTo(R.id.vgsTilPostalCode).check(matches(withError(null)))
@@ -249,10 +255,10 @@ class OnSubmitFieldsValidationTest {
 
     @Test
     fun noError_selectCanada_postalCodeValidationRuleChange_errorDisplayed() {
-        launch<CheckoutActivity>(intent).use {
+        launch<CheckoutPaymentOrchestrationActivity>(intent).use {
             // Arrange
             waitFor(500)
-            onView(isRoot()).perform(closeSoftKeyboard())
+            onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard())
 
             fillCardFields(
                 VALID_CARD_HOLDER,
@@ -267,7 +273,7 @@ class OnSubmitFieldsValidationTest {
             )
             // Act
             onViewWithScrollTo(R.id.vgsTilCountry).perform(click())
-            onData(hasToString(startsWith("Canada"))).perform(scrollTo()).perform(click())
+            onData(hasToString(Matchers.startsWith("Canada"))).perform(scrollTo()).perform(click())
             onView(withText("Ok")).perform(click())
 
             onViewWithScrollTo(R.id.mbSaveCard).perform(click())
