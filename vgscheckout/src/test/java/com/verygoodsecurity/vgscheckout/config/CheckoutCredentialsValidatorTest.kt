@@ -1,8 +1,8 @@
 package com.verygoodsecurity.vgscheckout.config
 
 import com.verygoodsecurity.vgscheckout.BuildConfig
-import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutJWTParseException
-import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutJWTRestrictedRoleException
+import com.verygoodsecurity.vgscheckout.exception.internal.VGSCheckoutJWTParseException
+import com.verygoodsecurity.vgscheckout.exception.internal.VGSCheckoutJWTRestrictedRoleException
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Test
@@ -22,7 +22,6 @@ class CheckoutCredentialsValidatorTest {
         // Act
         jwtValidator.validateJWT("")
     }
-
     @Test(expected = VGSCheckoutJWTRestrictedRoleException::class)
     fun validateJWT_JWTWithTransfersWriteRole_exceptionThrown() {
         // Act

@@ -14,5 +14,5 @@ internal interface VgsCollectResponseListener {
      *
      * @param response The common [Response] class.
      */
-    fun onResponse(response: VGSResponse?)
+    fun onResponse(response: VGSResponse)
 }

@@ -9,7 +9,7 @@ import kotlinx.parcelize.Parcelize
 /**
  * Holds configuration for vault payment processing with custom configuration.
  *
- * @param vaultID unique organization vault id.
+ * @param vaultId unique organization vault id.
  * @param environment type of vault.
  * @param routeConfig Networking configuration, like http method, request headers etc.
  * @param formConfig UI configuration.
@@ -19,10 +19,10 @@ import kotlinx.parcelize.Parcelize
  */
 @Parcelize
 class VGSCheckoutCustomConfig @JvmOverloads constructor(
-    override val vaultID: String,
+    val vaultId: String,
     override val environment: VGSCheckoutEnvironment = VGSCheckoutEnvironment.Sandbox(),
     override val routeConfig: VGSCheckoutCustomRouteConfig = VGSCheckoutCustomRouteConfig(),
     override val formConfig: VGSCheckoutCustomFormConfig = VGSCheckoutCustomFormConfig(),
     override val isScreenshotsAllowed: Boolean = false,
     override val isAnalyticsEnabled: Boolean = true,
-) : CheckoutConfig()
+) : CheckoutConfig(vaultId)

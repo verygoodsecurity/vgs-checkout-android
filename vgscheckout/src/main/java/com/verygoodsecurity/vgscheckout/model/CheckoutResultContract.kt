@@ -10,9 +10,11 @@ import androidx.annotation.VisibleForTesting
 import androidx.core.os.bundleOf
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
+import com.verygoodsecurity.vgscheckout.config.VGSCheckoutPaymentConfig
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
-import com.verygoodsecurity.vgscheckout.ui.CheckoutActivity
-import com.verygoodsecurity.vgscheckout.ui.CheckoutPaymentOrchestrationActivity
+import com.verygoodsecurity.vgscheckout.ui.CustomCheckoutActivity
+import com.verygoodsecurity.vgscheckout.ui.PaymentCheckoutActivity
+import com.verygoodsecurity.vgscheckout.ui.SaveCardActivity
 import com.verygoodsecurity.vgscheckout.ui.core.BaseCheckoutActivity
 import kotlinx.parcelize.Parcelize
 
@@ -42,8 +44,9 @@ internal class CheckoutResultContract :
 
     private fun getIntentTarget(args: Args<CheckoutConfig>?): Class<out BaseCheckoutActivity<*>> {
         return when (args?.config) {
-            is VGSCheckoutCustomConfig -> CheckoutActivity::class.java
-            is VGSCheckoutAddCardConfig -> CheckoutPaymentOrchestrationActivity::class.java
+            is VGSCheckoutCustomConfig -> CustomCheckoutActivity::class.java
+            is VGSCheckoutAddCardConfig -> SaveCardActivity::class.java
+            is VGSCheckoutPaymentConfig -> PaymentCheckoutActivity::class.java
             else -> throw IllegalArgumentException("Invalid checkout config.")
         }
     }

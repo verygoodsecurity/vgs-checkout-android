@@ -20,13 +20,14 @@ import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSRequest
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
 import com.verygoodsecurity.vgscheckout.collect.widget.*
+import com.verygoodsecurity.vgscheckout.config.VGSCheckoutPaymentConfig
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.config.networking.core.VGSCheckoutHostnamePolicy
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
+import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 import com.verygoodsecurity.vgscheckout.ui.fragment.core.LoadingHandler
 import com.verygoodsecurity.vgscheckout.ui.fragment.save.core.BaseSaveCardFragment
-import com.verygoodsecurity.vgscheckout.ui.fragment.save.core.InputViewBinder
-import com.verygoodsecurity.vgscheckout.ui.fragment.save.core.ValidationResultListener
+import com.verygoodsecurity.vgscheckout.ui.fragment.save.core.BaseSaveCardFragment.Companion.TAG
 import com.verygoodsecurity.vgscheckout.util.CollectProvider
 import com.verygoodsecurity.vgscheckout.util.extension.*
 
@@ -42,7 +43,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
         }
     }
 
-    private lateinit var loadingHandler: LoadingHandler
+    protected lateinit var loadingHandler: LoadingHandler
 
     abstract fun resolveConfig(intent: Intent): C
 
@@ -69,6 +70,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
 
     override fun onAttachFragment(fragmentManager: FragmentManager, fragment: Fragment) {
         loadingHandler = fragment as LoadingHandler
+        updateToolbarTitle(fragment)
     }
 
     override fun bind(vararg view: InputFieldView) {
@@ -84,42 +86,69 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
     }
 
     override fun onSuccess() {
-        loadingHandler.setIsLoading(true)
-        makeRequest()
+        saveCard()
     }
 
-    override fun onResponse(response: VGSResponse?) {
-        (response as? VGSResponse.ErrorResponse)?.let {
-            if (it.code == VGSError.NO_NETWORK_CONNECTIONS.code) {
-                loadingHandler.setIsLoading(false)
-                showNetworkConnectionErrorSnackBar()
-                return
-            }
+    override fun onResponse(response: VGSResponse) {
+        if (isNetworkConnectionError(response)) {
+            loadingHandler.setIsLoading(false)
+            showNetworkConnectionErrorSnackBar()
+            return
         }
-        val resultBundle = CheckoutResultContract.Result(response?.toCheckoutResult()).toBundle()
+        handleResponse(response)
+    }
+
+    protected open fun handleResponse(response: VGSResponse) {
+        sendResult(response.toCheckoutResult())
+    }
+
+    protected fun sendResult(response: VGSCheckoutResult) {
+        val resultBundle = CheckoutResultContract.Result(response).toBundle()
         setResult(Activity.RESULT_OK, Intent().putExtras(resultBundle))
         finish()
     }
+
+    protected open fun getButtonTitle() = getString(R.string.vgs_checkout_button_save_card_title)
 
     @CallSuper
     protected open fun initView(savedInstanceState: Bundle?) {
         initToolbar()
         if (savedInstanceState == null) {
             showSaveCardFragment()
+        } else {
+            loadingHandler = supportFragmentManager.findFragmentByTag(TAG) as LoadingHandler
         }
     }
 
     private fun initToolbar() {
         setSupportActionBar(findViewById(R.id.mtToolbar))
+        updateToolbarTitle(supportFragmentManager.findFragmentByTag(TAG))
+    }
+
+    private fun updateToolbarTitle(fragment: Fragment?) {
+        supportActionBar?.title = getString(
+            if (config is VGSCheckoutPaymentConfig) {
+                if (fragment is BaseSaveCardFragment) {
+                    R.string.vgs_checkout_new_card_title
+                } else {
+                    R.string.vgs_checkout_title
+                }
+            } else {
+                R.string.vgs_checkout_add_card_title
+            }
+        )
     }
 
     private fun showSaveCardFragment() {
+        val fragment = BaseSaveCardFragment.create(config.formConfig, getButtonTitle())
         supportFragmentManager.beginTransaction()
-            .add(R.id.fcvContainer, BaseSaveCardFragment.create(config.formConfig))
+            .add(R.id.fcvContainer, fragment, TAG)
             .commit()
     }
 
-    private fun makeRequest() {
+    private fun saveCard() {
+        loadingHandler.setIsLoading(true)
+        sendRequestEvent()
         with(config.routeConfig) {
             collect.asyncSubmit(
                 VGSRequest.VGSRequestBuilder()
@@ -131,7 +160,6 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
                     .build()
             )
         }
-        sendRequestEvent()
     }
 
     private fun sendRequestEvent(invalidFields: List<String> = emptyList()) {
@@ -150,10 +178,13 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
         }
     }
 
+    private fun isNetworkConnectionError(response: VGSResponse): Boolean =
+        (response as? VGSResponse.ErrorResponse)?.code == VGSError.NO_NETWORK_CONNECTIONS.code
+
     private fun showNetworkConnectionErrorSnackBar() {
         val message = getString(R.string.vgs_checkout_no_network_error)
         Snackbar.make(findViewById(R.id.llRootView), message, Snackbar.LENGTH_LONG)
-            .setAction(getString(R.string.vgs_checkout_no_network_retry)) { makeRequest() }
+            .setAction(getString(R.string.vgs_checkout_no_network_retry)) { saveCard() }
             .show()
     }
 

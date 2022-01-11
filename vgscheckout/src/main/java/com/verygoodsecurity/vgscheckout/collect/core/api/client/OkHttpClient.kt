@@ -42,7 +42,7 @@ internal class OkHttpClient(
 
     override fun enqueue(request: NetworkRequest, callback: ((NetworkResponse) -> Unit)?) {
         if (!request.url.isURLValid()) {
-            callback?.invoke(NetworkResponse(error = VGSError.URL_NOT_VALID))
+            callback?.invoke(NetworkResponse.create(VGSError.URL_NOT_VALID))
             return
         }
 
@@ -64,8 +64,11 @@ internal class OkHttpClient(
 
                 override fun onFailure(call: Call, e: IOException) {
                     logException(e)
+                    if (call.isCanceled()) {
+                        return
+                    }
                     if (e is InterruptedIOException || e is TimeoutException) {
-                        callback?.invoke(NetworkResponse(error = VGSError.TIME_OUT))
+                        callback?.invoke(NetworkResponse.create(VGSError.TIME_OUT))
                     } else {
                         callback?.invoke(NetworkResponse(message = e.message))
                     }
@@ -91,7 +94,7 @@ internal class OkHttpClient(
 
     override fun execute(request: NetworkRequest): NetworkResponse {
         if (!request.url.isURLValid()) {
-            return NetworkResponse(error = VGSError.URL_NOT_VALID)
+            return NetworkResponse.create(VGSError.URL_NOT_VALID)
         }
 
         val okHttpRequest = buildRequest(
@@ -118,9 +121,9 @@ internal class OkHttpClient(
                 latency = response.latency()
             )
         } catch (e: InterruptedIOException) {
-            NetworkResponse(error = VGSError.TIME_OUT)
+            NetworkResponse.create(VGSError.TIME_OUT)
         } catch (e: TimeoutException) {
-            NetworkResponse(error = VGSError.TIME_OUT)
+            NetworkResponse.create(VGSError.TIME_OUT)
         } catch (e: IOException) {
             NetworkResponse(message = e.message)
         }

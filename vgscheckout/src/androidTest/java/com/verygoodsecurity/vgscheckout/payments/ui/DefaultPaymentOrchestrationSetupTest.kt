@@ -14,7 +14,7 @@ import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_ARGS
-import com.verygoodsecurity.vgscheckout.ui.CheckoutPaymentOrchestrationActivity
+import com.verygoodsecurity.vgscheckout.ui.SaveCardActivity
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers
 import com.verygoodsecurity.vgscheckout.util.ViewInteraction
 import com.verygoodsecurity.vgscheckout.util.extension.waitFor
@@ -28,7 +28,7 @@ class DefaultPaymentOrchestrationSetupTest {
 
     private val context: Context = ApplicationProvider.getApplicationContext()
 
-    private val defaultIntent = Intent(context, CheckoutPaymentOrchestrationActivity::class.java).apply {
+    private val defaultIntent = Intent(context, SaveCardActivity::class.java).apply {
         putExtra(
             EXTRA_KEY_ARGS,
             CheckoutResultContract.Args(
@@ -43,7 +43,7 @@ class DefaultPaymentOrchestrationSetupTest {
 
     @Test
     fun performCheckout_defaultVisibleFields() {
-        ActivityScenario.launch<CheckoutPaymentOrchestrationActivity>(defaultIntent).use {
+        ActivityScenario.launch<SaveCardActivity>(defaultIntent).use {
             waitFor(1500)
             //Assert
             ViewInteraction.onViewWithScrollTo(R.id.vgsTilCardHolder)
@@ -73,7 +73,7 @@ class DefaultPaymentOrchestrationSetupTest {
 
     @Test
     fun performCheckout_defaultFieldContent() {
-        ActivityScenario.launch<CheckoutPaymentOrchestrationActivity>(defaultIntent).use {
+        ActivityScenario.launch<SaveCardActivity>(defaultIntent).use {
             //Assert
             Espresso.onView(ViewMatchers.withId(R.id.vgsEtCardHolder))
                 .check(ViewAssertions.matches(VGSViewMatchers.withText("")))
@@ -88,7 +88,7 @@ class DefaultPaymentOrchestrationSetupTest {
 
     @Test
     fun performCheckout_saveButtonInteractive() {
-        ActivityScenario.launch<CheckoutPaymentOrchestrationActivity>(defaultIntent).use {
+        ActivityScenario.launch<SaveCardActivity>(defaultIntent).use {
             //Assert
             ViewInteraction.onViewWithScrollTo(R.id.mbSaveCard)
                 .check(ViewAssertions.matches(ViewMatchers.isEnabled()))
@@ -99,18 +99,18 @@ class DefaultPaymentOrchestrationSetupTest {
 
     @Test
     fun performCheckout_noErrorMessagesDisplayed() {
-        ActivityScenario.launch<CheckoutPaymentOrchestrationActivity>(defaultIntent).use {
+        ActivityScenario.launch<SaveCardActivity>(defaultIntent).use {
             waitFor(500)
             Espresso.onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard())
             // Assert
             ViewInteraction.onViewWithScrollTo(R.id.vgsTilCardHolder)
-                .check(ViewAssertions.matches(VGSViewMatchers.withError("")))
+                .check(ViewAssertions.matches(VGSViewMatchers.withError(null)))
             ViewInteraction.onViewWithScrollTo(R.id.vgsTilCardNumber)
-                .check(ViewAssertions.matches(VGSViewMatchers.withError("")))
+                .check(ViewAssertions.matches(VGSViewMatchers.withError(null)))
             ViewInteraction.onViewWithScrollTo(R.id.vgsTilExpirationDate)
-                .check(ViewAssertions.matches(VGSViewMatchers.withError("")))
+                .check(ViewAssertions.matches(VGSViewMatchers.withError(null)))
             ViewInteraction.onViewWithScrollTo(R.id.vgsTilSecurityCode)
-                .check(ViewAssertions.matches(VGSViewMatchers.withError("")))
+                .check(ViewAssertions.matches(VGSViewMatchers.withError(null)))
         }
     }
 }

@@ -8,12 +8,17 @@
     <application android:supportsRtl="true">
 
         <activity
-            android:name=".ui.CheckoutActivity"
+            android:name=".ui.CustomCheckoutActivity"
             android:theme="@style/VGSCheckout"
             android:windowSoftInputMode="adjustResize" />
 
         <activity
-            android:name=".ui.CheckoutPaymentOrchestrationActivity"
+            android:name=".ui.SaveCardActivity"
+            android:theme="@style/VGSCheckout"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".ui.PaymentCheckoutActivity"
             android:theme="@style/VGSCheckout"
             android:windowSoftInputMode="adjustResize" />
     </application>

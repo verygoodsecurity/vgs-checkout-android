@@ -4,5 +4,5 @@ internal enum class PostalCodeType {
 
     ZIP,
     POSTAL,
-    NOTHING
+    UNDEFINED
 }

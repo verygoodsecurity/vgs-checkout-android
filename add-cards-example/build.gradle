@@ -6,7 +6,6 @@ apply from: '../gradle/util.gradle'
 
 android {
     compileSdkVersion 31
-    buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId "com.verygoodsecurity.democheckout"
@@ -47,7 +46,7 @@ android {
 
     applicationVariants.all { variant ->
         String vaultId = getLocalProperty("VAULT_ID")
-        variant.resValue "string", "vault_id", vaultId + ''
+        variant.resValue "string", "storage_id", vaultId + ''
     }
 }
 

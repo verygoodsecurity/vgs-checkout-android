@@ -19,7 +19,7 @@ import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 //region Networking
 internal fun VGSResponse.toCheckoutResult() = when (this) {
     is VGSResponse.SuccessResponse -> VGSCheckoutResult.Success(code, body)
-    is VGSResponse.ErrorResponse -> VGSCheckoutResult.Failed(code, body)
+    is VGSResponse.ErrorResponse -> VGSCheckoutResult.Failed(code, message, body)
 }
 
 internal fun VGSCheckoutHTTPMethod.toCollectHTTPMethod() = when (this) {

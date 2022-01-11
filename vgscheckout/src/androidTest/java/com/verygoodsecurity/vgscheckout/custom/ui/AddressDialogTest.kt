@@ -22,11 +22,10 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutCustom
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.country.VGSCheckoutCustomCountryOptions
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_ARGS
-import com.verygoodsecurity.vgscheckout.ui.CheckoutActivity
+import com.verygoodsecurity.vgscheckout.ui.CustomCheckoutActivity
 import com.verygoodsecurity.vgscheckout.util.ActionHelper
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers
 import com.verygoodsecurity.vgscheckout.util.ViewInteraction.onViewWithScrollTo
-import com.verygoodsecurity.vgscheckout.util.extension.waitFor
 import com.verygoodsecurity.vgscheckout.util.country.CountriesHelper
 import com.verygoodsecurity.vgscheckout.util.country.model.Country
 import org.hamcrest.Matchers.hasToString
@@ -39,7 +38,7 @@ class AddressDialogTest {
 
     private val context: Context = ApplicationProvider.getApplicationContext()
 
-    private val defaultIntent = Intent(context, CheckoutActivity::class.java).apply {
+    private val defaultIntent = Intent(context, CustomCheckoutActivity::class.java).apply {
         putExtra(
             EXTRA_KEY_ARGS,
             CheckoutResultContract.Args(
@@ -57,7 +56,7 @@ class AddressDialogTest {
 
     @Test
     fun countrySelect_dialogShowed() {
-        launch<CheckoutActivity>(defaultIntent).use {
+        launch<CustomCheckoutActivity>(defaultIntent).use {
             // Act
             onViewWithScrollTo(R.id.vgsTilCountry).perform(click())
             //Assert
@@ -67,7 +66,7 @@ class AddressDialogTest {
 
     @Test
     fun countrySelect_usaByDefault() {
-        launch<CheckoutActivity>(defaultIntent).use {
+        launch<CustomCheckoutActivity>(defaultIntent).use {
             //Assert
             onView(withId(R.id.vgsEtCountry)).check(matches(VGSViewMatchers.withText("United States")))
         }
@@ -75,7 +74,7 @@ class AddressDialogTest {
 
     @Test
     fun countrySelect_zipCodeHintByDefault() {
-        launch<CheckoutActivity>(defaultIntent).use {
+        launch<CustomCheckoutActivity>(defaultIntent).use {
             //Assert
             onViewWithScrollTo(R.id.vgsTilPostalCode).check(matches(VGSViewMatchers.withHint("Zip code")))
         }
@@ -83,7 +82,7 @@ class AddressDialogTest {
 
     @Test
     fun countrySelect_selectCanada_countryChanged() {
-        launch<CheckoutActivity>(defaultIntent).use {
+        launch<CustomCheckoutActivity>(defaultIntent).use {
             // Act
             onViewWithScrollTo(R.id.vgsTilCountry).perform(click())
             onData(hasToString(startsWith("Canada"))).perform(scrollTo()).perform(click())
@@ -95,7 +94,7 @@ class AddressDialogTest {
 
     @Test
     fun countrySelect_selectCanada_postalCodeHintChanged() {
-        launch<CheckoutActivity>(defaultIntent).use {
+        launch<CustomCheckoutActivity>(defaultIntent).use {
             // Act
             onViewWithScrollTo(R.id.vgsTilCountry).perform(click())
             onData(hasToString(startsWith("Canada"))).perform(scrollTo()).perform(click())
@@ -110,7 +109,7 @@ class AddressDialogTest {
         // Arrange
         val validCountriesList = listOf("GB")
         val intent = getLimitCountriesIntent(validCountriesList)
-        launch<CheckoutActivity>(intent).use {
+        launch<CustomCheckoutActivity>(intent).use {
             // Act
             var countries: List<Country>? = null
             onView(withId(R.id.vgsEtCountry)).perform(ActionHelper.doAction<VGSCountryEditText> {
@@ -127,7 +126,7 @@ class AddressDialogTest {
         val invalidCountries = listOf("USD")
         val validCountriesList = listOf("UA", "US", "GB")
         val intent = getLimitCountriesIntent(invalidCountries + validCountriesList)
-        launch<CheckoutActivity>(intent).use {
+        launch<CustomCheckoutActivity>(intent).use {
             // Act
             var countries: List<Country>? = null
             onView(withId(R.id.vgsEtCountry)).perform(ActionHelper.doAction<VGSCountryEditText> {
@@ -144,7 +143,7 @@ class AddressDialogTest {
         val allCountries = CountriesHelper.countries
         val invalidCountriesList = listOf("USD")
         val intent = getLimitCountriesIntent(invalidCountriesList)
-        launch<CheckoutActivity>(intent).use {
+        launch<CustomCheckoutActivity>(intent).use {
             // Act
             var countries: List<Country>? = null
             onView(withId(R.id.vgsEtCountry)).perform(ActionHelper.doAction<VGSCountryEditText> {
@@ -161,7 +160,7 @@ class AddressDialogTest {
         val allCountries = CountriesHelper.countries
         val emptyCountriesList = listOf<String>()
         val intent = getLimitCountriesIntent(emptyCountriesList)
-        launch<CheckoutActivity>(intent).use {
+        launch<CustomCheckoutActivity>(intent).use {
             // Act
             var countries: List<Country>? = null
             onView(withId(R.id.vgsEtCountry)).perform(ActionHelper.doAction<VGSCountryEditText> {
@@ -173,7 +172,7 @@ class AddressDialogTest {
     }
 
     private fun getLimitCountriesIntent(countries: List<String>): Intent =
-        Intent(context, CheckoutActivity::class.java).apply {
+        Intent(context, CustomCheckoutActivity::class.java).apply {
             putExtra(
                 EXTRA_KEY_ARGS,
                 CheckoutResultContract.Args(

@@ -12,18 +12,18 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 internal class DefaultAnalyticsTracker @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE) constructor(
-    private val vaultID: String,
+    private val id: String,
     private val environment: String,
-    private val formID: String,
+    private val formId: String,
     private val client: ApiClient
 ) : AnalyticTracker {
 
     override var isEnabled: Boolean = true
 
-    constructor(vaultID: String, environment: String, formID: String) : this(
-        vaultID,
+    constructor(id: String, environment: String, formId: String) : this(
+        id,
         environment,
-        formID,
+        formId,
         ApiClient.create(false, getExecutor())
     )
 
@@ -31,7 +31,7 @@ internal class DefaultAnalyticsTracker @VisibleForTesting(otherwise = VisibleFor
         if (isEnabled.not()) {
             return
         }
-        val payload = event.getData(vaultID, formID, environment).toJSON().toString().toBase64()
+        val payload = event.getData(id, formId, environment).toJSON().toString().toBase64()
         client.enqueue(
             NetworkRequest(
                 method = HTTPMethod.POST,

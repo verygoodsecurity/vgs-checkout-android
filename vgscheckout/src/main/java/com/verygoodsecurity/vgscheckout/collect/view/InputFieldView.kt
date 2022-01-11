@@ -866,12 +866,14 @@ internal abstract class InputFieldView @JvmOverloads constructor(
     override fun onSaveInstanceState(): Parcelable? {
         val savedState = SavedState(super.onSaveInstanceState())
         savedState.text = inputField.text.toString()
+        savedState.isEdited = inputField.isEdited
         return savedState
     }
 
     override fun onRestoreInstanceState(state: Parcelable?) {
         if (state is SavedState) {
             setText(state.text)
+            inputField.isEdited = state.isEdited
             super.onRestoreInstanceState(state.superState)
         } else {
             super.onRestoreInstanceState(state)
@@ -880,6 +882,7 @@ internal abstract class InputFieldView @JvmOverloads constructor(
 
     protected class SavedState : BaseSavedState {
         var text: CharSequence = ""
+        var isEdited: Boolean = false
 
         companion object {
             @JvmField
@@ -898,11 +901,13 @@ internal abstract class InputFieldView @JvmOverloads constructor(
 
         constructor(`in`: Parcel) : super(`in`) {
             text = TextUtils.CHAR_SEQUENCE_CREATOR.createFromParcel(`in`)
+            isEdited = `in`.readInt() == 1
         }
 
         override fun writeToParcel(out: Parcel, flags: Int) {
             super.writeToParcel(out, flags)
             TextUtils.writeToParcel(text, out, flags)
+            out.writeInt(if (isEdited) 1 else 0)
         }
     }
 

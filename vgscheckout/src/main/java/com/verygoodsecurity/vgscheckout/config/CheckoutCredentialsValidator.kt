@@ -1,7 +1,8 @@
 package com.verygoodsecurity.vgscheckout.config
 
-import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutJWTParseException
-import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutJWTRestrictedRoleException
+import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
+import com.verygoodsecurity.vgscheckout.exception.internal.VGSCheckoutJWTParseException
+import com.verygoodsecurity.vgscheckout.exception.internal.VGSCheckoutJWTRestrictedRoleException
 import com.verygoodsecurity.vgscheckout.util.extension.decodeJWTPayload
 import com.verygoodsecurity.vgscheckout.util.extension.toJson
 import com.verygoodsecurity.vgscheckout.util.extension.toStringList
@@ -13,7 +14,7 @@ internal object CheckoutCredentialsValidator {
     private const val RESOURCE_ACCESS_KEY = "resource_access"
     private const val ROLES_KEY = "roles"
 
-    @Throws(VGSCheckoutJWTParseException::class, VGSCheckoutJWTRestrictedRoleException::class)
+    @Throws(VGSCheckoutException::class)
     fun validateJWT(token: String) {
         val payload = token.decodeJWTPayload()?.toJson() ?: throw VGSCheckoutJWTParseException()
 

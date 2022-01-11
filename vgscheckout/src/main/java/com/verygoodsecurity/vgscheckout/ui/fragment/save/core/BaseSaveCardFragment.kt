@@ -26,6 +26,8 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.CardHolde
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.CardNumberOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.CVCOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.ExpirationDateOptions
+import com.verygoodsecurity.vgscheckout.ui.core.InputViewBinder
+import com.verygoodsecurity.vgscheckout.ui.core.ValidationResultListener
 import com.verygoodsecurity.vgscheckout.ui.fragment.core.LoadingHandler
 import com.verygoodsecurity.vgscheckout.ui.fragment.save.SaveCardDynamicValidationFragment
 import com.verygoodsecurity.vgscheckout.ui.fragment.save.SaveCardStaticValidationFragment
@@ -38,14 +40,14 @@ internal abstract class BaseSaveCardFragment : Fragment(), LoadingHandler,
     InputFieldView.OnTextChangedListener, VGSCountryEditText.OnCountrySelectedListener,
     InputFieldView.OnEditorActionListener {
 
-    protected val formConfig: CheckoutFormConfig by lazy { requireArgument(KEY_BUNDLE_CONFIG) }
-    protected val inputFieldErrors = mutableMapOf<InputFieldView, String>()
+    protected val formConfig: CheckoutFormConfig by lazy { requireParcelable(KEY_BUNDLE_CONFIG) }
+    protected val buttonTitle: String by lazy { requireString(KEY_BUNDLE_BUTTON_TITLE) }
 
     protected lateinit var binding: SaveCardViewBindingHelper
     protected lateinit var inputViewBinder: InputViewBinder
     protected lateinit var validationListener: ValidationResultListener
 
-    private val validationRequiredInputs: Array<InputFieldView> by lazy {
+    private val validationRequiredInputs: List<InputFieldView> by lazy {
         mutableListOf(
             binding.cardNumberEt,
             binding.expirationDateEt,
@@ -57,7 +59,7 @@ internal abstract class BaseSaveCardFragment : Fragment(), LoadingHandler,
                 add(binding.cityEt)
                 add(binding.postalCodeEt)
             }
-        }.toTypedArray()
+        }
     }
 
     override fun onAttach(context: Context) {
@@ -114,18 +116,16 @@ internal abstract class BaseSaveCardFragment : Fragment(), LoadingHandler,
     protected open fun initViews(view: View) {
         initCardDetailsViews()
         initBillingAddressViews()
-        bindAllViews()
         initSaveButton()
     }
 
     open fun handleSaveClicked() {
         requireActivity().hideSoftKeyboard()
-        validate()
-        updateErrors()
-        if (inputFieldErrors.filter { it.value.isNotEmpty() }.isEmpty()) {
+        val invalidFields = validate()
+        if (invalidFields.isEmpty()) {
             validationListener.onSuccess()
         } else {
-            validationListener.onFailed(getInvalidInputAnalyticsNames())
+            validationListener.onFailed(invalidFields.map { it.getAnalyticsName() })
         }
     }
 
@@ -144,30 +144,38 @@ internal abstract class BaseSaveCardFragment : Fragment(), LoadingHandler,
             return
         }
         binding.cardHolderEt.setFieldName(options.fieldName)
-        binding.cardHolderEt.addOnTextChangeListener(this)
+        inputViewBinder.bind(binding.cardHolderEt)
+        binding.cardHolderEt.addOnTextChangeListenerOnLayout(this)
     }
 
     private fun initCardNumberView(options: CardNumberOptions) {
         binding.cardNumberEt.setFieldName(options.fieldName)
+        inputViewBinder.bind(binding.cardNumberEt)
         binding.cardNumberEt.setValidCardBrands(options.cardBrands)
         binding.cardNumberEt.setIsCardBrandPreviewHidden(options.isIconHidden)
-        binding.cardNumberEt.addOnTextChangeListener(this)
+        binding.cardNumberEt.addOnTextChangeListenerOnLayout(this)
     }
 
     private fun initExpirationDateView(options: ExpirationDateOptions) {
         binding.expirationDateEt.setFieldName(options.fieldName)
+        inputViewBinder.bind(binding.expirationDateEt)
         binding.expirationDateEt.setDateRegex(options.inputFormatRegex)
         binding.expirationDateEt.setOutputRegex(options.outputFormatRegex)
         binding.expirationDateEt.setSerializer(
             options.dateSeparateSerializer?.toCollectDateSeparateSerializer()
         )
-        binding.expirationDateEt.addOnTextChangeListener(this)
+        binding.expirationDateEt.addOnTextChangeListenerOnLayout(this)
     }
 
     private fun initSecurityCodeView(options: CVCOptions) {
         binding.securityCodeEt.setFieldName(options.fieldName)
+        inputViewBinder.bind(binding.securityCodeEt)
         binding.securityCodeEt.setIsPreviewIconHidden(options.isIconHidden)
-        binding.securityCodeEt.addOnTextChangeListener(this)
+        binding.securityCodeEt.setOnEditorActionListener(this)
+        binding.securityCodeEt.setImeOptions(
+            if (formConfig.isBillingAddressVisible()) EditorInfo.IME_ACTION_NEXT else EditorInfo.IME_ACTION_DONE
+        )
+        binding.securityCodeEt.addOnTextChangeListenerOnLayout(this)
     }
 
     private fun initBillingAddressViews() {
@@ -189,50 +197,54 @@ internal abstract class BaseSaveCardFragment : Fragment(), LoadingHandler,
 
     private fun initCountryView(options: CountryOptions) {
         binding.countryEt.setFieldName(options.fieldName)
+        inputViewBinder.bind(binding.countryEt)
         binding.countryEt.setCountries(options.validCountries)
         binding.countryEt.onCountrySelectedListener = this
     }
 
     private fun initAddressView(options: AddressOptions, rule: VGSInfoRule) {
         binding.addressEt.setFieldName(options.fieldName)
+        inputViewBinder.bind(binding.addressEt)
         binding.addressEt.addRule(rule)
-        binding.addressEt.addOnTextChangeListener(this)
+        binding.addressEt.addOnTextChangeListenerOnLayout(this)
     }
 
     private fun initOptionalAddressView(options: OptionalAddressOptions, rule: VGSInfoRule) {
         binding.optionalAddressEt.setFieldName(options.fieldName)
+        inputViewBinder.bind(binding.optionalAddressEt)
         binding.optionalAddressEt.addRule(rule)
     }
 
     private fun initCityView(options: CityOptions, rule: VGSInfoRule) {
         binding.cityEt.setFieldName(options.fieldName)
+        inputViewBinder.bind(binding.cityEt)
         binding.cityEt.addRule(rule)
-        binding.cityEt.addOnTextChangeListener(this)
         binding.cityEt.setOnEditorActionListener(this)
         updateCityView(binding.countryEt.selectedCountry)
+        binding.cityEt.addOnTextChangeListenerOnLayout(this)
     }
 
     private fun initPostalCodeView(options: PostalCodeOptions) {
         binding.postalCodeEt.setFieldName(options.fieldName)
-        binding.postalCodeEt.addOnTextChangeListener(this)
+        inputViewBinder.bind(binding.postalCodeEt)
         binding.postalCodeEt.setOnEditorActionListener(this)
         updatePostalCodeView(binding.countryEt.selectedCountry)
+        binding.postalCodeEt.addOnTextChangeListenerOnLayout(this)
     }
 
     private fun initSaveButton() {
+        binding.saveCardButton.text = buttonTitle
         binding.saveCardButton.setOnClickListener { handleSaveClicked() }
     }
 
     private fun updateCityView(country: Country) {
-        if (country.postalCodeType == PostalCodeType.NOTHING) {
-            binding.cityEt.setImeOptions(EditorInfo.IME_ACTION_DONE)
-        } else {
-            binding.cityEt.setImeOptions(EditorInfo.IME_ACTION_NEXT)
-        }
+        binding.cityEt.setImeOptions(
+            if (country.isPostalCodeUndefined()) EditorInfo.IME_ACTION_DONE else EditorInfo.IME_ACTION_NEXT
+        )
     }
 
     private fun updatePostalCodeView(country: Country) {
-        if (country.postalCodeType == PostalCodeType.NOTHING) {
+        if (country.isPostalCodeUndefined()) {
             binding.postalCodeEt.setText(null)
             binding.postalCodeEt.setIsRequired(false)
             binding.postalCodeTil.gone()
@@ -246,23 +258,10 @@ internal abstract class BaseSaveCardFragment : Fragment(), LoadingHandler,
         }
     }
 
-    private fun bindAllViews() {
-        with(binding) {
-            inputViewBinder.bind(cardHolderEt,
-                cardNumberEt,
-                expirationDateEt,
-                securityCodeEt,
-                countryEt,
-                addressEt,
-                optionalAddressEt,
-                cityEt,
-                postalCodeEt)
-        }
-    }
-
     private fun unbindAllViews() {
         with(binding) {
-            inputViewBinder.unbind(cardHolderEt,
+            inputViewBinder.unbind(
+                cardHolderEt,
                 cardNumberEt,
                 expirationDateEt,
                 securityCodeEt,
@@ -270,7 +269,8 @@ internal abstract class BaseSaveCardFragment : Fragment(), LoadingHandler,
                 addressEt,
                 optionalAddressEt,
                 cityEt,
-                postalCodeEt)
+                postalCodeEt
+            )
         }
     }
 
@@ -279,39 +279,43 @@ internal abstract class BaseSaveCardFragment : Fragment(), LoadingHandler,
         when (country.postalCodeType) {
             PostalCodeType.ZIP -> R.string.vgs_checkout_address_info_zip_hint
             PostalCodeType.POSTAL -> R.string.vgs_checkout_address_info_postal_code_hint
-            PostalCodeType.NOTHING -> R.string.empty
+            PostalCodeType.UNDEFINED -> R.string.empty
         }
 
-    protected fun validate(vararg input: InputFieldView = validationRequiredInputs) {
-        input.forEach { validate(it) }
-    }
-
-    protected fun validate(input: InputFieldView) {
-        inputFieldErrors[input] = getErrorMessage(input)
-    }
-
-    protected fun updateErrors() {
-        inputFieldErrors.forEach {
-            it.key.setMaterialError(it.value)
+    /**
+     * Validate all inputs and update error messages.
+     *
+     * @return list of invalid input fields.
+     */
+    protected fun validate(): List<InputFieldView> {
+        val result = mutableListOf<InputFieldView>()
+        validationRequiredInputs.forEach {
+            val isValid = validate(it)
+            if (!isValid) result.add(it)
         }
+        return result
     }
 
-    protected fun updateError(input: InputFieldView) {
-        input.setMaterialError(inputFieldErrors[input])
+    /**
+     * Validate input field and update error message.
+     *
+     * @return true if field valid, false otherwise.
+     */
+    protected fun validate(input: InputFieldView): Boolean {
+        val message = getErrorMessage(input)
+        input.setMaterialError(message)
+        return message.isNullOrEmpty()
     }
 
-    protected fun clearError(input: InputFieldView) {
-        inputFieldErrors[input] = ""
-        updateError(input)
+    private fun clearError(input: InputFieldView) {
+        input.setMaterialError(null)
     }
 
-    private fun getErrorMessage(
-        input: InputFieldView,
-    ): String = getString(when {
-        input.isInputEmpty() -> getEmptyErrorMessage(input)
-        !input.isInputValid() -> getInvalidErrorMessage(input)
-        else -> R.string.empty
-    })
+    private fun getErrorMessage(input: InputFieldView): String? = when {
+        input.isInputEmpty() -> getString(getEmptyErrorMessage(input))
+        !input.isInputValid() -> getString(getInvalidErrorMessage(input))
+        else -> null
+    }
 
     @StringRes
     private fun getEmptyErrorMessage(input: InputFieldView): Int = when (input.id) {
@@ -340,7 +344,7 @@ internal abstract class BaseSaveCardFragment : Fragment(), LoadingHandler,
         when (country.postalCodeType) {
             PostalCodeType.ZIP -> R.string.vgs_checkout_address_info_zipcode_empty_error
             PostalCodeType.POSTAL -> R.string.vgs_checkout_address_info_postal_code_empty_error
-            PostalCodeType.NOTHING -> R.string.empty
+            PostalCodeType.UNDEFINED -> R.string.empty
         }
 
     @StringRes
@@ -348,12 +352,8 @@ internal abstract class BaseSaveCardFragment : Fragment(), LoadingHandler,
         when (country.postalCodeType) {
             PostalCodeType.ZIP -> R.string.vgs_checkout_address_info_zipcode_invalid_error
             PostalCodeType.POSTAL -> R.string.vgs_checkout_address_info_postal_code_invalid_error
-            PostalCodeType.NOTHING -> R.string.empty
+            PostalCodeType.UNDEFINED -> R.string.empty
         }
-
-    private fun getInvalidInputAnalyticsNames(): List<String> =
-        inputFieldErrors.map { if (it.value.isEmpty()) null else it.key.getAnalyticsName() }
-            .filterNotNull()
 
     private fun setInputViewsEnabled(isEnabled: Boolean) {
         binding.cardDetailsLL.setEnabled(isEnabled, true, binding.cardDetailsMtv)
@@ -367,11 +367,11 @@ internal abstract class BaseSaveCardFragment : Fragment(), LoadingHandler,
         with(binding.saveCardButton) {
             isClickable = !isLoading
             if (isLoading) {
-                text = getString(R.string.vgs_checkout_save_button_processing_title)
+                text = getString(R.string.vgs_checkout_button_processing_title)
                 icon = getDrawableCompat(R.drawable.vgs_checkout_ic_loading_animated_white_16)
                 (icon as? Animatable)?.start()
             } else {
-                text = getString(R.string.vgs_checkout_save_button_save_card_title)
+                text = buttonTitle
                 icon = null
             }
         }
@@ -379,13 +379,19 @@ internal abstract class BaseSaveCardFragment : Fragment(), LoadingHandler,
 
     companion object {
 
+        internal const val TAG = "BaseSaveCardFragment"
+
         private const val ICON_ALPHA_ENABLED = 1f
         private const val ICON_ALPHA_DISABLED = 0.5f
         private const val BILLING_ADDRESS_MIN_CHARS_COUNT = 1
         private const val KEY_BUNDLE_CONFIG = "key_bundle_from_config"
+        private const val KEY_BUNDLE_BUTTON_TITLE = "key_bundle_button_title"
 
-        fun create(formConfig: CheckoutFormConfig): BaseSaveCardFragment {
-            val bundle = Bundle().apply { putParcelable(KEY_BUNDLE_CONFIG, formConfig) }
+        fun create(formConfig: CheckoutFormConfig, buttonTitle: String): BaseSaveCardFragment {
+            val bundle = Bundle().apply {
+                putParcelable(KEY_BUNDLE_CONFIG, formConfig)
+                putString(KEY_BUNDLE_BUTTON_TITLE, buttonTitle)
+            }
             val fragment = when (formConfig.validationBehaviour) {
                 VGSCheckoutFormValidationBehaviour.ON_SUBMIT -> SaveCardStaticValidationFragment()
                 VGSCheckoutFormValidationBehaviour.ON_FOCUS -> SaveCardDynamicValidationFragment()

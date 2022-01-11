@@ -28,10 +28,10 @@ internal abstract class Event constructor(type: String) {
     )
         get() = field + attributes
 
-    fun getData(vaultID: String, formID: String, environment: String): Map<String, Any> {
+    fun getData(id: String, formId: String, environment: String): Map<String, Any> {
         return data.apply {
-            put(KEY_VAULT_ID, vaultID)
-            put(KEY_FORM_ID, formID)
+            put(KEY_ID, id)
+            put(KEY_FORM_ID, formId)
             put(KEY_ENVIRONMENT, environment)
         }
     }
@@ -59,7 +59,7 @@ internal abstract class Event constructor(type: String) {
         private const val KEY_DEVICE = "device"
         private const val KEY_DEVICE_MODEL = "deviceModel"
         private const val KEY_OS = "osVersion"
-        private const val KEY_VAULT_ID = "tnt"
+        private const val KEY_ID = "tnt"
         private const val KEY_FORM_ID = "formId"
         private const val KEY_ENVIRONMENT = "env"
 

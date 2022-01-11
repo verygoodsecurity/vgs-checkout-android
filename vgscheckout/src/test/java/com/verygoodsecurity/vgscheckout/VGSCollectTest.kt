@@ -20,7 +20,6 @@ import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.ArgumentMatchers
 import org.mockito.Mockito.*
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
@@ -158,7 +157,7 @@ class VGSCollectTest {
 
         collect.submit("/path", HTTPMethod.POST)
 
-        verify(listener).onResponse(ArgumentMatchers.any(VGSResponse.ErrorResponse::class.java))
+        verify(listener).onResponse(any(VGSResponse.ErrorResponse::class.java))
     }
 
     @Test
@@ -172,7 +171,7 @@ class VGSCollectTest {
 
         collect.submit("/path", HTTPMethod.POST)
 
-        verify(listener).onResponse(ArgumentMatchers.any(VGSResponse.ErrorResponse::class.java))
+        verify(listener).onResponse(any(VGSResponse.ErrorResponse::class.java))
     }
 
     @Test
@@ -204,7 +203,7 @@ class VGSCollectTest {
 
         collect.asyncSubmit("/path", HTTPMethod.POST)
 
-        verify(listener).onResponse(ArgumentMatchers.any(VGSResponse.ErrorResponse::class.java))
+        verify(listener).onResponse(any(VGSResponse.ErrorResponse::class.java))
     }
 
     @Test
@@ -218,7 +217,7 @@ class VGSCollectTest {
 
         collect.asyncSubmit("/path", HTTPMethod.POST)
 
-        verify(listener).onResponse(ArgumentMatchers.any(VGSResponse.ErrorResponse::class.java))
+        verify(listener).onResponse(any(VGSResponse.ErrorResponse::class.java))
     }
 
     @Test
@@ -254,7 +253,7 @@ class VGSCollectTest {
             .build()
         collect.submit(request)
 
-        verify(listener).onResponse(ArgumentMatchers.any(VGSResponse.ErrorResponse::class.java))
+        verify(listener).onResponse(any(VGSResponse.ErrorResponse::class.java))
     }
 
     @Test
@@ -272,7 +271,7 @@ class VGSCollectTest {
             .build()
         collect.submit(request)
 
-        verify(listener).onResponse(ArgumentMatchers.any(VGSResponse.ErrorResponse::class.java))
+        verify(listener).onResponse(any(VGSResponse.ErrorResponse::class.java))
     }
 
     @Test
@@ -313,7 +312,7 @@ class VGSCollectTest {
             .build()
         collect.asyncSubmit(request)
 
-        verify(listener).onResponse(ArgumentMatchers.any(VGSResponse.ErrorResponse::class.java))
+        verify(listener).onResponse(any(VGSResponse.ErrorResponse::class.java))
     }
 
     @Test
@@ -331,7 +330,7 @@ class VGSCollectTest {
             .build()
         collect.asyncSubmit(request)
 
-        verify(listener).onResponse(ArgumentMatchers.any(VGSResponse.ErrorResponse::class.java))
+        verify(listener).onResponse(any(VGSResponse.ErrorResponse::class.java))
     }
 
     @Test
@@ -502,7 +501,7 @@ class VGSCollectTest {
         assertEquals(
             "{\"card\":{\"cvc\":\"123\",\"number\":\"4111111111111111\",\"name\":\"holder\",\"expDate\":\"12\\/2040\",\"billing_address\":{\"country\":\"CA\",\"address1\":\"address 1\",\"postal_code\":\"12345\",\"city\":\"city\"}}}",
             argument.value.customData
-        );
+        )
     }
 
     private fun applyStorage(): InternalStorage {

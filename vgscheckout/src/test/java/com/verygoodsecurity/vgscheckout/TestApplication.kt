@@ -13,5 +13,7 @@ internal class TestApplication : Application() {
 
 fun <T> any(): T = Mockito.any()
 
+fun <T> any(type: Class<T>): T = Mockito.any(type)
+
 fun <T> capture(argumentCaptor: ArgumentCaptor<T>): T = argumentCaptor.capture()
 

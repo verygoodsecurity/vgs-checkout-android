@@ -6,8 +6,8 @@ import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.JWTValid
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutPaymentRouteConfig
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutAddCardFormConfig
-import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutJWTParseException
-import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutJWTRestrictedRoleException
+import com.verygoodsecurity.vgscheckout.exception.internal.VGSCheckoutJWTParseException
+import com.verygoodsecurity.vgscheckout.exception.internal.VGSCheckoutJWTRestrictedRoleException
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
 
 /**
@@ -26,14 +26,14 @@ import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
 @Suppress("MemberVisibilityCanBePrivate", "CanBeParameter")
 class VGSCheckoutAddCardConfig private constructor(
     internal val accessToken: String,
-    override val vaultID: String,
+    val tenantId: String,
     override val environment: VGSCheckoutEnvironment,
     override val routeConfig: VGSCheckoutPaymentRouteConfig,
     override val formConfig: VGSCheckoutAddCardFormConfig,
     override val isScreenshotsAllowed: Boolean,
     override val isAnalyticsEnabled: Boolean,
     private val createdFromParcel: Boolean
-) : CheckoutConfig() {
+) : CheckoutConfig(tenantId) {
 
     init {
         if (!createdFromParcel) validateToken()
@@ -54,7 +54,7 @@ class VGSCheckoutAddCardConfig private constructor(
      * Public constructor.
      *
      * @param accessToken payment orchestration app access token.
-     * @param vaultID unique organization vault id.
+     * @param tenantId unique organization vault id.
      * @param environment type of vault.
      * @param formConfig UI configuration.
      * @param isScreenshotsAllowed If true, checkout form will allow to make screenshots. Default is false.
@@ -69,14 +69,14 @@ class VGSCheckoutAddCardConfig private constructor(
     @Throws(VGSCheckoutJWTParseException::class, VGSCheckoutJWTRestrictedRoleException::class)
     constructor(
         accessToken: String,
-        vaultID: String,
+        tenantId: String,
         environment: VGSCheckoutEnvironment = VGSCheckoutEnvironment.Sandbox(),
         formConfig: VGSCheckoutAddCardFormConfig = VGSCheckoutAddCardFormConfig(),
         isScreenshotsAllowed: Boolean = false,
         isAnalyticsEnabled: Boolean = true
     ) : this(
         accessToken,
-        vaultID,
+        tenantId,
         environment,
         VGSCheckoutPaymentRouteConfig(accessToken),
         formConfig,
@@ -87,7 +87,7 @@ class VGSCheckoutAddCardConfig private constructor(
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(accessToken)
-        parcel.writeString(vaultID)
+        parcel.writeString(tenantId)
         parcel.writeParcelable(environment, flags)
         parcel.writeParcelable(routeConfig, flags)
         parcel.writeParcelable(formConfig, flags)
