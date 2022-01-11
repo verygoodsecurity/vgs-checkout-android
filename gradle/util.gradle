@@ -18,3 +18,18 @@ def getLocalProperty(String propName) {
         return ""
     }
 }
+
+ext.getLocalProperties = {
+    getLocalProperties()
+}
+
+static def getLocalProperties() {
+    def properties = new Properties()
+    def localPropertiesFile = new File('local.properties')
+    if (localPropertiesFile.exists()) {
+        properties.load(localPropertiesFile.newDataInputStream())
+    } else {
+        throw new GradleException("local.properties does not exists.")
+    }
+    return properties
+}
