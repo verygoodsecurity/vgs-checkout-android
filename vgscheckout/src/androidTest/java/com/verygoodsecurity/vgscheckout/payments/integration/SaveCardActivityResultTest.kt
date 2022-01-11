@@ -32,7 +32,7 @@ import org.junit.runner.RunWith
 
 @Suppress("SameParameterValue")
 @RunWith(AndroidJUnit4::class)
-class PaymentOrchestrationActivityResultTest {
+class SaveCardActivityResultTest {
 
     private val context: Context = ApplicationProvider.getApplicationContext()
 

@@ -24,7 +24,7 @@ import org.junit.runner.RunWith
 
 @Suppress("SameParameterValue")
 @RunWith(AndroidJUnit4::class)
-class DefaultPaymentOrchestrationSetupTest {
+class DefaultCheckoutSetupTest {
 
     private val context: Context = ApplicationProvider.getApplicationContext()
 
