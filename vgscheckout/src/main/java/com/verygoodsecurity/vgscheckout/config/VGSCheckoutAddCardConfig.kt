@@ -54,7 +54,7 @@ class VGSCheckoutAddCardConfig private constructor(
      * Public constructor.
      *
      * @param accessToken payment orchestration app access token.
-     * @param vaultID unique organization vault id.
+     * @param tenantId unique organization vault id.
      * @param environment type of vault.
      * @param formConfig UI configuration.
      * @param isScreenshotsAllowed If true, checkout form will allow to make screenshots. Default is false.
@@ -69,14 +69,14 @@ class VGSCheckoutAddCardConfig private constructor(
     @Throws(VGSCheckoutJWTParseException::class, VGSCheckoutJWTRestrictedRoleException::class)
     constructor(
         accessToken: String,
-        vaultID: String,
+        tenantId: String,
         environment: VGSCheckoutEnvironment = VGSCheckoutEnvironment.Sandbox(),
         formConfig: VGSCheckoutAddCardFormConfig = VGSCheckoutAddCardFormConfig(),
         isScreenshotsAllowed: Boolean = false,
         isAnalyticsEnabled: Boolean = true
     ) : this(
         accessToken,
-        vaultID,
+        tenantId,
         environment,
         VGSCheckoutPaymentRouteConfig(accessToken),
         formConfig,

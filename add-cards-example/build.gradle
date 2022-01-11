@@ -47,7 +47,7 @@ android {
 
     applicationVariants.all { variant ->
         String vaultId = getLocalProperty("VAULT_ID")
-        variant.resValue "string", "vault_id", vaultId + ''
+        variant.resValue "string", "storage_id", vaultId + ''
     }
 }
 

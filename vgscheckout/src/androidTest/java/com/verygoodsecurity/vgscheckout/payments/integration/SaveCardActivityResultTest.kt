@@ -21,7 +21,7 @@ import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_ARGS
 import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_RESULT
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
-import com.verygoodsecurity.vgscheckout.ui.CheckoutPaymentOrchestrationActivity
+import com.verygoodsecurity.vgscheckout.ui.SaveCardActivity
 import com.verygoodsecurity.vgscheckout.util.ViewInteraction
 import com.verygoodsecurity.vgscheckout.util.extension.*
 import com.verygoodsecurity.vgscheckout.util.extension.getParcelableSafe
@@ -32,11 +32,11 @@ import org.junit.runner.RunWith
 
 @Suppress("SameParameterValue")
 @RunWith(AndroidJUnit4::class)
-class PaymentOrchestrationActivityResultTest {
+class SaveCardActivityResultTest {
 
     private val context: Context = ApplicationProvider.getApplicationContext()
 
-    private val defaultIntent = Intent(context, CheckoutPaymentOrchestrationActivity::class.java).apply {
+    private val defaultIntent = Intent(context, SaveCardActivity::class.java).apply {
         putExtra(
             EXTRA_KEY_ARGS,
             CheckoutResultContract.Args(
@@ -60,7 +60,7 @@ class PaymentOrchestrationActivityResultTest {
     @Test(timeout = 60000L)
     fun performCheckout_PaymentOrchestration_saveCard_unsuccessfulResponse_resultFailed_codeOk() {
         //Arrange
-        launch<CheckoutPaymentOrchestrationActivity>(defaultIntent).use {
+        launch<SaveCardActivity>(defaultIntent).use {
             fillCardFields(
                 Constants.VALID_CARD_HOLDER,
                 Constants.VALID_CARD_NUMBER,
@@ -83,7 +83,7 @@ class PaymentOrchestrationActivityResultTest {
 
     @Test
     fun performPaymentOrchestration_cancelActivityResult_withNavigationUp_codeCanceled() {
-        launch<CheckoutPaymentOrchestrationActivity>(defaultIntent).use {
+        launch<SaveCardActivity>(defaultIntent).use {
             // Act
             onView(withContentDescription(R.string.abc_action_bar_up_description)).perform(click())
             //Assert
@@ -95,7 +95,7 @@ class PaymentOrchestrationActivityResultTest {
 
     @Test
     fun performPaymentOrchestration_cancelActivityResult_withBackPress_codeCanceled() {
-        launch<CheckoutPaymentOrchestrationActivity>(defaultIntent).use {
+        launch<SaveCardActivity>(defaultIntent).use {
             // Act
             onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard())
             device.pressBack()

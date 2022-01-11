@@ -24,7 +24,7 @@ import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 
 class MainActivity : AppCompatActivity(), VGSCheckoutCallback {
 
-    private val vaultId: String by lazy { getString(R.string.vault_id) }
+    private val vaultId: String by lazy { getString(R.string.storage_id) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

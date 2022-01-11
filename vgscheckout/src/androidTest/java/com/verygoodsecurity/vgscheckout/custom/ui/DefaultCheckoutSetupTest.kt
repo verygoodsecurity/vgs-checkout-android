@@ -18,7 +18,7 @@ import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_ARGS
 import com.verygoodsecurity.vgscheckout.ui.CheckoutActivity
-import com.verygoodsecurity.vgscheckout.ui.CheckoutPaymentOrchestrationActivity
+import com.verygoodsecurity.vgscheckout.ui.SaveCardActivity
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers.withError
 import com.verygoodsecurity.vgscheckout.util.ViewInteraction.onViewWithScrollTo
@@ -50,7 +50,7 @@ class DefaultCheckoutSetupTest {
 
     @Test
     fun performCheckout_defaultVisibleFields() {
-        launch<CheckoutPaymentOrchestrationActivity>(defaultIntent).use {
+        launch<SaveCardActivity>(defaultIntent).use {
             waitFor(1500)
             //Assert
             onViewWithScrollTo(R.id.vgsTilCardHolder)
@@ -96,7 +96,7 @@ class DefaultCheckoutSetupTest {
 
     @Test
     fun performCheckout_saveButtonInteractive() {
-        launch<CheckoutPaymentOrchestrationActivity>(defaultIntent).use {
+        launch<SaveCardActivity>(defaultIntent).use {
             //Assert
             onViewWithScrollTo(R.id.mbSaveCard)
                 .check(matches(isEnabled()))

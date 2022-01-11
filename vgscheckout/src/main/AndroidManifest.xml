@@ -13,7 +13,7 @@
             android:windowSoftInputMode="adjustResize" />
 
         <activity
-            android:name=".ui.CheckoutPaymentOrchestrationActivity"
+            android:name=".ui.SaveCardActivity"
             android:theme="@style/VGSCheckout"
             android:windowSoftInputMode="adjustResize" />
     </application>
