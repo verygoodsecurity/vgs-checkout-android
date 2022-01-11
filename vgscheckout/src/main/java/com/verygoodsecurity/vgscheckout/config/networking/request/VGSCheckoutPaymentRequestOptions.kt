@@ -7,11 +7,11 @@ import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 
 /**
- * Multiplexing checkout flow request option. Only for internal use, as multiplexing request have
- * fixed structure.
+ * Payment orchestration checkout flow request option. Only for internal use,
+ * as Payment orchestration request have fixed structure.
  */
 @Parcelize
-class VGSCheckoutMultiplexingRequestOptions private constructor(
+class VGSCheckoutPaymentRequestOptions private constructor(
     override val httpMethod: VGSCheckoutHTTPMethod,
     override val extraHeaders: Map<String, String>,
     override val extraData: Map<String, @RawValue Any>,

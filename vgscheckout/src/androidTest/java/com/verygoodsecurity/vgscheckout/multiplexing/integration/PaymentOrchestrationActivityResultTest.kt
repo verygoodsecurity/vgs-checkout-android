@@ -33,7 +33,7 @@ import org.junit.runner.RunWith
 
 @Suppress("SameParameterValue")
 @RunWith(AndroidJUnit4::class)
-class MultiplexingActivityResultTest {
+class PaymentOrchestrationActivityResultTest {
 
     private val context: Context = ApplicationProvider.getApplicationContext()
 
@@ -59,7 +59,7 @@ class MultiplexingActivityResultTest {
     }
 
     @Test(timeout = 60000L)
-    fun performCheckout_multiplexing_saveCard_unsuccessfulResponse_resultFailed_codeOk() {
+    fun performCheckout_PaymentOrchestration_saveCard_unsuccessfulResponse_resultFailed_codeOk() {
         //Arrange
         launch<CheckoutPaymentOrchestrationActivity>(defaultIntent).use {
             fillCardFields(
@@ -83,7 +83,7 @@ class MultiplexingActivityResultTest {
     }
 
     @Test
-    fun performMultiplexing_cancelActivityResult_withNavigationUp_codeCanceled() {
+    fun performPaymentOrchestration_cancelActivityResult_withNavigationUp_codeCanceled() {
         launch<CheckoutPaymentOrchestrationActivity>(defaultIntent).use {
             // Act
             onView(withContentDescription(R.string.abc_action_bar_up_description)).perform(click())
@@ -95,7 +95,7 @@ class MultiplexingActivityResultTest {
     }
 
     @Test
-    fun performMultiplexing_cancelActivityResult_withBackPress_codeCanceled() {
+    fun performPaymentOrchestration_cancelActivityResult_withBackPress_codeCanceled() {
         launch<CheckoutPaymentOrchestrationActivity>(defaultIntent).use {
             // Act
             onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard())

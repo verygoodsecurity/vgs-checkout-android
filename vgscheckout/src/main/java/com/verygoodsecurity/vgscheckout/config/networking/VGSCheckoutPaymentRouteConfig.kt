@@ -2,24 +2,24 @@ package com.verygoodsecurity.vgscheckout.config.networking
 
 import com.verygoodsecurity.vgscheckout.config.networking.core.CheckoutRouteConfig
 import com.verygoodsecurity.vgscheckout.config.networking.core.VGSCheckoutHostnamePolicy
-import com.verygoodsecurity.vgscheckout.config.networking.request.VGSCheckoutMultiplexingRequestOptions
+import com.verygoodsecurity.vgscheckout.config.networking.request.VGSCheckoutPaymentRequestOptions
 import kotlinx.parcelize.Parcelize
 
 /**
- * Multiplexing checkout route configuration. Only for internal use, as multiplexing request have
- * fixed structure.
+ * Payment orchestration checkout route configuration. Only for internal use,
+ * as Payment orchestration request have fixed structure.
  */
 @Parcelize
 class VGSCheckoutPaymentRouteConfig private constructor(
     override val path: String,
     override val hostnamePolicy: VGSCheckoutHostnamePolicy,
-    override val requestOptions: VGSCheckoutMultiplexingRequestOptions
+    override val requestOptions: VGSCheckoutPaymentRequestOptions
 ) : CheckoutRouteConfig() {
 
     internal constructor(accessToken: String) : this(
         PATH,
         VGSCheckoutHostnamePolicy.Vault,
-        VGSCheckoutMultiplexingRequestOptions(accessToken)
+        VGSCheckoutPaymentRequestOptions(accessToken)
     )
 
     private companion object {

@@ -14,7 +14,7 @@ private const val JWT_WITH_TRANSFERS_ANY_ROLE =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MjkzNzAyMjUsImlhdCI6MTYyOTM2OTkyNSwicmVzb3VyY2VfYWNjZXNzIjp7Im11bHRpcGxleGluZy1hcHAtdG50eHh4eHh4eCI6eyJyb2xlcyI6WyJmaW5hbmNpYWwtaW5zdHJ1bWVudHM6d3JpdGUiLCJ0cmFuc2ZlcnM6YW55Il19fX0.4YTKip8FIZ2VFfPlKFXSw6LMqoOGe2ai8eOH8QXfSxU"
 private const val EMPTY_JWT = ""
 
-class CheckoutMultiplexingCredentialsValidatorTest {
+class CheckoutCredentialsValidatorTest {
 
     private val jwtValidator = CheckoutCredentialsValidator
 
