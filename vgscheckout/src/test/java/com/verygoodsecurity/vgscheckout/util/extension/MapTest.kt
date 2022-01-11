@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscheckout.utils.extension
+package com.verygoodsecurity.vgscheckout.util.extension
 
 import com.verygoodsecurity.vgscheckout.collect.util.extension.ArrayMergePolicy
 import com.verygoodsecurity.vgscheckout.collect.util.extension.deepMerge

@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscheckout.utils.extension
+package com.verygoodsecurity.vgscheckout.util.extension
 
 import com.verygoodsecurity.vgscheckout.collect.core.api.equalsUrl
 import com.verygoodsecurity.vgscheckout.collect.core.api.toHost
