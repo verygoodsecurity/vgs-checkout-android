@@ -14,6 +14,7 @@ import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
+import com.verygoodsecurity.vgscheckout.BuildConfig
 import com.verygoodsecurity.vgscheckout.Constants
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.view.internal.*
@@ -29,7 +30,6 @@ import com.verygoodsecurity.vgscheckout.util.ActionHelper.setText
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers.withError
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers.withParent
 import com.verygoodsecurity.vgscheckout.util.ViewInteraction.onViewWithScrollTo
-import com.verygoodsecurity.vgscheckout.util.extension.safeResult
 import com.verygoodsecurity.vgscheckout.util.extension.waitFor
 import org.junit.Assert
 import org.junit.Before
@@ -46,7 +46,7 @@ class OnFocusFieldsValidationTest {
         putExtra(
             EXTRA_KEY_ARGS,
             CheckoutResultContract.Args(VGSCheckoutCustomConfig(
-                vaultID = Constants.VAULT_ID,
+                vaultID = BuildConfig.VAULT_ID,
                 formConfig = VGSCheckoutCustomFormConfig(
                     addressOptions = VGSCheckoutCustomBillingAddressOptions(
                         visibility = VGSCheckoutBillingAddressVisibility.VISIBLE

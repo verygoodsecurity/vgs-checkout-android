@@ -13,9 +13,8 @@ import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
+import com.verygoodsecurity.vgscheckout.BuildConfig
 import com.verygoodsecurity.vgscheckout.Constants
-import com.verygoodsecurity.vgscheckout.Constants.VALID_JWT_TOKEN
-import com.verygoodsecurity.vgscheckout.Constants.VAULT_ID
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
@@ -42,8 +41,8 @@ class PaymentOrchestrationActivityResultTest {
             EXTRA_KEY_ARGS,
             CheckoutResultContract.Args(
                 VGSCheckoutAddCardConfig(
-                    VALID_JWT_TOKEN,
-                    VAULT_ID,
+                    BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS,
+                    BuildConfig.VAULT_ID,
                     isScreenshotsAllowed = true
                 )
             )
