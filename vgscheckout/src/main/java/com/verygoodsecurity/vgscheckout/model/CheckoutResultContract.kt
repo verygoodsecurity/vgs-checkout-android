@@ -12,8 +12,8 @@ import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutPaymentConfig
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
-import com.verygoodsecurity.vgscheckout.ui.CustomCheckoutActivity
-import com.verygoodsecurity.vgscheckout.ui.PaymentCheckoutActivity
+import com.verygoodsecurity.vgscheckout.ui.CustomSaveCardActivity
+import com.verygoodsecurity.vgscheckout.ui.PaymentActivity
 import com.verygoodsecurity.vgscheckout.ui.SaveCardActivity
 import com.verygoodsecurity.vgscheckout.ui.core.BaseCheckoutActivity
 import kotlinx.parcelize.Parcelize
@@ -44,9 +44,9 @@ internal class CheckoutResultContract :
 
     private fun getIntentTarget(args: Args<CheckoutConfig>?): Class<out BaseCheckoutActivity<*>> {
         return when (args?.config) {
-            is VGSCheckoutCustomConfig -> CustomCheckoutActivity::class.java
+            is VGSCheckoutCustomConfig -> CustomSaveCardActivity::class.java
             is VGSCheckoutAddCardConfig -> SaveCardActivity::class.java
-            is VGSCheckoutPaymentConfig -> PaymentCheckoutActivity::class.java
+            is VGSCheckoutPaymentConfig -> PaymentActivity::class.java
             else -> throw IllegalArgumentException("Invalid checkout config.")
         }
     }

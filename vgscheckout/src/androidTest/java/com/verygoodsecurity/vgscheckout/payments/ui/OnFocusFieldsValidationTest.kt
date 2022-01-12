@@ -24,7 +24,7 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillin
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutPaymentBillingAddressOptions
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_ARGS
-import com.verygoodsecurity.vgscheckout.ui.CustomCheckoutActivity
+import com.verygoodsecurity.vgscheckout.ui.CustomSaveCardActivity
 import com.verygoodsecurity.vgscheckout.ui.SaveCardActivity
 import com.verygoodsecurity.vgscheckout.util.ActionHelper
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers.withError
@@ -71,7 +71,7 @@ class OnFocusFieldsValidationTest {
 
     @Test
     fun focusChange_noInput_errorsNotDisplayed() {
-        ActivityScenario.launch<CustomCheckoutActivity>(intent).use {
+        ActivityScenario.launch<CustomSaveCardActivity>(intent).use {
             // Act
             onViewWithScrollTo(withParent(R.id.vgsTilCardHolder, PersonNameInputField::class))
                 .perform(ViewActions.click())
@@ -111,7 +111,7 @@ class OnFocusFieldsValidationTest {
 
     @Test
     fun focusChange_emptyInput_errorsDisplayed() {
-        ActivityScenario.launch<CustomCheckoutActivity>(intent).use {
+        ActivityScenario.launch<CustomSaveCardActivity>(intent).use {
             // Act
             onViewWithScrollTo(withParent(R.id.vgsTilCardHolder,
                 PersonNameInputField::class))
@@ -164,7 +164,7 @@ class OnFocusFieldsValidationTest {
 
     @Test
     fun focusChange_invalidInput_errorsDisplayed() {
-        ActivityScenario.launch<CustomCheckoutActivity>(intent).use {
+        ActivityScenario.launch<CustomSaveCardActivity>(intent).use {
             // Act
             onViewWithScrollTo(withParent(R.id.vgsTilCardNumber, CardInputField::class))
                 .perform(typeText(Constants.INVALID_CARD_NUMBER))
@@ -186,7 +186,7 @@ class OnFocusFieldsValidationTest {
 
     @Test
     fun submitClicked_noInput_errorsDisplayed() {
-        ActivityScenario.launch<CustomCheckoutActivity>(intent).use {
+        ActivityScenario.launch<CustomSaveCardActivity>(intent).use {
             // Act
             onViewWithScrollTo(R.id.mbSaveCard).perform(ViewActions.click())
             // Assert

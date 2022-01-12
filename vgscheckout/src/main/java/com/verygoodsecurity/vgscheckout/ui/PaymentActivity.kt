@@ -20,7 +20,7 @@ import com.verygoodsecurity.vgscheckout.util.CurrencyFormatter.format
 import com.verygoodsecurity.vgscheckout.util.extension.toCheckoutResult
 import org.json.JSONObject
 
-internal class PaymentCheckoutActivity :
+internal class PaymentActivity :
     BaseCheckoutActivity<VGSCheckoutPaymentConfig>() {
 
     private val client: ApiClient = OkHttpClient()

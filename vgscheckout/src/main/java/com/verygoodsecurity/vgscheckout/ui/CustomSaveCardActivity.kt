@@ -7,7 +7,7 @@ import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.ui.core.BaseCheckoutActivity
 
-internal class CustomCheckoutActivity : BaseCheckoutActivity<VGSCheckoutCustomConfig>() {
+internal class CustomSaveCardActivity : BaseCheckoutActivity<VGSCheckoutCustomConfig>() {
 
     override fun resolveConfig(intent: Intent) =
         CheckoutResultContract.Args.fromIntent<VGSCheckoutCustomConfig>(intent).config
