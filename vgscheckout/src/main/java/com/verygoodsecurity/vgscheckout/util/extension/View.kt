@@ -30,6 +30,10 @@ internal fun View.visible() {
     visibility = View.VISIBLE
 }
 
+internal fun View.setVisible(isVisible: Boolean) {
+    visibility = if (isVisible) View.VISIBLE else View.GONE
+}
+
 internal fun View.getString(@StringRes id: Int) = resources.getString(id)
 
 @ColorInt

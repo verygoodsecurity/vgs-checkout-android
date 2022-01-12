@@ -26,4 +26,9 @@ abstract class CheckoutFormConfig internal constructor() : Parcelable {
      * Defines validation behavior.
      */
     abstract val validationBehaviour: VGSCheckoutFormValidationBehaviour
+
+    /**
+     * Defines if save card checkbox should be visible.
+     */
+    abstract val isSaveCardCheckboxVisible: Boolean
 }

@@ -60,7 +60,6 @@ internal class PaymentActivity :
     private fun pay(financialInstrumentId: String) {
         client.enqueue(createPayRequest(financialInstrumentId)) {
             runOnUiThread {
-                loadingHandler.setIsLoading(false)
                 sendResult(it.toVGSResponse().toCheckoutResult())
             }
         }
