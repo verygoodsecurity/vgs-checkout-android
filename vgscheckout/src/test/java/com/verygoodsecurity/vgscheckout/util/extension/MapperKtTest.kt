@@ -10,6 +10,7 @@ import com.verygoodsecurity.vgscheckout.collect.view.card.BrandParams
 import com.verygoodsecurity.vgscheckout.collect.view.card.CardBrand
 import com.verygoodsecurity.vgscheckout.collect.view.card.CardType
 import com.verygoodsecurity.vgscheckout.collect.view.card.validation.payment.ChecksumAlgorithm
+import com.verygoodsecurity.vgscheckout.util.extension.*
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
 import org.junit.Test

@@ -1,7 +1,0 @@
-<resources>
-    <string name="app_name">VGS Checkout Demo</string>
-
-    <string name="cart_title">Cart</string>
-    <string name="buy_title">Buy</string>
-    <string name="total_title">Total</string>
-</resources>

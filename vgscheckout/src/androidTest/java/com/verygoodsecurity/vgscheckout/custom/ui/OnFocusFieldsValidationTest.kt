@@ -25,7 +25,7 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillin
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutCustomBillingAddressOptions
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_ARGS
-import com.verygoodsecurity.vgscheckout.ui.CustomCheckoutActivity
+import com.verygoodsecurity.vgscheckout.ui.CustomSaveCardActivity
 import com.verygoodsecurity.vgscheckout.util.ActionHelper.setText
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers.withError
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers.withParent
@@ -42,7 +42,7 @@ class OnFocusFieldsValidationTest {
 
     private val context: Context = ApplicationProvider.getApplicationContext()
 
-    private var intent = Intent(context, CustomCheckoutActivity::class.java).apply {
+    private var intent = Intent(context, CustomSaveCardActivity::class.java).apply {
         putExtra(
             EXTRA_KEY_ARGS,
             CheckoutResultContract.Args(VGSCheckoutCustomConfig(
@@ -68,7 +68,7 @@ class OnFocusFieldsValidationTest {
 
     @Test
     fun focusChange_noInput_errorsNotDisplayed() {
-        launch<CustomCheckoutActivity>(intent).use {
+        launch<CustomSaveCardActivity>(intent).use {
             // Act
             onViewWithScrollTo(withParent(R.id.vgsTilCardHolder, PersonNameInputField::class))
                 .perform(click())
@@ -107,7 +107,7 @@ class OnFocusFieldsValidationTest {
 
     @Test
     fun focusChange_emptyInput_errorsDisplayed() {
-        launch<CustomCheckoutActivity>(intent).use {
+        launch<CustomSaveCardActivity>(intent).use {
             // Act
             onViewWithScrollTo(withParent(R.id.vgsTilCardHolder, PersonNameInputField::class))
                 .perform(typeText(Constants.VALID_CARD_HOLDER))
@@ -145,7 +145,7 @@ class OnFocusFieldsValidationTest {
 
     @Test
     fun focusChange_invalidInput_errorsDisplayed() {
-        launch<CustomCheckoutActivity>(intent).use {
+        launch<CustomSaveCardActivity>(intent).use {
             // Act
             onViewWithScrollTo(withParent(R.id.vgsTilCardNumber, CardInputField::class))
                 .perform(typeText(Constants.INVALID_CARD_NUMBER))
@@ -167,7 +167,7 @@ class OnFocusFieldsValidationTest {
 
     @Test
     fun submitClicked_noInput_errorsDisplayed() {
-        launch<CustomCheckoutActivity>(intent).use {
+        launch<CustomSaveCardActivity>(intent).use {
             // Act
             onViewWithScrollTo(R.id.mbSaveCard).perform(click())
             // Assert

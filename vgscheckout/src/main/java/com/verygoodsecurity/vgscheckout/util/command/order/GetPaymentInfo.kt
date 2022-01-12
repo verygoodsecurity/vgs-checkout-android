@@ -62,7 +62,7 @@ internal class GetPaymentInfo : AsynchronousCommand<String, Result<PaymentInfo>>
     private fun createOrderDetailsRequest(orderId: String): NetworkRequest {
         return NetworkRequest(
             method = HTTPMethod.GET,
-            url = BuildConfig.MULTIPLEXING_URL + ORDERS_PATH + orderId,
+            url = BuildConfig.PAYMENT_ORCHESTRATION_URL + ORDERS_PATH + orderId,
             customHeader = emptyMap(),
             customData = Unit,
             fieldsIgnore = false,

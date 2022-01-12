@@ -1,4 +1,3 @@
 rootProject.name = "VGS Checkout Demo"
-include ':custom-example'
+include ':add-cards-example'
 include ':vgscheckout'
-include ':multiplexing-example'
