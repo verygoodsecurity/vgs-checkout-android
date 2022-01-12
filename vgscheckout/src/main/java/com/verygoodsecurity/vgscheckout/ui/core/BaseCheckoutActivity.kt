@@ -20,7 +20,7 @@ import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSRequest
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
 import com.verygoodsecurity.vgscheckout.collect.widget.*
-import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingPaymentConfig
+import com.verygoodsecurity.vgscheckout.config.VGSCheckoutPaymentConfig
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.config.networking.core.VGSCheckoutHostnamePolicy
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
@@ -127,7 +127,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
 
     private fun updateToolbarTitle(fragment: Fragment?) {
         supportActionBar?.title = getString(
-            if (config is VGSCheckoutMultiplexingPaymentConfig) {
+            if (config is VGSCheckoutPaymentConfig) {
                 if (fragment is BaseSaveCardFragment) {
                     R.string.vgs_checkout_new_card_title
                 } else {

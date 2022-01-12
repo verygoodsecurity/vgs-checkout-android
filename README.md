@@ -27,8 +27,7 @@ Table of contents
 
 
 ## Structure
-* **custom-example** - sample application of VGS Checkout with custom configuration for communication with VGS Proxy.
-* **multiplexing-example** - sample application of VGS Checkout with multiplexing configuration for communication with payment optimization solution.
+* **add-cards-example** - sample application of VGS Checkout which shows how to submit card data with VGS.
 * **vgscheckout** - provides an API for interacting with the VGS services.
 
 
@@ -63,7 +62,7 @@ dependencies {
 
   <tr>
     <td>
-      <b> To initialize VGS Checkout you have to set your <a href="https://www.verygoodsecurity.com/docs/payment-optimization/multiplexing/api/authentication/">access token</a>, <a href="https://www.verygoodsecurity.com/docs/terminology/nomenclature#vault">vault id</a> and <a href="https://www.verygoodsecurity.com/docs/getting-started/going-live#sandbox-vs-live">environment</a> type.</b> 
+      <b> To initialize VGS Checkout you have to set your <a href="https://www.verygoodsecurity.com/docs/payment-optimization/orchestration/api/authentication/">access token</a>, <a href="https://www.verygoodsecurity.com/docs/terminology/nomenclature#vault">vault id</a> and <a href="https://www.verygoodsecurity.com/docs/getting-started/going-live#sandbox-vs-live">environment</a> type.</b>
       </br>You can find additional information about VGS Checkout configurations at the following <a href="https://www.verygoodsecurity.com/docs/payment-optimization/checkout/android-sdk/configuration/">section</a>.
     </td>
 <!--      <th rowspan="2"><img src="/img/vgs-field-setup-state.gif"></th> -->

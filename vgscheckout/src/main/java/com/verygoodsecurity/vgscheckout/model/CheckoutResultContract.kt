@@ -9,12 +9,12 @@ import androidx.activity.result.contract.ActivityResultContract
 import androidx.annotation.VisibleForTesting
 import androidx.core.os.bundleOf
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
-import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingAddCardConfig
-import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingPaymentConfig
+import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
+import com.verygoodsecurity.vgscheckout.config.VGSCheckoutPaymentConfig
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
-import com.verygoodsecurity.vgscheckout.ui.CustomCheckoutActivity
-import com.verygoodsecurity.vgscheckout.ui.MultiplexingPaymentCheckoutActivity
-import com.verygoodsecurity.vgscheckout.ui.MultiplexingSaveCardActivity
+import com.verygoodsecurity.vgscheckout.ui.CustomSaveCardActivity
+import com.verygoodsecurity.vgscheckout.ui.PaymentActivity
+import com.verygoodsecurity.vgscheckout.ui.SaveCardActivity
 import com.verygoodsecurity.vgscheckout.ui.core.BaseCheckoutActivity
 import kotlinx.parcelize.Parcelize
 
@@ -44,9 +44,9 @@ internal class CheckoutResultContract :
 
     private fun getIntentTarget(args: Args<CheckoutConfig>?): Class<out BaseCheckoutActivity<*>> {
         return when (args?.config) {
-            is VGSCheckoutCustomConfig -> CustomCheckoutActivity::class.java
-            is VGSCheckoutMultiplexingAddCardConfig -> MultiplexingSaveCardActivity::class.java
-            is VGSCheckoutMultiplexingPaymentConfig -> MultiplexingPaymentCheckoutActivity::class.java
+            is VGSCheckoutCustomConfig -> CustomSaveCardActivity::class.java
+            is VGSCheckoutAddCardConfig -> SaveCardActivity::class.java
+            is VGSCheckoutPaymentConfig -> PaymentActivity::class.java
             else -> throw IllegalArgumentException("Invalid checkout config.")
         }
     }
