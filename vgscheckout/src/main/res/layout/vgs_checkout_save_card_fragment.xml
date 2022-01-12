@@ -234,7 +234,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/vgs_checkout_margin_padding_size_medium"
-            android:checked="true"
             android:text="@string/vgs_checkout_checkbox_save_card_title"
             android:visibility="gone" />
 
