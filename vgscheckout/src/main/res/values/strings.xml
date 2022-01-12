@@ -50,6 +50,8 @@
     <string name="vgs_checkout_address_info_postal_code_empty_error">Postal code is empty</string>
     <string name="vgs_checkout_address_info_postal_code_invalid_error">Postal code is invalid</string>
 
+    <string name="vgs_checkout_checkbox_save_card_title">Save card for future payments</string>
+
     <string name="vgs_checkout_button_save_card_title">Save card</string>
     <string name="vgs_checkout_button_pay_title">Pay %1$s</string>
     <string name="vgs_checkout_button_processing_title">Processing</string>

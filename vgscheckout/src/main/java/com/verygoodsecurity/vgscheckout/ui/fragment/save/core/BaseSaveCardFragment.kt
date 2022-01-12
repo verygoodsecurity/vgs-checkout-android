@@ -91,7 +91,7 @@ internal abstract class BaseSaveCardFragment : Fragment(), LoadingHandler,
     }
 
     override fun setIsLoading(isLoading: Boolean) {
-        setInputViewsEnabled(!isLoading)
+        setViewsEnabled(!isLoading)
         setSaveButtonIsLoading(isLoading)
     }
 
@@ -116,6 +116,7 @@ internal abstract class BaseSaveCardFragment : Fragment(), LoadingHandler,
     protected open fun initViews(view: View) {
         initCardDetailsViews()
         initBillingAddressViews()
+        initSaveCardCheckbox()
         initSaveButton()
     }
 
@@ -230,6 +231,10 @@ internal abstract class BaseSaveCardFragment : Fragment(), LoadingHandler,
         binding.postalCodeEt.setOnEditorActionListener(this)
         updatePostalCodeView(binding.countryEt.selectedCountry)
         binding.postalCodeEt.addOnTextChangeListenerOnLayout(this)
+    }
+
+    private fun initSaveCardCheckbox() {
+        binding.saveCardCheckbox.setVisible(formConfig.isSaveCardCheckboxVisible)
     }
 
     private fun initSaveButton() {
@@ -355,12 +360,13 @@ internal abstract class BaseSaveCardFragment : Fragment(), LoadingHandler,
             PostalCodeType.UNDEFINED -> R.string.empty
         }
 
-    private fun setInputViewsEnabled(isEnabled: Boolean) {
+    private fun setViewsEnabled(isEnabled: Boolean) {
         binding.cardDetailsLL.setEnabled(isEnabled, true, binding.cardDetailsMtv)
         binding.billingAddressLL.setEnabled(isEnabled, true, binding.billingAddressMtv)
         val alpha = if (isEnabled) ICON_ALPHA_ENABLED else ICON_ALPHA_DISABLED
         binding.cardNumberEt.setDrawablesAlphaColorFilter(alpha)
         binding.securityCodeEt.setDrawablesAlphaColorFilter(alpha)
+        binding.saveCardCheckbox.isEnabled = isEnabled
     }
 
     private fun setSaveButtonIsLoading(isLoading: Boolean) {

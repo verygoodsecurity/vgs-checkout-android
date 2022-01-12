@@ -228,6 +228,15 @@
             </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.appcompat.widget.LinearLayoutCompat>
 
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/mcbSaveCard"
+            style="@style/VGSCheckout.SaveCheckbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/vgs_checkout_margin_padding_size_medium"
+            android:text="@string/vgs_checkout_checkbox_save_card_title"
+            android:visibility="gone" />
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/mbSaveCard"
             style="@style/VGSCheckout.SaveButton"

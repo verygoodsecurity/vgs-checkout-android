@@ -7,6 +7,7 @@ import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.JWTValid
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutPaymentRouteConfig
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutAddCardFormConfig
+import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutPaymentFormConfig
 import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
 import com.verygoodsecurity.vgscheckout.util.command.Result
@@ -34,7 +35,7 @@ class VGSCheckoutPaymentConfig private constructor(
     internal val paymentInfo: PaymentInfo,
     override val environment: VGSCheckoutEnvironment,
     override val routeConfig: VGSCheckoutPaymentRouteConfig,
-    override val formConfig: VGSCheckoutAddCardFormConfig,
+    override val formConfig: VGSCheckoutPaymentFormConfig,
     override val isScreenshotsAllowed: Boolean,
     override val isAnalyticsEnabled: Boolean,
     private val createdFromParcel: Boolean
@@ -113,7 +114,7 @@ class VGSCheckoutPaymentConfig private constructor(
             tenantId: String,
             callback: VGSCheckoutConfigInitCallback<VGSCheckoutPaymentConfig>,
             environment: VGSCheckoutEnvironment = VGSCheckoutEnvironment.Sandbox(),
-            formConfig: VGSCheckoutAddCardFormConfig = VGSCheckoutAddCardFormConfig(),
+            formConfig: VGSCheckoutPaymentFormConfig = VGSCheckoutPaymentFormConfig(),
             isScreenshotsAllowed: Boolean = false,
             isAnalyticsEnabled: Boolean = true,
         ): VGSCheckoutCancellable = GetPaymentInfo().execute(orderId) {
