@@ -75,7 +75,6 @@ dependencies {
 
 def createBuildConfigFields(buildConfig) {
     def properties = getLocalProperties()
-    buildConfig.buildConfigField "String", "PAYMENT_ORCHESTRATION_URL", "\"${properties['PAYMENT_ORCHESTRATION_URL']}\""
     buildConfig.buildConfigField "String", "VAULT_ID", "\"${properties['VAULT_ID']}\""
     buildConfig.buildConfigField "String", "JWT_TOKEN_WITHOUT_TRANSFERS", "\"${properties['JWT_TOKEN_WITHOUT_TRANSFERS']}\""
     buildConfig.buildConfigField "String", "JWT_TOKEN_WITH_TRANSFERS_WRITE", "\"${properties['JWT_TOKEN_WITH_TRANSFERS_WRITE']}\""

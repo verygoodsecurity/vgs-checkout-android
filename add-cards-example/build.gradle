@@ -15,6 +15,10 @@ android {
         versionCode 1
         versionName "1.0"
 
+        buildConfigField "String", "CLIENT_HOST", "\"${getLocalProperty("CLIENT_HOST")}\""
+        buildConfigField "String", "GET_TOKEN_ENDPOINT", "\"${getLocalProperty("GET_TOKEN_ENDPOINT")}\""
+        buildConfigField "String", "TRANSFERS_ENDPOINT", "\"${getLocalProperty("TRANSFERS_ENDPOINT")}\""
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -22,18 +26,10 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-
-            buildConfigField "String", "CLIENT_HOST", "\"https://orchestration-demo.apps.verygood.systems/\""
-            buildConfigField "String", "GET_TOKEN_ENDPOINT", "\"get-auth-token\""
-            buildConfigField "String", "TRANSFERS_ENDPOINT", "\"transfers\""
         }
         debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-
-            buildConfigField "String", "CLIENT_HOST", "\"https://orchestration-demo.apps.verygood.systems/\""
-            buildConfigField "String", "GET_TOKEN_ENDPOINT", "\"get-auth-token\""
-            buildConfigField "String", "TRANSFERS_ENDPOINT", "\"transfers\""
         }
     }
 
