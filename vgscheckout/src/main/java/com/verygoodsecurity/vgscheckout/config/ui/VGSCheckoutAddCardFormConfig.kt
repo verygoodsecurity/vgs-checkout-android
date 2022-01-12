@@ -7,7 +7,7 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.card.VGSCheckoutPaymentCa
 import kotlinx.parcelize.Parcelize
 
 /**
- * Payment flow checkout form configuration.
+ * Payment orchestration flow checkout form configuration.
  *
  * @param cardOptions card details section UI options.
  * @param addressOptions address details section UI options.
