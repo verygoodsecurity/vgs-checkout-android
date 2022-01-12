@@ -17,6 +17,6 @@ internal class SaveCardActivity :
 
     override fun initView(savedInstanceState: Bundle?) {
         super.initView(savedInstanceState)
-        config.analyticTracker.log(InitEvent(InitEvent.ConfigType.PAYMENT_ORCHESTRATION))
+        config.analyticTracker.log(InitEvent(InitEvent.ConfigType.PAYOPT))
     }
 }
