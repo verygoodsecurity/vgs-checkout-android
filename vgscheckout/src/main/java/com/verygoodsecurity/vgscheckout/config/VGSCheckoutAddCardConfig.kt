@@ -6,8 +6,7 @@ import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.JWTValid
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutPaymentRouteConfig
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutAddCardFormConfig
-import com.verygoodsecurity.vgscheckout.exception.internal.VGSCheckoutJWTParseException
-import com.verygoodsecurity.vgscheckout.exception.internal.VGSCheckoutJWTRestrictedRoleException
+import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
 
 /**
@@ -61,12 +60,10 @@ class VGSCheckoutAddCardConfig private constructor(
      * @param isAnalyticsEnabled If true, checkout will send analytics events that helps to debug
      * issues if any occurs. Default value is true.
      *
-     * @throws com.verygoodsecurity.vgscheckout.exception.internal.VGSCheckoutJWTParseException if access token is not valid.
-     * @throws com.verygoodsecurity.vgscheckout.exception.internal.VGSCheckoutJWTRestrictedRoleException if
-     * access token is contains restricted roles.
+     * @throws com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
      */
     @JvmOverloads
-    @Throws(VGSCheckoutJWTParseException::class, VGSCheckoutJWTRestrictedRoleException::class)
+    @Throws(VGSCheckoutException::class)
     constructor(
         accessToken: String,
         tenantId: String,
