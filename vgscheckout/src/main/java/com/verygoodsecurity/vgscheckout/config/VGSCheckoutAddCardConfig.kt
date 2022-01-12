@@ -54,7 +54,7 @@ class VGSCheckoutAddCardConfig private constructor(
      * Public constructor.
      *
      * @param accessToken payment orchestration app access token.
-     * @param tenantId unique organization vault id.
+     * @param tenantId unique organization id.
      * @param environment type of vault.
      * @param formConfig UI configuration.
      * @param isScreenshotsAllowed If true, checkout form will allow to make screenshots. Default is false.
