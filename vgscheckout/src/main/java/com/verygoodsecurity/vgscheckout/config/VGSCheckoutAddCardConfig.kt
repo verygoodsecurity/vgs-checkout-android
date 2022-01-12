@@ -14,7 +14,7 @@ import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
  * Holds configuration with predefined setup for work with payment orchestration app.
  *
  * @param accessToken payment orchestration app access token.
- * @param vaultID unique organization vault id.
+ * @param vaultID unique organization id.
  * @param environment type of vault.
  * @param routeConfig Networking configuration, like http method, request headers etc.
  * @param formConfig UI configuration.
