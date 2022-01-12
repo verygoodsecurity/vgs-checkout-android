@@ -156,12 +156,12 @@ class EventsTest {
     @Test
     fun getData_initPaymentOrchestration_customDataAdded() {
         // Arrange
-        val event = InitEvent(InitEvent.ConfigType.PAYMENT_ORCHESTRATION)
+        val event = InitEvent(InitEvent.ConfigType.PAYOPT)
         // Act
         val data = event.getData(VAULT_ID, FORM_ID, ENVIRONMENT)
         // Assert
         assertEquals(data["type"], "Init")
-        assertEquals(data["config"], "payment_orchestration")
+        assertEquals(data["config"], "payopt")
     }
 
     @Test
