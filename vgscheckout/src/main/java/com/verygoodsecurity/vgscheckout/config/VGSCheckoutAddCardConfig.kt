@@ -14,7 +14,7 @@ import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
  * Holds configuration with predefined setup for work with payment orchestration app.
  *
  * @param accessToken payment orchestration app access token.
- * @param vaultID unique organization vault id.
+ * @param tenantId unique organization vault id.
  * @param environment type of vault.
  * @param routeConfig Networking configuration, like http method, request headers etc.
  * @param formConfig UI configuration.
@@ -61,8 +61,8 @@ class VGSCheckoutAddCardConfig private constructor(
      * @param isAnalyticsEnabled If true, checkout will send analytics events that helps to debug
      * issues if any occurs. Default value is true.
      *
-     * @throws com.verygoodsecurity.vgscheckout.exception.VGSCheckoutJWTParseException if access token is not valid.
-     * @throws com.verygoodsecurity.vgscheckout.exception.VGSCheckoutJWTRestrictedRoleException if
+     * @throws com.verygoodsecurity.vgscheckout.exception.internal.VGSCheckoutJWTParseException if access token is not valid.
+     * @throws com.verygoodsecurity.vgscheckout.exception.internal.VGSCheckoutJWTRestrictedRoleException if
      * access token is contains restricted roles.
      */
     @JvmOverloads
