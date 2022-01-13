@@ -10,7 +10,7 @@ import org.junit.Test
 class VGSCheckoutAddCardConfigTest {
 
     @Test
-    fun createMultiplexingConfig_validJWT_objectCreated() {
+    fun createAddCardConfig_validJWT_objectCreated() {
         // Act
         val config = VGSCheckoutAddCardConfig(BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS, "")
         // Assert
@@ -18,7 +18,7 @@ class VGSCheckoutAddCardConfigTest {
     }
 
     @Test
-    fun createMultiplexingConfig_envSandboxEnabledByDefault() {
+    fun createAddCardConfig_envSandboxEnabledByDefault() {
         // Act
         val config = VGSCheckoutAddCardConfig(BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS, "")
         // Assert
@@ -26,7 +26,7 @@ class VGSCheckoutAddCardConfigTest {
     }
 
     @Test
-    fun createMultiplexingConfig_screenshotsDisabledByDefault() {
+    fun createAddCardConfig_screenshotsDisabledByDefault() {
         // Act
         val config = VGSCheckoutAddCardConfig(BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS, "")
         // Assert
@@ -34,7 +34,7 @@ class VGSCheckoutAddCardConfigTest {
     }
 
     @Test
-    fun createMultiplexingConfig_analyticsEnabledByDefault() {
+    fun createAddCardConfig_analyticsEnabledByDefault() {
         // Act
         val config = VGSCheckoutAddCardConfig(BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS, "")
         // Assert
@@ -42,13 +42,13 @@ class VGSCheckoutAddCardConfigTest {
     }
 
     @Test(expected = VGSCheckoutJWTParseException::class)
-    fun createMultiplexingConfig_emptyJWT_exceptionThrown() {
+    fun createAddCardConfig_emptyJWT_exceptionThrown() {
         // Act
         VGSCheckoutAddCardConfig("", "")
     }
 
     @Test(expected = VGSCheckoutJWTRestrictedRoleException::class)
-    fun createMultiplexingConfig_invalidJWT_exceptionThrown() {
+    fun createAddCardConfig_invalidJWT_exceptionThrown() {
         // Act
         VGSCheckoutAddCardConfig(BuildConfig.JWT_TOKEN_WITH_TRANSFERS_WRITE, "")
     }
