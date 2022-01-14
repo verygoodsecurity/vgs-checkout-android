@@ -16,6 +16,6 @@ internal data class InitEvent(val type: ConfigType) : Event(TYPE) {
     enum class ConfigType {
 
         CUSTOM,
-        MULTIPLEXING
+        PAYOPT
     }
 }

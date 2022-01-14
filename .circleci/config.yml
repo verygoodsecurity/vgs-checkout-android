@@ -6,15 +6,22 @@ aliases:
     docker:
       - image: cimg/android:2021.10.2
     environment:
-      JVM_OPTS: -Xmx4608m
+      JVM_OPTS: -Xmx8g
 
 jobs:
   "Run_Unit_Test_And_Build":
     <<: *environment
     steps:
       - checkout
+      - run:
+          name: Write tests variables into local.properties from CI env variables
+          command: |
+            echo "VAULT_ID=$VAULT_ID" >> local.properties
+            echo "JWT_TOKEN_WITHOUT_TRANSFERS=$JWT_TOKEN_WITHOUT_TRANSFERS" >> local.properties
+            echo "JWT_TOKEN_WITH_TRANSFERS_WRITE=$JWT_TOKEN_WITH_TRANSFERS_WRITE" >> local.properties
+            echo "JWT_TOKEN_WITH_TRANSFERS_ANY=$JWT_TOKEN_WITH_TRANSFERS_ANY" >> local.properties
       - restore_cache:
-          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "custom-example/build.gradle" }}
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "add-cards-example/build.gradle" }}
       - run:
           name: Download Dependencies
           command: |
@@ -23,16 +30,16 @@ jobs:
       - save_cache:
           paths:
             - ~/.gradle
-          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "custom-example/build.gradle" }}
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "add-cards-example/build.gradle" }}
       - run:
           name: Run Lint
-          command: ./gradlew lintDebug
+          command: ./gradlew vgscheckout:lintDebug
       - run:
           name: Run Unit tests
-          command: ./gradlew testDebugUnitTest
+          command: ./gradlew vgscheckout:testDebugUnitTest
       - run:
           name: Generate apk
-          command: ./gradlew assembleDebug vgscheckout:assembleDebug vgscheckout:assembleAndroidTest
+          command: ./gradlew add-cards-example:assembleDebug vgscheckout:assembleDebug vgscheckout:assembleAndroidTest
       - run:
           name: Check if release branch
           command: |
@@ -52,7 +59,7 @@ jobs:
           name: Test with Firebase Test Lab
           command: >
             sudo gcloud firebase test android run \
-              --app custom-example/build/outputs/apk/debug/custom-example-debug.apk \
+              --app add-cards-example/build/outputs/apk/debug/add-cards-example-debug.apk \
               --test vgscheckout/build/outputs/apk/androidTest/debug/vgscheckout-debug-androidTest.apk \
               --device model=redfin,version=30,locale=en,orientation=portrait \
 workflows:

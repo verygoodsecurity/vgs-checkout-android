@@ -3,7 +3,7 @@ package com.verygoodsecurity.vgscheckout
 import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.verygoodsecurity.vgscheckout.config.VGSCheckoutMultiplexingConfig
+import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutJWTParseException
 import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutJWTRestrictedRoleException
@@ -58,7 +58,7 @@ class VGSCheckout internal constructor(
     }
 
     /**
-     * Start checkout with multiplexing configuration.
+     * Start checkout with payment orchestration configuration.
      *
      * @param accessToken client backend access token.
      * @param vaultID VGS vault id.
@@ -80,7 +80,7 @@ class VGSCheckout internal constructor(
         isAnalyticsEnabled: Boolean = true
     ) {
         present(
-            VGSCheckoutMultiplexingConfig(
+            VGSCheckoutAddCardConfig(
                 accessToken,
                 vaultID,
                 environment,

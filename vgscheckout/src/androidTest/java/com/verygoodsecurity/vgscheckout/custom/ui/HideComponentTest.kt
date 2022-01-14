@@ -8,7 +8,7 @@ import androidx.test.espresso.Espresso
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.verygoodsecurity.vgscheckout.Constants.VAULT_ID
+import com.verygoodsecurity.vgscheckout.BuildConfig
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutCustomFormConfig
@@ -37,7 +37,7 @@ class HideComponentTest {
                 EXTRA_KEY_ARGS,
                 CheckoutResultContract.Args(
                     VGSCheckoutCustomConfig(
-                        vaultID = VAULT_ID,
+                        vaultID = BuildConfig.VAULT_ID,
                         formConfig = VGSCheckoutCustomFormConfig(
                             cardOptions = VGSCheckoutCustomCardOptions(
                                 cardHolderOptions = VGSCheckoutCustomCardHolderOptions(
@@ -64,7 +64,7 @@ class HideComponentTest {
                 EXTRA_KEY_ARGS,
                 CheckoutResultContract.Args(
                     VGSCheckoutCustomConfig(
-                        vaultID = VAULT_ID,
+                        vaultID = BuildConfig.VAULT_ID,
                         formConfig = VGSCheckoutCustomFormConfig(
                             addressOptions =
                             VGSCheckoutCustomBillingAddressOptions(

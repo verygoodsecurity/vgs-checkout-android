@@ -13,6 +13,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
+import com.verygoodsecurity.vgscheckout.BuildConfig
 import com.verygoodsecurity.vgscheckout.Constants
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
@@ -42,7 +43,7 @@ class CustomActivityResultTest {
         putExtra(
             EXTRA_KEY_ARGS,
             CheckoutResultContract.Args(VGSCheckoutCustomConfig(
-                Constants.VAULT_ID_3,
+                BuildConfig.VAULT_ID,
                 isScreenshotsAllowed = true
             ))
         )
@@ -88,7 +89,7 @@ class CustomActivityResultTest {
                 EXTRA_KEY_ARGS,
                 CheckoutResultContract.Args(
                     VGSCheckoutCustomConfig(
-                        vaultID = Constants.VAULT_ID_3,
+                        vaultID = BuildConfig.VAULT_ID,
                         VGSCheckoutEnvironment.Sandbox(),
                         VGSCheckoutCustomRouteConfig("/post"),
                         VGSCheckoutCustomFormConfig(
