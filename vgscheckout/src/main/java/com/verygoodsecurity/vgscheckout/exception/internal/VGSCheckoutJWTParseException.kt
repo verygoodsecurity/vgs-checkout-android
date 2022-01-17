@@ -2,7 +2,7 @@ package com.verygoodsecurity.vgscheckout.exception.internal
 
 import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
 
-private const val CODE = 1484
+private const val CODE = 2000
 private const val MESSAGE = "Can't parse invalid access token."
 
 /**
