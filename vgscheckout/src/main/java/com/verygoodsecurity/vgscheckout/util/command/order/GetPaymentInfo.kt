@@ -44,7 +44,6 @@ internal class GetPaymentInfo : AsynchronousCommand<String, Result<PaymentInfo>>
         return this
     }
 
-
     @Throws(VGSCheckoutException::class)
     private fun parseResponse(body: String?): PaymentInfo {
         try {
@@ -62,6 +61,7 @@ internal class GetPaymentInfo : AsynchronousCommand<String, Result<PaymentInfo>>
     private fun createOrderDetailsRequest(orderId: String): NetworkRequest {
         return NetworkRequest(
             method = HTTPMethod.GET,
+            //todo replace PAYMENT_ORCHESTRATION_URL with live URL
             url = BuildConfig.PAYMENT_ORCHESTRATION_URL + ORDERS_PATH + orderId,
             customHeader = emptyMap(),
             customData = Unit,
