@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.verygoodsecurity.payment_example">
+    package="com.verygoodsecurity.payments">
 
     <application
         android:icon="@mipmap/ic_launcher"
@@ -11,7 +11,7 @@
         android:theme="@style/Theme.VGSCheckoutDemo"
         tools:replace="android:networkSecurityConfig">
         <activity
-            android:name=".PaymentActivity"
+            android:name="com.verygoodsecurity.payments.PaymentActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
