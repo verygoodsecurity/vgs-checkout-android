@@ -35,8 +35,10 @@ class VGSCheckoutResultBundle private constructor(private val bundle: Bundle) : 
     }
 
     /**
-     * @return true if user select save card for future use. Return false if checkbox is not supported by
-     * checkout flow, or hidden via saveCardOptionEnabled.
+     * Return boolean value that determine if user select save card for future use or null if save card for
+     * future use disabled.
+     *
+     * @return true or false if saveCardOptionEnabled or null.
      */
     fun shouldSaveCard(): Boolean? {
         if (bundle.containsKey(SHOULD_SAVE_CARD_KEY)) {
