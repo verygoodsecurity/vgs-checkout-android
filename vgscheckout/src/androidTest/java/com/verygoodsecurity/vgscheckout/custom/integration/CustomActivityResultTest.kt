@@ -124,7 +124,7 @@ class CustomActivityResultTest {
             assertTrue(result?.checkoutResult is VGSCheckoutResult.Success)
             assertEquals(
                 Constants.SUCCESS_RESPONSE_CODE,
-                (result?.checkoutResult as? VGSCheckoutResult.Success)?.code
+                (result?.checkoutResult as? VGSCheckoutResult.Success)?.data?.getAddCardResponse()?.code
             )
         }
     }
