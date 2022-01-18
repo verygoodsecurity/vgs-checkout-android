@@ -89,7 +89,8 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
         sendRequestEvent(invalidFieldsAnalyticsNames)
     }
 
-    override fun onSuccess() {
+    override fun onSuccess(shouldSaveCard: Boolean?) {
+        shouldSaveCard?.let { resultBundle.putShouldSaveCard(it) }
         saveCard()
     }
 

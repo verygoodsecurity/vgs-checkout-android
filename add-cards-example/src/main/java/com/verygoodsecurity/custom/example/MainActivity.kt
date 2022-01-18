@@ -36,14 +36,20 @@ class MainActivity : AppCompatActivity(), VGSCheckoutCallback {
     }
 
     override fun onCheckoutResult(result: VGSCheckoutResult) {
-        Log.d(
-            "VGSCheckout",
-            when (result) {
-                is VGSCheckoutResult.Success -> result.data.getAddCardResponse().toString()
-                is VGSCheckoutResult.Failed -> result.data.getAddCardResponse().toString()
-                is VGSCheckoutResult.Canceled -> "Canceled"
+        when (result) {
+            is VGSCheckoutResult.Success -> {
+                Log.d("VGSCheckout", "Success!")
+                Log.d("VGSCheckout", "Add card response = ${result.data.getAddCardResponse()}")
+                Log.d("VGSCheckout", "Should save card = ${result.data.shouldSaveCard()}")
             }
-        )
+            is VGSCheckoutResult.Failed -> {
+                Log.d("VGSCheckout", "Failed!")
+                Log.d("VGSCheckout", "Add card response = ${result.data.getAddCardResponse()}")
+            }
+            is VGSCheckoutResult.Canceled -> {
+                Log.d("VGSCheckout", "Canceled")
+            }
+        }
     }
 
     //region Checkout config

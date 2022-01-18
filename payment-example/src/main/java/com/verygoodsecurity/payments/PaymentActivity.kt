@@ -44,6 +44,10 @@ class PaymentActivity : AppCompatActivity(), VGSCheckoutCallback {
                     "VGSCheckout",
                     "Transaction response = ${result.data.getTransactionResponse()}"
                 )
+                Log.d(
+                    "VGSCheckout",
+                    "Should save card = ${result.data.shouldSaveCard()}"
+                )
             }
             is VGSCheckoutResult.Failed -> {
                 Log.d("VGSCheckout", "Failed!")

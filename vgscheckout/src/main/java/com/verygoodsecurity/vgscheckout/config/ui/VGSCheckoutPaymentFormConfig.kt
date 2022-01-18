@@ -12,14 +12,14 @@ import kotlinx.parcelize.Parcelize
  * @param cardOptions card details section UI options.
  * @param addressOptions address details section UI options.
  * @param validationBehaviour defines validation behavior.
- * @param isSaveCardCheckboxVisible defines if save card checkbox should be visible.
+ * @param saveCardOptionEnabled defines if save card checkbox should be visible.
  */
 @Parcelize
 class VGSCheckoutPaymentFormConfig private constructor(
     override val cardOptions: VGSCheckoutPaymentCardOptions,
     override val addressOptions: VGSCheckoutPaymentBillingAddressOptions,
     override val validationBehaviour: VGSCheckoutFormValidationBehaviour,
-    override val isSaveCardCheckboxVisible: Boolean
+    override val saveCardOptionEnabled: Boolean
 ) : CheckoutFormConfig() {
 
     /**
@@ -27,17 +27,17 @@ class VGSCheckoutPaymentFormConfig private constructor(
      *
      * @param addressOptions address details section UI options.
      * @param validationBehaviour defines validation behavior. Default is [VGSCheckoutFormValidationBehaviour.ON_SUBMIT].
-     * @param isSaveCardCheckboxVisible defines if save card checkbox should be visible. Default is true.
+     * @param saveCardOptionEnabled defines if save card checkbox should be visible. Default is true.
      */
     @JvmOverloads
     constructor(
         addressOptions: VGSCheckoutPaymentBillingAddressOptions = VGSCheckoutPaymentBillingAddressOptions(),
         validationBehaviour: VGSCheckoutFormValidationBehaviour = VGSCheckoutFormValidationBehaviour.ON_SUBMIT,
-        isSaveCardCheckboxVisible: Boolean = true
+        saveCardOptionEnabled: Boolean = true
     ) : this(
         VGSCheckoutPaymentCardOptions(),
         addressOptions,
         validationBehaviour,
-        isSaveCardCheckboxVisible
+        saveCardOptionEnabled
     )
 }
