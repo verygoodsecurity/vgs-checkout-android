@@ -12,10 +12,10 @@ import com.verygoodsecurity.vgscheckout.config.VGSCheckoutPaymentConfig
 import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
 import com.verygoodsecurity.vgscheckout.exception.internal.VGSCheckoutFinIdNotFoundException
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
+import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutAddCardResponse
 import com.verygoodsecurity.vgscheckout.ui.core.BaseCheckoutActivity
 import com.verygoodsecurity.vgscheckout.util.CurrencyFormatter.format
-import com.verygoodsecurity.vgscheckout.util.extension.toCheckoutResult
 import com.verygoodsecurity.vgscheckout.util.extension.toTransactionResponse
 import org.json.JSONObject
 
@@ -34,12 +34,8 @@ internal class PaymentActivity :
         return getString(R.string.vgs_checkout_button_pay_title, amount)
     }
 
-    override fun handleResponse(response: VGSCheckoutAddCardResponse) {
-        if (response.isSuccessful) {
-            pay(response)
-        } else {
-            sendResult(response.toCheckoutResult())
-        }
+    override fun handleSuccessfulAddCardResponse(response: VGSCheckoutAddCardResponse) {
+        pay(response)
     }
 
     @Throws(VGSCheckoutException::class)
@@ -57,11 +53,18 @@ internal class PaymentActivity :
             client.enqueue(createPayRequest(financialInstrumentId)) {
                 runOnUiThread {
                     val transactionResponse = it.toTransactionResponse()
-                    sendResult(transactionResponse.toCheckoutResult(addCardResponse))
+                    resultBundle.putTransactionResponse(transactionResponse)
+                    sendResult(
+                        if (transactionResponse.isSuccessful) {
+                            VGSCheckoutResult.Success(resultBundle)
+                        } else {
+                            VGSCheckoutResult.Failed(resultBundle)
+                        }
+                    )
                 }
             }
         } catch (e: VGSCheckoutException) {
-            sendResult(addCardResponse.toCheckoutResult(e))
+            sendResult(VGSCheckoutResult.Failed(resultBundle, e))
         }
     }
 

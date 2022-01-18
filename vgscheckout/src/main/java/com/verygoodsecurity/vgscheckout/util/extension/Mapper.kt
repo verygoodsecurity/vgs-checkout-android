@@ -15,9 +15,6 @@ import com.verygoodsecurity.vgscheckout.config.networking.request.core.VGSChecko
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.model.VGSCheckoutCardBrand
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.model.VGSCheckoutChecksumAlgorithm
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.model.VGSDateSeparateSerializer
-import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
-import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
-import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResultBundle
 import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutAddCardResponse
 import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutTransactionResponse
 
@@ -29,36 +26,12 @@ internal fun VGSResponse.toAddCardResponse() = VGSCheckoutAddCardResponse(
     (this as? VGSResponse.ErrorResponse)?.message
 )
 
-internal fun VGSCheckoutAddCardResponse.toCheckoutResult(e: VGSCheckoutException? = null): VGSCheckoutResult {
-    val bundle = VGSCheckoutResultBundle()
-    bundle.putAddCardResponse(this)
-    return if (isSuccessful) {
-        VGSCheckoutResult.Success(bundle)
-    } else {
-        VGSCheckoutResult.Failed(bundle, e)
-    }
-}
-
 internal fun NetworkResponse.toTransactionResponse() = VGSCheckoutTransactionResponse(
     isSuccessful,
     code,
     body,
     message
 )
-
-internal fun VGSCheckoutTransactionResponse.toCheckoutResult(
-    addCardResponse: VGSCheckoutAddCardResponse,
-    e: VGSCheckoutException? = null
-): VGSCheckoutResult {
-    val bundle = VGSCheckoutResultBundle()
-    bundle.putAddCardResponse(addCardResponse)
-    bundle.putTransactionResponse(this)
-    return if (addCardResponse.isSuccessful && isSuccessful) {
-        VGSCheckoutResult.Success(bundle)
-    } else {
-        VGSCheckoutResult.Failed(bundle, e)
-    }
-}
 
 internal fun VGSCheckoutHTTPMethod.toCollectHTTPMethod() = when (this) {
     VGSCheckoutHTTPMethod.POST -> HTTPMethod.POST

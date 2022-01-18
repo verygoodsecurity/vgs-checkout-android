@@ -25,6 +25,7 @@ import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.config.networking.core.VGSCheckoutHostnamePolicy
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
+import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResultBundle
 import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutAddCardResponse
 import com.verygoodsecurity.vgscheckout.ui.fragment.core.LoadingHandler
 import com.verygoodsecurity.vgscheckout.ui.fragment.save.core.BaseSaveCardFragment
@@ -45,6 +46,8 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
     }
 
     protected lateinit var loadingHandler: LoadingHandler
+
+    protected val resultBundle = VGSCheckoutResultBundle()
 
     abstract fun resolveConfig(intent: Intent): C
 
@@ -96,11 +99,17 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
             showNetworkConnectionErrorSnackBar()
             return
         }
-        handleResponse(response.toAddCardResponse())
+        val addCardResponse = response.toAddCardResponse()
+        resultBundle.putAddCardResponse(addCardResponse)
+        if (addCardResponse.isSuccessful) {
+            handleSuccessfulAddCardResponse(addCardResponse)
+        } else {
+            sendResult(VGSCheckoutResult.Failed(resultBundle))
+        }
     }
 
-    protected open fun handleResponse(response: VGSCheckoutAddCardResponse) {
-        sendResult(response.toCheckoutResult())
+    protected open fun handleSuccessfulAddCardResponse(response: VGSCheckoutAddCardResponse) {
+        sendResult(VGSCheckoutResult.Success(resultBundle))
     }
 
     protected fun sendResult(response: VGSCheckoutResult) {
