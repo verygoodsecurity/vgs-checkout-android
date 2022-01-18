@@ -8,16 +8,15 @@ import com.verygoodsecurity.vgscheckout.collect.core.api.VGSHttpBodyFormat
 import com.verygoodsecurity.vgscheckout.collect.core.api.client.ApiClient
 import com.verygoodsecurity.vgscheckout.collect.core.api.client.OkHttpClient
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.NetworkRequest
-import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSResponse
-import com.verygoodsecurity.vgscheckout.collect.core.model.network.toVGSResponse
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutPaymentConfig
 import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
 import com.verygoodsecurity.vgscheckout.exception.internal.VGSCheckoutFinIdNotFoundException
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
-import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
+import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutAddCardResponse
 import com.verygoodsecurity.vgscheckout.ui.core.BaseCheckoutActivity
 import com.verygoodsecurity.vgscheckout.util.CurrencyFormatter.format
 import com.verygoodsecurity.vgscheckout.util.extension.toCheckoutResult
+import com.verygoodsecurity.vgscheckout.util.extension.toTransactionResponse
 import org.json.JSONObject
 
 internal class PaymentActivity :
@@ -35,21 +34,16 @@ internal class PaymentActivity :
         return getString(R.string.vgs_checkout_button_pay_title, amount)
     }
 
-    override fun handleResponse(response: VGSResponse) {
-        when (response) {
-            is VGSResponse.SuccessResponse -> {
-                try {
-                    pay(readFinancialInstrumentId(response))
-                } catch (e: VGSCheckoutException) {
-                    sendResult(VGSCheckoutResult.Failed(e.code, e.message, response.body))
-                }
-            }
-            is VGSResponse.ErrorResponse -> sendResult(response.toCheckoutResult())
+    override fun handleResponse(response: VGSCheckoutAddCardResponse) {
+        if (response.isSuccessful) {
+            pay(response)
+        } else {
+            sendResult(response.toCheckoutResult())
         }
     }
 
     @Throws(VGSCheckoutException::class)
-    private fun readFinancialInstrumentId(response: VGSResponse.SuccessResponse): String {
+    private fun readFinancialInstrumentId(response: VGSCheckoutAddCardResponse): String {
         try {
             return JSONObject(response.body!!).getJSONObject(JSON_KEY_DATA).getString(JSON_KEY_ID)
         } catch (e: Exception) {
@@ -57,11 +51,17 @@ internal class PaymentActivity :
         }
     }
 
-    private fun pay(financialInstrumentId: String) {
-        client.enqueue(createPayRequest(financialInstrumentId)) {
-            runOnUiThread {
-                sendResult(it.toVGSResponse().toCheckoutResult())
+    private fun pay(addCardResponse: VGSCheckoutAddCardResponse) {
+        try {
+            val financialInstrumentId = readFinancialInstrumentId(addCardResponse)
+            client.enqueue(createPayRequest(financialInstrumentId)) {
+                runOnUiThread {
+                    val transactionResponse = it.toTransactionResponse()
+                    sendResult(transactionResponse.toCheckoutResult(addCardResponse))
+                }
             }
+        } catch (e: VGSCheckoutException) {
+            sendResult(addCardResponse.toCheckoutResult(e))
         }
     }
 

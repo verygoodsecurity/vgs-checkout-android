@@ -1,10 +1,15 @@
 package com.verygoodsecurity.payments
 
 import android.os.Bundle
-import android.widget.Toast
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.button.MaterialButton
+import com.verygoodsecurity.payments.data.Result
+import com.verygoodsecurity.payments.data.repository.auth.AccessTokenRepository
+import com.verygoodsecurity.payments.data.repository.auth.DefaultAccessTokenRepository
+import com.verygoodsecurity.payments.data.repository.order.DefaultOrderRepository
+import com.verygoodsecurity.payments.data.repository.order.OrderRepository
 import com.verygoodsecurity.vgscheckout.BuildConfig
 import com.verygoodsecurity.vgscheckout.VGSCheckout
 import com.verygoodsecurity.vgscheckout.VGSCheckoutCallback
@@ -13,11 +18,6 @@ import com.verygoodsecurity.vgscheckout.config.VGSCheckoutPaymentConfig
 import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 import kotlinx.coroutines.launch
-import com.verygoodsecurity.payments.data.Result
-import com.verygoodsecurity.payments.data.repository.auth.AccessTokenRepository
-import com.verygoodsecurity.payments.data.repository.auth.DefaultAccessTokenRepository
-import com.verygoodsecurity.payments.data.repository.order.DefaultOrderRepository
-import com.verygoodsecurity.payments.data.repository.order.OrderRepository
 
 class PaymentActivity : AppCompatActivity(), VGSCheckoutCallback {
 
@@ -36,13 +36,25 @@ class PaymentActivity : AppCompatActivity(), VGSCheckoutCallback {
     }
 
     override fun onCheckoutResult(result: VGSCheckoutResult) {
-        showShort(
-            when (result) {
-                is VGSCheckoutResult.Success -> "Checkout success!"
-                is VGSCheckoutResult.Failed -> "Checkout failed, reason = ${result.message}"
-                is VGSCheckoutResult.Canceled -> "Checkout canceled!"
+        when (result) {
+            is VGSCheckoutResult.Success -> {
+                Log.d("VGSCheckout", "Success!")
+                Log.d("VGSCheckout", "Add card response = ${result.data.getAddCardResponse()}")
+                Log.d(
+                    "VGSCheckout",
+                    "Transaction response = ${result.data.getTransactionResponse()}"
+                )
             }
-        )
+            is VGSCheckoutResult.Failed -> {
+                Log.d("VGSCheckout", "Failed!")
+                Log.d("VGSCheckout", "Add card response = ${result.data.getAddCardResponse()}")
+                Log.d(
+                    "VGSCheckout",
+                    "Transaction response = ${result.data.getTransactionResponse()}"
+                )
+            }
+            is VGSCheckoutResult.Canceled -> Log.d("VGSCheckout", "Canceled!")
+        }
     }
 
     private fun handlePayClicked() {
@@ -53,10 +65,13 @@ class PaymentActivity : AppCompatActivity(), VGSCheckoutCallback {
                 if (orderResult is Result.Success) {
                     startCheckout(tokenResult.data, orderResult.data.id)
                 } else {
-                    showShort("Can't create order! ${(tokenResult as Result.Error).msg}")
+                    Log.d("VGSCheckout", "Can't create order! ${(tokenResult as Result.Error).msg}")
                 }
             } else {
-                showShort("Can't fetch access token! ${(tokenResult as Result.Error).msg}")
+                Log.d(
+                    "VGSCheckout",
+                    "Can't fetch access token! ${(tokenResult as Result.Error).msg}"
+                )
             }
         }
     }
@@ -74,13 +89,9 @@ class PaymentActivity : AppCompatActivity(), VGSCheckoutCallback {
                 }
 
                 override fun onFailure(exception: VGSCheckoutException) {
-                    showShort("Can't create checkout config! ${exception.message}")
+                    Log.d("VGSCheckout", "Can't create checkout config! ${exception.message}")
                 }
             }
         )
-    }
-
-    private fun showShort(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 }

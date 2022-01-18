@@ -25,6 +25,7 @@ import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.config.networking.core.VGSCheckoutHostnamePolicy
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
+import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutAddCardResponse
 import com.verygoodsecurity.vgscheckout.ui.fragment.core.LoadingHandler
 import com.verygoodsecurity.vgscheckout.ui.fragment.save.core.BaseSaveCardFragment
 import com.verygoodsecurity.vgscheckout.ui.fragment.save.core.BaseSaveCardFragment.Companion.TAG
@@ -95,10 +96,10 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
             showNetworkConnectionErrorSnackBar()
             return
         }
-        handleResponse(response)
+        handleResponse(response.toAddCardResponse())
     }
 
-    protected open fun handleResponse(response: VGSResponse) {
+    protected open fun handleResponse(response: VGSCheckoutAddCardResponse) {
         sendResult(response.toCheckoutResult())
     }
 
