@@ -2,7 +2,7 @@ package com.verygoodsecurity.vgscheckout.exception.internal
 
 import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
 
-private const val CODE = 1484
+private const val CODE = 2001
 private const val MESSAGE = "Access token contains restricted role [%s]."
 
 /**
