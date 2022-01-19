@@ -10,24 +10,14 @@ import kotlinx.parcelize.Parcelize
  * Wrapper object that helps to retrieve checkout result from bundle.
  */
 @Parcelize
-class VGSCheckoutResultBundle private constructor(private val bundle: Bundle) : Parcelable {
+class VGSCheckoutResultBundle private constructor(@PublishedApi internal val bundle: Bundle) :
+    Parcelable {
 
     internal constructor() : this(Bundle())
 
-    /**
-     * If add card request was made that response object will be returned, null otherwise.
-     */
-    fun getAddCardResponse(): VGSCheckoutAddCardResponse? {
-        bundle.classLoader = VGSCheckoutAddCardResponse::class.java.classLoader
-        return bundle.getParcelable(ADD_CARD_RESPONSE_KEY)
-    }
-
-    /**
-     * If transaction request was made that response object will be returned, null otherwise.
-     */
-    fun getTransactionResponse(): VGSCheckoutTransactionResponse? {
-        bundle.classLoader = VGSCheckoutTransactionResponse::class.java.classLoader
-        return bundle.getParcelable(TRANSACTION_RESPONSE_KEY)
+    inline fun <reified T : Parcelable> getParcelable(key: String): T? {
+        bundle.classLoader = T::class.java.classLoader
+        return bundle.getParcelable(key)
     }
 
     internal fun putAddCardResponse(response: VGSCheckoutAddCardResponse) {
@@ -40,8 +30,7 @@ class VGSCheckoutResultBundle private constructor(private val bundle: Bundle) : 
 
     companion object Keys {
 
-        const val ADD_CARD_RESPONSE_KEY = "com.verygoodsecurity.vgscheckout.add_card_response_key"
-        const val TRANSACTION_RESPONSE_KEY =
-            "com.verygoodsecurity.vgscheckout.transaction_response_key"
+        const val ADD_CARD_RESPONSE_KEY = "com.verygoodsecurity.vgscheckout.add_card_response"
+        const val TRANSACTION_RESPONSE_KEY = "com.verygoodsecurity.vgscheckout.transaction_response"
     }
 }

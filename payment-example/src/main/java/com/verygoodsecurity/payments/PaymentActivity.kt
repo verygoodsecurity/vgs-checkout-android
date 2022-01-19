@@ -17,6 +17,9 @@ import com.verygoodsecurity.vgscheckout.VGSCheckoutConfigInitCallback
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutPaymentConfig
 import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
+import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResultBundle
+import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutAddCardResponse
+import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutTransactionResponse
 import kotlinx.coroutines.launch
 
 class PaymentActivity : AppCompatActivity(), VGSCheckoutCallback {
@@ -38,19 +41,29 @@ class PaymentActivity : AppCompatActivity(), VGSCheckoutCallback {
     override fun onCheckoutResult(result: VGSCheckoutResult) {
         when (result) {
             is VGSCheckoutResult.Success -> {
+                val addCardResponse =
+                    result.data.getParcelable<VGSCheckoutAddCardResponse>(VGSCheckoutResultBundle.Keys.ADD_CARD_RESPONSE_KEY)
+                val transactionResponse = result.data.getParcelable<VGSCheckoutTransactionResponse>(
+                    VGSCheckoutResultBundle.Keys.TRANSACTION_RESPONSE_KEY
+                )
                 Log.d("VGSCheckout", "Success!")
-                Log.d("VGSCheckout", "Add card response = ${result.data.getAddCardResponse()}")
+                Log.d("VGSCheckout", "Add card response = $addCardResponse")
                 Log.d(
                     "VGSCheckout",
-                    "Transaction response = ${result.data.getTransactionResponse()}"
+                    "Transaction response = $transactionResponse"
                 )
             }
             is VGSCheckoutResult.Failed -> {
+                val addCardResponse =
+                    result.data.getParcelable<VGSCheckoutAddCardResponse>(VGSCheckoutResultBundle.Keys.ADD_CARD_RESPONSE_KEY)
+                val transactionResponse = result.data.getParcelable<VGSCheckoutTransactionResponse>(
+                    VGSCheckoutResultBundle.Keys.TRANSACTION_RESPONSE_KEY
+                )
                 Log.d("VGSCheckout", "Failed!")
-                Log.d("VGSCheckout", "Add card response = ${result.data.getAddCardResponse()}")
+                Log.d("VGSCheckout", "Add card response = $addCardResponse")
                 Log.d(
                     "VGSCheckout",
-                    "Transaction response = ${result.data.getTransactionResponse()}"
+                    "Transaction response = $transactionResponse}"
                 )
             }
             is VGSCheckoutResult.Canceled -> Log.d("VGSCheckout", "Canceled!")

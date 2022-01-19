@@ -1,7 +1,7 @@
 package com.verygoodsecurity.orchestration.example
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.button.MaterialButton
 import com.google.gson.JsonParser
 import com.verygoodsecurity.BuildConfig.CLIENT_HOST
@@ -13,6 +13,8 @@ import com.verygoodsecurity.vgscheckout.VGSCheckout
 import com.verygoodsecurity.vgscheckout.VGSCheckoutCallback
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
+import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResultBundle
+import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutAddCardResponse
 
 class MainActivity : AppCompatActivity(), VGSCheckoutCallback {
 
@@ -68,13 +70,17 @@ class MainActivity : AppCompatActivity(), VGSCheckoutCallback {
         TransactionDialogFragment().apply {
             arguments = when (result) {
                 is VGSCheckoutResult.Success -> Bundle().apply {
-                    val addCardResponse = result.data.getAddCardResponse()
+                    val addCardResponse = result.data.getParcelable<VGSCheckoutAddCardResponse>(
+                        VGSCheckoutResultBundle.Keys.ADD_CARD_RESPONSE_KEY
+                    )
                     addCardResponse?.code?.let { putInt(TransactionDialogFragment.CODE, it) }
                     putString(TransactionDialogFragment.TNT, tenantId)
                     putString(TransactionDialogFragment.BODY, addCardResponse?.body)
                 }
                 is VGSCheckoutResult.Failed -> Bundle().apply {
-                    val addCardResponse = result.data.getAddCardResponse()
+                    val addCardResponse = result.data.getParcelable<VGSCheckoutAddCardResponse>(
+                        VGSCheckoutResultBundle.Keys.ADD_CARD_RESPONSE_KEY
+                    )
                     addCardResponse?.code?.let { putInt(TransactionDialogFragment.CODE, it) }
                     putString(TransactionDialogFragment.TNT, tenantId)
                     putString(TransactionDialogFragment.BODY, addCardResponse?.body)
