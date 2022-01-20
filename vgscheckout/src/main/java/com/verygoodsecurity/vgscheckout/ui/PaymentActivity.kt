@@ -35,7 +35,11 @@ internal class PaymentActivity :
     }
 
     override fun handleSuccessfulAddCardResponse(response: VGSCheckoutAddCardResponse) {
-        pay(response)
+        try {
+            pay(readFinancialInstrumentId(response))
+        } catch (e: VGSCheckoutException) {
+            sendResult(VGSCheckoutResult.Failed(resultBundle, e))
+        }
     }
 
     @Throws(VGSCheckoutException::class)
@@ -47,24 +51,19 @@ internal class PaymentActivity :
         }
     }
 
-    private fun pay(addCardResponse: VGSCheckoutAddCardResponse) {
-        try {
-            val financialInstrumentId = readFinancialInstrumentId(addCardResponse)
-            client.enqueue(createPayRequest(financialInstrumentId)) {
-                runOnUiThread {
-                    val transactionResponse = it.toTransactionResponse()
-                    resultBundle.putTransactionResponse(transactionResponse)
-                    sendResult(
-                        if (transactionResponse.isSuccessful) {
-                            VGSCheckoutResult.Success(resultBundle)
-                        } else {
-                            VGSCheckoutResult.Failed(resultBundle)
-                        }
-                    )
-                }
+    private fun pay(financialInstrumentId: String) {
+        client.enqueue(createPayRequest(financialInstrumentId)) {
+            runOnUiThread {
+                val transactionResponse = it.toTransactionResponse()
+                resultBundle.putTransactionResponse(transactionResponse)
+                sendResult(
+                    if (transactionResponse.isSuccessful) {
+                        VGSCheckoutResult.Success(resultBundle)
+                    } else {
+                        VGSCheckoutResult.Failed(resultBundle)
+                    }
+                )
             }
-        } catch (e: VGSCheckoutException) {
-            sendResult(VGSCheckoutResult.Failed(resultBundle, e))
         }
     }
 
