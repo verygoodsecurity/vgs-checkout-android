@@ -21,6 +21,7 @@ sealed class VGSCheckoutResult : Parcelable {
      * Checkout was failed due network errors or invalid setup.
      *
      * @param data wrapper object that helps to retrieve checkout result from bundle.
+     * @param exception local or setup error that interrupt checkout.
      */
     @Parcelize
     data class Failed constructor(
