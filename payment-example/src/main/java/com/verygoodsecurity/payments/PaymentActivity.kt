@@ -15,6 +15,7 @@ import com.verygoodsecurity.vgscheckout.VGSCheckout
 import com.verygoodsecurity.vgscheckout.VGSCheckoutCallback
 import com.verygoodsecurity.vgscheckout.VGSCheckoutConfigInitCallback
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutPaymentConfig
+import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutPaymentFormConfig
 import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResultBundle
@@ -39,39 +40,24 @@ class PaymentActivity : AppCompatActivity(), VGSCheckoutCallback {
     }
 
     override fun onCheckoutResult(result: VGSCheckoutResult) {
-        when (result) {
-            is VGSCheckoutResult.Success -> {
-                val addCardResponse =
-                    result.data.getParcelable<VGSCheckoutAddCardResponse>(VGSCheckoutResultBundle.Keys.ADD_CARD_RESPONSE)
-                val transactionResponse = result.data.getParcelable<VGSCheckoutTransactionResponse>(
-                    VGSCheckoutResultBundle.Keys.TRANSACTION_RESPONSE
-                )
-                Log.d("VGSCheckout", "Success!")
-                Log.d("VGSCheckout", "Add card response = $addCardResponse")
-                Log.d(
-                    "VGSCheckout",
-                    "Transaction response = $transactionResponse"
-                )
-                Log.d(
-                    "VGSCheckout",
-                    "Should save card = ${result.data.shouldSaveCard()}"
-                )
-            }
-            is VGSCheckoutResult.Failed -> {
-                val addCardResponse =
-                    result.data.getParcelable<VGSCheckoutAddCardResponse>(VGSCheckoutResultBundle.Keys.ADD_CARD_RESPONSE)
-                val transactionResponse = result.data.getParcelable<VGSCheckoutTransactionResponse>(
-                    VGSCheckoutResultBundle.Keys.TRANSACTION_RESPONSE
-                )
-                Log.d("VGSCheckout", "Failed!")
-                Log.d("VGSCheckout", "Add card response = $addCardResponse")
-                Log.d(
-                    "VGSCheckout",
-                    "Transaction response = $transactionResponse}"
-                )
-            }
-            is VGSCheckoutResult.Canceled -> Log.d("VGSCheckout", "Canceled!")
+        val resultData: VGSCheckoutResultBundle? = when (result) {
+            is VGSCheckoutResult.Success -> result.data
+            is VGSCheckoutResult.Failed -> result.data
+            else -> null
         }
+        val addCardResponse =
+            resultData?.getParcelable<VGSCheckoutAddCardResponse>(VGSCheckoutResultBundle.ADD_CARD_RESPONSE)
+        val transactionResponse =
+            resultData?.getParcelable<VGSCheckoutTransactionResponse>(VGSCheckoutResultBundle.TRANSACTION_RESPONSE)
+        val shouldSaveCard = resultData?.getBoolean(VGSCheckoutResultBundle.SHOULD_SAVE_CARD)
+        Log.d(
+            "VGSCheckout", """
+            ${result::class.java.simpleName}
+            Add card response = $addCardResponse
+            Transaction response = $transactionResponse
+            Should save card = $shouldSaveCard
+        """.trimIndent()
+        )
     }
 
     private fun handlePayClicked() {

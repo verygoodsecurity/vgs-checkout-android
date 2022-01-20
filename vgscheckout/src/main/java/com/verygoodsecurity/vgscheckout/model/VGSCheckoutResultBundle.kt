@@ -20,6 +20,9 @@ class VGSCheckoutResultBundle private constructor(@PublishedApi internal val bun
         return bundle.getParcelable(key)
     }
 
+    fun getBoolean(key: String): Boolean? =
+        if (bundle.containsKey(key)) bundle.getBoolean(key) else null
+
     internal fun putAddCardResponse(response: VGSCheckoutAddCardResponse) {
         bundle.putParcelable(ADD_CARD_RESPONSE, response)
     }

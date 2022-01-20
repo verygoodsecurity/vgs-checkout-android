@@ -38,21 +38,21 @@ class MainActivity : AppCompatActivity(), VGSCheckoutCallback {
     }
 
     override fun onCheckoutResult(result: VGSCheckoutResult) {
-        when (result) {
-            is VGSCheckoutResult.Success -> {
-                val addCardResponse =
-                    result.data.getParcelable<VGSCheckoutAddCardResponse>(VGSCheckoutResultBundle.Keys.ADD_CARD_RESPONSE)
-                Log.d("VGSCheckout", "Add card result = $addCardResponse")
-            }
-            is VGSCheckoutResult.Failed -> {
-                val addCardResponse =
-                    result.data.getParcelable<VGSCheckoutAddCardResponse>(VGSCheckoutResultBundle.Keys.ADD_CARD_RESPONSE)
-                Log.d("VGSCheckout", "Add card result = $addCardResponse")
-            }
-            is VGSCheckoutResult.Canceled -> {
-                Log.d("VGSCheckout", "Canceled")
-            }
+        val resultData: VGSCheckoutResultBundle? = when (result) {
+            is VGSCheckoutResult.Success -> result.data
+            is VGSCheckoutResult.Failed -> result.data
+            else -> null
         }
+        val addCardResponse =
+            resultData?.getParcelable<VGSCheckoutAddCardResponse>(VGSCheckoutResultBundle.ADD_CARD_RESPONSE)
+        val shouldSaveCard = resultData?.getBoolean(VGSCheckoutResultBundle.SHOULD_SAVE_CARD)
+        Log.d(
+            "VGSCheckout", """
+            ${result::class.java.simpleName}
+            Add card response = $addCardResponse
+            Should save card = $shouldSaveCard
+        """.trimIndent()
+        )
     }
 
     //region Checkout config
