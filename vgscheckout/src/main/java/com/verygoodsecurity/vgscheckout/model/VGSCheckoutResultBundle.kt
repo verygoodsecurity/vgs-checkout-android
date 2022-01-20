@@ -10,59 +10,32 @@ import kotlinx.parcelize.Parcelize
  * Wrapper object that helps to retrieve checkout result from bundle.
  */
 @Parcelize
-class VGSCheckoutResultBundle private constructor(private val bundle: Bundle) : Parcelable {
+class VGSCheckoutResultBundle private constructor(@PublishedApi internal val bundle: Bundle) :
+    Parcelable {
 
     internal constructor() : this(Bundle())
 
-    /**
-     * Return add card response if request was made.
-     *
-     * @return add card response or null.
-     */
-    fun getAddCardResponse(): VGSCheckoutAddCardResponse? {
-        bundle.classLoader = VGSCheckoutAddCardResponse::class.java.classLoader
-        return bundle.getParcelable(ADD_CARD_RESPONSE_KEY)
-    }
-
-    /**
-     * Return transaction response if request was made.
-     *
-     * @return transaction response or null.
-     */
-    fun getTransactionResponse(): VGSCheckoutTransactionResponse? {
-        bundle.classLoader = VGSCheckoutTransactionResponse::class.java.classLoader
-        return bundle.getParcelable(TRANSACTION_RESPONSE_KEY)
-    }
-
-    /**
-     * Return boolean value that determine if user select save card for future use or null if save card for
-     * future use disabled.
-     *
-     * @return true or false if saveCardOptionEnabled or null.
-     */
-    fun shouldSaveCard(): Boolean? {
-        if (bundle.containsKey(SHOULD_SAVE_CARD_KEY)) {
-            return bundle.getBoolean(SHOULD_SAVE_CARD_KEY)
-        }
-        return null
+    inline fun <reified T : Parcelable> getParcelable(key: String): T? {
+        bundle.classLoader = T::class.java.classLoader
+        return bundle.getParcelable(key)
     }
 
     internal fun putAddCardResponse(response: VGSCheckoutAddCardResponse) {
-        bundle.putParcelable(ADD_CARD_RESPONSE_KEY, response)
+        bundle.putParcelable(ADD_CARD_RESPONSE, response)
     }
 
     internal fun putTransactionResponse(response: VGSCheckoutTransactionResponse) {
-        bundle.putParcelable(TRANSACTION_RESPONSE_KEY, response)
+        bundle.putParcelable(TRANSACTION_RESPONSE, response)
     }
 
     internal fun putShouldSaveCard(shouldSaveCard: Boolean) {
-        bundle.putBoolean(SHOULD_SAVE_CARD_KEY, shouldSaveCard)
+        bundle.putBoolean(SHOULD_SAVE_CARD, shouldSaveCard)
     }
 
-    private companion object Keys {
+    companion object Keys {
 
-        const val ADD_CARD_RESPONSE_KEY = "com.verygoodsecurity.vgscheckout.add_card_response"
-        const val TRANSACTION_RESPONSE_KEY = "com.verygoodsecurity.vgscheckout.transaction_response"
-        const val SHOULD_SAVE_CARD_KEY = "com.verygoodsecurity.vgscheckout.should_save_card"
+        const val ADD_CARD_RESPONSE = "com.verygoodsecurity.vgscheckout.add_card_response"
+        const val TRANSACTION_RESPONSE = "com.verygoodsecurity.vgscheckout.transaction_response"
+        const val SHOULD_SAVE_CARD = "com.verygoodsecurity.vgscheckout.should_save_card"
     }
 }

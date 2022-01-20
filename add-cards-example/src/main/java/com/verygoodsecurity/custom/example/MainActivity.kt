@@ -21,6 +21,8 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.VGSChecko
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.VGSCheckoutCustomCVCOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.VGSCheckoutCustomExpirationDateOptions
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
+import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResultBundle
+import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutAddCardResponse
 
 class MainActivity : AppCompatActivity(), VGSCheckoutCallback {
 
@@ -38,13 +40,14 @@ class MainActivity : AppCompatActivity(), VGSCheckoutCallback {
     override fun onCheckoutResult(result: VGSCheckoutResult) {
         when (result) {
             is VGSCheckoutResult.Success -> {
-                Log.d("VGSCheckout", "Success!")
-                Log.d("VGSCheckout", "Add card response = ${result.data.getAddCardResponse()}")
-                Log.d("VGSCheckout", "Should save card = ${result.data.shouldSaveCard()}")
+                val addCardResponse =
+                    result.data.getParcelable<VGSCheckoutAddCardResponse>(VGSCheckoutResultBundle.Keys.ADD_CARD_RESPONSE)
+                Log.d("VGSCheckout", "Add card result = $addCardResponse")
             }
             is VGSCheckoutResult.Failed -> {
-                Log.d("VGSCheckout", "Failed!")
-                Log.d("VGSCheckout", "Add card response = ${result.data.getAddCardResponse()}")
+                val addCardResponse =
+                    result.data.getParcelable<VGSCheckoutAddCardResponse>(VGSCheckoutResultBundle.Keys.ADD_CARD_RESPONSE)
+                Log.d("VGSCheckout", "Add card result = $addCardResponse")
             }
             is VGSCheckoutResult.Canceled -> {
                 Log.d("VGSCheckout", "Canceled")
