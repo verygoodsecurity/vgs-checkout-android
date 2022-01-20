@@ -121,7 +121,7 @@ class CustomActivityResultTest {
             onViewWithScrollTo(R.id.mbSaveCard).perform(click())
             //Assert
             val result = it?.getParcelableSafe<CheckoutResultContract.Result>(EXTRA_KEY_RESULT)
-            val response = (result?.checkoutResult as? VGSCheckoutResult.Success)?.data?.getParcelable<VGSCheckoutAddCardResponse>(VGSCheckoutResultBundle.ADD_CARD_RESPONSE_KEY)
+            val response = (result?.checkoutResult as? VGSCheckoutResult.Success)?.data?.getParcelable<VGSCheckoutAddCardResponse>(VGSCheckoutResultBundle.ADD_CARD_RESPONSE)
             assertEquals(Activity.RESULT_OK, it.result.resultCode)
             assertTrue(result?.checkoutResult is VGSCheckoutResult.Success)
             assertEquals(Constants.SUCCESS_RESPONSE_CODE, response?.code)

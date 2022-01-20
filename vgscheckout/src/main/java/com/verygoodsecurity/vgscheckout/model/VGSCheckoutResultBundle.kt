@@ -21,16 +21,16 @@ class VGSCheckoutResultBundle private constructor(@PublishedApi internal val bun
     }
 
     internal fun putAddCardResponse(response: VGSCheckoutAddCardResponse) {
-        bundle.putParcelable(ADD_CARD_RESPONSE_KEY, response)
+        bundle.putParcelable(ADD_CARD_RESPONSE, response)
     }
 
     internal fun putTransactionResponse(response: VGSCheckoutTransactionResponse) {
-        bundle.putParcelable(TRANSACTION_RESPONSE_KEY, response)
+        bundle.putParcelable(TRANSACTION_RESPONSE, response)
     }
 
     companion object Keys {
 
-        const val ADD_CARD_RESPONSE_KEY = "com.verygoodsecurity.vgscheckout.add_card_response"
-        const val TRANSACTION_RESPONSE_KEY = "com.verygoodsecurity.vgscheckout.transaction_response"
+        const val ADD_CARD_RESPONSE = "com.verygoodsecurity.vgscheckout.add_card_response"
+        const val TRANSACTION_RESPONSE = "com.verygoodsecurity.vgscheckout.transaction_response"
     }
 }

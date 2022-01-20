@@ -42,9 +42,9 @@ class PaymentActivity : AppCompatActivity(), VGSCheckoutCallback {
         when (result) {
             is VGSCheckoutResult.Success -> {
                 val addCardResponse =
-                    result.data.getParcelable<VGSCheckoutAddCardResponse>(VGSCheckoutResultBundle.Keys.ADD_CARD_RESPONSE_KEY)
+                    result.data.getParcelable<VGSCheckoutAddCardResponse>(VGSCheckoutResultBundle.Keys.ADD_CARD_RESPONSE)
                 val transactionResponse = result.data.getParcelable<VGSCheckoutTransactionResponse>(
-                    VGSCheckoutResultBundle.Keys.TRANSACTION_RESPONSE_KEY
+                    VGSCheckoutResultBundle.Keys.TRANSACTION_RESPONSE
                 )
                 Log.d("VGSCheckout", "Success!")
                 Log.d("VGSCheckout", "Add card response = $addCardResponse")
@@ -55,9 +55,9 @@ class PaymentActivity : AppCompatActivity(), VGSCheckoutCallback {
             }
             is VGSCheckoutResult.Failed -> {
                 val addCardResponse =
-                    result.data.getParcelable<VGSCheckoutAddCardResponse>(VGSCheckoutResultBundle.Keys.ADD_CARD_RESPONSE_KEY)
+                    result.data.getParcelable<VGSCheckoutAddCardResponse>(VGSCheckoutResultBundle.Keys.ADD_CARD_RESPONSE)
                 val transactionResponse = result.data.getParcelable<VGSCheckoutTransactionResponse>(
-                    VGSCheckoutResultBundle.Keys.TRANSACTION_RESPONSE_KEY
+                    VGSCheckoutResultBundle.Keys.TRANSACTION_RESPONSE
                 )
                 Log.d("VGSCheckout", "Failed!")
                 Log.d("VGSCheckout", "Add card response = $addCardResponse")

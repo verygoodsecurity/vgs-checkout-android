@@ -41,12 +41,12 @@ class MainActivity : AppCompatActivity(), VGSCheckoutCallback {
         when (result) {
             is VGSCheckoutResult.Success -> {
                 val addCardResponse =
-                    result.data.getParcelable<VGSCheckoutAddCardResponse>(VGSCheckoutResultBundle.Keys.ADD_CARD_RESPONSE_KEY)
+                    result.data.getParcelable<VGSCheckoutAddCardResponse>(VGSCheckoutResultBundle.Keys.ADD_CARD_RESPONSE)
                 Log.d("VGSCheckout", "Add card result = $addCardResponse")
             }
             is VGSCheckoutResult.Failed -> {
                 val addCardResponse =
-                    result.data.getParcelable<VGSCheckoutAddCardResponse>(VGSCheckoutResultBundle.Keys.ADD_CARD_RESPONSE_KEY)
+                    result.data.getParcelable<VGSCheckoutAddCardResponse>(VGSCheckoutResultBundle.Keys.ADD_CARD_RESPONSE)
                 Log.d("VGSCheckout", "Add card result = $addCardResponse")
             }
             is VGSCheckoutResult.Canceled -> {

@@ -71,7 +71,7 @@ class MainActivity : AppCompatActivity(), VGSCheckoutCallback {
             arguments = when (result) {
                 is VGSCheckoutResult.Success -> Bundle().apply {
                     val addCardResponse = result.data.getParcelable<VGSCheckoutAddCardResponse>(
-                        VGSCheckoutResultBundle.Keys.ADD_CARD_RESPONSE_KEY
+                        VGSCheckoutResultBundle.Keys.ADD_CARD_RESPONSE
                     )
                     addCardResponse?.code?.let { putInt(TransactionDialogFragment.CODE, it) }
                     putString(TransactionDialogFragment.TNT, tenantId)
@@ -79,7 +79,7 @@ class MainActivity : AppCompatActivity(), VGSCheckoutCallback {
                 }
                 is VGSCheckoutResult.Failed -> Bundle().apply {
                     val addCardResponse = result.data.getParcelable<VGSCheckoutAddCardResponse>(
-                        VGSCheckoutResultBundle.Keys.ADD_CARD_RESPONSE_KEY
+                        VGSCheckoutResultBundle.Keys.ADD_CARD_RESPONSE
                     )
                     addCardResponse?.code?.let { putInt(TransactionDialogFragment.CODE, it) }
                     putString(TransactionDialogFragment.TNT, tenantId)
