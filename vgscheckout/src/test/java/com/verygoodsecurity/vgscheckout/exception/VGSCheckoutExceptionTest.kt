@@ -1,9 +1,6 @@
 package com.verygoodsecurity.vgscheckout.exception
 
-import com.verygoodsecurity.vgscheckout.exception.internal.VGSCheckoutFinIdNotFoundException
-import com.verygoodsecurity.vgscheckout.exception.internal.VGSCheckoutJWTParseException
-import com.verygoodsecurity.vgscheckout.exception.internal.VGSCheckoutJWTRestrictedRoleException
-import com.verygoodsecurity.vgscheckout.exception.internal.VGSCheckoutPaymentInfoParseException
+import com.verygoodsecurity.vgscheckout.exception.internal.*
 import org.junit.Assert
 import org.junit.Test
 
@@ -27,5 +24,10 @@ class VGSCheckoutExceptionTest {
     @Test
     fun check_VGSCheckoutFinIdNotFoundException_code() {
         Assert.assertEquals(2002, VGSCheckoutFinIdNotFoundException(Exception()).code)
+    }
+
+    @Test
+    fun check_VGSCheckoutResultParseException_code() {
+        Assert.assertEquals(1002, VGSCheckoutResultParseException().code)
     }
 }
