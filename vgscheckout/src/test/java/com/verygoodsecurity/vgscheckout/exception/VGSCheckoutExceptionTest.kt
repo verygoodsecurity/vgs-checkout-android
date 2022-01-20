@@ -28,6 +28,6 @@ class VGSCheckoutExceptionTest {
 
     @Test
     fun check_VGSCheckoutResultParseException_code() {
-        Assert.assertEquals(2004, VGSCheckoutResultParseException().code)
+        Assert.assertEquals(1002, VGSCheckoutResultParseException().code)
     }
 }
