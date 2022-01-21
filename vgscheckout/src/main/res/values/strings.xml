@@ -59,6 +59,9 @@
     <string name="vgs_checkout_no_network_retry">Retry</string>
     <string name="vgs_checkout_no_network_error">Your network is unavailable.</string>
 
+    <!--Payment method-->
+    <string name="vgs_checkout_pay_with_new_card">Pay with new Card</string>
+
     <!--Collect-->
     <string name="vgs_checkout_error_divider_mask">Divider for number can\'t be # or \\ symbol.</string>
     <string name="vgs_checkout_error_output_divider_mask">Output divider for number can\'t be # or \\ symbol.</string>

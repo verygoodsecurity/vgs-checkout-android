@@ -41,7 +41,7 @@ internal abstract class BaseSaveCardFragment : Fragment(), LoadingHandler,
     InputFieldView.OnEditorActionListener {
 
     protected val formConfig: CheckoutFormConfig by lazy { requireParcelable(KEY_BUNDLE_CONFIG) }
-    protected val buttonTitle: String by lazy { requireString(KEY_BUNDLE_BUTTON_TITLE) }
+    private val buttonTitle: String by lazy { requireString(KEY_BUNDLE_BUTTON_TITLE) }
 
     protected lateinit var binding: SaveCardViewBindingHelper
     protected lateinit var inputViewBinder: InputViewBinder
@@ -385,8 +385,6 @@ internal abstract class BaseSaveCardFragment : Fragment(), LoadingHandler,
     }
 
     companion object {
-
-        internal const val TAG = "BaseSaveCardFragment"
 
         private const val ICON_ALPHA_ENABLED = 1f
         private const val ICON_ALPHA_DISABLED = 0.5f

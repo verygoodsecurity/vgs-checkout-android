@@ -11,9 +11,10 @@ import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutPaymentFormConfig
 import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
 import com.verygoodsecurity.vgscheckout.util.command.Result
-import com.verygoodsecurity.vgscheckout.util.command.order.GetPaymentInfo
 import com.verygoodsecurity.vgscheckout.util.command.VGSCheckoutCancellable
+import com.verygoodsecurity.vgscheckout.util.command.order.GetPaymentInfo
 import com.verygoodsecurity.vgscheckout.util.command.order.PaymentInfo
+import java.util.*
 
 /**
  * Holds configuration with predefined setup for work with payment orchestration app.
@@ -38,6 +39,7 @@ class VGSCheckoutPaymentConfig private constructor(
     override val formConfig: VGSCheckoutPaymentFormConfig,
     override val isScreenshotsAllowed: Boolean,
     override val isAnalyticsEnabled: Boolean,
+    internal val savedCards: List<String>,
     private val createdFromParcel: Boolean
 ) : CheckoutConfig(tenantId) {
 
@@ -54,6 +56,7 @@ class VGSCheckoutPaymentConfig private constructor(
         parcel.readParcelable(VGSCheckoutAddCardFormConfig::class.java.classLoader)!!,
         parcel.readInt() == 1,
         parcel.readInt() == 1,
+        LinkedList<String>().apply { parcel.readStringList(this) },
         true
     )
 
@@ -119,7 +122,7 @@ class VGSCheckoutPaymentConfig private constructor(
             isAnalyticsEnabled: Boolean = true,
         ): VGSCheckoutCancellable = GetPaymentInfo().execute(orderId) {
             try {
-                when(it) {
+                when (it) {
                     is Result.Success<PaymentInfo> -> {
                         callback.onSuccess(
                             VGSCheckoutPaymentConfig(
@@ -131,6 +134,7 @@ class VGSCheckoutPaymentConfig private constructor(
                                 formConfig,
                                 isScreenshotsAllowed,
                                 isAnalyticsEnabled,
+                                emptyList(),
                                 false
                             )
                         )

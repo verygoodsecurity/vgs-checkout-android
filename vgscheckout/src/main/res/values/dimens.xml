@@ -6,6 +6,7 @@
     <dimen name="vgs_checkout_margin_padding_size_small">8dp</dimen>
     <dimen name="vgs_checkout_margin_padding_size_xsmall">12dp</dimen>
     <dimen name="vgs_checkout_margin_padding_size_medium">16dp</dimen>
+    <dimen name="vgs_checkout_margin_padding_size_xmedium">20dp</dimen>
     <dimen name="vgs_checkout_margin_padding_size_large">24dp</dimen>
     <dimen name="vgs_checkout_margin_padding_size_xlarge">48dp</dimen>
 

@@ -29,7 +29,6 @@ import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResultBundle
 import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutAddCardResponse
 import com.verygoodsecurity.vgscheckout.ui.fragment.core.LoadingHandler
 import com.verygoodsecurity.vgscheckout.ui.fragment.save.core.BaseSaveCardFragment
-import com.verygoodsecurity.vgscheckout.ui.fragment.save.core.BaseSaveCardFragment.Companion.TAG
 import com.verygoodsecurity.vgscheckout.util.CollectProvider
 import com.verygoodsecurity.vgscheckout.util.extension.*
 
@@ -45,7 +44,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
         }
     }
 
-    protected lateinit var loadingHandler: LoadingHandler
+    private lateinit var loadingHandler: LoadingHandler
 
     protected val resultBundle = VGSCheckoutResultBundle()
 
@@ -125,15 +124,15 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
     protected open fun initView(savedInstanceState: Bundle?) {
         initToolbar()
         if (savedInstanceState == null) {
-            showSaveCardFragment()
+            initFragment()
         } else {
-            loadingHandler = supportFragmentManager.findFragmentByTag(TAG) as LoadingHandler
+            loadingHandler = findFragmentByTag(FRAGMENT_TAG) as LoadingHandler
         }
     }
 
     private fun initToolbar() {
         setSupportActionBar(findViewById(R.id.mtToolbar))
-        updateToolbarTitle(supportFragmentManager.findFragmentByTag(TAG))
+        updateToolbarTitle(findFragmentByTag(FRAGMENT_TAG))
     }
 
     private fun updateToolbarTitle(fragment: Fragment?) {
@@ -150,10 +149,10 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
         )
     }
 
-    private fun showSaveCardFragment() {
+    protected open fun initFragment() {
         val fragment = BaseSaveCardFragment.create(config.formConfig, getButtonTitle())
         supportFragmentManager.beginTransaction()
-            .add(R.id.fcvContainer, fragment, TAG)
+            .add(R.id.fcvContainer, fragment, FRAGMENT_TAG)
             .commit()
     }
 
@@ -202,5 +201,10 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     internal fun validateFields() {
         collect.validateFields()
+    }
+
+    companion object {
+
+        const val FRAGMENT_TAG = "com.verygoodsecurity.vgscheckout.ui.core.fragment"
     }
 }

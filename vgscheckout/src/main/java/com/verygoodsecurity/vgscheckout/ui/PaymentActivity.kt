@@ -15,12 +15,12 @@ import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutAddCardResponse
 import com.verygoodsecurity.vgscheckout.ui.core.BaseCheckoutActivity
+import com.verygoodsecurity.vgscheckout.ui.fragment.method.SelectPaymentMethodFragment
 import com.verygoodsecurity.vgscheckout.util.CurrencyFormatter.format
 import com.verygoodsecurity.vgscheckout.util.extension.toTransactionResponse
 import org.json.JSONObject
 
-internal class PaymentActivity :
-    BaseCheckoutActivity<VGSCheckoutPaymentConfig>() {
+internal class PaymentActivity : BaseCheckoutActivity<VGSCheckoutPaymentConfig>() {
 
     private val client: ApiClient = OkHttpClient()
 
@@ -32,6 +32,17 @@ internal class PaymentActivity :
     override fun getButtonTitle(): String {
         val amount = format(config.paymentInfo.amount, config.paymentInfo.currency)
         return getString(R.string.vgs_checkout_button_pay_title, amount)
+    }
+
+    override fun initFragment() {
+//        if (config.savedCards.isEmpty()) {
+//            super.initFragment()
+//            return
+//        }
+        val fragment = SelectPaymentMethodFragment.create(getButtonTitle())
+        supportFragmentManager.beginTransaction()
+            .add(R.id.fcvContainer, fragment, FRAGMENT_TAG)
+            .commit()
     }
 
     override fun handleSuccessfulAddCardResponse(response: VGSCheckoutAddCardResponse) {
