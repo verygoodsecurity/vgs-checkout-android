@@ -12,14 +12,14 @@ import kotlinx.parcelize.Parcelize
  * @param cardOptions card details section UI options.
  * @param addressOptions address details section UI options.
  * @param validationBehaviour defines validation behavior.
- * @param isSaveCardCheckboxVisible defines if save card checkbox should be visible.
+ * @param saveCardOptionEnabled defines if save card checkbox should be visible.
  */
 @Parcelize
 class VGSCheckoutCustomFormConfig internal constructor(
     override val cardOptions: VGSCheckoutCustomCardOptions,
     override val addressOptions: VGSCheckoutCustomBillingAddressOptions,
     override val validationBehaviour: VGSCheckoutFormValidationBehaviour,
-    override val isSaveCardCheckboxVisible: Boolean,
+    override val saveCardOptionEnabled: Boolean,
 ) : CheckoutFormConfig() {
 
     /**

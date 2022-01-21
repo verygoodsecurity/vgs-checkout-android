@@ -124,7 +124,8 @@ internal abstract class BaseSaveCardFragment : Fragment(), LoadingHandler,
         requireActivity().hideSoftKeyboard()
         val invalidFields = validate()
         if (invalidFields.isEmpty()) {
-            validationListener.onSuccess()
+            val shouldSaveCard = if (!formConfig.saveCardOptionEnabled) null else binding.saveCardCheckbox.isChecked
+            validationListener.onSuccess(shouldSaveCard)
         } else {
             validationListener.onFailed(invalidFields.map { it.getAnalyticsName() })
         }
@@ -234,7 +235,7 @@ internal abstract class BaseSaveCardFragment : Fragment(), LoadingHandler,
     }
 
     private fun initSaveCardCheckbox() {
-        binding.saveCardCheckbox.setVisible(formConfig.isSaveCardCheckboxVisible)
+        binding.saveCardCheckbox.setVisible(formConfig.saveCardOptionEnabled)
     }
 
     private fun initSaveButton() {
