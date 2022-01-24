@@ -18,6 +18,8 @@
 
     <dimen name="vgs_checkout_clear_icon_max_size">56dp</dimen>
 
+    <dimen name="vgs_checkout_payment_methods_bottom_padding">96dp</dimen>
+
     <!--Collect -->
     <dimen name="vgs_checkout_default_vertical_field">8dp</dimen>
     <dimen name="vgs_checkout_default_horizontal_field">0dp</dimen>

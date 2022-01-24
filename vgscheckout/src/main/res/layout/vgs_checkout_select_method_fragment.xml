@@ -1,24 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingStart="@dimen/vgs_checkout_margin_padding_size_medium"
-    android:paddingTop="@dimen/vgs_checkout_margin_padding_size_large"
-    android:paddingEnd="@dimen/vgs_checkout_margin_padding_size_medium"
-    android:paddingBottom="@dimen/vgs_checkout_margin_padding_size_large">
+    android:orientation="vertical">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvCards"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:overScrollMode="never"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+        android:id="@+id/rvPaymentMethods"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:paddingTop="@dimen/vgs_checkout_margin_padding_size_medium"
+        android:paddingBottom="@dimen/vgs_checkout_payment_methods_bottom_padding"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/vgs_checkout_payment_methods_bottom_gradient"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/mbPay" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/mbPay"
         style="@style/VGSCheckout.SaveButton"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom" />
-</FrameLayout>
+        android:layout_marginStart="@dimen/vgs_checkout_margin_padding_size_medium"
+        android:layout_marginEnd="@dimen/vgs_checkout_margin_padding_size_medium"
+        android:layout_marginBottom="@dimen/vgs_checkout_margin_padding_size_large"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
