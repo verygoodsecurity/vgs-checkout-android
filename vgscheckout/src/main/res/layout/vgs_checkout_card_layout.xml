@@ -20,15 +20,17 @@
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/mtvCardHolderName"
+        style="@style/VGSCheckout.SavedCard.Name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/vgs_checkout_margin_padding_size_medium"
         android:layout_marginEnd="@dimen/vgs_checkout_margin_padding_size_medium"
+        android:layout_marginBottom="@dimen/vgs_checkout_margin_padding_size_micro"
         app:layout_constraintBottom_toTopOf="@+id/llNumberAndExpiry"
         app:layout_constraintEnd_toStartOf="@+id/radioButton"
         app:layout_constraintStart_toEndOf="@+id/ivCardBrand"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="spread"
+        app:layout_constraintVertical_chainStyle="packed"
         tools:text="John Doe" />
 
     <LinearLayout
@@ -45,8 +47,9 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/mtvCardNumber"
+            style="@style/VGSCheckout.SavedCard.Number"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             tools:text="**** 4111" />
 
         <View
@@ -54,10 +57,11 @@
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/vgs_checkout_margin_padding_size_small"
             android:layout_marginEnd="@dimen/vgs_checkout_margin_padding_size_small"
-            android:background="@color/vgs_checkout_dark_gray" />
+            android:background="?android:attr/textColorHint" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/mtvExpiry"
+            style="@style/VGSCheckout.SavedCard.Expiry"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

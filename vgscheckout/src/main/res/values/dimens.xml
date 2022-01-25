@@ -12,7 +12,8 @@
 
     <dimen name="vgs_checkout_input_text_size">16sp</dimen>
 
-    <dimen name="vgs_checkout_title_text_size">16sp</dimen>
+    <dimen name="vgs_checkout_subtitle_2_text_size">14sp</dimen>
+    <dimen name="vgs_checkout_subtitle_1_text_size">16sp</dimen>
 
     <dimen name="vgs_checkout_border_width">1dp</dimen>
 

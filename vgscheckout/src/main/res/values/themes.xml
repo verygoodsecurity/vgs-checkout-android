@@ -24,10 +24,11 @@
 
     <style name="VGSCheckout.Form">
         <item name="android:background">@drawable/vgs_checkout_form_bg</item>
+        <item name="android:padding">@dimen/vgs_checkout_margin_padding_size_medium</item>
     </style>
 
     <style name="VGSCheckout.Title">
-        <item name="android:textSize">@dimen/vgs_checkout_title_text_size</item>
+        <item name="android:textSize">@dimen/vgs_checkout_subtitle_1_text_size</item>
     </style>
 
     <style name="VGSCheckout.TextInputLayout">
@@ -64,8 +65,8 @@
         <item name="textAllCaps">false</item>
     </style>
 
-    <style name="VGSCheckout.PayWithNewCard">
-        <item name="android:textSize">@dimen/vgs_checkout_title_text_size</item>
+    <style name="VGSCheckout.PayWithNewCardTitle">
+        <item name="android:textSize">@dimen/vgs_checkout_subtitle_1_text_size</item>
         <item name="android:textColor">?colorSecondary</item>
         <item name="android:background">@drawable/vgs_checkout_payment_methods_item_background</item>
         <item name="android:paddingStart">@dimen/vgs_checkout_margin_padding_size_medium</item>
@@ -75,5 +76,25 @@
         <item name="drawableStartCompat">@drawable/vgs_checkout_ic_abstract_card_back_blue</item>
         <item name="drawableTint">?colorSecondary</item>
         <item name="android:drawablePadding">@dimen/vgs_checkout_margin_padding_size_small</item>
+    </style>
+
+    <style name="VGSCheckout.SavedCard">
+        <item name="android:ellipsize">end</item>
+        <item name="android:lines">@integer/vgs_checkout_single_line</item>
+    </style>
+
+    <style name="VGSCheckout.SavedCard.Name">
+        <item name="android:textSize">@dimen/vgs_checkout_subtitle_1_text_size</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+    </style>
+
+    <style name="VGSCheckout.SavedCard.Number">
+        <item name="android:textSize">@dimen/vgs_checkout_subtitle_2_text_size</item>
+        <item name="android:textColor">?android:attr/textColorHint</item>
+    </style>
+
+    <style name="VGSCheckout.SavedCard.Expiry">
+        <item name="android:textSize">@dimen/vgs_checkout_subtitle_2_text_size</item>
+        <item name="android:textColor">?android:attr/textColorHint</item>
     </style>
 </resources>
