@@ -1,6 +1,7 @@
 package com.verygoodsecurity.vgscheckout.ui
 
 import android.content.Intent
+import android.util.Log
 import com.verygoodsecurity.vgscheckout.BuildConfig
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.core.HTTPMethod
@@ -39,7 +40,8 @@ internal class PaymentActivity : BaseCheckoutActivity<VGSCheckoutPaymentConfig>(
 //            super.initFragment()
 //            return
 //        }
-        val fragment = SelectPaymentMethodFragment.create(getButtonTitle())
+        Log.d("Test", config.savedCards.toString())
+        val fragment = SelectPaymentMethodFragment.create(config, getButtonTitle())
         supportFragmentManager.beginTransaction()
             .add(R.id.fcvContainer, fragment, FRAGMENT_TAG)
             .commit()

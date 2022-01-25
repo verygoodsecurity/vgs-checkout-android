@@ -15,7 +15,6 @@ import com.verygoodsecurity.vgscheckout.VGSCheckout
 import com.verygoodsecurity.vgscheckout.VGSCheckoutCallback
 import com.verygoodsecurity.vgscheckout.VGSCheckoutConfigInitCallback
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutPaymentConfig
-import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutPaymentFormConfig
 import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResultBundle
@@ -85,7 +84,7 @@ class PaymentActivity : AppCompatActivity(), VGSCheckoutCallback {
             accessToken,
             orderId,
             BuildConfig.VAULT_ID,
-            object : VGSCheckoutConfigInitCallback<VGSCheckoutPaymentConfig> {
+            callback = object : VGSCheckoutConfigInitCallback<VGSCheckoutPaymentConfig> {
 
                 override fun onSuccess(config: VGSCheckoutPaymentConfig) {
                     checkout.present(config)
