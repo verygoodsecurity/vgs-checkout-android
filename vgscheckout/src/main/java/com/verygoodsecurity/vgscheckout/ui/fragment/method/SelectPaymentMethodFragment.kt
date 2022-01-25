@@ -8,8 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.model.VGSCheckoutCardBrand
+import com.verygoodsecurity.vgscheckout.model.VGSCheckoutCard
 import com.verygoodsecurity.vgscheckout.ui.fragment.core.LoadingHandler
-import com.verygoodsecurity.vgscheckout.ui.fragment.method.adapter.Card
 import com.verygoodsecurity.vgscheckout.ui.fragment.method.adapter.PaymentMethodsAdapter
 import com.verygoodsecurity.vgscheckout.ui.fragment.method.decorator.MarginItemDecoration
 import com.verygoodsecurity.vgscheckout.util.extension.requireString
@@ -20,6 +20,8 @@ internal class SelectPaymentMethodFragment : Fragment(R.layout.vgs_checkout_sele
 
     private val buttonTitle: String by lazy { requireString(KEY_BUNDLE_BUTTON_TITLE) }
 
+    private val paymentMethodsView: RecyclerView? by lazy { view?.findViewById(R.id.rvPaymentMethods) }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView(view)
@@ -29,7 +31,7 @@ internal class SelectPaymentMethodFragment : Fragment(R.layout.vgs_checkout_sele
         // TODO: Handle
     }
 
-    override fun onCardClick(card: Card) {
+    override fun onCardClick(card: VGSCheckoutCard) {
 //        Toast.makeText(requireContext(), "onCardClick::$card", Toast.LENGTH_SHORT).show()
     }
 
@@ -38,12 +40,12 @@ internal class SelectPaymentMethodFragment : Fragment(R.layout.vgs_checkout_sele
     }
 
     private fun initView(view: View) {
-        initSavedCardsView(view)
+        initSavedCardsView()
         initPayButton(view)
     }
 
-    private fun initSavedCardsView(view: View) {
-        view.findViewById<RecyclerView>(R.id.rvPaymentMethods)?.let {
+    private fun initSavedCardsView() {
+        paymentMethodsView?.let {
             it.adapter = PaymentMethodsAdapter(getCards(), this)
             val paddingSmall =
                 resources.getDimensionPixelSize(R.dimen.vgs_checkout_margin_padding_size_small)
@@ -73,12 +75,12 @@ internal class SelectPaymentMethodFragment : Fragment(R.layout.vgs_checkout_sele
         // TODO: Handle
     }
 
-    private fun getCards(): List<Card> {
+    private fun getCards(): List<VGSCheckoutCard> {
         val brands = VGSCheckoutCardBrand.BRANDS.toList()
-        val result = mutableListOf<Card>()
+        val result = mutableListOf<VGSCheckoutCard>()
         for (i in 0..10) {
             result.add(
-                Card(
+                VGSCheckoutCard(
                     UUID.randomUUID().toString(),
                     "Test $i",
                     "$i$i$i$i",

@@ -1,6 +1,6 @@
-package com.verygoodsecurity.vgscheckout.ui.fragment.method.adapter
+package com.verygoodsecurity.vgscheckout.model
 
-internal data class Card constructor(
+internal data class VGSCheckoutCard constructor(
     val finId: String,
     val holderName: String,
     val lastFour: String,

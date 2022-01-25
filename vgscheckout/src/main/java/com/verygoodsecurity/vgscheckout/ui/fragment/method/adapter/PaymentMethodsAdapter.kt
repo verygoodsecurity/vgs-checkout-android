@@ -9,9 +9,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textview.MaterialTextView
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.model.VGSCheckoutCardBrand
+import com.verygoodsecurity.vgscheckout.model.VGSCheckoutCard
 
 internal class PaymentMethodsAdapter constructor(
-    private val cards: List<Card>,
+    private val cards: List<VGSCheckoutCard>,
     private val listener: OnPaymentMethodClickListener
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -63,7 +64,7 @@ internal class PaymentMethodsAdapter constructor(
             }
         }
 
-        fun bind(card: Card) {
+        fun bind(card: VGSCheckoutCard) {
             ivCardBrand?.setImageResource(VGSCheckoutCardBrand.getBrandIcon(card.brand))
             mtvCardHolderName?.text = card.holderName
             mtvCardNumber?.text = getFormattedCardNumber(card.lastFour)
@@ -92,7 +93,7 @@ internal class PaymentMethodsAdapter constructor(
 
     interface OnPaymentMethodClickListener {
 
-        fun onCardClick(card: Card)
+        fun onCardClick(card: VGSCheckoutCard)
 
         fun onNewCardClick()
     }
