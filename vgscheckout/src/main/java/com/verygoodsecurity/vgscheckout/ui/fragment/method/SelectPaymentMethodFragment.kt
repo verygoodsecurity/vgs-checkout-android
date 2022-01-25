@@ -7,10 +7,13 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.verygoodsecurity.vgscheckout.R
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.model.VGSCheckoutCardBrand
 import com.verygoodsecurity.vgscheckout.ui.fragment.core.LoadingHandler
+import com.verygoodsecurity.vgscheckout.ui.fragment.method.adapter.Card
 import com.verygoodsecurity.vgscheckout.ui.fragment.method.adapter.PaymentMethodsAdapter
 import com.verygoodsecurity.vgscheckout.ui.fragment.method.decorator.MarginItemDecoration
 import com.verygoodsecurity.vgscheckout.util.extension.requireString
+import java.util.*
 
 internal class SelectPaymentMethodFragment : Fragment(R.layout.vgs_checkout_select_method_fragment),
     LoadingHandler, PaymentMethodsAdapter.OnPaymentMethodClickListener {
@@ -26,8 +29,8 @@ internal class SelectPaymentMethodFragment : Fragment(R.layout.vgs_checkout_sele
         // TODO: Handle
     }
 
-    override fun onCardClick(card: String) {
-        Toast.makeText(requireContext(), "onCardClick::$card", Toast.LENGTH_SHORT).show()
+    override fun onCardClick(card: Card) {
+//        Toast.makeText(requireContext(), "onCardClick::$card", Toast.LENGTH_SHORT).show()
     }
 
     override fun onNewCardClick() {
@@ -41,7 +44,7 @@ internal class SelectPaymentMethodFragment : Fragment(R.layout.vgs_checkout_sele
 
     private fun initSavedCardsView(view: View) {
         view.findViewById<RecyclerView>(R.id.rvPaymentMethods)?.let {
-            it.adapter = PaymentMethodsAdapter(getPaymentMethods(), this)
+            it.adapter = PaymentMethodsAdapter(getCards(), this)
             val paddingSmall =
                 resources.getDimensionPixelSize(R.dimen.vgs_checkout_margin_padding_size_small)
             val paddingMedium =
@@ -70,21 +73,22 @@ internal class SelectPaymentMethodFragment : Fragment(R.layout.vgs_checkout_sele
         // TODO: Handle
     }
 
-    private fun getPaymentMethods() = listOf(
-        "test1",
-        "test2",
-        "test3",
-        "test4",
-        "test5",
-        "test6",
-        "test7",
-        "test8",
-        "test9",
-        "test10",
-        "test11",
-        "test12",
-        "test13",
-    )
+    private fun getCards(): List<Card> {
+        val brands = VGSCheckoutCardBrand.BRANDS.toList()
+        val result = mutableListOf<Card>()
+        for (i in 0..10) {
+            result.add(
+                Card(
+                    UUID.randomUUID().toString(),
+                    "Test $i",
+                    "$i$i$i$i",
+                    "09/24",
+                    brands.random().name
+                )
+            )
+        }
+        return result
+    }
 
     companion object {
 

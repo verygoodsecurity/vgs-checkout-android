@@ -3,11 +3,15 @@ package com.verygoodsecurity.vgscheckout.ui.fragment.method.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RadioButton
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.textview.MaterialTextView
 import com.verygoodsecurity.vgscheckout.R
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.model.VGSCheckoutCardBrand
 
 internal class PaymentMethodsAdapter constructor(
-    private val paymentMethods: List<String>,
+    private val cards: List<Card>,
     private val listener: OnPaymentMethodClickListener
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -16,7 +20,7 @@ internal class PaymentMethodsAdapter constructor(
         return when (toEnum(viewType)) {
             ViewType.CARD -> CardViewHolder(
                 inflater.inflate(
-                    R.layout.vgs_checkout_new_card_layout,
+                    R.layout.vgs_checkout_card_layout,
                     parent,
                     false
                 )
@@ -32,13 +36,13 @@ internal class PaymentMethodsAdapter constructor(
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as? CardViewHolder)?.bind(paymentMethods[position])
+        (holder as? CardViewHolder)?.bind(cards[position])
     }
 
-    override fun getItemCount(): Int = paymentMethods.count().inc()
+    override fun getItemCount(): Int = cards.count().inc()
 
     override fun getItemViewType(position: Int): Int =
-        if (paymentMethods.getOrNull(position) != null) ViewType.CARD.value else ViewType.ADD_CARD.value
+        if (cards.getOrNull(position) != null) ViewType.CARD.value else ViewType.ADD_CARD.value
 
     private fun toEnum(viewType: Int): ViewType = when (viewType) {
         ViewType.CARD.value -> ViewType.CARD
@@ -47,14 +51,27 @@ internal class PaymentMethodsAdapter constructor(
 
     inner class CardViewHolder constructor(view: View) : RecyclerView.ViewHolder(view) {
 
+        private val ivCardBrand: AppCompatImageView? = view.findViewById(R.id.ivCardBrand)
+        private val mtvCardHolderName: MaterialTextView? = view.findViewById(R.id.mtvCardHolderName)
+        private val mtvCardNumber: MaterialTextView? = view.findViewById(R.id.mtvCardNumber)
+        private val mtvExpiry: MaterialTextView? = view.findViewById(R.id.mtvExpiry)
+        private val radioButton: RadioButton? = view.findViewById(R.id.radioButton)
+
         init {
             view.setOnClickListener {
-                listener.onCardClick(paymentMethods[adapterPosition])
+                listener.onCardClick(cards[adapterPosition])
             }
         }
 
-        fun bind(card: String) {
-            // TODO: Implement
+        fun bind(card: Card) {
+            ivCardBrand?.setImageResource(VGSCheckoutCardBrand.getBrandIcon(card.brand))
+            mtvCardHolderName?.text = card.holderName
+            mtvCardNumber?.text = getFormattedCardNumber(card.lastFour)
+            mtvExpiry?.text = card.expiry
+        }
+
+        private fun getFormattedCardNumber(lastFour: String): String {
+            return itemView.resources.getString(R.string.vgs_checkout_card_number, lastFour)
         }
     }
 
@@ -75,7 +92,7 @@ internal class PaymentMethodsAdapter constructor(
 
     interface OnPaymentMethodClickListener {
 
-        fun onCardClick(card: String)
+        fun onCardClick(card: Card)
 
         fun onNewCardClick()
     }

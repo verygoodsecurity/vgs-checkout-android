@@ -2,8 +2,8 @@ package com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.model
 
 import android.os.Parcelable
 import androidx.annotation.DrawableRes
-import com.verygoodsecurity.vgscheckout.util.extension.toCheckoutChecksumAlgorithm
 import com.verygoodsecurity.vgscheckout.collect.view.card.CardType
+import com.verygoodsecurity.vgscheckout.util.extension.toCheckoutChecksumAlgorithm
 import kotlinx.parcelize.Parcelize
 
 @Suppress("SpellCheckingInspection", "unused")
@@ -64,6 +64,10 @@ sealed class VGSCheckoutCardBrand : Parcelable {
             Unionpay(),
             JCB()
         )
+
+        @DrawableRes
+        fun getBrandIcon(brand: String): Int =
+            BRANDS.find { it.name == brand }?.icon ?: CardType.UNKNOWN.resId
     }
 
     @Parcelize
