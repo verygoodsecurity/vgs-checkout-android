@@ -53,7 +53,7 @@
             tools:text="**** 4111" />
 
         <View
-            android:layout_width="1dp"
+            android:layout_width="@dimen/vgs_checkout_border_width"
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/vgs_checkout_margin_padding_size_small"
             android:layout_marginEnd="@dimen/vgs_checkout_margin_padding_size_small"
