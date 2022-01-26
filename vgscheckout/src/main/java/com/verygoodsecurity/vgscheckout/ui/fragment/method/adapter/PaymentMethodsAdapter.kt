@@ -16,7 +16,7 @@ internal class PaymentMethodsAdapter constructor(
     private val listener: OnPaymentMethodClickListener
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private val selectedPosition: Int = 0
+    private var selectedPosition: Int = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -39,7 +39,7 @@ internal class PaymentMethodsAdapter constructor(
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as? CardViewHolder)?.bind(cards[position])
+        (holder as? CardViewHolder)?.bind(cards[position], selectedPosition == position)
     }
 
     override fun getItemCount(): Int = cards.count().inc()
@@ -48,6 +48,13 @@ internal class PaymentMethodsAdapter constructor(
         if (cards.getOrNull(position) != null) ViewType.CARD.value else ViewType.ADD_CARD.value
 
     fun getSelectedCard() = cards[selectedPosition]
+
+    fun setSelectedCard(position: Int) {
+        val oldPosition = selectedPosition
+        selectedPosition = position
+        notifyItemChanged(oldPosition)
+        notifyItemChanged(position)
+    }
 
     private fun toEnum(viewType: Int): ViewType = when (viewType) {
         ViewType.CARD.value -> ViewType.CARD
@@ -62,11 +69,19 @@ internal class PaymentMethodsAdapter constructor(
         private val mtvExpiry: MaterialTextView? = view.findViewById(R.id.mtvExpiry)
         private val radioButton: RadioButton? = view.findViewById(R.id.radioButton)
 
-        fun bind(card: VGSCheckoutCard) {
+        init {
+
+            view.setOnClickListener {
+                setSelectedCard(adapterPosition)
+            }
+        }
+
+        fun bind(card: VGSCheckoutCard, isSelected: Boolean) {
             ivCardBrand?.setImageResource(VGSCheckoutCardBrand.getBrandIcon(card.brand))
             mtvCardHolderName?.text = card.holderName
             mtvCardNumber?.text = getFormattedCardNumber(card.lastFour)
             mtvExpiry?.text = card.expiry
+            radioButton?.isChecked = isSelected
         }
 
         private fun getFormattedCardNumber(lastFour: String): String {

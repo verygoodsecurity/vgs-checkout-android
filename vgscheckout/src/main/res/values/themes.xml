@@ -68,7 +68,6 @@
     <style name="VGSCheckout.PayWithNewCardTitle">
         <item name="android:textSize">@dimen/vgs_checkout_subtitle_1_text_size</item>
         <item name="android:textColor">?colorSecondary</item>
-        <item name="android:background">@drawable/vgs_checkout_payment_methods_item_background</item>
         <item name="android:paddingStart">@dimen/vgs_checkout_margin_padding_size_medium</item>
         <item name="android:paddingEnd">@dimen/vgs_checkout_margin_padding_size_medium</item>
         <item name="android:paddingTop">@dimen/vgs_checkout_margin_padding_size_xmedium</item>
