@@ -45,6 +45,16 @@ internal class SelectPaymentMethodFragment : Fragment(R.layout.vgs_checkout_sele
         toolbarHandler.setTitle(getString(R.string.vgs_checkout_title))
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt(KEY_SELECTED_ITEM_POSITION, adapter.getSelectedPosition())
+    }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        adapter.setSelectedPosition(savedInstanceState?.getInt(KEY_SELECTED_ITEM_POSITION) ?: 0)
+    }
+
     override fun setIsLoading(isLoading: Boolean) {
         setViewsEnabled(!isLoading)
         setSaveButtonIsLoading(isLoading)
@@ -108,6 +118,8 @@ internal class SelectPaymentMethodFragment : Fragment(R.layout.vgs_checkout_sele
     }
 
     companion object {
+
+        private const val KEY_SELECTED_ITEM_POSITION = "selected_item_position"
 
         private const val KEY_BUNDLE_CONFIG = "com.verygoodsecurity.vgscheckout.config"
         private const val KEY_BUNDLE_BUTTON_TITLE = "com.verygoodsecurity.vgscheckout.button_title"

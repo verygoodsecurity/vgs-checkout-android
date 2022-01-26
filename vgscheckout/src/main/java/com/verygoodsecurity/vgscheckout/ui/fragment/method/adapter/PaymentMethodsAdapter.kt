@@ -47,9 +47,11 @@ internal class PaymentMethodsAdapter constructor(
     override fun getItemViewType(position: Int): Int =
         if (cards.getOrNull(position) != null) ViewType.CARD.value else ViewType.ADD_CARD.value
 
+    fun getSelectedPosition() = selectedPosition
+
     fun getSelectedCard() = cards[selectedPosition]
 
-    fun setSelectedCard(position: Int) {
+    fun setSelectedPosition(position: Int) {
         val oldPosition = selectedPosition
         selectedPosition = position
         notifyItemChanged(oldPosition)
@@ -72,7 +74,7 @@ internal class PaymentMethodsAdapter constructor(
         init {
 
             view.setOnClickListener {
-                setSelectedCard(adapterPosition)
+                setSelectedPosition(adapterPosition)
             }
         }
 
