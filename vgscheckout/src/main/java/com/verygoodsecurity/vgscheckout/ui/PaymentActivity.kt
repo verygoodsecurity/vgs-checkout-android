@@ -1,7 +1,6 @@
 package com.verygoodsecurity.vgscheckout.ui
 
 import android.content.Intent
-import android.util.Log
 import com.verygoodsecurity.vgscheckout.BuildConfig
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.core.HTTPMethod
@@ -13,15 +12,18 @@ import com.verygoodsecurity.vgscheckout.config.VGSCheckoutPaymentConfig
 import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
 import com.verygoodsecurity.vgscheckout.exception.internal.VGSCheckoutFinIdNotFoundException
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
+import com.verygoodsecurity.vgscheckout.model.VGSCheckoutCard
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutAddCardResponse
 import com.verygoodsecurity.vgscheckout.ui.core.BaseCheckoutActivity
+import com.verygoodsecurity.vgscheckout.ui.core.OnPaymentMethodSelectedListener
 import com.verygoodsecurity.vgscheckout.ui.fragment.method.SelectPaymentMethodFragment
+import com.verygoodsecurity.vgscheckout.ui.fragment.save.core.BaseSaveCardFragment
 import com.verygoodsecurity.vgscheckout.util.CurrencyFormatter.format
 import com.verygoodsecurity.vgscheckout.util.extension.toTransactionResponse
 import org.json.JSONObject
 
-internal class PaymentActivity : BaseCheckoutActivity<VGSCheckoutPaymentConfig>() {
+internal class PaymentActivity : BaseCheckoutActivity<VGSCheckoutPaymentConfig>(), OnPaymentMethodSelectedListener {
 
     private val client: ApiClient = OkHttpClient()
 
@@ -40,10 +42,20 @@ internal class PaymentActivity : BaseCheckoutActivity<VGSCheckoutPaymentConfig>(
 //            super.initFragment()
 //            return
 //        }
-        Log.d("Test", config.savedCards.toString())
         val fragment = SelectPaymentMethodFragment.create(config, getButtonTitle())
         supportFragmentManager.beginTransaction()
-            .add(R.id.fcvContainer, fragment, FRAGMENT_TAG)
+            .replace(R.id.fcvContainer, fragment, FRAGMENT_TAG)
+            .commit()
+    }
+
+    override fun onCardSelected(card: VGSCheckoutCard) {
+        pay(card.finId)
+    }
+
+    override fun onNewCardSelected() {
+        val fragment = BaseSaveCardFragment.create(config.formConfig, getButtonTitle())
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fcvContainer, fragment, FRAGMENT_TAG)
             .commit()
     }
 

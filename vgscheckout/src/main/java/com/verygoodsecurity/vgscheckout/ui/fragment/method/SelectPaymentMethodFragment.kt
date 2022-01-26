@@ -1,14 +1,16 @@
 package com.verygoodsecurity.vgscheckout.ui.fragment.method
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutPaymentConfig
-import com.verygoodsecurity.vgscheckout.model.VGSCheckoutCard
+import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
+import com.verygoodsecurity.vgscheckout.ui.core.OnPaymentMethodSelectedListener
+import com.verygoodsecurity.vgscheckout.ui.core.ToolbarHandler
 import com.verygoodsecurity.vgscheckout.ui.fragment.core.LoadingHandler
 import com.verygoodsecurity.vgscheckout.ui.fragment.method.adapter.PaymentMethodsAdapter
 import com.verygoodsecurity.vgscheckout.ui.fragment.method.decorator.MarginItemDecoration
@@ -21,33 +23,39 @@ internal class SelectPaymentMethodFragment : Fragment(R.layout.vgs_checkout_sele
     private val config: VGSCheckoutPaymentConfig by lazy { requireParcelable(KEY_BUNDLE_CONFIG) }
     private val buttonTitle: String by lazy { requireString(KEY_BUNDLE_BUTTON_TITLE) }
 
-    private val paymentMethodsView: RecyclerView? by lazy { view?.findViewById(R.id.rvPaymentMethods) }
+    private lateinit var toolbarHandler: ToolbarHandler
+    private lateinit var listener: OnPaymentMethodSelectedListener
+    private lateinit var adapter: PaymentMethodsAdapter
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        listener = requireActivity() as OnPaymentMethodSelectedListener
+        toolbarHandler = requireActivity() as ToolbarHandler
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView(view)
+        toolbarHandler.setTitle(getString(R.string.vgs_checkout_title))
     }
 
     override fun setIsLoading(isLoading: Boolean) {
         // TODO: Handle
     }
 
-    override fun onCardClick(card: VGSCheckoutCard) {
-//        Toast.makeText(requireContext(), "onCardClick::$card", Toast.LENGTH_SHORT).show()
-    }
-
     override fun onNewCardClick() {
-        Toast.makeText(requireContext(), "onNewCardClick", Toast.LENGTH_SHORT).show()
+        listener.onNewCardSelected()
     }
 
     private fun initView(view: View) {
-        initSavedCardsView()
+        initSavedCardsView(view)
         initPayButton(view)
     }
 
-    private fun initSavedCardsView() {
-        paymentMethodsView?.let {
-            it.adapter = PaymentMethodsAdapter(config.savedCards, this)
+    private fun initSavedCardsView(view: View) {
+        view.findViewById<RecyclerView>(R.id.rvPaymentMethods)?.let {
+            adapter = PaymentMethodsAdapter(config.savedCards, this)
+            it.adapter = adapter
             val paddingSmall =
                 resources.getDimensionPixelSize(R.dimen.vgs_checkout_margin_padding_size_small)
             val paddingMedium =
@@ -67,13 +75,9 @@ internal class SelectPaymentMethodFragment : Fragment(R.layout.vgs_checkout_sele
         view.findViewById<MaterialButton>(R.id.mbPay)?.let {
             it.text = buttonTitle
             it.setOnClickListener {
-                handlePayClicked()
+                listener.onCardSelected(adapter.getSelectedCard())
             }
         }
-    }
-
-    private fun handlePayClicked() {
-        // TODO: Handle
     }
 
     companion object {
@@ -81,7 +85,7 @@ internal class SelectPaymentMethodFragment : Fragment(R.layout.vgs_checkout_sele
         private const val KEY_BUNDLE_CONFIG = "com.verygoodsecurity.vgscheckout.config"
         private const val KEY_BUNDLE_BUTTON_TITLE = "com.verygoodsecurity.vgscheckout.button_title"
 
-        fun create(config: VGSCheckoutPaymentConfig, buttonTitle: String): Fragment =
+        fun create(config: CheckoutConfig, buttonTitle: String): Fragment =
             SelectPaymentMethodFragment().apply {
                 arguments = Bundle().apply {
                     putParcelable(KEY_BUNDLE_CONFIG, config)

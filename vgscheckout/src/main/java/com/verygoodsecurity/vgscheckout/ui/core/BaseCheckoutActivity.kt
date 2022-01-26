@@ -20,7 +20,6 @@ import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSRequest
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
 import com.verygoodsecurity.vgscheckout.collect.widget.*
-import com.verygoodsecurity.vgscheckout.config.VGSCheckoutPaymentConfig
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.config.networking.core.VGSCheckoutHostnamePolicy
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
@@ -33,7 +32,7 @@ import com.verygoodsecurity.vgscheckout.util.CollectProvider
 import com.verygoodsecurity.vgscheckout.util.extension.*
 
 internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActivity(),
-    FragmentOnAttachListener, InputViewBinder, ValidationResultListener,
+    FragmentOnAttachListener, ToolbarHandler, InputViewBinder, ValidationResultListener,
     VgsCollectResponseListener {
 
     protected val config: C by lazy { resolveConfig(intent) }
@@ -73,7 +72,10 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
 
     override fun onAttachFragment(fragmentManager: FragmentManager, fragment: Fragment) {
         loadingHandler = fragment as LoadingHandler
-        updateToolbarTitle(fragment)
+    }
+
+    override fun setTitle(title: String) {
+        supportActionBar?.title = title
     }
 
     override fun bind(vararg view: InputFieldView) {
@@ -132,27 +134,12 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
 
     private fun initToolbar() {
         setSupportActionBar(findViewById(R.id.mtToolbar))
-        updateToolbarTitle(findFragmentByTag(FRAGMENT_TAG))
-    }
-
-    private fun updateToolbarTitle(fragment: Fragment?) {
-        supportActionBar?.title = getString(
-            if (config is VGSCheckoutPaymentConfig) {
-                if (fragment is BaseSaveCardFragment) {
-                    R.string.vgs_checkout_new_card_title
-                } else {
-                    R.string.vgs_checkout_title
-                }
-            } else {
-                R.string.vgs_checkout_add_card_title
-            }
-        )
     }
 
     protected open fun initFragment() {
         val fragment = BaseSaveCardFragment.create(config.formConfig, getButtonTitle())
         supportFragmentManager.beginTransaction()
-            .add(R.id.fcvContainer, fragment, FRAGMENT_TAG)
+            .replace(R.id.fcvContainer, fragment, FRAGMENT_TAG)
             .commit()
     }
 

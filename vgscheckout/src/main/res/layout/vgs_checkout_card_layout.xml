@@ -57,7 +57,7 @@
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/vgs_checkout_margin_padding_size_small"
             android:layout_marginEnd="@dimen/vgs_checkout_margin_padding_size_small"
-            android:background="?android:attr/textColorHint" />
+            android:background="@color/vgs_checkout_gray" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/mtvExpiry"

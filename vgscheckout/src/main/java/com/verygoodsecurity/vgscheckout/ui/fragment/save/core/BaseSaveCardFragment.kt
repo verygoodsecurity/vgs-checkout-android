@@ -15,6 +15,7 @@ import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
 import com.verygoodsecurity.vgscheckout.collect.view.card.validation.rules.VGSInfoRule
 import com.verygoodsecurity.vgscheckout.collect.widget.VGSCountryEditText
+import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutCustomFormConfig
 import com.verygoodsecurity.vgscheckout.config.ui.core.CheckoutFormConfig
 import com.verygoodsecurity.vgscheckout.config.ui.core.VGSCheckoutFormValidationBehaviour
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.AddressOptions
@@ -27,6 +28,7 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.CardNumbe
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.CVCOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.ExpirationDateOptions
 import com.verygoodsecurity.vgscheckout.ui.core.InputViewBinder
+import com.verygoodsecurity.vgscheckout.ui.core.ToolbarHandler
 import com.verygoodsecurity.vgscheckout.ui.core.ValidationResultListener
 import com.verygoodsecurity.vgscheckout.ui.fragment.core.LoadingHandler
 import com.verygoodsecurity.vgscheckout.ui.fragment.save.SaveCardDynamicValidationFragment
@@ -46,6 +48,7 @@ internal abstract class BaseSaveCardFragment : Fragment(), LoadingHandler,
     protected lateinit var binding: SaveCardViewBindingHelper
     protected lateinit var inputViewBinder: InputViewBinder
     protected lateinit var validationListener: ValidationResultListener
+    protected lateinit var toolbarHandler: ToolbarHandler
 
     private val validationRequiredInputs: List<InputFieldView> by lazy {
         mutableListOf(
@@ -66,6 +69,7 @@ internal abstract class BaseSaveCardFragment : Fragment(), LoadingHandler,
         super.onAttach(context)
         inputViewBinder = requireActivity() as InputViewBinder
         validationListener = requireActivity() as ValidationResultListener
+        toolbarHandler = requireActivity() as ToolbarHandler
     }
 
     override fun onCreateView(
@@ -83,6 +87,7 @@ internal abstract class BaseSaveCardFragment : Fragment(), LoadingHandler,
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViews(view)
+        updateToolbarTitle()
     }
 
     override fun onDestroyView() {
@@ -120,11 +125,23 @@ internal abstract class BaseSaveCardFragment : Fragment(), LoadingHandler,
         initSaveButton()
     }
 
+    private fun updateToolbarTitle() {
+        toolbarHandler.setTitle(
+            getString(
+                when (formConfig) {
+                    is VGSCheckoutCustomFormConfig -> R.string.vgs_checkout_add_card_title
+                    else -> R.string.vgs_checkout_new_card_title
+                }
+            )
+        )
+    }
+
     open fun handleSaveClicked() {
         requireActivity().hideSoftKeyboard()
         val invalidFields = validate()
         if (invalidFields.isEmpty()) {
-            val shouldSaveCard = if (!formConfig.saveCardOptionEnabled) null else binding.saveCardCheckbox.isChecked
+            val shouldSaveCard =
+                if (!formConfig.saveCardOptionEnabled) null else binding.saveCardCheckbox.isChecked
             validationListener.onSuccess(shouldSaveCard)
         } else {
             validationListener.onFailed(invalidFields.map { it.getAnalyticsName() })

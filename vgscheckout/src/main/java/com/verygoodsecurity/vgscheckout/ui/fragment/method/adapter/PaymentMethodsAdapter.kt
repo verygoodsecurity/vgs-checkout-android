@@ -16,6 +16,8 @@ internal class PaymentMethodsAdapter constructor(
     private val listener: OnPaymentMethodClickListener
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+    private val selectedPosition: Int = 0
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         return when (toEnum(viewType)) {
@@ -45,6 +47,8 @@ internal class PaymentMethodsAdapter constructor(
     override fun getItemViewType(position: Int): Int =
         if (cards.getOrNull(position) != null) ViewType.CARD.value else ViewType.ADD_CARD.value
 
+    fun getSelectedCard() = cards[selectedPosition]
+
     private fun toEnum(viewType: Int): ViewType = when (viewType) {
         ViewType.CARD.value -> ViewType.CARD
         else -> ViewType.ADD_CARD
@@ -57,12 +61,6 @@ internal class PaymentMethodsAdapter constructor(
         private val mtvCardNumber: MaterialTextView? = view.findViewById(R.id.mtvCardNumber)
         private val mtvExpiry: MaterialTextView? = view.findViewById(R.id.mtvExpiry)
         private val radioButton: RadioButton? = view.findViewById(R.id.radioButton)
-
-        init {
-            view.setOnClickListener {
-                listener.onCardClick(cards[adapterPosition])
-            }
-        }
 
         fun bind(card: VGSCheckoutCard) {
             ivCardBrand?.setImageResource(VGSCheckoutCardBrand.getBrandIcon(card.brand))
@@ -92,8 +90,6 @@ internal class PaymentMethodsAdapter constructor(
     }
 
     interface OnPaymentMethodClickListener {
-
-        fun onCardClick(card: VGSCheckoutCard)
 
         fun onNewCardClick()
     }
