@@ -38,10 +38,10 @@ internal class PaymentActivity : BaseCheckoutActivity<VGSCheckoutPaymentConfig>(
     }
 
     override fun initFragment() {
-//        if (config.savedCards.isEmpty()) {
-//            super.initFragment()
-//            return
-//        }
+        if (config.savedCards.isEmpty()) {
+            super.initFragment()
+            return
+        }
         val fragment = SelectPaymentMethodFragment.create(config, getButtonTitle())
         supportFragmentManager.beginTransaction()
             .replace(R.id.fcvContainer, fragment, FRAGMENT_TAG)
