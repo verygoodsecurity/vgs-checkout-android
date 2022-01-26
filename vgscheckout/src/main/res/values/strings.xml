@@ -62,6 +62,7 @@
     <!--Payment method-->
     <string name="vgs_checkout_pay_with_new_card">Pay with new Card</string>
     <string name="vgs_checkout_card_number">&#8226;&#8226;&#8226;&#8226; %1$s</string>
+    <string name="vgs_checkout_delete_menu_title">Delete</string>
 
     <!--Collect-->
     <string name="vgs_checkout_error_divider_mask">Divider for number can\'t be # or \\ symbol.</string>

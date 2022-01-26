@@ -3,8 +3,8 @@ package com.verygoodsecurity.vgscheckout.ui.fragment.method
 import android.content.Context
 import android.graphics.drawable.Animatable
 import android.os.Bundle
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
@@ -41,8 +41,24 @@ internal class SelectPaymentMethodFragment : Fragment(R.layout.vgs_checkout_sele
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(true)
         initView(view)
-        toolbarHandler.setTitle(getString(R.string.vgs_checkout_title))
+        initToolbar()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.selec_payment_method_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.delete -> {
+                Toast.makeText(requireContext(), "Delete", Toast.LENGTH_SHORT).show()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -67,6 +83,10 @@ internal class SelectPaymentMethodFragment : Fragment(R.layout.vgs_checkout_sele
     private fun initView(view: View) {
         initSavedCardsView(view)
         initPayButton(view)
+    }
+
+    private fun initToolbar() {
+        toolbarHandler.setTitle(getString(R.string.vgs_checkout_title))
     }
 
     private fun initSavedCardsView(view: View) {
