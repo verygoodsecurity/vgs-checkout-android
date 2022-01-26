@@ -48,6 +48,12 @@ internal class PaymentActivity : BaseCheckoutActivity<VGSCheckoutPaymentConfig>(
             .commit()
     }
 
+
+    override fun onDestroy() {
+        super.onDestroy()
+        client.cancelAll()
+    }
+
     override fun onCardSelected(card: VGSCheckoutCard) {
         pay(card.finId)
     }
