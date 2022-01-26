@@ -43,7 +43,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
         }
     }
 
-    private lateinit var loadingHandler: LoadingHandler
+    protected lateinit var loadingHandler: LoadingHandler
 
     protected val resultBundle = VGSCheckoutResultBundle()
 

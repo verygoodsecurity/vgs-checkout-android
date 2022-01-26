@@ -77,6 +77,7 @@ internal class PaymentActivity : BaseCheckoutActivity<VGSCheckoutPaymentConfig>(
     }
 
     private fun pay(financialInstrumentId: String) {
+        loadingHandler.setIsLoading(true)
         client.enqueue(createPayRequest(financialInstrumentId)) {
             runOnUiThread {
                 val transactionResponse = it.toTransactionResponse()
