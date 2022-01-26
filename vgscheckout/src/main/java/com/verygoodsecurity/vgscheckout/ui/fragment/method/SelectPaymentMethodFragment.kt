@@ -3,7 +3,12 @@ package com.verygoodsecurity.vgscheckout.ui.fragment.method
 import android.content.Context
 import android.graphics.drawable.Animatable
 import android.os.Bundle
-import android.view.*
+import android.os.Handler
+import android.os.Looper
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
@@ -19,7 +24,7 @@ import com.verygoodsecurity.vgscheckout.ui.fragment.method.decorator.MarginItemD
 import com.verygoodsecurity.vgscheckout.util.extension.getDrawableCompat
 import com.verygoodsecurity.vgscheckout.util.extension.requireParcelable
 import com.verygoodsecurity.vgscheckout.util.extension.requireString
-import com.verygoodsecurity.vgscheckout.util.extension.setEnabled
+import com.verygoodsecurity.vgscheckout.util.extension.setVisible
 
 internal class SelectPaymentMethodFragment : Fragment(R.layout.vgs_checkout_select_method_fragment),
     LoadingHandler, PaymentMethodsAdapter.OnPaymentMethodClickListener {
@@ -29,9 +34,12 @@ internal class SelectPaymentMethodFragment : Fragment(R.layout.vgs_checkout_sele
 
     private lateinit var toolbarHandler: ToolbarHandler
     private lateinit var listener: OnPaymentMethodSelectedListener
-    private lateinit var adapter: PaymentMethodsAdapter
 
-    private var payButton: MaterialButton? = null
+    private lateinit var cardRecyclerView: RecyclerView
+    private lateinit var adapter: PaymentMethodsAdapter
+    private lateinit var payButton: MaterialButton
+
+    private var isLoading: Boolean = false
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -52,12 +60,11 @@ internal class SelectPaymentMethodFragment : Fragment(R.layout.vgs_checkout_sele
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.delete -> {
-                handleDeleteCardClicked()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
+        return if (!isLoading && item.itemId == R.id.delete) {
+            handleDeleteCardClicked()
+            true
+        } else {
+            super.onOptionsItemSelected(item)
         }
     }
 
@@ -72,6 +79,7 @@ internal class SelectPaymentMethodFragment : Fragment(R.layout.vgs_checkout_sele
     }
 
     override fun setIsLoading(isLoading: Boolean) {
+        this.isLoading = isLoading
         setViewsEnabled(!isLoading)
         setSaveButtonIsLoading(isLoading)
     }
@@ -90,32 +98,29 @@ internal class SelectPaymentMethodFragment : Fragment(R.layout.vgs_checkout_sele
     }
 
     private fun initSavedCardsView(view: View) {
-        view.findViewById<RecyclerView>(R.id.rvPaymentMethods)?.let {
-            it.itemAnimator = null
-            adapter = PaymentMethodsAdapter(config.savedCards, this)
-            it.adapter = adapter
-            val paddingSmall =
-                resources.getDimensionPixelSize(R.dimen.vgs_checkout_margin_padding_size_small)
-            val paddingMedium =
-                resources.getDimensionPixelSize(R.dimen.vgs_checkout_margin_padding_size_medium)
-            it.addItemDecoration(
-                MarginItemDecoration(
-                    paddingSmall,
-                    paddingMedium,
-                    paddingMedium,
-                    paddingSmall
-                )
+        cardRecyclerView = view.findViewById(R.id.rvPaymentMethods)
+        adapter = PaymentMethodsAdapter(config.savedCards, this)
+        cardRecyclerView.itemAnimator = null
+        cardRecyclerView.adapter = adapter
+        val paddingSmall =
+            resources.getDimensionPixelSize(R.dimen.vgs_checkout_margin_padding_size_small)
+        val paddingMedium =
+            resources.getDimensionPixelSize(R.dimen.vgs_checkout_margin_padding_size_medium)
+        cardRecyclerView.addItemDecoration(
+            MarginItemDecoration(
+                paddingSmall,
+                paddingMedium,
+                paddingMedium,
+                paddingSmall
             )
-        }
+        )
     }
 
     private fun initPayButton(view: View) {
-        view.findViewById<MaterialButton>(R.id.mbPay)?.let {
-            payButton = it
-            it.text = buttonTitle
-            it.setOnClickListener {
-                listener.onCardSelected(adapter.getSelectedCard())
-            }
+        payButton = view.findViewById(R.id.mbPay)
+        payButton.text = buttonTitle
+        payButton.setOnClickListener {
+            listener.onCardSelected(adapter.getSelectedCard())
         }
     }
 
@@ -133,24 +138,26 @@ internal class SelectPaymentMethodFragment : Fragment(R.layout.vgs_checkout_sele
     }
 
     private fun deleteSelectedCard() {
-
+        // TODO: Implement delete request
+        setIsLoading(true)
+        Handler(Looper.getMainLooper()).postDelayed({
+            setIsLoading(false)
+        }, 5000)
     }
 
     private fun setViewsEnabled(isEnabled: Boolean) {
-        (view as? ViewGroup)?.setEnabled(isEnabled, true, payButton)
+        view?.findViewById<View>(R.id.viewOverlay)?.setVisible(!isEnabled)
     }
 
     private fun setSaveButtonIsLoading(isLoading: Boolean) {
-        view?.findViewById<MaterialButton>(R.id.mbPay)?.let {
-            it.isClickable = !isLoading
-            if (isLoading) {
-                it.text = getString(R.string.vgs_checkout_button_processing_title)
-                it.icon = getDrawableCompat(R.drawable.vgs_checkout_ic_loading_animated_white_16)
-                (it.icon as? Animatable)?.start()
-            } else {
-                it.text = buttonTitle
-                it.icon = null
-            }
+        payButton.isClickable = !isLoading
+        if (isLoading) {
+            payButton.text = getString(R.string.vgs_checkout_button_processing_title)
+            payButton.icon = getDrawableCompat(R.drawable.vgs_checkout_ic_loading_animated_white_16)
+            (payButton.icon as? Animatable)?.start()
+        } else {
+            payButton.text = buttonTitle
+            payButton.icon = null
         }
     }
 
