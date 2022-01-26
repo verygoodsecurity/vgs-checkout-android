@@ -7,9 +7,6 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.core.VGSCheckoutFieldVisi
 internal fun CheckoutFormConfig.isCardHolderVisible() =
     cardOptions.cardHolderOptions.visibility == VGSCheckoutFieldVisibility.VISIBLE
 
-internal fun CheckoutFormConfig.isCardHolderHidden() =
-    cardOptions.cardHolderOptions.visibility == VGSCheckoutFieldVisibility.HIDDEN
-
 internal fun CheckoutFormConfig.isBillingAddressVisible() =
     addressOptions.visibility == VGSCheckoutBillingAddressVisibility.VISIBLE
 

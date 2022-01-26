@@ -17,22 +17,16 @@ import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutPaymentConfig
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.ui.core.OnPaymentMethodSelectedListener
-import com.verygoodsecurity.vgscheckout.ui.core.ToolbarHandler
-import com.verygoodsecurity.vgscheckout.ui.fragment.core.LoadingHandler
+import com.verygoodsecurity.vgscheckout.ui.fragment.core.BaseFragment
 import com.verygoodsecurity.vgscheckout.ui.fragment.method.adapter.PaymentMethodsAdapter
 import com.verygoodsecurity.vgscheckout.ui.fragment.method.decorator.MarginItemDecoration
 import com.verygoodsecurity.vgscheckout.util.extension.getDrawableCompat
-import com.verygoodsecurity.vgscheckout.util.extension.requireParcelable
-import com.verygoodsecurity.vgscheckout.util.extension.requireString
 import com.verygoodsecurity.vgscheckout.util.extension.setVisible
 
-internal class SelectPaymentMethodFragment : Fragment(R.layout.vgs_checkout_select_method_fragment),
-    LoadingHandler, PaymentMethodsAdapter.OnPaymentMethodClickListener {
+internal class SelectPaymentMethodFragment :
+    BaseFragment<VGSCheckoutPaymentConfig>(R.layout.vgs_checkout_select_method_fragment),
+    PaymentMethodsAdapter.OnItemClickListener {
 
-    private val config: VGSCheckoutPaymentConfig by lazy { requireParcelable(KEY_BUNDLE_CONFIG) }
-    private val buttonTitle: String by lazy { requireString(KEY_BUNDLE_BUTTON_TITLE) }
-
-    private lateinit var toolbarHandler: ToolbarHandler
     private lateinit var listener: OnPaymentMethodSelectedListener
 
     private lateinit var cardRecyclerView: RecyclerView
@@ -41,10 +35,11 @@ internal class SelectPaymentMethodFragment : Fragment(R.layout.vgs_checkout_sele
 
     private var isLoading: Boolean = false
 
+    override fun getToolbarTitle(): String = getString(R.string.vgs_checkout_title)
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         listener = requireActivity() as OnPaymentMethodSelectedListener
-        toolbarHandler = requireActivity() as ToolbarHandler
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -85,7 +80,7 @@ internal class SelectPaymentMethodFragment : Fragment(R.layout.vgs_checkout_sele
     }
 
     override fun onNewCardClick() {
-        listener.onNewCardSelected()
+        navigationHandler.navigateToAddCard()
     }
 
     private fun initView(view: View) {
@@ -118,7 +113,7 @@ internal class SelectPaymentMethodFragment : Fragment(R.layout.vgs_checkout_sele
 
     private fun initPayButton(view: View) {
         payButton = view.findViewById(R.id.mbPay)
-        payButton.text = buttonTitle
+        payButton.text = title
         payButton.setOnClickListener {
             listener.onCardSelected(adapter.getSelectedCard())
         }
@@ -156,7 +151,7 @@ internal class SelectPaymentMethodFragment : Fragment(R.layout.vgs_checkout_sele
             payButton.icon = getDrawableCompat(R.drawable.vgs_checkout_ic_loading_animated_white_16)
             (payButton.icon as? Animatable)?.start()
         } else {
-            payButton.text = buttonTitle
+            payButton.text = title
             payButton.icon = null
         }
     }

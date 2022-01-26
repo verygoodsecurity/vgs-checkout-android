@@ -54,15 +54,17 @@ class OnSubmitFieldsValidationTest {
     private var intent = Intent(context, CustomSaveCardActivity::class.java).apply {
         putExtra(
             EXTRA_KEY_ARGS,
-            CheckoutResultContract.Args(VGSCheckoutCustomConfig(
-                BuildConfig.VAULT_ID,
-                formConfig = VGSCheckoutCustomFormConfig(
-                    addressOptions = VGSCheckoutCustomBillingAddressOptions(
-                        visibility = VGSCheckoutBillingAddressVisibility.VISIBLE
-                    )
-                ),
-                isScreenshotsAllowed = true
-            ))
+            CheckoutResultContract.Args(
+                VGSCheckoutCustomConfig(
+                    BuildConfig.VAULT_ID,
+                    formConfig = VGSCheckoutCustomFormConfig(
+                        addressOptions = VGSCheckoutCustomBillingAddressOptions(
+                            visibility = VGSCheckoutBillingAddressVisibility.VISIBLE
+                        )
+                    ),
+                    isScreenshotsAllowed = true
+                )
+            )
         )
     }
 
@@ -215,8 +217,8 @@ class OnSubmitFieldsValidationTest {
             )
             // Act
             onView(isRoot()).perform(closeSoftKeyboard())
-            it.onActivity {
-                it.validateFields()
+            it.onActivity { activity ->
+                activity.shouldHandleAddCard = false
             }
 
             // Assert

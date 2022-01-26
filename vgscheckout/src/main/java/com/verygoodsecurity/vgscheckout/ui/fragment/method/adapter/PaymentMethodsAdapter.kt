@@ -13,7 +13,7 @@ import com.verygoodsecurity.vgscheckout.model.VGSCheckoutCard
 
 internal class PaymentMethodsAdapter constructor(
     private val cards: List<VGSCheckoutCard>,
-    private val listener: OnPaymentMethodClickListener
+    private val listener: OnItemClickListener
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var selectedPosition: Int = 0
@@ -106,7 +106,7 @@ internal class PaymentMethodsAdapter constructor(
         ADD_CARD(2)
     }
 
-    interface OnPaymentMethodClickListener {
+    interface OnItemClickListener {
 
         fun onNewCardClick()
     }

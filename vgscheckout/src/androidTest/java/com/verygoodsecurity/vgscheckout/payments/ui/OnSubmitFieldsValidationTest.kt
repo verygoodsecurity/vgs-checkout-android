@@ -223,9 +223,10 @@ class OnSubmitFieldsValidationTest {
 
             // Act
             onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard())
-            it.onActivity {
-                it.validateFields()
+            it.onActivity { activity ->
+                activity.shouldHandleAddCard = false
             }
+
             // Assert
             onViewWithScrollTo(R.id.vgsTilCardHolder).check(matches(withError(null)))
             onViewWithScrollTo(R.id.vgsTilCardNumber).check(matches(withError(null)))
