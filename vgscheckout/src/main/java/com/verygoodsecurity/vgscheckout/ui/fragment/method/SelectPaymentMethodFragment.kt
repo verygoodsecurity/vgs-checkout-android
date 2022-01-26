@@ -4,10 +4,10 @@ import android.content.Context
 import android.graphics.drawable.Animatable
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutPaymentConfig
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
@@ -54,7 +54,7 @@ internal class SelectPaymentMethodFragment : Fragment(R.layout.vgs_checkout_sele
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.delete -> {
-                Toast.makeText(requireContext(), "Delete", Toast.LENGTH_SHORT).show()
+                handleDeleteCardClicked()
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -117,6 +117,23 @@ internal class SelectPaymentMethodFragment : Fragment(R.layout.vgs_checkout_sele
                 listener.onCardSelected(adapter.getSelectedCard())
             }
         }
+    }
+
+    private fun handleDeleteCardClicked() {
+        MaterialAlertDialogBuilder(requireContext(), R.style.VGSCheckout_RemoveCardDialog)
+            .setTitle(getString(R.string.vgs_checkout_delete_dialog_title))
+            .setMessage(getString(R.string.vgs_checkout_delete_dialog_message))
+            .setPositiveButton(getString(R.string.vgs_checkout_delete_dialog_positive_button_title)) { _, _ ->
+                deleteSelectedCard()
+            }
+            .setNegativeButton(getString(R.string.vgs_checkout_delete_dialog_negative_button_title)) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
+    }
+
+    private fun deleteSelectedCard() {
+
     }
 
     private fun setViewsEnabled(isEnabled: Boolean) {
