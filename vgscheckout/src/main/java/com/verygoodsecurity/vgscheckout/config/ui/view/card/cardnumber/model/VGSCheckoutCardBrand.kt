@@ -392,7 +392,7 @@ sealed class VGSCheckoutCardBrand : Parcelable {
     }
 
     @Parcelize
-    class Custom constructor(
+    internal class Custom constructor(
         override val name: String,
         @DrawableRes override val icon: Int,
         override val regex: String,
