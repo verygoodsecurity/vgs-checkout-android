@@ -12,8 +12,10 @@
         tools:replace="android:networkSecurityConfig"
         tools:targetApi="n">
 
-        <activity android:name="com.verygoodsecurity.custom.example.MainActivity"
+        <activity
+            android:name="com.verygoodsecurity.custom.example.MainActivity"
 
+            android:exported="true"
             android:label="@string/app_name_custom_add_cards">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,16 +23,5 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.verygoodsecurity.orchestration.example.MainActivity"
-
-            android:label="@string/app_name_orchestration_add_cards">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-
     </application>
-
 </manifest>
