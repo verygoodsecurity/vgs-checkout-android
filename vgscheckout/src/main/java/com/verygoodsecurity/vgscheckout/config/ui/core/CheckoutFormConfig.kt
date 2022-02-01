@@ -30,5 +30,5 @@ abstract class CheckoutFormConfig internal constructor() : Parcelable {
     /**
      * Defines if save card checkbox should be visible.
      */
-    abstract val saveCardOptionEnabled: Boolean
+    internal abstract val saveCardOptionEnabled: Boolean
 }
