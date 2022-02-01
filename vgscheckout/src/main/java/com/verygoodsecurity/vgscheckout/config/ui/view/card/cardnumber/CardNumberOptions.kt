@@ -16,5 +16,5 @@ abstract class CardNumberOptions: ViewOptions() {
     /**
      * List of brands that can be detected.
      */
-    abstract val cardBrands: Set<VGSCheckoutCardBrand>
+    internal abstract val cardBrands: Set<VGSCheckoutCardBrand>
 }
