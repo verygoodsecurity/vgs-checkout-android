@@ -10,13 +10,8 @@ import com.verygoodsecurity.payments.data.repository.auth.AccessTokenRepository
 import com.verygoodsecurity.payments.data.repository.auth.DefaultAccessTokenRepository
 import com.verygoodsecurity.payments.data.repository.order.DefaultOrderRepository
 import com.verygoodsecurity.payments.data.repository.order.OrderRepository
-import com.verygoodsecurity.vgscheckout.BuildConfig
 import com.verygoodsecurity.vgscheckout.VGSCheckout
 import com.verygoodsecurity.vgscheckout.VGSCheckoutCallback
-import com.verygoodsecurity.vgscheckout.VGSCheckoutConfigInitCallback
-import com.verygoodsecurity.vgscheckout.config.VGSCheckoutPaymentConfig
-import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutPaymentFormConfig
-import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResultBundle
 import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutAddCardResponse
@@ -81,20 +76,20 @@ class PaymentActivity : AppCompatActivity(), VGSCheckoutCallback {
 
     @Suppress("SameParameterValue")
     private fun startCheckout(accessToken: String, orderId: String) {
-        VGSCheckoutPaymentConfig.create(
-            accessToken,
-            orderId,
-            BuildConfig.VAULT_ID,
-            object : VGSCheckoutConfigInitCallback<VGSCheckoutPaymentConfig> {
-
-                override fun onSuccess(config: VGSCheckoutPaymentConfig) {
-                    checkout.present(config)
-                }
-
-                override fun onFailure(exception: VGSCheckoutException) {
-                    Log.d("VGSCheckout", "Can't create checkout config! ${exception.message}")
-                }
-            }
-        )
+//        VGSCheckoutPaymentConfig.create(
+//            accessToken,
+//            orderId,
+//            BuildConfig.VAULT_ID,
+//            object : VGSCheckoutConfigInitCallback<VGSCheckoutPaymentConfig> {
+//
+//                override fun onSuccess(config: VGSCheckoutPaymentConfig) {
+//                    checkout.present(config)
+//                }
+//
+//                override fun onFailure(exception: VGSCheckoutException) {
+//                    Log.d("VGSCheckout", "Can't create checkout config! ${exception.message}")
+//                }
+//            }
+//        )
     }
 }

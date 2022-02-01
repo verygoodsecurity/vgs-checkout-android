@@ -11,7 +11,6 @@ import com.verygoodsecurity.orchestration.example.network.HttpClient
 import com.verygoodsecurity.orchestration.example.network.util.isSuccessHttpCode
 import com.verygoodsecurity.vgscheckout.VGSCheckout
 import com.verygoodsecurity.vgscheckout.VGSCheckoutCallback
-import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResultBundle
 import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutAddCardResponse
@@ -39,7 +38,7 @@ class MainActivity : AppCompatActivity(), VGSCheckoutCallback {
         checkout = VGSCheckout(this, this)
 
         findViewById<MaterialButton>(R.id.mbPay).setOnClickListener {
-            checkout.present(getCheckoutConfig())
+//            checkout.present(getCheckoutConfig())
         }
     }
 
@@ -51,10 +50,10 @@ class MainActivity : AppCompatActivity(), VGSCheckoutCallback {
         )
     }
 
-    private fun getCheckoutConfig() = VGSCheckoutAddCardConfig(
-        accessToken = accessToken,
-        tenantId = tenantId
-    )
+//    private fun getCheckoutConfig() = VGSCheckoutAddCardConfig(
+//        accessToken = accessToken,
+//        tenantId = tenantId
+//    )
 
     override fun onCheckoutResult(result: VGSCheckoutResult) {
         if (result is VGSCheckoutResult.Canceled) {
@@ -94,7 +93,7 @@ class MainActivity : AppCompatActivity(), VGSCheckoutCallback {
         refreshToken { code, body ->
             if (code.isSuccessHttpCode()) accessToken = parseToken(body)
 
-            checkout.present(getCheckoutConfig())
+//            checkout.present(getCheckoutConfig())
         }
     }
 
