@@ -7,7 +7,7 @@ import com.verygoodsecurity.vgscheckout.collect.core.api.client.ApiClient
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.NetworkRequest
 import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
 import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutNetworkException
-import com.verygoodsecurity.vgscheckout.exception.internal.VGSCheckoutPaymentInfoParseException
+import com.verygoodsecurity.vgscheckout.exception.internal.PaymentInfoParseException
 import com.verygoodsecurity.vgscheckout.util.command.AsynchronousCommand
 import com.verygoodsecurity.vgscheckout.util.command.Result
 import com.verygoodsecurity.vgscheckout.util.command.VGSCheckoutCancellable
@@ -50,7 +50,7 @@ internal class GetPaymentInfo : AsynchronousCommand<String, Result<PaymentInfo>>
             val data = JSONObject(body!!).getJSONObject(JSON_KEY_DATA)
             return PaymentInfo(data.getLong(JSON_KEY_AMOUNT), data.getString(JSON_KEY_CURRENCY))
         } catch (e: Exception) {
-            throw VGSCheckoutPaymentInfoParseException(e)
+            throw PaymentInfoParseException(e)
         }
     }
 

@@ -9,5 +9,5 @@ private const val MESSAGE =
 /**
  * Throws to indicate that response doesn't contains fin in or it can't be parsed.
  */
-internal class VGSCheckoutFinIdNotFoundException constructor(cause: Throwable?) :
+internal class FinIdNotFoundException constructor(cause: Throwable?) :
     VGSCheckoutException(CODE, MESSAGE, cause)
