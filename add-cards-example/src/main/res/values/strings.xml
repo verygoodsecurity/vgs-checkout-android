@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name_custom_add_cards">VGS Custom Add Card Sample</string>
-    <string name="app_name_orchestration_add_cards">VGS Orchestration Add Card Sample</string>
 
     <string name="cart_title">Cart</string>
     <string name="buy_title">Buy</string>
