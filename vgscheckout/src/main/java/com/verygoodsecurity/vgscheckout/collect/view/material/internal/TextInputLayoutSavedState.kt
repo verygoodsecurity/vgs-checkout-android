@@ -4,7 +4,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import android.view.View
 
-class TextInputLayoutSavedState : View.BaseSavedState {
+internal class TextInputLayoutSavedState : View.BaseSavedState {
 
     var error: String? = null
 
