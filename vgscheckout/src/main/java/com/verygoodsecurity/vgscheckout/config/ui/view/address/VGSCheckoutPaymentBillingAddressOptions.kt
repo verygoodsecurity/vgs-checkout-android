@@ -19,7 +19,7 @@ import kotlinx.parcelize.Parcelize
  * @param visibility defines if address section UI should be visible to user.
  */
 @Parcelize
-class VGSCheckoutPaymentBillingAddressOptions private constructor(
+internal class VGSCheckoutPaymentBillingAddressOptions private constructor(
     override val countryOptions: VGSCheckoutPaymentCountryOptions,
     override val cityOptions: VGSCheckoutPaymentCityOptions,
     override val addressOptions: VGSCheckoutPaymentAddressOptions,

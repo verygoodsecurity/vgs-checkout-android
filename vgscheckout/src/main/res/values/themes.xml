@@ -17,7 +17,7 @@
     <style name="VGSCheckout.Toolbar" parent="Widget.MaterialComponents.Toolbar.PrimarySurface">
         <item name="android:background">?colorSurface</item>
         <item name="titleTextColor">?colorOnSurface</item>
-        <item name="title">@string/vgs_checkout_add_card_title</item>
+        <item name="title">@string/vgs_checkout_title</item>
         <item name="navigationIcon">@drawable/vgs_checkout_ic_baseline_close_white_24</item>
         <item name="navigationIconTint">@color/vgs_checkout_nero</item>
     </style>
@@ -50,11 +50,17 @@
         <item name="android:paddingBottom">@dimen/vgs_checkout_margin_padding_size_xsmall</item>
     </style>
 
+    <style name="VGSCheckout.SaveCheckbox" parent="Widget.MaterialComponents.CompoundButton.CheckBox">
+        <item name="android:textSize">@dimen/vgs_checkout_input_text_size</item>
+        <item name="android:checked">true</item>
+    </style>
+
     <style name="VGSCheckout.SaveButton" parent="Widget.MaterialComponents.Button.UnelevatedButton">
         <item name="android:paddingTop">@dimen/vgs_checkout_margin_padding_size_medium</item>
         <item name="android:paddingBottom">@dimen/vgs_checkout_margin_padding_size_medium</item>
         <item name="cornerRadius">@dimen/vgs_checkout_margin_padding_size_small</item>
         <item name="textAppearance">?attr/textAppearanceBody2</item>
         <item name="iconGravity">textStart</item>
+        <item name="textAllCaps">false</item>
     </style>
 </resources>

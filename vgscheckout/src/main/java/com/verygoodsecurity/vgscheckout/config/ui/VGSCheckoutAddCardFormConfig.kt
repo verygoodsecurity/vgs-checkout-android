@@ -7,17 +7,19 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.card.VGSCheckoutPaymentCa
 import kotlinx.parcelize.Parcelize
 
 /**
- * Payment flow checkout form configuration.
+ * Payment orchestration flow checkout form configuration.
  *
  * @param cardOptions card details section UI options.
  * @param addressOptions address details section UI options.
  * @param validationBehaviour defines validation behavior.
+ * @param saveCardOptionEnabled defines if save card checkbox should be visible.
  */
 @Parcelize
-class VGSCheckoutAddCardFormConfig private constructor(
+internal class VGSCheckoutAddCardFormConfig private constructor(
     override val cardOptions: VGSCheckoutPaymentCardOptions,
     override val addressOptions: VGSCheckoutPaymentBillingAddressOptions,
     override val validationBehaviour: VGSCheckoutFormValidationBehaviour,
+    override val saveCardOptionEnabled: Boolean,
 ) : CheckoutFormConfig() {
 
     /**
@@ -30,5 +32,5 @@ class VGSCheckoutAddCardFormConfig private constructor(
     constructor(
         addressOptions: VGSCheckoutPaymentBillingAddressOptions = VGSCheckoutPaymentBillingAddressOptions(),
         validationBehaviour: VGSCheckoutFormValidationBehaviour = VGSCheckoutFormValidationBehaviour.ON_SUBMIT,
-    ) : this(VGSCheckoutPaymentCardOptions(), addressOptions, validationBehaviour)
+    ) : this(VGSCheckoutPaymentCardOptions(), addressOptions, validationBehaviour, false)
 }

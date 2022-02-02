@@ -5,6 +5,7 @@ import android.view.View
 import androidx.annotation.LayoutRes
 import androidx.appcompat.widget.LinearLayoutCompat
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.checkbox.MaterialCheckBox
 import com.google.android.material.textview.MaterialTextView
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.widget.*
@@ -39,5 +40,6 @@ internal class SaveCardViewBindingHelper(inflater: LayoutInflater, @LayoutRes la
     val postalCodeTil: VGSTextInputLayout = rootView.findViewById(R.id.vgsTilPostalCode)
     val postalCodeEt: VGSEditText = rootView.findViewById(R.id.vgsEtPostalCode)
 
+    val saveCardCheckbox: MaterialCheckBox = rootView.findViewById(R.id.mcbSaveCard)
     val saveCardButton: MaterialButton = rootView.findViewById(R.id.mbSaveCard)
 }

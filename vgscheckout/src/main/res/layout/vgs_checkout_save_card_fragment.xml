@@ -25,6 +25,7 @@
                 style="@style/VGSCheckout.Title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/vgs_checkout_margin_padding_size_xsmall"
                 android:text="@string/vgs_checkout_form_card_details_title" />
 
             <com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout
@@ -32,7 +33,6 @@
                 style="@style/VGSCheckout.TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/vgs_checkout_margin_padding_size_xsmall"
                 android:layout_marginBottom="@dimen/vgs_checkout_margin_padding_size_micro"
                 app:hint="@string/vgs_checkout_card_holder_hint">
 
@@ -228,12 +228,21 @@
             </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.appcompat.widget.LinearLayoutCompat>
 
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/mcbSaveCard"
+            style="@style/VGSCheckout.SaveCheckbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/vgs_checkout_margin_padding_size_medium"
+            android:text="@string/vgs_checkout_checkbox_save_card_title"
+            android:visibility="gone" />
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/mbSaveCard"
             style="@style/VGSCheckout.SaveButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/vgs_checkout_margin_padding_size_medium"
-            android:text="@string/vgs_checkout_save_button_save_card_title" />
+            android:text="@string/vgs_checkout_button_save_card_title" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 </ScrollView>

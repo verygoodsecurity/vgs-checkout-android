@@ -95,7 +95,7 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
     private var analyticName: String? = null
 
     var isEdited: Boolean = false
-        private set
+        internal set
 
     init {
         isListeningPermitted = true

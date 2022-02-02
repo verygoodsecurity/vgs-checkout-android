@@ -9,7 +9,7 @@ import kotlinx.parcelize.Parcelize
  * @param validCountries list of countries in ISO 3166-2 format that will be show in selection dialog.
  */
 @Parcelize
-class VGSCheckoutPaymentCountryOptions private constructor(
+internal class VGSCheckoutPaymentCountryOptions private constructor(
     override val fieldName: String,
     override val validCountries: List<String>,
 ) : CountryOptions() {

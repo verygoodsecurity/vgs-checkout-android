@@ -1,6 +1,7 @@
 package com.verygoodsecurity.vgscheckout.model
 
 import android.os.Parcelable
+import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
 import kotlinx.parcelize.Parcelize
 
 /**
@@ -11,33 +12,26 @@ sealed class VGSCheckoutResult : Parcelable {
     /**
      * Checkout was successfully completed.
      *
-     * @param code http response code.
-     * @param body http response body.
+     * @param data wrapper object that helps to retrieve checkout result from bundle.
      */
     @Parcelize
-    data class Success constructor(val code: Int?, val body: String?) : VGSCheckoutResult() {
-
-        override fun toString() = "${this.javaClass.simpleName}\ncode: $code \nbody:$body"
-    }
+    data class Success constructor(val data: VGSCheckoutResultBundle) : VGSCheckoutResult()
 
     /**
      * Checkout was failed due network errors or invalid setup.
      *
-     * @param code http response code or local error code [com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSError].
-     * @param body http response body or local error message [com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSError].
+     * @param data wrapper object that helps to retrieve checkout result from bundle.
+     * @param exception local or setup error that interrupt checkout.
      */
     @Parcelize
-    data class Failed constructor(val code: Int?, val body: String?) : VGSCheckoutResult() {
-
-        override fun toString() = "${this.javaClass.simpleName}\ncode: $code \nbody:$body"
-    }
+    data class Failed constructor(
+        val data: VGSCheckoutResultBundle,
+        val exception: VGSCheckoutException? = null,
+    ) : VGSCheckoutResult()
 
     /**
      * Checkout cancelled by user.
      */
     @Parcelize
-    object Canceled : VGSCheckoutResult() {
-
-        override fun toString(): String = this.javaClass.simpleName
-    }
+    object Canceled : VGSCheckoutResult()
 }

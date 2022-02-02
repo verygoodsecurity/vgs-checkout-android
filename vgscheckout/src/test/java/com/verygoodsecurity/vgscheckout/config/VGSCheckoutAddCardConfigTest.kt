@@ -1,8 +1,8 @@
 package com.verygoodsecurity.vgscheckout.config
 
 import com.verygoodsecurity.vgscheckout.BuildConfig
-import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutJWTParseException
-import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutJWTRestrictedRoleException
+import com.verygoodsecurity.vgscheckout.exception.internal.JWTParseException
+import com.verygoodsecurity.vgscheckout.exception.internal.JWTRestrictedRoleException
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
 import org.junit.Assert.*
 import org.junit.Test
@@ -41,13 +41,13 @@ class VGSCheckoutAddCardConfigTest {
         assertTrue(config.isAnalyticsEnabled)
     }
 
-    @Test(expected = VGSCheckoutJWTParseException::class)
+    @Test(expected = JWTParseException::class)
     fun createAddCardConfig_emptyJWT_exceptionThrown() {
         // Act
         VGSCheckoutAddCardConfig("", "")
     }
 
-    @Test(expected = VGSCheckoutJWTRestrictedRoleException::class)
+    @Test(expected = JWTRestrictedRoleException::class)
     fun createAddCardConfig_invalidJWT_exceptionThrown() {
         // Act
         VGSCheckoutAddCardConfig(BuildConfig.JWT_TOKEN_WITH_TRANSFERS_WRITE, "")

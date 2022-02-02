@@ -12,7 +12,7 @@ import kotlinx.parcelize.Parcelize
  * @param outputFormatRegex ISO 8601 format in which date will be sent to proxy.
  */
 @Parcelize
-class VGSCheckoutPaymentExpirationDateOptions private constructor(
+internal class VGSCheckoutPaymentExpirationDateOptions private constructor(
     override val fieldName: String,
     override val dateSeparateSerializer: VGSDateSeparateSerializer?,
     override val inputFormatRegex: String,
@@ -38,6 +38,6 @@ class VGSCheckoutPaymentExpirationDateOptions private constructor(
         private const val MONTH_FIELD_NAME = "card.exp_month"
         private const val YEAR_FIELD_NAME = "card.exp_year"
         private const val EXPIRY_DATE_INPUT_FORMAT = "MM/yy"
-        private const val EXPIRY_DATE_OUTPUT_FORMAT = "MM/YYYY"
+        private const val EXPIRY_DATE_OUTPUT_FORMAT = "MM/yyyy"
     }
 }

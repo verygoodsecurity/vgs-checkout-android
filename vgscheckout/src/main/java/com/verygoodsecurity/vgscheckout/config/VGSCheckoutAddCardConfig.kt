@@ -6,15 +6,14 @@ import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.JWTValid
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutPaymentRouteConfig
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutAddCardFormConfig
-import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutJWTParseException
-import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutJWTRestrictedRoleException
+import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
 
 /**
  * Holds configuration with predefined setup for work with payment orchestration app.
  *
  * @param accessToken payment orchestration app access token.
- * @param vaultID unique organization id.
+ * @param tenantId unique organization vault id.
  * @param environment type of vault.
  * @param routeConfig Networking configuration, like http method, request headers etc.
  * @param formConfig UI configuration.
@@ -24,16 +23,16 @@ import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
  * validation event should be send.
  */
 @Suppress("MemberVisibilityCanBePrivate", "CanBeParameter")
-class VGSCheckoutAddCardConfig private constructor(
+internal class VGSCheckoutAddCardConfig private constructor(
     internal val accessToken: String,
-    override val vaultID: String,
+    val tenantId: String,
     override val environment: VGSCheckoutEnvironment,
     override val routeConfig: VGSCheckoutPaymentRouteConfig,
     override val formConfig: VGSCheckoutAddCardFormConfig,
     override val isScreenshotsAllowed: Boolean,
     override val isAnalyticsEnabled: Boolean,
     private val createdFromParcel: Boolean
-) : CheckoutConfig() {
+) : CheckoutConfig(tenantId) {
 
     init {
         if (!createdFromParcel) validateToken()
@@ -61,12 +60,10 @@ class VGSCheckoutAddCardConfig private constructor(
      * @param isAnalyticsEnabled If true, checkout will send analytics events that helps to debug
      * issues if any occurs. Default value is true.
      *
-     * @throws com.verygoodsecurity.vgscheckout.exception.VGSCheckoutJWTParseException if access token is not valid.
-     * @throws com.verygoodsecurity.vgscheckout.exception.VGSCheckoutJWTRestrictedRoleException if
-     * access token is contains restricted roles.
+     * @throws com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
      */
     @JvmOverloads
-    @Throws(VGSCheckoutJWTParseException::class, VGSCheckoutJWTRestrictedRoleException::class)
+    @Throws(VGSCheckoutException::class)
     constructor(
         accessToken: String,
         tenantId: String,
@@ -87,7 +84,7 @@ class VGSCheckoutAddCardConfig private constructor(
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(accessToken)
-        parcel.writeString(vaultID)
+        parcel.writeString(tenantId)
         parcel.writeParcelable(environment, flags)
         parcel.writeParcelable(routeConfig, flags)
         parcel.writeParcelable(formConfig, flags)

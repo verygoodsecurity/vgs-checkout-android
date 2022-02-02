@@ -7,7 +7,6 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
@@ -17,7 +16,7 @@ import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_ARGS
-import com.verygoodsecurity.vgscheckout.ui.CheckoutActivity
+import com.verygoodsecurity.vgscheckout.ui.CustomSaveCardActivity
 import com.verygoodsecurity.vgscheckout.ui.SaveCardActivity
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers.withError
@@ -33,7 +32,7 @@ class DefaultCheckoutSetupTest {
 
     private val context: Context = ApplicationProvider.getApplicationContext()
 
-    private val defaultIntent = Intent(context, CheckoutActivity::class.java).apply {
+    private val defaultIntent = Intent(context, CustomSaveCardActivity::class.java).apply {
         putExtra(
             EXTRA_KEY_ARGS,
             CheckoutResultContract.Args(VGSCheckoutCustomConfig(BuildConfig.VAULT_ID))
@@ -75,9 +74,9 @@ class DefaultCheckoutSetupTest {
 
     @Test
     fun performCheckout_defaultFieldContent() {
-        launch<CheckoutActivity>(defaultIntent).use {
+        launch<CustomSaveCardActivity>(defaultIntent).use {
             //Act
-            onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard())
+            onView(isRoot()).perform(ViewActions.closeSoftKeyboard())
             //Assert
             onViewWithScrollTo(R.id.vgsTilCardHolder)
             onView(withId(R.id.vgsEtCardHolder))
@@ -107,20 +106,20 @@ class DefaultCheckoutSetupTest {
 
     @Test
     fun preformCheckout_noErrorMessagesDisplayed() {
-        launch<CheckoutActivity>(defaultIntent).use {
+        launch<CustomSaveCardActivity>(defaultIntent).use {
             waitFor(500)
             onView(isRoot()).perform(ViewActions.closeSoftKeyboard())
             // Assert
-            onViewWithScrollTo(R.id.vgsTilCardHolder).check(matches(withError("")))
-            onViewWithScrollTo(R.id.vgsTilCardNumber).check(matches(withError("")))
-            onViewWithScrollTo(R.id.vgsTilExpirationDate).check(matches(withError("")))
-            onViewWithScrollTo(R.id.vgsTilSecurityCode).check(matches(withError("")))
+            onViewWithScrollTo(R.id.vgsTilCardHolder).check(matches(withError(null)))
+            onViewWithScrollTo(R.id.vgsTilCardNumber).check(matches(withError(null)))
+            onViewWithScrollTo(R.id.vgsTilExpirationDate).check(matches(withError(null)))
+            onViewWithScrollTo(R.id.vgsTilSecurityCode).check(matches(withError(null)))
         }
     }
 
     @Test
     fun performCheckout_addressIsVisible() {
-        launch<CheckoutActivity>(defaultIntent).use {
+        launch<CustomSaveCardActivity>(defaultIntent).use {
             //Assert
             onView(withId(R.id.llBillingAddress)).check(matches(not(isCompletelyDisplayed())))
         }

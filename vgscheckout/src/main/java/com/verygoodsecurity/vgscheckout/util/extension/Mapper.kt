@@ -2,6 +2,7 @@ package com.verygoodsecurity.vgscheckout.util.extension
 
 import com.verygoodsecurity.vgscheckout.collect.core.HTTPMethod
 import com.verygoodsecurity.vgscheckout.collect.core.model.VGSCollectFieldNameMappingPolicy
+import com.verygoodsecurity.vgscheckout.collect.core.model.network.NetworkResponse
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscheckout.collect.util.extension.toCardBrand
 import com.verygoodsecurity.vgscheckout.collect.view.card.BrandParams
@@ -14,13 +15,23 @@ import com.verygoodsecurity.vgscheckout.config.networking.request.core.VGSChecko
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.model.VGSCheckoutCardBrand
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.model.VGSCheckoutChecksumAlgorithm
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.model.VGSDateSeparateSerializer
-import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
+import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutAddCardResponse
+import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutTransactionResponse
 
 //region Networking
-internal fun VGSResponse.toCheckoutResult() = when (this) {
-    is VGSResponse.SuccessResponse -> VGSCheckoutResult.Success(code, body)
-    is VGSResponse.ErrorResponse -> VGSCheckoutResult.Failed(code, body)
-}
+internal fun VGSResponse.toAddCardResponse() = VGSCheckoutAddCardResponse(
+    this is VGSResponse.SuccessResponse,
+    code,
+    body,
+    (this as? VGSResponse.ErrorResponse)?.message
+)
+
+internal fun NetworkResponse.toTransactionResponse() = VGSCheckoutTransactionResponse(
+    isSuccessful,
+    code,
+    body,
+    message
+)
 
 internal fun VGSCheckoutHTTPMethod.toCollectHTTPMethod() = when (this) {
     VGSCheckoutHTTPMethod.POST -> HTTPMethod.POST

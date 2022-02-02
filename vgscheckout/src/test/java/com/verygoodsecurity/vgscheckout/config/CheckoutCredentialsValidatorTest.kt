@@ -1,8 +1,8 @@
 package com.verygoodsecurity.vgscheckout.config
 
 import com.verygoodsecurity.vgscheckout.BuildConfig
-import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutJWTParseException
-import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutJWTRestrictedRoleException
+import com.verygoodsecurity.vgscheckout.exception.internal.JWTParseException
+import com.verygoodsecurity.vgscheckout.exception.internal.JWTRestrictedRoleException
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Test
@@ -17,19 +17,18 @@ class CheckoutCredentialsValidatorTest {
         jwtValidator.validateJWT(BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS)
     }
 
-    @Test(expected = VGSCheckoutJWTParseException::class)
+    @Test(expected = JWTParseException::class)
     fun validateJWT_emptyJWT_exceptionThrown() {
         // Act
         jwtValidator.validateJWT("")
     }
-
-    @Test(expected = VGSCheckoutJWTRestrictedRoleException::class)
+    @Test(expected = JWTRestrictedRoleException::class)
     fun validateJWT_JWTWithTransfersWriteRole_exceptionThrown() {
         // Act
         jwtValidator.validateJWT(BuildConfig.JWT_TOKEN_WITH_TRANSFERS_WRITE)
     }
 
-    @Test(expected = VGSCheckoutJWTRestrictedRoleException::class)
+    @Test(expected = JWTRestrictedRoleException::class)
     fun validateJWT_JWTWithTransfersAnyRole_exceptionThrown() {
         // Act
         jwtValidator.validateJWT(BuildConfig.JWT_TOKEN_WITH_TRANSFERS_ANY)

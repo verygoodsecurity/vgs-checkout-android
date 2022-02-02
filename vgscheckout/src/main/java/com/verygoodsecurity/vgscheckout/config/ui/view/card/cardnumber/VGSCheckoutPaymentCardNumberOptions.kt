@@ -11,7 +11,7 @@ import kotlinx.parcelize.Parcelize
  * @param cardBrands list of brands that can be detected.
  */
 @Parcelize
-class VGSCheckoutPaymentCardNumberOptions private constructor(
+internal class VGSCheckoutPaymentCardNumberOptions private constructor(
     override val fieldName: String,
     override val isIconHidden: Boolean,
     override val cardBrands: Set<VGSCheckoutCardBrand>,

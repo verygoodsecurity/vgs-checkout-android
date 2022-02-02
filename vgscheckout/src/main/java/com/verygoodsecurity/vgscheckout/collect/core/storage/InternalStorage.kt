@@ -34,7 +34,7 @@ internal class InternalStorage(
             fileStorage = this
         }
 
-        val fieldStateContractor = FieldStateContractor(context)
+        val fieldStateContractor = FieldStateContractor()
         with(TemporaryFieldsStorage(fieldStateContractor)) {
             attachFieldDependencyObserver(fieldsDependencyDispatcher)
 

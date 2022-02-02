@@ -8,10 +8,13 @@ import android.os.Parcelable
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.annotation.VisibleForTesting
 import androidx.core.os.bundleOf
-import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
+import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
+import com.verygoodsecurity.vgscheckout.config.VGSCheckoutPaymentConfig
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
-import com.verygoodsecurity.vgscheckout.ui.CheckoutActivity
+import com.verygoodsecurity.vgscheckout.exception.internal.ResultParseException
+import com.verygoodsecurity.vgscheckout.ui.CustomSaveCardActivity
+import com.verygoodsecurity.vgscheckout.ui.PaymentActivity
 import com.verygoodsecurity.vgscheckout.ui.SaveCardActivity
 import com.verygoodsecurity.vgscheckout.ui.core.BaseCheckoutActivity
 import kotlinx.parcelize.Parcelize
@@ -34,7 +37,10 @@ internal class CheckoutResultContract :
     override fun parseResult(resultCode: Int, intent: Intent?): VGSCheckoutResult {
         return if (resultCode == Activity.RESULT_OK) {
             intent?.getParcelableExtra<Result>(EXTRA_KEY_RESULT)?.checkoutResult
-                ?: VGSCheckoutResult.Failed(-1, "Failed to retrieve checkout result.")
+                ?: VGSCheckoutResult.Failed(
+                    VGSCheckoutResultBundle(),
+                    ResultParseException()
+                )
         } else {
             VGSCheckoutResult.Canceled
         }
@@ -42,8 +48,9 @@ internal class CheckoutResultContract :
 
     private fun getIntentTarget(args: Args<CheckoutConfig>?): Class<out BaseCheckoutActivity<*>> {
         return when (args?.config) {
-            is VGSCheckoutCustomConfig -> CheckoutActivity::class.java
+            is VGSCheckoutCustomConfig -> CustomSaveCardActivity::class.java
             is VGSCheckoutAddCardConfig -> SaveCardActivity::class.java
+            is VGSCheckoutPaymentConfig -> PaymentActivity::class.java
             else -> throw IllegalArgumentException("Invalid checkout config.")
         }
     }

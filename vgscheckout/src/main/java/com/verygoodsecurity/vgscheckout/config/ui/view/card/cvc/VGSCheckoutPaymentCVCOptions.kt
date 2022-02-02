@@ -9,7 +9,7 @@ import kotlinx.parcelize.Parcelize
  * @param isIconHidden defines if card brand icon should be hidden.
  */
 @Parcelize
-class VGSCheckoutPaymentCVCOptions private constructor(
+internal class VGSCheckoutPaymentCVCOptions private constructor(
     override val fieldName: String,
     override val isIconHidden: Boolean,
 ) : CVCOptions() {

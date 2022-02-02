@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Typeface
 import android.os.Build
+import android.os.Parcelable
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +15,7 @@ import androidx.annotation.StyleRes
 import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
 import com.verygoodsecurity.vgscheckout.collect.view.material.internal.InputLayoutStateImpl
+import com.verygoodsecurity.vgscheckout.collect.view.material.internal.TextInputLayoutSavedState
 import com.verygoodsecurity.vgscheckout.collect.view.material.internal.TextInputLayoutWrapper
 import com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout
 
@@ -40,6 +42,21 @@ internal abstract class TextInputFieldLayout @JvmOverloads constructor(
         fieldState = InputLayoutStateImpl(textInputLayout)
 
         addView(textInputLayout)
+    }
+
+    override fun onSaveInstanceState(): Parcelable? {
+        return TextInputLayoutSavedState(super.onSaveInstanceState()).apply {
+            this.error = fieldState.error?.toString()
+        }
+    }
+
+    override fun onRestoreInstanceState(state: Parcelable?) {
+        if ((state as? TextInputLayoutSavedState) != null) {
+            super.onRestoreInstanceState(state.superState)
+            fieldState.error = state.error
+        } else {
+            super.onRestoreInstanceState(state)
+        }
     }
 
     /**
