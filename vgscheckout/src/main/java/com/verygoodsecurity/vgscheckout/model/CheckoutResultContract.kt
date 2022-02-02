@@ -12,7 +12,7 @@ import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutPaymentConfig
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
-import com.verygoodsecurity.vgscheckout.exception.internal.VGSCheckoutResultParseException
+import com.verygoodsecurity.vgscheckout.exception.internal.ResultParseException
 import com.verygoodsecurity.vgscheckout.ui.CustomSaveCardActivity
 import com.verygoodsecurity.vgscheckout.ui.PaymentActivity
 import com.verygoodsecurity.vgscheckout.ui.SaveCardActivity
@@ -39,7 +39,7 @@ internal class CheckoutResultContract :
             intent?.getParcelableExtra<Result>(EXTRA_KEY_RESULT)?.checkoutResult
                 ?: VGSCheckoutResult.Failed(
                     VGSCheckoutResultBundle(),
-                    VGSCheckoutResultParseException()
+                    ResultParseException()
                 )
         } else {
             VGSCheckoutResult.Canceled

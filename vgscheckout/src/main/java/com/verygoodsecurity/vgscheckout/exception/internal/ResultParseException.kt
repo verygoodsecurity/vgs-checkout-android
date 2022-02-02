@@ -8,4 +8,4 @@ private const val MESSAGE = "Failed to retrieve checkout result."
 /**
  * Throws to indicate that checkout result can't be parsed.
  */
-internal class VGSCheckoutResultParseException : VGSCheckoutException(CODE, MESSAGE, null)
+internal class ResultParseException : VGSCheckoutException(CODE, MESSAGE, null)

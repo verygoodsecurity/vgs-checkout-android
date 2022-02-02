@@ -45,12 +45,10 @@ class MainActivity : AppCompatActivity(), VGSCheckoutCallback {
         }
         val addCardResponse =
             resultData?.getParcelable<VGSCheckoutAddCardResponse>(VGSCheckoutResultBundle.ADD_CARD_RESPONSE)
-        val shouldSaveCard = resultData?.getBoolean(VGSCheckoutResultBundle.SHOULD_SAVE_CARD)
         Log.d(
             "VGSCheckout", """
             ${result::class.java.simpleName}
             Add card response = $addCardResponse
-            Should save card = $shouldSaveCard
         """.trimIndent()
         )
     }

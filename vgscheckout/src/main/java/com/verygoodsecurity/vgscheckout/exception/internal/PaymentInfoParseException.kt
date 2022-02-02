@@ -8,5 +8,5 @@ private const val MESSAGE = "Cannot fetch order id info."
 /**
  * Throws to indicate that payment info can't be parsed.
  */
-internal class VGSCheckoutPaymentInfoParseException constructor(cause: Throwable?) :
+internal class PaymentInfoParseException constructor(cause: Throwable?) :
     VGSCheckoutException(CODE, MESSAGE, cause)

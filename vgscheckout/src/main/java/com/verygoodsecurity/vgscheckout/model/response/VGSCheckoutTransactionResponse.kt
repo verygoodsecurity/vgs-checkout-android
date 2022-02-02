@@ -4,7 +4,7 @@ import com.verygoodsecurity.vgscheckout.model.response.core.VGSCheckoutResponse
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class VGSCheckoutTransactionResponse(
+internal data class VGSCheckoutTransactionResponse(
     override val isSuccessful: Boolean,
     override val code: Int,
     override val body: String?,

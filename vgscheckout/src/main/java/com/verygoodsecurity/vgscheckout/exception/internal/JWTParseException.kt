@@ -8,4 +8,4 @@ private const val MESSAGE = "Can't parse invalid access token."
 /**
  * Throws to indicate that access token can't be parsed.
  */
-internal class VGSCheckoutJWTParseException : VGSCheckoutException(CODE, MESSAGE, null)
+internal class JWTParseException : VGSCheckoutException(CODE, MESSAGE, null)
