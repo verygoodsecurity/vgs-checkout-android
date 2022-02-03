@@ -1,6 +1,8 @@
 package com.verygoodsecurity.vgscheckout.ui.fragment.core
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.CallSuper
@@ -12,12 +14,15 @@ import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutPaymentConfig
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
+import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
+import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
+import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResultBundle
 import com.verygoodsecurity.vgscheckout.ui.core.NavigationHandler
 import com.verygoodsecurity.vgscheckout.ui.core.ToolbarHandler
 import com.verygoodsecurity.vgscheckout.util.CurrencyFormatter
 import com.verygoodsecurity.vgscheckout.util.extension.requireParcelable
 
-internal abstract class BaseFragment<C : CheckoutConfig> : Fragment, LoadingHandler {
+internal abstract class BaseFragment<C : CheckoutConfig> : Fragment {
 
     constructor() : super()
 
@@ -28,6 +33,8 @@ internal abstract class BaseFragment<C : CheckoutConfig> : Fragment, LoadingHand
 
     protected lateinit var navigationHandler: NavigationHandler
     protected lateinit var toolbarHandler: ToolbarHandler
+
+    protected val resultBundle = VGSCheckoutResultBundle()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -41,6 +48,12 @@ internal abstract class BaseFragment<C : CheckoutConfig> : Fragment, LoadingHand
         updateToolbarTitle()
     }
 
+    protected fun sendResult(result: VGSCheckoutResult) {
+        val resultBundle = CheckoutResultContract.Result(result).toBundle()
+        requireActivity().setResult(Activity.RESULT_OK, Intent().putExtras(resultBundle))
+        requireActivity().finish()
+    }
+
     protected fun showNetworkError(onRetry: (() -> Unit)? = null) {
         val message = getString(R.string.vgs_checkout_no_network_error)
         val bar = Snackbar.make(requireView(), message, Snackbar.LENGTH_LONG)
@@ -48,6 +61,10 @@ internal abstract class BaseFragment<C : CheckoutConfig> : Fragment, LoadingHand
             bar.setAction(getString(R.string.vgs_checkout_no_network_retry)) { action.invoke() }
         }
         bar.show()
+    }
+
+    protected fun pay(financialInstrumentId: String) {
+        // TODO: implement
     }
 
     private fun generateButtonTitle(): String = when (config) {

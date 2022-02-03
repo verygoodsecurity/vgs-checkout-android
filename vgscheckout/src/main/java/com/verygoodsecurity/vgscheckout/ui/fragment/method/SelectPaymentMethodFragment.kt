@@ -1,6 +1,5 @@
 package com.verygoodsecurity.vgscheckout.ui.fragment.method
 
-import android.content.Context
 import android.graphics.drawable.Animatable
 import android.os.Bundle
 import android.os.Handler
@@ -14,7 +13,6 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutPaymentConfig
-import com.verygoodsecurity.vgscheckout.ui.core.OnPaymentMethodSelectedListener
 import com.verygoodsecurity.vgscheckout.ui.fragment.core.BaseFragment
 import com.verygoodsecurity.vgscheckout.ui.fragment.method.adapter.PaymentMethodsAdapter
 import com.verygoodsecurity.vgscheckout.ui.fragment.method.decorator.MarginItemDecoration
@@ -25,18 +23,11 @@ internal class SelectPaymentMethodFragment :
     BaseFragment<VGSCheckoutPaymentConfig>(R.layout.vgs_checkout_select_method_fragment),
     PaymentMethodsAdapter.OnItemClickListener {
 
-    private lateinit var listener: OnPaymentMethodSelectedListener
-
     private lateinit var cardRecyclerView: RecyclerView
     private lateinit var adapter: PaymentMethodsAdapter
     private lateinit var payButton: MaterialButton
 
     private var isLoading: Boolean = false
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        listener = requireActivity() as OnPaymentMethodSelectedListener
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -67,12 +58,6 @@ internal class SelectPaymentMethodFragment :
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
         adapter.setSelectedPosition(savedInstanceState?.getInt(KEY_SELECTED_ITEM_POSITION) ?: 0)
-    }
-
-    override fun setIsLoading(isLoading: Boolean) {
-        this.isLoading = isLoading
-        setViewsEnabled(!isLoading)
-        setSaveButtonIsLoading(isLoading)
     }
 
     override fun onNewCardClick() {
@@ -111,7 +96,8 @@ internal class SelectPaymentMethodFragment :
         payButton = view.findViewById(R.id.mbPay)
         payButton.text = title
         payButton.setOnClickListener {
-            listener.onCardSelected(adapter.getSelectedCard())
+            setLoading(true)
+            pay(adapter.getSelectedCard().finId)
         }
     }
 
@@ -130,10 +116,16 @@ internal class SelectPaymentMethodFragment :
 
     private fun deleteSelectedCard() {
         // TODO: Implement delete request
-        setIsLoading(true)
+        setLoading(true)
         Handler(Looper.getMainLooper()).postDelayed({
-            setIsLoading(false)
+            setLoading(false)
         }, 5000)
+    }
+
+    private fun setLoading(isLoading: Boolean) {
+        this.isLoading = isLoading
+        setViewsEnabled(!isLoading)
+        setSaveButtonIsLoading(isLoading)
     }
 
     private fun setViewsEnabled(isEnabled: Boolean) {

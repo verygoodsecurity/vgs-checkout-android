@@ -1,6 +1,5 @@
 package com.verygoodsecurity.vgscheckout.ui.fragment.save
 
-import android.content.Context
 import android.graphics.drawable.Animatable
 import android.os.Bundle
 import android.view.KeyEvent
@@ -18,7 +17,8 @@ import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
 import com.verygoodsecurity.vgscheckout.collect.view.card.validation.rules.VGSInfoRule
 import com.verygoodsecurity.vgscheckout.collect.widget.VGSCountryEditText
-import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
+import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
+import com.verygoodsecurity.vgscheckout.config.VGSCheckoutPaymentConfig
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.config.networking.core.VGSCheckoutHostnamePolicy
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.AddressOptions
@@ -30,7 +30,10 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.CardHolde
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.CardNumberOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.CVCOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.ExpirationDateOptions
-import com.verygoodsecurity.vgscheckout.ui.core.OnAddCardResponseListener
+import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
+import com.verygoodsecurity.vgscheckout.exception.internal.FinIdNotFoundException
+import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
+import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutAddCardResponse
 import com.verygoodsecurity.vgscheckout.ui.fragment.core.BaseFragment
 import com.verygoodsecurity.vgscheckout.ui.fragment.save.binding.SaveCardViewBindingHelper
 import com.verygoodsecurity.vgscheckout.ui.fragment.save.validation.ValidationManager
@@ -38,23 +41,18 @@ import com.verygoodsecurity.vgscheckout.util.CollectProvider
 import com.verygoodsecurity.vgscheckout.util.country.model.Country
 import com.verygoodsecurity.vgscheckout.util.country.model.PostalCodeType
 import com.verygoodsecurity.vgscheckout.util.extension.*
+import org.json.JSONObject
 
 internal class SaveCardFragment : BaseFragment<CheckoutConfig>(), VgsCollectResponseListener,
     VGSCountryEditText.OnCountrySelectedListener, InputFieldView.OnEditorActionListener {
 
     private lateinit var binding: SaveCardViewBindingHelper
     private lateinit var validationHelper: ValidationManager
-    private lateinit var responseListener: OnAddCardResponseListener
 
     private val collect: VGSCollect by lazy {
         CollectProvider().get(requireContext(), config).apply {
             addOnResponseListeners(this@SaveCardFragment)
         }
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        responseListener = activity as OnAddCardResponseListener
     }
 
     override fun onCreateView(
@@ -86,15 +84,7 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(), VgsCollectResp
             showNetworkError { saveCard() }
             return
         }
-        val addCardResponse = response.toAddCardResponse()
-        val shouldSave =
-            if (!config.formConfig.saveCardOptionEnabled) null else binding.saveCardCheckbox.isChecked
-        responseListener.onAddCardResponse(addCardResponse, shouldSave)
-    }
-
-    override fun setIsLoading(isLoading: Boolean) {
-        setViewsEnabled(!isLoading)
-        setSaveButtonIsLoading(isLoading)
+        handleSaveCardResponse(response)
     }
 
     override fun onCountrySelected(country: Country) {
@@ -232,7 +222,15 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(), VgsCollectResp
     }
 
     private fun initSaveCardCheckbox() {
-        binding.saveCardCheckbox.setVisible(config.formConfig.saveCardOptionEnabled)
+        if (config.formConfig.saveCardOptionEnabled) {
+            with(binding.saveCardCheckbox) {
+                resultBundle.putShouldSaveCard(isChecked)
+                visible()
+                setOnCheckedChangeListener { _, isChecked ->
+                    resultBundle.putShouldSaveCard(isChecked)
+                }
+            }
+        }
     }
 
     private fun initSaveButton() {
@@ -278,29 +276,6 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(), VgsCollectResp
         }
     }
 
-    private fun setViewsEnabled(isEnabled: Boolean) {
-        binding.cardDetailsLL.setEnabled(isEnabled, true, binding.cardDetailsMtv)
-        binding.billingAddressLL.setEnabled(isEnabled, true, binding.billingAddressMtv)
-        val alpha = if (isEnabled) ICON_ALPHA_ENABLED else ICON_ALPHA_DISABLED
-        binding.cardNumberEt.setDrawablesAlphaColorFilter(alpha)
-        binding.securityCodeEt.setDrawablesAlphaColorFilter(alpha)
-        binding.saveCardCheckbox.isEnabled = isEnabled
-    }
-
-    private fun setSaveButtonIsLoading(isLoading: Boolean) {
-        with(binding.saveCardButton) {
-            isClickable = !isLoading
-            if (isLoading) {
-                text = getString(R.string.vgs_checkout_button_processing_title)
-                icon = getDrawableCompat(R.drawable.vgs_checkout_ic_loading_animated_white_16)
-                (icon as? Animatable)?.start()
-            } else {
-                text = title
-                icon = null
-            }
-        }
-    }
-
     private fun sendRequestEvent(invalidFields: List<String> = emptyList()) {
         with(config) {
             analyticTracker.log(
@@ -332,10 +307,67 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(), VgsCollectResp
         }
     }
 
+    private fun handleSaveCardResponse(response: VGSResponse) {
+        val addCardResponse = response.toAddCardResponse()
+        resultBundle.putAddCardResponse(addCardResponse)
+        if (addCardResponse.isSuccessful && shouldPay()) {
+            try {
+                pay(readFinancialInstrumentId(addCardResponse))
+            } catch (e: VGSCheckoutException) {
+                sendResult(VGSCheckoutResult.Failed(resultBundle, e))
+            }
+        } else {
+            sendResult(resultBundle.toCheckoutResult(addCardResponse.isSuccessful))
+        }
+    }
+
+    private fun shouldPay(): Boolean =
+        config is VGSCheckoutPaymentConfig || config is VGSCheckoutAddCardConfig
+
+    @Throws(VGSCheckoutException::class)
+    private fun readFinancialInstrumentId(response: VGSCheckoutAddCardResponse): String {
+        try {
+            return JSONObject(response.body!!).getJSONObject(JSON_KEY_DATA).getString(JSON_KEY_ID)
+        } catch (e: Exception) {
+            throw FinIdNotFoundException(e)
+        }
+    }
+
+    private fun setIsLoading(isLoading: Boolean) {
+        setViewsEnabled(!isLoading)
+        setSaveButtonIsLoading(isLoading)
+    }
+
+    private fun setViewsEnabled(isEnabled: Boolean) {
+        binding.cardDetailsLL.setEnabled(isEnabled, true, binding.cardDetailsMtv)
+        binding.billingAddressLL.setEnabled(isEnabled, true, binding.billingAddressMtv)
+        val alpha = if (isEnabled) ICON_ALPHA_ENABLED else ICON_ALPHA_DISABLED
+        binding.cardNumberEt.setDrawablesAlphaColorFilter(alpha)
+        binding.securityCodeEt.setDrawablesAlphaColorFilter(alpha)
+        binding.saveCardCheckbox.isEnabled = isEnabled
+    }
+
+    private fun setSaveButtonIsLoading(isLoading: Boolean) {
+        with(binding.saveCardButton) {
+            isClickable = !isLoading
+            if (isLoading) {
+                text = getString(R.string.vgs_checkout_button_processing_title)
+                icon = getDrawableCompat(R.drawable.vgs_checkout_ic_loading_animated_white_16)
+                (icon as? Animatable)?.start()
+            } else {
+                text = title
+                icon = null
+            }
+        }
+    }
+
     companion object {
 
         private const val ICON_ALPHA_ENABLED = 1f
         private const val ICON_ALPHA_DISABLED = 0.5f
         private const val BILLING_ADDRESS_MIN_CHARS_COUNT = 1
+
+        private const val JSON_KEY_DATA = "data"
+        private const val JSON_KEY_ID = "id"
     }
 }
