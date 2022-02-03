@@ -39,7 +39,7 @@ internal class PaymentMethodsAdapter constructor(
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as? CardViewHolder)?.bind(cards[position], selectedPosition == position)
+        (holder as? CardViewHolder)?.bind(cards[position])
     }
 
     override fun getItemCount(): Int = cards.count().inc()
@@ -78,12 +78,12 @@ internal class PaymentMethodsAdapter constructor(
             }
         }
 
-        fun bind(card: VGSCheckoutCard, isSelected: Boolean) {
+        fun bind(card: VGSCheckoutCard) {
             ivCardBrand?.setImageResource(VGSCheckoutCardBrand.getBrandIcon(card.brand))
             mtvCardHolderName?.text = card.holderName
             mtvCardNumber?.text = getFormattedCardNumber(card.lastFour)
             mtvExpiry?.text = card.expiry
-            radioButton?.isChecked = isSelected
+            radioButton?.isChecked = adapterPosition == selectedPosition
         }
 
         private fun getFormattedCardNumber(lastFour: String): String {
