@@ -35,7 +35,6 @@ internal abstract class BaseFragment<C : CheckoutConfig> : Fragment, LoadingHand
         toolbarHandler = requireActivity() as ToolbarHandler
     }
 
-
     @CallSuper
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -73,7 +72,6 @@ internal abstract class BaseFragment<C : CheckoutConfig> : Fragment, LoadingHand
             else -> throw IllegalArgumentException("Unknown type of config.")
         }
     )
-
 
     companion object {
 
