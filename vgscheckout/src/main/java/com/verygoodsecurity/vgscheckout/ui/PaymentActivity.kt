@@ -1,7 +1,6 @@
 package com.verygoodsecurity.vgscheckout.ui
 
 import com.verygoodsecurity.vgscheckout.BuildConfig
-import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.core.HTTPMethod
 import com.verygoodsecurity.vgscheckout.collect.core.api.VGSHttpBodyFormat
 import com.verygoodsecurity.vgscheckout.collect.core.api.client.ApiClient
@@ -15,12 +14,11 @@ import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutAddCardResponse
 import com.verygoodsecurity.vgscheckout.ui.core.BaseCheckoutActivity
 import com.verygoodsecurity.vgscheckout.ui.core.OnPaymentMethodSelectedListener
-import com.verygoodsecurity.vgscheckout.ui.fragment.core.BaseFragment
-import com.verygoodsecurity.vgscheckout.ui.fragment.method.SelectPaymentMethodFragment
 import com.verygoodsecurity.vgscheckout.util.extension.toTransactionResponse
 import org.json.JSONObject
 
-internal class PaymentActivity : BaseCheckoutActivity<VGSCheckoutPaymentConfig>(), OnPaymentMethodSelectedListener {
+internal class PaymentActivity : BaseCheckoutActivity<VGSCheckoutPaymentConfig>(),
+    OnPaymentMethodSelectedListener {
 
     private val client: ApiClient = OkHttpClient()
 
@@ -29,10 +27,7 @@ internal class PaymentActivity : BaseCheckoutActivity<VGSCheckoutPaymentConfig>(
             super.initFragment()
             return
         }
-        val fragment = BaseFragment.create<SelectPaymentMethodFragment>(config)
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fcvContainer, fragment, FRAGMENT_TAG)
-            .commit()
+        navigateToPaymentMethods()
     }
 
     override fun onDestroy() {
