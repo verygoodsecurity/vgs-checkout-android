@@ -7,7 +7,7 @@ import com.verygoodsecurity.vgscheckout.util.extension.toCheckoutChecksumAlgorit
 import kotlinx.parcelize.Parcelize
 
 @Suppress("SpellCheckingInspection", "unused")
-sealed class VGSCheckoutCardBrand : Parcelable {
+internal sealed class VGSCheckoutCardBrand : Parcelable {
 
     //region Fields
     abstract val name: String

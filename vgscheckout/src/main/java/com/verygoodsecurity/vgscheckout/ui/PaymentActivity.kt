@@ -10,7 +10,7 @@ import com.verygoodsecurity.vgscheckout.collect.core.api.client.OkHttpClient
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.NetworkRequest
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutPaymentConfig
 import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
-import com.verygoodsecurity.vgscheckout.exception.internal.VGSCheckoutFinIdNotFoundException
+import com.verygoodsecurity.vgscheckout.exception.internal.FinIdNotFoundException
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutCard
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
@@ -78,7 +78,7 @@ internal class PaymentActivity : BaseCheckoutActivity<VGSCheckoutPaymentConfig>(
         try {
             return JSONObject(response.body!!).getJSONObject(JSON_KEY_DATA).getString(JSON_KEY_ID)
         } catch (e: Exception) {
-            throw VGSCheckoutFinIdNotFoundException(e)
+            throw FinIdNotFoundException(e)
         }
     }
 

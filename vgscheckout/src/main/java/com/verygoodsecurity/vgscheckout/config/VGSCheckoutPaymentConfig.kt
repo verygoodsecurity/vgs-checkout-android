@@ -33,7 +33,7 @@ import java.util.*
  * validation event should be send.
  */
 @Suppress("MemberVisibilityCanBePrivate", "CanBeParameter")
-class VGSCheckoutPaymentConfig private constructor(
+internal class VGSCheckoutPaymentConfig private constructor(
     internal val accessToken: String,
     val tenantId: String,
     internal val paymentInfo: PaymentInfo,

@@ -38,7 +38,7 @@ class VGSCheckoutResultBundle private constructor(@PublishedApi internal val bun
     companion object Keys {
 
         const val ADD_CARD_RESPONSE = "com.verygoodsecurity.vgscheckout.add_card_response"
-        const val TRANSACTION_RESPONSE = "com.verygoodsecurity.vgscheckout.transaction_response"
-        const val SHOULD_SAVE_CARD = "com.verygoodsecurity.vgscheckout.should_save_card"
+        internal const val TRANSACTION_RESPONSE = "com.verygoodsecurity.vgscheckout.transaction_response"
+        internal const val SHOULD_SAVE_CARD = "com.verygoodsecurity.vgscheckout.should_save_card"
     }
 }
