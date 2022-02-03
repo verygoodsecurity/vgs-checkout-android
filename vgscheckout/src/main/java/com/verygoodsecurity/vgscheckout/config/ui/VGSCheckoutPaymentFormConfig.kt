@@ -15,7 +15,7 @@ import kotlinx.parcelize.Parcelize
  * @param saveCardOptionEnabled defines if save card checkbox should be visible.
  */
 @Parcelize
-class VGSCheckoutPaymentFormConfig private constructor(
+internal class VGSCheckoutPaymentFormConfig private constructor(
     override val cardOptions: VGSCheckoutPaymentCardOptions,
     override val addressOptions: VGSCheckoutPaymentBillingAddressOptions,
     override val validationBehaviour: VGSCheckoutFormValidationBehaviour,

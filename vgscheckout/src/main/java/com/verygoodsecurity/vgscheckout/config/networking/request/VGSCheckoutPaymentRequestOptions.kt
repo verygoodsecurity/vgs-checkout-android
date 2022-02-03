@@ -12,7 +12,7 @@ import kotlinx.parcelize.RawValue
  * as Payment orchestration request have fixed structure.
  */
 @Parcelize
-class VGSCheckoutPaymentRequestOptions private constructor(
+internal class VGSCheckoutPaymentRequestOptions private constructor(
     override val httpMethod: VGSCheckoutHTTPMethod,
     override val extraHeaders: Map<String, String>,
     override val extraData: Map<String, @RawValue Any>,

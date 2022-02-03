@@ -10,7 +10,7 @@ import kotlinx.parcelize.Parcelize
  * @param visibility defines if card holder name input field should be visible to user.
  */
 @Parcelize
-class VGSCheckoutPaymentCardHolderOptions private constructor(
+internal class VGSCheckoutPaymentCardHolderOptions private constructor(
     override val fieldName: String,
     override val visibility: VGSCheckoutFieldVisibility,
 ) : CardHolderOptions() {
