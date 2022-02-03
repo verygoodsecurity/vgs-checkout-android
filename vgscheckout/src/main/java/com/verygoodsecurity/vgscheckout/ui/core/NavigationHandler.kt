@@ -4,5 +4,5 @@ internal interface NavigationHandler {
 
     fun navigateToPaymentMethods()
 
-    fun navigateToAddCard()
+    fun navigateToSaveCard()
 }

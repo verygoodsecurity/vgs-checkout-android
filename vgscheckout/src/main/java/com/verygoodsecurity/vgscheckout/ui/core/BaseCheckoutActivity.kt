@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentOnAttachListener
-import com.google.android.material.snackbar.Snackbar
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.CancelEvent
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
@@ -25,7 +24,7 @@ import com.verygoodsecurity.vgscheckout.util.extension.findFragmentByTag
 import com.verygoodsecurity.vgscheckout.util.extension.setScreenshotsAllowed
 
 internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActivity(),
-    FragmentOnAttachListener, NavigationHandler, ToolbarHandler, ErrorHandler, OnAddCardResponseListener {
+    FragmentOnAttachListener, NavigationHandler, ToolbarHandler, OnAddCardResponseListener {
 
     protected val config: C by lazy { CheckoutResultContract.Args.fromIntent<C>(intent).config }
 
@@ -59,7 +58,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
         loadingHandler = fragment as LoadingHandler
     }
 
-    override fun navigateToAddCard() {
+    override fun navigateToSaveCard() {
         val fragment = BaseFragment.create<SaveCardFragment>(config)
         supportFragmentManager.beginTransaction()
             .replace(R.id.fcvContainer, fragment, FRAGMENT_TAG)
@@ -75,13 +74,6 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
 
     override fun setTitle(title: String) {
         supportActionBar?.title = title
-    }
-
-    override fun showNetworkError(onRetry: () -> Unit) {
-        val message = getString(R.string.vgs_checkout_no_network_error)
-        Snackbar.make(findViewById(R.id.llRootView), message, Snackbar.LENGTH_LONG)
-            .setAction(getString(R.string.vgs_checkout_no_network_retry)) { onRetry.invoke() }
-            .show()
     }
 
     override fun onAddCardResponse(response: VGSCheckoutAddCardResponse, shouldSaveCard: Boolean?) {
@@ -122,7 +114,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
     }
 
     protected open fun initFragment() {
-        navigateToAddCard()
+        navigateToSaveCard()
     }
 
     companion object {

@@ -33,8 +33,6 @@ internal class SelectPaymentMethodFragment :
 
     private var isLoading: Boolean = false
 
-    override fun getToolbarTitle(): String = getString(R.string.vgs_checkout_title)
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
         listener = requireActivity() as OnPaymentMethodSelectedListener
@@ -78,7 +76,7 @@ internal class SelectPaymentMethodFragment :
     }
 
     override fun onNewCardClick() {
-        navigationHandler.navigateToAddCard()
+        navigationHandler.navigateToSaveCard()
     }
 
     private fun initView(view: View) {

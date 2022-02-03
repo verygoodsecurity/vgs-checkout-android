@@ -52,13 +52,6 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(), VgsCollectResp
         }
     }
 
-    override fun getToolbarTitle(): String = getString(
-        when (config) {
-            is VGSCheckoutCustomConfig -> R.string.vgs_checkout_add_card_title
-            else -> R.string.vgs_checkout_new_card_title
-        }
-    )
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
         responseListener = activity as OnAddCardResponseListener
@@ -90,7 +83,7 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(), VgsCollectResp
     override fun onResponse(response: VGSResponse) {
         if (response.isNetworkConnectionError()) {
             setIsLoading(false)
-            errorHandler.showNetworkError { saveCard() }
+            showNetworkError { saveCard() }
             return
         }
         val addCardResponse = response.toAddCardResponse()
