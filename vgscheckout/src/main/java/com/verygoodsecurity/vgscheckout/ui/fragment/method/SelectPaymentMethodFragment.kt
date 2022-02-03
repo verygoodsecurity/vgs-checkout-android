@@ -9,13 +9,11 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutPaymentConfig
-import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.ui.core.OnPaymentMethodSelectedListener
 import com.verygoodsecurity.vgscheckout.ui.fragment.core.BaseFragment
 import com.verygoodsecurity.vgscheckout.ui.fragment.method.adapter.PaymentMethodsAdapter
@@ -159,16 +157,5 @@ internal class SelectPaymentMethodFragment :
     companion object {
 
         private const val KEY_SELECTED_ITEM_POSITION = "selected_item_position"
-
-        private const val KEY_BUNDLE_CONFIG = "com.verygoodsecurity.vgscheckout.config"
-        private const val KEY_BUNDLE_BUTTON_TITLE = "com.verygoodsecurity.vgscheckout.button_title"
-
-        fun create(config: CheckoutConfig, buttonTitle: String): Fragment =
-            SelectPaymentMethodFragment().apply {
-                arguments = Bundle().apply {
-                    putParcelable(KEY_BUNDLE_CONFIG, config)
-                    putString(KEY_BUNDLE_BUTTON_TITLE, buttonTitle)
-                }
-            }
     }
 }
