@@ -17,9 +17,15 @@ import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResultBundle
+import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutTransactionResponse
 import com.verygoodsecurity.vgscheckout.ui.core.NavigationHandler
 import com.verygoodsecurity.vgscheckout.ui.core.ToolbarHandler
+import com.verygoodsecurity.vgscheckout.ui.fragment.save.SaveCardFragment
 import com.verygoodsecurity.vgscheckout.util.CurrencyFormatter
+import com.verygoodsecurity.vgscheckout.util.command.Result
+import com.verygoodsecurity.vgscheckout.util.command.VGSCheckoutCancellable
+import com.verygoodsecurity.vgscheckout.util.command.transaction.CreateTransaction
+import com.verygoodsecurity.vgscheckout.util.command.transaction.TransactionParams
 import com.verygoodsecurity.vgscheckout.util.extension.requireParcelable
 
 internal abstract class BaseFragment<C : CheckoutConfig> : Fragment {
@@ -36,6 +42,8 @@ internal abstract class BaseFragment<C : CheckoutConfig> : Fragment {
 
     protected val resultBundle = VGSCheckoutResultBundle()
 
+    private var transactionRequest: VGSCheckoutCancellable? = null
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         navigationHandler = requireActivity() as NavigationHandler
@@ -48,7 +56,12 @@ internal abstract class BaseFragment<C : CheckoutConfig> : Fragment {
         updateToolbarTitle()
     }
 
-    protected fun sendResult(result: VGSCheckoutResult) {
+    override fun onDestroyView() {
+        super.onDestroyView()
+        transactionRequest?.cancel()
+    }
+
+    protected fun finishWithResult(result: VGSCheckoutResult) {
         val resultBundle = CheckoutResultContract.Result(result).toBundle()
         requireActivity().setResult(Activity.RESULT_OK, Intent().putExtras(resultBundle))
         requireActivity().finish()
@@ -63,8 +76,22 @@ internal abstract class BaseFragment<C : CheckoutConfig> : Fragment {
         bar.show()
     }
 
-    protected fun pay(financialInstrumentId: String) {
-        // TODO: implement
+    protected fun createTransaction(finId: String, amount: Long, currency: String) {
+        transactionRequest =
+            CreateTransaction().execute(TransactionParams(finId, config.id, amount, currency)) {
+                handleTransactionResponse((it as Result.Success).data)
+            }
+    }
+
+    private fun handleTransactionResponse(response: VGSCheckoutTransactionResponse) {
+        resultBundle.putTransactionResponse(response)
+        finishWithResult(
+            if (response.isSuccessful) {
+                VGSCheckoutResult.Success(resultBundle)
+            } else {
+                VGSCheckoutResult.Failed(resultBundle)
+            }
+        )
     }
 
     private fun generateButtonTitle(): String = when (config) {
@@ -82,10 +109,10 @@ internal abstract class BaseFragment<C : CheckoutConfig> : Fragment {
     }
 
     private fun getToolbarTitle(): String = getString(
-        when (config) {
-            is VGSCheckoutCustomConfig -> R.string.vgs_checkout_add_card_title
-            is VGSCheckoutAddCardConfig -> R.string.vgs_checkout_new_card_title
-            is VGSCheckoutPaymentConfig -> R.string.vgs_checkout_title
+        when {
+            config is VGSCheckoutCustomConfig -> R.string.vgs_checkout_add_card_title
+            config is VGSCheckoutAddCardConfig || this is SaveCardFragment -> R.string.vgs_checkout_new_card_title
+            config is VGSCheckoutPaymentConfig -> R.string.vgs_checkout_title
             else -> throw IllegalArgumentException("Unknown type of config.")
         }
     )

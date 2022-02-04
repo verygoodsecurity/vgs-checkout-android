@@ -23,7 +23,7 @@ internal class SelectPaymentMethodFragment :
     BaseFragment<VGSCheckoutPaymentConfig>(R.layout.vgs_checkout_select_method_fragment),
     PaymentMethodsAdapter.OnItemClickListener {
 
-    private lateinit var cardRecyclerView: RecyclerView
+    private lateinit var paymentMethodsRv: RecyclerView
     private lateinit var adapter: PaymentMethodsAdapter
     private lateinit var payButton: MaterialButton
 
@@ -65,7 +65,7 @@ internal class SelectPaymentMethodFragment :
     }
 
     private fun initView(view: View) {
-        initSavedCardsView(view)
+        initPaymentMethodsList(view)
         initPayButton(view)
     }
 
@@ -73,16 +73,16 @@ internal class SelectPaymentMethodFragment :
         toolbarHandler.setTitle(getString(R.string.vgs_checkout_title))
     }
 
-    private fun initSavedCardsView(view: View) {
-        cardRecyclerView = view.findViewById(R.id.rvPaymentMethods)
+    private fun initPaymentMethodsList(view: View) {
+        paymentMethodsRv = view.findViewById(R.id.rvPaymentMethods)
         adapter = PaymentMethodsAdapter(config.savedCards, this)
-        cardRecyclerView.itemAnimator = null
-        cardRecyclerView.adapter = adapter
+        paymentMethodsRv.itemAnimator = null
+        paymentMethodsRv.adapter = adapter
         val paddingSmall =
             resources.getDimensionPixelSize(R.dimen.vgs_checkout_margin_padding_size_small)
         val paddingMedium =
             resources.getDimensionPixelSize(R.dimen.vgs_checkout_margin_padding_size_medium)
-        cardRecyclerView.addItemDecoration(
+        paymentMethodsRv.addItemDecoration(
             MarginItemDecoration(
                 paddingSmall,
                 paddingMedium,
@@ -97,7 +97,11 @@ internal class SelectPaymentMethodFragment :
         payButton.text = title
         payButton.setOnClickListener {
             setLoading(true)
-            pay(adapter.getSelectedCard().finId)
+            createTransaction(
+                adapter.getSelectedCard().finId,
+                config.paymentInfo.amount,
+                config.paymentInfo.currency,
+            )
         }
     }
 

@@ -17,7 +17,6 @@ import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
 import com.verygoodsecurity.vgscheckout.collect.view.card.validation.rules.VGSInfoRule
 import com.verygoodsecurity.vgscheckout.collect.widget.VGSCountryEditText
-import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutPaymentConfig
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.config.networking.core.VGSCheckoutHostnamePolicy
@@ -31,7 +30,6 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.CardNumbe
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.CVCOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.ExpirationDateOptions
 import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
-import com.verygoodsecurity.vgscheckout.exception.internal.FinIdNotFoundException
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutAddCardResponse
 import com.verygoodsecurity.vgscheckout.ui.fragment.core.BaseFragment
@@ -41,7 +39,6 @@ import com.verygoodsecurity.vgscheckout.util.CollectProvider
 import com.verygoodsecurity.vgscheckout.util.country.model.Country
 import com.verygoodsecurity.vgscheckout.util.country.model.PostalCodeType
 import com.verygoodsecurity.vgscheckout.util.extension.*
-import org.json.JSONObject
 
 internal class SaveCardFragment : BaseFragment<CheckoutConfig>(), VgsCollectResponseListener,
     VGSCountryEditText.OnCountrySelectedListener, InputFieldView.OnEditorActionListener {
@@ -84,7 +81,7 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(), VgsCollectResp
             showNetworkError { saveCard() }
             return
         }
-        handleSaveCardResponse(response)
+        handleAddCardResponse(response.toAddCardResponse())
     }
 
     override fun onCountrySelected(country: Country) {
@@ -307,29 +304,22 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(), VgsCollectResp
         }
     }
 
-    private fun handleSaveCardResponse(response: VGSResponse) {
-        val addCardResponse = response.toAddCardResponse()
-        resultBundle.putAddCardResponse(addCardResponse)
-        if (addCardResponse.isSuccessful && shouldPay()) {
-            try {
-                pay(readFinancialInstrumentId(addCardResponse))
-            } catch (e: VGSCheckoutException) {
-                sendResult(VGSCheckoutResult.Failed(resultBundle, e))
+    private fun handleAddCardResponse(response: VGSCheckoutAddCardResponse) {
+        resultBundle.putAddCardResponse(response)
+        with(config) {
+            if (response.isSuccessful && this is VGSCheckoutPaymentConfig) {
+                try {
+                    createTransaction(
+                        response.getFinancialInstrumentId(),
+                        paymentInfo.amount,
+                        paymentInfo.currency,
+                    )
+                } catch (e: VGSCheckoutException) {
+                    finishWithResult(VGSCheckoutResult.Failed(resultBundle, e))
+                }
+            } else {
+                finishWithResult(resultBundle.toCheckoutResult(response.isSuccessful))
             }
-        } else {
-            sendResult(resultBundle.toCheckoutResult(addCardResponse.isSuccessful))
-        }
-    }
-
-    private fun shouldPay(): Boolean =
-        config is VGSCheckoutPaymentConfig || config is VGSCheckoutAddCardConfig
-
-    @Throws(VGSCheckoutException::class)
-    private fun readFinancialInstrumentId(response: VGSCheckoutAddCardResponse): String {
-        try {
-            return JSONObject(response.body!!).getJSONObject(JSON_KEY_DATA).getString(JSON_KEY_ID)
-        } catch (e: Exception) {
-            throw FinIdNotFoundException(e)
         }
     }
 
@@ -366,8 +356,5 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(), VgsCollectResp
         private const val ICON_ALPHA_ENABLED = 1f
         private const val ICON_ALPHA_DISABLED = 0.5f
         private const val BILLING_ADDRESS_MIN_CHARS_COUNT = 1
-
-        private const val JSON_KEY_DATA = "data"
-        private const val JSON_KEY_ID = "id"
     }
 }

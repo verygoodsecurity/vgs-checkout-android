@@ -1,6 +1,5 @@
 package com.verygoodsecurity.vgscheckout.util.command.transaction
 
-import android.util.Log
 import com.verygoodsecurity.vgscheckout.BuildConfig
 import com.verygoodsecurity.vgscheckout.collect.core.HTTPMethod
 import com.verygoodsecurity.vgscheckout.collect.core.api.VGSHttpBodyFormat
@@ -24,7 +23,6 @@ internal class CreateTransaction :
         val request = createTransactionRequest(payload)
         client.enqueue(request) {
             onResult.invoke(Result.Success(it.toTransactionResponse()))
-            Log.d("Test", it.toString())
         }
         return this
     }
