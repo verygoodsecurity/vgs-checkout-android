@@ -35,6 +35,8 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutCustom
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_ARGS
 import com.verygoodsecurity.vgscheckout.ui.CustomSaveCardActivity
+import com.verygoodsecurity.vgscheckout.ui.core.BaseCheckoutActivity
+import com.verygoodsecurity.vgscheckout.ui.fragment.save.SaveCardFragment
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers.withError
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers.withParent
 import com.verygoodsecurity.vgscheckout.util.ViewInteraction.onViewWithScrollTo
@@ -218,7 +220,7 @@ class OnSubmitFieldsValidationTest {
             // Act
             onView(isRoot()).perform(closeSoftKeyboard())
             it.onActivity { activity ->
-                activity.shouldHandleAddCard = false
+                (activity.findFragmentByTag(BaseCheckoutActivity.FRAGMENT_TAG) as? SaveCardFragment)?.shouldHandleAddCard = false
             }
 
             // Assert

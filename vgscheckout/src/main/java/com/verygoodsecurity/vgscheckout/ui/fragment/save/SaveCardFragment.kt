@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.annotation.StringRes
+import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.core.VGSCollect
 import com.verygoodsecurity.vgscheckout.collect.core.VgsCollectResponseListener
@@ -46,6 +47,12 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(), VgsCollectResp
     private lateinit var binding: SaveCardViewBindingHelper
     private lateinit var validationHelper: ValidationManager
 
+    /**
+     * TODO: Remove this flag and replace it with mocked view model in tests
+     */
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    internal var shouldHandleAddCard: Boolean = true
+
     private val collect: VGSCollect by lazy {
         CollectProvider().get(requireContext(), config).apply {
             addOnResponseListeners(this@SaveCardFragment)
@@ -76,6 +83,9 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(), VgsCollectResp
     }
 
     override fun onResponse(response: VGSResponse) {
+        if (!shouldHandleAddCard) {
+            return
+        }
         if (response.isNetworkConnectionError()) {
             setIsLoading(false)
             showNetworkError { saveCard() }
