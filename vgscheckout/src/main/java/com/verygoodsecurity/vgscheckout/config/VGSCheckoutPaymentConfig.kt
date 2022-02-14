@@ -8,12 +8,15 @@ import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutPaymentRouteConfig
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutAddCardFormConfig
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutPaymentFormConfig
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.model.VGSCheckoutCardBrand
 import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
+import com.verygoodsecurity.vgscheckout.model.VGSCheckoutCard
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
 import com.verygoodsecurity.vgscheckout.util.command.Result
-import com.verygoodsecurity.vgscheckout.util.command.order.GetPaymentInfo
 import com.verygoodsecurity.vgscheckout.util.command.VGSCheckoutCancellable
+import com.verygoodsecurity.vgscheckout.util.command.order.GetPaymentInfo
 import com.verygoodsecurity.vgscheckout.util.command.order.PaymentInfo
+import java.util.*
 
 /**
  * Holds configuration with predefined setup for work with payment orchestration app.
@@ -25,6 +28,7 @@ import com.verygoodsecurity.vgscheckout.util.command.order.PaymentInfo
  * @param formConfig UI configuration.
  * @param isScreenshotsAllowed If true, checkout form will allow to make screenshots.
  * @param isAnalyticsEnabled If true, checkout will send analytics events that helps to debug issues if any occurs.
+ * @param savedCards list of previously saved cards.
  * @param createdFromParcel if true then object created form parcel. Used to determine if access token
  * validation event should be send.
  */
@@ -38,6 +42,7 @@ internal class VGSCheckoutPaymentConfig private constructor(
     override val formConfig: VGSCheckoutPaymentFormConfig,
     override val isScreenshotsAllowed: Boolean,
     override val isAnalyticsEnabled: Boolean,
+    internal val savedCards: List<VGSCheckoutCard>,
     private val createdFromParcel: Boolean
 ) : CheckoutConfig(tenantId) {
 
@@ -54,6 +59,12 @@ internal class VGSCheckoutPaymentConfig private constructor(
         parcel.readParcelable(VGSCheckoutAddCardFormConfig::class.java.classLoader)!!,
         parcel.readInt() == 1,
         parcel.readInt() == 1,
+        LinkedList<VGSCheckoutCard>().apply {
+            parcel.readList(
+                this,
+                VGSCheckoutCard::class.java.classLoader
+            )
+        },
         true
     )
 
@@ -66,6 +77,7 @@ internal class VGSCheckoutPaymentConfig private constructor(
         parcel.writeParcelable(formConfig, flags)
         parcel.writeInt(if (isScreenshotsAllowed) 1 else 0)
         parcel.writeInt(if (isAnalyticsEnabled) 1 else 0)
+        parcel.writeList(savedCards)
     }
 
     override fun describeContents(): Int {
@@ -112,16 +124,16 @@ internal class VGSCheckoutPaymentConfig private constructor(
             accessToken: String,
             orderId: String,
             tenantId: String,
-            callback: VGSCheckoutConfigInitCallback<VGSCheckoutPaymentConfig>,
             environment: VGSCheckoutEnvironment = VGSCheckoutEnvironment.Sandbox(),
             formConfig: VGSCheckoutPaymentFormConfig = VGSCheckoutPaymentFormConfig(),
             isScreenshotsAllowed: Boolean = false,
             isAnalyticsEnabled: Boolean = true,
+            callback: VGSCheckoutConfigInitCallback<VGSCheckoutPaymentConfig>? = null,
         ): VGSCheckoutCancellable = GetPaymentInfo().execute(orderId) {
             try {
-                when(it) {
+                when (it) {
                     is Result.Success<PaymentInfo> -> {
-                        callback.onSuccess(
+                        callback?.onSuccess(
                             VGSCheckoutPaymentConfig(
                                 accessToken,
                                 tenantId,
@@ -131,15 +143,34 @@ internal class VGSCheckoutPaymentConfig private constructor(
                                 formConfig,
                                 isScreenshotsAllowed,
                                 isAnalyticsEnabled,
+                                getCardsMock(),
                                 false
                             )
                         )
                     }
-                    is Result.Error -> callback.onFailure(it.e)
+                    is Result.Error -> callback?.onFailure(it.e)
                 }
             } catch (e: VGSCheckoutException) {
-                callback.onFailure(e)
+                callback?.onFailure(e)
             }
+        }
+
+
+        private fun getCardsMock(): List<VGSCheckoutCard> {
+            val brands = VGSCheckoutCardBrand.BRANDS.toList()
+            val result = mutableListOf<VGSCheckoutCard>()
+            for (i in 0 until 10) {
+                result.add(
+                    VGSCheckoutCard(
+                        UUID.randomUUID().toString(),
+                        "Test $i",
+                        "$i$i$i$i",
+                        "09/24",
+                        brands.random().name
+                    )
+                )
+            }
+            return result
         }
     }
 }

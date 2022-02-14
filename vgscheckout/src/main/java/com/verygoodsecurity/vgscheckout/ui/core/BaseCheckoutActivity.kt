@@ -20,7 +20,6 @@ import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSRequest
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
 import com.verygoodsecurity.vgscheckout.collect.widget.*
-import com.verygoodsecurity.vgscheckout.config.VGSCheckoutPaymentConfig
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.config.networking.core.VGSCheckoutHostnamePolicy
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
@@ -29,12 +28,11 @@ import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResultBundle
 import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutAddCardResponse
 import com.verygoodsecurity.vgscheckout.ui.fragment.core.LoadingHandler
 import com.verygoodsecurity.vgscheckout.ui.fragment.save.core.BaseSaveCardFragment
-import com.verygoodsecurity.vgscheckout.ui.fragment.save.core.BaseSaveCardFragment.Companion.TAG
 import com.verygoodsecurity.vgscheckout.util.CollectProvider
 import com.verygoodsecurity.vgscheckout.util.extension.*
 
 internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActivity(),
-    FragmentOnAttachListener, InputViewBinder, ValidationResultListener,
+    FragmentOnAttachListener, ToolbarHandler, InputViewBinder, ValidationResultListener,
     VgsCollectResponseListener {
 
     protected val config: C by lazy { resolveConfig(intent) }
@@ -74,7 +72,10 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
 
     override fun onAttachFragment(fragmentManager: FragmentManager, fragment: Fragment) {
         loadingHandler = fragment as LoadingHandler
-        updateToolbarTitle(fragment)
+    }
+
+    override fun setTitle(title: String) {
+        supportActionBar?.title = title
     }
 
     override fun bind(vararg view: InputFieldView) {
@@ -125,35 +126,20 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
     protected open fun initView(savedInstanceState: Bundle?) {
         initToolbar()
         if (savedInstanceState == null) {
-            showSaveCardFragment()
+            initFragment()
         } else {
-            loadingHandler = supportFragmentManager.findFragmentByTag(TAG) as LoadingHandler
+            loadingHandler = findFragmentByTag(FRAGMENT_TAG) as LoadingHandler
         }
     }
 
     private fun initToolbar() {
         setSupportActionBar(findViewById(R.id.mtToolbar))
-        updateToolbarTitle(supportFragmentManager.findFragmentByTag(TAG))
     }
 
-    private fun updateToolbarTitle(fragment: Fragment?) {
-        supportActionBar?.title = getString(
-            if (config is VGSCheckoutPaymentConfig) {
-                if (fragment is BaseSaveCardFragment) {
-                    R.string.vgs_checkout_new_card_title
-                } else {
-                    R.string.vgs_checkout_title
-                }
-            } else {
-                R.string.vgs_checkout_add_card_title
-            }
-        )
-    }
-
-    private fun showSaveCardFragment() {
+    protected open fun initFragment() {
         val fragment = BaseSaveCardFragment.create(config.formConfig, getButtonTitle())
         supportFragmentManager.beginTransaction()
-            .add(R.id.fcvContainer, fragment, TAG)
+            .replace(R.id.fcvContainer, fragment, FRAGMENT_TAG)
             .commit()
     }
 
@@ -202,5 +188,10 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     internal fun validateFields() {
         collect.validateFields()
+    }
+
+    companion object {
+
+        const val FRAGMENT_TAG = "com.verygoodsecurity.vgscheckout.ui.core.fragment"
     }
 }

@@ -17,8 +17,7 @@
             style="@style/VGSCheckout.Form"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="@dimen/vgs_checkout_margin_padding_size_medium">
+            android:orientation="vertical">
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/mtvCardDetailsTitle"
@@ -120,8 +119,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/vgs_checkout_margin_padding_size_medium"
-            android:orientation="vertical"
-            android:padding="@dimen/vgs_checkout_margin_padding_size_medium">
+            android:orientation="vertical">
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/mtvBillingAddressTitle"

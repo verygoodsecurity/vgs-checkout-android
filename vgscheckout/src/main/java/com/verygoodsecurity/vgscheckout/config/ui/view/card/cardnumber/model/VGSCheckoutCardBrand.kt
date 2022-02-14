@@ -64,6 +64,10 @@ internal sealed class VGSCheckoutCardBrand : Parcelable {
             Unionpay(),
             JCB()
         )
+
+        @DrawableRes
+        fun getBrandIcon(brand: String): Int =
+            BRANDS.find { it.name == brand }?.icon ?: CardType.UNKNOWN.resId
     }
 
     @Parcelize

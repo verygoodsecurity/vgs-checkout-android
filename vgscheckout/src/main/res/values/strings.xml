@@ -59,6 +59,15 @@
     <string name="vgs_checkout_no_network_retry">Retry</string>
     <string name="vgs_checkout_no_network_error">Your network is unavailable.</string>
 
+    <!--Payment method-->
+    <string name="vgs_checkout_pay_with_new_card">Pay with new Card</string>
+    <string name="vgs_checkout_card_number">&#8226;&#8226;&#8226;&#8226; %1$s</string>
+    <string name="vgs_checkout_delete_menu_title">Delete</string>
+    <string name="vgs_checkout_delete_dialog_title">Remove credit card?</string>
+    <string name="vgs_checkout_delete_dialog_message">Are you sure you want to remove the selected credit card?</string>
+    <string name="vgs_checkout_delete_dialog_positive_button_title">Remove</string>
+    <string name="vgs_checkout_delete_dialog_negative_button_title">Cancel</string>
+
     <!--Collect-->
     <string name="vgs_checkout_error_divider_mask">Divider for number can\'t be # or \\ symbol.</string>
     <string name="vgs_checkout_error_output_divider_mask">Output divider for number can\'t be # or \\ symbol.</string>
