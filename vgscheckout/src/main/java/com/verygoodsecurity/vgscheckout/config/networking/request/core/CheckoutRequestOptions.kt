@@ -28,4 +28,6 @@ abstract class CheckoutRequestOptions internal constructor() : Parcelable {
      * @see [VGSCheckoutDataMergePolicy]
      */
     abstract val mergePolicy: VGSCheckoutDataMergePolicy
+
+    internal abstract val hasExtraHeaders: Boolean
 }

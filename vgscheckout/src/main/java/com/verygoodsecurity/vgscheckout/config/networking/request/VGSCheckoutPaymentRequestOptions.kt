@@ -3,6 +3,7 @@ package com.verygoodsecurity.vgscheckout.config.networking.request
 import com.verygoodsecurity.vgscheckout.config.networking.request.core.CheckoutRequestOptions
 import com.verygoodsecurity.vgscheckout.config.networking.request.core.VGSCheckoutDataMergePolicy
 import com.verygoodsecurity.vgscheckout.config.networking.request.core.VGSCheckoutHTTPMethod
+import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 
@@ -17,6 +18,9 @@ internal class VGSCheckoutPaymentRequestOptions private constructor(
     override val extraData: Map<String, @RawValue Any>,
     override val mergePolicy: VGSCheckoutDataMergePolicy
 ) : CheckoutRequestOptions() {
+
+    @IgnoredOnParcel
+    override val hasExtraHeaders: Boolean = false
 
     internal constructor(accessToken: String) : this(
         VGSCheckoutHTTPMethod.POST,

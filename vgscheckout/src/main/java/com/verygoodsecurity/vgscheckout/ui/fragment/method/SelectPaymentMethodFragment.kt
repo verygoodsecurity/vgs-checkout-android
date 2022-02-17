@@ -1,6 +1,5 @@
 package com.verygoodsecurity.vgscheckout.ui.fragment.method
 
-import android.content.Context
 import android.graphics.drawable.Animatable
 import android.os.Bundle
 import android.os.Handler
@@ -9,43 +8,26 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutPaymentConfig
-import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
-import com.verygoodsecurity.vgscheckout.ui.core.OnPaymentMethodSelectedListener
-import com.verygoodsecurity.vgscheckout.ui.core.ToolbarHandler
-import com.verygoodsecurity.vgscheckout.ui.fragment.core.LoadingHandler
+import com.verygoodsecurity.vgscheckout.ui.fragment.core.BaseFragment
 import com.verygoodsecurity.vgscheckout.ui.fragment.method.adapter.PaymentMethodsAdapter
 import com.verygoodsecurity.vgscheckout.ui.fragment.method.decorator.MarginItemDecoration
 import com.verygoodsecurity.vgscheckout.util.extension.getDrawableCompat
-import com.verygoodsecurity.vgscheckout.util.extension.requireParcelable
-import com.verygoodsecurity.vgscheckout.util.extension.requireString
 import com.verygoodsecurity.vgscheckout.util.extension.setVisible
 
-internal class SelectPaymentMethodFragment : Fragment(R.layout.vgs_checkout_select_method_fragment),
-    LoadingHandler, PaymentMethodsAdapter.OnPaymentMethodClickListener {
+internal class SelectPaymentMethodFragment :
+    BaseFragment<VGSCheckoutPaymentConfig>(R.layout.vgs_checkout_select_method_fragment),
+    PaymentMethodsAdapter.OnItemClickListener {
 
-    private val config: VGSCheckoutPaymentConfig by lazy { requireParcelable(KEY_BUNDLE_CONFIG) }
-    private val buttonTitle: String by lazy { requireString(KEY_BUNDLE_BUTTON_TITLE) }
-
-    private lateinit var toolbarHandler: ToolbarHandler
-    private lateinit var listener: OnPaymentMethodSelectedListener
-
-    private lateinit var cardRecyclerView: RecyclerView
+    private lateinit var paymentMethodsRv: RecyclerView
     private lateinit var adapter: PaymentMethodsAdapter
     private lateinit var payButton: MaterialButton
 
     private var isLoading: Boolean = false
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        listener = requireActivity() as OnPaymentMethodSelectedListener
-        toolbarHandler = requireActivity() as ToolbarHandler
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -78,18 +60,12 @@ internal class SelectPaymentMethodFragment : Fragment(R.layout.vgs_checkout_sele
         adapter.setSelectedPosition(savedInstanceState?.getInt(KEY_SELECTED_ITEM_POSITION) ?: 0)
     }
 
-    override fun setIsLoading(isLoading: Boolean) {
-        this.isLoading = isLoading
-        setViewsEnabled(!isLoading)
-        setSaveButtonIsLoading(isLoading)
-    }
-
     override fun onNewCardClick() {
-        listener.onNewCardSelected()
+        navigationHandler.navigateToSaveCard()
     }
 
     private fun initView(view: View) {
-        initSavedCardsView(view)
+        initPaymentMethodsList(view)
         initPayButton(view)
     }
 
@@ -97,16 +73,16 @@ internal class SelectPaymentMethodFragment : Fragment(R.layout.vgs_checkout_sele
         toolbarHandler.setTitle(getString(R.string.vgs_checkout_title))
     }
 
-    private fun initSavedCardsView(view: View) {
-        cardRecyclerView = view.findViewById(R.id.rvPaymentMethods)
+    private fun initPaymentMethodsList(view: View) {
+        paymentMethodsRv = view.findViewById(R.id.rvPaymentMethods)
         adapter = PaymentMethodsAdapter(config.savedCards, this)
-        cardRecyclerView.itemAnimator = null
-        cardRecyclerView.adapter = adapter
+        paymentMethodsRv.itemAnimator = null
+        paymentMethodsRv.adapter = adapter
         val paddingSmall =
             resources.getDimensionPixelSize(R.dimen.vgs_checkout_margin_padding_size_small)
         val paddingMedium =
             resources.getDimensionPixelSize(R.dimen.vgs_checkout_margin_padding_size_medium)
-        cardRecyclerView.addItemDecoration(
+        paymentMethodsRv.addItemDecoration(
             MarginItemDecoration(
                 paddingSmall,
                 paddingMedium,
@@ -118,9 +94,14 @@ internal class SelectPaymentMethodFragment : Fragment(R.layout.vgs_checkout_sele
 
     private fun initPayButton(view: View) {
         payButton = view.findViewById(R.id.mbPay)
-        payButton.text = buttonTitle
+        payButton.text = title
         payButton.setOnClickListener {
-            listener.onCardSelected(adapter.getSelectedCard())
+            setLoading(true)
+            createTransaction(
+                adapter.getSelectedCard().finId,
+                config.paymentInfo.amount,
+                config.paymentInfo.currency,
+            )
         }
     }
 
@@ -139,10 +120,16 @@ internal class SelectPaymentMethodFragment : Fragment(R.layout.vgs_checkout_sele
 
     private fun deleteSelectedCard() {
         // TODO: Implement delete request
-        setIsLoading(true)
+        setLoading(true)
         Handler(Looper.getMainLooper()).postDelayed({
-            setIsLoading(false)
+            setLoading(false)
         }, 5000)
+    }
+
+    private fun setLoading(isLoading: Boolean) {
+        this.isLoading = isLoading
+        setViewsEnabled(!isLoading)
+        setSaveButtonIsLoading(isLoading)
     }
 
     private fun setViewsEnabled(isEnabled: Boolean) {
@@ -156,7 +143,7 @@ internal class SelectPaymentMethodFragment : Fragment(R.layout.vgs_checkout_sele
             payButton.icon = getDrawableCompat(R.drawable.vgs_checkout_ic_loading_animated_white_16)
             (payButton.icon as? Animatable)?.start()
         } else {
-            payButton.text = buttonTitle
+            payButton.text = title
             payButton.icon = null
         }
     }
@@ -164,16 +151,5 @@ internal class SelectPaymentMethodFragment : Fragment(R.layout.vgs_checkout_sele
     companion object {
 
         private const val KEY_SELECTED_ITEM_POSITION = "selected_item_position"
-
-        private const val KEY_BUNDLE_CONFIG = "com.verygoodsecurity.vgscheckout.config"
-        private const val KEY_BUNDLE_BUTTON_TITLE = "com.verygoodsecurity.vgscheckout.button_title"
-
-        fun create(config: CheckoutConfig, buttonTitle: String): Fragment =
-            SelectPaymentMethodFragment().apply {
-                arguments = Bundle().apply {
-                    putParcelable(KEY_BUNDLE_CONFIG, config)
-                    putString(KEY_BUNDLE_BUTTON_TITLE, buttonTitle)
-                }
-            }
     }
 }
