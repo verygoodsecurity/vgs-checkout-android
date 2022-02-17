@@ -1,7 +1,6 @@
 package com.verygoodsecurity.vgscheckout.ui.fragment.save.validation
 
 import android.content.Context
-import android.util.Log
 import androidx.annotation.StringRes
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
@@ -41,9 +40,7 @@ internal abstract class ValidationManager constructor(
      */
     fun validate(): List<InputFieldView> {
         val result = mutableListOf<InputFieldView>()
-        inputs.filter { it.isShown }.also {
-            Log.d("Test", it.toString())
-        }.forEach {
+        inputs.filter { it.isShown }.forEach {
             val isValid = validate(it)
             if (!isValid) result.add(it)
         }
