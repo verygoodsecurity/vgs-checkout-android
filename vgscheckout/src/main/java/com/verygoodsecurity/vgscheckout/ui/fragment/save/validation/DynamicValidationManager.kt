@@ -9,22 +9,22 @@ internal class DynamicValidationManager constructor(
     context: Context,
     country: Country,
     inputs: List<InputFieldView>
-) : ValidationManager(context, country, inputs), View.OnFocusChangeListener {
+) : ValidationManager(context, country, inputs) {
+
+    private val onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
+        if (v is InputFieldView && hasFocus.not() && v.isEdited()) {
+            validate(v)
+        }
+    }
 
     init {
 
         initOnFocusChangeListener()
     }
 
-    override fun onFocusChange(v: View?, hasFocus: Boolean) {
-        if (v is InputFieldView && hasFocus.not() && v.isEdited()) {
-            validate(v)
-        }
-    }
-
     private fun initOnFocusChangeListener() {
         inputs.forEach {
-            it.onFocusChangeListener = this
+            it.onFocusChangeListener = onFocusChangeListener
         }
     }
 }

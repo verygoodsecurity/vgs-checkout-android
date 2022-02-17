@@ -16,20 +16,23 @@ internal abstract class ValidationManager constructor(
     private val context: Context,
     var country: Country?,
     protected val inputs: List<InputFieldView>
-) : InputFieldView.OnTextChangedListener {
+) {
+
+    private val onTextChangeListener = object : InputFieldView.OnTextChangedListener {
+
+        override fun onTextChange(view: InputFieldView, isEmpty: Boolean) {
+            clearError(view)
+        }
+    }
 
     init {
 
         initTextChangeListener()
     }
 
-    override fun onTextChange(view: InputFieldView, isEmpty: Boolean) {
-        clearError(view)
-    }
-
     private fun initTextChangeListener() {
         inputs.forEach {
-            it.addOnTextChangeListenerOnLayout(this) // Workaround for restoring error massages after screen rotation
+            it.addOnTextChangeListenerOnLayout(onTextChangeListener) // Workaround for restoring error massages after screen rotation
         }
     }
 
