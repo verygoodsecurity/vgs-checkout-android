@@ -13,6 +13,7 @@ import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.core.VgsCollectResponseListener
 import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.RequestEvent
+import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.ResponseEvent
 import com.verygoodsecurity.vgscheckout.collect.core.api.isURLValid
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSError
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSResponse
@@ -92,6 +93,13 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
         if (!shouldHandleAddCard) {
             return
         }
+        config.analyticTracker.log(
+            ResponseEvent(
+                response.code,
+                response.latency,
+                (this as? VGSResponse.ErrorResponse)?.message
+            )
+        )
         if (response.isNetworkConnectionError()) {
             setIsLoading(false)
             showNetworkError { saveCard() }
