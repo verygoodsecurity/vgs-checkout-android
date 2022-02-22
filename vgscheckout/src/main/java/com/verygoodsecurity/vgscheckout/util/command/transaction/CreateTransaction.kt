@@ -12,8 +12,7 @@ import com.verygoodsecurity.vgscheckout.util.extension.toTransactionResponse
 import org.json.JSONObject
 
 internal class CreateTransaction :
-    NetworkingCommand<TransactionParams, Result<VGSCheckoutTransactionResponse>>(),
-    VGSCheckoutCancellable {
+    NetworkingCommand<TransactionParams, Result<VGSCheckoutTransactionResponse>>() {
 
     override fun run(
         params: TransactionParams,
@@ -25,10 +24,6 @@ internal class CreateTransaction :
             onResult.invoke(Result.Success(it.toTransactionResponse()))
         }
         return this
-    }
-
-    override fun cancel() {
-        client.cancelAll()
     }
 
     private fun createPayload(params: TransactionParams): String {

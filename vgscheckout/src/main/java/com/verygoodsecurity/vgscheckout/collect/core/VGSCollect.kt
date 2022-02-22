@@ -41,7 +41,7 @@ import java.util.*
  *
  * @since 1.0.0
  */
-internal class VGSCollect {
+private class VGSCollect {
 
     private val externalDependencyDispatcher: ExternalDependencyDispatcher
 
@@ -340,7 +340,7 @@ internal class VGSCollect {
     }
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    internal fun validateFields(): Boolean {
+    fun validateFields(): Boolean {
         var isValid = true
 
         storage.getFieldsStorage().getItems().forEach {
@@ -488,21 +488,21 @@ internal class VGSCollect {
     }
 
     @VisibleForTesting
-    internal fun getResponseListeners(): Collection<VgsCollectResponseListener> {
+    fun getResponseListeners(): Collection<VgsCollectResponseListener> {
         return responseListeners
     }
 
     @VisibleForTesting
-    internal fun setStorage(store: InternalStorage) {
+    fun setStorage(store: InternalStorage) {
         storage = store
     }
 
     @VisibleForTesting
-    internal fun setClient(c: ApiClient) {
+    fun setClient(c: ApiClient) {
         client = c
     }
     @VisibleForTesting
-    internal fun getClient() = client
+    fun getClient() = client
 
     private fun responseEvent(code: Int, latency: Long, message: String? = null) {
         if (code.isHttpStatusCode()) {
@@ -577,7 +577,7 @@ internal class VGSCollect {
     }
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    internal fun updateAgentHeader(isAnalyticsEnabled: Boolean = true) {
+    fun updateAgentHeader(isAnalyticsEnabled: Boolean = true) {
         client.getStorage().setCustomHeaders(
             mapOf(
                 AGENT to String.format(

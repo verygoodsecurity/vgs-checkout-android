@@ -51,10 +51,6 @@ internal class GetPaymentInfo : NetworkingCommand<String, Result<PaymentInfo>>()
         }
     }
 
-    override fun cancel() {
-        client.cancelAll()
-    }
-
     private fun createOrderDetailsRequest(orderId: String): NetworkRequest {
         return NetworkRequest(
             method = HTTPMethod.GET,
