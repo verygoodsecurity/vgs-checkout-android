@@ -1,38 +1,22 @@
 package com.verygoodsecurity.vgscheckout.collect.core.storage
 
-import android.content.Context
 import com.verygoodsecurity.vgscheckout.collect.core.model.state.FieldContent.*
 import com.verygoodsecurity.vgscheckout.collect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscheckout.collect.core.storage.content.field.FieldStateContractor
 import com.verygoodsecurity.vgscheckout.collect.core.storage.content.field.TemporaryFieldsStorage
-import com.verygoodsecurity.vgscheckout.collect.core.storage.content.file.FileStorage
-import com.verygoodsecurity.vgscheckout.collect.core.storage.content.file.StorageErrorListener
-import com.verygoodsecurity.vgscheckout.collect.core.storage.content.file.TemporaryFileStorage
-import com.verygoodsecurity.vgscheckout.collect.core.storage.content.file.VGSFileProvider
-import com.verygoodsecurity.vgscheckout.collect.util.extension.merge
 import com.verygoodsecurity.vgscheckout.collect.view.VGSCollectView
 import com.verygoodsecurity.vgscheckout.collect.view.core.serializers.CountryNameToIsoSerializer
 import com.verygoodsecurity.vgscheckout.collect.view.core.serializers.VGSExpDateSeparateSerializer
 
 /** @suppress */
-internal class InternalStorage(
-    context: Context,
-    private val errorListener: StorageErrorListener? = null
-) {
+internal class InternalStorage {
     private val fieldsDependencyDispatcher: DependencyDispatcher
 
-    private val fileProvider: VGSFileProvider
-    private val fileStorage: FileStorage
     private val fieldsStorage: VgsStore<Int, VGSFieldState>
     private val emitter: IStateEmitter
 
     init {
         fieldsDependencyDispatcher = Notifier()
-
-        with(TemporaryFileStorage(context, errorListener)) {
-            fileProvider = this
-            fileStorage = this
-        }
 
         val fieldStateContractor = FieldStateContractor()
         with(TemporaryFieldsStorage(fieldStateContractor)) {
@@ -43,31 +27,21 @@ internal class InternalStorage(
         }
     }
 
-    fun getFileProvider() = fileProvider
-    fun getAttachedFiles() = fileProvider.getAttachedFiles()
-    fun getFileStorage() = fileStorage
     fun getFieldsStorage() = fieldsStorage
 
     fun getFieldsStates(): MutableCollection<VGSFieldState> = fieldsStorage.getItems()
 
-    fun getAssociatedList(
-        fieldsIgnore: Boolean = false, fileIgnore: Boolean = false
-    ): MutableCollection<Pair<String, String>> {
+    fun getAssociatedList(fieldsIgnore: Boolean = false): MutableCollection<Pair<String, String>> {
         val list = mutableListOf<Pair<String, String>>()
 
         if (fieldsIgnore.not()) {
             list.addAll(stateToAssociatedList(fieldsStorage.getItems()))
         }
 
-        if (fileIgnore.not()) {
-            list.merge(fileStorage.getAssociatedList())
-        }
-
         return list
     }
 
     fun clear() {
-        fileStorage.clear()
         fieldsStorage.clear()
     }
 
@@ -90,10 +64,6 @@ internal class InternalStorage(
             it.statePreparer.unsubscribe()
             fieldsStorage.remove(it.statePreparer.getView().id)
         }
-    }
-
-    fun getFileSizeLimit(): Int {
-        return 19 * 1024 * 1024
     }
 
     private fun stateToAssociatedList(items: MutableCollection<VGSFieldState>): MutableCollection<Pair<String, String>> {

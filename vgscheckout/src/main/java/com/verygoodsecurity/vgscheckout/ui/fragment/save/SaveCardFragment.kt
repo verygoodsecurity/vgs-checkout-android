@@ -2,7 +2,6 @@ package com.verygoodsecurity.vgscheckout.ui.fragment.save
 
 import android.graphics.drawable.Animatable
 import android.os.Bundle
-import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -18,7 +17,6 @@ import com.verygoodsecurity.vgscheckout.collect.core.api.isURLValid
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSError
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.toVGSResponse
-import com.verygoodsecurity.vgscheckout.collect.core.storage.InternalStorage
 import com.verygoodsecurity.vgscheckout.collect.util.extension.hasAccessNetworkStatePermission
 import com.verygoodsecurity.vgscheckout.collect.util.extension.hasInternetPermission
 import com.verygoodsecurity.vgscheckout.collect.util.extension.isConnectionAvailable
@@ -63,9 +61,6 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     internal var shouldHandleAddCard: Boolean = true
 
-    //todo think about removing storage as view could play this role.
-    private val storage: InternalStorage by lazy { InternalStorage(requireContext()) }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -82,11 +77,6 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
         super.onViewCreated(view, savedInstanceState)
         initViews()
         initValidationHelper()
-    }
-
-    override fun onDestroyView() {
-        storage.clear()
-        super.onDestroyView()
     }
 
     override fun onResponse(response: VGSResponse) {
@@ -161,19 +151,16 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
             return
         }
         binding.cardHolderEt.setFieldName(options.fieldName)
-        storage.performSubscription(binding.cardHolderEt)
     }
 
     private fun initCardNumberView(options: CardNumberOptions) {
         binding.cardNumberEt.setFieldName(options.fieldName)
-        storage.performSubscription(binding.cardNumberEt)
         binding.cardNumberEt.setValidCardBrands(options.cardBrands)
         binding.cardNumberEt.setIsCardBrandPreviewHidden(options.isIconHidden)
     }
 
     private fun initExpirationDateView(options: ExpirationDateOptions) {
         binding.expirationDateEt.setFieldName(options.fieldName)
-        storage.performSubscription(binding.expirationDateEt)
         binding.expirationDateEt.setDateRegex(options.inputFormatRegex)
         binding.expirationDateEt.setOutputRegex(options.outputFormatRegex)
         binding.expirationDateEt.setSerializer(
@@ -183,7 +170,6 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
 
     private fun initSecurityCodeView(options: CVCOptions) {
         binding.securityCodeEt.setFieldName(options.fieldName)
-        storage.performSubscription(binding.securityCodeEt)
         binding.securityCodeEt.setIsPreviewIconHidden(options.isIconHidden)
         binding.securityCodeEt.setOnEditorActionListener(this)
         binding.securityCodeEt.setImeOptions(
@@ -211,26 +197,22 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
 
     private fun initCountryView(options: CountryOptions) {
         binding.countryEt.setFieldName(options.fieldName)
-        storage.performSubscription(binding.countryEt)
         binding.countryEt.setCountries(options.validCountries)
         binding.countryEt.onCountrySelectedListener = this
     }
 
     private fun initAddressView(options: AddressOptions, rule: VGSInfoRule) {
         binding.addressEt.setFieldName(options.fieldName)
-        storage.performSubscription(binding.addressEt)
         binding.addressEt.addRule(rule)
     }
 
     private fun initOptionalAddressView(options: OptionalAddressOptions, rule: VGSInfoRule) {
         binding.optionalAddressEt.setFieldName(options.fieldName)
-        storage.performSubscription(binding.optionalAddressEt)
         binding.optionalAddressEt.addRule(rule)
     }
 
     private fun initCityView(options: CityOptions, rule: VGSInfoRule) {
         binding.cityEt.setFieldName(options.fieldName)
-        storage.performSubscription(binding.cityEt)
         binding.cityEt.addRule(rule)
         binding.cityEt.setOnEditorActionListener(this)
         updateCityView(binding.countryEt.selectedCountry)
@@ -238,7 +220,6 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
 
     private fun initPostalCodeView(options: PostalCodeOptions) {
         binding.postalCodeEt.setFieldName(options.fieldName)
-        storage.performSubscription(binding.postalCodeEt)
         binding.postalCodeEt.setOnEditorActionListener(this)
         updatePostalCodeView(binding.countryEt.selectedCountry)
     }
@@ -327,7 +308,7 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
                         CardInfo(
                             this,
                             config.routeConfig,
-                            storage.getAssociatedList()
+                            binding.getAssociatedList()
                         )
                     ) {
                         onResponse((it as Result.Success).data)
