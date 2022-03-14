@@ -10,7 +10,6 @@ import android.view.inputmethod.EditorInfo
 import androidx.annotation.StringRes
 import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgscheckout.R
-import com.verygoodsecurity.vgscheckout.collect.core.VgsCollectResponseListener
 import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.RequestEvent
 import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.ResponseEvent
 import com.verygoodsecurity.vgscheckout.collect.core.api.isURLValid
@@ -49,7 +48,6 @@ import com.verygoodsecurity.vgscheckout.util.country.model.PostalCodeType
 import com.verygoodsecurity.vgscheckout.util.extension.*
 
 internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
-    VgsCollectResponseListener,
     VGSCountryEditText.OnCountrySelectedListener, InputFieldView.OnEditorActionListener {
 
     private lateinit var binding: SaveCardViewBindingHelper
@@ -77,25 +75,6 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
         super.onViewCreated(view, savedInstanceState)
         initViews()
         initValidationHelper()
-    }
-
-    override fun onResponse(response: VGSResponse) {
-        if (!shouldHandleAddCard) {
-            return
-        }
-        config.analyticTracker.log(
-            ResponseEvent(
-                response.code,
-                response.latency,
-                (this as? VGSResponse.ErrorResponse)?.message
-            )
-        )
-        if (response.isNetworkConnectionError()) {
-            setIsLoading(false)
-            showNetworkError { saveCard() }
-            return
-        }
-        handleAddCardResponse(response.toAddCardResponse())
     }
 
     override fun onCountrySelected(country: Country) {
@@ -311,11 +290,33 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
                             binding.getAssociatedList()
                         )
                     ) {
-                        onResponse((it as Result.Success).data)
+                        when (it) {
+                            is Result.Success -> onResponse(it.data)
+                            is Result.Error -> finishWithResult(VGSCheckoutResult.Failed(resultBundle, it.e))
+                        }
                     }
                 }
             }
         }
+    }
+
+    private fun onResponse(response: VGSResponse) {
+        if (!shouldHandleAddCard) {
+            return
+        }
+        config.analyticTracker.log(
+            ResponseEvent(
+                response.code,
+                response.latency,
+                (this as? VGSResponse.ErrorResponse)?.message
+            )
+        )
+        if (response.isNetworkConnectionError()) {
+            setIsLoading(false)
+            showNetworkError { saveCard() }
+            return
+        }
+        handleAddCardResponse(response.toAddCardResponse())
     }
 
     private fun handleAddCardResponse(response: VGSCheckoutAddCardResponse) {

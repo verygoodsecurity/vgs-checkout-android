@@ -1,13 +1,13 @@
 package com.verygoodsecurity.vgscheckout.util.command.save
 
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSResponse
-import com.verygoodsecurity.vgscheckout.collect.core.model.network.toVGSResponse
 import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
 import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutNetworkException
 import com.verygoodsecurity.vgscheckout.util.command.NetworkingCommand
 import com.verygoodsecurity.vgscheckout.util.command.Result
 import com.verygoodsecurity.vgscheckout.util.command.VGSCheckoutCancellable
 import com.verygoodsecurity.vgscheckout.util.extension.toSaveCardNetworkRequest
+import com.verygoodsecurity.vgscheckout.util.extension.toVGSResponse
 
 internal class SaveCardInfo :
     NetworkingCommand<CardInfo, Result<VGSResponse>>(),
