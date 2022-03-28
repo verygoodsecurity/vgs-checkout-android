@@ -10,11 +10,15 @@ import android.view.inputmethod.EditorInfo
 import androidx.annotation.StringRes
 import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgscheckout.R
-import com.verygoodsecurity.vgscheckout.collect.core.VGSCollect
-import com.verygoodsecurity.vgscheckout.collect.core.VgsCollectResponseListener
 import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.RequestEvent
-import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSRequest
+import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.ResponseEvent
+import com.verygoodsecurity.vgscheckout.collect.core.api.isURLValid
+import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSError
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSResponse
+import com.verygoodsecurity.vgscheckout.collect.core.model.network.toVGSResponse
+import com.verygoodsecurity.vgscheckout.collect.util.extension.hasAccessNetworkStatePermission
+import com.verygoodsecurity.vgscheckout.collect.util.extension.hasInternetPermission
+import com.verygoodsecurity.vgscheckout.collect.util.extension.isConnectionAvailable
 import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
 import com.verygoodsecurity.vgscheckout.collect.view.card.validation.rules.VGSInfoRule
 import com.verygoodsecurity.vgscheckout.collect.widget.VGSCountryEditText
@@ -36,12 +40,14 @@ import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutAddCardRespons
 import com.verygoodsecurity.vgscheckout.ui.fragment.core.BaseFragment
 import com.verygoodsecurity.vgscheckout.ui.fragment.save.binding.SaveCardViewBindingHelper
 import com.verygoodsecurity.vgscheckout.ui.fragment.save.validation.ValidationManager
-import com.verygoodsecurity.vgscheckout.util.CollectProvider
+import com.verygoodsecurity.vgscheckout.util.command.Result
+import com.verygoodsecurity.vgscheckout.util.command.save.CardInfo
+import com.verygoodsecurity.vgscheckout.util.command.save.SaveCardInfo
 import com.verygoodsecurity.vgscheckout.util.country.model.Country
 import com.verygoodsecurity.vgscheckout.util.country.model.PostalCodeType
 import com.verygoodsecurity.vgscheckout.util.extension.*
 
-internal class SaveCardFragment : BaseFragment<CheckoutConfig>(), VgsCollectResponseListener,
+internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
     VGSCountryEditText.OnCountrySelectedListener, InputFieldView.OnEditorActionListener {
 
     private lateinit var binding: SaveCardViewBindingHelper
@@ -52,12 +58,6 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(), VgsCollectResp
      */
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     internal var shouldHandleAddCard: Boolean = true
-
-    private val collect: VGSCollect by lazy {
-        CollectProvider().get(requireContext(), config).apply {
-            addOnResponseListeners(this@SaveCardFragment)
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -75,23 +75,6 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(), VgsCollectResp
         super.onViewCreated(view, savedInstanceState)
         initViews()
         initValidationHelper()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        collect.onDestroy()
-    }
-
-    override fun onResponse(response: VGSResponse) {
-        if (!shouldHandleAddCard) {
-            return
-        }
-        if (response.isNetworkConnectionError()) {
-            setIsLoading(false)
-            showNetworkError { saveCard() }
-            return
-        }
-        handleAddCardResponse(response.toAddCardResponse())
     }
 
     override fun onCountrySelected(country: Country) {
@@ -147,19 +130,16 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(), VgsCollectResp
             return
         }
         binding.cardHolderEt.setFieldName(options.fieldName)
-        collect.bindView(binding.cardHolderEt)
     }
 
     private fun initCardNumberView(options: CardNumberOptions) {
         binding.cardNumberEt.setFieldName(options.fieldName)
-        collect.bindView(binding.cardNumberEt)
         binding.cardNumberEt.setValidCardBrands(options.cardBrands)
         binding.cardNumberEt.setIsCardBrandPreviewHidden(options.isIconHidden)
     }
 
     private fun initExpirationDateView(options: ExpirationDateOptions) {
         binding.expirationDateEt.setFieldName(options.fieldName)
-        collect.bindView(binding.expirationDateEt)
         binding.expirationDateEt.setDateRegex(options.inputFormatRegex)
         binding.expirationDateEt.setOutputRegex(options.outputFormatRegex)
         binding.expirationDateEt.setSerializer(
@@ -169,7 +149,6 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(), VgsCollectResp
 
     private fun initSecurityCodeView(options: CVCOptions) {
         binding.securityCodeEt.setFieldName(options.fieldName)
-        collect.bindView(binding.securityCodeEt)
         binding.securityCodeEt.setIsPreviewIconHidden(options.isIconHidden)
         binding.securityCodeEt.setOnEditorActionListener(this)
         binding.securityCodeEt.setImeOptions(
@@ -182,40 +161,37 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(), VgsCollectResp
             binding.billingAddressLL.gone()
             return
         }
-        val validationRule = VGSInfoRule.ValidationBuilder()
+        VGSInfoRule.ValidationBuilder()
             .setAllowableMinLength(BILLING_ADDRESS_MIN_CHARS_COUNT)
-            .build()
-        with(config.formConfig.addressOptions) {
-            initCountryView(countryOptions)
-            initAddressView(addressOptions, validationRule)
-            initOptionalAddressView(optionalAddressOptions, validationRule)
-            initCityView(cityOptions, validationRule)
-            initPostalCodeView(postalCodeOptions)
-        }
+            .build().let {
+                with(config.formConfig.addressOptions) {
+                    initCountryView(countryOptions)
+                    initAddressView(addressOptions, it)
+                    initOptionalAddressView(optionalAddressOptions, it)
+                    initCityView(cityOptions, it)
+                    initPostalCodeView(postalCodeOptions)
+                }
+            }
     }
 
     private fun initCountryView(options: CountryOptions) {
         binding.countryEt.setFieldName(options.fieldName)
-        collect.bindView(binding.countryEt)
         binding.countryEt.setCountries(options.validCountries)
         binding.countryEt.onCountrySelectedListener = this
     }
 
     private fun initAddressView(options: AddressOptions, rule: VGSInfoRule) {
         binding.addressEt.setFieldName(options.fieldName)
-        collect.bindView(binding.addressEt)
         binding.addressEt.addRule(rule)
     }
 
     private fun initOptionalAddressView(options: OptionalAddressOptions, rule: VGSInfoRule) {
         binding.optionalAddressEt.setFieldName(options.fieldName)
-        collect.bindView(binding.optionalAddressEt)
         binding.optionalAddressEt.addRule(rule)
     }
 
     private fun initCityView(options: CityOptions, rule: VGSInfoRule) {
         binding.cityEt.setFieldName(options.fieldName)
-        collect.bindView(binding.cityEt)
         binding.cityEt.addRule(rule)
         binding.cityEt.setOnEditorActionListener(this)
         updateCityView(binding.countryEt.selectedCountry)
@@ -223,7 +199,6 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(), VgsCollectResp
 
     private fun initPostalCodeView(options: PostalCodeOptions) {
         binding.postalCodeEt.setFieldName(options.fieldName)
-        collect.bindView(binding.postalCodeEt)
         binding.postalCodeEt.setOnEditorActionListener(this)
         updatePostalCodeView(binding.countryEt.selectedCountry)
     }
@@ -301,17 +276,47 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(), VgsCollectResp
 
     private fun saveCard() {
         setIsLoading(true)
-        with(config.routeConfig) {
-            collect.asyncSubmit(
-                VGSRequest.VGSRequestBuilder()
-                    .setPath(path)
-                    .setMethod(requestOptions.httpMethod.toCollectHTTPMethod())
-                    .setCustomData(requestOptions.extraData)
-                    .setCustomHeader(requestOptions.extraHeaders)
-                    .setFieldNameMappingPolicy(requestOptions.mergePolicy.toCollectMergePolicy())
-                    .build()
-            )
+        with(config.getBaseUrl(requireContext())) {
+            when {
+                !isURLValid() -> onResponse(VGSError.URL_NOT_VALID.toVGSResponse())
+                !requireActivity().hasInternetPermission() -> onResponse(VGSError.NO_INTERNET_PERMISSIONS.toVGSResponse())
+                !requireActivity().hasAccessNetworkStatePermission() -> onResponse(VGSError.NO_NETWORK_CONNECTIONS.toVGSResponse())
+                !requireActivity().isConnectionAvailable() -> onResponse(VGSError.NO_NETWORK_CONNECTIONS.toVGSResponse())
+                else -> {
+                    SaveCardInfo().execute(
+                        CardInfo(
+                            this,
+                            config.routeConfig,
+                            binding.getAssociatedList()
+                        )
+                    ) {
+                        when (it) {
+                            is Result.Success -> onResponse(it.data)
+                            is Result.Error -> finishWithResult(VGSCheckoutResult.Failed(resultBundle, it.e))
+                        }
+                    }
+                }
+            }
         }
+    }
+
+    private fun onResponse(response: VGSResponse) {
+        if (!shouldHandleAddCard) {
+            return
+        }
+        config.analyticTracker.log(
+            ResponseEvent(
+                response.code,
+                response.latency,
+                (this as? VGSResponse.ErrorResponse)?.message
+            )
+        )
+        if (response.isNetworkConnectionError()) {
+            setIsLoading(false)
+            showNetworkError { saveCard() }
+            return
+        }
+        handleAddCardResponse(response.toAddCardResponse())
     }
 
     private fun handleAddCardResponse(response: VGSCheckoutAddCardResponse) {

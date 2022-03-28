@@ -3,6 +3,7 @@ package com.verygoodsecurity.vgscheckout.api
 import com.verygoodsecurity.vgscheckout.collect.core.HTTPMethod
 import com.verygoodsecurity.vgscheckout.collect.core.api.VGSHttpBodyFormat
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.*
+import com.verygoodsecurity.vgscheckout.util.extension.toVGSResponse
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -117,5 +118,4 @@ class RequestTest {
         assertEquals(exampleRequest.code, r.code)
         assertEquals(exampleRequest.body, r.body)
     }
-
 }

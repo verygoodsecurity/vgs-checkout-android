@@ -69,11 +69,9 @@ internal abstract class BaseFragment<C : CheckoutConfig> : Fragment {
 
     protected fun showNetworkError(onRetry: (() -> Unit)? = null) {
         val message = getString(R.string.vgs_checkout_no_network_error)
-        val bar = Snackbar.make(requireView(), message, Snackbar.LENGTH_LONG)
-        onRetry?.let { action ->
-            bar.setAction(getString(R.string.vgs_checkout_no_network_retry)) { action.invoke() }
-        }
-        bar.show()
+        Snackbar.make(requireView(), message, Snackbar.LENGTH_LONG)
+            .setAction(getString(R.string.vgs_checkout_no_network_retry)) { onRetry?.invoke() }
+            .show()
     }
 
     protected fun createTransaction(finId: String, amount: Long, currency: String) {

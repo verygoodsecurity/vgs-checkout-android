@@ -4,7 +4,7 @@ import android.os.Handler
 import android.os.Looper
 import com.verygoodsecurity.vgscheckout.collect.core.api.client.ApiClient
 
-internal abstract class NetworkingCommand<P, R : Result<*>> {
+internal abstract class NetworkingCommand<P, R : Result<*>> : VGSCheckoutCancellable {
 
     protected val client = ApiClient.create(false)
 
@@ -20,6 +20,10 @@ internal abstract class NetworkingCommand<P, R : Result<*>> {
     }
 
     protected abstract fun run(params: P, onResult: (R) -> Unit): VGSCheckoutCancellable
+
+    override fun cancel() {
+        client.cancelAll()
+    }
 
     protected companion object {
 
