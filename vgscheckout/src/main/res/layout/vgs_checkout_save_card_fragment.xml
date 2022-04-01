@@ -179,8 +179,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:analyticsName="addressLine2"
-                    app:imeOptions="actionNext"
-                    app:isRequired="false" />
+                    app:imeOptions="actionNext" />
             </com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout>
 
             <androidx.appcompat.widget.LinearLayoutCompat
