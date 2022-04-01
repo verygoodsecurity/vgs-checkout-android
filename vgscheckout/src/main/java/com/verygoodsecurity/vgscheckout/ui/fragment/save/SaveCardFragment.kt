@@ -16,6 +16,7 @@ import com.verygoodsecurity.vgscheckout.collect.core.api.isURLValid
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSError
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.toVGSResponse
+import com.verygoodsecurity.vgscheckout.collect.core.storage.InternalStorage
 import com.verygoodsecurity.vgscheckout.collect.util.extension.hasAccessNetworkStatePermission
 import com.verygoodsecurity.vgscheckout.collect.util.extension.hasInternetPermission
 import com.verygoodsecurity.vgscheckout.collect.util.extension.isConnectionAvailable
@@ -52,6 +53,8 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
 
     private lateinit var binding: SaveCardViewBindingHelper
     private lateinit var validationHelper: ValidationManager
+
+    private val inputFieldsStorage = InternalStorage()
 
     /**
      * TODO: Remove this flag and replace it with mocked view model in tests
@@ -130,12 +133,14 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
             return
         }
         binding.cardHolderEt.setFieldName(options.fieldName)
+        inputFieldsStorage.performSubscription(binding.cardHolderEt)
     }
 
     private fun initCardNumberView(options: CardNumberOptions) {
         binding.cardNumberEt.setFieldName(options.fieldName)
         binding.cardNumberEt.setValidCardBrands(options.cardBrands)
         binding.cardNumberEt.setIsCardBrandPreviewHidden(options.isIconHidden)
+        inputFieldsStorage.performSubscription(binding.cardNumberEt)
     }
 
     private fun initExpirationDateView(options: ExpirationDateOptions) {
@@ -145,6 +150,7 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
         binding.expirationDateEt.setSerializer(
             options.dateSeparateSerializer?.toCollectDateSeparateSerializer()
         )
+        inputFieldsStorage.performSubscription(binding.expirationDateEt)
     }
 
     private fun initSecurityCodeView(options: CVCOptions) {
@@ -154,6 +160,7 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
         binding.securityCodeEt.setImeOptions(
             if (config.formConfig.isBillingAddressVisible()) EditorInfo.IME_ACTION_NEXT else EditorInfo.IME_ACTION_DONE
         )
+        inputFieldsStorage.performSubscription(binding.securityCodeEt)
     }
 
     private fun initBillingAddressViews() {
@@ -161,45 +168,48 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
             binding.billingAddressLL.gone()
             return
         }
-        VGSInfoRule.ValidationBuilder()
+        val rule = VGSInfoRule.ValidationBuilder()
             .setAllowableMinLength(BILLING_ADDRESS_MIN_CHARS_COUNT)
-            .build().let {
-                with(config.formConfig.addressOptions) {
-                    initCountryView(countryOptions)
-                    initAddressView(addressOptions, it)
-                    initOptionalAddressView(optionalAddressOptions, it)
-                    initCityView(cityOptions, it)
-                    initPostalCodeView(postalCodeOptions)
-                }
-            }
+            .build()
+        with(config.formConfig.addressOptions) {
+            initCountryView(countryOptions)
+            initAddressView(addressOptions, rule)
+            initOptionalAddressView(optionalAddressOptions)
+            initCityView(cityOptions, rule)
+            initPostalCodeView(postalCodeOptions)
+        }
     }
 
     private fun initCountryView(options: CountryOptions) {
         binding.countryEt.setFieldName(options.fieldName)
         binding.countryEt.setCountries(options.validCountries)
         binding.countryEt.onCountrySelectedListener = this
+        inputFieldsStorage.performSubscription(binding.countryEt)
     }
 
     private fun initAddressView(options: AddressOptions, rule: VGSInfoRule) {
         binding.addressEt.setFieldName(options.fieldName)
         binding.addressEt.addRule(rule)
+        inputFieldsStorage.performSubscription(binding.addressEt)
     }
 
-    private fun initOptionalAddressView(options: OptionalAddressOptions, rule: VGSInfoRule) {
+    private fun initOptionalAddressView(options: OptionalAddressOptions) {
         binding.optionalAddressEt.setFieldName(options.fieldName)
-        binding.optionalAddressEt.addRule(rule)
+        inputFieldsStorage.performSubscription(binding.optionalAddressEt)
     }
 
     private fun initCityView(options: CityOptions, rule: VGSInfoRule) {
         binding.cityEt.setFieldName(options.fieldName)
         binding.cityEt.addRule(rule)
         binding.cityEt.setOnEditorActionListener(this)
+        inputFieldsStorage.performSubscription(binding.cityEt)
         updateCityView(binding.countryEt.selectedCountry)
     }
 
     private fun initPostalCodeView(options: PostalCodeOptions) {
         binding.postalCodeEt.setFieldName(options.fieldName)
         binding.postalCodeEt.setOnEditorActionListener(this)
+        inputFieldsStorage.performSubscription(binding.postalCodeEt)
         updatePostalCodeView(binding.countryEt.selectedCountry)
     }
 
@@ -287,7 +297,7 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
                         CardInfo(
                             this,
                             config.routeConfig,
-                            binding.getAssociatedList()
+                            inputFieldsStorage.getAssociatedList()
                         )
                     ) {
                         when (it) {
