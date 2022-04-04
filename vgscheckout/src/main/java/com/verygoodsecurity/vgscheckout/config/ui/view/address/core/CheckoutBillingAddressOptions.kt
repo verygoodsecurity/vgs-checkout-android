@@ -7,6 +7,7 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.OptionalA
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.city.CityOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.code.PostalCodeOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.country.CountryOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.core.VGSCheckoutFieldVisibility
 
 /**
  * Base class of address section UI options.
@@ -42,4 +43,13 @@ abstract class CheckoutBillingAddressOptions : Parcelable {
      * Address block visibility.
      */
     abstract val visibility: VGSCheckoutBillingAddressVisibility
+
+    fun isVisible(): Boolean {
+        return visibility == VGSCheckoutBillingAddressVisibility.VISIBLE &&
+                (countryOptions.visibility == VGSCheckoutFieldVisibility.VISIBLE ||
+                        cityOptions.visibility == VGSCheckoutFieldVisibility.VISIBLE ||
+                        addressOptions.visibility == VGSCheckoutFieldVisibility.VISIBLE ||
+                        optionalAddressOptions.visibility == VGSCheckoutFieldVisibility.VISIBLE ||
+                        postalCodeOptions.visibility == VGSCheckoutFieldVisibility.VISIBLE)
+    }
 }

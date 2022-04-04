@@ -158,13 +158,13 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
         binding.securityCodeEt.setIsPreviewIconHidden(options.isIconHidden)
         binding.securityCodeEt.setOnEditorActionListener(this)
         binding.securityCodeEt.setImeOptions(
-            if (config.formConfig.isBillingAddressVisible()) EditorInfo.IME_ACTION_NEXT else EditorInfo.IME_ACTION_DONE
+            if (config.formConfig.addressOptions.isVisible()) EditorInfo.IME_ACTION_NEXT else EditorInfo.IME_ACTION_DONE
         )
         inputFieldsStorage.performSubscription(binding.securityCodeEt)
     }
 
     private fun initBillingAddressViews() {
-        if (config.formConfig.isBillingAddressHidden()) {
+        if (!config.formConfig.addressOptions.isVisible()) {
             binding.billingAddressLL.gone()
             return
         }
@@ -302,7 +302,12 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
                     ) {
                         when (it) {
                             is Result.Success -> onResponse(it.data)
-                            is Result.Error -> finishWithResult(VGSCheckoutResult.Failed(resultBundle, it.e))
+                            is Result.Error -> finishWithResult(
+                                VGSCheckoutResult.Failed(
+                                    resultBundle,
+                                    it.e
+                                )
+                            )
                         }
                     }
                 }
