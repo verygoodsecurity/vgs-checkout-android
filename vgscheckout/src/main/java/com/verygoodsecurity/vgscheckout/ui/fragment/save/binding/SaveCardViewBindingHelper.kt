@@ -2,6 +2,7 @@ package com.verygoodsecurity.vgscheckout.ui.fragment.save.binding
 
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.Space
 import androidx.annotation.LayoutRes
 import androidx.appcompat.widget.LinearLayoutCompat
 import com.google.android.material.button.MaterialButton
@@ -41,6 +42,8 @@ internal class SaveCardViewBindingHelper(inflater: LayoutInflater, @LayoutRes la
     val cityEt: VGSEditText by lazy { findViewById(R.id.vgsEtCity) }
     val postalCodeTil: VGSTextInputLayout by lazy { findViewById(R.id.vgsTilPostalCode) }
     val postalCodeEt: VGSEditText by lazy { findViewById(R.id.vgsEtPostalCode) }
+
+    val cityPostalAddressSpace: Space by lazy { findViewById(R.id.cityPostalAddressSpace) }
 
     val saveCardCheckbox: MaterialCheckBox by lazy { findViewById(R.id.mcbSaveCard) }
     val saveCardButton: MaterialButton by lazy { findViewById(R.id.mbSaveCard) }

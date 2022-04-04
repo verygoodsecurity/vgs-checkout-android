@@ -35,6 +35,7 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.CardHolde
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.CardNumberOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.CVCOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.ExpirationDateOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.core.VGSCheckoutFieldVisibility
 import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutAddCardResponse
@@ -181,6 +182,9 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
     }
 
     private fun initCountryView(options: CountryOptions) {
+        if (options.visibility == VGSCheckoutFieldVisibility.HIDDEN) {
+            binding.countryTil.gone()
+        }
         binding.countryEt.setFieldName(options.fieldName)
         binding.countryEt.setCountries(options.validCountries)
         binding.countryEt.onCountrySelectedListener = this
@@ -188,17 +192,30 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
     }
 
     private fun initAddressView(options: AddressOptions, rule: VGSInfoRule) {
+        if (options.visibility == VGSCheckoutFieldVisibility.HIDDEN) {
+            binding.addressTil.gone()
+            return
+        }
         binding.addressEt.setFieldName(options.fieldName)
         binding.addressEt.addRule(rule)
         inputFieldsStorage.performSubscription(binding.addressEt)
     }
 
     private fun initOptionalAddressView(options: OptionalAddressOptions) {
+        if (options.visibility == VGSCheckoutFieldVisibility.HIDDEN) {
+            binding.optionalAddressTil.gone()
+            return
+        }
         binding.optionalAddressEt.setFieldName(options.fieldName)
         inputFieldsStorage.performSubscription(binding.optionalAddressEt)
     }
 
     private fun initCityView(options: CityOptions, rule: VGSInfoRule) {
+        if (options.visibility == VGSCheckoutFieldVisibility.HIDDEN) {
+            binding.cityTil.gone()
+            binding.cityPostalAddressSpace.gone()
+            return
+        }
         binding.cityEt.setFieldName(options.fieldName)
         binding.cityEt.addRule(rule)
         binding.cityEt.setOnEditorActionListener(this)
@@ -207,6 +224,11 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
     }
 
     private fun initPostalCodeView(options: PostalCodeOptions) {
+        if (options.visibility == VGSCheckoutFieldVisibility.HIDDEN) {
+            binding.postalCodeTil.gone()
+            binding.cityPostalAddressSpace.gone()
+            return
+        }
         binding.postalCodeEt.setFieldName(options.fieldName)
         binding.postalCodeEt.setOnEditorActionListener(this)
         inputFieldsStorage.performSubscription(binding.postalCodeEt)
