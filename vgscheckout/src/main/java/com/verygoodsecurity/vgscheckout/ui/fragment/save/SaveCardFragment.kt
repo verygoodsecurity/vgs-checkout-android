@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.annotation.StringRes
 import androidx.annotation.VisibleForTesting
+import androidx.core.view.isGone
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.RequestEvent
 import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.ResponseEvent
@@ -179,6 +180,7 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
             initCityView(cityOptions, rule)
             initPostalCodeView(postalCodeOptions)
         }
+        updateBillingAddressViewVisibility()
     }
 
     private fun initCountryView(options: CountryOptions) {
@@ -260,16 +262,28 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
 
     private fun updatePostalCodeView(country: Country) {
         if (country.isPostalCodeUndefined()) {
+            inputFieldsStorage.unsubscribe(binding.postalCodeEt)
             binding.postalCodeEt.setText(null)
             binding.postalCodeEt.setIsRequired(false)
             binding.postalCodeTil.gone()
+            binding.cityPostalAddressSpace.gone()
         } else {
+            inputFieldsStorage.performSubscription(binding.postalCodeEt)
             binding.postalCodeEt.setIsRequired(true)
             binding.postalCodeEt.addRule(country.toVGSInfoRule())
             binding.postalCodeEt.resetText()
             binding.postalCodeTil.setHint(getString(getPostalCodeHint(country)))
             binding.postalCodeTil.setError(null)
             binding.postalCodeTil.visible()
+            binding.cityPostalAddressSpace.visible()
+        }
+    }
+
+    private fun updateBillingAddressViewVisibility() {
+        with(binding) {
+            if (countryTil.isGone && addressTil.isGone && optionalAddressTil.isGone && cityTil.isGone && postalCodeTil.isGone) {
+                billingAddressLL.gone()
+            }
         }
     }
 
