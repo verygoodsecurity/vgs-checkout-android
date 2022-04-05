@@ -65,9 +65,15 @@ class MainActivity : AppCompatActivity(), VGSCheckoutCallback {
     private fun getCheckoutRouteConfig() = VGSCheckoutCustomRouteConfig(
         "post",
         requestOptions = VGSCheckoutCustomRequestOptions(
-//            extraData = mapOf("data" to mapOf("card_data" to arrayOf(null, "12345678"))),
-            extraData = linkedMapOf("data" to mapOf("card_data" to arrayListOf(mapOf("number" to "123", "cvv" to "333")))),
-//            extraData = linkedMapOf("data" to mapOf("card_data" to arrayListOf(null, mapOf("cvc" to "123")))), todo check why arrayOf doesn't work
+            extraData = linkedMapOf(
+                "data" to mapOf(
+                    "card_data" to arrayOf(
+                        null,
+                        mapOf("cvc" to "333"),
+                        null
+                    )
+                )
+            ),
             mergePolicy = VGSCheckoutDataMergePolicy.NESTED_JSON_WITH_ARRAYS_MERGE
         )
     )
@@ -76,7 +82,7 @@ class MainActivity : AppCompatActivity(), VGSCheckoutCallback {
         VGSCheckoutCustomFormConfig(getCardOptions(), getAddressOptions())
 
     private fun getCardOptions() = VGSCheckoutCustomCardOptions(
-        VGSCheckoutCustomCardNumberOptions("data.card_data[1].number"),
+        VGSCheckoutCustomCardNumberOptions("data.card_data[1]"),
         VGSCheckoutCustomCardHolderOptions("card_data.card_holder"),
         VGSCheckoutCustomCVCOptions("card_data.card_cvc"),
         VGSCheckoutCustomExpirationDateOptions("card_data.exp_date")
