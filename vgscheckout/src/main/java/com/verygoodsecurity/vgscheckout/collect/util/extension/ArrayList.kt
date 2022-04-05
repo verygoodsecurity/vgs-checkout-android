@@ -35,17 +35,16 @@ internal fun ArrayList<Any?>.deepMerge(
         ArrayMergePolicy.MERGE -> {
             source.forEachIndexed { index, value ->
                 when {
-                    value is Map<*, *> && this.getOrNull(index) is Map<*, *> -> { // Target and source values are maps, try to merge
-                        val sourceValue = value as Map<String, Any>
+                    value is Map<*, *> && this.getOrNull(index) is Map<*, *> -> {
                         val targetValue = (this[index] as Map<String, Any>).toMutableMap()
-                        this[index] = targetValue.deepMerge(sourceValue, policy)
-                    }
-                    value is Map<*, *> -> this.setOrAdd(value, index) // Source value is map, replace target value
-                    else -> {
-                        if (value != null || index > this.lastIndex) {
-                            this.add(value)
+                        if (targetValue.keys.containsAll(value.keys)) {
+                            this[index] = targetValue.deepMerge(value as Map<String, Any>, policy)
+                        } else {
+                            add(index, value)
                         }
                     }
+                    value is Map<*, *> -> this.setOrAdd(value, index)
+                    value != null -> add(index, value)
                 }
             }
             this
