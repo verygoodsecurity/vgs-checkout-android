@@ -56,7 +56,7 @@ class ArrayListTest {
         // Arrange
         val target = arrayListOf<Any?>(1, null, null, 3, 5)
         val source = arrayListOf<Any?>(3, 2, null, 22)
-        val expectedResult = arrayListOf<Any?>(1, null, null, 3, 5, 3, 2, 22)
+        val expectedResult = arrayListOf<Any?>(3, 2, 1, 22, null, null, 3, 5)
         // Act
         val result = target.deepMerge(source, ArrayMergePolicy.MERGE)
         // Arrange
@@ -81,8 +81,9 @@ class ArrayListTest {
         // Arrange
         val target = arrayListOf(mutableMapOf<String, Any>("test" to "test"), null, null, 3, 5)
         val source = arrayListOf<Any?>(1)
-        val expectedResult =
-            arrayListOf(mutableMapOf<String, Any>("test" to "test"), null, null, 3, 5, 1)
+        val expectedResult = arrayListOf(
+            1, mutableMapOf<String, Any>("test" to "test"), null, null, 3, 5
+        )
         // Act
         val result = target.deepMerge(source, ArrayMergePolicy.MERGE)
         // Arrange
@@ -104,6 +105,22 @@ class ArrayListTest {
     fun deepMerge_twoObjectsWithDifferentKeysAndSameIndexes_objectsMerged() {
         // Arrange
         val target = arrayListOf<Any?>(mutableMapOf<String, Any>("test" to "test"))
+        val source = arrayListOf<Any?>(mutableMapOf<String, Any>("test1" to "test1"))
+        val expectedResult =
+            arrayListOf(
+                mapOf<String, Any>("test1" to "test1"),
+                mapOf<String, Any>("test" to "test")
+            )
+        // Act
+        val result = target.deepMerge(source, ArrayMergePolicy.MERGE)
+        // Arrange
+        assertEquals(expectedResult, result)
+    }
+
+    @Test
+    fun deepMerge_twoObjectsWithSameKeys_objectsMerged() {
+        // Arrange
+        val target = arrayListOf<Any?>(mutableMapOf<String, Any>("test" to "test", "test1" to ""))
         val source = arrayListOf<Any?>(mutableMapOf<String, Any>("test1" to "test1"))
         val expectedResult =
             arrayListOf(mutableMapOf<String, Any>("test" to "test", "test1" to "test1"))

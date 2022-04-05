@@ -127,7 +127,7 @@ class MapTest {
     }
 
     @Test
-    fun deepMerge_withNestedArraysMergeArrays_mergedSuccessfully() {
+    fun deepMerge_withNestedArrayListsMergeArrays_mergedSuccessfully() {
         //Arrange
         val target = mutableMapOf<String, Any>(
             "test" to mutableMapOf(
@@ -146,7 +146,37 @@ class MapTest {
         val expectedResult = mutableMapOf<String, Any>(
             "test" to mutableMapOf(
                 "test_1" to mutableMapOf<String, Any>(
-                    "test_2" to arrayListOf<Any>(1, 2, 3, 4)
+                    "test_2" to arrayListOf<Any>(3, 4, 1, 2)
+                )
+            )
+        )
+        // Act
+        target.deepMerge(source, ArrayMergePolicy.MERGE)
+        // Arrange
+        assertEquals(target, expectedResult)
+    }
+
+    @Test
+    fun deepMerge_withNestedTargetArrayMergeArrayList_mergedSuccessfully() {
+        //Arrange
+        val target = mutableMapOf<String, Any>(
+            "test" to mutableMapOf(
+                "test_1" to mutableMapOf<String, Any>(
+                    "test_2" to arrayOf<Any>(1, 2)
+                )
+            )
+        )
+        val source = mutableMapOf<String, Any>(
+            "test" to mutableMapOf(
+                "test_1" to mutableMapOf<String, Any>(
+                    "test_2" to arrayListOf<Any>(3, 4)
+                )
+            )
+        )
+        val expectedResult = mutableMapOf<String, Any>(
+            "test" to mutableMapOf(
+                "test_1" to mutableMapOf<String, Any>(
+                    "test_2" to arrayListOf<Any>(3, 4, 1, 2)
                 )
             )
         )
@@ -225,15 +255,17 @@ class MapTest {
     }
 
     @Test
-    fun deepMerge_withNestedArraysWithNestedObjectsMerge_sourceAddedToEnd() {
+    fun deepMerge_withNestedArrayListsWithNestedObjectsMerge_sourceAddedToEnd() {
         //Arrange
         val target = mutableMapOf<String, Any>(
             "test" to mutableMapOf(
                 "test_1" to mutableMapOf<String, Any>(
-                    "test_2" to arrayListOf<Any>(
+                    "test_2" to arrayListOf<Any?>(
+                        null,
                         mutableMapOf<String, Any>(
                             "test_3" to "test"
-                        )
+                        ),
+                        null
                     )
                 )
             )
@@ -241,7 +273,7 @@ class MapTest {
         val source = mutableMapOf<String, Any>(
             "test" to mutableMapOf(
                 "test_1" to mutableMapOf<String, Any>(
-                    "test_2" to arrayListOf<Any>(1)
+                    "test_2" to arrayListOf<Any?>(null, 1)
                 )
             )
         )
@@ -249,10 +281,51 @@ class MapTest {
             "test" to mutableMapOf(
                 "test_1" to mutableMapOf<String, Any>(
                     "test_2" to arrayListOf(
+                        null,
+                        1,
+                        mutableMapOf<String, Any>("test_3" to "test"),
+                        null,
+                    )
+                )
+            )
+        )
+        // Act
+        target.deepMerge(source, ArrayMergePolicy.MERGE)
+        // Arrange
+        assertEquals(target, expectedResult)
+    }
+
+    @Test
+    fun deepMerge_withNestedTargetArrayWithNestedObjectsMerge_sourceAddedToEnd() {
+        //Arrange
+        val target = mutableMapOf<String, Any>(
+            "test" to mutableMapOf(
+                "test_1" to mutableMapOf<String, Any>(
+                    "test_2" to arrayOf<Any?>(
+                        null,
                         mutableMapOf<String, Any>(
                             "test_3" to "test"
                         ),
-                        1
+                        null
+                    )
+                )
+            )
+        )
+        val source = mutableMapOf<String, Any>(
+            "test" to mutableMapOf(
+                "test_1" to mutableMapOf<String, Any>(
+                    "test_2" to arrayListOf<Any?>(null, 1)
+                )
+            )
+        )
+        val expectedResult = mutableMapOf<String, Any>(
+            "test" to mutableMapOf(
+                "test_1" to mutableMapOf<String, Any>(
+                    "test_2" to arrayListOf(
+                        null,
+                        1,
+                        mutableMapOf<String, Any>("test_3" to "test"),
+                        null
                     )
                 )
             )
@@ -267,13 +340,11 @@ class MapTest {
     fun deepMerge_extraDataWithNulls() {
         //Arrange
         val target = mutableMapOf<String, Any>(
-                "test" to arrayListOf(
-                    null,
-                    mutableMapOf<String, Any>(
-                        "test_1" to "test_1"
-                    ),
-                    null
-                )
+            "test" to arrayListOf(
+                null,
+                mutableMapOf<String, Any>("test_1" to "test_1"),
+                null
+            )
         )
         val source = mutableMapOf<String, Any>(
             "test" to arrayListOf(
@@ -285,11 +356,36 @@ class MapTest {
         val expectedResult = mutableMapOf<String, Any>(
             "test" to arrayListOf(
                 null,
-                mutableMapOf<String, Any>(
-                    "test_1" to "test_1"
-                ),
+                mutableMapOf<String, Any>("test_1" to "test_1"),
+                "test_1",
+                null
+            )
+        )
+        // Act
+        target.deepMerge(source, ArrayMergePolicy.MERGE)
+        // Arrange
+        assertEquals(target, expectedResult)
+    }
+
+    @Test
+    fun deepMerge_extraDataWithSameKeys() {
+        //Arrange
+        val target = mutableMapOf<String, Any>(
+            "test" to arrayOf(
+                mutableMapOf<String, Any>("test" to "test"),
+                mutableMapOf<String, Any>("test_1" to ""),
+            )
+        )
+        val source = mutableMapOf<String, Any>(
+            "test" to arrayListOf(
                 null,
-                "test_1"
+                mutableMapOf<String, Any>("test_1" to "test_1")
+            )
+        )
+        val expectedResult = mutableMapOf<String, Any>(
+            "test" to arrayListOf(
+                mutableMapOf<String, Any>("test" to "test"),
+                mutableMapOf<String, Any>("test_1" to "test_1"),
             )
         )
         // Act
