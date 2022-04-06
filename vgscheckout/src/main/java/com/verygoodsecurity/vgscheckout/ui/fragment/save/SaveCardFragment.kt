@@ -25,6 +25,7 @@ import com.verygoodsecurity.vgscheckout.collect.util.extension.isConnectionAvail
 import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
 import com.verygoodsecurity.vgscheckout.collect.view.card.validation.rules.VGSInfoRule
 import com.verygoodsecurity.vgscheckout.collect.widget.VGSCountryEditText
+import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutPaymentConfig
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.config.networking.core.VGSCheckoutHostnamePolicy
@@ -50,6 +51,7 @@ import com.verygoodsecurity.vgscheckout.util.command.save.SaveCardInfo
 import com.verygoodsecurity.vgscheckout.util.country.model.Country
 import com.verygoodsecurity.vgscheckout.util.country.model.PostalCodeType
 import com.verygoodsecurity.vgscheckout.util.extension.*
+import com.verygoodsecurity.vgscheckout.util.logger.VGSCheckoutLogger
 
 internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
     VGSCountryEditText.OnCountrySelectedListener, InputFieldView.OnEditorActionListener {
@@ -185,8 +187,14 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
     }
 
     private fun initCountryView(options: CountryOptions) {
-        if (options.visibility == VGSCheckoutFieldVisibility.HIDDEN) {
-            binding.countryTil.gone()
+        val isVisible = options.visibility == VGSCheckoutFieldVisibility.VISIBLE
+        binding.countryTil.isVisible = isVisible
+        if (!isVisible) {
+            if (config is VGSCheckoutCustomConfig) {
+                return
+            } else {
+                VGSCheckoutLogger.warn(message = "Country field is hidden in billing address. You should provide validCountries array.")
+            }
         }
         binding.countryEt.setFieldName(options.fieldName)
         binding.countryEt.setCountries(options.validCountries)
