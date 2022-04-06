@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.annotation.StringRes
 import androidx.annotation.VisibleForTesting
+import androidx.core.view.isGone
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.RequestEvent
 import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.ResponseEvent
@@ -16,6 +17,7 @@ import com.verygoodsecurity.vgscheckout.collect.core.api.isURLValid
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSError
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.toVGSResponse
+import com.verygoodsecurity.vgscheckout.collect.core.storage.InternalStorage
 import com.verygoodsecurity.vgscheckout.collect.util.extension.hasAccessNetworkStatePermission
 import com.verygoodsecurity.vgscheckout.collect.util.extension.hasInternetPermission
 import com.verygoodsecurity.vgscheckout.collect.util.extension.isConnectionAvailable
@@ -34,6 +36,7 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.CardHolde
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.CardNumberOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.CVCOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.ExpirationDateOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.core.VGSCheckoutFieldVisibility
 import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutAddCardResponse
@@ -52,6 +55,8 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
 
     private lateinit var binding: SaveCardViewBindingHelper
     private lateinit var validationHelper: ValidationManager
+
+    private val inputFieldsStorage = InternalStorage()
 
     /**
      * TODO: Remove this flag and replace it with mocked view model in tests
@@ -130,12 +135,14 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
             return
         }
         binding.cardHolderEt.setFieldName(options.fieldName)
+        inputFieldsStorage.performSubscription(binding.cardHolderEt)
     }
 
     private fun initCardNumberView(options: CardNumberOptions) {
         binding.cardNumberEt.setFieldName(options.fieldName)
         binding.cardNumberEt.setValidCardBrands(options.cardBrands)
         binding.cardNumberEt.setIsCardBrandPreviewHidden(options.isIconHidden)
+        inputFieldsStorage.performSubscription(binding.cardNumberEt)
     }
 
     private fun initExpirationDateView(options: ExpirationDateOptions) {
@@ -145,6 +152,7 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
         binding.expirationDateEt.setSerializer(
             options.dateSeparateSerializer?.toCollectDateSeparateSerializer()
         )
+        inputFieldsStorage.performSubscription(binding.expirationDateEt)
     }
 
     private fun initSecurityCodeView(options: CVCOptions) {
@@ -152,54 +160,80 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
         binding.securityCodeEt.setIsPreviewIconHidden(options.isIconHidden)
         binding.securityCodeEt.setOnEditorActionListener(this)
         binding.securityCodeEt.setImeOptions(
-            if (config.formConfig.isBillingAddressVisible()) EditorInfo.IME_ACTION_NEXT else EditorInfo.IME_ACTION_DONE
+            if (config.formConfig.addressOptions.isVisible()) EditorInfo.IME_ACTION_NEXT else EditorInfo.IME_ACTION_DONE
         )
+        inputFieldsStorage.performSubscription(binding.securityCodeEt)
     }
 
     private fun initBillingAddressViews() {
-        if (config.formConfig.isBillingAddressHidden()) {
+        if (!config.formConfig.addressOptions.isVisible()) {
             binding.billingAddressLL.gone()
             return
         }
-        VGSInfoRule.ValidationBuilder()
+        val rule = VGSInfoRule.ValidationBuilder()
             .setAllowableMinLength(BILLING_ADDRESS_MIN_CHARS_COUNT)
-            .build().let {
-                with(config.formConfig.addressOptions) {
-                    initCountryView(countryOptions)
-                    initAddressView(addressOptions, it)
-                    initOptionalAddressView(optionalAddressOptions, it)
-                    initCityView(cityOptions, it)
-                    initPostalCodeView(postalCodeOptions)
-                }
-            }
+            .build()
+        with(config.formConfig.addressOptions) {
+            initCountryView(countryOptions)
+            initAddressView(addressOptions, rule)
+            initOptionalAddressView(optionalAddressOptions)
+            initCityView(cityOptions, rule)
+            initPostalCodeView(postalCodeOptions)
+        }
+        updateBillingAddressViewVisibility()
     }
 
     private fun initCountryView(options: CountryOptions) {
+        if (options.visibility == VGSCheckoutFieldVisibility.HIDDEN) {
+            binding.countryTil.gone()
+        }
         binding.countryEt.setFieldName(options.fieldName)
         binding.countryEt.setCountries(options.validCountries)
         binding.countryEt.onCountrySelectedListener = this
+        inputFieldsStorage.performSubscription(binding.countryEt)
     }
 
     private fun initAddressView(options: AddressOptions, rule: VGSInfoRule) {
+        if (options.visibility == VGSCheckoutFieldVisibility.HIDDEN) {
+            binding.addressTil.gone()
+            return
+        }
         binding.addressEt.setFieldName(options.fieldName)
         binding.addressEt.addRule(rule)
+        inputFieldsStorage.performSubscription(binding.addressEt)
     }
 
-    private fun initOptionalAddressView(options: OptionalAddressOptions, rule: VGSInfoRule) {
+    private fun initOptionalAddressView(options: OptionalAddressOptions) {
+        if (options.visibility == VGSCheckoutFieldVisibility.HIDDEN) {
+            binding.optionalAddressTil.gone()
+            return
+        }
         binding.optionalAddressEt.setFieldName(options.fieldName)
-        binding.optionalAddressEt.addRule(rule)
+        inputFieldsStorage.performSubscription(binding.optionalAddressEt)
     }
 
     private fun initCityView(options: CityOptions, rule: VGSInfoRule) {
+        if (options.visibility == VGSCheckoutFieldVisibility.HIDDEN) {
+            binding.cityTil.gone()
+            binding.cityPostalAddressSpace.gone()
+            return
+        }
         binding.cityEt.setFieldName(options.fieldName)
         binding.cityEt.addRule(rule)
         binding.cityEt.setOnEditorActionListener(this)
+        inputFieldsStorage.performSubscription(binding.cityEt)
         updateCityView(binding.countryEt.selectedCountry)
     }
 
     private fun initPostalCodeView(options: PostalCodeOptions) {
+        if (options.visibility == VGSCheckoutFieldVisibility.HIDDEN) {
+            binding.postalCodeTil.gone()
+            binding.cityPostalAddressSpace.gone()
+            return
+        }
         binding.postalCodeEt.setFieldName(options.fieldName)
         binding.postalCodeEt.setOnEditorActionListener(this)
+        inputFieldsStorage.performSubscription(binding.postalCodeEt)
         updatePostalCodeView(binding.countryEt.selectedCountry)
     }
 
@@ -228,16 +262,28 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
 
     private fun updatePostalCodeView(country: Country) {
         if (country.isPostalCodeUndefined()) {
+            inputFieldsStorage.unsubscribe(binding.postalCodeEt)
             binding.postalCodeEt.setText(null)
             binding.postalCodeEt.setIsRequired(false)
             binding.postalCodeTil.gone()
+            binding.cityPostalAddressSpace.gone()
         } else {
+            inputFieldsStorage.performSubscription(binding.postalCodeEt)
             binding.postalCodeEt.setIsRequired(true)
             binding.postalCodeEt.addRule(country.toVGSInfoRule())
             binding.postalCodeEt.resetText()
             binding.postalCodeTil.setHint(getString(getPostalCodeHint(country)))
             binding.postalCodeTil.setError(null)
             binding.postalCodeTil.visible()
+            binding.cityPostalAddressSpace.visible()
+        }
+    }
+
+    private fun updateBillingAddressViewVisibility() {
+        with(binding) {
+            if (countryTil.isGone && addressTil.isGone && optionalAddressTil.isGone && cityTil.isGone && postalCodeTil.isGone) {
+                billingAddressLL.gone()
+            }
         }
     }
 
@@ -287,12 +333,17 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
                         CardInfo(
                             this,
                             config.routeConfig,
-                            binding.getAssociatedList()
+                            inputFieldsStorage.getAssociatedList()
                         )
                     ) {
                         when (it) {
                             is Result.Success -> onResponse(it.data)
-                            is Result.Error -> finishWithResult(VGSCheckoutResult.Failed(resultBundle, it.e))
+                            is Result.Error -> finishWithResult(
+                                VGSCheckoutResult.Failed(
+                                    resultBundle,
+                                    it.e
+                                )
+                            )
                         }
                     }
                 }
