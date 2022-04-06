@@ -10,6 +10,7 @@ import android.view.inputmethod.EditorInfo
 import androidx.annotation.StringRes
 import androidx.annotation.VisibleForTesting
 import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.RequestEvent
 import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.ResponseEvent
@@ -275,7 +276,7 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
             binding.postalCodeTil.setHint(getString(getPostalCodeHint(country)))
             binding.postalCodeTil.setError(null)
             binding.postalCodeTil.visible()
-            binding.cityPostalAddressSpace.visible()
+            binding.cityPostalAddressSpace.isVisible = binding.cityTil.isVisible
         }
     }
 
