@@ -13,6 +13,18 @@
         tools:targetApi="n">
 
         <activity
+            android:name="com.verygoodsecurity.add.example.AddCardActivity"
+
+            android:exported="true"
+            android:label="@string/app_name_custom_add_cards">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
             android:name="com.verygoodsecurity.custom.example.MainActivity"
 
             android:exported="true"
@@ -23,5 +35,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
 </manifest>
