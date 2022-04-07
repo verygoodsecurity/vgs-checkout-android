@@ -49,7 +49,7 @@ class AddressDialogTest {
                     BuildConfig.VAULT_ID,
                     formConfig = VGSCheckoutAddCardFormConfig(
                         addressOptions = VGSCheckoutPaymentBillingAddressOptions(
-                            VGSCheckoutBillingAddressVisibility.VISIBLE
+                            visibility = VGSCheckoutBillingAddressVisibility.VISIBLE
                         )
                     )
                 )
