@@ -87,7 +87,9 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
 
     override fun onCountrySelected(country: Country) {
         validationHelper.country = country
-        updatePostalCodeView(country)
+        if (config.formConfig.addressOptions.postalCodeOptions.isVisible()) {
+            updatePostalCodeView(country)
+        }
         updateCityView(country)
     }
 
