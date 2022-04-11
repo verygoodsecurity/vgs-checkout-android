@@ -23,7 +23,7 @@ import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
  * validation event should be send.
  */
 @Suppress("MemberVisibilityCanBePrivate", "CanBeParameter")
-internal class VGSCheckoutAddCardConfig private constructor(
+class VGSCheckoutAddCardConfig private constructor(
     internal val accessToken: String,
     val tenantId: String,
     override val environment: VGSCheckoutEnvironment,
@@ -68,7 +68,6 @@ internal class VGSCheckoutAddCardConfig private constructor(
         accessToken: String,
         tenantId: String,
         environment: VGSCheckoutEnvironment = VGSCheckoutEnvironment.Sandbox(),
-        formConfig: VGSCheckoutAddCardFormConfig = VGSCheckoutAddCardFormConfig(),
         isScreenshotsAllowed: Boolean = false,
         isAnalyticsEnabled: Boolean = true
     ) : this(
@@ -76,7 +75,7 @@ internal class VGSCheckoutAddCardConfig private constructor(
         tenantId,
         environment,
         VGSCheckoutPaymentRouteConfig(accessToken),
-        formConfig,
+        VGSCheckoutAddCardFormConfig(),
         isScreenshotsAllowed,
         isAnalyticsEnabled,
         false
