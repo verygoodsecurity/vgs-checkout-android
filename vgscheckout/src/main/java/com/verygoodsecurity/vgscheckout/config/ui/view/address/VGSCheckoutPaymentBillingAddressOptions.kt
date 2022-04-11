@@ -19,31 +19,11 @@ import kotlinx.parcelize.Parcelize
  * @param visibility defines if address section UI should be visible to user.
  */
 @Parcelize
-internal class VGSCheckoutPaymentBillingAddressOptions private constructor(
-    override val countryOptions: VGSCheckoutPaymentCountryOptions,
-    override val cityOptions: VGSCheckoutPaymentCityOptions,
-    override val addressOptions: VGSCheckoutPaymentAddressOptions,
-    override val optionalAddressOptions: VGSCheckoutPaymentOptionalAddressOptions,
-    override val postalCodeOptions: VGSCheckoutPaymentPostalCodeOptions,
-    override val visibility: VGSCheckoutBillingAddressVisibility,
-) : CheckoutBillingAddressOptions() {
-
-    /**
-     * Public constructor.
-     *
-     * @param visibility defines if address section UI should be visible to user.
-     * @param countryOptions country input field UI options.
-     */
-    @JvmOverloads
-    constructor(
-        visibility: VGSCheckoutBillingAddressVisibility = VGSCheckoutBillingAddressVisibility.HIDDEN,
-        countryOptions: VGSCheckoutPaymentCountryOptions = VGSCheckoutPaymentCountryOptions(),
-    ) : this(
-        countryOptions,
-        VGSCheckoutPaymentCityOptions(),
-        VGSCheckoutPaymentAddressOptions(),
-        VGSCheckoutPaymentOptionalAddressOptions(),
-        VGSCheckoutPaymentPostalCodeOptions(),
-        visibility
-    )
-}
+internal class VGSCheckoutPaymentBillingAddressOptions constructor(
+    override val countryOptions: VGSCheckoutPaymentCountryOptions = VGSCheckoutPaymentCountryOptions(),
+    override val cityOptions: VGSCheckoutPaymentCityOptions = VGSCheckoutPaymentCityOptions(),
+    override val addressOptions: VGSCheckoutPaymentAddressOptions = VGSCheckoutPaymentAddressOptions(),
+    override val optionalAddressOptions: VGSCheckoutPaymentOptionalAddressOptions = VGSCheckoutPaymentOptionalAddressOptions(),
+    override val postalCodeOptions: VGSCheckoutPaymentPostalCodeOptions = VGSCheckoutPaymentPostalCodeOptions(),
+    override val visibility: VGSCheckoutBillingAddressVisibility = VGSCheckoutBillingAddressVisibility.HIDDEN
+) : CheckoutBillingAddressOptions()

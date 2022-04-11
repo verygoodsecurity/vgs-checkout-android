@@ -1,6 +1,8 @@
 package com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber
 
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.model.VGSCheckoutCardBrand
+import com.verygoodsecurity.vgscheckout.config.ui.view.core.VGSCheckoutFieldVisibility
+import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 
 /**
@@ -16,6 +18,12 @@ class VGSCheckoutCustomCardNumberOptions private constructor(
     override val isIconHidden: Boolean,
     override val cardBrands: Set<VGSCheckoutCardBrand>,
 ) : CardNumberOptions() {
+
+    /**
+     *  Defines if input field should be visible to user.
+     */
+    @IgnoredOnParcel
+    override val visibility: VGSCheckoutFieldVisibility = VGSCheckoutFieldVisibility.VISIBLE
 
     /**
      * Public constructor. Allow to specify set card brands mode.

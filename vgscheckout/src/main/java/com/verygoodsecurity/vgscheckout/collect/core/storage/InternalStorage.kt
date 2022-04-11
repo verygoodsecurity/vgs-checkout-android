@@ -68,7 +68,7 @@ internal class InternalStorage {
 
     private fun stateToAssociatedList(items: MutableCollection<VGSFieldState>): MutableCollection<Pair<String, String>> {
         val result = mutableListOf<Pair<String, String>>()
-        items.filter { state -> state.isNotNullOrEmpty() }.forEach { state ->
+        items.filter { state -> !state.fieldName.isNullOrEmpty() }.forEach { state ->
             with(state.content!!) {
                 when (this) {
                     is CardNumberContent -> result.add(state.fieldName!! to (rawData ?: data!!))
@@ -104,7 +104,7 @@ internal class InternalStorage {
     }
 
     private fun handleInfoContent(content: InfoContent): String {
-        val data = (content.rawData ?: content.data!!)
+        val data = content.rawData ?: (content.data ?: "")
         return (content.serializer as? CountryNameToIsoSerializer)?.serialize(data) ?: data
     }
 }
