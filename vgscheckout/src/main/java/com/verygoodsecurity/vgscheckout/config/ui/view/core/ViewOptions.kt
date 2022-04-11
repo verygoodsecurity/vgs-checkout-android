@@ -18,4 +18,6 @@ abstract class ViewOptions : Parcelable {
      * be added to payload.
      */
     abstract val visibility: VGSCheckoutFieldVisibility
+
+    fun isVisible() = visibility == VGSCheckoutFieldVisibility.VISIBLE
 }
