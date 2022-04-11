@@ -33,9 +33,11 @@ import com.verygoodsecurity.vgscheckout.util.ViewInteraction.onViewWithScrollTo
 import com.verygoodsecurity.vgscheckout.util.extension.waitFor
 import org.junit.Assert
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 
+@Ignore("This test should be updated according payment optimization changes.")
 @Suppress("SameParameterValue")
 @RunWith(AndroidJUnit4::class)
 class OnFocusFieldsValidationTest {
@@ -49,12 +51,6 @@ class OnFocusFieldsValidationTest {
                 VGSCheckoutAddCardConfig(
                     BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS,
                     BuildConfig.VAULT_ID,
-                    formConfig = VGSCheckoutAddCardFormConfig(
-                        VGSCheckoutPaymentBillingAddressOptions(
-                            visibility = VGSCheckoutBillingAddressVisibility.VISIBLE
-                        ),
-                        VGSCheckoutFormValidationBehaviour.ON_FOCUS
-                    ),
                     isScreenshotsAllowed = true
                 )
             )
