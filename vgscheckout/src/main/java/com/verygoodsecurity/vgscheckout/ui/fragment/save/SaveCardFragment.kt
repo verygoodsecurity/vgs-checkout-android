@@ -180,6 +180,7 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
     }
 
     private fun initCountryView(options: CountryOptions) {
+        binding.countryEt.setCountries(options.validCountries)
         val isVisible = options.isVisible()
         binding.countryTil.isVisible = isVisible
         if (!isVisible) {
@@ -190,7 +191,6 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
             }
         }
         binding.countryEt.setFieldName(options.fieldName)
-        binding.countryEt.setCountries(options.validCountries)
         binding.countryEt.onCountrySelectedListener = this
         inputFieldsStorage.performSubscription(binding.countryEt)
     }
