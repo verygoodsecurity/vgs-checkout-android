@@ -1,7 +1,7 @@
 package com.verygoodsecurity.vgscheckout.collect.core.model.map
 
 import com.verygoodsecurity.vgscheckout.collect.util.extension.arrayListOfNulls
-import com.verygoodsecurity.vgscheckout.collect.util.extension.merge
+import com.verygoodsecurity.vgscheckout.collect.util.extension.overwrite
 import com.verygoodsecurity.vgscheckout.collect.util.extension.putIfAbsentCompat
 
 @Suppress("UNCHECKED_CAST")
@@ -43,7 +43,7 @@ internal class FlatMap constructor(private val allowParseArrays: Boolean = true)
         val currentArray =
             arrayListOfNulls<Any>(key.position).apply { this[key.position] = currentValue }
 
-        target[key.value] = array merge currentArray
+        target[key.value] = array overwrite currentArray
 
         return currentValue as? MutableMap<String, Any>
     }

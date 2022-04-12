@@ -243,15 +243,16 @@ class MapTest {
                     "test_2" to arrayListOf<Any>(
                         mutableMapOf<String, Any>(
                             "test_3" to "test"
-                        )
+                        ),
+                        1
                     )
                 )
             )
         )
         // Act
-        target.deepMerge(source, ArrayMergePolicy.MERGE)
+        val result = target.deepMerge(source, ArrayMergePolicy.MERGE)
         // Arrange
-        assertEquals(target, expectedResult)
+        assertEquals(result, expectedResult)
     }
 
     @Test
