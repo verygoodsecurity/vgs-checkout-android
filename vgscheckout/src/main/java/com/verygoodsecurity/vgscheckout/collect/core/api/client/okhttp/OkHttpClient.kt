@@ -8,7 +8,7 @@ import com.verygoodsecurity.vgscheckout.collect.core.api.client.okhttp.intercept
 import com.verygoodsecurity.vgscheckout.collect.core.api.isURLValid
 import com.verygoodsecurity.vgscheckout.collect.core.api.toContentType
 import com.verygoodsecurity.vgscheckout.collect.core.api.toHost
-import com.verygoodsecurity.vgscheckout.collect.core.model.network.NetworkRequest
+import com.verygoodsecurity.vgscheckout.collect.core.model.network.HttpRequest
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.NetworkResponse
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSError
 import com.verygoodsecurity.vgscheckout.util.logger.VGSCheckoutLogger
@@ -44,7 +44,7 @@ internal class OkHttpClient(
         hostInterceptor.host = url?.toHost()
     }
 
-    override fun enqueue(request: NetworkRequest, callback: ((NetworkResponse) -> Unit)?) {
+    override fun enqueue(request: HttpRequest, callback: ((NetworkResponse) -> Unit)?) {
         if (!request.url.isURLValid()) {
             callback?.invoke(NetworkResponse.create(VGSError.URL_NOT_VALID))
             return
@@ -53,16 +53,16 @@ internal class OkHttpClient(
         val okHttpRequest = buildRequest(
             request.url,
             request.method,
-            request.customHeader,
-            request.customData,
+            request.headers,
+            request.payload,
             request.format
         )
 
         try {
             client.newBuilder()
-                .callTimeout(request.requestTimeoutInterval, TimeUnit.MILLISECONDS)
-                .readTimeout(request.requestTimeoutInterval, TimeUnit.MILLISECONDS)
-                .writeTimeout(request.requestTimeoutInterval, TimeUnit.MILLISECONDS)
+                .callTimeout(request.timeoutInterval, TimeUnit.MILLISECONDS)
+                .readTimeout(request.timeoutInterval, TimeUnit.MILLISECONDS)
+                .writeTimeout(request.timeoutInterval, TimeUnit.MILLISECONDS)
                 .build()
                 .newCall(okHttpRequest).enqueue(object : Callback {
 
@@ -96,7 +96,7 @@ internal class OkHttpClient(
         }
     }
 
-    override fun execute(request: NetworkRequest): NetworkResponse {
+    override fun execute(request: HttpRequest): NetworkResponse {
         if (!request.url.isURLValid()) {
             return NetworkResponse.create(VGSError.URL_NOT_VALID)
         }
@@ -104,16 +104,16 @@ internal class OkHttpClient(
         val okHttpRequest = buildRequest(
             request.url,
             request.method,
-            request.customHeader,
-            request.customData,
+            request.headers,
+            request.payload,
             request.format
         )
 
         return try {
             val response = client.newBuilder()
-                .callTimeout(request.requestTimeoutInterval, TimeUnit.MILLISECONDS)
-                .readTimeout(request.requestTimeoutInterval, TimeUnit.MILLISECONDS)
-                .writeTimeout(request.requestTimeoutInterval, TimeUnit.MILLISECONDS)
+                .callTimeout(request.timeoutInterval, TimeUnit.MILLISECONDS)
+                .readTimeout(request.timeoutInterval, TimeUnit.MILLISECONDS)
+                .writeTimeout(request.timeoutInterval, TimeUnit.MILLISECONDS)
                 .build()
                 .newCall(okHttpRequest).execute()
 

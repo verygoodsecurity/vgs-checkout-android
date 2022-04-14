@@ -1,9 +1,7 @@
 package com.verygoodsecurity.vgscheckout.util.command.transaction
 
 import com.verygoodsecurity.vgscheckout.BuildConfig
-import com.verygoodsecurity.vgscheckout.collect.core.HTTPMethod
-import com.verygoodsecurity.vgscheckout.collect.core.api.VGSHttpBodyFormat
-import com.verygoodsecurity.vgscheckout.collect.core.model.network.NetworkRequest
+import com.verygoodsecurity.vgscheckout.collect.core.model.network.HttpRequest
 import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutTransactionResponse
 import com.verygoodsecurity.vgscheckout.util.command.NetworkingCommand
 import com.verygoodsecurity.vgscheckout.util.command.Result
@@ -35,15 +33,9 @@ internal class CreateTransaction :
         return json.toString()
     }
 
-    private fun createTransactionRequest(payload: String) = NetworkRequest(
-        method = HTTPMethod.POST,
+    private fun createTransactionRequest(payload: String) = HttpRequest(
         url = BuildConfig.PAYMENT_ORCHESTRATION_URL + PATH,
-        customHeader = emptyMap(),
-        customData = payload,
-        fieldsIgnore = false,
-        fileIgnore = false,
-        format = VGSHttpBodyFormat.JSON,
-        requestTimeoutInterval = DEFAULT_REQUEST_TIMEOUT
+        payload = payload
     )
 
     companion object {

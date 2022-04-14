@@ -2,8 +2,7 @@ package com.verygoodsecurity.vgscheckout.util.command.order
 
 import com.verygoodsecurity.vgscheckout.BuildConfig
 import com.verygoodsecurity.vgscheckout.collect.core.HTTPMethod
-import com.verygoodsecurity.vgscheckout.collect.core.api.VGSHttpBodyFormat
-import com.verygoodsecurity.vgscheckout.collect.core.model.network.NetworkRequest
+import com.verygoodsecurity.vgscheckout.collect.core.model.network.HttpRequest
 import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
 import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutNetworkException
 import com.verygoodsecurity.vgscheckout.exception.internal.PaymentInfoParseException
@@ -51,17 +50,12 @@ internal class GetPaymentInfo : NetworkingCommand<String, Result<PaymentInfo>>()
         }
     }
 
-    private fun createOrderDetailsRequest(orderId: String): NetworkRequest {
-        return NetworkRequest(
-            method = HTTPMethod.GET,
+    private fun createOrderDetailsRequest(orderId: String): HttpRequest {
+        return HttpRequest(
             //todo replace PAYMENT_ORCHESTRATION_URL with live URL
             url = BuildConfig.PAYMENT_ORCHESTRATION_URL + ORDERS_PATH + orderId,
-            customHeader = emptyMap(),
-            customData = Unit,
-            fieldsIgnore = false,
-            fileIgnore = false,
-            format = VGSHttpBodyFormat.JSON,
-            requestTimeoutInterval = DEFAULT_REQUEST_TIMEOUT
+            payload = Unit,
+            method = HTTPMethod.GET
         )
     }
 

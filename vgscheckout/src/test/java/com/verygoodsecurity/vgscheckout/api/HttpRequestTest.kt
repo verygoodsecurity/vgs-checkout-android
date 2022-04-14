@@ -7,7 +7,7 @@ import com.verygoodsecurity.vgscheckout.util.extension.toVGSResponse
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
-class RequestTest {
+class HttpRequestTest {
 
     @Test
     fun test_create_default_request() {
@@ -59,13 +59,11 @@ class RequestTest {
         val METHOD = HTTPMethod.POST
         val PATH = "/some/path"
 
-        val exampleRequest = NetworkRequest(
-            METHOD,
+        val exampleRequest = HttpRequest(
             BASE_URL+PATH,
-            emptyMap(),
             "{}",
-            false,
-            false,
+            emptyMap(),
+            METHOD,
             VGSHttpBodyFormat.JSON,
             60000L
         )

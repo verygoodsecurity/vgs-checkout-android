@@ -168,14 +168,12 @@ internal data class VGSRequest private constructor(
     }
 }
 
-internal fun VGSRequest.toNetworkRequest(url: String, requestData: Map<String, Any>? = null): NetworkRequest {
-    return NetworkRequest(
-        method,
+internal fun VGSRequest.toNetworkRequest(url: String, requestData: Map<String, Any>? = null): HttpRequest {
+    return HttpRequest(
         url concatWithSlash path,
-        customHeader,
         requestData?.toJSON()?.toString() ?: customData,
-        fieldsIgnore,
-        fileIgnore,
+        customHeader,
+        method,
         format,
         requestTimeoutInterval
     )

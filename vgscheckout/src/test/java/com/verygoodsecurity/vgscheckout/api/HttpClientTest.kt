@@ -3,7 +3,7 @@ package com.verygoodsecurity.vgscheckout.api
 import com.verygoodsecurity.vgscheckout.collect.core.*
 import com.verygoodsecurity.vgscheckout.collect.core.api.VGSHttpBodyFormat
 import com.verygoodsecurity.vgscheckout.collect.core.api.client.HttpClient
-import com.verygoodsecurity.vgscheckout.collect.core.model.network.NetworkRequest
+import com.verygoodsecurity.vgscheckout.collect.core.model.network.HttpRequest
 import org.junit.Test
 import org.mockito.Mockito
 
@@ -18,13 +18,11 @@ class HttpClientTest {
         val data = HashMap<String, Any>()
         data.put("customData", "dataset")
 
-        val r = NetworkRequest(
+        val r = HttpRequest(
             HTTPMethod.POST,
             "https://www.test.com/post",
             headers,
             data,
-            false,
-            false,
             VGSHttpBodyFormat.JSON,
             60000L
         )
@@ -43,13 +41,11 @@ class HttpClientTest {
         val data = HashMap<String, Any>()
         data.put("customData", "dataset")
 
-        val r = NetworkRequest(
+        val r = HttpRequest(
             HTTPMethod.POST,
             "https://www.test.com/post",
             headers,
             data,
-            false,
-            false,
             VGSHttpBodyFormat.JSON,
             60000L
         )

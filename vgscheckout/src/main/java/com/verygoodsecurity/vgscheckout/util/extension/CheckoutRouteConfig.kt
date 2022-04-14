@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgscheckout.util.extension
 
-import com.verygoodsecurity.vgscheckout.collect.core.model.network.NetworkRequest
+import com.verygoodsecurity.vgscheckout.collect.core.model.network.HttpRequest
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSRequest
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.toNetworkRequest
 import com.verygoodsecurity.vgscheckout.collect.util.extension.deepMerge
@@ -10,7 +10,7 @@ import com.verygoodsecurity.vgscheckout.config.networking.core.CheckoutRouteConf
 internal fun CheckoutRouteConfig.toSaveCardNetworkRequest(
     baseURL: String,
     data: MutableCollection<Pair<String, String>>
-): NetworkRequest {
+): HttpRequest {
     return VGSRequest.VGSRequestBuilder()
         .setPath(path)
         .setMethod(requestOptions.httpMethod.toCollectHTTPMethod())
