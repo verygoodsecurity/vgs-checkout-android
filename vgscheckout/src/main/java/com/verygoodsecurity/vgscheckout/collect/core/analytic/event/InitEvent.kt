@@ -1,6 +1,6 @@
-package com.verygoodsecurity.vgscheckout.collect.core.api.analytic.event
+package com.verygoodsecurity.vgscheckout.collect.core.analytic.event
 
-import com.verygoodsecurity.vgscheckout.collect.core.api.analytic.event.core.Event
+import com.verygoodsecurity.vgscheckout.collect.core.analytic.event.core.Event
 
 internal data class InitEvent(val type: ConfigType) : Event(TYPE) {
 
