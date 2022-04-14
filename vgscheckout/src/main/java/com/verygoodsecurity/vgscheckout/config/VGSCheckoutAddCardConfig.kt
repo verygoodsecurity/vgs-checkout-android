@@ -2,7 +2,7 @@ package com.verygoodsecurity.vgscheckout.config
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.JWTValidationEvent
+import com.verygoodsecurity.vgscheckout.collect.core.api.analytic.event.JWTValidationEvent
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutPaymentRouteConfig
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutAddCardFormConfig

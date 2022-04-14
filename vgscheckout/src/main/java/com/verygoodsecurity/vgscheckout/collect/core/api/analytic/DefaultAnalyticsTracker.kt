@@ -1,9 +1,9 @@
-package com.verygoodsecurity.vgscheckout.collect.core.api.analityc
+package com.verygoodsecurity.vgscheckout.collect.core.api.analytic
 
 import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgscheckout.collect.core.HTTPMethod
 import com.verygoodsecurity.vgscheckout.collect.core.api.VGSHttpBodyFormat
-import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.core.Event
+import com.verygoodsecurity.vgscheckout.collect.core.api.analytic.event.core.Event
 import com.verygoodsecurity.vgscheckout.collect.core.api.client.HttpClient
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.NetworkRequest
 import com.verygoodsecurity.vgscheckout.collect.util.extension.toBase64

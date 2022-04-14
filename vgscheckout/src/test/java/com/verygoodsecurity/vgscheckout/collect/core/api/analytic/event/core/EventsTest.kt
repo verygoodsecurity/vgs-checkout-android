@@ -1,6 +1,6 @@
-package com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.core
+package com.verygoodsecurity.vgscheckout.collect.core.api.analytic.event.core
 
-import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.*
+import com.verygoodsecurity.vgscheckout.collect.core.api.analytic.event.*
 import com.verygoodsecurity.vgscheckout.config.networking.request.core.VGSCheckoutDataMergePolicy
 import org.junit.Assert.*
 import org.junit.Test

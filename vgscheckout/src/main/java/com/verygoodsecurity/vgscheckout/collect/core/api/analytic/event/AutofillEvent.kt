@@ -1,6 +1,6 @@
-package com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event
+package com.verygoodsecurity.vgscheckout.collect.core.api.analytic.event
 
-import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.core.Event
+import com.verygoodsecurity.vgscheckout.collect.core.api.analytic.event.core.Event
 
 internal data class AutofillEvent(val fieldAnalyticsName: String) : Event(TYPE) {
 

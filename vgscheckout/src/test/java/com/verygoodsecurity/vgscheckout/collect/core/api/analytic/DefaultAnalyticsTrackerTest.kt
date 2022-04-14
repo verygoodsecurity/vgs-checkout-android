@@ -1,9 +1,9 @@
-package com.verygoodsecurity.vgscheckout.collect.core.api.analityc
+package com.verygoodsecurity.vgscheckout.collect.core.api.analytic
 
 import com.verygoodsecurity.vgscheckout.capture
 import com.verygoodsecurity.vgscheckout.collect.core.HTTPMethod
 import com.verygoodsecurity.vgscheckout.collect.core.api.VGSHttpBodyFormat
-import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.InitEvent
+import com.verygoodsecurity.vgscheckout.collect.core.api.analytic.event.InitEvent
 import com.verygoodsecurity.vgscheckout.collect.core.api.client.HttpClient
 import com.verygoodsecurity.vgscheckout.collect.core.api.client.okhttp.OkHttpClient
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.NetworkRequest

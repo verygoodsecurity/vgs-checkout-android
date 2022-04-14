@@ -12,8 +12,8 @@ import androidx.annotation.VisibleForTesting
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import com.verygoodsecurity.vgscheckout.R
-import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.RequestEvent
-import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.ResponseEvent
+import com.verygoodsecurity.vgscheckout.collect.core.api.analytic.event.RequestEvent
+import com.verygoodsecurity.vgscheckout.collect.core.api.analytic.event.ResponseEvent
 import com.verygoodsecurity.vgscheckout.collect.core.api.isURLValid
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSError
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSResponse
