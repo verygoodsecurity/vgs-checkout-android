@@ -44,6 +44,7 @@ object VGSCheckoutLogger {
     /**
      * Returns true if the logger print log messages.
      */
+    @Suppress("unused")
     fun isDebugEnabled(): Boolean = isEnabled && (logLevel.ordinal != NONE.ordinal)
 
     private fun printLog(level: Level, prefix: String?, message: String) {
@@ -53,8 +54,7 @@ object VGSCheckoutLogger {
             when (level) {
                 DEBUG -> Log.d(tag, log)
                 WARN -> Log.w(tag, log)
-                NONE -> {
-                }
+                NONE -> Unit
             }
         }
     }
