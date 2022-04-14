@@ -1,21 +1,28 @@
 package com.verygoodsecurity.vgscheckout.config.ui.view.address.address
 
+import com.verygoodsecurity.vgscheckout.config.ui.view.core.VGSCheckoutFieldVisibility
 import kotlinx.parcelize.Parcelize
 
 /**
  * Address input field options.
  *
  * @param fieldName text to be used for data transfer to VGS proxy.
+ * @param visibility defines if input field should be visible to user.
  */
 @Parcelize
 internal class VGSCheckoutPaymentAddressOptions private constructor(
     override val fieldName: String,
+    override val visibility: VGSCheckoutFieldVisibility
 ) : AddressOptions() {
 
     /**
      * Public constructor.
+     *
+     * @param visibility defines if input field should be visible to user.
      */
-    constructor() : this(FIELD_NAME)
+    constructor(
+        visibility: VGSCheckoutFieldVisibility = VGSCheckoutFieldVisibility.VISIBLE
+    ) : this(FIELD_NAME, visibility)
 
     private companion object {
 

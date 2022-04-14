@@ -126,6 +126,7 @@
                 style="@style/VGSCheckout.Title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/vgs_checkout_margin_padding_size_xsmall"
                 android:text="@string/vgs_checkout_form_billing_address_title" />
 
             <com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout
@@ -133,7 +134,6 @@
                 style="@style/VGSCheckout.TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/vgs_checkout_margin_padding_size_xsmall"
                 app:endIconDrawable="@drawable/vgs_checkout_ic_baseline_arrow_drop_down_white_24"
                 app:endIconModes="custom"
                 app:hint="@string/vgs_checkout_address_info_country_hint">
@@ -179,8 +179,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:analyticsName="addressLine2"
-                    app:imeOptions="actionNext"
-                    app:isRequired="false" />
+                    app:imeOptions="actionNext" />
             </com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout>
 
             <androidx.appcompat.widget.LinearLayoutCompat
@@ -206,12 +205,16 @@
                         app:imeOptions="actionNext" />
                 </com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout>
 
+                <Space
+                    android:id="@+id/cityPostalAddressSpace"
+                    android:layout_width="@dimen/vgs_checkout_margin_padding_size_medium"
+                    android:layout_height="match_parent"/>
+
                 <com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout
                     android:id="@+id/vgsTilPostalCode"
                     style="@style/VGSCheckout.TextInputLayout"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/vgs_checkout_margin_padding_size_medium"
                     android:layout_weight="1"
                     app:hint="@string/vgs_checkout_address_info_zip_hint">
 
