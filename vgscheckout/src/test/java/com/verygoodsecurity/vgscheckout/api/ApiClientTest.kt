@@ -58,12 +58,4 @@ class ApiClientTest {
 
         Mockito.verify(client).enqueue(r)
     }
-
-    @Test
-    fun getStore() {
-        val client = Mockito.mock(ApiClient::class.java)
-        client.getStorage()
-
-        Mockito.verify(client).getStorage()
-    }
 }

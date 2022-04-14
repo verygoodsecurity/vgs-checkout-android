@@ -23,8 +23,6 @@ internal class OkHttpClient(
     executor: ExecutorService = Executors.newSingleThreadExecutor()
 ) : ApiClient {
 
-    private val storage: ApiClientStorage = DefaultApiClientStorage()
-
     private val hostInterceptor: HostInterceptor = HostInterceptor()
 
     private val client: OkHttpClient by lazy {
@@ -133,8 +131,6 @@ internal class OkHttpClient(
         client.dispatcher.cancelAll()
     }
 
-    override fun getStorage(): ApiClientStorage = storage
-
     private fun buildRequest(
         url: String,
         method: HTTPMethod,
@@ -155,10 +151,6 @@ internal class OkHttpClient(
         headers?.forEach {
             this.addHeader(it.key, it.value)
         }
-        storage.getCustomHeaders().forEach {
-            this.addHeader(it.key, it.value)
-        }
-
         return this
     }
 

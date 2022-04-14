@@ -1,6 +1,5 @@
 package com.verygoodsecurity.vgscheckout.collect.core.api.client
 
-import com.verygoodsecurity.vgscheckout.collect.core.api.ApiClientStorage
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.NetworkRequest
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.NetworkResponse
 import java.util.concurrent.ExecutorService
@@ -15,8 +14,6 @@ internal interface ApiClient {
     fun execute(request: NetworkRequest): NetworkResponse
 
     fun cancelAll()
-
-    fun getStorage(): ApiClientStorage
 
     companion object Factory {
 
