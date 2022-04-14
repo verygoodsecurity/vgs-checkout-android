@@ -1,18 +1,24 @@
-package com.verygoodsecurity.vgscheckout.collect.core.api.client
+package com.verygoodsecurity.vgscheckout.collect.core.api.client.okhttp
 
 import com.verygoodsecurity.vgscheckout.collect.core.HTTPMethod
-import com.verygoodsecurity.vgscheckout.collect.core.api.*
-import com.verygoodsecurity.vgscheckout.collect.core.api.client.extension.*
+import com.verygoodsecurity.vgscheckout.collect.core.api.VGSHttpBodyFormat
+import com.verygoodsecurity.vgscheckout.collect.core.api.client.HttpClient
+import com.verygoodsecurity.vgscheckout.collect.core.api.client.okhttp.interceptor.CustomHostnameInterceptor
+import com.verygoodsecurity.vgscheckout.collect.core.api.client.okhttp.interceptor.LoggingInterceptor
+import com.verygoodsecurity.vgscheckout.collect.core.api.isURLValid
+import com.verygoodsecurity.vgscheckout.collect.core.api.toContentType
+import com.verygoodsecurity.vgscheckout.collect.core.api.toHost
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.NetworkRequest
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.NetworkResponse
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSError
+import com.verygoodsecurity.vgscheckout.util.logger.VGSCheckoutLogger
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
-import okio.Buffer
+import okhttp3.RequestBody.Companion.toRequestBody
+import okhttp3.internal.EMPTY_REQUEST
 import java.io.IOException
 import java.io.InterruptedIOException
-import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
@@ -21,15 +27,15 @@ import java.util.concurrent.TimeoutException
 internal class OkHttpClient(
     printLogs: Boolean = true,
     executor: ExecutorService = Executors.newSingleThreadExecutor()
-) : ApiClient {
+) : HttpClient {
 
-    private val hostInterceptor: HostInterceptor = HostInterceptor()
+    private val hostInterceptor: CustomHostnameInterceptor = CustomHostnameInterceptor()
 
     private val client: OkHttpClient by lazy {
         OkHttpClient().newBuilder()
             .addInterceptor(hostInterceptor)
             .dispatcher(Dispatcher(executor)).also {
-                if (printLogs) it.addInterceptor(HttpLoggingInterceptor())
+                if (printLogs) it.addInterceptor(LoggingInterceptor())
             }
             .build()
     }
@@ -60,32 +66,32 @@ internal class OkHttpClient(
                 .build()
                 .newCall(okHttpRequest).enqueue(object : Callback {
 
-                override fun onFailure(call: Call, e: IOException) {
-                    logException(e)
-                    if (call.isCanceled()) {
-                        return
+                    override fun onFailure(call: Call, e: IOException) {
+                        VGSCheckoutLogger.warn(this::class.java.simpleName, e)
+                        if (call.isCanceled()) {
+                            return
+                        }
+                        if (e is InterruptedIOException || e is TimeoutException) {
+                            callback?.invoke(NetworkResponse.create(VGSError.TIME_OUT))
+                        } else {
+                            callback?.invoke(NetworkResponse(message = e.message))
+                        }
                     }
-                    if (e is InterruptedIOException || e is TimeoutException) {
-                        callback?.invoke(NetworkResponse.create(VGSError.TIME_OUT))
-                    } else {
-                        callback?.invoke(NetworkResponse(message = e.message))
-                    }
-                }
 
-                override fun onResponse(call: Call, response: Response) {
-                    callback?.invoke(
-                        NetworkResponse(
-                            response.isSuccessful,
-                            response.code,
-                            response.body?.string(),
-                            response.message,
-                            latency = response.latency()
+                    override fun onResponse(call: Call, response: Response) {
+                        callback?.invoke(
+                            NetworkResponse(
+                                response.isSuccessful,
+                                response.code,
+                                response.body?.string(),
+                                response.message,
+                                latency = response.latency()
+                            )
                         )
-                    )
-                }
-            })
+                    }
+                })
         } catch (e: Exception) {
-            logException(e)
+            VGSCheckoutLogger.warn(this::class.java.simpleName, e)
             callback?.invoke(NetworkResponse(message = e.message))
         }
     }
@@ -147,68 +153,18 @@ internal class OkHttpClient(
             .build()
     }
 
+    private fun Response.latency() = this.receivedResponseAtMillis - this.sentRequestAtMillis
+
+    private fun String?.toRequestBodyOrNull(mediaType: MediaType?, method: HTTPMethod) =
+        when (method) {
+            HTTPMethod.GET -> null
+            else -> this?.toRequestBody(mediaType) ?: EMPTY_REQUEST
+        }
+
     private fun Request.Builder.addHeaders(headers: Map<String, String>?): Request.Builder {
         headers?.forEach {
             this.addHeader(it.key, it.value)
         }
         return this
-    }
-
-    private class HostInterceptor : Interceptor {
-        var host: String? = null
-        override fun intercept(chain: Interceptor.Chain): Response {
-            val r = with(chain.request()) {
-                if (!host.isNullOrBlank() && host != url.host) {
-                    val newUrl = chain.request().url.newBuilder()
-                        .scheme(url.scheme)
-                        .host(host!!)
-                        .build()
-
-                    chain.request().newBuilder()
-                        .url(newUrl)
-                        .build()
-                } else {
-                    this
-                }
-            }
-
-            return chain.proceed(r)
-        }
-    }
-
-    private class HttpLoggingInterceptor : Interceptor {
-
-        override fun intercept(chain: Interceptor.Chain): Response {
-            val requestId = UUID.randomUUID().toString()
-            return chain.proceed(chain.request().also {
-                it.logRequest(
-                    requestId,
-                    it.url.toString(),
-                    it.method,
-                    it.headers.toMap(),
-                    getBody(it.body),
-                    it::class.java.simpleName
-                )
-            }).also {
-                logResponse(
-                    requestId,
-                    it.request.url.toString(),
-                    it.code,
-                    it.message,
-                    it.headers.toMap(),
-                    it::class.java.simpleName
-                )
-            }
-        }
-
-        private fun getBody(request: RequestBody?): String {
-            return try {
-                val buffer = Buffer()
-                request?.writeTo(buffer)
-                buffer.readUtf8()
-            } catch (e: IOException) {
-                ""
-            }
-        }
     }
 }

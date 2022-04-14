@@ -2,16 +2,16 @@ package com.verygoodsecurity.vgscheckout.api
 
 import com.verygoodsecurity.vgscheckout.collect.core.*
 import com.verygoodsecurity.vgscheckout.collect.core.api.VGSHttpBodyFormat
-import com.verygoodsecurity.vgscheckout.collect.core.api.client.ApiClient
+import com.verygoodsecurity.vgscheckout.collect.core.api.client.HttpClient
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.NetworkRequest
 import org.junit.Test
 import org.mockito.Mockito
 
-class ApiClientTest {
+class HttpClientTest {
 
     @Test
     fun test_api_execute() {
-        val client = Mockito.mock(ApiClient::class.java)
+        val client = Mockito.mock(HttpClient::class.java)
 
         val headers = HashMap<String, String>()
         headers.put("NEW-HEADER", "header")
@@ -36,7 +36,7 @@ class ApiClientTest {
 
     @Test
     fun test_api_enqueue() {
-        val client = Mockito.mock(ApiClient::class.java)
+        val client = Mockito.mock(HttpClient::class.java)
 
         val headers = HashMap<String, String>()
         headers.put("NEW-HEADER", "header")

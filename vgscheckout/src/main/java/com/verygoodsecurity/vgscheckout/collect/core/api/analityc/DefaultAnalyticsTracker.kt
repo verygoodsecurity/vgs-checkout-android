@@ -4,7 +4,7 @@ import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgscheckout.collect.core.HTTPMethod
 import com.verygoodsecurity.vgscheckout.collect.core.api.VGSHttpBodyFormat
 import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.core.Event
-import com.verygoodsecurity.vgscheckout.collect.core.api.client.ApiClient
+import com.verygoodsecurity.vgscheckout.collect.core.api.client.HttpClient
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.NetworkRequest
 import com.verygoodsecurity.vgscheckout.collect.util.extension.toBase64
 import com.verygoodsecurity.vgscheckout.collect.util.extension.toJSON
@@ -15,7 +15,7 @@ internal class DefaultAnalyticsTracker @VisibleForTesting(otherwise = VisibleFor
     private val id: String,
     private val environment: String,
     private val formId: String,
-    private val client: ApiClient
+    private val client: HttpClient
 ) : AnalyticTracker {
 
     override var isEnabled: Boolean = true
@@ -24,7 +24,7 @@ internal class DefaultAnalyticsTracker @VisibleForTesting(otherwise = VisibleFor
         id,
         environment,
         formId,
-        ApiClient.create(false, getExecutor())
+        HttpClient.create(false, getExecutor())
     )
 
     override fun log(event: Event) {

@@ -1,7 +1,6 @@
 package com.verygoodsecurity.vgscheckout.collect.view.core.serializers
 
 import com.verygoodsecurity.vgscheckout.util.logger.VGSCheckoutLogger
-import com.verygoodsecurity.vgscheckout.collect.core.api.client.extension.logException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -36,7 +35,7 @@ internal class VGSExpDateSeparateSerializer constructor(
                 yearFieldName to getYearFormat(params.dateFormat).format(date)
             )
         } catch (e: Exception) {
-            logException(e)
+            VGSCheckoutLogger.warn(this::class.java.simpleName, e)
             emptyList()
         }
     }
@@ -55,7 +54,7 @@ internal class VGSExpDateSeparateSerializer constructor(
                 }
                 SimpleDateFormat(monthFormat, Locale.US)
             } catch (e: Exception) {
-                logException(e)
+                VGSCheckoutLogger.warn(this::class.java.simpleName, e)
                 SimpleDateFormat(DEFAULT_MONTH_FORMAT, Locale.US)
             }
         }
@@ -73,7 +72,7 @@ internal class VGSExpDateSeparateSerializer constructor(
                 }
                 SimpleDateFormat(yearFormat, Locale.US)
             } catch (e: Exception) {
-                logException(e)
+                VGSCheckoutLogger.warn(this::class.java.simpleName, e)
                 SimpleDateFormat(DEFAULT_YEAR_FORMAT, Locale.US)
             }
         }

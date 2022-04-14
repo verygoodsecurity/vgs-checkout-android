@@ -70,6 +70,16 @@ object VGSCheckoutLogger {
     }
 
     /**
+     * Print a WARN log message due to exception.
+     *
+     * @param tag Used to identify the source of a log message.
+     * @param e exception.
+     */
+    internal fun warn(tag: String? = null, e: Exception) {
+        warn(tag, "e: ${e::class.java}, message: ${e.message}")
+    }
+
+    /**
      * Print a DEBUG log message.
      *
      * @param tag Used to identify the source of a log message.

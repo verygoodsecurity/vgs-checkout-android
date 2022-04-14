@@ -1,11 +1,12 @@
 package com.verygoodsecurity.vgscheckout.collect.core.api.client
 
+import com.verygoodsecurity.vgscheckout.collect.core.api.client.okhttp.OkHttpClient
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.NetworkRequest
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.NetworkResponse
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
-internal interface ApiClient {
+internal interface HttpClient {
 
     fun setHost(url: String?)
 

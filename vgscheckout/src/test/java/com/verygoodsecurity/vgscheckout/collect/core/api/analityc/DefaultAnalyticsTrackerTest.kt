@@ -4,8 +4,8 @@ import com.verygoodsecurity.vgscheckout.capture
 import com.verygoodsecurity.vgscheckout.collect.core.HTTPMethod
 import com.verygoodsecurity.vgscheckout.collect.core.api.VGSHttpBodyFormat
 import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.InitEvent
-import com.verygoodsecurity.vgscheckout.collect.core.api.client.ApiClient
-import com.verygoodsecurity.vgscheckout.collect.core.api.client.OkHttpClient
+import com.verygoodsecurity.vgscheckout.collect.core.api.client.HttpClient
+import com.verygoodsecurity.vgscheckout.collect.core.api.client.okhttp.OkHttpClient
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.NetworkRequest
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.NetworkResponse
 import com.verygoodsecurity.vgscheckout.collect.util.extension.toBase64
@@ -21,9 +21,9 @@ private const val ENVIRONMENT = "test_env"
 
 class DefaultAnalyticsTrackerTest {
 
-    private val mockApiClient: ApiClient = mock(OkHttpClient::class.java)
+    private val mockHttpClient: HttpClient = mock(OkHttpClient::class.java)
     private val callback: (NetworkResponse) -> Unit = {}
-    private var tracker = DefaultAnalyticsTracker(ID, ENVIRONMENT, FORM_ID, mockApiClient)
+    private var tracker = DefaultAnalyticsTracker(ID, ENVIRONMENT, FORM_ID, mockHttpClient)
 
     @Test
     fun log_analyticsEnabled_apiClientCalled() {
@@ -36,7 +36,7 @@ class DefaultAnalyticsTrackerTest {
         // Act
         tracker.log(event)
         // Assert
-        verify(mockApiClient, times(1)).enqueue(
+        verify(mockHttpClient, times(1)).enqueue(
             capture(networkRequestCaptor),
             capture(callbackCaptor)
         )
@@ -54,7 +54,7 @@ class DefaultAnalyticsTrackerTest {
         // Act
         tracker.log(event)
         // Assert
-        verify(mockApiClient, never()).enqueue(
+        verify(mockHttpClient, never()).enqueue(
             capture(networkRequestCaptor),
             capture(callbackCaptor)
         )
@@ -82,7 +82,7 @@ class DefaultAnalyticsTrackerTest {
         // Act
         tracker.log(event)
         // Assert
-        verify(mockApiClient, times(1)).enqueue(
+        verify(mockHttpClient, times(1)).enqueue(
             capture(networkRequestCaptor),
             capture(callbackCaptor)
         )
