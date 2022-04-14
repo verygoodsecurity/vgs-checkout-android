@@ -23,7 +23,7 @@ import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
  * validation event should be send.
  */
 @Suppress("MemberVisibilityCanBePrivate", "CanBeParameter")
-internal class VGSCheckoutAddCardConfig private constructor(
+class VGSCheckoutAddCardConfig private constructor(
     internal val accessToken: String,
     val tenantId: String,
     override val environment: VGSCheckoutEnvironment,
