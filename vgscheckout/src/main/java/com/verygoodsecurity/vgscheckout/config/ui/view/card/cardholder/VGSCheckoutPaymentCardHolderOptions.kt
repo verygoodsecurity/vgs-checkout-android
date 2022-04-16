@@ -10,7 +10,7 @@ import kotlinx.parcelize.Parcelize
  * @param fieldName text to be used for data transfer to VGS proxy.
  */
 @Parcelize
-internal class VGSCheckoutPaymentCardHolderOptions private constructor(
+class VGSCheckoutPaymentCardHolderOptions private constructor(
     override val fieldName: String
 ) : CardHolderOptions() {
 
