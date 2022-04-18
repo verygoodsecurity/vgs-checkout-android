@@ -2,7 +2,7 @@ package com.verygoodsecurity.vgscheckout.collect.core.analytic
 
 import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgscheckout.collect.core.HTTPMethod
-import com.verygoodsecurity.vgscheckout.collect.core.api.VGSHttpBodyFormat
+import com.verygoodsecurity.vgscheckout.collect.core.api.HttpBodyFormat
 import com.verygoodsecurity.vgscheckout.collect.core.analytic.event.core.Event
 import com.verygoodsecurity.vgscheckout.collect.core.api.client.HttpClient
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.HttpRequest
@@ -38,7 +38,7 @@ internal class DefaultAnalyticsTracker @VisibleForTesting(otherwise = VisibleFor
                 url = API_URL,
                 headers = emptyMap(),
                 payload = payload,
-                format = VGSHttpBodyFormat.X_WWW_FORM_URLENCODED,
+                format = HttpBodyFormat.X_WWW_FORM_URLENCODED,
             )
         )
     }

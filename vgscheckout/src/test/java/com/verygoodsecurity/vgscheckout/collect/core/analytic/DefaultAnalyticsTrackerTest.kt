@@ -2,7 +2,7 @@ package com.verygoodsecurity.vgscheckout.collect.core.analytic
 
 import com.verygoodsecurity.vgscheckout.capture
 import com.verygoodsecurity.vgscheckout.collect.core.HTTPMethod
-import com.verygoodsecurity.vgscheckout.collect.core.api.VGSHttpBodyFormat
+import com.verygoodsecurity.vgscheckout.collect.core.api.HttpBodyFormat
 import com.verygoodsecurity.vgscheckout.collect.core.analytic.event.InitEvent
 import com.verygoodsecurity.vgscheckout.collect.core.api.client.HttpClient
 import com.verygoodsecurity.vgscheckout.collect.core.api.client.okhttp.OkHttpClient
@@ -70,7 +70,7 @@ class DefaultAnalyticsTrackerTest {
             url = "https://vgs-collect-keeper.apps.verygood.systems/vgs",
             headers = emptyMap(),
             payload = payload,
-            format = VGSHttpBodyFormat.X_WWW_FORM_URLENCODED,
+            format = HttpBodyFormat.X_WWW_FORM_URLENCODED,
             timeoutInterval = 60_000L
         )
         val httpRequestCaptor: ArgumentCaptor<HttpRequest> =

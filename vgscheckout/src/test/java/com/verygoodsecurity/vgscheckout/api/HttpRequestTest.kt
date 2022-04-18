@@ -1,7 +1,7 @@
 package com.verygoodsecurity.vgscheckout.api
 
 import com.verygoodsecurity.vgscheckout.collect.core.HTTPMethod
-import com.verygoodsecurity.vgscheckout.collect.core.api.VGSHttpBodyFormat
+import com.verygoodsecurity.vgscheckout.collect.core.api.HttpBodyFormat
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.*
 import com.verygoodsecurity.vgscheckout.util.extension.toVGSResponse
 import org.junit.Assert.assertEquals
@@ -64,7 +64,7 @@ class HttpRequestTest {
             "{}",
             emptyMap(),
             METHOD,
-            VGSHttpBodyFormat.JSON,
+            HttpBodyFormat.JSON,
             60000L
         )
 

@@ -1,7 +1,7 @@
 package com.verygoodsecurity.vgscheckout.collect.core.api.client.okhttp
 
 import com.verygoodsecurity.vgscheckout.collect.core.HTTPMethod
-import com.verygoodsecurity.vgscheckout.collect.core.api.VGSHttpBodyFormat
+import com.verygoodsecurity.vgscheckout.collect.core.api.HttpBodyFormat
 import com.verygoodsecurity.vgscheckout.collect.core.api.client.HttpClient
 import com.verygoodsecurity.vgscheckout.collect.core.api.client.okhttp.interceptor.CustomHostnameInterceptor
 import com.verygoodsecurity.vgscheckout.collect.core.api.client.okhttp.interceptor.LoggingInterceptor
@@ -142,7 +142,7 @@ internal class OkHttpClient(
         method: HTTPMethod,
         headers: Map<String, String>?,
         data: Any?,
-        contentType: VGSHttpBodyFormat = VGSHttpBodyFormat.JSON
+        contentType: HttpBodyFormat = HttpBodyFormat.JSON
     ): Request {
         val mediaType = contentType.toContentType().toMediaTypeOrNull()
         val requestBody = data?.toString().toRequestBodyOrNull(mediaType, method)

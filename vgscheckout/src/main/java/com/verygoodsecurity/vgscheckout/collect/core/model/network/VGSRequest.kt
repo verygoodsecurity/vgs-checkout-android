@@ -1,7 +1,7 @@
 package com.verygoodsecurity.vgscheckout.collect.core.model.network
 
 import com.verygoodsecurity.vgscheckout.collect.core.HTTPMethod
-import com.verygoodsecurity.vgscheckout.collect.core.api.VGSHttpBodyFormat
+import com.verygoodsecurity.vgscheckout.collect.core.api.HttpBodyFormat
 import com.verygoodsecurity.vgscheckout.collect.core.model.VGSCollectFieldNameMappingPolicy
 import com.verygoodsecurity.vgscheckout.collect.util.extension.concatWithSlash
 import com.verygoodsecurity.vgscheckout.collect.util.extension.toJSON
@@ -27,7 +27,7 @@ internal data class VGSRequest private constructor(
     val customData: Map<String, Any>,
     val fieldsIgnore: Boolean,
     val fileIgnore: Boolean,
-    val format: VGSHttpBodyFormat,
+    val format: HttpBodyFormat,
     val fieldNameMappingPolicy: VGSCollectFieldNameMappingPolicy,
     val requestTimeoutInterval: Long,
 ) {
@@ -42,7 +42,7 @@ internal data class VGSRequest private constructor(
         private val customHeader: HashMap<String, String> = HashMap()
         private val customData: HashMap<String, Any> = HashMap()
         private var fieldsIgnore: Boolean = false
-        private var format: VGSHttpBodyFormat = VGSHttpBodyFormat.JSON
+        private var format: HttpBodyFormat = HttpBodyFormat.JSON
         private var fileIgnore: Boolean = false
         private var fieldNameMappingPolicy: VGSCollectFieldNameMappingPolicy = VGSCollectFieldNameMappingPolicy.NESTED_JSON
         private var requestTimeoutInterval: Long = DEFAULT_CONNECTION_TIME_OUT
@@ -142,7 +142,7 @@ internal data class VGSRequest private constructor(
             return this
         }
 
-        internal fun setFormat(format: VGSHttpBodyFormat): VGSRequestBuilder {
+        internal fun setFormat(format: HttpBodyFormat): VGSRequestBuilder {
             this.format = format
             return this
         }
