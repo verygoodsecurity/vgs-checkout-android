@@ -19,11 +19,11 @@ class MapperKtTest {
     @Test
     fun toCollectHTTPMethod_mappedCorrectly() {
         // Assert
-        assertEquals(VGSCheckoutHttpMethod.POST.toCollectHttpMethod(), HttpMethod.POST)
-        assertEquals(VGSCheckoutHttpMethod.DELETE.toCollectHttpMethod(), HttpMethod.DELETE)
-        assertEquals(VGSCheckoutHttpMethod.GET.toCollectHttpMethod(), HttpMethod.GET)
-        assertEquals(VGSCheckoutHttpMethod.PATCH.toCollectHttpMethod(), HttpMethod.PATCH)
-        assertEquals(VGSCheckoutHttpMethod.PUT.toCollectHttpMethod(), HttpMethod.PUT)
+        assertEquals(VGSCheckoutHttpMethod.POST.toInternal(), HttpMethod.POST)
+        assertEquals(VGSCheckoutHttpMethod.DELETE.toInternal(), HttpMethod.DELETE)
+        assertEquals(VGSCheckoutHttpMethod.GET.toInternal(), HttpMethod.GET)
+        assertEquals(VGSCheckoutHttpMethod.PATCH.toInternal(), HttpMethod.PATCH)
+        assertEquals(VGSCheckoutHttpMethod.PUT.toInternal(), HttpMethod.PUT)
     }
 
     @Test

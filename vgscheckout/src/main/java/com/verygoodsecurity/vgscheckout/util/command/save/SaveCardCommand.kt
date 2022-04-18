@@ -1,16 +1,16 @@
 package com.verygoodsecurity.vgscheckout.util.command.save
 
-import com.verygoodsecurity.vgscheckout.collect.core.model.network.HttpRequest
 import com.verygoodsecurity.vgscheckout.collect.util.extension.concatWithSlash
 import com.verygoodsecurity.vgscheckout.collect.util.extension.deepMerge
 import com.verygoodsecurity.vgscheckout.collect.util.extension.toFlatMap
 import com.verygoodsecurity.vgscheckout.config.networking.core.CheckoutRouteConfig
 import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutAddCardResponse
+import com.verygoodsecurity.vgscheckout.networking.client.HttpRequest
 import com.verygoodsecurity.vgscheckout.util.command.NetworkingCommand
 import com.verygoodsecurity.vgscheckout.util.command.Result
 import com.verygoodsecurity.vgscheckout.util.command.VGSCheckoutCancellable
-import com.verygoodsecurity.vgscheckout.util.extension.toCollectHttpMethod
 import com.verygoodsecurity.vgscheckout.util.extension.toCollectMergePolicy
+import com.verygoodsecurity.vgscheckout.util.extension.toInternal
 
 internal class SaveCardCommand :
     NetworkingCommand<SaveCardCommand.Params, Result<VGSCheckoutAddCardResponse>>(),
@@ -40,7 +40,7 @@ internal class SaveCardCommand :
         val url = params.baseUrl concatWithSlash params.config.path
         val payload = generatePayload(params)
         val headers = params.config.requestOptions.extraHeaders
-        val method = params.config.requestOptions.httpMethod.toCollectHttpMethod()
+        val method = params.config.requestOptions.httpMethod.toInternal()
         return HttpRequest(url, payload, headers, method)
     }
 

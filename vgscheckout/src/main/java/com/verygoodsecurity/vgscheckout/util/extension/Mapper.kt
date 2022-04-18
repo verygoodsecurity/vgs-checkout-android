@@ -23,7 +23,7 @@ internal fun VGSCheckoutResultBundle.toCheckoutResult(isSuccessful: Boolean) = i
     VGSCheckoutResult.Failed(this)
 }
 
-internal fun VGSCheckoutHttpMethod.toCollectHttpMethod() = when (this) {
+internal fun VGSCheckoutHttpMethod.toInternal() = when (this) {
     VGSCheckoutHttpMethod.POST -> HttpMethod.POST
     VGSCheckoutHttpMethod.DELETE -> HttpMethod.DELETE
     VGSCheckoutHttpMethod.GET -> HttpMethod.GET
