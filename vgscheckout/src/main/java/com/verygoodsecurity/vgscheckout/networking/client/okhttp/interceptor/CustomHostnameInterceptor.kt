@@ -4,7 +4,9 @@ import okhttp3.Interceptor
 import okhttp3.Response
 
 internal class CustomHostnameInterceptor : Interceptor {
+
     var host: String? = null
+
     override fun intercept(chain: Interceptor.Chain): Response {
         val r = with(chain.request()) {
             if (!host.isNullOrBlank() && host != url.host) {
@@ -20,7 +22,6 @@ internal class CustomHostnameInterceptor : Interceptor {
                 this
             }
         }
-
         return chain.proceed(r)
     }
 }
