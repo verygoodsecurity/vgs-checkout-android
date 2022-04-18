@@ -26,7 +26,6 @@ import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
 import com.verygoodsecurity.vgscheckout.collect.view.card.validation.rules.VGSInfoRule
 import com.verygoodsecurity.vgscheckout.collect.widget.VGSCountryEditText
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
-import com.verygoodsecurity.vgscheckout.config.VGSCheckoutPaymentConfig
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.config.networking.core.VGSCheckoutHostnamePolicy
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.AddressOptions
@@ -38,7 +37,6 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.CardHolde
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.CardNumberOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.CVCOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.ExpirationDateOptions
-import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutAddCardResponse
 import com.verygoodsecurity.vgscheckout.ui.fragment.core.BaseFragment
@@ -376,21 +374,7 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
 
     private fun handleAddCardResponse(response: VGSCheckoutAddCardResponse) {
         resultBundle.putAddCardResponse(response)
-        with(config) {
-            if (response.isSuccessful && this is VGSCheckoutPaymentConfig) {
-                try {
-                    createTransaction(
-                        response.getFinancialInstrumentId(),
-                        paymentInfo.amount,
-                        paymentInfo.currency,
-                    )
-                } catch (e: VGSCheckoutException) {
-                    finishWithResult(VGSCheckoutResult.Failed(resultBundle, e))
-                }
-            } else {
-                finishWithResult(resultBundle.toCheckoutResult(response.isSuccessful))
-            }
-        }
+        finishWithResult(resultBundle.toCheckoutResult(response.isSuccessful))
     }
 
     private fun setIsLoading(isLoading: Boolean) {
