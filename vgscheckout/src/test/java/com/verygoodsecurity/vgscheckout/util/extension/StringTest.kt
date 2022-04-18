@@ -1,9 +1,9 @@
 package com.verygoodsecurity.vgscheckout.util.extension
 
-import com.verygoodsecurity.vgscheckout.collect.core.networking.equalsUrl
-import com.verygoodsecurity.vgscheckout.collect.core.networking.toHost
-import com.verygoodsecurity.vgscheckout.collect.core.networking.toHostnameValidationUrl
-import com.verygoodsecurity.vgscheckout.collect.core.networking.toHttps
+import com.verygoodsecurity.vgscheckout.networking.equalsUrl
+import com.verygoodsecurity.vgscheckout.networking.toHost
+import com.verygoodsecurity.vgscheckout.networking.toHostnameValidationUrl
+import com.verygoodsecurity.vgscheckout.networking.toHttps
 import com.verygoodsecurity.vgscheckout.collect.util.extension.concatWithDash
 import com.verygoodsecurity.vgscheckout.collect.util.extension.concatWithSlash
 import org.junit.Assert.*

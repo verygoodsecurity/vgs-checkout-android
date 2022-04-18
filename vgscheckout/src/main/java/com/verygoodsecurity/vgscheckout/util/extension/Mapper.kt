@@ -1,7 +1,7 @@
 package com.verygoodsecurity.vgscheckout.util.extension
 
 import com.verygoodsecurity.vgscheckout.collect.core.model.VGSCollectFieldNameMappingPolicy
-import com.verygoodsecurity.vgscheckout.collect.core.networking.client.HttpMethod
+import com.verygoodsecurity.vgscheckout.networking.client.HttpMethod
 import com.verygoodsecurity.vgscheckout.collect.util.extension.toCardBrand
 import com.verygoodsecurity.vgscheckout.collect.view.card.BrandParams
 import com.verygoodsecurity.vgscheckout.collect.view.card.CardBrand

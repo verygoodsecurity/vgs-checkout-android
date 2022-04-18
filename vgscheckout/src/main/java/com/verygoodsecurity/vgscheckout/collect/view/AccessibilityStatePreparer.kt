@@ -1,7 +1,7 @@
 package com.verygoodsecurity.vgscheckout.collect.view
 
 import android.view.View
-import com.verygoodsecurity.vgscheckout.collect.core.analytic.AnalyticTracker
+import com.verygoodsecurity.vgscheckout.analytic.AnalyticTracker
 import com.verygoodsecurity.vgscheckout.collect.core.storage.DependencyListener
 
 /** @suppress */

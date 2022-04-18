@@ -1,10 +1,10 @@
 package com.verygoodsecurity.vgscheckout
 
 import com.verygoodsecurity.vgscheckout.collect.core.Environment
-import com.verygoodsecurity.vgscheckout.collect.core.networking.isEnvironmentValid
-import com.verygoodsecurity.vgscheckout.collect.core.networking.isTennantIdValid
-import com.verygoodsecurity.vgscheckout.collect.core.networking.isURLValid
-import com.verygoodsecurity.vgscheckout.collect.core.networking.setupURL
+import com.verygoodsecurity.vgscheckout.networking.isEnvironmentValid
+import com.verygoodsecurity.vgscheckout.networking.isTennantIdValid
+import com.verygoodsecurity.vgscheckout.networking.isURLValid
+import com.verygoodsecurity.vgscheckout.networking.setupURL
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test

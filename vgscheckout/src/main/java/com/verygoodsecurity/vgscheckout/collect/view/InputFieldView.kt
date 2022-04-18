@@ -25,7 +25,7 @@ import androidx.annotation.RequiresApi
 import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.core.OnVgsViewStateChangeListener
-import com.verygoodsecurity.vgscheckout.collect.core.analytic.AnalyticTracker
+import com.verygoodsecurity.vgscheckout.analytic.AnalyticTracker
 import com.verygoodsecurity.vgscheckout.collect.core.model.state.FieldState
 import com.verygoodsecurity.vgscheckout.collect.core.storage.DependencyListener
 import com.verygoodsecurity.vgscheckout.collect.core.storage.OnFieldStateChangeListener

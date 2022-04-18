@@ -4,7 +4,7 @@ import com.verygoodsecurity.vgscheckout.config.networking.request.core.VGSChecko
 import com.verygoodsecurity.vgscheckout.config.networking.request.core.VGSCheckoutHttpMethod
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.model.VGSCheckoutCardBrand
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.model.VGSCheckoutChecksumAlgorithm
-import com.verygoodsecurity.vgscheckout.collect.core.networking.client.HttpMethod
+import com.verygoodsecurity.vgscheckout.networking.client.HttpMethod
 import com.verygoodsecurity.vgscheckout.collect.core.model.VGSCollectFieldNameMappingPolicy
 import com.verygoodsecurity.vgscheckout.collect.view.card.BrandParams
 import com.verygoodsecurity.vgscheckout.collect.view.card.CardBrand

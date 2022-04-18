@@ -1,7 +1,7 @@
 package com.verygoodsecurity.vgscheckout.ui
 
 import android.os.Bundle
-import com.verygoodsecurity.vgscheckout.collect.core.analytic.event.InitEvent
+import com.verygoodsecurity.vgscheckout.analytic.event.InitEvent
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
 import com.verygoodsecurity.vgscheckout.ui.core.BaseCheckoutActivity
 

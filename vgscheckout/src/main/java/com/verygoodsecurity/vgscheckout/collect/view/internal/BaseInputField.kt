@@ -13,8 +13,8 @@ import androidx.core.widget.addTextChangedListener
 import com.google.android.material.textfield.TextInputEditText
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.core.OnVgsViewStateChangeListener
-import com.verygoodsecurity.vgscheckout.collect.core.analytic.AnalyticTracker
-import com.verygoodsecurity.vgscheckout.collect.core.analytic.event.AutofillEvent
+import com.verygoodsecurity.vgscheckout.analytic.AnalyticTracker
+import com.verygoodsecurity.vgscheckout.analytic.event.AutofillEvent
 import com.verygoodsecurity.vgscheckout.collect.core.model.state.*
 import com.verygoodsecurity.vgscheckout.collect.core.storage.DependencyListener
 import com.verygoodsecurity.vgscheckout.collect.core.storage.DependencyType
