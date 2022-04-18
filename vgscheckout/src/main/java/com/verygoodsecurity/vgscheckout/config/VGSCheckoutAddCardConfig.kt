@@ -101,6 +101,7 @@ class VGSCheckoutAddCardConfig private constructor(
         parcel.writeParcelable(formConfig, flags)
         parcel.writeInt(if (isScreenshotsAllowed) 1 else 0)
         parcel.writeInt(if (isAnalyticsEnabled) 1 else 0)
+        parcel.writeList(savedCards)
     }
 
     override fun describeContents(): Int {
