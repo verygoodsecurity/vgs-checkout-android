@@ -9,9 +9,8 @@ import com.verygoodsecurity.vgscheckout.collect.util.extension.isConnectionAvail
 import com.verygoodsecurity.vgscheckout.model.response.core.VGSCheckoutResponse
 import com.verygoodsecurity.vgscheckout.networking.client.HttpClient
 
-internal abstract class NetworkingCommand<P, R : VGSCheckoutResponse> constructor(
-    private val context: Context
-) : VGSCheckoutCancellable {
+internal abstract class Command<P, R : VGSCheckoutResponse> constructor(private val context: Context) :
+    Cancellable {
 
     protected val client = HttpClient.create(false)
 

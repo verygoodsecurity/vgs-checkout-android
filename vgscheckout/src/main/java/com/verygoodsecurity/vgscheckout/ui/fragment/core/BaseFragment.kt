@@ -19,7 +19,7 @@ import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResultBundle
 import com.verygoodsecurity.vgscheckout.ui.core.NavigationHandler
 import com.verygoodsecurity.vgscheckout.ui.core.ToolbarHandler
 import com.verygoodsecurity.vgscheckout.ui.fragment.save.SaveCardFragment
-import com.verygoodsecurity.vgscheckout.networking.command.VGSCheckoutCancellable
+import com.verygoodsecurity.vgscheckout.networking.command.Cancellable
 import com.verygoodsecurity.vgscheckout.util.extension.requireParcelable
 
 internal abstract class BaseFragment<C : CheckoutConfig> : Fragment {
@@ -36,7 +36,7 @@ internal abstract class BaseFragment<C : CheckoutConfig> : Fragment {
 
     protected val resultBundle = VGSCheckoutResultBundle()
 
-    private var transactionRequest: VGSCheckoutCancellable? = null
+    private var transactionRequest: Cancellable? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

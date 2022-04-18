@@ -7,12 +7,12 @@ import com.verygoodsecurity.vgscheckout.collect.util.extension.toFlatMap
 import com.verygoodsecurity.vgscheckout.config.networking.core.CheckoutRouteConfig
 import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutAddCardResponse
 import com.verygoodsecurity.vgscheckout.networking.client.HttpRequest
-import com.verygoodsecurity.vgscheckout.networking.command.NetworkingCommand
+import com.verygoodsecurity.vgscheckout.networking.command.Command
 import com.verygoodsecurity.vgscheckout.util.extension.toCollectMergePolicy
 import com.verygoodsecurity.vgscheckout.util.extension.toInternal
 
 internal class AddCardCommand constructor(context: Context) :
-    NetworkingCommand<AddCardCommand.Params, VGSCheckoutAddCardResponse>(context) {
+    Command<AddCardCommand.Params, VGSCheckoutAddCardResponse>(context) {
 
     override fun run(
         params: Params,
