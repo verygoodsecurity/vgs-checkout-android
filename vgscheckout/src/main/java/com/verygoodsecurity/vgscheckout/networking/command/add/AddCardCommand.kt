@@ -1,5 +1,6 @@
 package com.verygoodsecurity.vgscheckout.networking.command.add
 
+import android.content.Context
 import com.verygoodsecurity.vgscheckout.collect.util.extension.concatWithSlash
 import com.verygoodsecurity.vgscheckout.collect.util.extension.deepMerge
 import com.verygoodsecurity.vgscheckout.collect.util.extension.toFlatMap
@@ -7,18 +8,16 @@ import com.verygoodsecurity.vgscheckout.config.networking.core.CheckoutRouteConf
 import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutAddCardResponse
 import com.verygoodsecurity.vgscheckout.networking.client.HttpRequest
 import com.verygoodsecurity.vgscheckout.networking.command.NetworkingCommand
-import com.verygoodsecurity.vgscheckout.networking.command.VGSCheckoutCancellable
 import com.verygoodsecurity.vgscheckout.util.extension.toCollectMergePolicy
 import com.verygoodsecurity.vgscheckout.util.extension.toInternal
 
-internal class AddCardCommand :
-    NetworkingCommand<AddCardCommand.Params, VGSCheckoutAddCardResponse>(),
-    VGSCheckoutCancellable {
+internal class AddCardCommand constructor(context: Context) :
+    NetworkingCommand<AddCardCommand.Params, VGSCheckoutAddCardResponse>(context) {
 
     override fun run(
         params: Params,
         onResult: (VGSCheckoutAddCardResponse) -> Unit
-    ): VGSCheckoutCancellable {
+    ) {
         client.enqueue(createRequest(params)) {
             onResult.invoke(
                 VGSCheckoutAddCardResponse(
@@ -30,7 +29,6 @@ internal class AddCardCommand :
                 )
             )
         }
-        return this
     }
 
     private fun createRequest(params: Params): HttpRequest {

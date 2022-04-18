@@ -315,25 +315,14 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
 
     private fun saveCard() {
         setIsLoading(true)
-        with(config.getBaseUrl(requireContext())) {
-            // TODO: Handle commented code in correct place
-//            when {
-//                !isURLValid() -> onResponse(VGSError.URL_NOT_VALID.toVGSResponse())
-//                !requireActivity().hasInternetPermission() -> onResponse(VGSError.NO_INTERNET_PERMISSIONS.toVGSResponse())
-//                !requireActivity().hasAccessNetworkStatePermission() -> onResponse(VGSError.NO_NETWORK_CONNECTIONS.toVGSResponse())
-//                !requireActivity().isConnectionAvailable() -> onResponse(VGSError.NO_NETWORK_CONNECTIONS.toVGSResponse())
-//                else -> {
-            AddCardCommand().execute(
-                AddCardCommand.Params(
-                    this,
-                    config.routeConfig,
-                    inputFieldsStorage.getAssociatedList()
-                ),
-                ::handleAddCardResponse
-            )
-        }
-//            }
-//        }
+        AddCardCommand(requireContext()).execute(
+            AddCardCommand.Params(
+                config.getBaseUrl(requireContext()),
+                config.routeConfig,
+                inputFieldsStorage.getAssociatedList()
+            ),
+            ::handleAddCardResponse
+        )
     }
 
     private fun handleAddCardResponse(response: VGSCheckoutAddCardResponse) {
