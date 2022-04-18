@@ -31,13 +31,11 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.CardHolde
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.CardNumberOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.CVCOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.ExpirationDateOptions
-import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutAddCardResponse
+import com.verygoodsecurity.vgscheckout.networking.command.add.AddCardCommand
 import com.verygoodsecurity.vgscheckout.ui.fragment.core.BaseFragment
 import com.verygoodsecurity.vgscheckout.ui.fragment.save.binding.SaveCardViewBindingHelper
 import com.verygoodsecurity.vgscheckout.ui.fragment.save.validation.ValidationManager
-import com.verygoodsecurity.vgscheckout.util.command.Result
-import com.verygoodsecurity.vgscheckout.util.command.save.SaveCardCommand
 import com.verygoodsecurity.vgscheckout.util.country.model.Country
 import com.verygoodsecurity.vgscheckout.util.country.model.PostalCodeType
 import com.verygoodsecurity.vgscheckout.util.extension.*
@@ -325,23 +323,14 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
 //                !requireActivity().hasAccessNetworkStatePermission() -> onResponse(VGSError.NO_NETWORK_CONNECTIONS.toVGSResponse())
 //                !requireActivity().isConnectionAvailable() -> onResponse(VGSError.NO_NETWORK_CONNECTIONS.toVGSResponse())
 //                else -> {
-            SaveCardCommand().execute(
-                SaveCardCommand.Params(
+            AddCardCommand().execute(
+                AddCardCommand.Params(
                     this,
                     config.routeConfig,
                     inputFieldsStorage.getAssociatedList()
-                )
-            ) {
-                when (it) {
-                    is Result.Success -> handleAddCardResponse(it.data)
-                    is Result.Error -> finishWithResult(
-                        VGSCheckoutResult.Failed(
-                            resultBundle,
-                            it.e
-                        )
-                    )
-                }
-            }
+                ),
+                ::handleAddCardResponse
+            )
         }
 //            }
 //        }

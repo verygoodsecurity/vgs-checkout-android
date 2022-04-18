@@ -1,10 +1,11 @@
-package com.verygoodsecurity.vgscheckout.util.command
+package com.verygoodsecurity.vgscheckout.networking.command
 
 import android.os.Handler
 import android.os.Looper
+import com.verygoodsecurity.vgscheckout.model.response.core.VGSCheckoutResponse
 import com.verygoodsecurity.vgscheckout.networking.client.HttpClient
 
-internal abstract class NetworkingCommand<P, R : Result<*>> : VGSCheckoutCancellable {
+internal abstract class NetworkingCommand<P, R : VGSCheckoutResponse> : VGSCheckoutCancellable {
 
     protected val client = HttpClient.create(false)
 

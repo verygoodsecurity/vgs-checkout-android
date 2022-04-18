@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscheckout.util.command.save
+package com.verygoodsecurity.vgscheckout.networking.command.add
 
 import com.verygoodsecurity.vgscheckout.collect.util.extension.concatWithSlash
 import com.verygoodsecurity.vgscheckout.collect.util.extension.deepMerge
@@ -6,30 +6,27 @@ import com.verygoodsecurity.vgscheckout.collect.util.extension.toFlatMap
 import com.verygoodsecurity.vgscheckout.config.networking.core.CheckoutRouteConfig
 import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutAddCardResponse
 import com.verygoodsecurity.vgscheckout.networking.client.HttpRequest
-import com.verygoodsecurity.vgscheckout.util.command.NetworkingCommand
-import com.verygoodsecurity.vgscheckout.util.command.Result
-import com.verygoodsecurity.vgscheckout.util.command.VGSCheckoutCancellable
+import com.verygoodsecurity.vgscheckout.networking.command.NetworkingCommand
+import com.verygoodsecurity.vgscheckout.networking.command.VGSCheckoutCancellable
 import com.verygoodsecurity.vgscheckout.util.extension.toCollectMergePolicy
 import com.verygoodsecurity.vgscheckout.util.extension.toInternal
 
-internal class SaveCardCommand :
-    NetworkingCommand<SaveCardCommand.Params, Result<VGSCheckoutAddCardResponse>>(),
+internal class AddCardCommand :
+    NetworkingCommand<AddCardCommand.Params, VGSCheckoutAddCardResponse>(),
     VGSCheckoutCancellable {
 
     override fun run(
         params: Params,
-        onResult: (Result<VGSCheckoutAddCardResponse>) -> Unit
+        onResult: (VGSCheckoutAddCardResponse) -> Unit
     ): VGSCheckoutCancellable {
         client.enqueue(createRequest(params)) {
             onResult.invoke(
-                Result.Success(
-                    VGSCheckoutAddCardResponse(
-                        it.isSuccessful,
-                        it.code,
-                        it.body,
-                        it.message,
-                        it.latency
-                    )
+                VGSCheckoutAddCardResponse(
+                    it.isSuccessful,
+                    it.code,
+                    it.body,
+                    it.message,
+                    it.latency
                 )
             )
         }
