@@ -7,7 +7,7 @@ import com.verygoodsecurity.vgscheckout.collect.core.analytic.event.InitEvent
 import com.verygoodsecurity.vgscheckout.collect.core.networking.client.HttpClient
 import com.verygoodsecurity.vgscheckout.collect.core.networking.client.okhttp.OkHttpClient
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.HttpRequest
-import com.verygoodsecurity.vgscheckout.collect.core.model.network.HttpResponse
+import com.verygoodsecurity.vgscheckout.collect.core.networking.client.HttpResponse
 import com.verygoodsecurity.vgscheckout.collect.util.extension.toBase64
 import com.verygoodsecurity.vgscheckout.collect.util.extension.toJSON
 import org.junit.Assert.assertEquals

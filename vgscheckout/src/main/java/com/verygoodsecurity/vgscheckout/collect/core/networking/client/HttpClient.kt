@@ -1,8 +1,6 @@
 package com.verygoodsecurity.vgscheckout.collect.core.networking.client
 
 import com.verygoodsecurity.vgscheckout.collect.core.networking.client.okhttp.OkHttpClient
-import com.verygoodsecurity.vgscheckout.collect.core.model.network.HttpRequest
-import com.verygoodsecurity.vgscheckout.collect.core.model.network.HttpResponse
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 

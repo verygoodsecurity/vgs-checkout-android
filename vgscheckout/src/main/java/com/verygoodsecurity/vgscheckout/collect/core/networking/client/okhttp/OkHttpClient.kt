@@ -1,15 +1,15 @@
 package com.verygoodsecurity.vgscheckout.collect.core.networking.client.okhttp
 
-import com.verygoodsecurity.vgscheckout.collect.core.networking.client.HttpMethod
-import com.verygoodsecurity.vgscheckout.collect.core.networking.client.HttpBodyFormat
-import com.verygoodsecurity.vgscheckout.collect.core.networking.client.HttpClient
 import com.verygoodsecurity.vgscheckout.collect.core.networking.client.okhttp.interceptor.CustomHostnameInterceptor
 import com.verygoodsecurity.vgscheckout.collect.core.networking.client.okhttp.interceptor.LoggingInterceptor
-import com.verygoodsecurity.vgscheckout.collect.core.networking.isURLValid
 import com.verygoodsecurity.vgscheckout.collect.core.networking.toHost
-import com.verygoodsecurity.vgscheckout.collect.core.model.network.HttpRequest
-import com.verygoodsecurity.vgscheckout.collect.core.model.network.HttpResponse
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSError
+import com.verygoodsecurity.vgscheckout.collect.core.networking.client.HttpBodyFormat
+import com.verygoodsecurity.vgscheckout.collect.core.networking.client.HttpClient
+import com.verygoodsecurity.vgscheckout.collect.core.networking.client.HttpMethod
+import com.verygoodsecurity.vgscheckout.collect.core.networking.client.HttpRequest
+import com.verygoodsecurity.vgscheckout.collect.core.networking.client.HttpResponse
+import com.verygoodsecurity.vgscheckout.collect.core.networking.isURLValid
 import com.verygoodsecurity.vgscheckout.util.logger.VGSCheckoutLogger
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull

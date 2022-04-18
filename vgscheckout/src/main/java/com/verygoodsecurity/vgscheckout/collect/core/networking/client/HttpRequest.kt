@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscheckout.collect.core.model.network
+package com.verygoodsecurity.vgscheckout.collect.core.networking.client
 
 import com.verygoodsecurity.vgscheckout.collect.core.networking.client.HttpMethod
 import com.verygoodsecurity.vgscheckout.collect.core.networking.client.HttpBodyFormat

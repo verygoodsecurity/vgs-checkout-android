@@ -1,4 +1,6 @@
-package com.verygoodsecurity.vgscheckout.collect.core.model.network
+package com.verygoodsecurity.vgscheckout.collect.core.networking.client
+
+import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSError
 
 internal data class HttpResponse(
     val isSuccessful: Boolean = false,
