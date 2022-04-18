@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscheckout.collect.core
+package com.verygoodsecurity.vgscheckout.collect.core.networking.client
 
 /**
  *  The set of common methods for HTTP.

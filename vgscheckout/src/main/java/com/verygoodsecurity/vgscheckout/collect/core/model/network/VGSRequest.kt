@@ -1,7 +1,7 @@
 package com.verygoodsecurity.vgscheckout.collect.core.model.network
 
-import com.verygoodsecurity.vgscheckout.collect.core.HttpMethod
-import com.verygoodsecurity.vgscheckout.collect.core.api.HttpBodyFormat
+import com.verygoodsecurity.vgscheckout.collect.core.networking.client.HttpMethod
+import com.verygoodsecurity.vgscheckout.collect.core.networking.client.HttpBodyFormat
 import com.verygoodsecurity.vgscheckout.collect.core.model.VGSCollectFieldNameMappingPolicy
 import com.verygoodsecurity.vgscheckout.collect.util.extension.concatWithSlash
 import com.verygoodsecurity.vgscheckout.collect.util.extension.toJSON

@@ -2,7 +2,7 @@ package com.verygoodsecurity.vgscheckout.util.command
 
 import android.os.Handler
 import android.os.Looper
-import com.verygoodsecurity.vgscheckout.collect.core.api.client.HttpClient
+import com.verygoodsecurity.vgscheckout.collect.core.networking.client.HttpClient
 
 internal abstract class NetworkingCommand<P, R : Result<*>> : VGSCheckoutCancellable {
 

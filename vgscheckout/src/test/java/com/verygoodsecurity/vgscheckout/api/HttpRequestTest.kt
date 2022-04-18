@@ -1,7 +1,7 @@
 package com.verygoodsecurity.vgscheckout.api
 
-import com.verygoodsecurity.vgscheckout.collect.core.HttpMethod
-import com.verygoodsecurity.vgscheckout.collect.core.api.HttpBodyFormat
+import com.verygoodsecurity.vgscheckout.collect.core.networking.client.HttpMethod
+import com.verygoodsecurity.vgscheckout.collect.core.networking.client.HttpBodyFormat
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.*
 import com.verygoodsecurity.vgscheckout.util.extension.toVGSResponse
 import org.junit.Assert.assertEquals
@@ -86,7 +86,7 @@ class HttpRequestTest {
             code = CODE
         )
 
-        val r = NetworkResponse(
+        val r = HttpResponse(
             true,
             CODE,
             BODY
@@ -107,7 +107,7 @@ class HttpRequestTest {
             CODE
         )
 
-        val r = NetworkResponse(
+        val r = HttpResponse(
             code = CODE,
             message = MESSAGE
         ).toVGSResponse() as VGSResponse.ErrorResponse

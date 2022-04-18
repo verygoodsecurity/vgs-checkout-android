@@ -1,7 +1,7 @@
 package com.verygoodsecurity.vgscheckout.collect.core.model.network
 
-import com.verygoodsecurity.vgscheckout.collect.core.HttpMethod
-import com.verygoodsecurity.vgscheckout.collect.core.api.HttpBodyFormat
+import com.verygoodsecurity.vgscheckout.collect.core.networking.client.HttpMethod
+import com.verygoodsecurity.vgscheckout.collect.core.networking.client.HttpBodyFormat
 
 private const val DEFAULT_REQUEST_TIMEOUT = 60_000L
 

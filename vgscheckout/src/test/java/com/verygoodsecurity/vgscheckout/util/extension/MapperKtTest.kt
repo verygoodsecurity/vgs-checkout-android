@@ -1,10 +1,10 @@
 package com.verygoodsecurity.vgscheckout.util.extension
 
 import com.verygoodsecurity.vgscheckout.config.networking.request.core.VGSCheckoutDataMergePolicy
-import com.verygoodsecurity.vgscheckout.config.networking.request.core.VGSCheckoutHTTPMethod
+import com.verygoodsecurity.vgscheckout.config.networking.request.core.VGSCheckoutHttpMethod
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.model.VGSCheckoutCardBrand
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.model.VGSCheckoutChecksumAlgorithm
-import com.verygoodsecurity.vgscheckout.collect.core.HttpMethod
+import com.verygoodsecurity.vgscheckout.collect.core.networking.client.HttpMethod
 import com.verygoodsecurity.vgscheckout.collect.core.model.VGSCollectFieldNameMappingPolicy
 import com.verygoodsecurity.vgscheckout.collect.view.card.BrandParams
 import com.verygoodsecurity.vgscheckout.collect.view.card.CardBrand
@@ -19,11 +19,11 @@ class MapperKtTest {
     @Test
     fun toCollectHTTPMethod_mappedCorrectly() {
         // Assert
-        assertEquals(VGSCheckoutHTTPMethod.POST.toCollectHTTPMethod(), HttpMethod.POST)
-        assertEquals(VGSCheckoutHTTPMethod.DELETE.toCollectHTTPMethod(), HttpMethod.DELETE)
-        assertEquals(VGSCheckoutHTTPMethod.GET.toCollectHTTPMethod(), HttpMethod.GET)
-        assertEquals(VGSCheckoutHTTPMethod.PATCH.toCollectHTTPMethod(), HttpMethod.PATCH)
-        assertEquals(VGSCheckoutHTTPMethod.PUT.toCollectHTTPMethod(), HttpMethod.PUT)
+        assertEquals(VGSCheckoutHttpMethod.POST.toCollectHTTPMethod(), HttpMethod.POST)
+        assertEquals(VGSCheckoutHttpMethod.DELETE.toCollectHTTPMethod(), HttpMethod.DELETE)
+        assertEquals(VGSCheckoutHttpMethod.GET.toCollectHTTPMethod(), HttpMethod.GET)
+        assertEquals(VGSCheckoutHttpMethod.PATCH.toCollectHTTPMethod(), HttpMethod.PATCH)
+        assertEquals(VGSCheckoutHttpMethod.PUT.toCollectHTTPMethod(), HttpMethod.PUT)
     }
 
     @Test

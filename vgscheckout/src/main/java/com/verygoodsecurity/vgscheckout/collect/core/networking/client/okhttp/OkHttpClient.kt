@@ -1,15 +1,14 @@
-package com.verygoodsecurity.vgscheckout.collect.core.api.client.okhttp
+package com.verygoodsecurity.vgscheckout.collect.core.networking.client.okhttp
 
-import com.verygoodsecurity.vgscheckout.collect.core.HttpMethod
-import com.verygoodsecurity.vgscheckout.collect.core.api.HttpBodyFormat
-import com.verygoodsecurity.vgscheckout.collect.core.api.client.HttpClient
-import com.verygoodsecurity.vgscheckout.collect.core.api.client.okhttp.interceptor.CustomHostnameInterceptor
-import com.verygoodsecurity.vgscheckout.collect.core.api.client.okhttp.interceptor.LoggingInterceptor
-import com.verygoodsecurity.vgscheckout.collect.core.api.isURLValid
-import com.verygoodsecurity.vgscheckout.collect.core.api.toContentType
-import com.verygoodsecurity.vgscheckout.collect.core.api.toHost
+import com.verygoodsecurity.vgscheckout.collect.core.networking.client.HttpMethod
+import com.verygoodsecurity.vgscheckout.collect.core.networking.client.HttpBodyFormat
+import com.verygoodsecurity.vgscheckout.collect.core.networking.client.HttpClient
+import com.verygoodsecurity.vgscheckout.collect.core.networking.client.okhttp.interceptor.CustomHostnameInterceptor
+import com.verygoodsecurity.vgscheckout.collect.core.networking.client.okhttp.interceptor.LoggingInterceptor
+import com.verygoodsecurity.vgscheckout.collect.core.networking.isURLValid
+import com.verygoodsecurity.vgscheckout.collect.core.networking.toHost
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.HttpRequest
-import com.verygoodsecurity.vgscheckout.collect.core.model.network.NetworkResponse
+import com.verygoodsecurity.vgscheckout.collect.core.model.network.HttpResponse
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSError
 import com.verygoodsecurity.vgscheckout.util.logger.VGSCheckoutLogger
 import okhttp3.*
@@ -44,9 +43,9 @@ internal class OkHttpClient(
         hostInterceptor.host = url?.toHost()
     }
 
-    override fun enqueue(request: HttpRequest, callback: ((NetworkResponse) -> Unit)?) {
+    override fun enqueue(request: HttpRequest, callback: ((HttpResponse) -> Unit)?) {
         if (!request.url.isURLValid()) {
-            callback?.invoke(NetworkResponse.create(VGSError.URL_NOT_VALID))
+            callback?.invoke(HttpResponse.create(VGSError.URL_NOT_VALID))
             return
         }
 
@@ -72,15 +71,15 @@ internal class OkHttpClient(
                             return
                         }
                         if (e is InterruptedIOException || e is TimeoutException) {
-                            callback?.invoke(NetworkResponse.create(VGSError.TIME_OUT))
+                            callback?.invoke(HttpResponse.create(VGSError.TIME_OUT))
                         } else {
-                            callback?.invoke(NetworkResponse(message = e.message))
+                            callback?.invoke(HttpResponse(message = e.message))
                         }
                     }
 
                     override fun onResponse(call: Call, response: Response) {
                         callback?.invoke(
-                            NetworkResponse(
+                            HttpResponse(
                                 response.isSuccessful,
                                 response.code,
                                 response.body?.string(),
@@ -92,13 +91,13 @@ internal class OkHttpClient(
                 })
         } catch (e: Exception) {
             VGSCheckoutLogger.warn(this::class.java.simpleName, e)
-            callback?.invoke(NetworkResponse(message = e.message))
+            callback?.invoke(HttpResponse(message = e.message))
         }
     }
 
-    override fun execute(request: HttpRequest): NetworkResponse {
+    override fun execute(request: HttpRequest): HttpResponse {
         if (!request.url.isURLValid()) {
-            return NetworkResponse.create(VGSError.URL_NOT_VALID)
+            return HttpResponse.create(VGSError.URL_NOT_VALID)
         }
 
         val okHttpRequest = buildRequest(
@@ -117,7 +116,7 @@ internal class OkHttpClient(
                 .build()
                 .newCall(okHttpRequest).execute()
 
-            NetworkResponse(
+            HttpResponse(
                 response.isSuccessful,
                 response.code,
                 response.body?.string(),
@@ -125,11 +124,11 @@ internal class OkHttpClient(
                 latency = response.latency()
             )
         } catch (e: InterruptedIOException) {
-            NetworkResponse.create(VGSError.TIME_OUT)
+            HttpResponse.create(VGSError.TIME_OUT)
         } catch (e: TimeoutException) {
-            NetworkResponse.create(VGSError.TIME_OUT)
+            HttpResponse.create(VGSError.TIME_OUT)
         } catch (e: IOException) {
-            NetworkResponse(message = e.message)
+            HttpResponse(message = e.message)
         }
     }
 
@@ -144,7 +143,7 @@ internal class OkHttpClient(
         data: Any?,
         contentType: HttpBodyFormat = HttpBodyFormat.JSON
     ): Request {
-        val mediaType = contentType.toContentType().toMediaTypeOrNull()
+        val mediaType = contentType.value.toMediaTypeOrNull()
         val requestBody = data?.toString().toRequestBodyOrNull(mediaType, method)
         return Request.Builder()
             .url(url)

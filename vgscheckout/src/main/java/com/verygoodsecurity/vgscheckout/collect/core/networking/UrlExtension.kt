@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscheckout.collect.core.api
+package com.verygoodsecurity.vgscheckout.collect.core.networking
 
 import androidx.core.util.PatternsCompat
 import com.verygoodsecurity.vgscheckout.util.logger.VGSCheckoutLogger

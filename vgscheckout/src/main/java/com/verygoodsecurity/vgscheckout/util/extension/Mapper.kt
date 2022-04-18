@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgscheckout.util.extension
 
-import com.verygoodsecurity.vgscheckout.collect.core.HttpMethod
+import com.verygoodsecurity.vgscheckout.collect.core.networking.client.HttpMethod
 import com.verygoodsecurity.vgscheckout.collect.core.model.VGSCollectFieldNameMappingPolicy
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscheckout.collect.util.extension.toCardBrand
@@ -10,7 +10,7 @@ import com.verygoodsecurity.vgscheckout.collect.view.card.CardType
 import com.verygoodsecurity.vgscheckout.collect.view.card.validation.payment.ChecksumAlgorithm
 import com.verygoodsecurity.vgscheckout.collect.view.core.serializers.VGSExpDateSeparateSerializer
 import com.verygoodsecurity.vgscheckout.config.networking.request.core.VGSCheckoutDataMergePolicy
-import com.verygoodsecurity.vgscheckout.config.networking.request.core.VGSCheckoutHTTPMethod
+import com.verygoodsecurity.vgscheckout.config.networking.request.core.VGSCheckoutHttpMethod
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.model.VGSCheckoutCardBrand
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.model.VGSCheckoutChecksumAlgorithm
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.model.VGSDateSeparateSerializer
@@ -32,12 +32,12 @@ internal fun VGSCheckoutResultBundle.toCheckoutResult(isSuccessful: Boolean) = i
     VGSCheckoutResult.Failed(this)
 }
 
-internal fun VGSCheckoutHTTPMethod.toCollectHTTPMethod() = when (this) {
-    VGSCheckoutHTTPMethod.POST -> HttpMethod.POST
-    VGSCheckoutHTTPMethod.DELETE -> HttpMethod.DELETE
-    VGSCheckoutHTTPMethod.GET -> HttpMethod.GET
-    VGSCheckoutHTTPMethod.PATCH -> HttpMethod.PATCH
-    VGSCheckoutHTTPMethod.PUT -> HttpMethod.PUT
+internal fun VGSCheckoutHttpMethod.toCollectHTTPMethod() = when (this) {
+    VGSCheckoutHttpMethod.POST -> HttpMethod.POST
+    VGSCheckoutHttpMethod.DELETE -> HttpMethod.DELETE
+    VGSCheckoutHttpMethod.GET -> HttpMethod.GET
+    VGSCheckoutHttpMethod.PATCH -> HttpMethod.PATCH
+    VGSCheckoutHttpMethod.PUT -> HttpMethod.PUT
 }
 
 internal fun VGSCheckoutDataMergePolicy.toCollectMergePolicy() = when (this) {

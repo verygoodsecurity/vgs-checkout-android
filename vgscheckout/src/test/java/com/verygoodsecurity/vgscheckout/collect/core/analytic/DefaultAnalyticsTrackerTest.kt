@@ -1,13 +1,13 @@
 package com.verygoodsecurity.vgscheckout.collect.core.analytic
 
 import com.verygoodsecurity.vgscheckout.capture
-import com.verygoodsecurity.vgscheckout.collect.core.HttpMethod
-import com.verygoodsecurity.vgscheckout.collect.core.api.HttpBodyFormat
+import com.verygoodsecurity.vgscheckout.collect.core.networking.client.HttpMethod
+import com.verygoodsecurity.vgscheckout.collect.core.networking.client.HttpBodyFormat
 import com.verygoodsecurity.vgscheckout.collect.core.analytic.event.InitEvent
-import com.verygoodsecurity.vgscheckout.collect.core.api.client.HttpClient
-import com.verygoodsecurity.vgscheckout.collect.core.api.client.okhttp.OkHttpClient
+import com.verygoodsecurity.vgscheckout.collect.core.networking.client.HttpClient
+import com.verygoodsecurity.vgscheckout.collect.core.networking.client.okhttp.OkHttpClient
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.HttpRequest
-import com.verygoodsecurity.vgscheckout.collect.core.model.network.NetworkResponse
+import com.verygoodsecurity.vgscheckout.collect.core.model.network.HttpResponse
 import com.verygoodsecurity.vgscheckout.collect.util.extension.toBase64
 import com.verygoodsecurity.vgscheckout.collect.util.extension.toJSON
 import org.junit.Assert.assertEquals
@@ -22,7 +22,7 @@ private const val ENVIRONMENT = "test_env"
 class DefaultAnalyticsTrackerTest {
 
     private val mockHttpClient: HttpClient = mock(OkHttpClient::class.java)
-    private val callback: (NetworkResponse) -> Unit = {}
+    private val callback: (HttpResponse) -> Unit = {}
     private var tracker = DefaultAnalyticsTracker(ID, ENVIRONMENT, FORM_ID, mockHttpClient)
 
     @Test
@@ -31,7 +31,7 @@ class DefaultAnalyticsTrackerTest {
         val event = InitEvent(InitEvent.ConfigType.CUSTOM)
         val httpRequestCaptor: ArgumentCaptor<HttpRequest> =
             ArgumentCaptor.forClass(HttpRequest::class.java)
-        val callbackCaptor: ArgumentCaptor<(NetworkResponse) -> Unit> =
+        val callbackCaptor: ArgumentCaptor<(HttpResponse) -> Unit> =
             ArgumentCaptor.forClass(callback::class.java)
         // Act
         tracker.log(event)
@@ -49,7 +49,7 @@ class DefaultAnalyticsTrackerTest {
         val event = InitEvent(InitEvent.ConfigType.CUSTOM)
         val httpRequestCaptor: ArgumentCaptor<HttpRequest> =
             ArgumentCaptor.forClass(HttpRequest::class.java)
-        val callbackCaptor: ArgumentCaptor<(NetworkResponse) -> Unit> =
+        val callbackCaptor: ArgumentCaptor<(HttpResponse) -> Unit> =
             ArgumentCaptor.forClass(callback::class.java)
         // Act
         tracker.log(event)
@@ -75,7 +75,7 @@ class DefaultAnalyticsTrackerTest {
         )
         val httpRequestCaptor: ArgumentCaptor<HttpRequest> =
             ArgumentCaptor.forClass(HttpRequest::class.java)
-        val callbackCaptor: ArgumentCaptor<(NetworkResponse) -> Unit> =
+        val callbackCaptor: ArgumentCaptor<(HttpResponse) -> Unit> =
             ArgumentCaptor.forClass(callback::class.java)
         // Act
         tracker.log(event)

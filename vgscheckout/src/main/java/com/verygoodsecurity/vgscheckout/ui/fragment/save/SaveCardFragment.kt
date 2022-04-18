@@ -14,7 +14,7 @@ import androidx.core.view.isVisible
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.core.analytic.event.RequestEvent
 import com.verygoodsecurity.vgscheckout.collect.core.analytic.event.ResponseEvent
-import com.verygoodsecurity.vgscheckout.collect.core.api.isURLValid
+import com.verygoodsecurity.vgscheckout.collect.core.networking.isURLValid
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSError
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.toVGSResponse

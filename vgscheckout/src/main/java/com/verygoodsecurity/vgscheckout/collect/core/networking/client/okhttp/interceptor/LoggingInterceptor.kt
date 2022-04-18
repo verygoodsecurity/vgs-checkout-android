@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscheckout.collect.core.api.client.okhttp.interceptor
+package com.verygoodsecurity.vgscheckout.collect.core.networking.client.okhttp.interceptor
 
 import com.verygoodsecurity.vgscheckout.util.logger.VGSCheckoutLogger
 import okhttp3.Interceptor

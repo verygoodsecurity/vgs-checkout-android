@@ -1,8 +1,8 @@
 package com.verygoodsecurity.vgscheckout.api
 
-import com.verygoodsecurity.vgscheckout.collect.core.*
-import com.verygoodsecurity.vgscheckout.collect.core.api.HttpBodyFormat
-import com.verygoodsecurity.vgscheckout.collect.core.api.client.HttpClient
+import com.verygoodsecurity.vgscheckout.collect.core.networking.client.HttpBodyFormat
+import com.verygoodsecurity.vgscheckout.collect.core.networking.client.HttpMethod
+import com.verygoodsecurity.vgscheckout.collect.core.networking.client.HttpClient
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.HttpRequest
 import org.junit.Test
 import org.mockito.Mockito

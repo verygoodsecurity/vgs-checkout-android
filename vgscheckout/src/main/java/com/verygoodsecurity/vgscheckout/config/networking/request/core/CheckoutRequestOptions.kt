@@ -10,7 +10,7 @@ abstract class CheckoutRequestOptions internal constructor() : Parcelable {
     /**
      *  Define http method.
      */
-    abstract val httpMethod: VGSCheckoutHTTPMethod
+    abstract val httpMethod: VGSCheckoutHttpMethod
 
     /**
      * Request headers.

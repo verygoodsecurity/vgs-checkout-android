@@ -1,10 +1,10 @@
 package com.verygoodsecurity.vgscheckout.collect.core.analytic
 
 import androidx.annotation.VisibleForTesting
-import com.verygoodsecurity.vgscheckout.collect.core.HttpMethod
-import com.verygoodsecurity.vgscheckout.collect.core.api.HttpBodyFormat
+import com.verygoodsecurity.vgscheckout.collect.core.networking.client.HttpMethod
+import com.verygoodsecurity.vgscheckout.collect.core.networking.client.HttpBodyFormat
 import com.verygoodsecurity.vgscheckout.collect.core.analytic.event.core.Event
-import com.verygoodsecurity.vgscheckout.collect.core.api.client.HttpClient
+import com.verygoodsecurity.vgscheckout.collect.core.networking.client.HttpClient
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.HttpRequest
 import com.verygoodsecurity.vgscheckout.collect.util.extension.toBase64
 import com.verygoodsecurity.vgscheckout.collect.util.extension.toJSON

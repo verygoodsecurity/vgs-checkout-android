@@ -1,9 +1,9 @@
 package com.verygoodsecurity.vgscheckout.util.extension
 
-import com.verygoodsecurity.vgscheckout.collect.core.model.network.NetworkResponse
+import com.verygoodsecurity.vgscheckout.collect.core.model.network.HttpResponse
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSResponse
 
-internal fun NetworkResponse.toVGSResponse(): VGSResponse {
+internal fun HttpResponse.toVGSResponse(): VGSResponse {
     return when {
         this.isSuccessful -> VGSResponse.SuccessResponse(
             code = this.code,
