@@ -29,7 +29,7 @@ internal abstract class BaseFragment<C : CheckoutConfig> : Fragment {
     constructor(@LayoutRes id: Int) : super(id)
 
     protected val config: C by lazy { requireParcelable(KEY_BUNDLE_CONFIG) }
-    protected val title: String by lazy { getString(R.string.vgs_checkout_button_save_card_title) }
+    protected val title: String by lazy { generateButtonTitle() }
 
     protected lateinit var navigationHandler: NavigationHandler
     protected lateinit var toolbarHandler: ToolbarHandler
@@ -66,6 +66,11 @@ internal abstract class BaseFragment<C : CheckoutConfig> : Fragment {
         Snackbar.make(requireView(), message, Snackbar.LENGTH_LONG)
             .setAction(getString(R.string.vgs_checkout_no_network_retry)) { onRetry?.invoke() }
             .show()
+    }
+
+    private fun generateButtonTitle(): String = when (config) {
+        is VGSCheckoutAddCardConfig -> getString(R.string.vgs_checkout_button_pay_title)
+        else -> getString(R.string.vgs_checkout_button_save_card_title)
     }
 
     private fun updateToolbarTitle() {
