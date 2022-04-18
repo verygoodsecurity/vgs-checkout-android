@@ -14,14 +14,8 @@ import androidx.core.view.isVisible
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.core.analytic.event.RequestEvent
 import com.verygoodsecurity.vgscheckout.collect.core.analytic.event.ResponseEvent
-import com.verygoodsecurity.vgscheckout.collect.core.networking.isURLValid
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSError
-import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSResponse
-import com.verygoodsecurity.vgscheckout.collect.core.model.network.toVGSResponse
 import com.verygoodsecurity.vgscheckout.collect.core.storage.InternalStorage
-import com.verygoodsecurity.vgscheckout.collect.util.extension.hasAccessNetworkStatePermission
-import com.verygoodsecurity.vgscheckout.collect.util.extension.hasInternetPermission
-import com.verygoodsecurity.vgscheckout.collect.util.extension.isConnectionAvailable
 import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
 import com.verygoodsecurity.vgscheckout.collect.view.card.validation.rules.VGSInfoRule
 import com.verygoodsecurity.vgscheckout.collect.widget.VGSCountryEditText
@@ -43,8 +37,7 @@ import com.verygoodsecurity.vgscheckout.ui.fragment.core.BaseFragment
 import com.verygoodsecurity.vgscheckout.ui.fragment.save.binding.SaveCardViewBindingHelper
 import com.verygoodsecurity.vgscheckout.ui.fragment.save.validation.ValidationManager
 import com.verygoodsecurity.vgscheckout.util.command.Result
-import com.verygoodsecurity.vgscheckout.util.command.save.CardInfo
-import com.verygoodsecurity.vgscheckout.util.command.save.SaveCardInfo
+import com.verygoodsecurity.vgscheckout.util.command.save.SaveCardCommand
 import com.verygoodsecurity.vgscheckout.util.country.model.Country
 import com.verygoodsecurity.vgscheckout.util.country.model.PostalCodeType
 import com.verygoodsecurity.vgscheckout.util.extension.*
@@ -325,57 +318,56 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
     private fun saveCard() {
         setIsLoading(true)
         with(config.getBaseUrl(requireContext())) {
-            when {
-                !isURLValid() -> onResponse(VGSError.URL_NOT_VALID.toVGSResponse())
-                !requireActivity().hasInternetPermission() -> onResponse(VGSError.NO_INTERNET_PERMISSIONS.toVGSResponse())
-                !requireActivity().hasAccessNetworkStatePermission() -> onResponse(VGSError.NO_NETWORK_CONNECTIONS.toVGSResponse())
-                !requireActivity().isConnectionAvailable() -> onResponse(VGSError.NO_NETWORK_CONNECTIONS.toVGSResponse())
-                else -> {
-                    SaveCardInfo().execute(
-                        CardInfo(
-                            this,
-                            config.routeConfig,
-                            inputFieldsStorage.getAssociatedList()
+            // TODO: Handle commented code in correct place
+//            when {
+//                !isURLValid() -> onResponse(VGSError.URL_NOT_VALID.toVGSResponse())
+//                !requireActivity().hasInternetPermission() -> onResponse(VGSError.NO_INTERNET_PERMISSIONS.toVGSResponse())
+//                !requireActivity().hasAccessNetworkStatePermission() -> onResponse(VGSError.NO_NETWORK_CONNECTIONS.toVGSResponse())
+//                !requireActivity().isConnectionAvailable() -> onResponse(VGSError.NO_NETWORK_CONNECTIONS.toVGSResponse())
+//                else -> {
+            SaveCardCommand().execute(
+                SaveCardCommand.Params(
+                    this,
+                    config.routeConfig,
+                    inputFieldsStorage.getAssociatedList()
+                )
+            ) {
+                when (it) {
+                    is Result.Success -> handleAddCardResponse(it.data)
+                    is Result.Error -> finishWithResult(
+                        VGSCheckoutResult.Failed(
+                            resultBundle,
+                            it.e
                         )
-                    ) {
-                        when (it) {
-                            is Result.Success -> onResponse(it.data)
-                            is Result.Error -> finishWithResult(
-                                VGSCheckoutResult.Failed(
-                                    resultBundle,
-                                    it.e
-                                )
-                            )
-                        }
-                    }
+                    )
                 }
             }
         }
+//            }
+//        }
     }
 
-    private fun onResponse(response: VGSResponse) {
+    private fun handleAddCardResponse(response: VGSCheckoutAddCardResponse) {
         if (!shouldHandleAddCard) {
             return
         }
         config.analyticTracker.log(
             ResponseEvent(
                 response.code,
-                response.latency,
-                (this as? VGSResponse.ErrorResponse)?.message
+                response.message,
+                response.latency
             )
         )
-        if (response.isNetworkConnectionError()) {
+        if (isNetworkConnectionError(response.code)) {
             setIsLoading(false)
             showNetworkError { saveCard() }
             return
         }
-        handleAddCardResponse(response.toAddCardResponse())
-    }
-
-    private fun handleAddCardResponse(response: VGSCheckoutAddCardResponse) {
         resultBundle.putAddCardResponse(response)
         finishWithResult(resultBundle.toCheckoutResult(response.isSuccessful))
     }
+
+    private fun isNetworkConnectionError(code: Int) = code == VGSError.NO_NETWORK_CONNECTIONS.code
 
     private fun setIsLoading(isLoading: Boolean) {
         setViewsEnabled(!isLoading)

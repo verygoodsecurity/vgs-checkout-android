@@ -259,7 +259,7 @@ class EventsTest {
         // Arrange
         val code = 200
         val latency = 400L
-        val event = ResponseEvent(code, latency, null)
+        val event = ResponseEvent(code, null, latency)
         // Act
         val data = event.getData(ID, FORM_ID, ENVIRONMENT)
         // Assert
@@ -276,7 +276,7 @@ class EventsTest {
         val code = 200
         val latency = 400L
         val error = "test"
-        val event = ResponseEvent(code, latency, error)
+        val event = ResponseEvent(code, error, latency)
         // Act
         val data = event.getData(ID, FORM_ID, ENVIRONMENT)
         // Assert

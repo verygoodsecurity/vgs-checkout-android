@@ -23,8 +23,3 @@ internal enum class VGSError(val code: Int, val message: String) {
         "Field name is not set."
     )
 }
-
-internal fun VGSError.toVGSResponse(param: String? = null): VGSResponse.ErrorResponse {
-    val message = if (param.isNullOrEmpty()) this.message else String.format(this.message, param)
-    return VGSResponse.ErrorResponse(message, this.code)
-}

@@ -1,8 +1,7 @@
 package com.verygoodsecurity.vgscheckout.util.extension
 
-import com.verygoodsecurity.vgscheckout.collect.core.networking.client.HttpMethod
 import com.verygoodsecurity.vgscheckout.collect.core.model.VGSCollectFieldNameMappingPolicy
-import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSResponse
+import com.verygoodsecurity.vgscheckout.collect.core.networking.client.HttpMethod
 import com.verygoodsecurity.vgscheckout.collect.util.extension.toCardBrand
 import com.verygoodsecurity.vgscheckout.collect.view.card.BrandParams
 import com.verygoodsecurity.vgscheckout.collect.view.card.CardBrand
@@ -16,23 +15,15 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.model.VGS
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.model.VGSDateSeparateSerializer
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResultBundle
-import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutAddCardResponse
 
 //region Networking
-internal fun VGSResponse.toAddCardResponse() = VGSCheckoutAddCardResponse(
-    this is VGSResponse.SuccessResponse,
-    code,
-    body,
-    (this as? VGSResponse.ErrorResponse)?.message
-)
-
 internal fun VGSCheckoutResultBundle.toCheckoutResult(isSuccessful: Boolean) = if (isSuccessful) {
     VGSCheckoutResult.Success(this)
 } else {
     VGSCheckoutResult.Failed(this)
 }
 
-internal fun VGSCheckoutHttpMethod.toCollectHTTPMethod() = when (this) {
+internal fun VGSCheckoutHttpMethod.toCollectHttpMethod() = when (this) {
     VGSCheckoutHttpMethod.POST -> HttpMethod.POST
     VGSCheckoutHttpMethod.DELETE -> HttpMethod.DELETE
     VGSCheckoutHttpMethod.GET -> HttpMethod.GET

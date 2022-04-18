@@ -4,8 +4,8 @@ import com.verygoodsecurity.vgscheckout.collect.core.analytic.event.core.Event
 
 internal data class ResponseEvent(
     val code: Int,
-    val latency: Long,
-    val errorMsg: String?
+    val errorMsg: String?,
+    val latency: Long
 ) : Event(TYPE) {
 
     override val attributes: Map<String, Any> = LinkedHashMap<String, Any>().apply {

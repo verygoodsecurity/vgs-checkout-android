@@ -8,5 +8,6 @@ data class VGSCheckoutAddCardResponse(
     override val isSuccessful: Boolean,
     override val code: Int,
     override val body: String?,
-    override val message: String?
+    override val message: String?,
+    internal val latency: Long = 0
 ) : VGSCheckoutResponse()
