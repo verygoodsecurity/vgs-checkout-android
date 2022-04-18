@@ -19,7 +19,7 @@ class HttpClientTest {
         data.put("customData", "dataset")
 
         val r = HttpRequest(
-            HTTPMethod.POST,
+            HttpMethod.POST,
             "https://www.test.com/post",
             headers,
             data,
@@ -42,7 +42,7 @@ class HttpClientTest {
         data.put("customData", "dataset")
 
         val r = HttpRequest(
-            HTTPMethod.POST,
+            HttpMethod.POST,
             "https://www.test.com/post",
             headers,
             data,

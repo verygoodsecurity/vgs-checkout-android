@@ -1,7 +1,7 @@
 package com.verygoodsecurity.vgscheckout.collect.core.analytic
 
 import androidx.annotation.VisibleForTesting
-import com.verygoodsecurity.vgscheckout.collect.core.HTTPMethod
+import com.verygoodsecurity.vgscheckout.collect.core.HttpMethod
 import com.verygoodsecurity.vgscheckout.collect.core.api.HttpBodyFormat
 import com.verygoodsecurity.vgscheckout.collect.core.analytic.event.core.Event
 import com.verygoodsecurity.vgscheckout.collect.core.api.client.HttpClient
@@ -34,7 +34,7 @@ internal class DefaultAnalyticsTracker @VisibleForTesting(otherwise = VisibleFor
         val payload = event.getData(id, formId, environment).toJSON().toString().toBase64()
         client.enqueue(
             HttpRequest(
-                method = HTTPMethod.POST,
+                method = HttpMethod.POST,
                 url = API_URL,
                 headers = emptyMap(),
                 payload = payload,

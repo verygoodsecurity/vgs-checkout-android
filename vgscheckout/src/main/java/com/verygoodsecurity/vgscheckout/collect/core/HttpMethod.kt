@@ -5,7 +5,7 @@ package com.verygoodsecurity.vgscheckout.collect.core
  *
  *  @version 1.0.0
  */
-internal enum class HTTPMethod {
+internal enum class HttpMethod {
 
     /**
      *  HTTP GET method

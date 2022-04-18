@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgscheckout.collect.core.model.network
 
-import com.verygoodsecurity.vgscheckout.collect.core.HTTPMethod
+import com.verygoodsecurity.vgscheckout.collect.core.HttpMethod
 import com.verygoodsecurity.vgscheckout.collect.core.api.HttpBodyFormat
 import com.verygoodsecurity.vgscheckout.collect.core.model.VGSCollectFieldNameMappingPolicy
 import com.verygoodsecurity.vgscheckout.collect.util.extension.concatWithSlash
@@ -21,7 +21,7 @@ private const val DEFAULT_CONNECTION_TIME_OUT = 60_000L
  * @since 1.0.6
  */
 internal data class VGSRequest private constructor(
-    val method: HTTPMethod,
+    val method: HttpMethod,
     val path: String,
     val customHeader: Map<String, String>,
     val customData: Map<String, Any>,
@@ -37,7 +37,7 @@ internal data class VGSRequest private constructor(
      * dialog theme.
      */
     class VGSRequestBuilder {
-        private var method: HTTPMethod = HTTPMethod.POST
+        private var method: HttpMethod = HttpMethod.POST
         private var path: String = ""
         private val customHeader: HashMap<String, String> = HashMap()
         private val customData: HashMap<String, Any> = HashMap()
@@ -94,7 +94,7 @@ internal data class VGSRequest private constructor(
          * @param method HTTP method
          * @return current builder instance
          */
-        fun setMethod(method: HTTPMethod): VGSRequestBuilder {
+        fun setMethod(method: HttpMethod): VGSRequestBuilder {
             this.method = method
             return this
         }

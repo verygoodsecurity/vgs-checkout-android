@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgscheckout.api
 
-import com.verygoodsecurity.vgscheckout.collect.core.HTTPMethod
+import com.verygoodsecurity.vgscheckout.collect.core.HttpMethod
 import com.verygoodsecurity.vgscheckout.collect.core.api.HttpBodyFormat
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.*
 import com.verygoodsecurity.vgscheckout.util.extension.toVGSResponse
@@ -13,14 +13,14 @@ class HttpRequestTest {
     fun test_create_default_request() {
         val r = VGSRequest.VGSRequestBuilder().build()
         assertEquals("", r.path)
-        assertEquals(HTTPMethod.POST, r.method)
+        assertEquals(HttpMethod.POST, r.method)
         assertEquals(HashMap<String, String>(), r.customData)
         assertEquals(HashMap<String, String>(), r.customHeader)
     }
 
     @Test
     fun test_create_request_with_custom_data() {
-        val METHOD = HTTPMethod.POST
+        val METHOD = HttpMethod.POST
         val PATH = "/some/path"
         val headers = HashMap<String, String>()
         headers["HEADER-S"] = "some-data"
@@ -42,7 +42,7 @@ class HttpRequestTest {
 
     @Test
     fun test_create_request_without_custom_data() {
-        val METHOD = HTTPMethod.POST
+        val METHOD = HttpMethod.POST
         val PATH = "/some/path"
         val r = VGSRequest.VGSRequestBuilder()
             .setMethod(METHOD)
@@ -56,7 +56,7 @@ class HttpRequestTest {
     @Test
     fun test_to_network_request() {
         val BASE_URL = "base.url"
-        val METHOD = HTTPMethod.POST
+        val METHOD = HttpMethod.POST
         val PATH = "/some/path"
 
         val exampleRequest = HttpRequest(

@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgscheckout.util.extension
 
-import com.verygoodsecurity.vgscheckout.collect.core.HTTPMethod
+import com.verygoodsecurity.vgscheckout.collect.core.HttpMethod
 import com.verygoodsecurity.vgscheckout.collect.core.model.VGSCollectFieldNameMappingPolicy
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscheckout.collect.util.extension.toCardBrand
@@ -33,11 +33,11 @@ internal fun VGSCheckoutResultBundle.toCheckoutResult(isSuccessful: Boolean) = i
 }
 
 internal fun VGSCheckoutHTTPMethod.toCollectHTTPMethod() = when (this) {
-    VGSCheckoutHTTPMethod.POST -> HTTPMethod.POST
-    VGSCheckoutHTTPMethod.DELETE -> HTTPMethod.DELETE
-    VGSCheckoutHTTPMethod.GET -> HTTPMethod.GET
-    VGSCheckoutHTTPMethod.PATCH -> HTTPMethod.PATCH
-    VGSCheckoutHTTPMethod.PUT -> HTTPMethod.PUT
+    VGSCheckoutHTTPMethod.POST -> HttpMethod.POST
+    VGSCheckoutHTTPMethod.DELETE -> HttpMethod.DELETE
+    VGSCheckoutHTTPMethod.GET -> HttpMethod.GET
+    VGSCheckoutHTTPMethod.PATCH -> HttpMethod.PATCH
+    VGSCheckoutHTTPMethod.PUT -> HttpMethod.PUT
 }
 
 internal fun VGSCheckoutDataMergePolicy.toCollectMergePolicy() = when (this) {

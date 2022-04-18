@@ -4,13 +4,12 @@ import com.verygoodsecurity.vgscheckout.config.networking.request.core.VGSChecko
 import com.verygoodsecurity.vgscheckout.config.networking.request.core.VGSCheckoutHTTPMethod
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.model.VGSCheckoutCardBrand
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.model.VGSCheckoutChecksumAlgorithm
-import com.verygoodsecurity.vgscheckout.collect.core.HTTPMethod
+import com.verygoodsecurity.vgscheckout.collect.core.HttpMethod
 import com.verygoodsecurity.vgscheckout.collect.core.model.VGSCollectFieldNameMappingPolicy
 import com.verygoodsecurity.vgscheckout.collect.view.card.BrandParams
 import com.verygoodsecurity.vgscheckout.collect.view.card.CardBrand
 import com.verygoodsecurity.vgscheckout.collect.view.card.CardType
 import com.verygoodsecurity.vgscheckout.collect.view.card.validation.payment.ChecksumAlgorithm
-import com.verygoodsecurity.vgscheckout.util.extension.*
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
 import org.junit.Test
@@ -20,11 +19,11 @@ class MapperKtTest {
     @Test
     fun toCollectHTTPMethod_mappedCorrectly() {
         // Assert
-        assertEquals(VGSCheckoutHTTPMethod.POST.toCollectHTTPMethod(), HTTPMethod.POST)
-        assertEquals(VGSCheckoutHTTPMethod.DELETE.toCollectHTTPMethod(), HTTPMethod.DELETE)
-        assertEquals(VGSCheckoutHTTPMethod.GET.toCollectHTTPMethod(), HTTPMethod.GET)
-        assertEquals(VGSCheckoutHTTPMethod.PATCH.toCollectHTTPMethod(), HTTPMethod.PATCH)
-        assertEquals(VGSCheckoutHTTPMethod.PUT.toCollectHTTPMethod(), HTTPMethod.PUT)
+        assertEquals(VGSCheckoutHTTPMethod.POST.toCollectHTTPMethod(), HttpMethod.POST)
+        assertEquals(VGSCheckoutHTTPMethod.DELETE.toCollectHTTPMethod(), HttpMethod.DELETE)
+        assertEquals(VGSCheckoutHTTPMethod.GET.toCollectHTTPMethod(), HttpMethod.GET)
+        assertEquals(VGSCheckoutHTTPMethod.PATCH.toCollectHTTPMethod(), HttpMethod.PATCH)
+        assertEquals(VGSCheckoutHTTPMethod.PUT.toCollectHTTPMethod(), HttpMethod.PUT)
     }
 
     @Test

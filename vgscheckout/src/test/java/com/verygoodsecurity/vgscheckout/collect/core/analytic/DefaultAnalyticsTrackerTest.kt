@@ -1,7 +1,7 @@
 package com.verygoodsecurity.vgscheckout.collect.core.analytic
 
 import com.verygoodsecurity.vgscheckout.capture
-import com.verygoodsecurity.vgscheckout.collect.core.HTTPMethod
+import com.verygoodsecurity.vgscheckout.collect.core.HttpMethod
 import com.verygoodsecurity.vgscheckout.collect.core.api.HttpBodyFormat
 import com.verygoodsecurity.vgscheckout.collect.core.analytic.event.InitEvent
 import com.verygoodsecurity.vgscheckout.collect.core.api.client.HttpClient
@@ -66,7 +66,7 @@ class DefaultAnalyticsTrackerTest {
         val event = InitEvent(InitEvent.ConfigType.CUSTOM)
         val payload = event.getData(ID, FORM_ID, ENVIRONMENT).toJSON().toString().toBase64()
         val expectedNetworkRequest = HttpRequest(
-            method = HTTPMethod.POST,
+            method = HttpMethod.POST,
             url = "https://vgs-collect-keeper.apps.verygood.systems/vgs",
             headers = emptyMap(),
             payload = payload,

@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgscheckout.collect.core.api.client.okhttp
 
-import com.verygoodsecurity.vgscheckout.collect.core.HTTPMethod
+import com.verygoodsecurity.vgscheckout.collect.core.HttpMethod
 import com.verygoodsecurity.vgscheckout.collect.core.api.HttpBodyFormat
 import com.verygoodsecurity.vgscheckout.collect.core.api.client.HttpClient
 import com.verygoodsecurity.vgscheckout.collect.core.api.client.okhttp.interceptor.CustomHostnameInterceptor
@@ -139,7 +139,7 @@ internal class OkHttpClient(
 
     private fun buildRequest(
         url: String,
-        method: HTTPMethod,
+        method: HttpMethod,
         headers: Map<String, String>?,
         data: Any?,
         contentType: HttpBodyFormat = HttpBodyFormat.JSON
@@ -155,9 +155,9 @@ internal class OkHttpClient(
 
     private fun Response.latency() = this.receivedResponseAtMillis - this.sentRequestAtMillis
 
-    private fun String?.toRequestBodyOrNull(mediaType: MediaType?, method: HTTPMethod) =
+    private fun String?.toRequestBodyOrNull(mediaType: MediaType?, method: HttpMethod) =
         when (method) {
-            HTTPMethod.GET -> null
+            HttpMethod.GET -> null
             else -> this?.toRequestBody(mediaType) ?: EMPTY_REQUEST
         }
 
