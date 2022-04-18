@@ -24,9 +24,4 @@ internal abstract class NetworkingCommand<P, R : Result<*>> : VGSCheckoutCancell
     override fun cancel() {
         client.cancelAll()
     }
-
-    protected companion object {
-
-        const val DEFAULT_REQUEST_TIMEOUT = 60_000L
-    }
 }
