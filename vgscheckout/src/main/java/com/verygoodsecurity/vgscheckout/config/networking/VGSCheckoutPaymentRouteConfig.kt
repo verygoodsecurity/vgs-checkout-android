@@ -10,7 +10,7 @@ import kotlinx.parcelize.Parcelize
  * as Payment orchestration request have fixed structure.
  */
 @Parcelize
-internal class VGSCheckoutPaymentRouteConfig private constructor(
+class VGSCheckoutPaymentRouteConfig private constructor(
     override val path: String,
     override val hostnamePolicy: VGSCheckoutHostnamePolicy,
     override val requestOptions: VGSCheckoutPaymentRequestOptions

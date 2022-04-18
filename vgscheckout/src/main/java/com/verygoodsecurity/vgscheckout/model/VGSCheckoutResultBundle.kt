@@ -3,7 +3,6 @@ package com.verygoodsecurity.vgscheckout.model
 import android.os.Bundle
 import android.os.Parcelable
 import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutAddCardResponse
-import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutTransactionResponse
 import kotlinx.parcelize.Parcelize
 
 /**
@@ -27,10 +26,6 @@ class VGSCheckoutResultBundle private constructor(@PublishedApi internal val bun
         bundle.putParcelable(ADD_CARD_RESPONSE, response)
     }
 
-    internal fun putTransactionResponse(response: VGSCheckoutTransactionResponse) {
-        bundle.putParcelable(TRANSACTION_RESPONSE, response)
-    }
-
     internal fun putShouldSaveCard(shouldSaveCard: Boolean) {
         bundle.putBoolean(SHOULD_SAVE_CARD, shouldSaveCard)
     }
@@ -38,7 +33,6 @@ class VGSCheckoutResultBundle private constructor(@PublishedApi internal val bun
     companion object Keys {
 
         const val ADD_CARD_RESPONSE = "com.verygoodsecurity.vgscheckout.add_card_response"
-        internal const val TRANSACTION_RESPONSE = "com.verygoodsecurity.vgscheckout.transaction_response"
         internal const val SHOULD_SAVE_CARD = "com.verygoodsecurity.vgscheckout.should_save_card"
     }
 }

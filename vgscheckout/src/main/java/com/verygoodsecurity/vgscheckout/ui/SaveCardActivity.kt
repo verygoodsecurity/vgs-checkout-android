@@ -11,4 +11,12 @@ internal class SaveCardActivity : BaseCheckoutActivity<VGSCheckoutAddCardConfig>
         super.initView(savedInstanceState)
         config.analyticTracker.log(InitEvent(InitEvent.ConfigType.PAYOPT))
     }
+
+    override fun initFragment() {
+        if (config.savedCards.isEmpty()) {
+            super.initFragment()
+            return
+        }
+        navigateToPaymentMethods()
+    }
 }

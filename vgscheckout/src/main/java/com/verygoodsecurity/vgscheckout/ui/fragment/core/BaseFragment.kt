@@ -12,20 +12,14 @@ import com.google.android.material.snackbar.Snackbar
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
-import com.verygoodsecurity.vgscheckout.config.VGSCheckoutPaymentConfig
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResultBundle
-import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutTransactionResponse
 import com.verygoodsecurity.vgscheckout.ui.core.NavigationHandler
 import com.verygoodsecurity.vgscheckout.ui.core.ToolbarHandler
 import com.verygoodsecurity.vgscheckout.ui.fragment.save.SaveCardFragment
-import com.verygoodsecurity.vgscheckout.util.CurrencyFormatter
-import com.verygoodsecurity.vgscheckout.util.command.Result
 import com.verygoodsecurity.vgscheckout.util.command.VGSCheckoutCancellable
-import com.verygoodsecurity.vgscheckout.util.command.transaction.CreateTransaction
-import com.verygoodsecurity.vgscheckout.util.command.transaction.TransactionParams
 import com.verygoodsecurity.vgscheckout.util.extension.requireParcelable
 
 internal abstract class BaseFragment<C : CheckoutConfig> : Fragment {
@@ -74,31 +68,8 @@ internal abstract class BaseFragment<C : CheckoutConfig> : Fragment {
             .show()
     }
 
-    protected fun createTransaction(finId: String, amount: Long, currency: String) {
-        transactionRequest =
-            CreateTransaction().execute(TransactionParams(finId, config.id, amount, currency)) {
-                handleTransactionResponse((it as Result.Success).data)
-            }
-    }
-
-    private fun handleTransactionResponse(response: VGSCheckoutTransactionResponse) {
-        resultBundle.putTransactionResponse(response)
-        finishWithResult(
-            if (response.isSuccessful) {
-                VGSCheckoutResult.Success(resultBundle)
-            } else {
-                VGSCheckoutResult.Failed(resultBundle)
-            }
-        )
-    }
-
     private fun generateButtonTitle(): String = when (config) {
-        is VGSCheckoutPaymentConfig -> {
-            with(config as VGSCheckoutPaymentConfig) {
-                val amount = CurrencyFormatter.format(paymentInfo.amount, paymentInfo.currency)
-                getString(R.string.vgs_checkout_button_pay_title, amount)
-            }
-        }
+        is VGSCheckoutAddCardConfig -> getString(R.string.vgs_checkout_button_pay_title)
         else -> getString(R.string.vgs_checkout_button_save_card_title)
     }
 
@@ -110,7 +81,6 @@ internal abstract class BaseFragment<C : CheckoutConfig> : Fragment {
         when {
             config is VGSCheckoutCustomConfig -> R.string.vgs_checkout_add_card_title
             config is VGSCheckoutAddCardConfig || this is SaveCardFragment -> R.string.vgs_checkout_new_card_title
-            config is VGSCheckoutPaymentConfig -> R.string.vgs_checkout_title
             else -> throw IllegalArgumentException("Unknown type of config.")
         }
     )
