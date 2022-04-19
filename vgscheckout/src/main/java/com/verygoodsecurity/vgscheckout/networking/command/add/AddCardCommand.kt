@@ -1,7 +1,6 @@
 package com.verygoodsecurity.vgscheckout.networking.command.add
 
 import android.content.Context
-import com.verygoodsecurity.vgscheckout.collect.util.extension.concatWithSlash
 import com.verygoodsecurity.vgscheckout.collect.util.extension.deepMerge
 import com.verygoodsecurity.vgscheckout.collect.util.extension.toFlatMap
 import com.verygoodsecurity.vgscheckout.config.networking.core.CheckoutRouteConfig
@@ -12,10 +11,10 @@ import com.verygoodsecurity.vgscheckout.util.extension.toCollectMergePolicy
 import com.verygoodsecurity.vgscheckout.util.extension.toInternal
 
 internal class AddCardCommand constructor(context: Context) :
-    Command<AddCardCommand.Params, VGSCheckoutAddCardResponse>(context) {
+    Command<AddCardCommand.AddCardParams, VGSCheckoutAddCardResponse>(context) {
 
     override fun run(
-        params: Params,
+        params: AddCardParams,
         onResult: (VGSCheckoutAddCardResponse) -> Unit
     ) {
         client.enqueue(createRequest(params)) {
@@ -31,15 +30,14 @@ internal class AddCardCommand constructor(context: Context) :
         }
     }
 
-    private fun createRequest(params: Params): HttpRequest {
-        val url = params.baseUrl concatWithSlash params.config.path
+    private fun createRequest(params: AddCardParams): HttpRequest {
         val payload = generatePayload(params)
         val headers = params.config.requestOptions.extraHeaders
         val method = params.config.requestOptions.httpMethod.toInternal()
-        return HttpRequest(url, payload, headers, method)
+        return HttpRequest(params.url, payload, headers, method)
     }
 
-    private fun generatePayload(params: Params): Map<String, Any> {
+    private fun generatePayload(params: AddCardParams): Map<String, Any> {
         val collectMergePolicy = params.config.requestOptions.mergePolicy.toCollectMergePolicy()
         val isArraysAllowed = collectMergePolicy.isArraysAllowed()
         val arrayMergePolicy = collectMergePolicy.getMergeArraysPolicy()
@@ -48,9 +46,10 @@ internal class AddCardCommand constructor(context: Context) :
         return extraData.deepMerge(structuredData, arrayMergePolicy)
     }
 
-    internal data class Params(
-        val baseUrl: String,
+    internal class AddCardParams(
+        baseUrl: String,
+        path: String,
         val config: CheckoutRouteConfig,
         val data: MutableCollection<Pair<String, String>>,
-    )
+    ) : Command.Params(baseUrl, path)
 }

@@ -316,8 +316,9 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
     private fun saveCard() {
         setIsLoading(true)
         AddCardCommand(requireContext()).execute(
-            AddCardCommand.Params(
+            AddCardCommand.AddCardParams(
                 config.getBaseUrl(requireContext()),
+                config.routeConfig.path,
                 config.routeConfig,
                 inputFieldsStorage.getAssociatedList()
             ),

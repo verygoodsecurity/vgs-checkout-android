@@ -3,13 +3,14 @@ package com.verygoodsecurity.vgscheckout.networking.command
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
+import com.verygoodsecurity.vgscheckout.collect.util.extension.concatWithSlash
 import com.verygoodsecurity.vgscheckout.collect.util.extension.hasAccessNetworkStatePermission
 import com.verygoodsecurity.vgscheckout.collect.util.extension.hasInternetPermission
 import com.verygoodsecurity.vgscheckout.collect.util.extension.isConnectionAvailable
 import com.verygoodsecurity.vgscheckout.model.response.core.VGSCheckoutResponse
 import com.verygoodsecurity.vgscheckout.networking.client.HttpClient
 
-internal abstract class Command<P, R : VGSCheckoutResponse> constructor(private val context: Context) :
+internal abstract class Command<P : Command.Params, R : VGSCheckoutResponse> constructor(private val context: Context) :
     Cancellable {
 
     protected val client = HttpClient.create(false)
@@ -38,5 +39,13 @@ internal abstract class Command<P, R : VGSCheckoutResponse> constructor(private 
 
     override fun cancel() {
         client.cancelAll()
+    }
+
+    internal abstract class Params(
+        baseUrl: String,
+        path: String
+    ) {
+
+        val url = baseUrl concatWithSlash path
     }
 }
