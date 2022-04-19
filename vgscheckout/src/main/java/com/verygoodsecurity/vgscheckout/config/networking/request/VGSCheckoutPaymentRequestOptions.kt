@@ -2,7 +2,7 @@ package com.verygoodsecurity.vgscheckout.config.networking.request
 
 import com.verygoodsecurity.vgscheckout.config.networking.request.core.CheckoutRequestOptions
 import com.verygoodsecurity.vgscheckout.config.networking.request.core.VGSCheckoutDataMergePolicy
-import com.verygoodsecurity.vgscheckout.config.networking.request.core.VGSCheckoutHTTPMethod
+import com.verygoodsecurity.vgscheckout.config.networking.request.core.VGSCheckoutHttpMethod
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
@@ -13,7 +13,7 @@ import kotlinx.parcelize.RawValue
  */
 @Parcelize
 class VGSCheckoutPaymentRequestOptions private constructor(
-    override val httpMethod: VGSCheckoutHTTPMethod,
+    override val httpMethod: VGSCheckoutHttpMethod,
     override val extraHeaders: Map<String, String>,
     override val extraData: Map<String, @RawValue Any>,
     override val mergePolicy: VGSCheckoutDataMergePolicy
@@ -23,7 +23,7 @@ class VGSCheckoutPaymentRequestOptions private constructor(
     override val hasExtraHeaders: Boolean = false
 
     internal constructor(accessToken: String) : this(
-        VGSCheckoutHTTPMethod.POST,
+        VGSCheckoutHttpMethod.POST,
         mapOf(
             CONTENT_TYPE_HEADER_NAME to CONTENT_TYPE,
             AUTHORIZATION_HEADER_NAME to "$BEARER_TOKEN_TYPE $accessToken"

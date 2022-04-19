@@ -12,16 +12,8 @@ import androidx.annotation.VisibleForTesting
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import com.verygoodsecurity.vgscheckout.R
-import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.RequestEvent
-import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.ResponseEvent
-import com.verygoodsecurity.vgscheckout.collect.core.api.isURLValid
-import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSError
-import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSResponse
-import com.verygoodsecurity.vgscheckout.collect.core.model.network.toVGSResponse
+import com.verygoodsecurity.vgscheckout.analytic.event.RequestEvent
 import com.verygoodsecurity.vgscheckout.collect.core.storage.InternalStorage
-import com.verygoodsecurity.vgscheckout.collect.util.extension.hasAccessNetworkStatePermission
-import com.verygoodsecurity.vgscheckout.collect.util.extension.hasInternetPermission
-import com.verygoodsecurity.vgscheckout.collect.util.extension.isConnectionAvailable
 import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
 import com.verygoodsecurity.vgscheckout.collect.view.card.validation.rules.VGSInfoRule
 import com.verygoodsecurity.vgscheckout.collect.widget.VGSCountryEditText
@@ -37,14 +29,11 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.CardHolde
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.CardNumberOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.CVCOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.ExpirationDateOptions
-import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
-import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutAddCardResponse
+import com.verygoodsecurity.vgscheckout.networking.command.Command
+import com.verygoodsecurity.vgscheckout.networking.command.add.AddCardCommand
 import com.verygoodsecurity.vgscheckout.ui.fragment.core.BaseFragment
 import com.verygoodsecurity.vgscheckout.ui.fragment.save.binding.SaveCardViewBindingHelper
 import com.verygoodsecurity.vgscheckout.ui.fragment.save.validation.ValidationManager
-import com.verygoodsecurity.vgscheckout.util.command.Result
-import com.verygoodsecurity.vgscheckout.util.command.save.CardInfo
-import com.verygoodsecurity.vgscheckout.util.command.save.SaveCardInfo
 import com.verygoodsecurity.vgscheckout.util.country.model.Country
 import com.verygoodsecurity.vgscheckout.util.country.model.PostalCodeType
 import com.verygoodsecurity.vgscheckout.util.extension.*
@@ -57,6 +46,7 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
     private lateinit var validationHelper: ValidationManager
 
     private val inputFieldsStorage = InternalStorage()
+    private var addCardCommand: AddCardCommand? = null
 
     /**
      * TODO: Remove this flag and replace it with mocked view model in tests
@@ -80,6 +70,11 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
         super.onViewCreated(view, savedInstanceState)
         initViews()
         initValidationHelper()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        addCardCommand?.cancel()
     }
 
     override fun onCountrySelected(country: Country) {
@@ -324,57 +319,30 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
 
     private fun saveCard() {
         setIsLoading(true)
-        with(config.getBaseUrl(requireContext())) {
-            when {
-                !isURLValid() -> onResponse(VGSError.URL_NOT_VALID.toVGSResponse())
-                !requireActivity().hasInternetPermission() -> onResponse(VGSError.NO_INTERNET_PERMISSIONS.toVGSResponse())
-                !requireActivity().hasAccessNetworkStatePermission() -> onResponse(VGSError.NO_NETWORK_CONNECTIONS.toVGSResponse())
-                !requireActivity().isConnectionAvailable() -> onResponse(VGSError.NO_NETWORK_CONNECTIONS.toVGSResponse())
-                else -> {
-                    SaveCardInfo().execute(
-                        CardInfo(
-                            this,
-                            config.routeConfig,
-                            inputFieldsStorage.getAssociatedList()
-                        )
-                    ) {
-                        when (it) {
-                            is Result.Success -> onResponse(it.data)
-                            is Result.Error -> finishWithResult(
-                                VGSCheckoutResult.Failed(
-                                    resultBundle,
-                                    it.e
-                                )
-                            )
-                        }
-                    }
-                }
-            }
-        }
+        addCardCommand = AddCardCommand(requireContext())
+        addCardCommand?.execute(
+            AddCardCommand.AddCardParams(
+                config.getBaseUrl(requireContext()),
+                config.routeConfig.path,
+                config.routeConfig,
+                inputFieldsStorage.getAssociatedList()
+            ),
+            ::handleSaveCardResult
+        )
     }
 
-    private fun onResponse(response: VGSResponse) {
+    private fun handleSaveCardResult(result: Command.Result) {
         if (!shouldHandleAddCard) {
             return
         }
-        config.analyticTracker.log(
-            ResponseEvent(
-                response.code,
-                response.latency,
-                (this as? VGSResponse.ErrorResponse)?.message
-            )
-        )
-        if (response.isNetworkConnectionError()) {
+        config.analyticTracker.log(result.toResponseEvent())
+        if (result.isNoInternetConnectionCode()) {
             setIsLoading(false)
             showNetworkError { saveCard() }
             return
         }
-        handleAddCardResponse(response.toAddCardResponse())
-    }
-
-    private fun handleAddCardResponse(response: VGSCheckoutAddCardResponse) {
-        resultBundle.putAddCardResponse(response)
-        finishWithResult(resultBundle.toCheckoutResult(response.isSuccessful))
+        resultBundle.putAddCardResponse(result.toAddCardResponse())
+        finishWithResult(resultBundle.toCheckoutResult(result.isSuccessful))
     }
 
     private fun setIsLoading(isLoading: Boolean) {

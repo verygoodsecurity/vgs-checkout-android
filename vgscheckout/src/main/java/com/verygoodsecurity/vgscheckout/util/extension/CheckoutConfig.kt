@@ -2,7 +2,7 @@ package com.verygoodsecurity.vgscheckout.util.extension
 
 import android.content.Context
 import com.verygoodsecurity.vgscheckout.R
-import com.verygoodsecurity.vgscheckout.collect.core.api.*
+import com.verygoodsecurity.vgscheckout.networking.*
 import com.verygoodsecurity.vgscheckout.collect.core.isSandbox
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.config.networking.core.getNormalizedHostName
@@ -66,7 +66,7 @@ internal fun CheckoutConfig.getBaseUrl(context: Context): String {
         }
     }
 
-    if (!hostName.isNullOrBlank() && hostName.isURLValid()) {
+    if (!hostName.isNullOrBlank() && hostName.isUrlValid()) {
         val host = hostName.toHost().also {
             if (it != hostName) {
                 VGSCheckoutLogger.debug(message = "Hostname will be normalized to the $it")
