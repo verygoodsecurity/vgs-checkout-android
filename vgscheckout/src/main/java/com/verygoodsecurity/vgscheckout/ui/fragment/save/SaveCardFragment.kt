@@ -48,6 +48,7 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
     private lateinit var validationHelper: ValidationManager
 
     private val inputFieldsStorage = InternalStorage()
+    private var addCardCommand: AddCardCommand? = null
 
     /**
      * TODO: Remove this flag and replace it with mocked view model in tests
@@ -71,6 +72,11 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
         super.onViewCreated(view, savedInstanceState)
         initViews()
         initValidationHelper()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        addCardCommand?.cancel()
     }
 
     override fun onCountrySelected(country: Country) {
@@ -315,18 +321,19 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
 
     private fun saveCard() {
         setIsLoading(true)
-        AddCardCommand(requireContext()).execute(
+        addCardCommand = AddCardCommand(requireContext())
+        addCardCommand?.execute(
             AddCardCommand.AddCardParams(
                 config.getBaseUrl(requireContext()),
                 config.routeConfig.path,
                 config.routeConfig,
                 inputFieldsStorage.getAssociatedList()
             ),
-            ::handleAddCardResponse
+            ::handleSaveCardResult
         )
     }
 
-    private fun handleAddCardResponse(response: VGSCheckoutAddCardResponse) {
+    private fun handleSaveCardResult(response: VGSCheckoutAddCardResponse) {
         if (!shouldHandleAddCard) {
             return
         }

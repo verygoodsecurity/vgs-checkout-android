@@ -1,6 +1,7 @@
 package com.verygoodsecurity.vgscheckout.util.logger
 
 import android.util.Log
+import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
 import com.verygoodsecurity.vgscheckout.util.logger.VGSCheckoutLogger.Level.*
 
 /**
@@ -77,6 +78,16 @@ object VGSCheckoutLogger {
      */
     internal fun warn(tag: String? = null, e: Exception) {
         warn(tag, "e: ${e::class.java}, message: ${e.message}")
+    }
+
+    /**
+     * Print a WARN log message due to exception.
+     *
+     * @param tag Used to identify the source of a log message.
+     * @param e exception.
+     */
+    internal fun warn(tag: String? = null, e: VGSCheckoutException) {
+        warn(tag, "e: ${e::class.java}, code = ${e.code}, message: ${e.message}")
     }
 
     /**

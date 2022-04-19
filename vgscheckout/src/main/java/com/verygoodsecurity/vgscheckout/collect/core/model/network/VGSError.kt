@@ -17,9 +17,5 @@ internal enum class VGSError(val code: Int, val message: String) {
     TIME_OUT(
         1483,
         "Network request timeout error."
-    ),
-    FIELD_NAME_NOT_SET(
-        1004,
-        "Field name is not set."
     )
 }
