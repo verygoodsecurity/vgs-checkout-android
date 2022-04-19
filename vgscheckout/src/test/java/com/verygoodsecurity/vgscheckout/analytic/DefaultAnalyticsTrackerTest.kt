@@ -1,15 +1,11 @@
 package com.verygoodsecurity.vgscheckout.analytic
 
 import com.verygoodsecurity.vgscheckout.capture
-import com.verygoodsecurity.vgscheckout.networking.client.HttpMethod
-import com.verygoodsecurity.vgscheckout.networking.client.HttpBodyFormat
 import com.verygoodsecurity.vgscheckout.analytic.event.InitEvent
-import com.verygoodsecurity.vgscheckout.networking.client.HttpClient
 import com.verygoodsecurity.vgscheckout.networking.client.okhttp.OkHttpClient
-import com.verygoodsecurity.vgscheckout.collect.core.model.network.HttpRequest
-import com.verygoodsecurity.vgscheckout.networking.client.HttpResponse
 import com.verygoodsecurity.vgscheckout.collect.util.extension.toBase64
 import com.verygoodsecurity.vgscheckout.collect.util.extension.toJSON
+import com.verygoodsecurity.vgscheckout.networking.client.*
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.mockito.ArgumentCaptor
