@@ -128,6 +128,7 @@ class VGSCheckoutAddCardConfig private constructor(
             return arrayOfNulls(size)
         }
 
+        // TODO: Remove mocked data before release
         private fun getCardsMock(): List<VGSCheckoutCard> {
             val brands = VGSCheckoutCardBrand.BRANDS.toList()
             val result = mutableListOf<VGSCheckoutCard>()
