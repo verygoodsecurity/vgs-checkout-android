@@ -14,7 +14,6 @@ import androidx.core.view.isVisible
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.analytic.event.RequestEvent
 import com.verygoodsecurity.vgscheckout.analytic.event.ResponseEvent
-import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSError
 import com.verygoodsecurity.vgscheckout.collect.core.storage.InternalStorage
 import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
 import com.verygoodsecurity.vgscheckout.collect.view.card.validation.rules.VGSInfoRule
@@ -31,7 +30,9 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.CardHolde
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.CardNumberOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.CVCOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.ExpirationDateOptions
+import com.verygoodsecurity.vgscheckout.exception.internal.NoInternetConnectionException
 import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutAddCardResponse
+import com.verygoodsecurity.vgscheckout.networking.command.Command
 import com.verygoodsecurity.vgscheckout.networking.command.add.AddCardCommand
 import com.verygoodsecurity.vgscheckout.ui.fragment.core.BaseFragment
 import com.verygoodsecurity.vgscheckout.ui.fragment.save.binding.SaveCardViewBindingHelper
@@ -333,27 +334,34 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
         )
     }
 
-    private fun handleSaveCardResult(response: VGSCheckoutAddCardResponse) {
+    private fun handleSaveCardResult(result: Command.Result) {
         if (!shouldHandleAddCard) {
             return
         }
         config.analyticTracker.log(
             ResponseEvent(
-                response.code,
-                response.message,
-                response.latency
+                result.code,
+                result.message,
+                result.latency
             )
         )
-        if (isNetworkConnectionError(response.code)) {
+        if (isNetworkConnectionError(result.code)) {
             setIsLoading(false)
             showNetworkError { saveCard() }
             return
         }
-        resultBundle.putAddCardResponse(response)
-        finishWithResult(resultBundle.toCheckoutResult(response.isSuccessful))
+        resultBundle.putAddCardResponse(
+            VGSCheckoutAddCardResponse(
+                result.isSuccessful,
+                result.code,
+                result.body,
+                result.message
+            )
+        )
+        finishWithResult(resultBundle.toCheckoutResult(result.isSuccessful))
     }
 
-    private fun isNetworkConnectionError(code: Int) = code == VGSError.NO_NETWORK_CONNECTIONS.code
+    private fun isNetworkConnectionError(code: Int) = code == NoInternetConnectionException.CODE
 
     private fun setIsLoading(isLoading: Boolean) {
         setViewsEnabled(!isLoading)

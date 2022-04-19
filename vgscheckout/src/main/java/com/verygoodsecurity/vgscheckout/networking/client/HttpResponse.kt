@@ -1,10 +1,10 @@
 package com.verygoodsecurity.vgscheckout.networking.client
 
-import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSError
+import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
 
 internal data class HttpResponse(
-    val isSuccessful: Boolean = false,
-    val code: Int = -1,
+    val isSuccessful: Boolean,
+    val code: Int,
     val body: String? = null,
     val message: String? = null,
     val latency: Long = 0
@@ -12,9 +12,10 @@ internal data class HttpResponse(
 
     companion object {
 
-        fun create(error: VGSError) = HttpResponse(
-            code = error.code,
-            message = error.message
+        fun create(exception: VGSCheckoutException) = HttpResponse(
+            isSuccessful = false,
+            code = exception.code,
+            message = exception.message
         )
     }
 }

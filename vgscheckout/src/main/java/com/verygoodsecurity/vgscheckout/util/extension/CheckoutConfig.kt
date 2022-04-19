@@ -66,7 +66,7 @@ internal fun CheckoutConfig.getBaseUrl(context: Context): String {
         }
     }
 
-    if (!hostName.isNullOrBlank() && hostName.isURLValid()) {
+    if (!hostName.isNullOrBlank() && hostName.isUrlValid()) {
         val host = hostName.toHost().also {
             if (it != hostName) {
                 VGSCheckoutLogger.debug(message = "Hostname will be normalized to the $it")

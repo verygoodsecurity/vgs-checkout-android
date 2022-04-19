@@ -4,30 +4,20 @@ import android.content.Context
 import com.verygoodsecurity.vgscheckout.collect.util.extension.deepMerge
 import com.verygoodsecurity.vgscheckout.collect.util.extension.toFlatMap
 import com.verygoodsecurity.vgscheckout.config.networking.core.CheckoutRouteConfig
-import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutAddCardResponse
 import com.verygoodsecurity.vgscheckout.networking.client.HttpRequest
 import com.verygoodsecurity.vgscheckout.networking.command.Command
 import com.verygoodsecurity.vgscheckout.util.extension.toCollectMergePolicy
+import com.verygoodsecurity.vgscheckout.util.extension.toCommandResult
 import com.verygoodsecurity.vgscheckout.util.extension.toInternal
 
 internal class AddCardCommand constructor(context: Context) :
-    Command<AddCardCommand.AddCardParams, VGSCheckoutAddCardResponse>(context) {
+    Command<AddCardCommand.AddCardParams>(context) {
 
     override fun run(
         params: AddCardParams,
-        onResult: (VGSCheckoutAddCardResponse) -> Unit
+        onResult: (Result) -> Unit
     ) {
-        client.enqueue(createRequest(params)) {
-            onResult.invoke(
-                VGSCheckoutAddCardResponse(
-                    it.isSuccessful,
-                    it.code,
-                    it.body,
-                    it.message,
-                    it.latency
-                )
-            )
-        }
+        client.enqueue(createRequest(params)) { onResult.invoke(it.toCommandResult()) }
     }
 
     private fun createRequest(params: AddCardParams): HttpRequest {

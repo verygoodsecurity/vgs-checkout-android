@@ -57,7 +57,7 @@ internal fun String.isTennantIdValid(): Boolean =
 internal fun String.isEnvironmentValid(): Boolean =
     Pattern.compile("^(live|sandbox|LIVE|SANDBOX)+((-)+([a-zA-Z0-9]+)|)+\$").matcher(this).matches()
 
-internal fun String?.isURLValid(): Boolean {
+internal fun String?.isUrlValid(): Boolean {
     return when {
         isNullOrBlank() -> false
         else -> PatternsCompat.WEB_URL.matcher(this).matches()

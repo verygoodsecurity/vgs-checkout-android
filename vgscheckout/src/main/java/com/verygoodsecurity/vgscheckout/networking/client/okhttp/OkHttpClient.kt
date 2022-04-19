@@ -1,15 +1,12 @@
 package com.verygoodsecurity.vgscheckout.networking.client.okhttp
 
+import com.verygoodsecurity.vgscheckout.exception.internal.InvalidUrlException
+import com.verygoodsecurity.vgscheckout.exception.internal.TimeoutNetworkingException
+import com.verygoodsecurity.vgscheckout.exception.internal.UnexpectedNetworkingException
+import com.verygoodsecurity.vgscheckout.networking.client.*
 import com.verygoodsecurity.vgscheckout.networking.client.okhttp.interceptor.CustomHostnameInterceptor
 import com.verygoodsecurity.vgscheckout.networking.client.okhttp.interceptor.LoggingInterceptor
 import com.verygoodsecurity.vgscheckout.networking.toHost
-import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSError
-import com.verygoodsecurity.vgscheckout.networking.client.HttpBodyFormat
-import com.verygoodsecurity.vgscheckout.networking.client.HttpClient
-import com.verygoodsecurity.vgscheckout.networking.client.HttpMethod
-import com.verygoodsecurity.vgscheckout.networking.client.HttpRequest
-import com.verygoodsecurity.vgscheckout.networking.client.HttpResponse
-import com.verygoodsecurity.vgscheckout.networking.isURLValid
 import com.verygoodsecurity.vgscheckout.util.logger.VGSCheckoutLogger
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -21,7 +18,6 @@ import java.io.InterruptedIOException
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
-import java.util.concurrent.TimeoutException
 
 internal class OkHttpClient(
     printLogs: Boolean = true,
@@ -44,20 +40,15 @@ internal class OkHttpClient(
     }
 
     override fun enqueue(request: HttpRequest, callback: ((HttpResponse) -> Unit)?) {
-        if (!request.url.isURLValid()) {
-            callback?.invoke(HttpResponse.create(VGSError.URL_NOT_VALID))
-            return
-        }
-
-        val okHttpRequest = buildRequest(
-            request.url,
-            request.method,
-            request.headers,
-            request.payload,
-            request.format
-        )
-
         try {
+            val okHttpRequest = buildRequest(
+                request.url,
+                request.method,
+                request.headers,
+                request.payload,
+                request.format
+            )
+
             client.newBuilder()
                 .callTimeout(request.timeoutInterval, TimeUnit.MILLISECONDS)
                 .readTimeout(request.timeoutInterval, TimeUnit.MILLISECONDS)
@@ -70,11 +61,7 @@ internal class OkHttpClient(
                         if (call.isCanceled()) {
                             return
                         }
-                        if (e is InterruptedIOException || e is TimeoutException) {
-                            callback?.invoke(HttpResponse.create(VGSError.TIME_OUT))
-                        } else {
-                            callback?.invoke(HttpResponse(message = e.message))
-                        }
+                        callback?.invoke(createResponse(e))
                     }
 
                     override fun onResponse(call: Call, response: Response) {
@@ -84,31 +71,26 @@ internal class OkHttpClient(
                                 response.code,
                                 response.body?.string(),
                                 response.message,
-                                latency = response.latency()
+                                response.latency()
                             )
                         )
                     }
                 })
         } catch (e: Exception) {
-            VGSCheckoutLogger.warn(this::class.java.simpleName, e)
-            callback?.invoke(HttpResponse(message = e.message))
+            callback?.invoke(createResponse(e))
         }
     }
 
     override fun execute(request: HttpRequest): HttpResponse {
-        if (!request.url.isURLValid()) {
-            return HttpResponse.create(VGSError.URL_NOT_VALID)
-        }
-
-        val okHttpRequest = buildRequest(
-            request.url,
-            request.method,
-            request.headers,
-            request.payload,
-            request.format
-        )
-
         return try {
+            val okHttpRequest = buildRequest(
+                request.url,
+                request.method,
+                request.headers,
+                request.payload,
+                request.format
+            )
+
             val response = client.newBuilder()
                 .callTimeout(request.timeoutInterval, TimeUnit.MILLISECONDS)
                 .readTimeout(request.timeoutInterval, TimeUnit.MILLISECONDS)
@@ -121,14 +103,10 @@ internal class OkHttpClient(
                 response.code,
                 response.body?.string(),
                 response.message,
-                latency = response.latency()
+                response.latency()
             )
-        } catch (e: InterruptedIOException) {
-            HttpResponse.create(VGSError.TIME_OUT)
-        } catch (e: TimeoutException) {
-            HttpResponse.create(VGSError.TIME_OUT)
-        } catch (e: IOException) {
-            HttpResponse(message = e.message)
+        } catch (e: Exception) {
+            createResponse(e)
         }
     }
 
@@ -136,6 +114,7 @@ internal class OkHttpClient(
         client.dispatcher.cancelAll()
     }
 
+    @Throws(IllegalArgumentException::class)
     private fun buildRequest(
         url: String,
         method: HttpMethod,
@@ -152,18 +131,28 @@ internal class OkHttpClient(
             .build()
     }
 
-    private fun Response.latency() = this.receivedResponseAtMillis - this.sentRequestAtMillis
-
-    private fun String?.toRequestBodyOrNull(mediaType: MediaType?, method: HttpMethod) =
-        when (method) {
-            HttpMethod.GET -> null
-            else -> this?.toRequestBody(mediaType) ?: EMPTY_REQUEST
+    private fun createResponse(e: Exception): HttpResponse = HttpResponse.create(
+        when (e) {
+            is IllegalArgumentException -> InvalidUrlException()
+            is InterruptedIOException -> TimeoutNetworkingException()
+            else -> UnexpectedNetworkingException(e)
         }
+    )
+}
 
-    private fun Request.Builder.addHeaders(headers: Map<String, String>?): Request.Builder {
-        headers?.forEach {
-            this.addHeader(it.key, it.value)
-        }
-        return this
+private fun Response.latency() = this.receivedResponseAtMillis - this.sentRequestAtMillis
+
+private fun String?.toRequestBodyOrNull(
+    mediaType: MediaType?,
+    method: HttpMethod
+) = when (method) {
+    HttpMethod.GET -> null
+    else -> this?.toRequestBody(mediaType) ?: EMPTY_REQUEST
+}
+
+private fun Request.Builder.addHeaders(headers: Map<String, String>?): Request.Builder {
+    headers?.forEach {
+        this.addHeader(it.key, it.value)
     }
+    return this
 }
