@@ -13,7 +13,6 @@ import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.analytic.event.RequestEvent
-import com.verygoodsecurity.vgscheckout.analytic.event.ResponseEvent
 import com.verygoodsecurity.vgscheckout.collect.core.storage.InternalStorage
 import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
 import com.verygoodsecurity.vgscheckout.collect.view.card.validation.rules.VGSInfoRule
@@ -31,7 +30,6 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.CardNumbe
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.CVCOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.ExpirationDateOptions
 import com.verygoodsecurity.vgscheckout.exception.internal.NoInternetConnectionException
-import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutAddCardResponse
 import com.verygoodsecurity.vgscheckout.networking.command.Command
 import com.verygoodsecurity.vgscheckout.networking.command.add.AddCardCommand
 import com.verygoodsecurity.vgscheckout.ui.fragment.core.BaseFragment
@@ -338,26 +336,13 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
         if (!shouldHandleAddCard) {
             return
         }
-        config.analyticTracker.log(
-            ResponseEvent(
-                result.code,
-                result.message,
-                result.latency
-            )
-        )
+        config.analyticTracker.log(result.toResponseEvent())
         if (isNetworkConnectionError(result.code)) {
             setIsLoading(false)
             showNetworkError { saveCard() }
             return
         }
-        resultBundle.putAddCardResponse(
-            VGSCheckoutAddCardResponse(
-                result.isSuccessful,
-                result.code,
-                result.body,
-                result.message
-            )
-        )
+        resultBundle.putAddCardResponse(result.toAddCardResponse())
         finishWithResult(resultBundle.toCheckoutResult(result.isSuccessful))
     }
 
