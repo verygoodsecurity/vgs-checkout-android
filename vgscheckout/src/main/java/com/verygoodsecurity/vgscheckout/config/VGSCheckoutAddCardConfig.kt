@@ -6,8 +6,11 @@ import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.JWTValid
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutPaymentRouteConfig
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutAddCardFormConfig
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.model.VGSCheckoutCardBrand
 import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
+import com.verygoodsecurity.vgscheckout.model.VGSCheckoutCard
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
+import java.util.*
 
 /**
  * Holds configuration with predefined setup for work with payment orchestration app.
@@ -31,6 +34,7 @@ class VGSCheckoutAddCardConfig private constructor(
     override val formConfig: VGSCheckoutAddCardFormConfig,
     override val isScreenshotsAllowed: Boolean,
     override val isAnalyticsEnabled: Boolean,
+    internal val savedCards: List<VGSCheckoutCard>,
     private val createdFromParcel: Boolean
 ) : CheckoutConfig(tenantId) {
 
@@ -46,6 +50,12 @@ class VGSCheckoutAddCardConfig private constructor(
         parcel.readParcelable(VGSCheckoutAddCardFormConfig::class.java.classLoader)!!,
         parcel.readInt() == 1,
         parcel.readInt() == 1,
+        LinkedList<VGSCheckoutCard>().apply {
+            parcel.readList(
+                this,
+                VGSCheckoutCard::class.java.classLoader
+            )
+        },
         true
     )
 
@@ -79,6 +89,7 @@ class VGSCheckoutAddCardConfig private constructor(
         formConfig,
         isScreenshotsAllowed,
         isAnalyticsEnabled,
+        getCardsMock(),
         false
     )
 
@@ -90,6 +101,7 @@ class VGSCheckoutAddCardConfig private constructor(
         parcel.writeParcelable(formConfig, flags)
         parcel.writeInt(if (isScreenshotsAllowed) 1 else 0)
         parcel.writeInt(if (isAnalyticsEnabled) 1 else 0)
+        parcel.writeList(savedCards)
     }
 
     override fun describeContents(): Int {
@@ -114,6 +126,24 @@ class VGSCheckoutAddCardConfig private constructor(
 
         override fun newArray(size: Int): Array<VGSCheckoutAddCardConfig?> {
             return arrayOfNulls(size)
+        }
+
+        // TODO: Remove mocked data before release
+        private fun getCardsMock(): List<VGSCheckoutCard> {
+            val brands = VGSCheckoutCardBrand.BRANDS.toList()
+            val result = mutableListOf<VGSCheckoutCard>()
+            for (i in 0 until 10) {
+                result.add(
+                    VGSCheckoutCard(
+                        UUID.randomUUID().toString(),
+                        "Test $i",
+                        "$i$i$i$i",
+                        "09/24",
+                        brands.random().name
+                    )
+                )
+            }
+            return result
         }
     }
 }

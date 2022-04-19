@@ -2,7 +2,6 @@ package com.verygoodsecurity.vgscheckout.util.extension
 
 import com.verygoodsecurity.vgscheckout.collect.core.HTTPMethod
 import com.verygoodsecurity.vgscheckout.collect.core.model.VGSCollectFieldNameMappingPolicy
-import com.verygoodsecurity.vgscheckout.collect.core.model.network.NetworkResponse
 import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscheckout.collect.util.extension.toCardBrand
 import com.verygoodsecurity.vgscheckout.collect.view.card.BrandParams
@@ -18,7 +17,6 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.model.VGS
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResultBundle
 import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutAddCardResponse
-import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutTransactionResponse
 
 //region Networking
 internal fun VGSResponse.toAddCardResponse() = VGSCheckoutAddCardResponse(
@@ -33,13 +31,6 @@ internal fun VGSCheckoutResultBundle.toCheckoutResult(isSuccessful: Boolean) = i
 } else {
     VGSCheckoutResult.Failed(this)
 }
-
-internal fun NetworkResponse.toTransactionResponse() = VGSCheckoutTransactionResponse(
-    isSuccessful,
-    code,
-    body,
-    message
-)
 
 internal fun VGSCheckoutHTTPMethod.toCollectHTTPMethod() = when (this) {
     VGSCheckoutHTTPMethod.POST -> HTTPMethod.POST

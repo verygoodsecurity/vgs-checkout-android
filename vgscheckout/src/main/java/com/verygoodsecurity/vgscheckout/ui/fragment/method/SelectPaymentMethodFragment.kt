@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.verygoodsecurity.vgscheckout.R
-import com.verygoodsecurity.vgscheckout.config.VGSCheckoutPaymentConfig
+import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
 import com.verygoodsecurity.vgscheckout.ui.fragment.core.BaseFragment
 import com.verygoodsecurity.vgscheckout.ui.fragment.method.adapter.PaymentMethodsAdapter
 import com.verygoodsecurity.vgscheckout.ui.fragment.method.decorator.MarginItemDecoration
@@ -20,7 +20,7 @@ import com.verygoodsecurity.vgscheckout.util.extension.getDrawableCompat
 import com.verygoodsecurity.vgscheckout.util.extension.setVisible
 
 internal class SelectPaymentMethodFragment :
-    BaseFragment<VGSCheckoutPaymentConfig>(R.layout.vgs_checkout_select_method_fragment),
+    BaseFragment<VGSCheckoutAddCardConfig>(R.layout.vgs_checkout_select_method_fragment),
     PaymentMethodsAdapter.OnItemClickListener {
 
     private lateinit var paymentMethodsRv: RecyclerView
@@ -97,11 +97,7 @@ internal class SelectPaymentMethodFragment :
         payButton.text = title
         payButton.setOnClickListener {
             setLoading(true)
-            createTransaction(
-                adapter.getSelectedCard().finId,
-                config.paymentInfo.amount,
-                config.paymentInfo.currency,
-            )
+            // TODO: Handle pay button click
         }
     }
 
