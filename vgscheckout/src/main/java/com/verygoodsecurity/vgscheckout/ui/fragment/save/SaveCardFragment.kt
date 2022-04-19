@@ -29,7 +29,6 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.CardHolde
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.CardNumberOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.CVCOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.ExpirationDateOptions
-import com.verygoodsecurity.vgscheckout.exception.internal.NoInternetConnectionException
 import com.verygoodsecurity.vgscheckout.networking.command.Command
 import com.verygoodsecurity.vgscheckout.networking.command.add.AddCardCommand
 import com.verygoodsecurity.vgscheckout.ui.fragment.core.BaseFragment
@@ -337,7 +336,7 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
             return
         }
         config.analyticTracker.log(result.toResponseEvent())
-        if (isNetworkConnectionError(result.code)) {
+        if (result.isNoInternetConnectionCode()) {
             setIsLoading(false)
             showNetworkError { saveCard() }
             return
@@ -345,8 +344,6 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
         resultBundle.putAddCardResponse(result.toAddCardResponse())
         finishWithResult(resultBundle.toCheckoutResult(result.isSuccessful))
     }
-
-    private fun isNetworkConnectionError(code: Int) = code == NoInternetConnectionException.CODE
 
     private fun setIsLoading(isLoading: Boolean) {
         setViewsEnabled(!isLoading)

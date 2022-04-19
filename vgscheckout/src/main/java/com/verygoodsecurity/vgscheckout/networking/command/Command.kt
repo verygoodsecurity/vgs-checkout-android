@@ -61,6 +61,8 @@ internal abstract class Command<P : Command.Params> constructor(
         val latency: Long
     ) {
 
+        fun isNoInternetConnectionCode() = code == NoInternetConnectionException.CODE
+
         companion object {
 
             fun create(exception: VGSCheckoutException) = Result(
