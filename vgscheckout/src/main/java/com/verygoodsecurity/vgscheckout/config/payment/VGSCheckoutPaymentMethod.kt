@@ -2,6 +2,7 @@ package com.verygoodsecurity.vgscheckout.config.payment
 
 import androidx.annotation.Size
 import com.verygoodsecurity.vgscheckout.config.payment.VGSCheckoutPaymentMethod.SavedCards.Companion.MAX_IDS_SIZE
+import com.verygoodsecurity.vgscheckout.util.logger.VGSCheckoutLogger
 
 /**
  * Payment methods.
@@ -22,7 +23,14 @@ sealed class VGSCheckoutPaymentMethod {
         @Size(max = MAX_IDS_SIZE) private val ids: List<String>
     ) : VGSCheckoutPaymentMethod() {
 
-        fun getIds() = if (ids.size > MAX_IDS_SIZE) ids.subList(0, MAX_IDS_SIZE.toInt()) else ids
+        fun getIds(): List<String> {
+            return if (ids.size > MAX_IDS_SIZE) {
+                VGSCheckoutLogger.warn(message = "Max saved cards limit to fetch is $MAX_IDS_SIZE! Current saved cards count is: ${ids.size})!")
+                ids.subList(0, MAX_IDS_SIZE.toInt())
+            } else {
+                ids
+            }
+        }
 
         companion object {
 
