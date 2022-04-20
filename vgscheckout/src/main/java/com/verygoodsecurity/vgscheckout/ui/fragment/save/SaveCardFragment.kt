@@ -29,7 +29,7 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.CardHolde
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.CardNumberOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.CVCOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.ExpirationDateOptions
-import com.verygoodsecurity.vgscheckout.networking.command.Command
+import com.verygoodsecurity.vgscheckout.exception.internal.NoInternetConnectionException
 import com.verygoodsecurity.vgscheckout.networking.command.add.AddCardCommand
 import com.verygoodsecurity.vgscheckout.ui.fragment.core.BaseFragment
 import com.verygoodsecurity.vgscheckout.ui.fragment.save.binding.SaveCardViewBindingHelper
@@ -321,7 +321,7 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
         setIsLoading(true)
         addCardCommand = AddCardCommand(requireContext())
         addCardCommand?.execute(
-            AddCardCommand.AddCardParams(
+            AddCardCommand.Params(
                 config.getBaseUrl(requireContext()),
                 config.routeConfig.path,
                 config.routeConfig,
@@ -331,12 +331,12 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
         )
     }
 
-    private fun handleSaveCardResult(result: Command.Result) {
+    private fun handleSaveCardResult(result: AddCardCommand.Result) {
         if (!shouldHandleAddCard) {
             return
         }
         config.analyticTracker.log(result.toResponseEvent())
-        if (result.isNoInternetConnectionCode()) {
+        if (result.code == NoInternetConnectionException.CODE) {
             setIsLoading(false)
             showNetworkError { saveCard() }
             return

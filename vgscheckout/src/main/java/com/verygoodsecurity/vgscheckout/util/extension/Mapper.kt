@@ -18,16 +18,15 @@ import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResultBundle
 import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutAddCardResponse
 import com.verygoodsecurity.vgscheckout.networking.client.HttpMethod
 import com.verygoodsecurity.vgscheckout.networking.client.HttpResponse
-import com.verygoodsecurity.vgscheckout.networking.command.Command
+import com.verygoodsecurity.vgscheckout.networking.command.add.AddCardCommand
 
 //region Networking
-internal fun HttpResponse.toCommandResult() =
-    Command.Result(isSuccessful, code, message, body, latency)
+internal fun HttpResponse.toAddCardResult() =
+    AddCardCommand.Result(isSuccessful, code, message, body, latency)
 
-internal fun Command.Result.toResponseEvent() = ResponseEvent(code, message, latency)
+internal fun AddCardCommand.Result.toResponseEvent() = ResponseEvent(code, message, latency)
 
-internal fun Command.Result.toAddCardResponse() =
-    VGSCheckoutAddCardResponse(isSuccessful, code, body, message)
+internal fun AddCardCommand.Result.toAddCardResponse() = VGSCheckoutAddCardResponse(isSuccessful, code, body, message)
 
 internal fun VGSCheckoutResultBundle.toCheckoutResult(isSuccessful: Boolean) = if (isSuccessful) {
     VGSCheckoutResult.Success(this)
