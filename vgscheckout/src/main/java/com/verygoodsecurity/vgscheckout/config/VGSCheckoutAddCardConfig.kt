@@ -100,6 +100,28 @@ class VGSCheckoutAddCardConfig private constructor(
         false
     )
 
+    @JvmOverloads
+    @Throws(VGSCheckoutException::class)
+    internal constructor(
+        accessToken: String,
+        tenantId: String,
+        environment: VGSCheckoutEnvironment = VGSCheckoutEnvironment.Sandbox(),
+        formConfig: VGSCheckoutAddCardFormConfig = VGSCheckoutAddCardFormConfig(),
+        isScreenshotsAllowed: Boolean = false,
+        isAnalyticsEnabled: Boolean = true,
+        savedCards: List<Card>
+    ) : this(
+        accessToken,
+        tenantId,
+        environment,
+        VGSCheckoutPaymentRouteConfig(accessToken),
+        formConfig,
+        isScreenshotsAllowed,
+        isAnalyticsEnabled,
+        savedCards,
+        false
+    )
+
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(accessToken)
         parcel.writeString(tenantId)
@@ -160,7 +182,26 @@ class VGSCheckoutAddCardConfig private constructor(
             )
             val command = GetSavedCardsCommand(context)
             command.execute(params) {
-
+                when (it) {
+                    is GetSavedCardsCommand.Result.Success -> {
+                        try {
+                            callback?.onSuccess(
+                                VGSCheckoutAddCardConfig(
+                                    accessToken,
+                                    tenantId,
+                                    environment,
+                                    formConfig,
+                                    isScreenshotsAllowed,
+                                    isAnalyticsEnabled,
+                                    it.cards
+                                )
+                            )
+                        } catch (e: VGSCheckoutException) {
+                            callback?.onFailure(e)
+                        }
+                    }
+                    is GetSavedCardsCommand.Result.Failure -> callback?.onFailure(it.exception)
+                }
             }
             return command
         }
