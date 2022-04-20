@@ -12,8 +12,8 @@ import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutAddCardFormConfig
 import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutCreditCard
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
-import com.verygoodsecurity.vgscheckout.networking.command.VGSCheckoutCancellable
-import com.verygoodsecurity.vgscheckout.networking.command.saved.GetSavedCardsCommand
+import com.verygoodsecurity.vgscheckout.networking.command.core.VGSCheckoutCancellable
+import com.verygoodsecurity.vgscheckout.networking.command.GetSavedCardsCommand
 import com.verygoodsecurity.vgscheckout.networking.setupURL
 import java.util.*
 

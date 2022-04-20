@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscheckout.networking.command.saved
+package com.verygoodsecurity.vgscheckout.networking.command
 
 import android.content.Context
 import com.verygoodsecurity.vgscheckout.collect.util.extension.concatWithSlash
@@ -7,7 +7,7 @@ import com.verygoodsecurity.vgscheckout.model.VGSCheckoutCreditCard
 import com.verygoodsecurity.vgscheckout.networking.client.HttpMethod
 import com.verygoodsecurity.vgscheckout.networking.client.HttpRequest
 import com.verygoodsecurity.vgscheckout.networking.client.HttpResponse
-import com.verygoodsecurity.vgscheckout.networking.command.Command
+import com.verygoodsecurity.vgscheckout.networking.command.core.Command
 import org.json.JSONObject
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors

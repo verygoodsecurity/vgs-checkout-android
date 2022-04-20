@@ -30,7 +30,7 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.CardNumbe
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.CVCOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.ExpirationDateOptions
 import com.verygoodsecurity.vgscheckout.exception.internal.NoInternetConnectionException
-import com.verygoodsecurity.vgscheckout.networking.command.add.AddCardCommand
+import com.verygoodsecurity.vgscheckout.networking.command.AddCardCommand
 import com.verygoodsecurity.vgscheckout.ui.fragment.core.BaseFragment
 import com.verygoodsecurity.vgscheckout.ui.fragment.save.binding.SaveCardViewBindingHelper
 import com.verygoodsecurity.vgscheckout.ui.fragment.save.validation.ValidationManager

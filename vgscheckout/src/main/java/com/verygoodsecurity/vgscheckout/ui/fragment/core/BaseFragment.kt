@@ -19,7 +19,7 @@ import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResultBundle
 import com.verygoodsecurity.vgscheckout.ui.core.NavigationHandler
 import com.verygoodsecurity.vgscheckout.ui.core.ToolbarHandler
 import com.verygoodsecurity.vgscheckout.ui.fragment.save.SaveCardFragment
-import com.verygoodsecurity.vgscheckout.networking.command.VGSCheckoutCancellable
+import com.verygoodsecurity.vgscheckout.networking.command.core.VGSCheckoutCancellable
 import com.verygoodsecurity.vgscheckout.util.extension.requireParcelable
 
 internal abstract class BaseFragment<C : CheckoutConfig> : Fragment {

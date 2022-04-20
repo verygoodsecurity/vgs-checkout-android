@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscheckout.networking.command.add
+package com.verygoodsecurity.vgscheckout.networking.command
 
 import android.content.Context
 import com.verygoodsecurity.vgscheckout.collect.util.extension.concatWithSlash
@@ -7,7 +7,7 @@ import com.verygoodsecurity.vgscheckout.collect.util.extension.toFlatMap
 import com.verygoodsecurity.vgscheckout.config.networking.core.CheckoutRouteConfig
 import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
 import com.verygoodsecurity.vgscheckout.networking.client.HttpRequest
-import com.verygoodsecurity.vgscheckout.networking.command.Command
+import com.verygoodsecurity.vgscheckout.networking.command.core.Command
 import com.verygoodsecurity.vgscheckout.util.extension.toAddCardResult
 import com.verygoodsecurity.vgscheckout.util.extension.toCollectMergePolicy
 import com.verygoodsecurity.vgscheckout.util.extension.toInternal

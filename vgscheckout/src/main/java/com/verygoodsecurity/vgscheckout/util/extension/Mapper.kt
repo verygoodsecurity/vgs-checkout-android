@@ -18,7 +18,7 @@ import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResultBundle
 import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutAddCardResponse
 import com.verygoodsecurity.vgscheckout.networking.client.HttpMethod
 import com.verygoodsecurity.vgscheckout.networking.client.HttpResponse
-import com.verygoodsecurity.vgscheckout.networking.command.add.AddCardCommand
+import com.verygoodsecurity.vgscheckout.networking.command.AddCardCommand
 
 //region Networking
 internal fun HttpResponse.toAddCardResult() =

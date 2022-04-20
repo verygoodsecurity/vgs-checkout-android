@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscheckout.networking.command
+package com.verygoodsecurity.vgscheckout.networking.command.core
 
 import android.content.Context
 import android.os.Handler
