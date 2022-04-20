@@ -8,9 +8,7 @@ import com.verygoodsecurity.vgscheckout.networking.client.HttpMethod
 import com.verygoodsecurity.vgscheckout.networking.client.HttpRequest
 import com.verygoodsecurity.vgscheckout.networking.client.HttpResponse
 import com.verygoodsecurity.vgscheckout.networking.command.Command
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
-import java.util.concurrent.Future
+import java.util.concurrent.*
 
 internal class GetSavedCardsCommand constructor(context: Context) :
     Command<GetSavedCardsCommand.Params, GetSavedCardsCommand.Result>(context) {
@@ -61,7 +59,7 @@ internal class GetSavedCardsCommand constructor(context: Context) :
     companion object {
 
         private const val AUTHORIZATION_HEADER_KEY = "Authorization"
-        private const val AUTHORIZATION_HEADER_VALUE = "Bearer [%s]"
+        private const val AUTHORIZATION_HEADER_VALUE = "Bearer %s"
     }
 
     internal data class Params constructor(
