@@ -162,6 +162,7 @@ class VGSCheckoutAddCardConfig private constructor(
             }
         }
 
+        // TODO: Think about ability to set saved cards after config create
         @JvmOverloads
         fun create(
             context: Context,
@@ -175,14 +176,14 @@ class VGSCheckoutAddCardConfig private constructor(
             callback: VGSCheckoutConfigInitCallback<VGSCheckoutAddCardConfig>? = null
         ): VGSCheckoutCancellable {
             val params = GetSavedCardsCommand.Params(
-                tenantId.setupURL(environment.value),
+                tenantId.setupURL(environment.value), // TODO: check if URL build correct
                 VGSCheckoutPaymentRouteConfig.PATH,
                 accessToken,
                 paymentMethod.getIds()
             )
             val command = GetSavedCardsCommand(context)
             command.execute(params) {
-                // TODO: Add analytics event
+                // TODO: Add analytics event && sync about ability to set saved cards after init
                 when (it) {
                     is GetSavedCardsCommand.Result.Success -> {
                         try {
