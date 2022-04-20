@@ -2,12 +2,13 @@ package com.verygoodsecurity.vgscheckout.config
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.verygoodsecurity.vgscheckout.VGSCheckoutConfigInitCallback
 import com.verygoodsecurity.vgscheckout.analytic.event.JWTValidationEvent
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutPaymentRouteConfig
+import com.verygoodsecurity.vgscheckout.config.payment.VGSCheckoutPaymentMethod
 import com.verygoodsecurity.vgscheckout.config.payment.VGSCheckoutPaymentOptions
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutAddCardFormConfig
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.model.VGSCheckoutCardBrand
 import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
 import com.verygoodsecurity.vgscheckout.model.Card
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
@@ -91,7 +92,7 @@ class VGSCheckoutAddCardConfig private constructor(
         formConfig,
         isScreenshotsAllowed,
         isAnalyticsEnabled,
-        getCardsMock(),
+        emptyList(),
         false
     )
 
@@ -120,16 +121,22 @@ class VGSCheckoutAddCardConfig private constructor(
         }
     }
 
-    internal companion object CREATOR : Parcelable.Creator<VGSCheckoutAddCardConfig> {
+    companion object {
 
-        override fun createFromParcel(parcel: Parcel): VGSCheckoutAddCardConfig {
-            return VGSCheckoutAddCardConfig(parcel)
+        @Suppress("unused")
+        @JvmField
+        internal val CREATOR = object : Parcelable.Creator<VGSCheckoutAddCardConfig> {
+
+            override fun createFromParcel(parcel: Parcel): VGSCheckoutAddCardConfig {
+                return VGSCheckoutAddCardConfig(parcel)
+            }
+
+            override fun newArray(size: Int): Array<VGSCheckoutAddCardConfig?> {
+                return arrayOfNulls(size)
+            }
         }
 
-        override fun newArray(size: Int): Array<VGSCheckoutAddCardConfig?> {
-            return arrayOfNulls(size)
-        }
-
+        @JvmOverloads
         fun create(
             accessToken: String,
             tenantId: String,
@@ -137,27 +144,24 @@ class VGSCheckoutAddCardConfig private constructor(
             environment: VGSCheckoutEnvironment = VGSCheckoutEnvironment.Sandbox(),
             formConfig: VGSCheckoutAddCardFormConfig = VGSCheckoutAddCardFormConfig(),
             isScreenshotsAllowed: Boolean = false,
-            isAnalyticsEnabled: Boolean = true
+            isAnalyticsEnabled: Boolean = true,
+            callback: VGSCheckoutConfigInitCallback<VGSCheckoutAddCardConfig>? = null
         ) {
-            // TODO: Implement
-        }
-
-        // TODO: Remove mocked data before release
-        private fun getCardsMock(): List<Card> {
-            val brands = VGSCheckoutCardBrand.BRANDS.toList()
-            val result = mutableListOf<Card>()
-            for (i in 0 until 10) {
-                result.add(
-                    Card(
-                        UUID.randomUUID().toString(),
-                        "Test $i",
-                        "$i$i$i$i",
-                        "09/24",
-                        brands.random().name
+            when (paymentOptions.paymentMethod) {
+                is VGSCheckoutPaymentMethod.NewCard -> callback?.onSuccess(
+                    VGSCheckoutAddCardConfig(
+                        accessToken,
+                        tenantId,
+                        environment,
+                        formConfig,
+                        isScreenshotsAllowed,
+                        isAnalyticsEnabled
                     )
                 )
+                is VGSCheckoutPaymentMethod.SavedCards -> {
+                    // TODO: Implement cards fetch and cancellable return
+                }
             }
-            return result
         }
     }
 }
