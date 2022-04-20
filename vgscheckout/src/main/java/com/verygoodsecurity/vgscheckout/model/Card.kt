@@ -4,7 +4,7 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-internal data class VGSCheckoutCard constructor(
+internal data class Card constructor(
     val finId: String,
     val holderName: String,
     val lastFour: String,

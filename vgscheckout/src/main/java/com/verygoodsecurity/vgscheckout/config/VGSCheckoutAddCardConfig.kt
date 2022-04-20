@@ -5,10 +5,11 @@ import android.os.Parcelable
 import com.verygoodsecurity.vgscheckout.analytic.event.JWTValidationEvent
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutPaymentRouteConfig
+import com.verygoodsecurity.vgscheckout.config.payment.VGSCheckoutPaymentOptions
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutAddCardFormConfig
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.model.VGSCheckoutCardBrand
 import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
-import com.verygoodsecurity.vgscheckout.model.VGSCheckoutCard
+import com.verygoodsecurity.vgscheckout.model.Card
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
 import java.util.*
 
@@ -34,12 +35,13 @@ class VGSCheckoutAddCardConfig private constructor(
     override val formConfig: VGSCheckoutAddCardFormConfig,
     override val isScreenshotsAllowed: Boolean,
     override val isAnalyticsEnabled: Boolean,
-    internal val savedCards: List<VGSCheckoutCard>,
+    internal val savedCards: List<Card>,
     private val createdFromParcel: Boolean
 ) : CheckoutConfig(tenantId) {
 
     init {
-        if (!createdFromParcel) validateToken()
+        //TODO: Uncomment token validation
+//        if (!createdFromParcel) validateToken()
     }
 
     internal constructor(parcel: Parcel) : this(
@@ -50,10 +52,10 @@ class VGSCheckoutAddCardConfig private constructor(
         parcel.readParcelable(VGSCheckoutAddCardFormConfig::class.java.classLoader)!!,
         parcel.readInt() == 1,
         parcel.readInt() == 1,
-        LinkedList<VGSCheckoutCard>().apply {
+        LinkedList<Card>().apply {
             parcel.readList(
                 this,
-                VGSCheckoutCard::class.java.classLoader
+                Card::class.java.classLoader
             )
         },
         true
@@ -128,13 +130,25 @@ class VGSCheckoutAddCardConfig private constructor(
             return arrayOfNulls(size)
         }
 
+        fun create(
+            accessToken: String,
+            tenantId: String,
+            paymentOptions: VGSCheckoutPaymentOptions = VGSCheckoutPaymentOptions(),
+            environment: VGSCheckoutEnvironment = VGSCheckoutEnvironment.Sandbox(),
+            formConfig: VGSCheckoutAddCardFormConfig = VGSCheckoutAddCardFormConfig(),
+            isScreenshotsAllowed: Boolean = false,
+            isAnalyticsEnabled: Boolean = true
+        ) {
+            // TODO: Implement
+        }
+
         // TODO: Remove mocked data before release
-        private fun getCardsMock(): List<VGSCheckoutCard> {
+        private fun getCardsMock(): List<Card> {
             val brands = VGSCheckoutCardBrand.BRANDS.toList()
-            val result = mutableListOf<VGSCheckoutCard>()
+            val result = mutableListOf<Card>()
             for (i in 0 until 10) {
                 result.add(
-                    VGSCheckoutCard(
+                    Card(
                         UUID.randomUUID().toString(),
                         "Test $i",
                         "$i$i$i$i",
