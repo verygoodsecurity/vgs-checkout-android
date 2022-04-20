@@ -10,7 +10,7 @@ import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutPaymentRout
 import com.verygoodsecurity.vgscheckout.config.payment.VGSCheckoutPaymentMethod
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutAddCardFormConfig
 import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
-import com.verygoodsecurity.vgscheckout.model.Card
+import com.verygoodsecurity.vgscheckout.model.VGSCheckoutCreditCard
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
 import com.verygoodsecurity.vgscheckout.networking.command.VGSCheckoutCancellable
 import com.verygoodsecurity.vgscheckout.networking.command.saved.GetSavedCardsCommand
@@ -40,7 +40,7 @@ class VGSCheckoutAddCardConfig private constructor(
     override val formConfig: VGSCheckoutAddCardFormConfig,
     override val isScreenshotsAllowed: Boolean,
     override val isAnalyticsEnabled: Boolean,
-    internal val savedCards: List<Card>,
+    internal val savedCards: List<VGSCheckoutCreditCard>,
     private val createdFromParcel: Boolean
 ) : CheckoutConfig(tenantId) {
 
@@ -57,10 +57,10 @@ class VGSCheckoutAddCardConfig private constructor(
         parcel.readParcelable(VGSCheckoutAddCardFormConfig::class.java.classLoader)!!,
         parcel.readInt() == 1,
         parcel.readInt() == 1,
-        LinkedList<Card>().apply {
+        LinkedList<VGSCheckoutCreditCard>().apply {
             parcel.readList(
                 this,
-                Card::class.java.classLoader
+                VGSCheckoutCreditCard::class.java.classLoader
             )
         },
         true
@@ -109,7 +109,7 @@ class VGSCheckoutAddCardConfig private constructor(
         formConfig: VGSCheckoutAddCardFormConfig = VGSCheckoutAddCardFormConfig(),
         isScreenshotsAllowed: Boolean = false,
         isAnalyticsEnabled: Boolean = true,
-        savedCards: List<Card>
+        savedCards: List<VGSCheckoutCreditCard>
     ) : this(
         accessToken,
         tenantId,
