@@ -20,7 +20,7 @@ import com.verygoodsecurity.vgscheckout.util.extension.getBaseUrl
  * Holds configuration with predefined setup for work with payment orchestration app.
  *
  * @param accessToken payment orchestration app access token.
- * @param tenantId unique organization vault id.
+ * @param tenantId unique organization id.
  * @param environment type of vault.
  * @param routeConfig Networking configuration, like http method, request headers etc.
  * @param formConfig UI configuration.
@@ -47,6 +47,7 @@ class VGSCheckoutAddCardConfig private constructor(
 
     init {
         //TODO: Uncomment token validation
+        //TODO: Uncomment tests in VGSCheckoutAddCardConfigTest.kt
 //        if (!createdFromParcel) validateToken()
     }
 
