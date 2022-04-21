@@ -12,10 +12,9 @@ import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutAddCardFormConfig
 import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutCreditCard
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
-import com.verygoodsecurity.vgscheckout.networking.command.core.VGSCheckoutCancellable
 import com.verygoodsecurity.vgscheckout.networking.command.GetSavedCardsCommand
-import com.verygoodsecurity.vgscheckout.networking.setupURL
-import java.util.*
+import com.verygoodsecurity.vgscheckout.networking.command.core.VGSCheckoutCancellable
+import com.verygoodsecurity.vgscheckout.util.extension.getBaseUrl
 
 /**
  * Holds configuration with predefined setup for work with payment orchestration app.
@@ -27,9 +26,9 @@ import java.util.*
  * @param formConfig UI configuration.
  * @param isScreenshotsAllowed If true, checkout form will allow to make screenshots.
  * @param isAnalyticsEnabled If true, checkout will send analytics events that helps to debug issues if any occurs.
- * @param savedCards previously saved card(financial instruments).
  * @param createdFromParcel if true then object created form parcel. Used to determine if access token
  * validation event should be send.
+ * @field savedCards previously saved card(financial instruments).
  */
 @Suppress("MemberVisibilityCanBePrivate", "CanBeParameter")
 class VGSCheckoutAddCardConfig private constructor(
@@ -40,9 +39,11 @@ class VGSCheckoutAddCardConfig private constructor(
     override val formConfig: VGSCheckoutAddCardFormConfig,
     override val isScreenshotsAllowed: Boolean,
     override val isAnalyticsEnabled: Boolean,
-    internal val savedCards: List<VGSCheckoutCreditCard>,
     private val createdFromParcel: Boolean
 ) : CheckoutConfig(tenantId) {
+
+    internal var savedCards: List<VGSCheckoutCreditCard> = emptyList()
+        private set
 
     init {
         //TODO: Uncomment token validation
@@ -57,14 +58,15 @@ class VGSCheckoutAddCardConfig private constructor(
         parcel.readParcelable(VGSCheckoutAddCardFormConfig::class.java.classLoader)!!,
         parcel.readInt() == 1,
         parcel.readInt() == 1,
-        LinkedList<VGSCheckoutCreditCard>().apply {
+        true
+    ) {
+        this.savedCards = mutableListOf<VGSCheckoutCreditCard>().apply {
             parcel.readList(
                 this,
                 VGSCheckoutCreditCard::class.java.classLoader
             )
-        },
-        true
-    )
+        }
+    }
 
     /**
      * Public constructor.
@@ -96,29 +98,6 @@ class VGSCheckoutAddCardConfig private constructor(
         formConfig,
         isScreenshotsAllowed,
         isAnalyticsEnabled,
-        emptyList(),
-        false
-    )
-
-    @JvmOverloads
-    @Throws(VGSCheckoutException::class)
-    internal constructor(
-        accessToken: String,
-        tenantId: String,
-        environment: VGSCheckoutEnvironment = VGSCheckoutEnvironment.Sandbox(),
-        formConfig: VGSCheckoutAddCardFormConfig = VGSCheckoutAddCardFormConfig(),
-        isScreenshotsAllowed: Boolean = false,
-        isAnalyticsEnabled: Boolean = true,
-        savedCards: List<VGSCheckoutCreditCard>
-    ) : this(
-        accessToken,
-        tenantId,
-        environment,
-        VGSCheckoutPaymentRouteConfig(accessToken),
-        formConfig,
-        isScreenshotsAllowed,
-        isAnalyticsEnabled,
-        savedCards,
         false
     )
 
@@ -162,7 +141,6 @@ class VGSCheckoutAddCardConfig private constructor(
             }
         }
 
-        // TODO: Think about ability to set saved cards after config create
         @JvmOverloads
         fun create(
             context: Context,
@@ -175,8 +153,16 @@ class VGSCheckoutAddCardConfig private constructor(
             isAnalyticsEnabled: Boolean = true,
             callback: VGSCheckoutConfigInitCallback<VGSCheckoutAddCardConfig>? = null
         ): VGSCheckoutCancellable {
+            val config = VGSCheckoutAddCardConfig(
+                accessToken,
+                tenantId,
+                environment,
+                formConfig,
+                isScreenshotsAllowed,
+                isAnalyticsEnabled,
+            )
             val params = GetSavedCardsCommand.Params(
-                tenantId.setupURL(environment.value), // TODO: check if URL build correct
+                config.getBaseUrl(context),
                 VGSCheckoutPaymentRouteConfig.PATH,
                 accessToken,
                 paymentMethod.getIds()
@@ -187,17 +173,8 @@ class VGSCheckoutAddCardConfig private constructor(
                 when (it) {
                     is GetSavedCardsCommand.Result.Success -> {
                         try {
-                            callback?.onSuccess(
-                                VGSCheckoutAddCardConfig(
-                                    accessToken,
-                                    tenantId,
-                                    environment,
-                                    formConfig,
-                                    isScreenshotsAllowed,
-                                    isAnalyticsEnabled,
-                                    it.cards
-                                )
-                            )
+                            config.savedCards = it.cards
+                            callback?.onSuccess(config)
                         } catch (e: VGSCheckoutException) {
                             callback?.onFailure(e)
                         }
