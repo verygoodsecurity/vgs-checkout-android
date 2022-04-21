@@ -19,6 +19,7 @@ import com.verygoodsecurity.vgscheckout.util.extension.getBaseUrl
 import com.verygoodsecurity.vgscheckout.util.extension.getDrawableCompat
 import com.verygoodsecurity.vgscheckout.util.extension.setVisible
 
+// TODO: Handle deleted items after screen rotation
 internal class SelectPaymentMethodFragment :
     BaseFragment<VGSCheckoutAddCardConfig>(R.layout.vgs_checkout_select_method_fragment),
     PaymentMethodsAdapter.OnItemClickListener {
@@ -77,7 +78,7 @@ internal class SelectPaymentMethodFragment :
 
     private fun initPaymentMethodsList(view: View) {
         paymentMethodsRv = view.findViewById(R.id.rvPaymentMethods)
-        adapter = PaymentMethodsAdapter(config.savedCards, this)
+        adapter = PaymentMethodsAdapter(config.savedCards.toMutableList(), this)
         paymentMethodsRv.itemAnimator = null
         paymentMethodsRv.adapter = adapter
         val paddingSmall =
@@ -131,6 +132,10 @@ internal class SelectPaymentMethodFragment :
 
     private fun handleDeleteCreditCardResponse(result: DeleteCreditCardCommand.Result) {
         setLoading(false)
+        // TODO: Remove item only on successful response
+        adapter.getItems().find { it.finId == result.id }?.let {
+            adapter.removeItem(it)
+        }
         // TODO: Handle response
     }
 

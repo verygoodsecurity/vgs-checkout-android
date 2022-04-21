@@ -1,5 +1,6 @@
 package com.verygoodsecurity.vgscheckout.ui.fragment.method.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,10 +13,11 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.model.VGS
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutCreditCard
 
 internal class PaymentMethodsAdapter constructor(
-    private val cards: List<VGSCheckoutCreditCard>,
+    private val cards: MutableList<VGSCheckoutCreditCard>,
     private val listener: OnItemClickListener
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+    // TODO: Handle selected position on remove last item
     private var selectedPosition: Int = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -47,6 +49,8 @@ internal class PaymentMethodsAdapter constructor(
     override fun getItemViewType(position: Int): Int =
         if (cards.getOrNull(position) != null) ViewType.CARD.value else ViewType.ADD_CARD.value
 
+    fun getItems(): List<VGSCheckoutCreditCard> = cards
+
     fun getSelectedPosition() = selectedPosition
 
     fun getSelectedCard() = cards[selectedPosition]
@@ -56,6 +60,12 @@ internal class PaymentMethodsAdapter constructor(
         selectedPosition = position
         notifyItemChanged(oldPosition)
         notifyItemChanged(position)
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun removeItem(card: VGSCheckoutCreditCard) {
+        cards.remove(card)
+        notifyDataSetChanged()
     }
 
     private fun toEnum(viewType: Int): ViewType = when (viewType) {

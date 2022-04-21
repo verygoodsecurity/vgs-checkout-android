@@ -22,6 +22,7 @@ import com.verygoodsecurity.vgscheckout.ui.fragment.save.SaveCardFragment
 import com.verygoodsecurity.vgscheckout.networking.command.core.VGSCheckoutCancellable
 import com.verygoodsecurity.vgscheckout.util.extension.requireParcelable
 
+// TODO: Save result bundle on screen rotation
 internal abstract class BaseFragment<C : CheckoutConfig> : Fragment {
 
     constructor() : super()
