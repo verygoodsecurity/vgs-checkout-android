@@ -23,15 +23,21 @@ internal abstract class Command<P : Command.Params, R : Command.Result> construc
      */
     fun execute(params: P, onResult: (result: R) -> Unit) {
         when {
-            !context.inetPermissionsGranted() -> post(onResult, map(NoInternetPermissionException()))
-            !context.isConnectionAvailable() -> post(onResult, map(NoInternetConnectionException()))
+            !context.inetPermissionsGranted() -> post(
+                onResult,
+                map(params, NoInternetPermissionException())
+            )
+            !context.isConnectionAvailable() -> post(
+                onResult,
+                map(params, NoInternetConnectionException())
+            )
             else -> run(params) { post(onResult, it) }
         }
     }
 
     protected abstract fun run(params: P, onResult: (R) -> Unit)
 
-    protected abstract fun map(exception: VGSCheckoutException): R
+    protected abstract fun map(params: P, exception: VGSCheckoutException): R
 
     override fun cancel() {
         client.cancelAll()

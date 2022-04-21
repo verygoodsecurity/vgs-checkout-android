@@ -2,8 +2,6 @@ package com.verygoodsecurity.vgscheckout.ui.fragment.method
 
 import android.graphics.drawable.Animatable
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -13,9 +11,11 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
+import com.verygoodsecurity.vgscheckout.networking.command.DeleteCreditCardCommand
 import com.verygoodsecurity.vgscheckout.ui.fragment.core.BaseFragment
 import com.verygoodsecurity.vgscheckout.ui.fragment.method.adapter.PaymentMethodsAdapter
 import com.verygoodsecurity.vgscheckout.ui.fragment.method.decorator.MarginItemDecoration
+import com.verygoodsecurity.vgscheckout.util.extension.getBaseUrl
 import com.verygoodsecurity.vgscheckout.util.extension.getDrawableCompat
 import com.verygoodsecurity.vgscheckout.util.extension.setVisible
 
@@ -28,6 +28,8 @@ internal class SelectPaymentMethodFragment :
     private lateinit var payButton: MaterialButton
 
     private var isLoading: Boolean = false
+
+    private var deleteCardCommand: DeleteCreditCardCommand? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -115,11 +117,21 @@ internal class SelectPaymentMethodFragment :
     }
 
     private fun deleteSelectedCard() {
-        // TODO: Implement delete request
         setLoading(true)
-        Handler(Looper.getMainLooper()).postDelayed({
-            setLoading(false)
-        }, 5000)
+        deleteCardCommand = DeleteCreditCardCommand(requireContext())
+        deleteCardCommand?.execute(
+            DeleteCreditCardCommand.Params(
+                config.getBaseUrl(requireContext()),
+                config.routeConfig.path,
+                config.accessToken,
+                adapter.getSelectedCard().finId
+            ), ::handleDeleteCreditCardResponse
+        )
+    }
+
+    private fun handleDeleteCreditCardResponse(result: DeleteCreditCardCommand.Result) {
+        setLoading(false)
+        // TODO: Handle response
     }
 
     private fun setLoading(isLoading: Boolean) {

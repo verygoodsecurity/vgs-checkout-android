@@ -29,17 +29,38 @@ internal class GetSavedCardsCommand constructor(context: Context) :
                     params.accessToken
                 )
             )
-            params.ids.forEach { id ->
-                val response = client.execute(createRequest(id, headers, params))
-                parseResponse(response)?.let {
-                    cards.add(it)
-                }
-            }
-            onResult.invoke(Result.Success(cards))
+//            params.ids.forEach { id ->
+//                val response = client.execute(createRequest(id, headers, params))
+//                parseResponse(response)?.let {
+//                    cards.add(it)
+//                }
+//            }
+            onResult.invoke(Result.Success(createMockedCards(
+                "FNhA4cryyp8LwZmFWeZWSnJn",
+                "FNvzU2WX6zZVnvfUR7svBfvd",
+                "FNxipJnn3kQnV1rNqhcXCfKT",
+                "FN9mt48PtDqxypUUMKY6EeSZ"
+            ))) // TODO: Remove
         }
     }
 
-    override fun map(exception: VGSCheckoutException) = Result.Failure(exception)
+    // TODO: Remove
+    private fun createMockedCards(vararg ids: String): List<VGSCheckoutCreditCard> {
+        val cards = mutableListOf<VGSCheckoutCreditCard>()
+        ids.forEachIndexed { index, id ->
+            cards.add(VGSCheckoutCreditCard(
+                id,
+                "John Doe $index",
+                "4111411141114111",
+                10,
+                2030,
+                "Visa",
+            ))
+        }
+        return cards
+    }
+
+    override fun map(params: Params, exception: VGSCheckoutException) = Result.Failure(exception)
 
     override fun cancel() {
         fetchTask?.cancel(true)
@@ -51,7 +72,7 @@ internal class GetSavedCardsCommand constructor(context: Context) :
         params: Params
     ) = HttpRequest(
         (params.url concatWithSlash params.path) concatWithSlash id,
-        Unit,
+        null,
         headers = headers,
         method = HttpMethod.GET
     )
@@ -69,7 +90,7 @@ internal class GetSavedCardsCommand constructor(context: Context) :
                 card.getString(JSON_KEY_NUMBER),
                 card.getInt(JSON_KEY_EXPIRY_MONTH),
                 card.getInt(JSON_KEY_EXPIRY_YEAR),
-                card.getString(JSON_KEY_BRAND)
+                card.getString(JSON_KEY_BRAND),
             )
         } catch (e: Exception) {
             null

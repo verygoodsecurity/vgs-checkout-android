@@ -1,8 +1,10 @@
 package com.verygoodsecurity.vgscheckout.networking.command
 
 import android.content.Context
+import android.util.Log
 import com.verygoodsecurity.vgscheckout.collect.util.extension.concatWithSlash
 import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
+import com.verygoodsecurity.vgscheckout.networking.client.HttpMethod
 import com.verygoodsecurity.vgscheckout.networking.client.HttpRequest
 import com.verygoodsecurity.vgscheckout.networking.command.core.Command
 
@@ -11,11 +13,15 @@ internal class DeleteCreditCardCommand constructor(context: Context) :
 
     override fun run(params: Params, onResult: (Result) -> Unit) {
         client.enqueue(createRequest(params)) {
-            onResult.invoke(Result(it.isSuccessful, it.code, it.message, it.body, it.latency))
+            Log.d("Test", it.toString())
+            onResult.invoke(
+                Result(params.id, it.isSuccessful, it.code, it.message, it.body, it.latency)
+            )
         }
     }
 
-    override fun map(exception: VGSCheckoutException) = Result(
+    override fun map(params: Params, exception: VGSCheckoutException) = Result(
+        params.id,
         false,
         exception.code,
         exception.message,
@@ -25,13 +31,14 @@ internal class DeleteCreditCardCommand constructor(context: Context) :
 
     private fun createRequest(params: Params) = HttpRequest(
         (params.url concatWithSlash params.path) concatWithSlash params.id,
-        Unit,
+        null,
         mapOf(
             AUTHORIZATION_HEADER_KEY to String.format(
                 AUTHORIZATION_HEADER_VALUE,
                 params.accessToken
             )
-        )
+        ),
+        HttpMethod.DELETE
     )
 
     companion object {
@@ -48,6 +55,7 @@ internal class DeleteCreditCardCommand constructor(context: Context) :
     ) : Command.Params()
 
     data class Result constructor(
+        val id: String,
         val isSuccessful: Boolean,
         val code: Int,
         val message: String?,

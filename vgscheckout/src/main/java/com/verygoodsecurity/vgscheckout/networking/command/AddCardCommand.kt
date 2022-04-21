@@ -22,7 +22,7 @@ internal class AddCardCommand constructor(context: Context) :
         client.enqueue(createRequest(params)) { onResult.invoke(it.toAddCardResult()) }
     }
 
-    override fun map(exception: VGSCheckoutException) = Result(
+    override fun map(params: Params, exception: VGSCheckoutException) = Result(
         false,
         exception.code,
         exception.message,
