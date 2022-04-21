@@ -45,21 +45,18 @@ class VGSCheckout internal constructor(
      * @param tenantId unique organization id.
      * @param environment type of vault to communicate with.
      * @param transitionOptions specifying a custom animation to run when the checkout is displayed.
-     * @param isAnalyticsEnabled true if checkout should send analytics events, false otherwise.
      */
     fun present(
         token: String,
         tenantId: String,
         environment: VGSCheckoutEnvironment = VGSCheckoutEnvironment.Sandbox(),
         transitionOptions: VGSCheckoutTransitionOptions? = null,
-        isAnalyticsEnabled: Boolean = true
     ) {
         present(
             VGSCheckoutAddCardConfig(
                 token,
                 tenantId,
-                environment,
-                isAnalyticsEnabled = isAnalyticsEnabled
+                environment
             ),
             transitionOptions
         )
