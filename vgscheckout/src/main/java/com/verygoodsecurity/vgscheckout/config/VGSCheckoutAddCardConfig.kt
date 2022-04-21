@@ -46,6 +46,7 @@ class VGSCheckoutAddCardConfig private constructor(
 
     init {
         //TODO: Uncomment token validation
+        //TODO: Uncomment tests in VGSCheckoutAddCardConfigTest.kt
 //        if (!createdFromParcel) validateToken()
     }
 
