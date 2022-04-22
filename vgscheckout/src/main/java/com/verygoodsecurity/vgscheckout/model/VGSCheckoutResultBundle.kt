@@ -20,6 +20,11 @@ class VGSCheckoutResultBundle private constructor(@PublishedApi internal val bun
         return bundle.getParcelable(key)
     }
 
+    inline fun <reified T : Parcelable> getParcelableList(key: String): ArrayList<T>? {
+        bundle.classLoader = T::class.java.classLoader
+        return bundle.getParcelableArrayList(key)
+    }
+
     // TODO: Implement ability to get list of objects
 
     fun getBoolean(key: String): Boolean? =
@@ -30,7 +35,10 @@ class VGSCheckoutResultBundle private constructor(@PublishedApi internal val bun
     }
 
     internal fun putDeleteCardResponse(response: VGSCheckoutDeleteCardResponse) {
-        // TODO: Implement
+        val responseList =
+            getParcelableList<VGSCheckoutDeleteCardResponse>(DELETE_CARD_RESPONSES) ?: ArrayList()
+        responseList.add(response)
+        bundle.putParcelableArrayList(DELETE_CARD_RESPONSES, responseList)
     }
 
     internal fun putShouldSaveCard(shouldSaveCard: Boolean) {
@@ -44,6 +52,7 @@ class VGSCheckoutResultBundle private constructor(@PublishedApi internal val bun
     companion object Keys {
 
         const val ADD_CARD_RESPONSE = "com.verygoodsecurity.vgscheckout.add_card_response"
+        const val DELETE_CARD_RESPONSES = "com.verygoodsecurity.vgscheckout.delete_card_responses"
         const val SHOULD_SAVE_CARD = "com.verygoodsecurity.vgscheckout.should_save_card"
         const val IS_PRE_SAVED_CARD = "com.verygoodsecurity.vgscheckout.is_pre_saved_card"
     }
