@@ -13,9 +13,10 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.model.VGS
 import com.verygoodsecurity.vgscheckout.model.Card
 
 internal class PaymentMethodsAdapter constructor(
-    private val cards: MutableList<Card>,
     private val listener: OnItemClickListener
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    private var cards: MutableList<Card> = mutableListOf()
 
     private var selectedPosition: Int = 0
 
@@ -49,6 +50,12 @@ internal class PaymentMethodsAdapter constructor(
         if (cards.getOrNull(position) != null) ViewType.CARD.value else ViewType.ADD_CARD.value
 
     fun getItems(): List<Card> = cards
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun setItems(items: MutableList<Card>) {
+        this.cards = items
+        notifyDataSetChanged()
+    }
 
     fun getSelectedPosition() = selectedPosition
 

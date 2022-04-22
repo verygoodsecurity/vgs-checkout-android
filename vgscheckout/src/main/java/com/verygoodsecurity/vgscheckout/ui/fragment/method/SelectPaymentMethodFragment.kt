@@ -11,6 +11,7 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
+import com.verygoodsecurity.vgscheckout.model.Card
 import com.verygoodsecurity.vgscheckout.networking.command.DeleteCreditCardCommand
 import com.verygoodsecurity.vgscheckout.ui.fragment.core.BaseFragment
 import com.verygoodsecurity.vgscheckout.ui.fragment.method.adapter.PaymentMethodsAdapter
@@ -19,7 +20,6 @@ import com.verygoodsecurity.vgscheckout.util.extension.getBaseUrl
 import com.verygoodsecurity.vgscheckout.util.extension.getDrawableCompat
 import com.verygoodsecurity.vgscheckout.util.extension.setVisible
 
-// TODO: Handle deleted items after screen rotation
 internal class SelectPaymentMethodFragment :
     BaseFragment<VGSCheckoutAddCardConfig>(R.layout.vgs_checkout_select_method_fragment),
     PaymentMethodsAdapter.OnItemClickListener {
@@ -56,11 +56,16 @@ internal class SelectPaymentMethodFragment :
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putInt(KEY_SELECTED_ITEM_POSITION, adapter.getSelectedPosition())
+        outState.putParcelableArrayList(KEY_CARDS, adapter.getItems().toCollection(ArrayList()))
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
         adapter.setSelectedPosition(savedInstanceState?.getInt(KEY_SELECTED_ITEM_POSITION) ?: 0)
+        adapter.setItems(
+            savedInstanceState?.getParcelableArrayList<Card>(KEY_CARDS)?.toMutableList()
+                ?: config.savedCards.toMutableList()
+        )
     }
 
     override fun onNewCardClick() {
@@ -78,7 +83,7 @@ internal class SelectPaymentMethodFragment :
 
     private fun initPaymentMethodsList(view: View) {
         paymentMethodsRv = view.findViewById(R.id.rvPaymentMethods)
-        adapter = PaymentMethodsAdapter(config.savedCards.toMutableList(), this)
+        adapter = PaymentMethodsAdapter(this)
         paymentMethodsRv.itemAnimator = null
         paymentMethodsRv.adapter = adapter
         val paddingSmall =
@@ -164,5 +169,6 @@ internal class SelectPaymentMethodFragment :
     companion object {
 
         private const val KEY_SELECTED_ITEM_POSITION = "selected_item_position"
+        private const val KEY_CARDS = "selected_cards"
     }
 }
