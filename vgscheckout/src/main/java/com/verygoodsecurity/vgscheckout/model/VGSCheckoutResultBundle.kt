@@ -25,8 +25,6 @@ class VGSCheckoutResultBundle private constructor(@PublishedApi internal val bun
         return bundle.getParcelableArrayList(key)
     }
 
-    // TODO: Implement ability to get list of objects
-
     fun getBoolean(key: String): Boolean? =
         if (bundle.containsKey(key)) bundle.getBoolean(key) else null
 
