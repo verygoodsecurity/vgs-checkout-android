@@ -5,13 +5,13 @@ import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class VGSCheckoutCreditCard constructor(
+internal data class Card constructor(
     val finId: String,
-    internal val holderName: String,
-    internal val number: String,
-    internal val expiryMonth: Int,
-    internal val expiryYear: Int,
-    internal val brand: String
+    val holderName: String,
+    val number: String,
+    val expiryMonth: Int,
+    val expiryYear: Int,
+    val brand: String
 ) : Parcelable {
 
     @IgnoredOnParcel

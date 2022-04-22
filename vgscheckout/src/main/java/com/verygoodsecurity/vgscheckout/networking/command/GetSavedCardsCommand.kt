@@ -3,7 +3,7 @@ package com.verygoodsecurity.vgscheckout.networking.command
 import android.content.Context
 import com.verygoodsecurity.vgscheckout.collect.util.extension.concatWithSlash
 import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
-import com.verygoodsecurity.vgscheckout.model.VGSCheckoutCreditCard
+import com.verygoodsecurity.vgscheckout.model.Card
 import com.verygoodsecurity.vgscheckout.networking.client.HttpMethod
 import com.verygoodsecurity.vgscheckout.networking.client.HttpRequest
 import com.verygoodsecurity.vgscheckout.networking.client.HttpResponse
@@ -22,7 +22,7 @@ internal class GetSavedCardsCommand constructor(context: Context) :
     // TODO: Implement async call for each card request to improve performance
     override fun run(params: Params, onResult: (Result) -> Unit) {
         fetchTask = executor.submit {
-            val cards = mutableListOf<VGSCheckoutCreditCard>()
+            val cards = mutableListOf<Card>()
             val headers = mapOf(
                 AUTHORIZATION_HEADER_KEY to String.format(
                     AUTHORIZATION_HEADER_VALUE,
@@ -45,10 +45,10 @@ internal class GetSavedCardsCommand constructor(context: Context) :
     }
 
     // TODO: Remove
-    private fun createMockedCards(vararg ids: String): List<VGSCheckoutCreditCard> {
-        val cards = mutableListOf<VGSCheckoutCreditCard>()
+    private fun createMockedCards(vararg ids: String): List<Card> {
+        val cards = mutableListOf<Card>()
         ids.forEachIndexed { index, id ->
-            cards.add(VGSCheckoutCreditCard(
+            cards.add(Card(
                 id,
                 "John Doe $index",
                 "4111411141114111",
@@ -77,14 +77,14 @@ internal class GetSavedCardsCommand constructor(context: Context) :
         method = HttpMethod.GET
     )
 
-    private fun parseResponse(response: HttpResponse): VGSCheckoutCreditCard? {
+    private fun parseResponse(response: HttpResponse): Card? {
         if (response.body.isNullOrEmpty()) {
             return null
         }
         return try {
             val data = JSONObject(response.body).getJSONObject(JSON_KEY_DATA)
             val card = data.getJSONObject(JSON_KEY_CARD)
-            VGSCheckoutCreditCard(
+            Card(
                 data.getString(JSON_KEY_ID),
                 card.getString(JSON_KEY_HOLDER_NAME),
                 card.getString(JSON_KEY_NUMBER),
@@ -121,7 +121,7 @@ internal class GetSavedCardsCommand constructor(context: Context) :
 
     internal sealed class Result : Command.Result() {
 
-        data class Success(val cards: List<VGSCheckoutCreditCard>) : Result()
+        data class Success(val cards: List<Card>) : Result()
 
         data class Failure(val exception: VGSCheckoutException) : Result()
     }

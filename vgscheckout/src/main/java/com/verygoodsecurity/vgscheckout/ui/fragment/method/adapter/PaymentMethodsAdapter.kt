@@ -10,10 +10,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textview.MaterialTextView
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.model.VGSCheckoutCardBrand
-import com.verygoodsecurity.vgscheckout.model.VGSCheckoutCreditCard
+import com.verygoodsecurity.vgscheckout.model.Card
 
 internal class PaymentMethodsAdapter constructor(
-    private val cards: MutableList<VGSCheckoutCreditCard>,
+    private val cards: MutableList<Card>,
     private val listener: OnItemClickListener
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -48,7 +48,7 @@ internal class PaymentMethodsAdapter constructor(
     override fun getItemViewType(position: Int): Int =
         if (cards.getOrNull(position) != null) ViewType.CARD.value else ViewType.ADD_CARD.value
 
-    fun getItems(): List<VGSCheckoutCreditCard> = cards
+    fun getItems(): List<Card> = cards
 
     fun getSelectedPosition() = selectedPosition
 
@@ -62,7 +62,7 @@ internal class PaymentMethodsAdapter constructor(
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun removeItem(card: VGSCheckoutCreditCard) {
+    fun removeItem(card: Card) {
         cards.remove(card)
         selectedPosition = 0
         notifyDataSetChanged()
@@ -88,7 +88,7 @@ internal class PaymentMethodsAdapter constructor(
             }
         }
 
-        fun bind(card: VGSCheckoutCreditCard) {
+        fun bind(card: Card) {
             ivCardBrand?.setImageResource(VGSCheckoutCardBrand.getBrandIcon(card.brand))
             mtvCardHolderName?.text = card.holderName
             mtvCardNumber?.text = getFormattedCardNumber(card.lastFour)
