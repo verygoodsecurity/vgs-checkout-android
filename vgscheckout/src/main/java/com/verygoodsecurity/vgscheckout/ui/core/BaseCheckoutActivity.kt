@@ -2,7 +2,6 @@ package com.verygoodsecurity.vgscheckout.ui.core
 
 import android.app.Activity
 import android.os.Bundle
-import android.util.Log
 import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
 import com.verygoodsecurity.vgscheckout.R
@@ -32,7 +31,6 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putParcelable(KEY_RESULT_BUNDLE, resultBundle)
-        Log.d("Test", "onSaveInstanceState")
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
@@ -40,7 +38,6 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
         savedInstanceState.getParcelable<VGSCheckoutResultBundle>(KEY_RESULT_BUNDLE)?.let {
             resultBundle = it
         }
-        Log.d("Test", "onRestoreInstanceState")
     }
 
     override fun onBackPressed() {
