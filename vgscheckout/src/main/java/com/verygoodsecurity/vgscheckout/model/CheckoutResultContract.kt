@@ -40,7 +40,7 @@ internal class CheckoutResultContract :
                     ResultParseException()
                 )
         } else {
-            VGSCheckoutResult.Canceled
+            VGSCheckoutResult.Canceled(VGSCheckoutResultBundle()) // TODO: Read result bundle
         }
     }
 
