@@ -59,7 +59,7 @@ internal class PaymentMethodsAdapter constructor(
 
     fun getSelectedPosition() = selectedPosition
 
-    fun getSelectedCard() = cards[selectedPosition]
+    fun getSelectedCard(): Card? = cards.getOrNull(selectedPosition)
 
     fun setSelectedPosition(position: Int) {
         val oldPosition = selectedPosition

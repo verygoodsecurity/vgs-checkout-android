@@ -6,6 +6,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -18,6 +19,7 @@ import com.verygoodsecurity.vgscheckout.ui.fragment.core.BaseFragment
 import com.verygoodsecurity.vgscheckout.ui.fragment.method.adapter.PaymentMethodsAdapter
 import com.verygoodsecurity.vgscheckout.ui.fragment.method.decorator.MarginItemDecoration
 import com.verygoodsecurity.vgscheckout.util.extension.*
+import com.verygoodsecurity.vgscheckout.util.logger.VGSCheckoutLogger
 
 internal class SelectPaymentMethodFragment :
     BaseFragment<VGSCheckoutAddCardConfig>(R.layout.vgs_checkout_select_method_fragment),
@@ -29,6 +31,7 @@ internal class SelectPaymentMethodFragment :
 
     private var isLoading: Boolean = false
 
+    private var confirmationDialog: AlertDialog? = null
     private var deleteCardCommand: DeleteCreditCardCommand? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -39,7 +42,9 @@ internal class SelectPaymentMethodFragment :
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.selec_payment_method_menu, menu)
+        if (adapter.getItems().isNotEmpty()) {
+            inflater.inflate(R.menu.selec_payment_method_menu, menu)
+        }
         super.onCreateOptionsMenu(menu, inflater)
     }
 
@@ -102,27 +107,40 @@ internal class SelectPaymentMethodFragment :
     private fun initPayButton(view: View) {
         payButton = view.findViewById(R.id.mbPay)
         payButton.text = title
-        payButton.setOnClickListener {
-            resultBundle.putAddCardResponse(adapter.getSelectedCard().raw.toCardResponse())
-            resultBundle.putIsPreSavedCard(true)
-            finishWithResult(resultBundle.toCheckoutResult(true))
+        payButton.setOnClickListener { handlePayClicked() }
+    }
+
+    private fun handlePayClicked() {
+        val card = adapter.getSelectedCard()
+        if (card == null) {
+            VGSCheckoutLogger.warn(message = "Selected card is null.")
+            return
         }
+        resultBundle.putAddCardResponse(card.raw.toCardResponse())
+        resultBundle.putIsPreSavedCard(true)
+        finishWithResult(resultBundle.toCheckoutResult(true))
     }
 
     private fun handleDeleteCardClicked() {
-        MaterialAlertDialogBuilder(requireContext(), R.style.VGSCheckout_RemoveCardDialog)
-            .setTitle(getString(R.string.vgs_checkout_delete_dialog_title))
-            .setMessage(getString(R.string.vgs_checkout_delete_dialog_message))
-            .setPositiveButton(getString(R.string.vgs_checkout_delete_dialog_positive_button_title)) { _, _ ->
-                deleteSelectedCard()
-            }
-            .setNegativeButton(getString(R.string.vgs_checkout_delete_dialog_negative_button_title)) { dialog, _ ->
-                dialog.dismiss()
-            }
-            .show()
+        if (confirmationDialog != null) {
+            return
+        }
+        confirmationDialog =
+            MaterialAlertDialogBuilder(requireContext(), R.style.VGSCheckout_RemoveCardDialog)
+                .setTitle(getString(R.string.vgs_checkout_delete_dialog_title))
+                .setMessage(getString(R.string.vgs_checkout_delete_dialog_message))
+                .setPositiveButton(getString(R.string.vgs_checkout_delete_dialog_positive_button_title)) { _, _ -> deleteSelectedCard() }
+                .setNegativeButton(getString(R.string.vgs_checkout_delete_dialog_negative_button_title)) { dialog, _ -> dialog.dismiss() }
+                .setOnDismissListener { confirmationDialog = null }
+                .show()
     }
 
     private fun deleteSelectedCard() {
+        val card = adapter.getSelectedCard()
+        if (card == null) {
+            VGSCheckoutLogger.warn(message = "Selected card is null.")
+            return
+        }
         setLoading(true)
         deleteCardCommand = DeleteCreditCardCommand(requireContext())
         deleteCardCommand?.execute(
@@ -130,8 +148,9 @@ internal class SelectPaymentMethodFragment :
                 config.getBaseUrl(requireContext()),
                 config.routeConfig.path,
                 config.accessToken,
-                adapter.getSelectedCard().finId
-            ), ::handleDeleteCreditCardResponse
+                card.finId
+            ),
+            ::handleDeleteCreditCardResponse
         )
     }
 
@@ -150,6 +169,7 @@ internal class SelectPaymentMethodFragment :
             }
         }
         resultBundle.putDeleteCardResponse(result.toDeleteCardResponse())
+        requireActivity().invalidateOptionsMenu()
     }
 
     private fun setLoading(isLoading: Boolean) {

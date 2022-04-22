@@ -29,6 +29,7 @@ sealed class VGSCheckoutResult : Parcelable {
         val exception: VGSCheckoutException? = null,
     ) : VGSCheckoutResult()
 
+    // TODO: Add result bundle to cancel state
     /**
      * Checkout cancelled by user.
      */
