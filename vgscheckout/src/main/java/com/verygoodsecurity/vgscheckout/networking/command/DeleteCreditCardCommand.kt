@@ -1,7 +1,6 @@
 package com.verygoodsecurity.vgscheckout.networking.command
 
 import android.content.Context
-import android.util.Log
 import com.verygoodsecurity.vgscheckout.collect.util.extension.concatWithSlash
 import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
 import com.verygoodsecurity.vgscheckout.networking.client.HttpMethod
@@ -13,7 +12,6 @@ internal class DeleteCreditCardCommand constructor(context: Context) :
 
     override fun run(params: Params, onResult: (Result) -> Unit) {
         client.enqueue(createRequest(params)) {
-            Log.d("Test", it.toString())
             onResult.invoke(
                 Result(params.id, it.isSuccessful, it.code, it.message, it.body, it.latency)
             )
