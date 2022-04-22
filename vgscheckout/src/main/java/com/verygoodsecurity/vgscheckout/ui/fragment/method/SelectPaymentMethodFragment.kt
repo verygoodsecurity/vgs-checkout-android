@@ -9,7 +9,6 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.snackbar.Snackbar
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
 import com.verygoodsecurity.vgscheckout.exception.internal.NoInternetConnectionException
@@ -138,19 +137,19 @@ internal class SelectPaymentMethodFragment :
 
     private fun handleDeleteCreditCardResponse(result: DeleteCreditCardCommand.Result) {
         setLoading(false)
-        // TODO: Remove item only on successful response
-        adapter.getItems().find { it.finId == result.id }?.let {
-            adapter.removeItem(it)
-        }
-
         // TODO: Add analytic
         if (result.isSuccessful) {
-            // TODO: Delete item from list
+            adapter.getItems().find { it.finId == result.id }?.let {
+                adapter.removeItem(it)
+            }
         } else {
             if (result.code == NoInternetConnectionException.CODE) {
-                Snackbar.make(requireView(), "", Snackbar.LENGTH_SHORT).show()
+                showSnackBar(getString(R.string.vgs_checkout_no_network_error))
+            } else {
+                showSnackBar(getString(R.string.vgs_checkout_general_error))
             }
         }
+        // TODO: Think about cases when we should return local response codes
         resultBundle.putDeleteCardResponse(result.toDeleteCardResponse())
     }
 

@@ -62,6 +62,10 @@ internal abstract class BaseFragment<C : CheckoutConfig> : Fragment {
         requireActivity().finish()
     }
 
+    protected fun showSnackBar(message: String) {
+        Snackbar.make(requireView(), message, Snackbar.LENGTH_LONG).show()
+    }
+
     protected fun showRetrySnackBar(message: String, onRetry: (() -> Unit)? = null) {
         Snackbar.make(requireView(), message, Snackbar.LENGTH_LONG)
             .setAction(getString(R.string.vgs_checkout_no_network_retry)) { onRetry?.invoke() }
