@@ -68,11 +68,6 @@ class CustomActivityResultTest {
                 Constants.VALID_EXP_DATE,
                 Constants.VALID_SECURITY_CODE
             )
-            fillAddressFields(
-                Constants.VALID_ADDRESS,
-                Constants.VALID_CITY,
-                Constants.USA_VALID_ZIP_CODE
-            )
             // Act
             onViewWithScrollTo(R.id.mbSaveCard).perform(click())
             //Assert
@@ -111,11 +106,6 @@ class CustomActivityResultTest {
                 Constants.VALID_CARD_NUMBER,
                 Constants.VALID_EXP_DATE,
                 Constants.VALID_SECURITY_CODE
-            )
-            fillAddressFields(
-                Constants.VALID_ADDRESS,
-                Constants.VALID_CITY,
-                Constants.USA_VALID_ZIP_CODE
             )
             // Act
             onViewWithScrollTo(R.id.mbSaveCard).perform(click())

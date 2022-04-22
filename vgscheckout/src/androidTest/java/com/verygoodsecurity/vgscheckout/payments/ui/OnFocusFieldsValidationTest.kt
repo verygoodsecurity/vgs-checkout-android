@@ -18,6 +18,15 @@ import com.verygoodsecurity.vgscheckout.Constants
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.view.internal.*
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
+import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutAddCardFormConfig
+import com.verygoodsecurity.vgscheckout.config.ui.core.VGSCheckoutFormValidationBehaviour
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillingAddressVisibility
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutPaymentBillingAddressOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.VGSCheckoutPaymentAddressOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.VGSCheckoutPaymentOptionalAddressOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.city.VGSCheckoutPaymentCityOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.country.VGSCheckoutPaymentCountryOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.core.VGSCheckoutFieldVisibility
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_ARGS
 import com.verygoodsecurity.vgscheckout.ui.CustomSaveCardActivity
@@ -29,24 +38,45 @@ import com.verygoodsecurity.vgscheckout.util.ViewInteraction.onViewWithScrollTo
 import com.verygoodsecurity.vgscheckout.util.extension.waitFor
 import org.junit.Assert
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 
-@Ignore("This test should be updated according payment optimization changes.")
 @Suppress("SameParameterValue")
 @RunWith(AndroidJUnit4::class)
 class OnFocusFieldsValidationTest {
 
     private val context: Context = ApplicationProvider.getApplicationContext()
 
-    private val intent = Intent(context, SaveCardActivity::class.java).apply {
+    private val defaultSetupIntent = Intent(context, SaveCardActivity::class.java).apply {
         putExtra(
             EXTRA_KEY_ARGS,
             CheckoutResultContract.Args(
                 VGSCheckoutAddCardConfig(
                     BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS,
                     BuildConfig.VAULT_ID,
+                    isScreenshotsAllowed = true
+                )
+            )
+        )
+    }
+
+    val zipCodeIntent = Intent(context, SaveCardActivity::class.java).apply {
+        putExtra(
+            EXTRA_KEY_ARGS,
+            CheckoutResultContract.Args(
+                VGSCheckoutAddCardConfig(
+                    BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS,
+                    BuildConfig.VAULT_ID,
+                    formConfig = VGSCheckoutAddCardFormConfig(
+                        VGSCheckoutPaymentBillingAddressOptions(
+                            VGSCheckoutPaymentCountryOptions(visibility = VGSCheckoutFieldVisibility.HIDDEN),
+                            VGSCheckoutPaymentCityOptions(visibility = VGSCheckoutFieldVisibility.HIDDEN),
+                            VGSCheckoutPaymentAddressOptions(visibility = VGSCheckoutFieldVisibility.HIDDEN),
+                            VGSCheckoutPaymentOptionalAddressOptions(visibility = VGSCheckoutFieldVisibility.HIDDEN),
+                            visibility = VGSCheckoutBillingAddressVisibility.VISIBLE
+                        ),
+                        VGSCheckoutFormValidationBehaviour.ON_FOCUS
+                    ),
                     isScreenshotsAllowed = true
                 )
             )
@@ -62,8 +92,8 @@ class OnFocusFieldsValidationTest {
     }
 
     @Test
-    fun focusChange_noInput_errorsNotDisplayed() {
-        ActivityScenario.launch<CustomSaveCardActivity>(intent).use {
+    fun zipCode_focusChange_noInput_errorsNotDisplayed() {
+        ActivityScenario.launch<CustomSaveCardActivity>(zipCodeIntent).use {
             // Act
             onViewWithScrollTo(withParent(R.id.vgsTilCardHolder, PersonNameInputField::class))
                 .perform(ViewActions.click())
@@ -72,10 +102,6 @@ class OnFocusFieldsValidationTest {
             onViewWithScrollTo(withParent(R.id.vgsTilExpirationDate, DateInputField::class))
                 .perform(ViewActions.click())
             onViewWithScrollTo(withParent(R.id.vgsTilSecurityCode, CVCInputField::class))
-                .perform(ViewActions.click())
-            onViewWithScrollTo(withParent(R.id.vgsTilAddress, InfoInputField::class))
-                .perform(ViewActions.click())
-            onViewWithScrollTo(withParent(R.id.vgsTilCity, InfoInputField::class))
                 .perform(ViewActions.click())
             onViewWithScrollTo(withParent(R.id.vgsTilPostalCode, InfoInputField::class))
                 .perform(ViewActions.click())
@@ -87,8 +113,6 @@ class OnFocusFieldsValidationTest {
             onViewWithScrollTo(R.id.vgsTilCardNumber).check(matches(withError(null)))
             onViewWithScrollTo(R.id.vgsTilExpirationDate).check(matches(withError(null)))
             onViewWithScrollTo(R.id.vgsTilSecurityCode).check(matches(withError(null)))
-            onViewWithScrollTo(R.id.vgsTilAddress).check(matches(withError(null)))
-            onViewWithScrollTo(R.id.vgsTilCity).check(matches(withError(null)))
             onViewWithScrollTo(R.id.vgsTilPostalCode).check(matches(withError(null)))
 
             // Act
@@ -101,41 +125,88 @@ class OnFocusFieldsValidationTest {
         }
     }
 
+
     @Test
-    fun focusChange_emptyInput_errorsDisplayed() {
-        ActivityScenario.launch<CustomSaveCardActivity>(intent).use {
+    fun default_focusChange_noInput_errorsNotDisplayed() {
+        ActivityScenario.launch<CustomSaveCardActivity>(defaultSetupIntent).use {
             // Act
-            onViewWithScrollTo(withParent(R.id.vgsTilCardHolder,
-                PersonNameInputField::class))
+            onViewWithScrollTo(withParent(R.id.vgsTilCardHolder, PersonNameInputField::class))
+                .perform(ViewActions.click())
+            onViewWithScrollTo(withParent(R.id.vgsTilCardNumber, CardInputField::class))
+                .perform(ViewActions.click())
+            onViewWithScrollTo(withParent(R.id.vgsTilExpirationDate, DateInputField::class))
+                .perform(ViewActions.click())
+            onViewWithScrollTo(withParent(R.id.vgsTilSecurityCode, CVCInputField::class))
+                .perform(ViewActions.click())
+            onViewWithScrollTo(withParent(R.id.vgsTilCardHolder, PersonNameInputField::class))
+                .perform(ViewActions.click())
+
+            // Assert
+            onViewWithScrollTo(R.id.vgsTilCardHolder).check(matches(withError(null)))
+            onViewWithScrollTo(R.id.vgsTilCardNumber).check(matches(withError(null)))
+            onViewWithScrollTo(R.id.vgsTilExpirationDate).check(matches(withError(null)))
+            onViewWithScrollTo(R.id.vgsTilSecurityCode).check(matches(withError(null)))
+
+            // Act
+            Espresso.onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard())
+            waitFor(500)
+            device.pressBack()
+
+            //Assert
+            Assert.assertEquals(Activity.RESULT_CANCELED, it.result.resultCode)
+        }
+    }
+
+    @Test
+    fun default_focusChange_emptyInput_errorsDisplayed() {
+        ActivityScenario.launch<CustomSaveCardActivity>(defaultSetupIntent).use {
+            // Act
+            onViewWithScrollTo(
+                withParent(
+                    R.id.vgsTilCardHolder,
+                    PersonNameInputField::class
+                )
+            )
                 .perform(typeText(Constants.VALID_CARD_HOLDER))
                 .perform(ActionHelper.setText<PersonNameInputField>(null))
-            onViewWithScrollTo(withParent(R.id.vgsTilCardNumber,
-                CardInputField::class))
+
+            onViewWithScrollTo(
+                withParent(
+                    R.id.vgsTilCardNumber,
+                    CardInputField::class
+                )
+            )
                 .perform(typeText(Constants.VALID_CARD_NUMBER))
                 .perform(ActionHelper.setText<CardInputField>(null))
-            onViewWithScrollTo(withParent(R.id.vgsTilExpirationDate,
-                DateInputField::class))
+
+            onViewWithScrollTo(
+                withParent(
+                    R.id.vgsTilExpirationDate,
+                    DateInputField::class
+                )
+            )
                 .perform(typeText(Constants.VALID_EXP_DATE))
                 .perform(ActionHelper.setText<DateInputField>(null))
-            onViewWithScrollTo(withParent(R.id.vgsTilSecurityCode,
-                CVCInputField::class))
+
+            onViewWithScrollTo(
+                withParent(
+                    R.id.vgsTilSecurityCode,
+                    CVCInputField::class
+                )
+            )
                 .perform(typeText(Constants.VALID_SECURITY_CODE))
                 .perform(ActionHelper.setText<CVCInputField>(null))
-            onViewWithScrollTo(withParent(R.id.vgsTilAddress,
-                InfoInputField::class))
-                .perform(typeText(Constants.VALID_ADDRESS))
-                .perform(ActionHelper.setText<InfoInputField>(null))
-            onViewWithScrollTo(withParent(R.id.vgsTilCity,
-                InfoInputField::class))
-                .perform(typeText(Constants.VALID_CITY))
-                .perform(ActionHelper.setText<InfoInputField>(null))
-            onViewWithScrollTo(withParent(R.id.vgsTilPostalCode,
-                InfoInputField::class))
-                .perform(typeText(Constants.USA_VALID_ZIP_CODE))
-                .perform(ActionHelper.setText<InfoInputField>(null))
-            onViewWithScrollTo(withParent(R.id.vgsTilCardHolder,
-                PersonNameInputField::class))
+
+            onViewWithScrollTo(
+                withParent(
+                    R.id.vgsTilCardHolder,
+                    PersonNameInputField::class
+                )
+            )
                 .perform(ViewActions.click())
+
+            onViewWithScrollTo(R.id.mbSaveCard).perform(ViewActions.click())
+
             // Assert
             onViewWithScrollTo(R.id.vgsTilCardHolder)
                 .check(matches(withError("Name is empty")))
@@ -145,18 +216,108 @@ class OnFocusFieldsValidationTest {
                 .check(matches(withError("Expiry date is empty")))
             onViewWithScrollTo(R.id.vgsTilSecurityCode)
                 .check(matches(withError("CVC/CVV is empty")))
-            onViewWithScrollTo(R.id.vgsTilAddress)
-                .check(matches(withError("Address line 1 is empty")))
-            onViewWithScrollTo(R.id.vgsTilCity)
-                .check(matches(withError("City is empty")))
+        }
+    }
+
+
+    @Test
+    fun zipCode_focusChange_emptyInput_errorsDisplayed() {
+        ActivityScenario.launch<CustomSaveCardActivity>(zipCodeIntent).use {
+            // Act
+            onViewWithScrollTo(
+                withParent(
+                    R.id.vgsTilCardHolder,
+                    PersonNameInputField::class
+                )
+            )
+                .perform(typeText(Constants.VALID_CARD_HOLDER))
+                .perform(ActionHelper.setText<PersonNameInputField>(null))
+
+            onViewWithScrollTo(
+                withParent(
+                    R.id.vgsTilCardNumber,
+                    CardInputField::class
+                )
+            )
+                .perform(typeText(Constants.VALID_CARD_NUMBER))
+                .perform(ActionHelper.setText<CardInputField>(null))
+
+            onViewWithScrollTo(
+                withParent(
+                    R.id.vgsTilExpirationDate,
+                    DateInputField::class
+                )
+            )
+                .perform(typeText(Constants.VALID_EXP_DATE))
+                .perform(ActionHelper.setText<DateInputField>(null))
+
+            onViewWithScrollTo(
+                withParent(
+                    R.id.vgsTilSecurityCode,
+                    CVCInputField::class
+                )
+            )
+                .perform(typeText(Constants.VALID_SECURITY_CODE))
+                .perform(ActionHelper.setText<CVCInputField>(null))
+
+            onViewWithScrollTo(
+                withParent(
+                    R.id.vgsTilPostalCode,
+                    InfoInputField::class
+                )
+            )
+                .perform(typeText(Constants.USA_VALID_ZIP_CODE))
+                .perform(ActionHelper.setText<InfoInputField>(null))
+
+            onViewWithScrollTo(
+                withParent(
+                    R.id.vgsTilCardHolder,
+                    PersonNameInputField::class
+                )
+            )
+                .perform(ViewActions.click())
+
+            // Assert
+            onViewWithScrollTo(R.id.vgsTilCardHolder)
+                .check(matches(withError("Name is empty")))
+            onViewWithScrollTo(R.id.vgsTilCardNumber)
+                .check(matches(withError("Card number is empty")))
+            onViewWithScrollTo(R.id.vgsTilExpirationDate)
+                .check(matches(withError("Expiry date is empty")))
+            onViewWithScrollTo(R.id.vgsTilSecurityCode)
+                .check(matches(withError("CVC/CVV is empty")))
             onViewWithScrollTo(R.id.vgsTilPostalCode)
                 .check(matches(withError("ZIP is empty")))
         }
     }
 
     @Test
-    fun focusChange_invalidInput_errorsDisplayed() {
-        ActivityScenario.launch<CustomSaveCardActivity>(intent).use {
+    fun defaultSetup_focusChange_invalidInput_errorsDisplayed() {
+        ActivityScenario.launch<CustomSaveCardActivity>(defaultSetupIntent).use {
+            // Act
+            onViewWithScrollTo(withParent(R.id.vgsTilCardNumber, CardInputField::class))
+                .perform(typeText(Constants.INVALID_CARD_NUMBER))
+            onViewWithScrollTo(withParent(R.id.vgsTilExpirationDate, DateInputField::class))
+                .perform(typeText(Constants.INVALID_EXP_DATE))
+            onViewWithScrollTo(withParent(R.id.vgsTilSecurityCode, CVCInputField::class))
+                .perform(typeText(Constants.INVALID_SECURITY_CODE))
+            onViewWithScrollTo(withParent(R.id.vgsTilCardHolder, PersonNameInputField::class))
+                .perform(ViewActions.click())
+
+            Espresso.onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard())
+
+            onViewWithScrollTo(R.id.mbSaveCard).perform(ViewActions.click())
+            // Assert
+            onViewWithScrollTo(R.id.vgsTilCardNumber).check(matches(withError("Invalid card number")))
+            onViewWithScrollTo(R.id.vgsTilExpirationDate).check(matches(withError("Invalid expiry date")))
+            onViewWithScrollTo(R.id.vgsTilSecurityCode).check(matches(withError("Invalid CVC/CVV format")))
+        }
+    }
+
+
+    @Test
+    fun zipCode_focusChange_invalidInput_errorsDisplayed() {
+        ActivityScenario.launch<CustomSaveCardActivity>(zipCodeIntent).use {
             // Act
             onViewWithScrollTo(withParent(R.id.vgsTilCardNumber, CardInputField::class))
                 .perform(typeText(Constants.INVALID_CARD_NUMBER))
@@ -168,6 +329,9 @@ class OnFocusFieldsValidationTest {
                 .perform(typeText(Constants.USA_INVALID_ZIP_CODE))
             onViewWithScrollTo(withParent(R.id.vgsTilCardHolder, PersonNameInputField::class))
                 .perform(ViewActions.click())
+
+            Espresso.onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard())
+            waitFor(500)
             // Assert
             onViewWithScrollTo(R.id.vgsTilCardNumber).check(matches(withError("Invalid card number")))
             onViewWithScrollTo(R.id.vgsTilExpirationDate).check(matches(withError("Invalid expiry date")))
@@ -177,8 +341,8 @@ class OnFocusFieldsValidationTest {
     }
 
     @Test
-    fun submitClicked_noInput_errorsDisplayed() {
-        ActivityScenario.launch<CustomSaveCardActivity>(intent).use {
+    fun default_submitClicked_noInput_errorsDisplayed() {
+        ActivityScenario.launch<CustomSaveCardActivity>(defaultSetupIntent).use {
             // Act
             onViewWithScrollTo(R.id.mbSaveCard).perform(ViewActions.click())
             // Assert
@@ -186,8 +350,19 @@ class OnFocusFieldsValidationTest {
             onViewWithScrollTo(R.id.vgsTilCardNumber).check(matches(withError("Card number is empty")))
             onViewWithScrollTo(R.id.vgsTilExpirationDate).check(matches(withError("Expiry date is empty")))
             onViewWithScrollTo(R.id.vgsTilSecurityCode).check(matches(withError("CVC/CVV is empty")))
-            onViewWithScrollTo(R.id.vgsTilAddress).check(matches(withError("Address line 1 is empty")))
-            onViewWithScrollTo(R.id.vgsTilCity).check(matches(withError("City is empty")))
+        }
+    }
+
+    @Test
+    fun zipCode_submitClicked_noInput_errorsDisplayed() {
+        ActivityScenario.launch<CustomSaveCardActivity>(zipCodeIntent).use {
+            // Act
+            onViewWithScrollTo(R.id.mbSaveCard).perform(ViewActions.click())
+            // Assert
+            onViewWithScrollTo(R.id.vgsTilCardHolder).check(matches(withError("Name is empty")))
+            onViewWithScrollTo(R.id.vgsTilCardNumber).check(matches(withError("Card number is empty")))
+            onViewWithScrollTo(R.id.vgsTilExpirationDate).check(matches(withError("Expiry date is empty")))
+            onViewWithScrollTo(R.id.vgsTilSecurityCode).check(matches(withError("CVC/CVV is empty")))
             onViewWithScrollTo(R.id.vgsTilPostalCode).check(matches(withError("ZIP is empty")))
         }
     }
