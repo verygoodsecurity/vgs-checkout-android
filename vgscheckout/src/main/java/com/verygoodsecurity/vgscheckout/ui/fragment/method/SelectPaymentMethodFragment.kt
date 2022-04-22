@@ -149,7 +149,6 @@ internal class SelectPaymentMethodFragment :
                 showSnackBar(getString(R.string.vgs_checkout_general_error))
             }
         }
-        // TODO: Think about cases when we should return local response codes
         resultBundle.putDeleteCardResponse(result.toDeleteCardResponse())
     }
 
