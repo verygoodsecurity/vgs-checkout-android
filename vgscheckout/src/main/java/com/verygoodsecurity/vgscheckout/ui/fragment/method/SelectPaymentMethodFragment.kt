@@ -158,18 +158,18 @@ internal class SelectPaymentMethodFragment :
         setLoading(false)
         // TODO: Add analytics
         if (result.isSuccessful) {
-            adapter.getItems().find { it.finId == result.id }?.let {
-                adapter.removeItem(it)
-            }
+            adapter.getItems().find { it.finId == result.id }?.let { adapter.removeItem(it) }
         } else {
-            if (result.code == NoInternetConnectionException.CODE) {
-                showSnackBar(getString(R.string.vgs_checkout_no_network_error))
-            } else {
-                showSnackBar(getString(R.string.vgs_checkout_general_error))
-            }
+            showSnackBar(getErrorMessage(result.code))
         }
         resultBundle.putDeleteCardResponse(result.toDeleteCardResponse())
         requireActivity().invalidateOptionsMenu()
+    }
+
+    private fun getErrorMessage(code: Int) = if (code == NoInternetConnectionException.CODE) {
+        getString(R.string.vgs_checkout_no_network_error)
+    } else {
+        getString(R.string.vgs_checkout_general_error)
     }
 
     private fun setLoading(isLoading: Boolean) {
