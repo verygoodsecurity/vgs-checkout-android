@@ -4,6 +4,7 @@ import android.content.Context
 import com.verygoodsecurity.vgscheckout.collect.util.extension.concatWithSlash
 import com.verygoodsecurity.vgscheckout.collect.util.extension.deepMerge
 import com.verygoodsecurity.vgscheckout.collect.util.extension.toFlatMap
+import com.verygoodsecurity.vgscheckout.collect.util.extension.toJSON
 import com.verygoodsecurity.vgscheckout.config.networking.core.CheckoutRouteConfig
 import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
 import com.verygoodsecurity.vgscheckout.networking.client.HttpRequest
@@ -31,7 +32,7 @@ internal class AddCardCommand constructor(context: Context) :
     )
 
     private fun createRequest(params: Params): HttpRequest {
-        val payload = generatePayload(params)
+        val payload = generatePayload(params).toJSON().toString()
         val headers = params.config.requestOptions.extraHeaders
         val method = params.config.requestOptions.httpMethod.toInternal()
         return HttpRequest(params.url concatWithSlash params.path, payload, headers, method)
