@@ -13,6 +13,7 @@ import com.verygoodsecurity.vgscheckout.config.networking.request.core.VGSChecko
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.model.VGSCheckoutCardBrand
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.model.VGSCheckoutChecksumAlgorithm
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.model.VGSDateSeparateSerializer
+import com.verygoodsecurity.vgscheckout.model.Card
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResultBundle
 import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutCardResponse
@@ -26,7 +27,9 @@ internal fun HttpResponse.toAddCardResult() =
 
 internal fun AddCardCommand.Result.toResponseEvent() = ResponseEvent(code, message, latency)
 
-internal fun AddCardCommand.Result.toAddCardResponse() = VGSCheckoutCardResponse(isSuccessful, code, body, message)
+internal fun AddCardCommand.Result.toCardResponse() = VGSCheckoutCardResponse(isSuccessful, code, body, message)
+
+internal fun Card.Raw.toCardResponse() = VGSCheckoutCardResponse(isSuccessful, code, body, message)
 
 internal fun VGSCheckoutResultBundle.toCheckoutResult(isSuccessful: Boolean) = if (isSuccessful) {
     VGSCheckoutResult.Success(this)

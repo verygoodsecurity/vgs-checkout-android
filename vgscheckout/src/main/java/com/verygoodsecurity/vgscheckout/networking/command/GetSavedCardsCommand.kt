@@ -35,12 +35,16 @@ internal class GetSavedCardsCommand constructor(context: Context) :
 //                    cards.add(it)
 //                }
 //            }
-            onResult.invoke(Result.Success(createMockedCards(
-                "FNhA4cryyp8LwZmFWeZWSnJn",
-                "FNvzU2WX6zZVnvfUR7svBfvd",
-                "FNxipJnn3kQnV1rNqhcXCfKT",
-                "FN9mt48PtDqxypUUMKY6EeSZ"
-            ))) // TODO: Remove
+            onResult.invoke(
+                Result.Success(
+                    createMockedCards(
+                        "FNhA4cryyp8LwZmFWeZWSnJn",
+                        "FNvzU2WX6zZVnvfUR7svBfvd",
+                        "FNxipJnn3kQnV1rNqhcXCfKT",
+                        "FN9mt48PtDqxypUUMKY6EeSZ"
+                    )
+                )
+            ) // TODO: Remove
         }
     }
 
@@ -48,15 +52,17 @@ internal class GetSavedCardsCommand constructor(context: Context) :
     private fun createMockedCards(vararg ids: String): List<Card> {
         val cards = mutableListOf<Card>()
         ids.forEachIndexed { index, id ->
-            cards.add(Card(
-                id,
-                "John Doe $index",
-                "4111411141114111",
-                10,
-                2030,
-                "Visa",
-                ""
-            ))
+            cards.add(
+                Card(
+                    id,
+                    "John Doe $index",
+                    "4111411141114111",
+                    10,
+                    2030,
+                    "Visa",
+                    Card.Raw(true, 200, "", null)
+                )
+            )
         }
         return cards
     }
@@ -92,7 +98,7 @@ internal class GetSavedCardsCommand constructor(context: Context) :
                 card.getInt(JSON_KEY_EXPIRY_MONTH),
                 card.getInt(JSON_KEY_EXPIRY_YEAR),
                 card.getString(JSON_KEY_BRAND),
-                response.body
+                Card.Raw(response.isSuccessful, response.code, response.body, response.message)
             )
         } catch (e: Exception) {
             null

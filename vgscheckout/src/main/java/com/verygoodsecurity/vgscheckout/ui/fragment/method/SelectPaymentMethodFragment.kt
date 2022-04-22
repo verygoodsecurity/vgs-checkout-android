@@ -16,9 +16,7 @@ import com.verygoodsecurity.vgscheckout.networking.command.DeleteCreditCardComma
 import com.verygoodsecurity.vgscheckout.ui.fragment.core.BaseFragment
 import com.verygoodsecurity.vgscheckout.ui.fragment.method.adapter.PaymentMethodsAdapter
 import com.verygoodsecurity.vgscheckout.ui.fragment.method.decorator.MarginItemDecoration
-import com.verygoodsecurity.vgscheckout.util.extension.getBaseUrl
-import com.verygoodsecurity.vgscheckout.util.extension.getDrawableCompat
-import com.verygoodsecurity.vgscheckout.util.extension.setVisible
+import com.verygoodsecurity.vgscheckout.util.extension.*
 
 internal class SelectPaymentMethodFragment :
     BaseFragment<VGSCheckoutAddCardConfig>(R.layout.vgs_checkout_select_method_fragment),
@@ -104,8 +102,9 @@ internal class SelectPaymentMethodFragment :
         payButton = view.findViewById(R.id.mbPay)
         payButton.text = title
         payButton.setOnClickListener {
-            setLoading(true)
-            // TODO: Handle pay button click
+            resultBundle.putAddCardResponse(adapter.getSelectedCard().raw.toCardResponse())
+            resultBundle.putIsPreSavedCard(true)
+            finishWithResult(resultBundle.toCheckoutResult(true))
         }
     }
 

@@ -17,6 +17,7 @@ import com.verygoodsecurity.vgscheckout.collect.core.storage.InternalStorage
 import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
 import com.verygoodsecurity.vgscheckout.collect.view.card.validation.rules.VGSInfoRule
 import com.verygoodsecurity.vgscheckout.collect.widget.VGSCountryEditText
+import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.config.networking.core.VGSCheckoutHostnamePolicy
@@ -341,7 +342,8 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
             showNetworkError { saveCard() }
             return
         }
-        resultBundle.putAddCardResponse(result.toAddCardResponse())
+        resultBundle.putAddCardResponse(result.toCardResponse())
+        if (config is VGSCheckoutAddCardConfig) resultBundle.putIsPreSavedCard(false)
         finishWithResult(resultBundle.toCheckoutResult(result.isSuccessful))
     }
 

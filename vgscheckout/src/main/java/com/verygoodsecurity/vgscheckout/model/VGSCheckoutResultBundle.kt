@@ -30,9 +30,14 @@ class VGSCheckoutResultBundle private constructor(@PublishedApi internal val bun
         bundle.putBoolean(SHOULD_SAVE_CARD, shouldSaveCard)
     }
 
+    internal fun putIsPreSavedCard(isPreSavedCard: Boolean) {
+        bundle.putBoolean(IS_PRE_SAVED_CARD, isPreSavedCard)
+    }
+
     companion object Keys {
 
         const val ADD_CARD_RESPONSE = "com.verygoodsecurity.vgscheckout.add_card_response"
-        internal const val SHOULD_SAVE_CARD = "com.verygoodsecurity.vgscheckout.should_save_card"
+        const val SHOULD_SAVE_CARD = "com.verygoodsecurity.vgscheckout.should_save_card"
+        const val IS_PRE_SAVED_CARD = "com.verygoodsecurity.vgscheckout.is_pre_saved_card"
     }
 }
