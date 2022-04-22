@@ -337,9 +337,9 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
             return
         }
         config.analyticTracker.log(result.toResponseEvent())
-        if (result.code == NoInternetConnectionException.CODE) {
+        if (result.code == NoInternetConnectionException.CODE) { // TODO: Refactor error handling
             setIsLoading(false)
-            showNetworkError { saveCard() }
+            showRetrySnackBar(getString(R.string.vgs_checkout_no_network_error)) { saveCard() }
             return
         }
         resultBundle.putAddCardResponse(result.toCardResponse())

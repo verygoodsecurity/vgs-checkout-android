@@ -16,10 +16,10 @@ import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResultBundle
+import com.verygoodsecurity.vgscheckout.networking.command.core.VGSCheckoutCancellable
 import com.verygoodsecurity.vgscheckout.ui.core.NavigationHandler
 import com.verygoodsecurity.vgscheckout.ui.core.ToolbarHandler
 import com.verygoodsecurity.vgscheckout.ui.fragment.save.SaveCardFragment
-import com.verygoodsecurity.vgscheckout.networking.command.core.VGSCheckoutCancellable
 import com.verygoodsecurity.vgscheckout.util.extension.requireParcelable
 
 // TODO: Save result bundle on screen rotation
@@ -62,8 +62,7 @@ internal abstract class BaseFragment<C : CheckoutConfig> : Fragment {
         requireActivity().finish()
     }
 
-    protected fun showNetworkError(onRetry: (() -> Unit)? = null) {
-        val message = getString(R.string.vgs_checkout_no_network_error)
+    protected fun showRetrySnackBar(message: String, onRetry: (() -> Unit)? = null) {
         Snackbar.make(requireView(), message, Snackbar.LENGTH_LONG)
             .setAction(getString(R.string.vgs_checkout_no_network_retry)) { onRetry?.invoke() }
             .show()
