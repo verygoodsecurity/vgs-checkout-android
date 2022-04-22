@@ -12,7 +12,7 @@ internal data class Card constructor(
     val expiryMonth: Int,
     val expiryYear: Int,
     val brand: String,
-    val raw: String
+    val raw: Raw
 ) : Parcelable {
 
     @IgnoredOnParcel
@@ -26,4 +26,12 @@ internal data class Card constructor(
         private const val LAST_FOUR_LENGTH = 4
         private const val TWO_DIGIT_YEAR_LENGTH = 2
     }
+
+    @Parcelize
+    data class Raw(
+        val isSuccessful: Boolean,
+        val code: Int,
+        val body: String,
+        val message: String?
+    ) : Parcelable
 }

@@ -2,7 +2,7 @@ package com.verygoodsecurity.vgscheckout.model
 
 import android.os.Bundle
 import android.os.Parcelable
-import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutAddCardResponse
+import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutCardResponse
 import kotlinx.parcelize.Parcelize
 
 /**
@@ -22,7 +22,7 @@ class VGSCheckoutResultBundle private constructor(@PublishedApi internal val bun
     fun getBoolean(key: String): Boolean? =
         if (bundle.containsKey(key)) bundle.getBoolean(key) else null
 
-    internal fun putAddCardResponse(response: VGSCheckoutAddCardResponse) {
+    internal fun putAddCardResponse(response: VGSCheckoutCardResponse) {
         bundle.putParcelable(ADD_CARD_RESPONSE, response)
     }
 
