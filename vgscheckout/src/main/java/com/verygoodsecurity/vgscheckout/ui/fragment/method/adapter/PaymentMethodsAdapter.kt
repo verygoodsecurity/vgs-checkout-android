@@ -17,7 +17,6 @@ internal class PaymentMethodsAdapter constructor(
     private val listener: OnItemClickListener
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    // TODO: Handle selected position on remove last item
     private var selectedPosition: Int = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -65,6 +64,7 @@ internal class PaymentMethodsAdapter constructor(
     @SuppressLint("NotifyDataSetChanged")
     fun removeItem(card: VGSCheckoutCreditCard) {
         cards.remove(card)
+        selectedPosition = 0
         notifyDataSetChanged()
     }
 
