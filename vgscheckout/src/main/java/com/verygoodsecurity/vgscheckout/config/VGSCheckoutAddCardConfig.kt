@@ -170,7 +170,7 @@ class VGSCheckoutAddCardConfig private constructor(
             )
             val command = GetSavedCardsCommand(context)
             command.execute(params) {
-                // TODO: Add analytics event
+                // TODO: Add analytics
                 when (it) {
                     is GetSavedCardsCommand.Result.Success -> {
                         try {

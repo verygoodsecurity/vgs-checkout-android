@@ -29,42 +29,14 @@ internal class GetSavedCardsCommand constructor(context: Context) :
                     params.accessToken
                 )
             )
-//            params.ids.forEach { id ->
-//                val response = client.execute(createRequest(id, headers, params))
-//                parseResponse(response)?.let {
-//                    cards.add(it)
-//                }
-//            }
-            onResult.invoke(
-                Result.Success(
-                    createMockedCards(
-                        "FNhA4cryyp8LwZmFWeZWSnJn",
-                        "FNvzU2WX6zZVnvfUR7svBfvd",
-                        "FNxipJnn3kQnV1rNqhcXCfKT",
-                        "FN9mt48PtDqxypUUMKY6EeSZ"
-                    )
-                )
-            ) // TODO: Remove
+            params.ids.forEach { id ->
+                val response = client.execute(createRequest(id, headers, params))
+                parseResponse(response)?.let {
+                    cards.add(it)
+                }
+            }
+            onResult.invoke(Result.Success(cards))
         }
-    }
-
-    // TODO: Remove
-    private fun createMockedCards(vararg ids: String): List<Card> {
-        val cards = mutableListOf<Card>()
-        ids.forEachIndexed { index, id ->
-            cards.add(
-                Card(
-                    id,
-                    "John Doe $index",
-                    "4111411141114111",
-                    10,
-                    2030,
-                    "Visa",
-                    Card.Raw(true, 200, "", null)
-                )
-            )
-        }
-        return cards
     }
 
     override fun map(params: Params, exception: VGSCheckoutException) = Result.Failure(exception)

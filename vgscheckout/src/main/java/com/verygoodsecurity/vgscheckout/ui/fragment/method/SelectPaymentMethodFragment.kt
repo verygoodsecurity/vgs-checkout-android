@@ -137,7 +137,7 @@ internal class SelectPaymentMethodFragment :
 
     private fun handleDeleteCreditCardResponse(result: DeleteCreditCardCommand.Result) {
         setLoading(false)
-        // TODO: Add analytic
+        // TODO: Add analytics
         if (result.isSuccessful) {
             adapter.getItems().find { it.finId == result.id }?.let {
                 adapter.removeItem(it)
