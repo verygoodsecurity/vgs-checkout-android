@@ -34,6 +34,7 @@ internal abstract class BaseFragment<C : CheckoutConfig> : Fragment {
     protected lateinit var navigationHandler: NavigationHandler
     protected lateinit var toolbarHandler: ToolbarHandler
 
+    // TODO: Handle same result bundle for different fragments
     protected var resultBundle = VGSCheckoutResultBundle()
         private set
 
