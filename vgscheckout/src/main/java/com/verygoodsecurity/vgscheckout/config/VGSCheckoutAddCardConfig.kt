@@ -28,7 +28,7 @@ import com.verygoodsecurity.vgscheckout.util.extension.getBaseUrl
  * @param isAnalyticsEnabled If true, checkout will send analytics events that helps to debug issues if any occurs.
  * @param createdFromParcel if true then object created form parcel. Used to determine if access token
  * validation event should be send.
- * @field savedCards previously saved card(financial instruments).
+ * @property savedCards previously saved card(financial instruments).
  */
 @Suppress("MemberVisibilityCanBePrivate", "CanBeParameter")
 class VGSCheckoutAddCardConfig private constructor(
