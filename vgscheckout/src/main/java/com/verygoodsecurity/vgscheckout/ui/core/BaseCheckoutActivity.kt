@@ -26,6 +26,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
     }
 
     override fun onBackPressed() {
+        // TODO: move to fragment
         config.analyticTracker.log(CancelEvent)
         setResult(Activity.RESULT_CANCELED)
         super.onBackPressed()
