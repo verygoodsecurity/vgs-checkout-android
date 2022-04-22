@@ -11,7 +11,8 @@ internal data class Card constructor(
     val number: String,
     val expiryMonth: Int,
     val expiryYear: Int,
-    val brand: String
+    val brand: String,
+    val raw: String
 ) : Parcelable {
 
     @IgnoredOnParcel

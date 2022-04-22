@@ -55,6 +55,7 @@ internal class GetSavedCardsCommand constructor(context: Context) :
                 10,
                 2030,
                 "Visa",
+                ""
             ))
         }
         return cards
@@ -91,6 +92,7 @@ internal class GetSavedCardsCommand constructor(context: Context) :
                 card.getInt(JSON_KEY_EXPIRY_MONTH),
                 card.getInt(JSON_KEY_EXPIRY_YEAR),
                 card.getString(JSON_KEY_BRAND),
+                response.body
             )
         } catch (e: Exception) {
             null
