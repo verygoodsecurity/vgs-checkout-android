@@ -9,8 +9,10 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
+import com.verygoodsecurity.vgscheckout.exception.internal.NoInternetConnectionException
 import com.verygoodsecurity.vgscheckout.model.Card
 import com.verygoodsecurity.vgscheckout.networking.command.DeleteCreditCardCommand
 import com.verygoodsecurity.vgscheckout.ui.fragment.core.BaseFragment
@@ -140,7 +142,16 @@ internal class SelectPaymentMethodFragment :
         adapter.getItems().find { it.finId == result.id }?.let {
             adapter.removeItem(it)
         }
-        // TODO: Handle response
+
+        // TODO: Add analytic
+        if (result.isSuccessful) {
+            // TODO: Delete item from list
+        } else {
+            if (result.code == NoInternetConnectionException.CODE) {
+                Snackbar.make(requireView(), "", Snackbar.LENGTH_SHORT).show()
+            }
+        }
+        resultBundle.putDeleteCardResponse(result.toDeleteCardResponse())
     }
 
     private fun setLoading(isLoading: Boolean) {

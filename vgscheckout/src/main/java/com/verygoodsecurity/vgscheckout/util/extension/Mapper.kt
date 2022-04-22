@@ -17,9 +17,11 @@ import com.verygoodsecurity.vgscheckout.model.Card
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResultBundle
 import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutCardResponse
+import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutDeleteCardResponse
 import com.verygoodsecurity.vgscheckout.networking.client.HttpMethod
 import com.verygoodsecurity.vgscheckout.networking.client.HttpResponse
 import com.verygoodsecurity.vgscheckout.networking.command.AddCardCommand
+import com.verygoodsecurity.vgscheckout.networking.command.DeleteCreditCardCommand
 
 //region Networking
 internal fun HttpResponse.toAddCardResult() =
@@ -27,7 +29,16 @@ internal fun HttpResponse.toAddCardResult() =
 
 internal fun AddCardCommand.Result.toResponseEvent() = ResponseEvent(code, message, latency)
 
-internal fun AddCardCommand.Result.toCardResponse() = VGSCheckoutCardResponse(isSuccessful, code, body, message)
+internal fun AddCardCommand.Result.toCardResponse() =
+    VGSCheckoutCardResponse(isSuccessful, code, body, message)
+
+internal fun DeleteCreditCardCommand.Result.toDeleteCardResponse() = VGSCheckoutDeleteCardResponse(
+    id,
+    isSuccessful,
+    code,
+    body,
+    message
+)
 
 internal fun Card.Raw.toCardResponse() = VGSCheckoutCardResponse(isSuccessful, code, body, message)
 

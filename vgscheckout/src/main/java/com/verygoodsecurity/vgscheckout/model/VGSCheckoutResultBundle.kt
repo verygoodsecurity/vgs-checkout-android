@@ -3,6 +3,7 @@ package com.verygoodsecurity.vgscheckout.model
 import android.os.Bundle
 import android.os.Parcelable
 import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutCardResponse
+import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutDeleteCardResponse
 import kotlinx.parcelize.Parcelize
 
 /**
@@ -19,11 +20,17 @@ class VGSCheckoutResultBundle private constructor(@PublishedApi internal val bun
         return bundle.getParcelable(key)
     }
 
+    // TODO: Implement ability to get list of objects
+
     fun getBoolean(key: String): Boolean? =
         if (bundle.containsKey(key)) bundle.getBoolean(key) else null
 
     internal fun putAddCardResponse(response: VGSCheckoutCardResponse) {
         bundle.putParcelable(ADD_CARD_RESPONSE, response)
+    }
+
+    internal fun putDeleteCardResponse(response: VGSCheckoutDeleteCardResponse) {
+        // TODO: Implement
     }
 
     internal fun putShouldSaveCard(shouldSaveCard: Boolean) {
