@@ -164,7 +164,7 @@ class VGSCheckoutAddCardConfig private constructor(
             )
             val params = GetSavedCardsCommand.Params(
                 config.getBaseUrl(context),
-                VGSCheckoutPaymentRouteConfig.PATH,
+                config.routeConfig.path,
                 accessToken,
                 paymentMethod.getIds()
             )
