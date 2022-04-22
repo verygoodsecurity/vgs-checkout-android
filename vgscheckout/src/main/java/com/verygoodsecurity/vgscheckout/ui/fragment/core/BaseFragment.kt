@@ -22,7 +22,6 @@ import com.verygoodsecurity.vgscheckout.ui.core.ToolbarHandler
 import com.verygoodsecurity.vgscheckout.ui.fragment.save.SaveCardFragment
 import com.verygoodsecurity.vgscheckout.util.extension.requireParcelable
 
-// TODO: Save result bundle on screen rotation
 internal abstract class BaseFragment<C : CheckoutConfig> : Fragment {
 
     constructor() : super()
@@ -35,7 +34,8 @@ internal abstract class BaseFragment<C : CheckoutConfig> : Fragment {
     protected lateinit var navigationHandler: NavigationHandler
     protected lateinit var toolbarHandler: ToolbarHandler
 
-    protected val resultBundle = VGSCheckoutResultBundle()
+    protected var resultBundle = VGSCheckoutResultBundle()
+        private set
 
     private var transactionRequest: VGSCheckoutCancellable? = null
 
@@ -49,6 +49,20 @@ internal abstract class BaseFragment<C : CheckoutConfig> : Fragment {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         updateToolbarTitle()
+    }
+
+    @CallSuper
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putParcelable(KEY_RESULT_BUNDLE, resultBundle)
+    }
+
+    @CallSuper
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        savedInstanceState?.getParcelable<VGSCheckoutResultBundle>(KEY_RESULT_BUNDLE)?.let {
+            resultBundle = it
+        }
     }
 
     override fun onDestroyView() {
@@ -91,6 +105,7 @@ internal abstract class BaseFragment<C : CheckoutConfig> : Fragment {
 
     companion object {
 
+        private const val KEY_RESULT_BUNDLE = "com.verygoodsecurity.vgscheckout.result_bundle"
         private const val KEY_BUNDLE_CONFIG = "com.verygoodsecurity.vgscheckout.config"
 
         inline fun <reified T : BaseFragment<*>> create(config: CheckoutConfig): BaseFragment<*> =
