@@ -15,9 +15,9 @@ import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
-import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResultBundle
 import com.verygoodsecurity.vgscheckout.networking.command.core.VGSCheckoutCancellable
 import com.verygoodsecurity.vgscheckout.ui.core.NavigationHandler
+import com.verygoodsecurity.vgscheckout.ui.core.ResultHolder
 import com.verygoodsecurity.vgscheckout.ui.core.ToolbarHandler
 import com.verygoodsecurity.vgscheckout.ui.fragment.save.SaveCardFragment
 import com.verygoodsecurity.vgscheckout.util.extension.requireParcelable
@@ -33,10 +33,7 @@ internal abstract class BaseFragment<C : CheckoutConfig> : Fragment {
 
     protected lateinit var navigationHandler: NavigationHandler
     protected lateinit var toolbarHandler: ToolbarHandler
-
-    // TODO: Handle same result bundle for different fragments
-    protected var resultBundle = VGSCheckoutResultBundle()
-        private set
+    protected lateinit var resultHolder: ResultHolder
 
     private var transactionRequest: VGSCheckoutCancellable? = null
 
@@ -44,26 +41,13 @@ internal abstract class BaseFragment<C : CheckoutConfig> : Fragment {
         super.onAttach(context)
         navigationHandler = requireActivity() as NavigationHandler
         toolbarHandler = requireActivity() as ToolbarHandler
+        resultHolder = requireActivity() as ResultHolder
     }
 
     @CallSuper
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         updateToolbarTitle()
-    }
-
-    @CallSuper
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putParcelable(KEY_RESULT_BUNDLE, resultBundle)
-    }
-
-    @CallSuper
-    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        super.onViewStateRestored(savedInstanceState)
-        savedInstanceState?.getParcelable<VGSCheckoutResultBundle>(KEY_RESULT_BUNDLE)?.let {
-            resultBundle = it
-        }
     }
 
     override fun onDestroyView() {
@@ -106,7 +90,6 @@ internal abstract class BaseFragment<C : CheckoutConfig> : Fragment {
 
     companion object {
 
-        private const val KEY_RESULT_BUNDLE = "com.verygoodsecurity.vgscheckout.result_bundle"
         private const val KEY_BUNDLE_CONFIG = "com.verygoodsecurity.vgscheckout.config"
 
         inline fun <reified T : BaseFragment<*>> create(config: CheckoutConfig): BaseFragment<*> =

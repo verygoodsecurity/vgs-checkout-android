@@ -2,27 +2,45 @@ package com.verygoodsecurity.vgscheckout.ui.core
 
 import android.app.Activity
 import android.os.Bundle
+import android.util.Log
 import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.analytic.event.CancelEvent
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
+import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResultBundle
 import com.verygoodsecurity.vgscheckout.ui.fragment.core.BaseFragment
 import com.verygoodsecurity.vgscheckout.ui.fragment.method.SelectPaymentMethodFragment
 import com.verygoodsecurity.vgscheckout.ui.fragment.save.SaveCardFragment
 import com.verygoodsecurity.vgscheckout.util.extension.setScreenshotsAllowed
 
 internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActivity(),
-    NavigationHandler, ToolbarHandler {
+    NavigationHandler, ToolbarHandler, ResultHolder {
 
     protected val config: C by lazy { CheckoutResultContract.Args.fromIntent<C>(intent).config }
+
+    private var resultBundle = VGSCheckoutResultBundle()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setScreenshotsAllowed(config.isScreenshotsAllowed)
         setContentView(R.layout.vgs_checkout_activity)
         initView(savedInstanceState)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putParcelable(KEY_RESULT_BUNDLE, resultBundle)
+        Log.d("Test", "onSaveInstanceState")
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        savedInstanceState.getParcelable<VGSCheckoutResultBundle>(KEY_RESULT_BUNDLE)?.let {
+            resultBundle = it
+        }
+        Log.d("Test", "onRestoreInstanceState")
     }
 
     override fun onBackPressed() {
@@ -55,6 +73,8 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
         supportActionBar?.title = title
     }
 
+    override fun getResultBundle(): VGSCheckoutResultBundle = resultBundle
+
     @CallSuper
     protected open fun initView(savedInstanceState: Bundle?) {
         initToolbar()
@@ -74,5 +94,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
     companion object {
 
         const val FRAGMENT_TAG = "com.verygoodsecurity.vgscheckout.fragment_tag"
+
+        private const val KEY_RESULT_BUNDLE = "com.verygoodsecurity.vgscheckout.result_bundle"
     }
 }

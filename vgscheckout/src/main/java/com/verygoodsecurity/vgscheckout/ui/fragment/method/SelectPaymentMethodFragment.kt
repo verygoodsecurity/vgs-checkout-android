@@ -116,9 +116,11 @@ internal class SelectPaymentMethodFragment :
             VGSCheckoutLogger.warn(message = "Selected card is null.")
             return
         }
-        resultBundle.putAddCardResponse(card.raw.toCardResponse())
-        resultBundle.putIsPreSavedCard(true)
-        finishWithResult(resultBundle.toCheckoutResult(true))
+        with(resultHolder.getResultBundle()) {
+            putAddCardResponse(card.raw.toCardResponse())
+            putIsPreSavedCard(true)
+            finishWithResult(toCheckoutResult(true))
+        }
     }
 
     private fun handleDeleteCardClicked() {
@@ -162,7 +164,7 @@ internal class SelectPaymentMethodFragment :
         } else {
             showSnackBar(getErrorMessage(result.code))
         }
-        resultBundle.putDeleteCardResponse(result.toDeleteCardResponse())
+        resultHolder.getResultBundle().putDeleteCardResponse(result.toDeleteCardResponse())
         requireActivity().invalidateOptionsMenu()
     }
 
