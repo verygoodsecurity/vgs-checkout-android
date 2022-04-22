@@ -1,6 +1,7 @@
 package com.verygoodsecurity.vgscheckout.ui.core
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
@@ -8,14 +9,16 @@ import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.analytic.event.CancelEvent
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
+import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResultBundle
 import com.verygoodsecurity.vgscheckout.ui.fragment.core.BaseFragment
 import com.verygoodsecurity.vgscheckout.ui.fragment.method.SelectPaymentMethodFragment
 import com.verygoodsecurity.vgscheckout.ui.fragment.save.SaveCardFragment
 import com.verygoodsecurity.vgscheckout.util.extension.setScreenshotsAllowed
+import com.verygoodsecurity.vgscheckout.util.extension.toCheckoutResult
 
 internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActivity(),
-    NavigationHandler, ToolbarHandler, ResultHolder {
+    NavigationHandler, ToolbarHandler, ResultHandler {
 
     protected val config: C by lazy { CheckoutResultContract.Args.fromIntent<C>(intent).config }
 
@@ -41,9 +44,8 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
     }
 
     override fun onBackPressed() {
-        // TODO: move to fragment
         config.analyticTracker.log(CancelEvent)
-        setResult(Activity.RESULT_CANCELED)
+        setResult(Activity.RESULT_CANCELED, VGSCheckoutResult.Canceled(resultBundle))
         super.onBackPressed()
     }
 
@@ -72,6 +74,11 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
 
     override fun getResultBundle(): VGSCheckoutResultBundle = resultBundle
 
+    override fun setResult(isSuccessful: Boolean) {
+        setResult(Activity.RESULT_OK, resultBundle.toCheckoutResult(isSuccessful))
+        finish()
+    }
+
     @CallSuper
     protected open fun initView(savedInstanceState: Bundle?) {
         initToolbar()
@@ -80,12 +87,17 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
         }
     }
 
+    protected open fun initFragment() {
+        navigateToSaveCard()
+    }
+
     private fun initToolbar() {
         setSupportActionBar(findViewById(R.id.mtToolbar))
     }
 
-    protected open fun initFragment() {
-        navigateToSaveCard()
+    private fun setResult(resultCode: Int, result: VGSCheckoutResult) {
+        val checkoutResultBundle = CheckoutResultContract.Result(result).toBundle()
+        setResult(resultCode, Intent().putExtras(checkoutResultBundle))
     }
 
     companion object {

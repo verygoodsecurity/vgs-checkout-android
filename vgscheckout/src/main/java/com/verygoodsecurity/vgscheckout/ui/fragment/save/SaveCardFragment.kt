@@ -261,10 +261,10 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
     private fun initSaveCardCheckbox() {
         if (config.formConfig.saveCardOptionEnabled) {
             with(binding.saveCardCheckbox) {
-                resultHolder.getResultBundle().putShouldSaveCard(isChecked)
+                resultHandler.getResultBundle().putShouldSaveCard(isChecked)
                 visible()
                 setOnCheckedChangeListener { _, isChecked ->
-                    resultHolder.getResultBundle().putShouldSaveCard(isChecked)
+                    resultHandler.getResultBundle().putShouldSaveCard(isChecked)
                 }
             }
         }
@@ -342,10 +342,10 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
             showRetrySnackBar(getString(R.string.vgs_checkout_no_network_error)) { saveCard() }
             return
         }
-        with(resultHolder.getResultBundle()) {
-            putAddCardResponse(result.toCardResponse())
-            if (config is VGSCheckoutAddCardConfig) putIsPreSavedCard(false)
-            finishWithResult(toCheckoutResult(result.isSuccessful))
+        with(resultHandler) {
+            getResultBundle().putAddCardResponse(result.toCardResponse())
+            if (config is VGSCheckoutAddCardConfig) getResultBundle().putIsPreSavedCard(false)
+            setResult(result.isSuccessful)
         }
     }
 
