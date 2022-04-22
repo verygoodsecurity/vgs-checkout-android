@@ -62,7 +62,7 @@
     <!--Payment method-->
     <string name="vgs_checkout_pay_with_new_card">Pay with new Card</string>
     <string name="vgs_checkout_card_number">&#8226;&#8226;&#8226;&#8226; %1$s</string>
-    <string name="vgs_checkout_expiry">%1$d/%2$d</string>
+    <string name="vgs_checkout_expiry">%1$d/%2$s</string>
     <string name="vgs_checkout_delete_menu_title">Delete</string>
     <string name="vgs_checkout_delete_dialog_title">Remove credit card?</string>
     <string name="vgs_checkout_delete_dialog_message">Are you sure you want to remove the selected credit card?</string>

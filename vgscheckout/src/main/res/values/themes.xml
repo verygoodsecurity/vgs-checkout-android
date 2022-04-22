@@ -89,16 +89,20 @@
 
     <style name="VGSCheckout.SavedCard.Number">
         <item name="android:textSize">@dimen/vgs_checkout_subtitle_2_text_size</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
         <item name="android:textColor">?android:attr/textColorHint</item>
     </style>
 
     <style name="VGSCheckout.SavedCard.Expiry">
         <item name="android:textSize">@dimen/vgs_checkout_subtitle_2_text_size</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
         <item name="android:textColor">?android:attr/textColorHint</item>
     </style>
 
     <style name="VGSCheckout.RemoveCardDialog" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
-        <item name="buttonBarPositiveButtonStyle">@style/VGSCheckout.RemoveCardDialogPositiveButtonStyle</item>
+        <item name="buttonBarPositiveButtonStyle">
+            @style/VGSCheckout.RemoveCardDialogPositiveButtonStyle
+        </item>
     </style>
 
     <style name="VGSCheckout.RemoveCardDialogPositiveButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">

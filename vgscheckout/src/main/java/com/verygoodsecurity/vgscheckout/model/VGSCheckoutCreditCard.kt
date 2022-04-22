@@ -17,8 +17,12 @@ data class VGSCheckoutCreditCard constructor(
     @IgnoredOnParcel
     internal val lastFour: String = number.takeLast(LAST_FOUR_LENGTH)
 
+    @IgnoredOnParcel
+    internal val twoDigitExpiryYear: String = expiryYear.toString().takeLast(TWO_DIGIT_YEAR_LENGTH)
+
     companion object {
 
         private const val LAST_FOUR_LENGTH = 4
+        private const val TWO_DIGIT_YEAR_LENGTH = 2
     }
 }

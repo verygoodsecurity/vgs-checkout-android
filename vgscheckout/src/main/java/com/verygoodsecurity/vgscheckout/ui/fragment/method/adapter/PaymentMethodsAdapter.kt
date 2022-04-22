@@ -92,7 +92,7 @@ internal class PaymentMethodsAdapter constructor(
             ivCardBrand?.setImageResource(VGSCheckoutCardBrand.getBrandIcon(card.brand))
             mtvCardHolderName?.text = card.holderName
             mtvCardNumber?.text = getFormattedCardNumber(card.lastFour)
-            mtvExpiry?.text = getFormattedExpiry(card.expiryMonth, card.expiryYear)
+            mtvExpiry?.text = getFormattedExpiry(card.expiryMonth, card.twoDigitExpiryYear)
             radioButton?.isChecked = adapterPosition == selectedPosition
         }
 
@@ -100,7 +100,7 @@ internal class PaymentMethodsAdapter constructor(
             return itemView.resources.getString(R.string.vgs_checkout_card_number, lastFour)
         }
 
-        private fun getFormattedExpiry(month: Int, year: Int): String {
+        private fun getFormattedExpiry(month: Int, year: String): String {
             return itemView.resources.getString(R.string.vgs_checkout_expiry, month, year)
         }
     }
