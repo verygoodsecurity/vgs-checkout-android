@@ -55,17 +55,17 @@ internal class SelectPaymentMethodFragment :
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putInt(KEY_SELECTED_ITEM_POSITION, adapter.getSelectedPosition())
         outState.putParcelableArrayList(KEY_CARDS, adapter.getItems().toCollection(ArrayList()))
+        outState.putInt(KEY_SELECTED_ITEM_POSITION, adapter.getSelectedPosition())
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
-        adapter.setSelectedPosition(savedInstanceState?.getInt(KEY_SELECTED_ITEM_POSITION) ?: 0)
         adapter.setItems(
             savedInstanceState?.getParcelableArrayList<Card>(KEY_CARDS)?.toMutableList()
                 ?: config.savedCards.toMutableList()
         )
+        adapter.setSelectedPosition(savedInstanceState?.getInt(KEY_SELECTED_ITEM_POSITION) ?: 0)
     }
 
     override fun onNewCardClick() {
