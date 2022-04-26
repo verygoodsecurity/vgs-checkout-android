@@ -1,22 +1,26 @@
 package com.verygoodsecurity.vgscheckout.config
 
+import android.content.Context
 import android.os.Parcel
 import android.os.Parcelable
+import com.verygoodsecurity.vgscheckout.VGSCheckoutConfigInitCallback
 import com.verygoodsecurity.vgscheckout.analytic.event.JWTValidationEvent
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutPaymentRouteConfig
+import com.verygoodsecurity.vgscheckout.config.payment.VGSCheckoutPaymentMethod
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutAddCardFormConfig
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.model.VGSCheckoutCardBrand
 import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
-import com.verygoodsecurity.vgscheckout.model.VGSCheckoutCard
+import com.verygoodsecurity.vgscheckout.model.Card
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
-import java.util.*
+import com.verygoodsecurity.vgscheckout.networking.command.GetSavedCardsCommand
+import com.verygoodsecurity.vgscheckout.networking.command.core.VGSCheckoutCancellable
+import com.verygoodsecurity.vgscheckout.util.extension.getBaseUrl
 
 /**
  * Holds configuration with predefined setup for work with payment orchestration app.
  *
  * @param accessToken payment orchestration app access token.
- * @param tenantId unique organization vault id.
+ * @param tenantId unique organization id.
  * @param environment type of vault.
  * @param routeConfig Networking configuration, like http method, request headers etc.
  * @param formConfig UI configuration.
@@ -24,6 +28,7 @@ import java.util.*
  * @param isAnalyticsEnabled If true, checkout will send analytics events that helps to debug issues if any occurs.
  * @param createdFromParcel if true then object created form parcel. Used to determine if access token
  * validation event should be send.
+ * @property savedCards previously saved card(financial instruments).
  */
 @Suppress("MemberVisibilityCanBePrivate", "CanBeParameter")
 class VGSCheckoutAddCardConfig private constructor(
@@ -34,12 +39,16 @@ class VGSCheckoutAddCardConfig private constructor(
     override val formConfig: VGSCheckoutAddCardFormConfig,
     override val isScreenshotsAllowed: Boolean,
     override val isAnalyticsEnabled: Boolean,
-    internal val savedCards: List<VGSCheckoutCard>,
     private val createdFromParcel: Boolean
 ) : CheckoutConfig(tenantId) {
 
+    internal var savedCards: List<Card> = emptyList()
+        private set
+
     init {
-        if (!createdFromParcel) validateToken()
+        //TODO: Uncomment token validation
+        //TODO: Uncomment tests in VGSCheckoutAddCardConfigTest.kt
+//        if (!createdFromParcel) validateToken()
     }
 
     internal constructor(parcel: Parcel) : this(
@@ -50,14 +59,15 @@ class VGSCheckoutAddCardConfig private constructor(
         parcel.readParcelable(VGSCheckoutAddCardFormConfig::class.java.classLoader)!!,
         parcel.readInt() == 1,
         parcel.readInt() == 1,
-        LinkedList<VGSCheckoutCard>().apply {
+        true
+    ) {
+        this.savedCards = mutableListOf<Card>().apply {
             parcel.readList(
                 this,
-                VGSCheckoutCard::class.java.classLoader
+                Card::class.java.classLoader
             )
-        },
-        true
-    )
+        }
+    }
 
     /**
      * Public constructor.
@@ -89,7 +99,6 @@ class VGSCheckoutAddCardConfig private constructor(
         formConfig,
         isScreenshotsAllowed,
         isAnalyticsEnabled,
-        getCardsMock(),
         false
     )
 
@@ -118,32 +127,63 @@ class VGSCheckoutAddCardConfig private constructor(
         }
     }
 
-    internal companion object CREATOR : Parcelable.Creator<VGSCheckoutAddCardConfig> {
+    companion object {
 
-        override fun createFromParcel(parcel: Parcel): VGSCheckoutAddCardConfig {
-            return VGSCheckoutAddCardConfig(parcel)
-        }
+        @Suppress("unused")
+        @JvmField
+        internal val CREATOR = object : Parcelable.Creator<VGSCheckoutAddCardConfig> {
 
-        override fun newArray(size: Int): Array<VGSCheckoutAddCardConfig?> {
-            return arrayOfNulls(size)
-        }
-
-        // TODO: Remove mocked data before release
-        private fun getCardsMock(): List<VGSCheckoutCard> {
-            val brands = VGSCheckoutCardBrand.BRANDS.toList()
-            val result = mutableListOf<VGSCheckoutCard>()
-            for (i in 0 until 10) {
-                result.add(
-                    VGSCheckoutCard(
-                        UUID.randomUUID().toString(),
-                        "Test $i",
-                        "$i$i$i$i",
-                        "09/24",
-                        brands.random().name
-                    )
-                )
+            override fun createFromParcel(parcel: Parcel): VGSCheckoutAddCardConfig {
+                return VGSCheckoutAddCardConfig(parcel)
             }
-            return result
+
+            override fun newArray(size: Int): Array<VGSCheckoutAddCardConfig?> {
+                return arrayOfNulls(size)
+            }
+        }
+
+        @JvmOverloads
+        fun create(
+            context: Context,
+            accessToken: String,
+            tenantId: String,
+            paymentMethod: VGSCheckoutPaymentMethod.SavedCards,
+            environment: VGSCheckoutEnvironment = VGSCheckoutEnvironment.Sandbox(),
+            formConfig: VGSCheckoutAddCardFormConfig = VGSCheckoutAddCardFormConfig(),
+            isScreenshotsAllowed: Boolean = false,
+            isAnalyticsEnabled: Boolean = true,
+            callback: VGSCheckoutConfigInitCallback<VGSCheckoutAddCardConfig>? = null
+        ): VGSCheckoutCancellable {
+            val config = VGSCheckoutAddCardConfig(
+                accessToken,
+                tenantId,
+                environment,
+                formConfig,
+                isScreenshotsAllowed,
+                isAnalyticsEnabled,
+            )
+            val params = GetSavedCardsCommand.Params(
+                config.getBaseUrl(context),
+                config.routeConfig.path,
+                accessToken,
+                paymentMethod.getIds()
+            )
+            val command = GetSavedCardsCommand(context)
+            command.execute(params) {
+                // TODO: Add analytics
+                when (it) {
+                    is GetSavedCardsCommand.Result.Success -> {
+                        try {
+                            config.savedCards = it.cards
+                            callback?.onSuccess(config)
+                        } catch (e: VGSCheckoutException) {
+                            callback?.onFailure(e)
+                        }
+                    }
+                    is GetSavedCardsCommand.Result.Failure -> callback?.onFailure(it.exception)
+                }
+            }
+            return command
         }
     }
 }

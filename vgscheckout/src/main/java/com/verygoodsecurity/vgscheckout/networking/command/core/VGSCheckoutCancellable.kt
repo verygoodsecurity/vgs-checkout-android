@@ -1,9 +1,9 @@
-package com.verygoodsecurity.vgscheckout.networking.command
+package com.verygoodsecurity.vgscheckout.networking.command.core
 
 /**
  * A {@code VGSCancellable} is a action that can be canceled.
  */
-interface Cancellable {
+interface VGSCheckoutCancellable {
 
     /**
      * Cancel action.

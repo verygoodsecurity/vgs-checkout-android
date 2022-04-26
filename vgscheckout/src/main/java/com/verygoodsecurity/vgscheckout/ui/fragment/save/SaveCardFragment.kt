@@ -17,6 +17,7 @@ import com.verygoodsecurity.vgscheckout.collect.core.storage.InternalStorage
 import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
 import com.verygoodsecurity.vgscheckout.collect.view.card.validation.rules.VGSInfoRule
 import com.verygoodsecurity.vgscheckout.collect.widget.VGSCountryEditText
+import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.config.networking.core.VGSCheckoutHostnamePolicy
@@ -29,8 +30,8 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.CardHolde
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.CardNumberOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.CVCOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.ExpirationDateOptions
-import com.verygoodsecurity.vgscheckout.networking.command.Command
-import com.verygoodsecurity.vgscheckout.networking.command.add.AddCardCommand
+import com.verygoodsecurity.vgscheckout.exception.internal.NoInternetConnectionException
+import com.verygoodsecurity.vgscheckout.networking.command.AddCardCommand
 import com.verygoodsecurity.vgscheckout.ui.fragment.core.BaseFragment
 import com.verygoodsecurity.vgscheckout.ui.fragment.save.binding.SaveCardViewBindingHelper
 import com.verygoodsecurity.vgscheckout.ui.fragment.save.validation.ValidationManager
@@ -260,10 +261,10 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
     private fun initSaveCardCheckbox() {
         if (config.formConfig.saveCardOptionEnabled) {
             with(binding.saveCardCheckbox) {
-                resultBundle.putShouldSaveCard(isChecked)
+                resultHandler.getResultBundle().putShouldSaveCard(isChecked)
                 visible()
                 setOnCheckedChangeListener { _, isChecked ->
-                    resultBundle.putShouldSaveCard(isChecked)
+                    resultHandler.getResultBundle().putShouldSaveCard(isChecked)
                 }
             }
         }
@@ -321,7 +322,7 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
         setIsLoading(true)
         addCardCommand = AddCardCommand(requireContext())
         addCardCommand?.execute(
-            AddCardCommand.AddCardParams(
+            AddCardCommand.Params(
                 config.getBaseUrl(requireContext()),
                 config.routeConfig.path,
                 config.routeConfig,
@@ -331,18 +332,21 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
         )
     }
 
-    private fun handleSaveCardResult(result: Command.Result) {
+    private fun handleSaveCardResult(result: AddCardCommand.Result) {
         if (!shouldHandleAddCard) {
             return
         }
         config.analyticTracker.log(result.toResponseEvent())
-        if (result.isNoInternetConnectionCode()) {
+        if (result.code == NoInternetConnectionException.CODE) { // TODO: Refactor error handling
             setIsLoading(false)
-            showNetworkError { saveCard() }
+            showRetrySnackBar(getString(R.string.vgs_checkout_no_network_error)) { saveCard() }
             return
         }
-        resultBundle.putAddCardResponse(result.toAddCardResponse())
-        finishWithResult(resultBundle.toCheckoutResult(result.isSuccessful))
+        with(resultHandler) {
+            getResultBundle().putAddCardResponse(result.toCardResponse())
+            if (config is VGSCheckoutAddCardConfig) getResultBundle().putIsPreSavedCard(false)
+            setResult(result.isSuccessful)
+        }
     }
 
     private fun setIsLoading(isLoading: Boolean) {

@@ -66,8 +66,10 @@ internal sealed class VGSCheckoutCardBrand : Parcelable {
         )
 
         @DrawableRes
-        fun getBrandIcon(brand: String): Int =
-            BRANDS.find { it.name == brand }?.icon ?: CardType.UNKNOWN.resId
+        fun getBrandIcon(brand: String): Int {
+            return BRANDS.find { it.name.lowercase() == brand.lowercase() }?.icon
+                ?: CardType.UNKNOWN.resId
+        }
     }
 
     @Parcelize

@@ -1,8 +1,6 @@
 package com.verygoodsecurity.vgscheckout.ui.fragment.core
 
-import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.CallSuper
@@ -13,13 +11,11 @@ import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
-import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
-import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
-import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResultBundle
+import com.verygoodsecurity.vgscheckout.networking.command.core.VGSCheckoutCancellable
 import com.verygoodsecurity.vgscheckout.ui.core.NavigationHandler
+import com.verygoodsecurity.vgscheckout.ui.core.ResultHandler
 import com.verygoodsecurity.vgscheckout.ui.core.ToolbarHandler
 import com.verygoodsecurity.vgscheckout.ui.fragment.save.SaveCardFragment
-import com.verygoodsecurity.vgscheckout.networking.command.Cancellable
 import com.verygoodsecurity.vgscheckout.util.extension.requireParcelable
 
 internal abstract class BaseFragment<C : CheckoutConfig> : Fragment {
@@ -33,15 +29,15 @@ internal abstract class BaseFragment<C : CheckoutConfig> : Fragment {
 
     protected lateinit var navigationHandler: NavigationHandler
     protected lateinit var toolbarHandler: ToolbarHandler
+    protected lateinit var resultHandler: ResultHandler
 
-    protected val resultBundle = VGSCheckoutResultBundle()
-
-    private var transactionRequest: Cancellable? = null
+    private var transactionRequest: VGSCheckoutCancellable? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         navigationHandler = requireActivity() as NavigationHandler
         toolbarHandler = requireActivity() as ToolbarHandler
+        resultHandler = requireActivity() as ResultHandler
     }
 
     @CallSuper
@@ -55,14 +51,11 @@ internal abstract class BaseFragment<C : CheckoutConfig> : Fragment {
         transactionRequest?.cancel()
     }
 
-    protected fun finishWithResult(result: VGSCheckoutResult) {
-        val resultBundle = CheckoutResultContract.Result(result).toBundle()
-        requireActivity().setResult(Activity.RESULT_OK, Intent().putExtras(resultBundle))
-        requireActivity().finish()
+    protected fun showSnackBar(message: String) {
+        Snackbar.make(requireView(), message, Snackbar.LENGTH_LONG).show()
     }
 
-    protected fun showNetworkError(onRetry: (() -> Unit)? = null) {
-        val message = getString(R.string.vgs_checkout_no_network_error)
+    protected fun showRetrySnackBar(message: String, onRetry: (() -> Unit)? = null) {
         Snackbar.make(requireView(), message, Snackbar.LENGTH_LONG)
             .setAction(getString(R.string.vgs_checkout_no_network_retry)) { onRetry?.invoke() }
             .show()

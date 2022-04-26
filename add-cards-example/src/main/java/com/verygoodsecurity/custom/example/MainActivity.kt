@@ -24,7 +24,7 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.VGSCheckoutCusto
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.VGSCheckoutCustomExpirationDateOptions
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResultBundle
-import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutAddCardResponse
+import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutCardResponse
 
 class MainActivity : AppCompatActivity(), VGSCheckoutCallback {
 
@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity(), VGSCheckoutCallback {
             else -> null
         }
         val addCardResponse =
-            resultData?.getParcelable<VGSCheckoutAddCardResponse>(VGSCheckoutResultBundle.ADD_CARD_RESPONSE)
+            resultData?.getParcelable<VGSCheckoutCardResponse>(VGSCheckoutResultBundle.ADD_CARD_RESPONSE)
         Log.d(
             "VGSCheckout", """
             ${result::class.java.simpleName}

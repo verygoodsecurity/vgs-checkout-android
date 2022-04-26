@@ -24,3 +24,5 @@ internal fun Context.hasInternetPermission() = ContextCompat.checkSelfPermission
     this,
     android.Manifest.permission.INTERNET
 ) != PackageManager.PERMISSION_DENIED
+
+internal fun Context.inetPermissionsGranted() = hasAccessNetworkStatePermission() && hasInternetPermission()
