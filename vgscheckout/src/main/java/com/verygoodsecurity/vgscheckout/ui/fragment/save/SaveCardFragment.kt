@@ -312,6 +312,7 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
                     routeConfig.requestOptions.hasExtraHeaders,
                     formConfig.addressOptions.countryOptions.validCountries.isNotEmpty(),
                     routeConfig.requestOptions.mergePolicy,
+                    formConfig.validationBehaviour,
                     invalidFields
                 )
             )
