@@ -161,6 +161,7 @@ internal class SelectPaymentMethodFragment :
         // TODO: Add analytics
         if (result.isSuccessful) {
             adapter.getItems().find { it.finId == result.id }?.let { adapter.removeItem(it) }
+            payButton.isEnabled = adapter.getItems().isNotEmpty()
         } else {
             showSnackBar(getErrorMessage(result.code))
         }
