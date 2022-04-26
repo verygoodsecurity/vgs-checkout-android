@@ -126,7 +126,7 @@ class CustomActivityResultTest {
             //Assert
             val result = it.getParcelableSafe<CheckoutResultContract.Result>(EXTRA_KEY_RESULT)
             assertEquals(Activity.RESULT_CANCELED, it.result.resultCode)
-            assertNull(result?.checkoutResult)
+            assertTrue(result?.checkoutResult is VGSCheckoutResult.Canceled)
         }
     }
 
@@ -139,7 +139,7 @@ class CustomActivityResultTest {
             //Assert
             val result = it?.getParcelableSafe<CheckoutResultContract.Result>(EXTRA_KEY_RESULT)
             assertEquals(Activity.RESULT_CANCELED, it.result.resultCode)
-            assertNull(result?.checkoutResult)
+            assertTrue(result?.checkoutResult is VGSCheckoutResult.Canceled)
         }
     }
 }
