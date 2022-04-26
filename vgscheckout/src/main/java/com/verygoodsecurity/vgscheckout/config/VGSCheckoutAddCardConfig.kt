@@ -10,7 +10,7 @@ import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutPaymentRout
 import com.verygoodsecurity.vgscheckout.config.payment.VGSCheckoutPaymentMethod
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutAddCardFormConfig
 import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
-import com.verygoodsecurity.vgscheckout.model.VGSCheckoutCreditCard
+import com.verygoodsecurity.vgscheckout.model.Card
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
 import com.verygoodsecurity.vgscheckout.networking.command.GetSavedCardsCommand
 import com.verygoodsecurity.vgscheckout.networking.command.core.VGSCheckoutCancellable
@@ -28,7 +28,7 @@ import com.verygoodsecurity.vgscheckout.util.extension.getBaseUrl
  * @param isAnalyticsEnabled If true, checkout will send analytics events that helps to debug issues if any occurs.
  * @param createdFromParcel if true then object created form parcel. Used to determine if access token
  * validation event should be send.
- * @field savedCards previously saved card(financial instruments).
+ * @property savedCards previously saved card(financial instruments).
  */
 @Suppress("MemberVisibilityCanBePrivate", "CanBeParameter")
 class VGSCheckoutAddCardConfig private constructor(
@@ -42,7 +42,7 @@ class VGSCheckoutAddCardConfig private constructor(
     private val createdFromParcel: Boolean
 ) : CheckoutConfig(tenantId) {
 
-    internal var savedCards: List<VGSCheckoutCreditCard> = emptyList()
+    internal var savedCards: List<Card> = emptyList()
         private set
 
     init {
@@ -61,10 +61,10 @@ class VGSCheckoutAddCardConfig private constructor(
         parcel.readInt() == 1,
         true
     ) {
-        this.savedCards = mutableListOf<VGSCheckoutCreditCard>().apply {
+        this.savedCards = mutableListOf<Card>().apply {
             parcel.readList(
                 this,
-                VGSCheckoutCreditCard::class.java.classLoader
+                Card::class.java.classLoader
             )
         }
     }
@@ -164,13 +164,13 @@ class VGSCheckoutAddCardConfig private constructor(
             )
             val params = GetSavedCardsCommand.Params(
                 config.getBaseUrl(context),
-                VGSCheckoutPaymentRouteConfig.PATH,
+                config.routeConfig.path,
                 accessToken,
                 paymentMethod.getIds()
             )
             val command = GetSavedCardsCommand(context)
             command.execute(params) {
-                // TODO: Add analytics event
+                // TODO: Add analytics
                 when (it) {
                     is GetSavedCardsCommand.Result.Success -> {
                         try {

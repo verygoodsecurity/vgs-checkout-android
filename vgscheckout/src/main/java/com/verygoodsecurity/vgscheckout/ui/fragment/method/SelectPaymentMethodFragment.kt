@@ -6,20 +6,21 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
+import com.verygoodsecurity.vgscheckout.exception.internal.NoInternetConnectionException
+import com.verygoodsecurity.vgscheckout.model.Card
 import com.verygoodsecurity.vgscheckout.networking.command.DeleteCreditCardCommand
 import com.verygoodsecurity.vgscheckout.ui.fragment.core.BaseFragment
 import com.verygoodsecurity.vgscheckout.ui.fragment.method.adapter.PaymentMethodsAdapter
 import com.verygoodsecurity.vgscheckout.ui.fragment.method.decorator.MarginItemDecoration
-import com.verygoodsecurity.vgscheckout.util.extension.getBaseUrl
-import com.verygoodsecurity.vgscheckout.util.extension.getDrawableCompat
-import com.verygoodsecurity.vgscheckout.util.extension.setVisible
+import com.verygoodsecurity.vgscheckout.util.extension.*
+import com.verygoodsecurity.vgscheckout.util.logger.VGSCheckoutLogger
 
-// TODO: Handle deleted items after screen rotation
 internal class SelectPaymentMethodFragment :
     BaseFragment<VGSCheckoutAddCardConfig>(R.layout.vgs_checkout_select_method_fragment),
     PaymentMethodsAdapter.OnItemClickListener {
@@ -30,6 +31,7 @@ internal class SelectPaymentMethodFragment :
 
     private var isLoading: Boolean = false
 
+    private var confirmationDialog: AlertDialog? = null
     private var deleteCardCommand: DeleteCreditCardCommand? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -40,7 +42,9 @@ internal class SelectPaymentMethodFragment :
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.selec_payment_method_menu, menu)
+        if (adapter.getItems().isNotEmpty()) {
+            inflater.inflate(R.menu.selec_payment_method_menu, menu)
+        }
         super.onCreateOptionsMenu(menu, inflater)
     }
 
@@ -55,11 +59,16 @@ internal class SelectPaymentMethodFragment :
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
+        outState.putParcelableArrayList(KEY_CARDS, adapter.getItems().toCollection(ArrayList()))
         outState.putInt(KEY_SELECTED_ITEM_POSITION, adapter.getSelectedPosition())
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
+        adapter.setItems(
+            savedInstanceState?.getParcelableArrayList<Card>(KEY_CARDS)?.toMutableList()
+                ?: config.savedCards.toMutableList()
+        )
         adapter.setSelectedPosition(savedInstanceState?.getInt(KEY_SELECTED_ITEM_POSITION) ?: 0)
     }
 
@@ -78,7 +87,7 @@ internal class SelectPaymentMethodFragment :
 
     private fun initPaymentMethodsList(view: View) {
         paymentMethodsRv = view.findViewById(R.id.rvPaymentMethods)
-        adapter = PaymentMethodsAdapter(config.savedCards.toMutableList(), this)
+        adapter = PaymentMethodsAdapter(this)
         paymentMethodsRv.itemAnimator = null
         paymentMethodsRv.adapter = adapter
         val paddingSmall =
@@ -98,26 +107,42 @@ internal class SelectPaymentMethodFragment :
     private fun initPayButton(view: View) {
         payButton = view.findViewById(R.id.mbPay)
         payButton.text = title
-        payButton.setOnClickListener {
-            setLoading(true)
-            // TODO: Handle pay button click
+        payButton.setOnClickListener { handlePayClicked() }
+    }
+
+    private fun handlePayClicked() {
+        val card = adapter.getSelectedCard()
+        if (card == null) {
+            VGSCheckoutLogger.warn(message = "Selected card is null.")
+            return
+        }
+        with(resultHandler) {
+            getResultBundle().putAddCardResponse(card.toCardResponse())
+            getResultBundle().putIsPreSavedCard(true)
+            setResult(true)
         }
     }
 
     private fun handleDeleteCardClicked() {
-        MaterialAlertDialogBuilder(requireContext(), R.style.VGSCheckout_RemoveCardDialog)
-            .setTitle(getString(R.string.vgs_checkout_delete_dialog_title))
-            .setMessage(getString(R.string.vgs_checkout_delete_dialog_message))
-            .setPositiveButton(getString(R.string.vgs_checkout_delete_dialog_positive_button_title)) { _, _ ->
-                deleteSelectedCard()
-            }
-            .setNegativeButton(getString(R.string.vgs_checkout_delete_dialog_negative_button_title)) { dialog, _ ->
-                dialog.dismiss()
-            }
-            .show()
+        if (confirmationDialog != null) {
+            return
+        }
+        confirmationDialog =
+            MaterialAlertDialogBuilder(requireContext(), R.style.VGSCheckout_RemoveCardDialog)
+                .setTitle(getString(R.string.vgs_checkout_delete_dialog_title))
+                .setMessage(getString(R.string.vgs_checkout_delete_dialog_message))
+                .setPositiveButton(getString(R.string.vgs_checkout_delete_dialog_positive_button_title)) { _, _ -> deleteSelectedCard() }
+                .setNegativeButton(getString(R.string.vgs_checkout_delete_dialog_negative_button_title)) { dialog, _ -> dialog.dismiss() }
+                .setOnDismissListener { confirmationDialog = null }
+                .show()
     }
 
     private fun deleteSelectedCard() {
+        val card = adapter.getSelectedCard()
+        if (card == null) {
+            VGSCheckoutLogger.warn(message = "Selected card is null.")
+            return
+        }
         setLoading(true)
         deleteCardCommand = DeleteCreditCardCommand(requireContext())
         deleteCardCommand?.execute(
@@ -125,18 +150,28 @@ internal class SelectPaymentMethodFragment :
                 config.getBaseUrl(requireContext()),
                 config.routeConfig.path,
                 config.accessToken,
-                adapter.getSelectedCard().finId
-            ), ::handleDeleteCreditCardResponse
+                card.finId
+            ),
+            ::handleDeleteCreditCardResponse
         )
     }
 
     private fun handleDeleteCreditCardResponse(result: DeleteCreditCardCommand.Result) {
         setLoading(false)
-        // TODO: Remove item only on successful response
-        adapter.getItems().find { it.finId == result.id }?.let {
-            adapter.removeItem(it)
+        // TODO: Add analytics
+        if (result.isSuccessful) {
+            adapter.getItems().find { it.finId == result.id }?.let { adapter.removeItem(it) }
+        } else {
+            showSnackBar(getErrorMessage(result.code))
         }
-        // TODO: Handle response
+        resultHandler.getResultBundle().putDeleteCardResponse(result.toDeleteCardResponse())
+        requireActivity().invalidateOptionsMenu()
+    }
+
+    private fun getErrorMessage(code: Int) = if (code == NoInternetConnectionException.CODE) {
+        getString(R.string.vgs_checkout_no_network_error)
+    } else {
+        getString(R.string.vgs_checkout_general_error)
     }
 
     private fun setLoading(isLoading: Boolean) {
@@ -164,5 +199,6 @@ internal class SelectPaymentMethodFragment :
     companion object {
 
         private const val KEY_SELECTED_ITEM_POSITION = "selected_item_position"
+        private const val KEY_CARDS = "selected_cards"
     }
 }

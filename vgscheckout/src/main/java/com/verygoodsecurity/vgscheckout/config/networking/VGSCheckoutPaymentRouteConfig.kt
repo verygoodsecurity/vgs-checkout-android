@@ -22,8 +22,8 @@ class VGSCheckoutPaymentRouteConfig private constructor(
         VGSCheckoutPaymentRequestOptions(accessToken)
     )
 
-    internal companion object {
+    private companion object {
 
-        internal const val PATH = "/financial_instruments"
+        private const val PATH = "/financial_instruments"
     }
 }

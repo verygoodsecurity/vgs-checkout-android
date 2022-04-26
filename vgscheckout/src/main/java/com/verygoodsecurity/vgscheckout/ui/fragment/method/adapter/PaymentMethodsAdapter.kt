@@ -10,14 +10,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textview.MaterialTextView
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.model.VGSCheckoutCardBrand
-import com.verygoodsecurity.vgscheckout.model.VGSCheckoutCreditCard
+import com.verygoodsecurity.vgscheckout.model.Card
 
+// TODO: Switch to ListAdapter to add delete animation
 internal class PaymentMethodsAdapter constructor(
-    private val cards: MutableList<VGSCheckoutCreditCard>,
     private val listener: OnItemClickListener
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    // TODO: Handle selected position on remove last item
+    private var cards: MutableList<Card> = mutableListOf()
+
     private var selectedPosition: Int = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -49,11 +50,17 @@ internal class PaymentMethodsAdapter constructor(
     override fun getItemViewType(position: Int): Int =
         if (cards.getOrNull(position) != null) ViewType.CARD.value else ViewType.ADD_CARD.value
 
-    fun getItems(): List<VGSCheckoutCreditCard> = cards
+    fun getItems(): List<Card> = cards
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun setItems(items: MutableList<Card>) {
+        this.cards = items
+        notifyDataSetChanged()
+    }
 
     fun getSelectedPosition() = selectedPosition
 
-    fun getSelectedCard() = cards[selectedPosition]
+    fun getSelectedCard(): Card? = cards.getOrNull(selectedPosition)
 
     fun setSelectedPosition(position: Int) {
         val oldPosition = selectedPosition
@@ -63,8 +70,9 @@ internal class PaymentMethodsAdapter constructor(
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun removeItem(card: VGSCheckoutCreditCard) {
+    fun removeItem(card: Card) {
         cards.remove(card)
+        selectedPosition = 0
         notifyDataSetChanged()
     }
 
@@ -88,16 +96,20 @@ internal class PaymentMethodsAdapter constructor(
             }
         }
 
-        fun bind(card: VGSCheckoutCreditCard) {
+        fun bind(card: Card) {
             ivCardBrand?.setImageResource(VGSCheckoutCardBrand.getBrandIcon(card.brand))
             mtvCardHolderName?.text = card.holderName
             mtvCardNumber?.text = getFormattedCardNumber(card.lastFour)
-            mtvExpiry?.text = card.expiryMonth.toString()
+            mtvExpiry?.text = getFormattedExpiry(card.expiryMonth, card.twoDigitExpiryYear)
             radioButton?.isChecked = adapterPosition == selectedPosition
         }
 
         private fun getFormattedCardNumber(lastFour: String): String {
             return itemView.resources.getString(R.string.vgs_checkout_card_number, lastFour)
+        }
+
+        private fun getFormattedExpiry(month: Int, year: String): String {
+            return itemView.resources.getString(R.string.vgs_checkout_expiry, month, year)
         }
     }
 

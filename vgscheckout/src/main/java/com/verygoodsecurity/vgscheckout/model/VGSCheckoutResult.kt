@@ -6,8 +6,12 @@ import kotlinx.parcelize.Parcelize
 
 /**
  * The result of an attempt to submit checkout form.
+ *
+ * @property data wrapper object that helps to retrieve checkout result from bundle.
  */
 sealed class VGSCheckoutResult : Parcelable {
+
+    abstract val data: VGSCheckoutResultBundle
 
     /**
      * Checkout was successfully completed.
@@ -15,7 +19,7 @@ sealed class VGSCheckoutResult : Parcelable {
      * @param data wrapper object that helps to retrieve checkout result from bundle.
      */
     @Parcelize
-    data class Success constructor(val data: VGSCheckoutResultBundle) : VGSCheckoutResult()
+    data class Success(override val data: VGSCheckoutResultBundle) : VGSCheckoutResult()
 
     /**
      * Checkout was failed due network errors or invalid setup.
@@ -25,13 +29,15 @@ sealed class VGSCheckoutResult : Parcelable {
      */
     @Parcelize
     data class Failed constructor(
-        val data: VGSCheckoutResultBundle,
+        override val data: VGSCheckoutResultBundle,
         val exception: VGSCheckoutException? = null,
     ) : VGSCheckoutResult()
 
     /**
      * Checkout cancelled by user.
+     *
+     * @param data wrapper object that helps to retrieve checkout result from bundle.
      */
     @Parcelize
-    object Canceled : VGSCheckoutResult()
+    data class Canceled(override val data: VGSCheckoutResultBundle) : VGSCheckoutResult()
 }

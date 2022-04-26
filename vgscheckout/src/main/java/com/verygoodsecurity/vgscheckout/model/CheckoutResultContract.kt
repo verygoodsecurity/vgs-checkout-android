@@ -33,14 +33,14 @@ internal class CheckoutResultContract :
     }
 
     override fun parseResult(resultCode: Int, intent: Intent?): VGSCheckoutResult {
-        return if (resultCode == Activity.RESULT_OK) {
+        return if (resultCode == Activity.RESULT_OK || resultCode == Activity.RESULT_CANCELED) {
             intent?.getParcelableExtra<Result>(EXTRA_KEY_RESULT)?.checkoutResult
                 ?: VGSCheckoutResult.Failed(
                     VGSCheckoutResultBundle(),
                     ResultParseException()
                 )
         } else {
-            VGSCheckoutResult.Canceled
+            throw IllegalStateException("Not implemented.")
         }
     }
 

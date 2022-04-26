@@ -13,12 +13,15 @@ import com.verygoodsecurity.vgscheckout.config.networking.request.core.VGSChecko
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.model.VGSCheckoutCardBrand
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.model.VGSCheckoutChecksumAlgorithm
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.model.VGSDateSeparateSerializer
+import com.verygoodsecurity.vgscheckout.model.Card
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResultBundle
-import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutAddCardResponse
+import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutCardResponse
+import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutDeleteCardResponse
 import com.verygoodsecurity.vgscheckout.networking.client.HttpMethod
 import com.verygoodsecurity.vgscheckout.networking.client.HttpResponse
 import com.verygoodsecurity.vgscheckout.networking.command.AddCardCommand
+import com.verygoodsecurity.vgscheckout.networking.command.DeleteCreditCardCommand
 
 //region Networking
 internal fun HttpResponse.toAddCardResult() =
@@ -26,7 +29,19 @@ internal fun HttpResponse.toAddCardResult() =
 
 internal fun AddCardCommand.Result.toResponseEvent() = ResponseEvent(code, message, latency)
 
-internal fun AddCardCommand.Result.toAddCardResponse() = VGSCheckoutAddCardResponse(isSuccessful, code, body, message)
+internal fun AddCardCommand.Result.toCardResponse() =
+    VGSCheckoutCardResponse(isSuccessful, code, body, message)
+
+internal fun DeleteCreditCardCommand.Result.toDeleteCardResponse() = VGSCheckoutDeleteCardResponse(
+    id,
+    isSuccessful,
+    code,
+    body,
+    message
+)
+
+internal fun Card.toCardResponse() =
+    VGSCheckoutCardResponse(raw.isSuccessful, raw.code, raw.body, raw.message)
 
 internal fun VGSCheckoutResultBundle.toCheckoutResult(isSuccessful: Boolean) = if (isSuccessful) {
     VGSCheckoutResult.Success(this)

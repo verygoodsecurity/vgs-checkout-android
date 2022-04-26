@@ -17,6 +17,7 @@ import com.verygoodsecurity.vgscheckout.collect.core.storage.InternalStorage
 import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
 import com.verygoodsecurity.vgscheckout.collect.view.card.validation.rules.VGSInfoRule
 import com.verygoodsecurity.vgscheckout.collect.widget.VGSCountryEditText
+import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.config.networking.core.VGSCheckoutHostnamePolicy
@@ -260,10 +261,10 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
     private fun initSaveCardCheckbox() {
         if (config.formConfig.saveCardOptionEnabled) {
             with(binding.saveCardCheckbox) {
-                resultBundle.putShouldSaveCard(isChecked)
+                resultHandler.getResultBundle().putShouldSaveCard(isChecked)
                 visible()
                 setOnCheckedChangeListener { _, isChecked ->
-                    resultBundle.putShouldSaveCard(isChecked)
+                    resultHandler.getResultBundle().putShouldSaveCard(isChecked)
                 }
             }
         }
@@ -336,13 +337,16 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
             return
         }
         config.analyticTracker.log(result.toResponseEvent())
-        if (result.code == NoInternetConnectionException.CODE) {
+        if (result.code == NoInternetConnectionException.CODE) { // TODO: Refactor error handling
             setIsLoading(false)
-            showNetworkError { saveCard() }
+            showRetrySnackBar(getString(R.string.vgs_checkout_no_network_error)) { saveCard() }
             return
         }
-        resultBundle.putAddCardResponse(result.toAddCardResponse())
-        finishWithResult(resultBundle.toCheckoutResult(result.isSuccessful))
+        with(resultHandler) {
+            getResultBundle().putAddCardResponse(result.toCardResponse())
+            if (config is VGSCheckoutAddCardConfig) getResultBundle().putIsPreSavedCard(false)
+            setResult(result.isSuccessful)
+        }
     }
 
     private fun setIsLoading(isLoading: Boolean) {

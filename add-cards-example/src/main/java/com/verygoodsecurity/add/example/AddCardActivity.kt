@@ -11,7 +11,7 @@ import com.verygoodsecurity.vgscheckout.VGSCheckoutCallback
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResultBundle
-import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutAddCardResponse
+import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutCardResponse
 
 class AddCardActivity : AppCompatActivity(), VGSCheckoutCallback {
 
@@ -38,7 +38,6 @@ class AddCardActivity : AppCompatActivity(), VGSCheckoutCallback {
 
 
     override fun onCheckoutResult(result: VGSCheckoutResult) {
-        config = null
         if (result is VGSCheckoutResult.Canceled) {
             refreshToken()
         } else {
@@ -49,11 +48,11 @@ class AddCardActivity : AppCompatActivity(), VGSCheckoutCallback {
     private fun printResults(result: VGSCheckoutResult) {
         when (result) {
             is VGSCheckoutResult.Success ->
-                result.data.getParcelable<VGSCheckoutAddCardResponse>(
+                result.data.getParcelable<VGSCheckoutCardResponse>(
                     VGSCheckoutResultBundle.Keys.ADD_CARD_RESPONSE
                 ).let { Log.e(TAG, "Success \n ${it?.body}") }
             is VGSCheckoutResult.Failed ->
-                result.data.getParcelable<VGSCheckoutAddCardResponse>(
+                result.data.getParcelable<VGSCheckoutCardResponse>(
                     VGSCheckoutResultBundle.Keys.ADD_CARD_RESPONSE
                 ).let { Log.e(TAG, "Failed \n ${it?.body}") }
             is VGSCheckoutResult.Canceled -> Log.e(TAG, "Canceled")
