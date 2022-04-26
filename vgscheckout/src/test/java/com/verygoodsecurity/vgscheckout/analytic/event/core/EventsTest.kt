@@ -2,6 +2,7 @@ package com.verygoodsecurity.vgscheckout.analytic.event.core
 
 import com.verygoodsecurity.vgscheckout.analytic.event.*
 import com.verygoodsecurity.vgscheckout.config.networking.request.core.VGSCheckoutDataMergePolicy
+import com.verygoodsecurity.vgscheckout.config.ui.core.VGSCheckoutFormValidationBehaviour
 import org.junit.Assert.*
 import org.junit.Test
 
@@ -46,10 +47,10 @@ class EventsTest {
         // Act
         val data = event.getData(ID, FORM_ID, ENVIRONMENT)
         // Assert
-        assertEquals(data["type"], TEST_TYPE)
-        assertEquals(data["tnt"], ID)
-        assertEquals(data["formId"], FORM_ID)
-        assertEquals(data["env"], ENVIRONMENT)
+        assertEquals(TEST_TYPE, data["type"])
+        assertEquals(ID, data["tnt"])
+        assertEquals(FORM_ID, data["formId"])
+        assertEquals(ENVIRONMENT, data["env"])
     }
 
     @Test
@@ -62,48 +63,44 @@ class EventsTest {
         // Act
         val data = event.getData(ID, FORM_ID, ENVIRONMENT)
         // Assert
-        assertEquals(data["status"], "Ok")
+        assertEquals("Ok", data["status"])
     }
 
     @Test
     fun getData_statusOverridden() {
         // Arrange
-        val testStatus = "Test_failed"
         val event = object : Event(TEST_TYPE) {
 
-            override val attributes: Map<String, Any> = mapOf("status" to testStatus)
+            override val attributes: Map<String, Any> = mapOf("status" to "Test_failed")
         }
         // Act
         val data = event.getData(ID, FORM_ID, ENVIRONMENT)
         // Assert
-        assertEquals(data["status"], testStatus)
+        assertEquals("Test_failed", data["status"])
     }
 
     @Test
     fun getData_customDataAdded() {
         // Arrange
-        val testKey = "test_key"
-        val testValue = "test_value"
         val event = object : Event(TEST_TYPE) {
 
-            override val attributes: Map<String, Any> = mapOf(testKey to testValue)
+            override val attributes: Map<String, Any> = mapOf("test_key" to "test_value")
         }
         // Act
         val data = event.getData(ID, FORM_ID, ENVIRONMENT)
         // Assert
-        assertEquals(data[testKey], testValue)
+        assertEquals("test_value", data["test_key"])
     }
 
     @Test
     fun getData_autofill_customDataAdded() {
         // Arrange
-        val testFieldName = "test_field_name"
-        val event = AutofillEvent(testFieldName)
+        val event = AutofillEvent("test_field_name")
         // Act
         val data = event.getData(ID, FORM_ID, ENVIRONMENT)
         // Assert
-        assertEquals(data["type"], "Autofill")
-        assertEquals(data["field"], testFieldName)
+        assertEquals("Autofill", data["type"])
+        assertEquals("test_field_name", data["field"])
     }
 
     @Test
@@ -113,33 +110,31 @@ class EventsTest {
         // Act
         val data = event.getData(ID, FORM_ID, ENVIRONMENT)
         // Assert
-        assertEquals(data["type"], "Cancel")
+        assertEquals("Cancel", data["type"])
     }
 
     @Test
     fun getData_hostnameValidationSuccess_customDataAdded() {
         // Arrange
-        val hostname = "test"
-        val event = HostnameValidationEvent(true, hostname)
+        val event = HostnameValidationEvent(true, "test")
         // Act
         val data = event.getData(ID, FORM_ID, ENVIRONMENT)
         // Assert
-        assertEquals(data["type"], "HostNameValidation")
-        assertEquals(data["hostname"], hostname)
-        assertEquals(data["status"], "Ok")
+        assertEquals("HostNameValidation", data["type"])
+        assertEquals("test", data["hostname"])
+        assertEquals("Ok", data["status"])
     }
 
     @Test
     fun getData_hostnameValidationFailed_customDataAdded() {
         // Arrange
-        val hostname = "test"
-        val event = HostnameValidationEvent(false, hostname)
+        val event = HostnameValidationEvent(false, "test")
         // Act
         val data = event.getData(ID, FORM_ID, ENVIRONMENT)
         // Assert
-        assertEquals(data["type"], "HostNameValidation")
-        assertEquals(data["hostname"], hostname)
-        assertEquals(data["status"], "Failed")
+        assertEquals("HostNameValidation", data["type"])
+        assertEquals("test", data["hostname"])
+        assertEquals("Failed", data["status"])
     }
 
     @Test
@@ -149,8 +144,8 @@ class EventsTest {
         // Act
         val data = event.getData(ID, FORM_ID, ENVIRONMENT)
         // Assert
-        assertEquals(data["type"], "Init")
-        assertEquals(data["config"], "custom")
+        assertEquals("Init", data["type"])
+        assertEquals("custom", data["config"])
     }
 
     @Test
@@ -160,8 +155,8 @@ class EventsTest {
         // Act
         val data = event.getData(ID, FORM_ID, ENVIRONMENT)
         // Assert
-        assertEquals(data["type"], "Init")
-        assertEquals(data["config"], "payopt")
+        assertEquals("Init", data["type"])
+        assertEquals("payopt", data["config"])
     }
 
     @Test
@@ -171,8 +166,8 @@ class EventsTest {
         // Act
         val data = event.getData(ID, FORM_ID, ENVIRONMENT)
         // Assert
-        assertEquals(data["type"], "JWTValidation")
-        assertEquals(data["status"], "Ok")
+        assertEquals("JWTValidation", data["type"])
+        assertEquals("Ok", data["status"])
     }
 
 
@@ -183,8 +178,8 @@ class EventsTest {
         // Act
         val data = event.getData(ID, FORM_ID, ENVIRONMENT)
         // Assert
-        assertEquals(data["type"], "JWTValidation")
-        assertEquals(data["status"], "Failed")
+        assertEquals("JWTValidation", data["type"])
+        assertEquals("Failed", data["status"])
     }
 
     @Test
@@ -197,15 +192,16 @@ class EventsTest {
             hasCustomHeaders = false,
             hasValidCountries = false,
             mergingPolicy = VGSCheckoutDataMergePolicy.FLAT_JSON,
-            invalidFieldTypes = emptyList()
+            invalidFieldTypes = emptyList(),
+            validationBehaviour = VGSCheckoutFormValidationBehaviour.ON_SUBMIT
         )
         // Act
         val data = event.getData(ID, FORM_ID, ENVIRONMENT)
         // Assert
-        assertEquals(data["type"], "BeforeSubmit")
-        assertEquals(data["status"], "Ok")
-        assertEquals(data["fieldTypes"], null)
-        assertEquals((data["content"] as ArrayList<*>).size, 1)
+        assertEquals("BeforeSubmit", data["type"])
+        assertEquals("Ok", data["status"])
+        assertEquals(null, data["fieldTypes"])
+        assertEquals(2, (data["content"] as ArrayList<*>).size)
     }
 
     @Test
@@ -218,15 +214,16 @@ class EventsTest {
             hasCustomHeaders = false,
             hasValidCountries = false,
             mergingPolicy = VGSCheckoutDataMergePolicy.FLAT_JSON,
-            invalidFieldTypes = emptyList()
+            invalidFieldTypes = emptyList(),
+            validationBehaviour = VGSCheckoutFormValidationBehaviour.ON_SUBMIT
         )
         // Act
         val data = event.getData(ID, FORM_ID, ENVIRONMENT)
         // Assert
-        assertEquals(data["type"], "BeforeSubmit")
-        assertEquals(data["status"], "Failed")
-        assertEquals(data["fieldTypes"], null)
-        assertEquals((data["content"] as ArrayList<*>).size, 1)
+        assertEquals("BeforeSubmit", data["type"])
+        assertEquals("Failed", data["status"])
+        assertEquals(null, data["fieldTypes"])
+        assertEquals(2, (data["content"] as ArrayList<*>).size)
     }
 
     @Test
@@ -239,82 +236,151 @@ class EventsTest {
             hasCustomHeaders = true,
             hasValidCountries = true,
             mergingPolicy = VGSCheckoutDataMergePolicy.FLAT_JSON,
-            invalidFieldTypes = emptyList()
+            invalidFieldTypes = emptyList(),
+            validationBehaviour = VGSCheckoutFormValidationBehaviour.ON_SUBMIT
         )
         // Act
         val data = event.getData(ID, FORM_ID, ENVIRONMENT)
         val content = data["content"] as ArrayList<*>
         // Assert
-        assertEquals(data["type"], "BeforeSubmit")
-        assertEquals(data["status"], "Failed")
-        assertEquals(data["fieldTypes"], null)
+        assertEquals("BeforeSubmit", data["type"])
+        assertEquals("Failed", data["status"])
+        assertEquals(null, data["fieldTypes"])
         assertTrue(content.contains("custom_hostname"))
         assertTrue(content.contains("custom_data"))
         assertTrue(content.contains("custom_header"))
         assertTrue(content.contains("valid_countries"))
+        assertTrue(content.contains("on_submit_validation"))
     }
 
     @Test
     fun getData_responseErrorNull_customDataAdded() {
         // Arrange
-        val code = 200
-        val latency = 400L
-        val event = ResponseEvent(code, null, latency)
+        val event = ResponseEvent(200, null, 400L)
         // Act
         val data = event.getData(ID, FORM_ID, ENVIRONMENT)
         // Assert
-        assertEquals(data["type"], "Submit")
-        assertEquals(data["status"], "Ok")
-        assertEquals(data["statusCode"], code)
-        assertEquals(data["latency"], latency)
-        assertEquals(data["error"], null)
+        assertEquals("Submit", data["type"])
+        assertEquals("Ok", data["status"])
+        assertEquals(200, data["statusCode"])
+        assertEquals(400L, data["latency"])
+        assertEquals(null, data["error"])
     }
 
     @Test
     fun getData_responseErrorNotNull_customDataAdded() {
         // Arrange
-        val code = 200
-        val latency = 400L
-        val error = "test"
-        val event = ResponseEvent(code, error, latency)
+        val event = ResponseEvent(200, "test", 400L)
         // Act
         val data = event.getData(ID, FORM_ID, ENVIRONMENT)
         // Assert
-        assertEquals(data["type"], "Submit")
+        assertEquals("Submit", data["type"])
         assertEquals(data["status"], "Ok")
-        assertEquals(data["statusCode"], code)
-        assertEquals(data["latency"], latency)
-        assertEquals(data["error"], error)
+        assertEquals(200, data["statusCode"])
+        assertEquals(400L, data["latency"])
+        assertEquals("test", data["error"])
     }
 
     @Test
     fun getData_scanScanIdNull_customDataAdded() {
         // Arrange
-        val status = "Ok"
-        val scannerType = "Test"
-        val event = ScanEvent("Ok", scannerType, null)
+        val event = ScanEvent("Ok", "Test", null)
         // Act
         val data = event.getData(ID, FORM_ID, ENVIRONMENT)
         // Assert
-        assertEquals(data["type"], "Scan")
-        assertEquals(data["status"], status)
-        assertEquals(data["scannerType"], scannerType)
-        assertEquals(data["scanId"], null)
+        assertEquals("Scan", data["type"])
+        assertEquals("Ok", data["status"])
+        assertEquals("Test", data["scannerType"])
+        assertEquals(null, data["scanId"])
     }
 
     @Test
     fun getData_scanScanIdNotNull_customDataAdded() {
         // Arrange
-        val status = "Ok"
-        val scannerType = "Test"
-        val scanId = "Test"
-        val event = ScanEvent("Ok", scannerType, scanId)
+        val event = ScanEvent("Ok", "Test", "Test")
         // Act
         val data = event.getData(ID, FORM_ID, ENVIRONMENT)
         // Assert
-        assertEquals(data["type"], "Scan")
-        assertEquals(data["status"], status)
-        assertEquals(data["scannerType"], scannerType)
-        assertEquals(data["scanId"], scanId)
+        assertEquals("Scan", data["type"])
+        assertEquals("Ok", data["status"])
+        assertEquals("Test", data["scannerType"])
+        assertEquals("Test", data["scanId"])
+    }
+
+    @Test
+    fun getData_finInstrumentLoad_customDataAdded() {
+        // Arrange
+        val event = FinInstrumentCrudEvent.load(
+            200,
+            true,
+            "Error message",
+            false,
+            10,
+            5
+        )
+        //Act
+        val data = event.getData(ID, FORM_ID, ENVIRONMENT)
+        //Assert
+        assertEquals("FinInstrument", data["type"])
+        assertEquals("LoadFinInstruments", data["method"])
+        assertEquals(200, data["statusCode"])
+        assertEquals("Error message", data["error"])
+        assertEquals("payopt", data["config"])
+        assertEquals(10, data["totalCount"])
+        assertEquals(5, data["failedCount"])
+    }
+
+    @Test
+    fun getData_finInstrumentDelete_customDataAdded() {
+        // Arrange
+        val event = FinInstrumentCrudEvent.delete(
+            200,
+            true,
+            "Error message",
+            false
+        )
+        //Act
+        val data = event.getData(ID, FORM_ID, ENVIRONMENT)
+        //Assert
+        assertEquals("FinInstrument", data["type"])
+        assertEquals("DeleteFinInstrument", data["method"])
+        assertEquals(200, data["statusCode"])
+        assertEquals("Error message", data["error"])
+        assertEquals("payopt", data["config"])
+    }
+
+    @Test
+    fun getData_finInstrumentCreate_customDataAdded() {
+        // Arrange
+        val event = FinInstrumentCrudEvent.create(
+            200,
+            true,
+            "Error message",
+            false
+        )
+        //Act
+        val data = event.getData(ID, FORM_ID, ENVIRONMENT)
+        //Assert
+        assertEquals("FinInstrument", data["type"])
+        assertEquals("CreateFinInstrument", data["method"])
+        assertEquals(200, data["statusCode"])
+        assertEquals("Error message", data["error"])
+        assertEquals("payopt", data["config"])
+    }
+
+    @Test
+    fun getData_addPaymentMethod_customDataAdded() {
+        // Arrange
+        val event = AddCardPaymentMethod(
+            isPreSavedCard = true,
+            isCustomConfig = true,
+        )
+        //Act
+        val data = event.getData(ID, FORM_ID, ENVIRONMENT)
+        //Assert
+        assertEquals("AddCardPaymentMethod", data["type"])
+        assertEquals("savedCard", data["paymentMethod"])
+        assertEquals("custom", data["config"])
+        assertEquals("addCard", data["configType"])
     }
 }
