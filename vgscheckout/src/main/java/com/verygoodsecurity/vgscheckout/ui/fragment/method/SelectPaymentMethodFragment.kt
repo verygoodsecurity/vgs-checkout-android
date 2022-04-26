@@ -117,7 +117,7 @@ internal class SelectPaymentMethodFragment :
             return
         }
         with(resultHandler) {
-            getResultBundle().putAddCardResponse(card.raw.toCardResponse())
+            getResultBundle().putAddCardResponse(card.toCardResponse())
             getResultBundle().putIsPreSavedCard(true)
             setResult(true)
         }

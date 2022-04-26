@@ -40,7 +40,8 @@ internal fun DeleteCreditCardCommand.Result.toDeleteCardResponse() = VGSCheckout
     message
 )
 
-internal fun Card.Raw.toCardResponse() = VGSCheckoutCardResponse(isSuccessful, code, body, message)
+internal fun Card.toCardResponse() =
+    VGSCheckoutCardResponse(raw.isSuccessful, raw.code, raw.body, raw.message)
 
 internal fun VGSCheckoutResultBundle.toCheckoutResult(isSuccessful: Boolean) = if (isSuccessful) {
     VGSCheckoutResult.Success(this)
