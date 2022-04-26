@@ -12,6 +12,7 @@ import androidx.annotation.VisibleForTesting
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import com.verygoodsecurity.vgscheckout.R
+import com.verygoodsecurity.vgscheckout.analytic.event.FinInstrumentCrudEvent
 import com.verygoodsecurity.vgscheckout.analytic.event.RequestEvent
 import com.verygoodsecurity.vgscheckout.collect.core.storage.InternalStorage
 import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
@@ -338,6 +339,12 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
             return
         }
         config.analyticTracker.log(result.toResponseEvent())
+        config.analyticTracker.log(FinInstrumentCrudEvent.create(
+            result.code,
+            result.isSuccessful,
+            result.message,
+            config is VGSCheckoutCustomConfig
+        ))
         if (result.code == NoInternetConnectionException.CODE) { // TODO: Refactor error handling
             setIsLoading(false)
             showRetrySnackBar(getString(R.string.vgs_checkout_no_network_error)) { saveCard() }
