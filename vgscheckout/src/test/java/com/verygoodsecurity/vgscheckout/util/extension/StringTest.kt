@@ -6,6 +6,7 @@ import com.verygoodsecurity.vgscheckout.networking.toHostnameValidationUrl
 import com.verygoodsecurity.vgscheckout.networking.toHttps
 import com.verygoodsecurity.vgscheckout.collect.util.extension.concatWithDash
 import com.verygoodsecurity.vgscheckout.collect.util.extension.concatWithSlash
+import com.verygoodsecurity.vgscheckout.collect.util.extension.normalizedBrandName
 import org.junit.Assert.*
 import org.junit.Test
 
@@ -65,5 +66,18 @@ class StringTest {
         assertEquals("www.vgs.io", "https://www.vgs.io".toHost())
         assertEquals("www.vgs.io", "http://www.vgs.io".toHost())
         assertEquals("www.vgs.io", "www.vgs.io".toHost())
+    }
+
+    @Test
+    fun normalizedBrandName() {
+        assertEquals("visaelectron", "visaElectron".normalizedBrandName())
+        assertEquals("americanexpress", "AMERICAN_EXPRESS".normalizedBrandName())
+        assertEquals("americanexpress", "AmericanExpress".normalizedBrandName())
+        assertEquals("americanexpress", "American Express".normalizedBrandName())
+        assertEquals("americanexpress", "AmEx".normalizedBrandName())
+        assertEquals("dinersclub", "dinersClub".normalizedBrandName())
+        assertEquals("wwwvgsio", "www.vgs.io".normalizedBrandName())
+        assertEquals("httpswwwvgscom", "https://www.vgs.com".normalizedBrandName())
+        assertEquals("testbrand12", "test brand_12_&*!@#$%^()".normalizedBrandName())
     }
 }
