@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.verygoodsecurity.vgscheckout.R
+import com.verygoodsecurity.vgscheckout.analytic.event.FinInstrumentCrudEvent
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
 import com.verygoodsecurity.vgscheckout.exception.internal.NoInternetConnectionException
 import com.verygoodsecurity.vgscheckout.model.Card
@@ -158,7 +159,14 @@ internal class SelectPaymentMethodFragment :
 
     private fun handleDeleteCreditCardResponse(result: DeleteCreditCardCommand.Result) {
         setLoading(false)
-        // TODO: Add analytics
+        config.analyticTracker.log(
+            FinInstrumentCrudEvent.delete(
+                result.code,
+                result.isSuccessful,
+                result.message,
+                false
+            )
+        )
         if (result.isSuccessful) {
             adapter.getItems().find { it.finId == result.id }?.let { adapter.removeItem(it) }
         } else {

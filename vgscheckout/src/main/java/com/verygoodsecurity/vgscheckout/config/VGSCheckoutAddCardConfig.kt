@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Parcel
 import android.os.Parcelable
 import com.verygoodsecurity.vgscheckout.VGSCheckoutConfigInitCallback
+import com.verygoodsecurity.vgscheckout.analytic.event.FinInstrumentCrudEvent
 import com.verygoodsecurity.vgscheckout.analytic.event.JWTValidationEvent
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutPaymentRouteConfig
@@ -162,25 +163,43 @@ class VGSCheckoutAddCardConfig private constructor(
                 isScreenshotsAllowed,
                 isAnalyticsEnabled,
             )
+            val ids = paymentMethod.getIds()
             val params = GetSavedCardsCommand.Params(
                 config.getBaseUrl(context),
                 config.routeConfig.path,
                 accessToken,
-                paymentMethod.getIds()
+                ids
             )
             val command = GetSavedCardsCommand(context)
             command.execute(params) {
-                // TODO: Add analytics
                 when (it) {
                     is GetSavedCardsCommand.Result.Success -> {
-                        try {
-                            config.savedCards = it.cards
-                            callback?.onSuccess(config)
-                        } catch (e: VGSCheckoutException) {
-                            callback?.onFailure(e)
-                        }
+                        config.analyticTracker.log(
+                            FinInstrumentCrudEvent.load(
+                                FinInstrumentCrudEvent.DEFAULT_CODE,
+                                true,
+                                null,
+                                false,
+                                ids.count(),
+                                ids.count() - it.cards.count()
+                            )
+                        )
+                        config.savedCards = it.cards
+                        callback?.onSuccess(config)
                     }
-                    is GetSavedCardsCommand.Result.Failure -> callback?.onFailure(it.exception)
+                    is GetSavedCardsCommand.Result.Failure -> {
+                        config.analyticTracker.log(
+                            FinInstrumentCrudEvent.load(
+                                it.exception.code,
+                                false,
+                                it.exception.message,
+                                false,
+                                ids.count(),
+                                ids.count(),
+                            )
+                        )
+                        callback?.onFailure(it.exception)
+                    }
                 }
             }
             return command
