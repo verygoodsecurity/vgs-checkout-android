@@ -2,6 +2,7 @@ package com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.model
 
 import android.os.Parcelable
 import androidx.annotation.DrawableRes
+import com.verygoodsecurity.vgscheckout.collect.util.extension.normalizedBrandName
 import com.verygoodsecurity.vgscheckout.collect.view.card.CardType
 import com.verygoodsecurity.vgscheckout.util.extension.toCheckoutChecksumAlgorithm
 import kotlinx.parcelize.Parcelize
@@ -67,7 +68,7 @@ internal sealed class VGSCheckoutCardBrand : Parcelable {
 
         @DrawableRes
         fun getBrandIcon(brand: String): Int {
-            return BRANDS.find { it.name.lowercase() == brand.lowercase() }?.icon
+            return BRANDS.find { it.name.normalizedBrandName() == brand.normalizedBrandName() }?.icon
                 ?: CardType.UNKNOWN.resId
         }
     }
