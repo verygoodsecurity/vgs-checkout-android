@@ -27,11 +27,9 @@ import com.verygoodsecurity.vgscheckout.util.extension.*
 import com.verygoodsecurity.vgscheckout.util.extension.getParcelableSafe
 import org.junit.Assert.*
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 
-@Ignore("This test should be updated according payment optimization changes.")
 @Suppress("SameParameterValue")
 @RunWith(AndroidJUnit4::class)
 class SaveCardActivityResultTest {
@@ -86,12 +84,13 @@ class SaveCardActivityResultTest {
     @Test
     fun performPaymentOrchestration_cancelActivityResult_withNavigationUp_codeCanceled() {
         launch<SaveCardActivity>(defaultIntent).use {
+            waitFor(500)
             // Act
             onView(withContentDescription(R.string.abc_action_bar_up_description)).perform(click())
             //Assert
             val result = it.getParcelableSafe<CheckoutResultContract.Result>(EXTRA_KEY_RESULT)
             assertEquals(Activity.RESULT_CANCELED, it.result.resultCode)
-            assertNull(result?.checkoutResult)
+            assertTrue(result?.checkoutResult is VGSCheckoutResult.Canceled)
         }
     }
 
@@ -104,7 +103,7 @@ class SaveCardActivityResultTest {
             //Assert
             val result = it?.getParcelableSafe<CheckoutResultContract.Result>(EXTRA_KEY_RESULT)
             assertEquals(Activity.RESULT_CANCELED, it.result.resultCode)
-            assertNull(result?.checkoutResult)
+            assertTrue(result?.checkoutResult is VGSCheckoutResult.Canceled)
         }
     }
 }

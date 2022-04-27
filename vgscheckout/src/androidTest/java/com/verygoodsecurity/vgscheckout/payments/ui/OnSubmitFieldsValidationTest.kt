@@ -31,6 +31,15 @@ import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.view.internal.CardInputField
 import com.verygoodsecurity.vgscheckout.collect.view.internal.PersonNameInputField
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
+import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutAddCardFormConfig
+import com.verygoodsecurity.vgscheckout.config.ui.core.VGSCheckoutFormValidationBehaviour
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillingAddressVisibility
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutPaymentBillingAddressOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.VGSCheckoutPaymentAddressOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.VGSCheckoutPaymentOptionalAddressOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.city.VGSCheckoutPaymentCityOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.country.VGSCheckoutPaymentCountryOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.core.VGSCheckoutFieldVisibility
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_ARGS
 import com.verygoodsecurity.vgscheckout.ui.SaveCardActivity
@@ -43,11 +52,9 @@ import com.verygoodsecurity.vgscheckout.util.extension.*
 import org.hamcrest.Matchers
 import org.hamcrest.Matchers.hasToString
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 
-@Ignore("This test should be updated according payment optimization changes.")
 @Suppress("SameParameterValue")
 @RunWith(AndroidJUnit4::class)
 class OnSubmitFieldsValidationTest {
@@ -61,6 +68,25 @@ class OnSubmitFieldsValidationTest {
                 VGSCheckoutAddCardConfig(
                     BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS,
                     BuildConfig.VAULT_ID,
+                    isScreenshotsAllowed = true
+                )
+            )
+        )
+    }
+
+    val addressIntent = Intent(context, SaveCardActivity::class.java).apply {
+        putExtra(
+            EXTRA_KEY_ARGS,
+            CheckoutResultContract.Args(
+                VGSCheckoutAddCardConfig(
+                    BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS,
+                    BuildConfig.VAULT_ID,
+                    formConfig = VGSCheckoutAddCardFormConfig(
+                        VGSCheckoutPaymentBillingAddressOptions(
+                            visibility = VGSCheckoutBillingAddressVisibility.VISIBLE
+                        ),
+                        VGSCheckoutFormValidationBehaviour.ON_FOCUS
+                    ),
                     isScreenshotsAllowed = true
                 )
             )
@@ -91,8 +117,8 @@ class OnSubmitFieldsValidationTest {
     }
 
     @Test
-    fun saveCardClicked_noInput_emptyErrorsDisplayed() {
-        launch<SaveCardActivity>(intent).use {
+    fun addressSetup_saveCardClicked_noInput_emptyErrorsDisplayed() {
+        launch<SaveCardActivity>(addressIntent).use {
             // Act
             onViewWithScrollTo(R.id.mbSaveCard)
                 .perform(click())
@@ -150,7 +176,7 @@ class OnSubmitFieldsValidationTest {
     }
 
     @Test
-    fun saveCardClicked_invalidInput_invalidInputErrorsDisplayed() {
+    fun defaultSetup_saveCardClicked_invalidInput_invalidInputErrorsDisplayed() {
         launch<SaveCardActivity>(intent).use {
             // Arrange
             waitFor(500)
@@ -162,11 +188,7 @@ class OnSubmitFieldsValidationTest {
                 INVALID_EXP_DATE,
                 INVALID_SECURITY_CODE
             )
-            fillAddressFields(
-                VALID_ADDRESS,
-                VALID_CITY,
-                USA_INVALID_ZIP_CODE
-            )
+
             // Act
             onViewWithScrollTo(R.id.mbSaveCard).perform(click())
             // Assert
@@ -191,19 +213,12 @@ class OnSubmitFieldsValidationTest {
                     )
                 )
             )
-            onViewWithScrollTo(R.id.vgsTilPostalCode).check(
-                matches(
-                    withError(
-                        "ZIP is invalid"
-                    )
-                )
-            )
         }
     }
 
     @Test
-    fun saveCard_custom_validInput_noErrorsDisplayed() {
-        launch<SaveCardActivity>(intent).use {
+    fun addressSetup_saveCard_custom_validInput_noErrorsDisplayed() {
+        launch<SaveCardActivity>(addressIntent).use {
             // Arrange
             fillCardFields(
                 VALID_CARD_HOLDER,
@@ -235,8 +250,8 @@ class OnSubmitFieldsValidationTest {
     }
 
     @Test
-    fun showErrorMessage_countrySelect_selectCanada_postalCodeErrorMessageCleared() {
-        launch<SaveCardActivity>(intent).use {
+    fun addressSetup_showErrorMessage_countrySelect_selectCanada_postalCodeErrorMessageCleared() {
+        launch<SaveCardActivity>(addressIntent).use {
             // Act
             waitFor(500)
             onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard())
@@ -251,8 +266,8 @@ class OnSubmitFieldsValidationTest {
     }
 
     @Test
-    fun noError_selectCanada_postalCodeValidationRuleChange_errorDisplayed() {
-        launch<SaveCardActivity>(intent).use {
+    fun addressSetup_noError_selectCanada_postalCodeValidationRuleChange_errorDisplayed() {
+        launch<SaveCardActivity>(addressIntent).use {
             // Arrange
             waitFor(500)
             onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard())

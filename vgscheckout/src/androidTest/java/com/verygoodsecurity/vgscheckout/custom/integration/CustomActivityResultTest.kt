@@ -68,11 +68,6 @@ class CustomActivityResultTest {
                 Constants.VALID_EXP_DATE,
                 Constants.VALID_SECURITY_CODE
             )
-            fillAddressFields(
-                Constants.VALID_ADDRESS,
-                Constants.VALID_CITY,
-                Constants.USA_VALID_ZIP_CODE
-            )
             // Act
             onViewWithScrollTo(R.id.mbSaveCard).perform(click())
             //Assert
@@ -112,11 +107,6 @@ class CustomActivityResultTest {
                 Constants.VALID_EXP_DATE,
                 Constants.VALID_SECURITY_CODE
             )
-            fillAddressFields(
-                Constants.VALID_ADDRESS,
-                Constants.VALID_CITY,
-                Constants.USA_VALID_ZIP_CODE
-            )
             // Act
             onViewWithScrollTo(R.id.mbSaveCard).perform(click())
             //Assert
@@ -136,7 +126,7 @@ class CustomActivityResultTest {
             //Assert
             val result = it.getParcelableSafe<CheckoutResultContract.Result>(EXTRA_KEY_RESULT)
             assertEquals(Activity.RESULT_CANCELED, it.result.resultCode)
-            assertNull(result?.checkoutResult)
+            assertTrue(result?.checkoutResult is VGSCheckoutResult.Canceled)
         }
     }
 
@@ -149,7 +139,7 @@ class CustomActivityResultTest {
             //Assert
             val result = it?.getParcelableSafe<CheckoutResultContract.Result>(EXTRA_KEY_RESULT)
             assertEquals(Activity.RESULT_CANCELED, it.result.resultCode)
-            assertNull(result?.checkoutResult)
+            assertTrue(result?.checkoutResult is VGSCheckoutResult.Canceled)
         }
     }
 }

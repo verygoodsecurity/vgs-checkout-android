@@ -17,6 +17,11 @@ import com.verygoodsecurity.vgscheckout.BuildConfig
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.widget.VGSCountryEditText
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
+import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutAddCardFormConfig
+import com.verygoodsecurity.vgscheckout.config.ui.core.VGSCheckoutFormValidationBehaviour
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillingAddressVisibility
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutPaymentBillingAddressOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.country.VGSCheckoutPaymentCountryOptions
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_ARGS
 import com.verygoodsecurity.vgscheckout.ui.SaveCardActivity
@@ -28,31 +33,36 @@ import com.verygoodsecurity.vgscheckout.util.country.CountriesHelper
 import com.verygoodsecurity.vgscheckout.util.country.model.Country
 import org.hamcrest.Matchers.hasToString
 import org.hamcrest.Matchers.startsWith
-import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 
-@Ignore("This test should be updated according payment optimization changes.")
 @RunWith(AndroidJUnit4::class)
 class AddressDialogTest {
 
     private val context: Context = ApplicationProvider.getApplicationContext()
 
-    private val defaultIntent = Intent(context, SaveCardActivity::class.java).apply {
+    val addressIntent = Intent(context, SaveCardActivity::class.java).apply {
         putExtra(
             EXTRA_KEY_ARGS,
             CheckoutResultContract.Args(
                 VGSCheckoutAddCardConfig(
                     BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS,
-                    BuildConfig.VAULT_ID
+                    BuildConfig.VAULT_ID,
+                    formConfig = VGSCheckoutAddCardFormConfig(
+                        VGSCheckoutPaymentBillingAddressOptions(
+                            visibility = VGSCheckoutBillingAddressVisibility.VISIBLE
+                        ),
+                        VGSCheckoutFormValidationBehaviour.ON_FOCUS
+                    ),
+                    isScreenshotsAllowed = true
                 )
             )
         )
     }
 
     @Test
-    fun countrySelect_dialogShowed() {
-        launch<SaveCardActivity>(defaultIntent).use {
+    fun addressSetup_countrySelect_dialogShowed() {
+        launch<SaveCardActivity>(addressIntent).use {
             // Act
             waitFor(500)
             onView(isRoot()).perform(ViewActions.closeSoftKeyboard())
@@ -64,24 +74,24 @@ class AddressDialogTest {
     }
 
     @Test
-    fun countrySelect_usaByDefault() {
-        launch<SaveCardActivity>(defaultIntent).use {
+    fun addressSetup_countrySelect_usaByDefault() {
+        launch<SaveCardActivity>(addressIntent).use {
             //Assert
             onView(withId(R.id.vgsEtCountry)).check(matches(VGSViewMatchers.withText("United States")))
         }
     }
 
     @Test
-    fun countrySelect_zipCodeHintByDefault() {
-        launch<SaveCardActivity>(defaultIntent).use {
+    fun addressSetup_countrySelect_zipCodeHintByDefault() {
+        launch<SaveCardActivity>(addressIntent).use {
             //Assert
             onViewWithScrollTo(R.id.vgsTilPostalCode).check(matches(VGSViewMatchers.withHint("Zip code")))
         }
     }
 
     @Test
-    fun countrySelect_selectCanada_countryChanged() {
-        launch<SaveCardActivity>(defaultIntent).use {
+    fun addressSetup_countrySelect_selectCanada_countryChanged() {
+        launch<SaveCardActivity>(addressIntent).use {
             // Act
             onViewWithScrollTo(R.id.vgsTilCountry).perform(click())
             onData(hasToString(startsWith("Canada"))).perform(scrollTo()).perform(click())
@@ -92,8 +102,8 @@ class AddressDialogTest {
     }
 
     @Test
-    fun countrySelect_selectCanada_postalCodeHintChanged() {
-        launch<SaveCardActivity>(defaultIntent).use {
+    fun addressSetup_countrySelect_selectCanada_postalCodeHintChanged() {
+        launch<SaveCardActivity>(addressIntent).use {
             // Act
             waitFor(500)
             onViewWithScrollTo(R.id.vgsTilCountry).perform(click())
@@ -179,7 +189,16 @@ class AddressDialogTest {
                 CheckoutResultContract.Args(
                     VGSCheckoutAddCardConfig(
                         BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS,
-                        BuildConfig.VAULT_ID
+                        BuildConfig.VAULT_ID,
+                        formConfig = VGSCheckoutAddCardFormConfig(
+                            VGSCheckoutPaymentBillingAddressOptions(
+                                countryOptions = VGSCheckoutPaymentCountryOptions(
+                                    validCountries = countries
+                                ),
+                                visibility = VGSCheckoutBillingAddressVisibility.VISIBLE
+                            ),
+                            VGSCheckoutFormValidationBehaviour.ON_FOCUS
+                        ),
                     )
                 )
             )
