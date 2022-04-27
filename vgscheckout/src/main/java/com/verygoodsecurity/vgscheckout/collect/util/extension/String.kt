@@ -68,7 +68,4 @@ internal fun String.substringOrNull(startIndex: Int, endIndex: Int) = try {
     null
 }
 
-internal fun String.normalizedBrandName() = when (this) {
-    "AmEx" -> "americanexpress"
-    else -> replace("((?![a-zA-Z0-9]).)".toRegex(), "").lowercase()
-}
+
