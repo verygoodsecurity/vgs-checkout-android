@@ -6,6 +6,7 @@ import com.verygoodsecurity.vgscheckout.networking.toHostnameValidationUrl
 import com.verygoodsecurity.vgscheckout.networking.toHttps
 import com.verygoodsecurity.vgscheckout.collect.util.extension.concatWithDash
 import com.verygoodsecurity.vgscheckout.collect.util.extension.concatWithSlash
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.model.VGSCheckoutCardBrand
 import org.junit.Assert.*
 import org.junit.Test
 
@@ -65,5 +66,18 @@ class StringTest {
         assertEquals("www.vgs.io", "https://www.vgs.io".toHost())
         assertEquals("www.vgs.io", "http://www.vgs.io".toHost())
         assertEquals("www.vgs.io", "www.vgs.io".toHost())
+    }
+
+    @Test
+    fun normalizedBrandName() {
+        assertEquals("visaelectron", VGSCheckoutCardBrand.normalizedBrandName("visaElectron"))
+        assertEquals("americanexpress", VGSCheckoutCardBrand.normalizedBrandName("AMERICAN_EXPRESS"))
+        assertEquals("americanexpress", VGSCheckoutCardBrand.normalizedBrandName("AmericanExpress"))
+        assertEquals("americanexpress", VGSCheckoutCardBrand.normalizedBrandName("American Express"))
+        assertEquals("americanexpress", VGSCheckoutCardBrand.normalizedBrandName("AmEx"))
+        assertEquals("dinersclub", VGSCheckoutCardBrand.normalizedBrandName("dinersClub"))
+        assertEquals("wwwvgsio", VGSCheckoutCardBrand.normalizedBrandName("www.vgs.io"))
+        assertEquals("httpswwwvgscom", VGSCheckoutCardBrand.normalizedBrandName("https://www.vgs.com"))
+        assertEquals("testbrand12", VGSCheckoutCardBrand.normalizedBrandName("test brand_12_&*!@#$%^()"))
     }
 }
