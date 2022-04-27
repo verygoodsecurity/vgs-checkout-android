@@ -2,7 +2,7 @@ package com.verygoodsecurity.vgscheckout.analytic.event
 
 import com.verygoodsecurity.vgscheckout.analytic.event.core.Event
 
-internal class AddCardPaymentMethod constructor(
+internal class AddCardPaymentMethodEvent constructor(
     val isPreSavedCard: Boolean,
     val isCustomConfig: Boolean
 ) : Event(TYPE) {
