@@ -31,7 +31,7 @@ import com.verygoodsecurity.vgscheckout.util.extension.getBaseUrl
  * @property savedCards previously saved card(financial instruments).
  */
 @Suppress("MemberVisibilityCanBePrivate", "CanBeParameter")
-class VGSCheckoutAddCardConfig private constructor(
+class VGSCheckoutAddCardConfig internal constructor(
     internal val accessToken: String,
     val tenantId: String,
     override val environment: VGSCheckoutEnvironment,
@@ -39,6 +39,7 @@ class VGSCheckoutAddCardConfig private constructor(
     override val formConfig: VGSCheckoutAddCardFormConfig,
     override val isScreenshotsAllowed: Boolean,
     override val isAnalyticsEnabled: Boolean,
+    val isRemoveCardOptionEnabled: Boolean,
     private val createdFromParcel: Boolean
 ) : CheckoutConfig(tenantId) {
 
@@ -57,6 +58,7 @@ class VGSCheckoutAddCardConfig private constructor(
         parcel.readParcelable(VGSCheckoutEnvironment::class.java.classLoader)!!,
         parcel.readParcelable(VGSCheckoutPaymentRouteConfig::class.java.classLoader)!!,
         parcel.readParcelable(VGSCheckoutAddCardFormConfig::class.java.classLoader)!!,
+        parcel.readInt() == 1,
         parcel.readInt() == 1,
         parcel.readInt() == 1,
         true
@@ -99,6 +101,7 @@ class VGSCheckoutAddCardConfig private constructor(
         formConfig,
         isScreenshotsAllowed,
         isAnalyticsEnabled,
+        true,
         false
     )
 
@@ -110,6 +113,7 @@ class VGSCheckoutAddCardConfig private constructor(
         parcel.writeParcelable(formConfig, flags)
         parcel.writeInt(if (isScreenshotsAllowed) 1 else 0)
         parcel.writeInt(if (isAnalyticsEnabled) 1 else 0)
+        parcel.writeInt(if (isRemoveCardOptionEnabled) 1 else 0)
         parcel.writeList(savedCards)
     }
 
@@ -142,6 +146,19 @@ class VGSCheckoutAddCardConfig private constructor(
             }
         }
 
+        /**
+         * Function that allows create config with saved cards.
+         *
+         * @param accessToken payment orchestration app access token.
+         * @param tenantId unique organization id.
+         * @param paymentMethod
+         * @param environment type of vault.
+         * @param formConfig UI configuration.
+         * @param isScreenshotsAllowed If true, checkout form will allow to make screenshots. Default is false.
+         * @param isAnalyticsEnabled If true, checkout will send analytics events that helps to debug.
+         * @param isRemoveCardOptionEnabled If true, user will be able to delete saved card.
+         * issues if any occurs. Default value is true.
+         */
         @JvmOverloads
         fun create(
             context: Context,
@@ -152,15 +169,19 @@ class VGSCheckoutAddCardConfig private constructor(
             formConfig: VGSCheckoutAddCardFormConfig = VGSCheckoutAddCardFormConfig(),
             isScreenshotsAllowed: Boolean = false,
             isAnalyticsEnabled: Boolean = true,
+            isRemoveCardOptionEnabled: Boolean = true,
             callback: VGSCheckoutConfigInitCallback<VGSCheckoutAddCardConfig>? = null
         ): VGSCheckoutCancellable {
             val config = VGSCheckoutAddCardConfig(
                 accessToken,
                 tenantId,
                 environment,
+                VGSCheckoutPaymentRouteConfig(accessToken),
                 formConfig,
                 isScreenshotsAllowed,
                 isAnalyticsEnabled,
+                isRemoveCardOptionEnabled,
+                false
             )
             val params = GetSavedCardsCommand.Params(
                 config.getBaseUrl(context),

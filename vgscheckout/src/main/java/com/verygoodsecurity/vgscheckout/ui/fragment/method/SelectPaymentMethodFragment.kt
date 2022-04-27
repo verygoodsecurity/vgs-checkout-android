@@ -36,7 +36,7 @@ internal class SelectPaymentMethodFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setHasOptionsMenu(true)
+        setHasOptionsMenu(config.isRemoveCardOptionEnabled)
         initView(view)
         initToolbar()
     }
