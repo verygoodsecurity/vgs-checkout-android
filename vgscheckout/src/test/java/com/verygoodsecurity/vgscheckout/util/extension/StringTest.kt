@@ -6,7 +6,7 @@ import com.verygoodsecurity.vgscheckout.networking.toHostnameValidationUrl
 import com.verygoodsecurity.vgscheckout.networking.toHttps
 import com.verygoodsecurity.vgscheckout.collect.util.extension.concatWithDash
 import com.verygoodsecurity.vgscheckout.collect.util.extension.concatWithSlash
-import com.verygoodsecurity.vgscheckout.collect.util.extension.normalizedBrandName
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.model.VGSCheckoutCardBrand
 import org.junit.Assert.*
 import org.junit.Test
 
@@ -70,14 +70,14 @@ class StringTest {
 
     @Test
     fun normalizedBrandName() {
-        assertEquals("visaelectron", "visaElectron".normalizedBrandName())
-        assertEquals("americanexpress", "AMERICAN_EXPRESS".normalizedBrandName())
-        assertEquals("americanexpress", "AmericanExpress".normalizedBrandName())
-        assertEquals("americanexpress", "American Express".normalizedBrandName())
-        assertEquals("americanexpress", "AmEx".normalizedBrandName())
-        assertEquals("dinersclub", "dinersClub".normalizedBrandName())
-        assertEquals("wwwvgsio", "www.vgs.io".normalizedBrandName())
-        assertEquals("httpswwwvgscom", "https://www.vgs.com".normalizedBrandName())
-        assertEquals("testbrand12", "test brand_12_&*!@#$%^()".normalizedBrandName())
+        assertEquals("visaelectron", VGSCheckoutCardBrand.normalizedBrandName("visaElectron"))
+        assertEquals("americanexpress", VGSCheckoutCardBrand.normalizedBrandName("AMERICAN_EXPRESS"))
+        assertEquals("americanexpress", VGSCheckoutCardBrand.normalizedBrandName("AmericanExpress"))
+        assertEquals("americanexpress", VGSCheckoutCardBrand.normalizedBrandName("American Express"))
+        assertEquals("americanexpress", VGSCheckoutCardBrand.normalizedBrandName("AmEx"))
+        assertEquals("dinersclub", VGSCheckoutCardBrand.normalizedBrandName("dinersClub"))
+        assertEquals("wwwvgsio", VGSCheckoutCardBrand.normalizedBrandName("www.vgs.io"))
+        assertEquals("httpswwwvgscom", VGSCheckoutCardBrand.normalizedBrandName("https://www.vgs.com"))
+        assertEquals("testbrand12", VGSCheckoutCardBrand.normalizedBrandName("test brand_12_&*!@#$%^()"))
     }
 }
