@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
+import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutTransitionOptions
@@ -45,7 +46,11 @@ class VGSCheckout internal constructor(
      * @param tenantId unique organization id.
      * @param environment type of vault to communicate with.
      * @param transitionOptions specifying a custom animation to run when the checkout is displayed.
+     *
+     * @throws com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
      */
+    @JvmOverloads
+    @Throws(VGSCheckoutException::class)
     fun present(
         token: String,
         tenantId: String,
