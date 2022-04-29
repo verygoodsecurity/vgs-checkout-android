@@ -17,14 +17,14 @@ internal class GetSavedCardsCommand constructor(context: Context) :
     Command<GetSavedCardsCommand.Params, GetSavedCardsCommand.Result>(context) {
 
     private val cards: MutableList<Card> = Collections.synchronizedList(mutableListOf<Card>())
-    private var workerThread: Thread? = null
-    private val workers = mutableListOf<Thread>()
+    private var rootThread: Thread? = null
+    private val fetchCardThreads = mutableListOf<Thread>()
 
     override fun run(params: Params, onResult: (Result) -> Unit) {
-        workerThread = thread(start = true) {
+        rootThread = thread(start = true) {
             val headers = createFetchCardHeaders(params)
             params.ids.forEach { id ->
-                workers.add(thread(start = true) worker@{
+                fetchCardThreads.add(thread(start = true) worker@{
                     val response = client.execute(createRequest(id, headers, params))
                     if (Thread.interrupted()) return@worker
                     parseResponse(response)?.let {
@@ -33,7 +33,7 @@ internal class GetSavedCardsCommand constructor(context: Context) :
                 })
             }
             try {
-                workers.forEach { it.join() }
+                fetchCardThreads.forEach { it.join() }
                 onResult.invoke(Result.Success(cards))
             } catch (e: InterruptedException) {
                 VGSCheckoutLogger.debug(message = "GetSavedCardsCommand was canceled.")
@@ -45,8 +45,8 @@ internal class GetSavedCardsCommand constructor(context: Context) :
 
     override fun cancel() {
         client.cancelAll()
-        workerThread?.interrupt()
-        workers.forEach { it.interrupt() }
+        rootThread?.interrupt()
+        fetchCardThreads.forEach { it.interrupt() }
     }
 
     private fun createRequest(
