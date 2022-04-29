@@ -8,41 +8,45 @@ import com.verygoodsecurity.vgscheckout.networking.client.HttpMethod
 import com.verygoodsecurity.vgscheckout.networking.client.HttpRequest
 import com.verygoodsecurity.vgscheckout.networking.client.HttpResponse
 import com.verygoodsecurity.vgscheckout.networking.command.core.Command
+import com.verygoodsecurity.vgscheckout.util.logger.VGSCheckoutLogger
 import org.json.JSONObject
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
-import java.util.concurrent.Future
+import java.util.*
+import kotlin.concurrent.thread
 
 internal class GetSavedCardsCommand constructor(context: Context) :
     Command<GetSavedCardsCommand.Params, GetSavedCardsCommand.Result>(context) {
 
-    private val executor: ExecutorService = Executors.newSingleThreadExecutor()
-    private var fetchTask: Future<*>? = null
+    private val cards: MutableList<Card> = Collections.synchronizedList(mutableListOf<Card>())
+    private var workerThread: Thread? = null
+    private val workers = mutableListOf<Thread>()
 
-    // TODO: Implement async call for each card request to improve performance
     override fun run(params: Params, onResult: (Result) -> Unit) {
-        fetchTask = executor.submit {
-            val cards = mutableListOf<Card>()
-            val headers = mapOf(
-                AUTHORIZATION_HEADER_KEY to String.format(
-                    AUTHORIZATION_HEADER_VALUE,
-                    params.accessToken
-                )
-            )
+        workerThread = thread(start = true) {
+            val headers = createFetchCardHeaders(params)
             params.ids.forEach { id ->
-                val response = client.execute(createRequest(id, headers, params))
-                parseResponse(response)?.let {
-                    cards.add(it)
-                }
+                workers.add(thread(start = true) worker@{
+                    val response = client.execute(createRequest(id, headers, params))
+                    if (Thread.interrupted()) return@worker
+                    parseResponse(response)?.let {
+                        cards.add(it)
+                    }
+                })
             }
-            onResult.invoke(Result.Success(cards))
+            try {
+                workers.forEach { it.join() }
+                onResult.invoke(Result.Success(cards))
+            } catch (e: InterruptedException) {
+                VGSCheckoutLogger.debug(message = "GetSavedCardsCommand was canceled.")
+            }
         }
     }
 
     override fun map(params: Params, exception: VGSCheckoutException) = Result.Failure(exception)
 
     override fun cancel() {
-        fetchTask?.cancel(true)
+        client.cancelAll()
+        workerThread?.interrupt()
+        workers.forEach { it.interrupt() }
     }
 
     private fun createRequest(
@@ -54,6 +58,13 @@ internal class GetSavedCardsCommand constructor(context: Context) :
         null,
         headers = headers,
         method = HttpMethod.GET
+    )
+
+    private fun createFetchCardHeaders(params: Params) = mapOf(
+        AUTHORIZATION_HEADER_KEY to String.format(
+            AUTHORIZATION_HEADER_VALUE,
+            params.accessToken
+        )
     )
 
     private fun parseResponse(response: HttpResponse): Card? {
