@@ -12,6 +12,7 @@ import androidx.annotation.VisibleForTesting
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import com.verygoodsecurity.vgscheckout.R
+import com.verygoodsecurity.vgscheckout.analytic.event.FinInstrumentCrudEvent
 import com.verygoodsecurity.vgscheckout.analytic.event.RequestEvent
 import com.verygoodsecurity.vgscheckout.collect.core.storage.InternalStorage
 import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
@@ -312,6 +313,7 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
                     routeConfig.requestOptions.hasExtraHeaders,
                     formConfig.addressOptions.countryOptions.validCountries.isNotEmpty(),
                     routeConfig.requestOptions.mergePolicy,
+                    formConfig.validationBehaviour,
                     invalidFields
                 )
             )
@@ -336,7 +338,8 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
         if (!shouldHandleAddCard) {
             return
         }
-        config.analyticTracker.log(result.toResponseEvent())
+        logResponseEvent(result)
+        logCreateFinInstrumentEvent(result)
         if (result.code == NoInternetConnectionException.CODE) { // TODO: Refactor error handling
             setIsLoading(false)
             showRetrySnackBar(getString(R.string.vgs_checkout_no_network_error)) { saveCard() }
@@ -346,6 +349,23 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
             getResultBundle().putAddCardResponse(result.toCardResponse())
             if (config is VGSCheckoutAddCardConfig) getResultBundle().putIsPreSavedCard(false)
             setResult(result.isSuccessful)
+        }
+    }
+
+    private fun logResponseEvent(result: AddCardCommand.Result) {
+        config.analyticTracker.log(result.toResponseEvent())
+    }
+
+    private fun logCreateFinInstrumentEvent(result: AddCardCommand.Result) {
+        if (config is VGSCheckoutAddCardConfig) {
+            config.analyticTracker.log(
+                FinInstrumentCrudEvent.create(
+                    result.code,
+                    result.isSuccessful,
+                    result.message,
+                    config is VGSCheckoutCustomConfig
+                )
+            )
         }
     }
 

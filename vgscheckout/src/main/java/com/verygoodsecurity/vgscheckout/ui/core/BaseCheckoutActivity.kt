@@ -6,7 +6,10 @@ import android.os.Bundle
 import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
 import com.verygoodsecurity.vgscheckout.R
+import com.verygoodsecurity.vgscheckout.analytic.event.AddCardPaymentMethodEvent
 import com.verygoodsecurity.vgscheckout.analytic.event.CancelEvent
+import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
+import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
@@ -75,6 +78,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
     override fun getResultBundle(): VGSCheckoutResultBundle = resultBundle
 
     override fun setResult(isSuccessful: Boolean) {
+        logPaymentMethodSelected()
         setResult(Activity.RESULT_OK, resultBundle.toCheckoutResult(isSuccessful))
         finish()
     }
@@ -93,6 +97,17 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
 
     private fun initToolbar() {
         setSupportActionBar(findViewById(R.id.mtToolbar))
+    }
+
+    private fun logPaymentMethodSelected() {
+        if (config is VGSCheckoutAddCardConfig) {
+            config.analyticTracker.log(
+                AddCardPaymentMethodEvent(
+                    resultBundle.getBoolean(VGSCheckoutResultBundle.IS_PRE_SAVED_CARD) ?: false,
+                    config is VGSCheckoutCustomConfig
+                )
+            )
+        }
     }
 
     private fun setResult(resultCode: Int, result: VGSCheckoutResult) {
