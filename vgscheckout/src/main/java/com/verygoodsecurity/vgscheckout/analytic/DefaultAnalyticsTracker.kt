@@ -18,8 +18,6 @@ internal class DefaultAnalyticsTracker @VisibleForTesting(otherwise = VisibleFor
     private val client: HttpClient
 ) : AnalyticTracker {
 
-    override var isEnabled: Boolean = true
-
     constructor(id: String, environment: String, formId: String) : this(
         id,
         environment,
@@ -28,7 +26,7 @@ internal class DefaultAnalyticsTracker @VisibleForTesting(otherwise = VisibleFor
     )
 
     override fun log(event: Event) {
-        if (isEnabled.not()) {
+        if (VGSCheckoutAnalyticsLogger.isAnalyticsEnabled.not()) {
             return
         }
         val payload = event.getData(id, formId, environment).toJSON().toString().toBase64()

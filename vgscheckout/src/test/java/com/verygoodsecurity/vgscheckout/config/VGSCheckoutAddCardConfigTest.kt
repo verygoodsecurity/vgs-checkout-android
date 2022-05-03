@@ -1,8 +1,6 @@
 package com.verygoodsecurity.vgscheckout.config
 
 import com.verygoodsecurity.vgscheckout.BuildConfig
-import com.verygoodsecurity.vgscheckout.exception.internal.JWTParseException
-import com.verygoodsecurity.vgscheckout.exception.internal.JWTRestrictedRoleException
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
 import org.junit.Assert.*
 import org.junit.Test
@@ -31,14 +29,6 @@ class VGSCheckoutAddCardConfigTest {
         val config = VGSCheckoutAddCardConfig(BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS, "")
         // Assert
         assertFalse(config.isScreenshotsAllowed)
-    }
-
-    @Test
-    fun createAddCardConfig_analyticsEnabledByDefault() {
-        // Act
-        val config = VGSCheckoutAddCardConfig(BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS, "")
-        // Assert
-        assertTrue(config.isAnalyticsEnabled)
     }
 
 //    @Test(expected = JWTParseException::class)
