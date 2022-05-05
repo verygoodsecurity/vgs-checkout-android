@@ -37,14 +37,7 @@ abstract class CheckoutConfig internal constructor(internal val id: String) : Pa
      */
     abstract val isScreenshotsAllowed: Boolean
 
-    /**
-     * If true, checkout will send analytics events that helps to debug issues if any occurs.
-     */
-    abstract val isAnalyticsEnabled: Boolean
-
     internal val analyticTracker: AnalyticTracker by lazy {
-        DefaultAnalyticsTracker(id, environment.value, UUID.randomUUID().toString()).apply {
-            isEnabled = isAnalyticsEnabled
-        }
+        DefaultAnalyticsTracker(id, environment.value, UUID.randomUUID().toString())
     }
 }

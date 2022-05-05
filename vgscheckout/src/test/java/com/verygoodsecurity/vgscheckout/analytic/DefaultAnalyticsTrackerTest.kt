@@ -7,6 +7,7 @@ import com.verygoodsecurity.vgscheckout.collect.util.extension.toBase64
 import com.verygoodsecurity.vgscheckout.collect.util.extension.toJSON
 import com.verygoodsecurity.vgscheckout.networking.client.*
 import org.junit.Assert.assertEquals
+import org.junit.Before
 import org.junit.Test
 import org.mockito.ArgumentCaptor
 import org.mockito.Mockito.*
@@ -20,6 +21,11 @@ class DefaultAnalyticsTrackerTest {
     private val mockHttpClient: HttpClient = mock(OkHttpClient::class.java)
     private val callback: (HttpResponse) -> Unit = {}
     private var tracker = DefaultAnalyticsTracker(ID, ENVIRONMENT, FORM_ID, mockHttpClient)
+
+    @Before
+    fun setup() {
+        VGSCheckoutAnalyticsLogger.isAnalyticsEnabled = true
+    }
 
     @Test
     fun log_analyticsEnabled_apiClientCalled() {
@@ -41,7 +47,7 @@ class DefaultAnalyticsTrackerTest {
     @Test
     fun log_analyticsDisabled_apiClientCalled() {
         // Arrange
-        tracker.isEnabled = false
+        VGSCheckoutAnalyticsLogger.isAnalyticsEnabled = false
         val event = InitEvent(InitEvent.ConfigType.CUSTOM)
         val httpRequestCaptor: ArgumentCaptor<HttpRequest> =
             ArgumentCaptor.forClass(HttpRequest::class.java)

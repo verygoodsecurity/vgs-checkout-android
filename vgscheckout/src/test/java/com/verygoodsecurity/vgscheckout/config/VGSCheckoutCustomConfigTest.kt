@@ -16,14 +16,6 @@ class VGSCheckoutCustomConfigTest {
     }
 
     @Test
-    fun createCustomConfig_analyticsEnabledByDefault() {
-        // Act
-        val config = VGSCheckoutCustomConfig("")
-        // Assert
-        assertTrue(config.isAnalyticsEnabled)
-    }
-
-    @Test
     fun createCustomConfig_envSandboxEnabledByDefault() {
         // Act
         val config = VGSCheckoutCustomConfig("")

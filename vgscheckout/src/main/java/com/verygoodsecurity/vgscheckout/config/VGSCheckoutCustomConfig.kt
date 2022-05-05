@@ -14,8 +14,6 @@ import kotlinx.parcelize.Parcelize
  * @param routeConfig Networking configuration, like http method, request headers etc.
  * @param formConfig UI configuration.
  * @param isScreenshotsAllowed If true, checkout form will allow to make screenshots. Default is false.
- * @param isAnalyticsEnabled If true, checkout will send analytics events that helps to debug issues
- * if any occurs. Default value is true.
  */
 @Parcelize
 class VGSCheckoutCustomConfig @JvmOverloads constructor(
@@ -24,5 +22,4 @@ class VGSCheckoutCustomConfig @JvmOverloads constructor(
     override val routeConfig: VGSCheckoutCustomRouteConfig = VGSCheckoutCustomRouteConfig(),
     override val formConfig: VGSCheckoutCustomFormConfig = VGSCheckoutCustomFormConfig(),
     override val isScreenshotsAllowed: Boolean = false,
-    override val isAnalyticsEnabled: Boolean = true,
 ) : CheckoutConfig(vaultId)

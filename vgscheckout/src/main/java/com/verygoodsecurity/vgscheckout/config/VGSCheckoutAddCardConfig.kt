@@ -26,7 +26,6 @@ import com.verygoodsecurity.vgscheckout.util.extension.getBaseUrl
  * @param routeConfig Networking configuration, like http method, request headers etc.
  * @param formConfig UI configuration.
  * @param isScreenshotsAllowed If true, checkout form will allow to make screenshots.
- * @param isAnalyticsEnabled If true, checkout will send analytics events that helps to debug issues if any occurs.
  * @param createdFromParcel if true then object created form parcel. Used to determine if access token
  * validation event should be send.
  * @property savedCards previously saved card(financial instruments).
@@ -39,7 +38,6 @@ class VGSCheckoutAddCardConfig internal constructor(
     override val routeConfig: VGSCheckoutPaymentRouteConfig,
     override val formConfig: VGSCheckoutAddCardFormConfig,
     override val isScreenshotsAllowed: Boolean,
-    override val isAnalyticsEnabled: Boolean,
     val isRemoveCardOptionEnabled: Boolean,
     private val createdFromParcel: Boolean
 ) : CheckoutConfig(tenantId) {
@@ -61,7 +59,6 @@ class VGSCheckoutAddCardConfig internal constructor(
         parcel.readParcelable(VGSCheckoutAddCardFormConfig::class.java.classLoader)!!,
         parcel.readInt() == 1,
         parcel.readInt() == 1,
-        parcel.readInt() == 1,
         true
     ) {
         this.savedCards = mutableListOf<Card>().apply {
@@ -80,8 +77,6 @@ class VGSCheckoutAddCardConfig internal constructor(
      * @param environment type of vault.
      * @param formConfig UI configuration.
      * @param isScreenshotsAllowed If true, checkout form will allow to make screenshots. Default is false.
-     * @param isAnalyticsEnabled If true, checkout will send analytics events that helps to debug
-     * issues if any occurs. Default value is true.
      *
      * @throws com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
      */
@@ -92,8 +87,7 @@ class VGSCheckoutAddCardConfig internal constructor(
         tenantId: String,
         environment: VGSCheckoutEnvironment = VGSCheckoutEnvironment.Sandbox(),
         formConfig: VGSCheckoutAddCardFormConfig = VGSCheckoutAddCardFormConfig(),
-        isScreenshotsAllowed: Boolean = false,
-        isAnalyticsEnabled: Boolean = true
+        isScreenshotsAllowed: Boolean = false
     ) : this(
         accessToken,
         tenantId,
@@ -101,7 +95,6 @@ class VGSCheckoutAddCardConfig internal constructor(
         VGSCheckoutPaymentRouteConfig(accessToken),
         formConfig,
         isScreenshotsAllowed,
-        isAnalyticsEnabled,
         true,
         false
     )
@@ -113,7 +106,6 @@ class VGSCheckoutAddCardConfig internal constructor(
         parcel.writeParcelable(routeConfig, flags)
         parcel.writeParcelable(formConfig, flags)
         parcel.writeInt(if (isScreenshotsAllowed) 1 else 0)
-        parcel.writeInt(if (isAnalyticsEnabled) 1 else 0)
         parcel.writeInt(if (isRemoveCardOptionEnabled) 1 else 0)
         parcel.writeList(savedCards)
     }
@@ -156,9 +148,7 @@ class VGSCheckoutAddCardConfig internal constructor(
          * @param environment type of vault.
          * @param formConfig UI configuration.
          * @param isScreenshotsAllowed If true, checkout form will allow to make screenshots. Default is false.
-         * @param isAnalyticsEnabled If true, checkout will send analytics events that helps to debug.
          * @param isRemoveCardOptionEnabled If true, user will be able to delete saved card.
-         * issues if any occurs. Default value is true.
          */
         @JvmOverloads
         fun create(
@@ -169,7 +159,6 @@ class VGSCheckoutAddCardConfig internal constructor(
             environment: VGSCheckoutEnvironment = VGSCheckoutEnvironment.Sandbox(),
             formConfig: VGSCheckoutAddCardFormConfig = VGSCheckoutAddCardFormConfig(),
             isScreenshotsAllowed: Boolean = false,
-            isAnalyticsEnabled: Boolean = true,
             isRemoveCardOptionEnabled: Boolean = true,
             callback: VGSCheckoutConfigInitCallback<VGSCheckoutAddCardConfig>? = null
         ): VGSCheckoutCancellable {
@@ -180,7 +169,6 @@ class VGSCheckoutAddCardConfig internal constructor(
                 VGSCheckoutPaymentRouteConfig(accessToken),
                 formConfig,
                 isScreenshotsAllowed,
-                isAnalyticsEnabled,
                 isRemoveCardOptionEnabled,
                 false
             )
