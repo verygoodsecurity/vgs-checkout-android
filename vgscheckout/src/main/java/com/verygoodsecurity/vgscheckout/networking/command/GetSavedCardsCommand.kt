@@ -8,41 +8,52 @@ import com.verygoodsecurity.vgscheckout.networking.client.HttpMethod
 import com.verygoodsecurity.vgscheckout.networking.client.HttpRequest
 import com.verygoodsecurity.vgscheckout.networking.client.HttpResponse
 import com.verygoodsecurity.vgscheckout.networking.command.core.Command
+import com.verygoodsecurity.vgscheckout.util.logger.VGSCheckoutLogger
 import org.json.JSONObject
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
-import java.util.concurrent.Future
+import java.util.concurrent.*
+import kotlin.concurrent.thread
 
 internal class GetSavedCardsCommand constructor(context: Context) :
     Command<GetSavedCardsCommand.Params, GetSavedCardsCommand.Result>(context) {
 
-    private val executor: ExecutorService = Executors.newSingleThreadExecutor()
-    private var fetchTask: Future<*>? = null
+    private var rootThread: Thread? = null
+    private val cardFetchExecutor: ExecutorService =
+        Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors())
 
-    // TODO: Implement async call for each card request to improve performance
     override fun run(params: Params, onResult: (Result) -> Unit) {
-        fetchTask = executor.submit {
-            val cards = mutableListOf<Card>()
-            val headers = mapOf(
-                AUTHORIZATION_HEADER_KEY to String.format(
-                    AUTHORIZATION_HEADER_VALUE,
-                    params.accessToken
-                )
-            )
+        rootThread = thread(start = true) {
+            val headers = createFetchCardHeaders(params)
+            val cardFetchTasks = mutableListOf<Future<Card?>>()
             params.ids.forEach { id ->
-                val response = client.execute(createRequest(id, headers, params))
-                parseResponse(response)?.let {
-                    cards.add(it)
+                try {
+                    cardFetchTasks.add(cardFetchExecutor.submit(Callable {
+                        val response = client.execute(createRequest(id, headers, params))
+                        parseResponse(response)
+                    }))
+                } catch (e: RejectedExecutionException) {
+                    VGSCheckoutLogger.warn(message = "GetSavedCardsCommand was canceled.")
+                    return@thread
                 }
             }
-            onResult.invoke(Result.Success(cards))
+            Result.Success(cardFetchTasks.mapNotNull {
+                try {
+                    it.get()
+                } catch (e: InterruptedException) {
+                    VGSCheckoutLogger.warn(message = "GetSavedCardsCommand was canceled.")
+                    return@thread
+                } catch (e: ExecutionException) {
+                    VGSCheckoutLogger.warn(message = "GetSavedCardsCommand card skipped due failed request.")
+                    null
+                }
+            })
         }
     }
 
     override fun map(params: Params, exception: VGSCheckoutException) = Result.Failure(exception)
 
     override fun cancel() {
-        fetchTask?.cancel(true)
+        client.cancelAll()
+        cardFetchExecutor.shutdownNow()
     }
 
     private fun createRequest(
@@ -54,6 +65,13 @@ internal class GetSavedCardsCommand constructor(context: Context) :
         null,
         headers = headers,
         method = HttpMethod.GET
+    )
+
+    private fun createFetchCardHeaders(params: Params) = mapOf(
+        AUTHORIZATION_HEADER_KEY to String.format(
+            AUTHORIZATION_HEADER_VALUE,
+            params.accessToken
+        )
     )
 
     private fun parseResponse(response: HttpResponse): Card? {
