@@ -10,34 +10,42 @@ import com.verygoodsecurity.vgscheckout.networking.client.HttpResponse
 import com.verygoodsecurity.vgscheckout.networking.command.core.Command
 import com.verygoodsecurity.vgscheckout.util.logger.VGSCheckoutLogger
 import org.json.JSONObject
-import java.util.*
+import java.util.concurrent.*
 import kotlin.concurrent.thread
 
 internal class GetSavedCardsCommand constructor(context: Context) :
     Command<GetSavedCardsCommand.Params, GetSavedCardsCommand.Result>(context) {
 
-    private val cards: MutableList<Card> = Collections.synchronizedList(mutableListOf<Card>())
     private var rootThread: Thread? = null
-    private val fetchCardThreads = mutableListOf<Thread>()
+    private val cardFetchExecutor: ExecutorService =
+        Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors())
 
     override fun run(params: Params, onResult: (Result) -> Unit) {
         rootThread = thread(start = true) {
             val headers = createFetchCardHeaders(params)
+            val cardFetchTasks = mutableListOf<Future<Card?>>()
             params.ids.forEach { id ->
-                fetchCardThreads.add(thread(start = true) worker@{
-                    val response = client.execute(createRequest(id, headers, params))
-                    if (Thread.interrupted()) return@worker
-                    parseResponse(response)?.let {
-                        cards.add(it)
-                    }
-                })
+                try {
+                    cardFetchTasks.add(cardFetchExecutor.submit(Callable {
+                        val response = client.execute(createRequest(id, headers, params))
+                        parseResponse(response)
+                    }))
+                } catch (e: RejectedExecutionException) {
+                    VGSCheckoutLogger.warn(message = "GetSavedCardsCommand was canceled.")
+                    return@thread
+                }
             }
-            try {
-                fetchCardThreads.forEach { it.join() }
-                onResult.invoke(Result.Success(cards))
-            } catch (e: InterruptedException) {
-                VGSCheckoutLogger.debug(message = "GetSavedCardsCommand was canceled.")
-            }
+            Result.Success(cardFetchTasks.mapNotNull {
+                try {
+                    it.get()
+                } catch (e: InterruptedException) {
+                    VGSCheckoutLogger.warn(message = "GetSavedCardsCommand was canceled.")
+                    return@thread
+                } catch (e: ExecutionException) {
+                    VGSCheckoutLogger.warn(message = "GetSavedCardsCommand card skipped due failed request.")
+                    null
+                }
+            })
         }
     }
 
@@ -45,8 +53,7 @@ internal class GetSavedCardsCommand constructor(context: Context) :
 
     override fun cancel() {
         client.cancelAll()
-        rootThread?.interrupt()
-        fetchCardThreads.forEach { it.interrupt() }
+        cardFetchExecutor.shutdownNow()
     }
 
     private fun createRequest(
