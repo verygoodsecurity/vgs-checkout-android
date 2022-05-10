@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscheckout.payments.ui
+package com.verygoodsecurity.vgscheckout.payments.add.ui
 
 import android.content.Context
 import android.content.Intent
@@ -19,7 +19,6 @@ import com.verygoodsecurity.vgscheckout.BuildConfig
 import com.verygoodsecurity.vgscheckout.Constants.INVALID_CARD_NUMBER
 import com.verygoodsecurity.vgscheckout.Constants.INVALID_EXP_DATE
 import com.verygoodsecurity.vgscheckout.Constants.INVALID_SECURITY_CODE
-import com.verygoodsecurity.vgscheckout.Constants.USA_INVALID_ZIP_CODE
 import com.verygoodsecurity.vgscheckout.Constants.USA_VALID_ZIP_CODE
 import com.verygoodsecurity.vgscheckout.Constants.VALID_ADDRESS
 import com.verygoodsecurity.vgscheckout.Constants.VALID_CARD_HOLDER
@@ -35,11 +34,6 @@ import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutAddCardFormConfig
 import com.verygoodsecurity.vgscheckout.config.ui.core.VGSCheckoutFormValidationBehaviour
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillingAddressVisibility
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutPaymentBillingAddressOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.VGSCheckoutPaymentAddressOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.VGSCheckoutPaymentOptionalAddressOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.city.VGSCheckoutPaymentCityOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.country.VGSCheckoutPaymentCountryOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.core.VGSCheckoutFieldVisibility
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_ARGS
 import com.verygoodsecurity.vgscheckout.ui.SaveCardActivity
