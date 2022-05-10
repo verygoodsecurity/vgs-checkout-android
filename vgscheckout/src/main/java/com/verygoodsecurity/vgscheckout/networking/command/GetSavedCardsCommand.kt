@@ -17,35 +17,18 @@ internal class GetSavedCardsCommand constructor(context: Context) :
     Command<GetSavedCardsCommand.Params, GetSavedCardsCommand.Result>(context) {
 
     private var rootThread: Thread? = null
-    private val cardFetchExecutor: ExecutorService =
-        Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors())
+    private val cardFetchExecutor: ExecutorService = createExecutor()
 
     override fun run(params: Params, onResult: (Result) -> Unit) {
         rootThread = thread(start = true) {
-            val headers = createFetchCardHeaders(params)
-            val cardFetchTasks = mutableListOf<Future<Card?>>()
-            params.ids.forEach { id ->
-                try {
-                    cardFetchTasks.add(cardFetchExecutor.submit(Callable {
-                        val response = client.execute(createRequest(id, headers, params))
-                        parseResponse(response)
-                    }))
-                } catch (e: RejectedExecutionException) {
-                    VGSCheckoutLogger.warn(message = "GetSavedCardsCommand was canceled.")
-                    return@thread
-                }
+            try {
+                val tasks = startRequests(params, createHeaders(params))
+                onResult.invoke(Result.Success(tasks.mapNotNull { it.get() }))
+            } catch (e: InterruptedException) {
+                VGSCheckoutLogger.warn(message = "GetSavedCardsCommand was canceled.")
+            } catch (e: ExecutionException) {
+                VGSCheckoutLogger.warn(message = "GetSavedCardsCommand card skipped due failed request.")
             }
-            Result.Success(cardFetchTasks.mapNotNull {
-                try {
-                    it.get()
-                } catch (e: InterruptedException) {
-                    VGSCheckoutLogger.warn(message = "GetSavedCardsCommand was canceled.")
-                    return@thread
-                } catch (e: ExecutionException) {
-                    VGSCheckoutLogger.warn(message = "GetSavedCardsCommand card skipped due failed request.")
-                    null
-                }
-            })
         }
     }
 
@@ -53,8 +36,12 @@ internal class GetSavedCardsCommand constructor(context: Context) :
 
     override fun cancel() {
         client.cancelAll()
+        rootThread?.interrupt()
         cardFetchExecutor.shutdownNow()
     }
+
+    private fun createExecutor() =
+        Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() * 2)
 
     private fun createRequest(
         id: String,
@@ -67,12 +54,24 @@ internal class GetSavedCardsCommand constructor(context: Context) :
         method = HttpMethod.GET
     )
 
-    private fun createFetchCardHeaders(params: Params) = mapOf(
+    private fun createHeaders(params: Params) = mapOf(
         AUTHORIZATION_HEADER_KEY to String.format(
             AUTHORIZATION_HEADER_VALUE,
             params.accessToken
         )
     )
+
+    @Throws(RejectedExecutionException::class)
+    private fun startRequests(params: Params, headers: Map<String, String>): List<Future<Card?>> {
+        val result = mutableListOf<Future<Card?>>()
+        params.ids.forEach { id ->
+            result.add(cardFetchExecutor.submit(Callable {
+                val response = client.execute(createRequest(id, headers, params))
+                parseResponse(response)
+            }))
+        }
+        return result
+    }
 
     private fun parseResponse(response: HttpResponse): Card? {
         if (response.body.isNullOrEmpty()) {
