@@ -270,27 +270,18 @@ class VGSTextInputLayoutTest {
 
         val state = textInputLayout.getFieldState()
         val iv = state.getInternalView()
-        val a1 = iv.boxCornerRadiusTopStart
-        val a2 = iv.boxCornerRadiusTopEnd
-        val a3 = iv.boxCornerRadiusBottomStart
-        val a4 = iv.boxCornerRadiusBottomEnd
-
-        //for some reason in 'com.google.android.material:material:1.1.0' lib after set value to boxCornerRadiusBottomStart
-        // later this value will return from boxCornerRadiusBottomEnd instead
-        //getBoxCornerRadiusBottomEnd return getBottomLeftCornerResolvedSize
-        //getBoxCornerRadiusBottomStart return getBottomRightCornerResolvedSize
-
-        assertEquals(iv.boxCornerRadiusBottomEnd, state.boxCornerRadiusBottomStart)
-        assertEquals(BottomStart, state.boxCornerRadiusBottomStart)
-
-        assertEquals(iv.boxCornerRadiusBottomStart, state.boxCornerRadiusBottomEnd)
-        assertEquals(BottomEnd, state.boxCornerRadiusBottomEnd)
 
         assertEquals(iv.boxCornerRadiusTopStart, state.boxCornerRadiusTopStart)
         assertEquals(TopStart, state.boxCornerRadiusTopStart)
 
         assertEquals(iv.boxCornerRadiusTopEnd, state.boxCornerRadiusTopEnd)
         assertEquals(TopEnd, state.boxCornerRadiusTopEnd)
+
+        assertEquals(iv.boxCornerRadiusBottomEnd, state.boxCornerRadiusBottomEnd)
+        assertEquals(BottomEnd, state.boxCornerRadiusBottomEnd)
+
+        assertEquals(iv.boxCornerRadiusBottomStart, state.boxCornerRadiusBottomStart)
+        assertEquals(BottomStart, state.boxCornerRadiusBottomStart)
     }
 
     @Test
@@ -487,27 +478,18 @@ class VGSTextInputLayoutTest {
 
         val state = textInputLayout.getFieldState()
         val iv = state.getInternalView()
-        val a1 = iv.boxCornerRadiusTopStart
-        val a2 = iv.boxCornerRadiusTopEnd
-        val a3 = iv.boxCornerRadiusBottomStart
-        val a4 = iv.boxCornerRadiusBottomEnd
-
-        //for some reason in 'com.google.android.material:material:1.1.0' lib after set value to boxCornerRadiusBottomStart
-        // later this value will return from boxCornerRadiusBottomEnd instead
-        //getBoxCornerRadiusBottomEnd return getBottomLeftCornerResolvedSize
-        //getBoxCornerRadiusBottomStart return getBottomRightCornerResolvedSize
-
-        assertEquals(iv.boxCornerRadiusBottomEnd, state.boxCornerRadiusBottomStart)
-        assertEquals(BottomStart, state.boxCornerRadiusBottomStart)
-
-        assertEquals(iv.boxCornerRadiusBottomStart, state.boxCornerRadiusBottomEnd)
-        assertEquals(BottomEnd, state.boxCornerRadiusBottomEnd)
 
         assertEquals(iv.boxCornerRadiusTopStart, state.boxCornerRadiusTopStart)
         assertEquals(TopStart, state.boxCornerRadiusTopStart)
 
         assertEquals(iv.boxCornerRadiusTopEnd, state.boxCornerRadiusTopEnd)
         assertEquals(TopEnd, state.boxCornerRadiusTopEnd)
+
+        assertEquals(iv.boxCornerRadiusBottomEnd, state.boxCornerRadiusBottomEnd)
+        assertEquals(BottomEnd, state.boxCornerRadiusBottomEnd)
+
+        assertEquals(iv.boxCornerRadiusBottomStart, state.boxCornerRadiusBottomStart)
+        assertEquals(BottomStart, state.boxCornerRadiusBottomStart)
     }
 
     @Test
