@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscheckout.payments.ui
+package com.verygoodsecurity.vgscheckout.payments.add.ui
 
 import android.app.Activity
 import android.content.Context
