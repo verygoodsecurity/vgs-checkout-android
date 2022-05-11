@@ -29,7 +29,6 @@ class AccessTokenHelper {
         return try {
             val okHttpRequest = Request.Builder()
                 .method("POST", "{}".toRequestBody())
-                //TODO replace to circleCI
                 .url(BuildConfig.AUTHENTICATION_HOST)
                 .build()
 
