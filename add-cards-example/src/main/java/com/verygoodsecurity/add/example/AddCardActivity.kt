@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.button.MaterialButton
+import com.verygoodsecurity.BuildConfig.STORAGE_ID
 import com.verygoodsecurity.R
 import com.verygoodsecurity.add.example.network.HttpClient
 import com.verygoodsecurity.vgscheckout.VGSCheckout
@@ -15,7 +16,7 @@ import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutCardResponse
 
 class AddCardActivity : AppCompatActivity(), VGSCheckoutCallback {
 
-    private val vaultId: String by lazy { getString(R.string.storage_id) }
+    private val vaultId: String = STORAGE_ID
 
     private val accessClient: HttpClient by lazy { HttpClient() }
 
