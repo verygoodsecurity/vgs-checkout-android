@@ -5,20 +5,19 @@ import com.verygoodsecurity.vgscheckout.BuildConfig
 import okhttp3.*
 import okhttp3.RequestBody.Companion.toRequestBody
 
-class AccessTokenHelper {
+object AccessTokenHelper {
 
-    companion object {
-        private const val ACCESS_TOKEN = "access_token"
-        private fun parseToken(body: String?) = body?.let {
-            JsonParser
-                .parseString(it)
-                .asJsonObject
-                .run {
-                    takeIf { this.has(ACCESS_TOKEN) }
-                        ?.run { get(ACCESS_TOKEN).asString } ?: ""
-                }
-        } ?: ""
-    }
+    private const val ACCESS_TOKEN = "access_token"
+
+    private fun parseToken(body: String?) = body?.let {
+        JsonParser
+            .parseString(it)
+            .asJsonObject
+            .run {
+                takeIf { this.has(ACCESS_TOKEN) }
+                    ?.run { get(ACCESS_TOKEN).asString } ?: ""
+            }
+    } ?: ""
 
     private val client: OkHttpClient by lazy {
         OkHttpClient().newBuilder()

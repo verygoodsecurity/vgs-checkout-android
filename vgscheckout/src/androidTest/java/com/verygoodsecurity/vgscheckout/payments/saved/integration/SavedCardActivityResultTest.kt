@@ -45,7 +45,7 @@ class SavedCardActivityResultTest {
         device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
         device.setOrientationNatural()
 
-        token = AccessTokenHelper().getToken()
+        token = AccessTokenHelper.getToken()
         val config = initializeSavedCardConfig()
 
         intent = Intent(context, SaveCardActivity::class.java).apply {
