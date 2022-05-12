@@ -17,14 +17,12 @@ import com.verygoodsecurity.vgscheckout.BuildConfig
 import com.verygoodsecurity.vgscheckout.Constants
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
-import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
-import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_ARGS
-import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_RESULT
-import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
+import com.verygoodsecurity.vgscheckout.model.*
 import com.verygoodsecurity.vgscheckout.ui.SaveCardActivity
 import com.verygoodsecurity.vgscheckout.util.ViewInteraction
 import com.verygoodsecurity.vgscheckout.util.extension.*
 import com.verygoodsecurity.vgscheckout.util.extension.getParcelableSafe
+import org.junit.Assert
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -106,4 +104,31 @@ class SaveCardActivityResultTest {
             assertTrue(result?.checkoutResult is VGSCheckoutResult.Canceled)
         }
     }
+
+    @Test(timeout = 60000L)
+    fun performPaymentOrchestration_saveCard_isPreSavedCard_true() {
+        //Arrange
+        launch<SaveCardActivity>(defaultIntent).use {
+            fillCardFields(
+                Constants.VALID_CARD_HOLDER,
+                Constants.VALID_CARD_NUMBER,
+                Constants.VALID_EXP_DATE,
+                Constants.VALID_SECURITY_CODE
+            )
+            fillAddressFields(
+                Constants.VALID_ADDRESS,
+                Constants.VALID_CITY,
+                Constants.USA_VALID_ZIP_CODE
+            )
+            // Act
+            ViewInteraction.onViewWithScrollTo(R.id.mbSaveCard).perform(click())
+            //Assert
+            val isPreSavedCard =
+                it?.getParcelableSafe<CheckoutResultContract.Result>(EXTRA_KEY_RESULT)
+                    ?.checkoutResult?.data?.getBoolean(VGSCheckoutResultBundle.Keys.IS_PRE_SAVED_CARD)
+                    ?: false
+            assertFalse(isPreSavedCard)
+        }
+    }
+
 }
