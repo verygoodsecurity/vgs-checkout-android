@@ -168,39 +168,4 @@ class CustomActivityResultTest {
             assertFalse(isPreSavedCard)
         }
     }
-
-    @Test
-    fun performCheckout_custom_saveCard_isPreSavedCard_true() {
-        val intent = Intent(context, CustomSaveCardActivity::class.java).apply {
-            putExtra(
-                EXTRA_KEY_ARGS,
-                CheckoutResultContract.Args(
-                    VGSCheckoutCustomConfig(
-                        BuildConfig.VAULT_ID,
-                        formConfig = VGSCheckoutCustomFormConfig(
-                        ),
-                        isScreenshotsAllowed = true
-                    )
-                )
-            )
-        }
-        // Arrange
-        launch<CustomSaveCardActivity>(intent).use {
-            fillCardFields(
-                Constants.VALID_CARD_HOLDER,
-                Constants.VALID_CARD_NUMBER,
-                Constants.VALID_EXP_DATE,
-                Constants.VALID_SECURITY_CODE
-            )
-            // Act
-            onViewWithScrollTo(R.id.mbSaveCard).perform(click())
-            //Assert
-            val isPreSavedCard =
-                it?.getParcelableSafe<CheckoutResultContract.Result>(EXTRA_KEY_RESULT)
-                    ?.checkoutResult?.data?.getBoolean(VGSCheckoutResultBundle.Keys.IS_PRE_SAVED_CARD)
-                    ?: false
-            assertFalse(isPreSavedCard)
-        }
-    }
-
 }
