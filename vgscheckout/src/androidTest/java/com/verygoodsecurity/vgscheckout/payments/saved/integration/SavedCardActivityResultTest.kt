@@ -19,7 +19,6 @@ import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
 import com.verygoodsecurity.vgscheckout.config.payment.VGSCheckoutPaymentMethod
 import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
 import com.verygoodsecurity.vgscheckout.model.*
-import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutCardResponse
 import com.verygoodsecurity.vgscheckout.ui.SaveCardActivity
 import com.verygoodsecurity.vgscheckout.util.extension.*
 import com.verygoodsecurity.vgscheckout.util.extension.addCardPaymentInstrument
@@ -56,19 +55,6 @@ class SavedCardActivityResultTest {
         }
     }
 
-    /*
-    - додать 3 картки і перевірить чі всі є
-    - додать 3 картки і перевірить вибрану
-        - повиділять нові картки.
-
-    - додать 3 картки і видалить 2гу. перевірить чі правильно видалилася
-        - перевірити чі виділена потрібна
-    - додать 2 картки і видалить одну. спробувать її ше раз загрузить.
-    - додать 3 картки і видалить 2.
-        - перевірить у респонсах їх.
-
-    - перевірить SHOULD_SAVE_CARD
-     */
     private fun initializeSavedCardConfig() = CountDownLatch(1).runCatching {
         val finID = addCardPaymentInstrument(context, token)
         var savedConfig: VGSCheckoutAddCardConfig? = null

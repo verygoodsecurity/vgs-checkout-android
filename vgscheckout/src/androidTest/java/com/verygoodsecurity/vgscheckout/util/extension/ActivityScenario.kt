@@ -121,7 +121,14 @@ fun waitFor(milliseconds: Long) {
     })
 }
 
-internal fun addCardPaymentInstrument(context: Context, token: String): String {
+internal fun addCardPaymentInstrument(
+    context: Context,
+    token: String,
+    cardNumber: String = Constants.VALID_CARD_NUMBER,
+    cardHolderName: String = Constants.VALID_CARD_HOLDER,
+    expDate: String = Constants.VALID_EXP_DATE,
+    cvc: String = Constants.VALID_SECURITY_CODE
+): String {
     val intent = Intent(context, SaveCardActivity::class.java).apply {
         putExtra(
             EXTRA_KEY_ARGS,
@@ -132,10 +139,10 @@ internal fun addCardPaymentInstrument(context: Context, token: String): String {
     }
     ActivityScenario.launch<SaveCardActivity>(intent).use {
         fillCardFields(
-            Constants.VALID_CARD_HOLDER,
-            Constants.VALID_CARD_NUMBER,
-            Constants.VALID_EXP_DATE,
-            Constants.VALID_SECURITY_CODE
+            cardHolderName,
+            cardNumber,
+            expDate,
+            cvc
         )
         // Act
         ViewInteraction.onViewWithScrollTo(R.id.mbSaveCard).perform(ViewActions.click())
