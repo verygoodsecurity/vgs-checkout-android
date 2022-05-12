@@ -32,5 +32,11 @@ class VGSCheckoutAddCardFormConfig private constructor(
     constructor(
         addressOptions: VGSCheckoutPaymentBillingAddressOptions = VGSCheckoutPaymentBillingAddressOptions(),
         validationBehaviour: VGSCheckoutFormValidationBehaviour = VGSCheckoutFormValidationBehaviour.ON_SUBMIT,
-    ) : this(VGSCheckoutPaymentCardOptions(), addressOptions, validationBehaviour, false)
+        saveCardOptionEnabled: Boolean = false
+    ) : this(
+        VGSCheckoutPaymentCardOptions(),
+        addressOptions,
+        validationBehaviour,
+        saveCardOptionEnabled
+    )
 }
