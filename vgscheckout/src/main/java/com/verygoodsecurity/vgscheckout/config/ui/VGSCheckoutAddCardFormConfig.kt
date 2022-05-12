@@ -27,6 +27,7 @@ class VGSCheckoutAddCardFormConfig private constructor(
      *
      * @param addressOptions address details section UI options.
      * @param validationBehaviour defines validation behavior. Default is [VGSCheckoutFormValidationBehaviour.ON_SUBMIT].
+     * @param saveCardOptionEnabled defines if save card checkbox should be visible.
      */
     @JvmOverloads
     constructor(
