@@ -3,6 +3,7 @@ package com.verygoodsecurity.vgscheckout.config
 import android.content.Context
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgscheckout.VGSCheckoutConfigInitCallback
 import com.verygoodsecurity.vgscheckout.analytic.event.FinInstrumentCrudEvent
 import com.verygoodsecurity.vgscheckout.analytic.event.JWTValidationEvent
@@ -43,7 +44,7 @@ class VGSCheckoutAddCardConfig internal constructor(
 ) : CheckoutConfig(tenantId) {
 
     internal var savedCards: List<Card> = emptyList()
-        private set
+        @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE) internal set
 
     init {
         //TODO: Uncomment token validation

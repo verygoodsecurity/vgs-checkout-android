@@ -97,6 +97,8 @@ class SaveCardActivityResultTest {
     @Test
     fun performPaymentOrchestration_cancelActivityResult_withBackPress_codeCanceled() {
         launch<SaveCardActivity>(defaultIntent).use {
+            it.onActivity {
+            }
             // Act
             onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard())
             device.pressBack()
