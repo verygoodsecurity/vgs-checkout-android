@@ -3,15 +3,17 @@ package com.verygoodsecurity.vgscheckout.payments.add.ui
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ActivityScenario
+import androidx.test.core.app.ActivityScenario.launch
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.RootMatchers.isDialog
+import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
@@ -22,12 +24,15 @@ import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutPaymentRouteConfig
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutAddCardFormConfig
-import com.verygoodsecurity.vgscheckout.model.*
-import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutCardResponse
+import com.verygoodsecurity.vgscheckout.model.Card
+import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
+import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_ARGS
+import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
 import com.verygoodsecurity.vgscheckout.ui.SaveCardActivity
 import com.verygoodsecurity.vgscheckout.ui.core.BaseCheckoutActivity
 import com.verygoodsecurity.vgscheckout.ui.fragment.method.SelectPaymentMethodFragment
 import com.verygoodsecurity.vgscheckout.ui.fragment.method.adapter.PaymentMethodsAdapter
+import com.verygoodsecurity.vgscheckout.ui.fragment.save.SaveCardFragment
 import com.verygoodsecurity.vgscheckout.util.ActionHelper.doAction
 import com.verygoodsecurity.vgscheckout.util.extension.safeResult
 import org.junit.Assert.*
@@ -53,10 +58,10 @@ class SelectPaymentMethodFragmentTest {
     fun selectPaymentMethodFragmentShowed_cardsAndAddNewCardShowed() {
         // Arrange
         val cards = getCardsFixtures()
-        putConfig(getConfigFixture(cards, true))
+        putConfig(getConfigFixture(getCardsFixtures(), true))
         // Act
-        ActivityScenario.launch<SaveCardActivity>(intent).use { scenario ->
-            checkFragmentCorrect(scenario)
+        launch<SaveCardActivity>(intent).use { scenario ->
+            checkFragmentCorrect<SelectPaymentMethodFragment>(scenario)
             //Assert
             onView(withId(R.id.rvPaymentMethods)).perform(doAction<RecyclerView> {
                 assertEquals(cards.size.inc(), it.adapter?.itemCount)
@@ -67,11 +72,10 @@ class SelectPaymentMethodFragmentTest {
     @Test
     fun selectPaymentMethodFragmentShowed_deleteExist() {
         // Arrange
-        val cards = getCardsFixtures()
-        putConfig(getConfigFixture(cards, true))
+        putConfig(getConfigFixture(getCardsFixtures(), true))
         // Act
-        ActivityScenario.launch<SaveCardActivity>(intent).use { scenario ->
-            checkFragmentCorrect(scenario)
+        launch<SaveCardActivity>(intent).use { scenario ->
+            checkFragmentCorrect<SelectPaymentMethodFragment>(scenario)
             //Assert
             onView(withId(R.id.delete)).check(matches(isDisplayed()))
         }
@@ -80,11 +84,10 @@ class SelectPaymentMethodFragmentTest {
     @Test
     fun selectPaymentMethodFragmentShowed_deleteDoesNotExist() {
         // Arrange
-        val cards = getCardsFixtures()
-        putConfig(getConfigFixture(cards, false))
+        putConfig(getConfigFixture(getCardsFixtures(), false))
         // Act
-        ActivityScenario.launch<SaveCardActivity>(intent).use { scenario ->
-            checkFragmentCorrect(scenario)
+        launch<SaveCardActivity>(intent).use { scenario ->
+            checkFragmentCorrect<SelectPaymentMethodFragment>(scenario)
             //Assert
             onView(withId(R.id.delete)).check(doesNotExist())
         }
@@ -96,8 +99,8 @@ class SelectPaymentMethodFragmentTest {
         val cards = getCardsFixtures()
         putConfig(getConfigFixture(cards, false))
         // Act
-        ActivityScenario.launch<SaveCardActivity>(intent).use { scenario ->
-            checkFragmentCorrect(scenario)
+        launch<SaveCardActivity>(intent).use { scenario ->
+            checkFragmentCorrect<SelectPaymentMethodFragment>(scenario)
             onView(withId(R.id.rvPaymentMethods)).perform(doAction<RecyclerView> {
                 val adapter = (it.adapter as? PaymentMethodsAdapter)
                 cards.forEach { card -> adapter?.removeItem(card) }
@@ -110,11 +113,10 @@ class SelectPaymentMethodFragmentTest {
     @Test
     fun selectPaymentMethodFragmentShowed_payEnabled() {
         // Arrange
-        val cards = getCardsFixtures()
-        putConfig(getConfigFixture(cards, false))
+        putConfig(getConfigFixture(getCardsFixtures(), false))
         // Act
-        ActivityScenario.launch<SaveCardActivity>(intent).use { scenario ->
-            checkFragmentCorrect(scenario)
+        launch<SaveCardActivity>(intent).use { scenario ->
+            checkFragmentCorrect<SelectPaymentMethodFragment>(scenario)
             //Assert
             onView(withId(R.id.mbPay)).perform(doAction<MaterialButton> { assertTrue(it.isEnabled) })
         }
@@ -126,8 +128,8 @@ class SelectPaymentMethodFragmentTest {
         val cards = getCardsFixtures()
         putConfig(getConfigFixture(cards, false))
         // Act
-        ActivityScenario.launch<SaveCardActivity>(intent).use { scenario ->
-            checkFragmentCorrect(scenario)
+        launch<SaveCardActivity>(intent).use { scenario ->
+            checkFragmentCorrect<SelectPaymentMethodFragment>(scenario)
             onView(withId(R.id.rvPaymentMethods)).perform(doAction<RecyclerView> {
                 val adapter = (it.adapter as? PaymentMethodsAdapter)
                 cards.forEach { card -> adapter?.removeItem(card) }
@@ -138,37 +140,58 @@ class SelectPaymentMethodFragmentTest {
     }
 
     @Test
-    fun selectPaymentMethodFragmentShowed_firstCardReturnedOnPayClick() {
+    fun selectPaymentMethodFragmentShowed_screenClosedWithOkOnPayClick() {
         // Arrange
-        val cards = getCardsFixtures()
-        putConfig(getConfigFixture(cards, false))
+        putConfig(getConfigFixture(getCardsFixtures(), false))
         // Act
-        ActivityScenario.launch<SaveCardActivity>(intent).use { scenario ->
-            checkFragmentCorrect(scenario)
+        launch<SaveCardActivity>(intent).use { scenario ->
+            checkFragmentCorrect<SelectPaymentMethodFragment>(scenario)
             onView(withId(R.id.mbPay)).perform(click())
-            val checkoutResult = scenario.safeResult.resultData?.getParcelableExtra<CheckoutResultContract.Result>(EXTRA_KEY_RESULT)?.checkoutResult?.data
-            val addCardResponse = checkoutResult?.getParcelable<VGSCheckoutCardResponse>(VGSCheckoutResultBundle.ADD_CARD_RESPONSE)
             //Assert
             assertEquals(Activity.RESULT_OK, scenario.safeResult.resultCode)
         }
     }
 
     @Test
-    fun selectPaymentMethodFragmentShowed_resultCancelReturnedOnBackClick() {
+    fun selectPaymentMethodFragmentShowed_screenClosedWithCancelOnBackClick() {
         // Arrange
-        val cards = getCardsFixtures()
-        putConfig(getConfigFixture(cards, false))
+        putConfig(getConfigFixture(getCardsFixtures(), false))
         // Act
-        ActivityScenario.launch<SaveCardActivity>(intent).use { scenario ->
-            checkFragmentCorrect(scenario)
+        launch<SaveCardActivity>(intent).use { scenario ->
+            checkFragmentCorrect<SelectPaymentMethodFragment>(scenario)
             device.pressBack()
             //Assert
             assertEquals(Activity.RESULT_CANCELED, scenario.safeResult.resultCode)
         }
     }
 
-    // TODO: add is dialog showed test
-    // TODO: add new card click test
+    @Test
+    fun selectPaymentMethodFragmentShowed_dialogShowed() {
+        // Arrange
+        putConfig(getConfigFixture(getCardsFixtures(), true))
+        // Act
+        launch<SaveCardActivity>(intent).use { scenario ->
+            checkFragmentCorrect<SelectPaymentMethodFragment>(scenario)
+            onView(withId(R.id.delete)).perform(click())
+            //Assert
+            onView(isRoot()).inRoot(isDialog()).check(matches(isDisplayed()))
+        }
+    }
+
+
+    @Test
+    fun selectPaymentMethodFragmentShowed_newCardFragmentOpened() {
+        // Arrange
+        putConfig(getConfigFixture(getCardsFixtures().subList(0, 1), true))
+        // Act
+        launch<SaveCardActivity>(intent).use { scenario ->
+            checkFragmentCorrect<SelectPaymentMethodFragment>(scenario)
+
+            onView(withId(R.id.tvPayWithNewCard)).perform(click())
+            //Assert
+            checkFragmentCorrect<SaveCardFragment>(scenario)
+        }
+    }
 
     private fun putConfig(config: CheckoutConfig) {
         intent.putExtra(EXTRA_KEY_ARGS, CheckoutResultContract.Args(config))
@@ -207,9 +230,9 @@ class SelectPaymentMethodFragmentTest {
         return result
     }
 
-    private fun checkFragmentCorrect(scenario: ActivityScenario<SaveCardActivity>) {
+    private inline fun <reified F : Fragment> checkFragmentCorrect(scenario: ActivityScenario<SaveCardActivity>) {
         scenario.onActivity {
-            assertTrue(it.supportFragmentManager.findFragmentByTag(BaseCheckoutActivity.FRAGMENT_TAG) is SelectPaymentMethodFragment)
+            assertTrue(it.supportFragmentManager.findFragmentByTag(BaseCheckoutActivity.FRAGMENT_TAG) is F)
         }
     }
 }
