@@ -17,9 +17,7 @@ import com.verygoodsecurity.vgscheckout.BuildConfig
 import com.verygoodsecurity.vgscheckout.Constants
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
-import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutAddCardFormConfig
-import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutCustomFormConfig
 import com.verygoodsecurity.vgscheckout.model.*
 import com.verygoodsecurity.vgscheckout.ui.CustomSaveCardActivity
 import com.verygoodsecurity.vgscheckout.ui.SaveCardActivity
@@ -107,6 +105,33 @@ class SaveCardActivityResultTest {
             assertTrue(result?.checkoutResult is VGSCheckoutResult.Canceled)
         }
     }
+
+    @Test(timeout = 60000L)
+    fun performPaymentOrchestration_saveCard_isPreSavedCard_true() {
+        //Arrange
+        launch<SaveCardActivity>(defaultIntent).use {
+            fillCardFields(
+                Constants.VALID_CARD_HOLDER,
+                Constants.VALID_CARD_NUMBER,
+                Constants.VALID_EXP_DATE,
+                Constants.VALID_SECURITY_CODE
+            )
+            fillAddressFields(
+                Constants.VALID_ADDRESS,
+                Constants.VALID_CITY,
+                Constants.USA_VALID_ZIP_CODE
+            )
+            // Act
+            ViewInteraction.onViewWithScrollTo(R.id.mbSaveCard).perform(click())
+            //Assert
+            val isPreSavedCard =
+                it?.getParcelableSafe<CheckoutResultContract.Result>(EXTRA_KEY_RESULT)
+                    ?.checkoutResult?.data?.getBoolean(VGSCheckoutResultBundle.Keys.IS_PRE_SAVED_CARD)
+                    ?: false
+            assertFalse(isPreSavedCard)
+        }
+    }
+
 
     @Test
     fun performPaymentOrchestration_saveCardOptionEnabled_true() {

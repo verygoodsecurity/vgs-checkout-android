@@ -43,10 +43,12 @@ class CustomActivityResultTest {
     private val defaultIntent = Intent(context, CustomSaveCardActivity::class.java).apply {
         putExtra(
             EXTRA_KEY_ARGS,
-            CheckoutResultContract.Args(VGSCheckoutCustomConfig(
-                BuildConfig.VAULT_ID,
-                isScreenshotsAllowed = true
-            ))
+            CheckoutResultContract.Args(
+                VGSCheckoutCustomConfig(
+                    BuildConfig.VAULT_ID,
+                    isScreenshotsAllowed = true
+                )
+            )
         )
     }
 
@@ -111,7 +113,10 @@ class CustomActivityResultTest {
             onViewWithScrollTo(R.id.mbSaveCard).perform(click())
             //Assert
             val result = it?.getParcelableSafe<CheckoutResultContract.Result>(EXTRA_KEY_RESULT)
-            val response = (result?.checkoutResult as? VGSCheckoutResult.Success)?.data?.getParcelable<VGSCheckoutCardResponse>(VGSCheckoutResultBundle.ADD_CARD_RESPONSE)
+            val response =
+                (result?.checkoutResult as? VGSCheckoutResult.Success)?.data?.getParcelable<VGSCheckoutCardResponse>(
+                    VGSCheckoutResultBundle.ADD_CARD_RESPONSE
+                )
             assertEquals(Activity.RESULT_OK, it.result.resultCode)
             assertTrue(result?.checkoutResult is VGSCheckoutResult.Success)
             assertEquals(Constants.SUCCESS_RESPONSE_CODE, response?.code)
@@ -140,6 +145,27 @@ class CustomActivityResultTest {
             val result = it?.getParcelableSafe<CheckoutResultContract.Result>(EXTRA_KEY_RESULT)
             assertEquals(Activity.RESULT_CANCELED, it.result.resultCode)
             assertTrue(result?.checkoutResult is VGSCheckoutResult.Canceled)
+        }
+    }
+
+    @Test
+    fun performCheckout_custom_saveCard_isPreSavedCard() {
+        // Arrange
+        launch<CustomSaveCardActivity>(defaultIntent).use {
+            fillCardFields(
+                Constants.VALID_CARD_HOLDER,
+                Constants.VALID_CARD_NUMBER,
+                Constants.VALID_EXP_DATE,
+                Constants.VALID_SECURITY_CODE
+            )
+            // Act
+            onViewWithScrollTo(R.id.mbSaveCard).perform(click())
+            //Assert
+            val isPreSavedCard =
+                it?.getParcelableSafe<CheckoutResultContract.Result>(EXTRA_KEY_RESULT)
+                    ?.checkoutResult?.data?.getBoolean(VGSCheckoutResultBundle.Keys.IS_PRE_SAVED_CARD)
+                    ?: false
+            assertFalse(isPreSavedCard)
         }
     }
 }

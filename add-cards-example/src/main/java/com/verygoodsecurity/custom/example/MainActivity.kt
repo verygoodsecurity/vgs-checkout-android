@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.button.MaterialButton
+import com.verygoodsecurity.BuildConfig.STORAGE_ID
 import com.verygoodsecurity.R
 import com.verygoodsecurity.vgscheckout.VGSCheckout
 import com.verygoodsecurity.vgscheckout.VGSCheckoutCallback
@@ -28,7 +29,7 @@ import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutCardResponse
 
 class MainActivity : AppCompatActivity(), VGSCheckoutCallback {
 
-    private val vaultId: String by lazy { getString(R.string.storage_id) }
+    private val vaultId = STORAGE_ID
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

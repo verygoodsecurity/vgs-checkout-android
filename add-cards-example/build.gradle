@@ -17,6 +17,7 @@ android {
         buildConfigField "String", "CLIENT_HOST", "\"${getLocalProperty("CLIENT_HOST")}\""
         buildConfigField "String", "GET_TOKEN_ENDPOINT", "\"${getLocalProperty("GET_TOKEN_ENDPOINT")}\""
         buildConfigField "String", "TRANSFERS_ENDPOINT", "\"${getLocalProperty("TRANSFERS_ENDPOINT")}\""
+        buildConfigField "String", "STORAGE_ID", "\"${getLocalProperty("VAULT_ID")}\""
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -38,11 +39,6 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
-    }
-
-    applicationVariants.all { variant ->
-        String vaultId = getLocalProperty("VAULT_ID")
-        variant.resValue "string", "storage_id", vaultId + ''
     }
 }
 
