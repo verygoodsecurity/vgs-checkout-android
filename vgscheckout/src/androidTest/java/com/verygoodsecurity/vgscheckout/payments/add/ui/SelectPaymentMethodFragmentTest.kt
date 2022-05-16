@@ -178,7 +178,6 @@ class SelectPaymentMethodFragmentTest {
         }
     }
 
-
     @Test
     fun selectPaymentMethodFragmentShowed_newCardFragmentOpened() {
         // Arrange
