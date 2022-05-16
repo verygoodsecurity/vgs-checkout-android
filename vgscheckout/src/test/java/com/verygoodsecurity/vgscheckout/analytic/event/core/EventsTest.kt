@@ -384,7 +384,7 @@ class EventsTest {
         //Act
         val data = event.getData(ID, FORM_ID, ENVIRONMENT)
         //Assert
-        assertEquals("AddCardPaymentMethod", data["type"])
+        assertEquals("PaymentMethodSelected", data["type"])
         assertEquals("savedCard", data["paymentMethod"])
         assertEquals("custom", data["config"])
         assertEquals("addCard", data["configType"])
