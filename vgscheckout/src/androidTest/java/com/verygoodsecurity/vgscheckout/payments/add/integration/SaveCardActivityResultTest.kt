@@ -134,7 +134,40 @@ class SaveCardActivityResultTest {
 
 
     @Test
-    fun performPaymentOrchestration_saveCardOptionEnabled_true() {
+    fun performPaymentOrchestration_saveCardOptionEnabled_default() {
+        val intent = Intent(context, SaveCardActivity::class.java).apply {
+            putExtra(
+                EXTRA_KEY_ARGS,
+                CheckoutResultContract.Args(
+                    VGSCheckoutAddCardConfig(
+                        BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS,
+                        BuildConfig.VAULT_ID,
+                        isScreenshotsAllowed = true
+                    )
+                )
+            )
+        }
+        // Arrange
+        launch<CustomSaveCardActivity>(intent).use {
+            fillCardFields(
+                Constants.VALID_CARD_HOLDER,
+                Constants.VALID_CARD_NUMBER,
+                Constants.VALID_EXP_DATE,
+                Constants.VALID_SECURITY_CODE
+            )
+            // Act
+            ViewInteraction.onViewWithScrollTo(R.id.mbSaveCard).perform(click())
+            //Assert
+            val shouldSaveCard =
+                it?.getParcelableSafe<CheckoutResultContract.Result>(EXTRA_KEY_RESULT)
+                    ?.checkoutResult?.data?.getBoolean(VGSCheckoutResultBundle.Keys.SHOULD_SAVE_CARD)
+                    ?: false
+            assertTrue(shouldSaveCard)
+        }
+    }
+
+    @Test
+    fun performPaymentOrchestration_saveCardOptionEnabled_disable() {
         val intent = Intent(context, SaveCardActivity::class.java).apply {
             putExtra(
                 EXTRA_KEY_ARGS,
@@ -143,7 +176,7 @@ class SaveCardActivityResultTest {
                         BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS,
                         BuildConfig.VAULT_ID,
                         formConfig = VGSCheckoutAddCardFormConfig(
-                            saveCardOptionEnabled = true
+                            saveCardOptionEnabled = false
                         ),
                         isScreenshotsAllowed = true
                     )
@@ -161,11 +194,11 @@ class SaveCardActivityResultTest {
             // Act
             ViewInteraction.onViewWithScrollTo(R.id.mbSaveCard).perform(click())
             //Assert
-            val isPreSavedCard =
+            val shouldSaveCard =
                 it?.getParcelableSafe<CheckoutResultContract.Result>(EXTRA_KEY_RESULT)
                     ?.checkoutResult?.data?.getBoolean(VGSCheckoutResultBundle.Keys.SHOULD_SAVE_CARD)
                     ?: false
-            assertTrue(isPreSavedCard)
+            assertFalse(shouldSaveCard)
         }
     }
 
@@ -178,9 +211,6 @@ class SaveCardActivityResultTest {
                     VGSCheckoutAddCardConfig(
                         BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS,
                         BuildConfig.VAULT_ID,
-                        formConfig = VGSCheckoutAddCardFormConfig(
-                            saveCardOptionEnabled = true
-                        ),
                         isScreenshotsAllowed = true
                     )
                 )
