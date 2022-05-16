@@ -1,8 +1,13 @@
 package com.verygoodsecurity.vgscheckout.analytic.event.core
 
 import com.verygoodsecurity.vgscheckout.analytic.event.*
-import com.verygoodsecurity.vgscheckout.config.networking.request.core.VGSCheckoutDataMergePolicy
-import com.verygoodsecurity.vgscheckout.config.ui.core.VGSCheckoutFormValidationBehaviour
+import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
+import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutCustomRouteConfig
+import com.verygoodsecurity.vgscheckout.config.networking.core.VGSCheckoutHostnamePolicy
+import com.verygoodsecurity.vgscheckout.config.networking.request.VGSCheckoutCustomRequestOptions
+import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutCustomFormConfig
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutCustomBillingAddressOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.country.VGSCheckoutCustomCountryOptions
 import org.junit.Assert.*
 import org.junit.Test
 
@@ -187,13 +192,8 @@ class EventsTest {
         // Arrange
         val event = RequestEvent(
             isSuccessFull = true,
-            hasCustomHostname = false,
-            hasCustomData = false,
-            hasCustomHeaders = false,
-            hasValidCountries = false,
-            mergingPolicy = VGSCheckoutDataMergePolicy.FLAT_JSON,
             invalidFieldTypes = emptyList(),
-            validationBehaviour = VGSCheckoutFormValidationBehaviour.ON_SUBMIT
+            VGSCheckoutCustomConfig(ID)
         )
         // Act
         val data = event.getData(ID, FORM_ID, ENVIRONMENT)
@@ -201,7 +201,7 @@ class EventsTest {
         assertEquals("BeforeSubmit", data["type"])
         assertEquals("Ok", data["status"])
         assertEquals(null, data["fieldTypes"])
-        assertEquals(2, (data["content"] as ArrayList<*>).size)
+        assertEquals(3, (data["content"] as ArrayList<*>).size)
     }
 
     @Test
@@ -209,13 +209,8 @@ class EventsTest {
         // Arrange
         val event = RequestEvent(
             isSuccessFull = false,
-            hasCustomHostname = false,
-            hasCustomData = false,
-            hasCustomHeaders = false,
-            hasValidCountries = false,
-            mergingPolicy = VGSCheckoutDataMergePolicy.FLAT_JSON,
             invalidFieldTypes = emptyList(),
-            validationBehaviour = VGSCheckoutFormValidationBehaviour.ON_SUBMIT
+            VGSCheckoutCustomConfig(ID)
         )
         // Act
         val data = event.getData(ID, FORM_ID, ENVIRONMENT)
@@ -223,7 +218,7 @@ class EventsTest {
         assertEquals("BeforeSubmit", data["type"])
         assertEquals("Failed", data["status"])
         assertEquals(null, data["fieldTypes"])
-        assertEquals(2, (data["content"] as ArrayList<*>).size)
+        assertEquals(3, (data["content"] as ArrayList<*>).size)
     }
 
     @Test
@@ -231,13 +226,24 @@ class EventsTest {
         // Arrange
         val event = RequestEvent(
             isSuccessFull = false,
-            hasCustomHostname = true,
-            hasCustomData = true,
-            hasCustomHeaders = true,
-            hasValidCountries = true,
-            mergingPolicy = VGSCheckoutDataMergePolicy.FLAT_JSON,
             invalidFieldTypes = emptyList(),
-            validationBehaviour = VGSCheckoutFormValidationBehaviour.ON_SUBMIT
+            VGSCheckoutCustomConfig(
+                ID,
+                routeConfig = VGSCheckoutCustomRouteConfig(
+                    hostnamePolicy = VGSCheckoutHostnamePolicy.CustomHostname(""),
+                    requestOptions = VGSCheckoutCustomRequestOptions(
+                        extraHeaders = mapOf("" to ""),
+                        extraData = mapOf("" to "")
+                    )
+                ),
+                formConfig = VGSCheckoutCustomFormConfig(
+                    addressOptions = VGSCheckoutCustomBillingAddressOptions(
+                        countryOptions = VGSCheckoutCustomCountryOptions(
+                            validCountries = listOf("")
+                        )
+                    )
+                )
+            )
         )
         // Act
         val data = event.getData(ID, FORM_ID, ENVIRONMENT)
