@@ -9,7 +9,7 @@ internal data class RequestEvent(
     val config: CheckoutConfig
 ) : Event(TYPE) {
 
-    override val attributes: Map<String, Any> = LinkedHashMap<String, Any>().apply {
+    override val attributes: Map<String, Any> = mutableMapOf<String, Any>().apply {
         put(KEY_STATUS, if (isSuccessFull) STATUS_OK else STATUS_FAILED)
         put(KEY_CONTENT, generateContent(config))
         if (invalidFieldTypes.isNotEmpty()) put(KEY_INVALID_FIELDS, invalidFieldTypes)

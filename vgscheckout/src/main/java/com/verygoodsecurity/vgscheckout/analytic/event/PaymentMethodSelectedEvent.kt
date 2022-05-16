@@ -2,7 +2,7 @@ package com.verygoodsecurity.vgscheckout.analytic.event
 
 import com.verygoodsecurity.vgscheckout.analytic.event.core.Event
 
-internal class AddCardPaymentMethodEvent constructor(
+internal class PaymentMethodSelectedEvent constructor(
     val isPreSavedCard: Boolean,
     val isCustomConfig: Boolean
 ) : Event(TYPE) {
@@ -15,7 +15,7 @@ internal class AddCardPaymentMethodEvent constructor(
 
     companion object {
 
-        private const val TYPE = "AddCardPaymentMethod"
+        private const val TYPE = "PaymentMethodSelected"
 
         private const val KEY_PAYMENT_METHOD = "paymentMethod"
         private const val KEY_CONFIG = "config"

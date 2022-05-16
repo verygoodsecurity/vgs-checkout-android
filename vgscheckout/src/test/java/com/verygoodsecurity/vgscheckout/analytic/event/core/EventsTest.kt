@@ -145,7 +145,7 @@ class EventsTest {
     @Test
     fun getData_initCustom_customDataAdded() {
         // Arrange
-        val event = InitEvent(InitEvent.ConfigType.CUSTOM)
+        val event = InitEvent(InitEvent.ConfigType.CUSTOM, VGSCheckoutCustomConfig(ID))
         // Act
         val data = event.getData(ID, FORM_ID, ENVIRONMENT)
         // Assert
@@ -156,7 +156,7 @@ class EventsTest {
     @Test
     fun getData_initPaymentOrchestration_customDataAdded() {
         // Arrange
-        val event = InitEvent(InitEvent.ConfigType.PAYOPT)
+        val event = InitEvent(InitEvent.ConfigType.PAYOPT, VGSCheckoutCustomConfig(ID))
         // Act
         val data = event.getData(ID, FORM_ID, ENVIRONMENT)
         // Assert
@@ -377,14 +377,14 @@ class EventsTest {
     @Test
     fun getData_addPaymentMethod_customDataAdded() {
         // Arrange
-        val event = AddCardPaymentMethodEvent(
+        val event = PaymentMethodSelectedEvent(
             isPreSavedCard = true,
             isCustomConfig = true,
         )
         //Act
         val data = event.getData(ID, FORM_ID, ENVIRONMENT)
         //Assert
-        assertEquals("AddCardPaymentMethod", data["type"])
+        assertEquals("PaymentMethodSelected", data["type"])
         assertEquals("savedCard", data["paymentMethod"])
         assertEquals("custom", data["config"])
         assertEquals("addCard", data["configType"])

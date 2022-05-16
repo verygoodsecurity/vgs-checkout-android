@@ -8,7 +8,7 @@ internal data class ResponseEvent(
     val latency: Long
 ) : Event(TYPE) {
 
-    override val attributes: Map<String, Any> = LinkedHashMap<String, Any>().apply {
+    override val attributes: Map<String, Any> = mutableMapOf<String, Any>().apply {
         put(KEY_CODE, code)
         put(KEY_LATENCY, latency)
         errorMsg?.let { put(KEY_ERROR_MSG, errorMsg) }
