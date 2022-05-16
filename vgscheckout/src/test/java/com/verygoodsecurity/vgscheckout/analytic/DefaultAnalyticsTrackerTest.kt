@@ -5,6 +5,7 @@ import com.verygoodsecurity.vgscheckout.analytic.event.InitEvent
 import com.verygoodsecurity.vgscheckout.networking.client.okhttp.OkHttpClient
 import com.verygoodsecurity.vgscheckout.collect.util.extension.toBase64
 import com.verygoodsecurity.vgscheckout.collect.util.extension.toJSON
+import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
 import com.verygoodsecurity.vgscheckout.networking.client.*
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -30,7 +31,7 @@ class DefaultAnalyticsTrackerTest {
     @Test
     fun log_analyticsEnabled_apiClientCalled() {
         // Arrange
-        val event = InitEvent(InitEvent.ConfigType.CUSTOM)
+        val event = InitEvent(InitEvent.ConfigType.CUSTOM, VGSCheckoutCustomConfig(ID))
         val httpRequestCaptor: ArgumentCaptor<HttpRequest> =
             ArgumentCaptor.forClass(HttpRequest::class.java)
         val callbackCaptor: ArgumentCaptor<(HttpResponse) -> Unit> =
@@ -48,7 +49,7 @@ class DefaultAnalyticsTrackerTest {
     fun log_analyticsDisabled_apiClientCalled() {
         // Arrange
         VGSCheckoutAnalyticsLogger.isAnalyticsEnabled = false
-        val event = InitEvent(InitEvent.ConfigType.CUSTOM)
+        val event = InitEvent(InitEvent.ConfigType.CUSTOM, VGSCheckoutCustomConfig(ID))
         val httpRequestCaptor: ArgumentCaptor<HttpRequest> =
             ArgumentCaptor.forClass(HttpRequest::class.java)
         val callbackCaptor: ArgumentCaptor<(HttpResponse) -> Unit> =
@@ -65,7 +66,7 @@ class DefaultAnalyticsTrackerTest {
     @Test
     fun log_apiCalledWithCorrectData() {
         // Arrange
-        val event = InitEvent(InitEvent.ConfigType.CUSTOM)
+        val event = InitEvent(InitEvent.ConfigType.CUSTOM, VGSCheckoutCustomConfig(ID))
         val payload = event.getData(ID, FORM_ID, ENVIRONMENT).toJSON().toString().toBase64()
         val expectedNetworkRequest = HttpRequest(
             method = HttpMethod.POST,
