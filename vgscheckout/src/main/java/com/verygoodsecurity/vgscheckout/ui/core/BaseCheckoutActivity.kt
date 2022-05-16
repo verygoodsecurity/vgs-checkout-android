@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.annotation.CallSuper
+import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AppCompatActivity
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.analytic.event.PaymentMethodSelectedEvent
@@ -117,7 +118,8 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
 
     companion object {
 
-        const val FRAGMENT_TAG = "com.verygoodsecurity.vgscheckout.fragment_tag"
+        @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+        internal const val FRAGMENT_TAG = "com.verygoodsecurity.vgscheckout.fragment_tag"
 
         private const val KEY_RESULT_BUNDLE = "com.verygoodsecurity.vgscheckout.result_bundle"
     }

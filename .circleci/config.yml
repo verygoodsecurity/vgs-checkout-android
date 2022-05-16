@@ -40,7 +40,7 @@ jobs:
           command: ./gradlew vgscheckout:testDebugUnitTest
       - run:
           name: Generate apk
-          command: ./gradlew add-cards-example:assembleDebug vgscheckout:assembleDebug vgscheckout:assembleAndroidTest
+          command: ./gradlew add-cards-example:assembleDebug vgscheckout:assembleDebug vgscheckout:assembleAndroidTest --no-daemon --stacktrace
       - run:
           name: Check if release branch
           command: |
