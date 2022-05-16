@@ -9,6 +9,6 @@ internal class CustomSaveCardActivity : BaseCheckoutActivity<VGSCheckoutCustomCo
 
     override fun initView(savedInstanceState: Bundle?) {
         super.initView(savedInstanceState)
-        config.analyticTracker.log(InitEvent(InitEvent.ConfigType.CUSTOM))
+        config.analyticTracker.log(InitEvent(InitEvent.ConfigType.CUSTOM, config))
     }
 }

@@ -9,7 +9,7 @@ internal class SaveCardActivity : BaseCheckoutActivity<VGSCheckoutAddCardConfig>
 
     override fun initView(savedInstanceState: Bundle?) {
         super.initView(savedInstanceState)
-        config.analyticTracker.log(InitEvent(InitEvent.ConfigType.PAYOPT))
+        config.analyticTracker.log(InitEvent(InitEvent.ConfigType.PAYOPT, config))
     }
 
     override fun initFragment() {

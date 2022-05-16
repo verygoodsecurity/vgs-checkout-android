@@ -21,7 +21,6 @@ import com.verygoodsecurity.vgscheckout.collect.widget.VGSCountryEditText
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
-import com.verygoodsecurity.vgscheckout.config.networking.core.VGSCheckoutHostnamePolicy
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.AddressOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.OptionalAddressOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.city.CityOptions
@@ -308,13 +307,8 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
             analyticTracker.log(
                 RequestEvent(
                     invalidFields.isEmpty(),
-                    routeConfig.hostnamePolicy is VGSCheckoutHostnamePolicy.CustomHostname,
-                    routeConfig.requestOptions.extraData.isNotEmpty(),
-                    routeConfig.requestOptions.hasExtraHeaders,
-                    formConfig.addressOptions.countryOptions.validCountries.isNotEmpty(),
-                    routeConfig.requestOptions.mergePolicy,
-                    formConfig.validationBehaviour,
-                    invalidFields
+                    invalidFields,
+                    config
                 )
             )
         }

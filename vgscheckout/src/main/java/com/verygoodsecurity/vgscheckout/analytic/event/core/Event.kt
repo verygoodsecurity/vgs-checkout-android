@@ -2,10 +2,14 @@ package com.verygoodsecurity.vgscheckout.analytic.event.core
 
 import android.os.Build
 import com.verygoodsecurity.vgscheckout.BuildConfig
+import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
+import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
+import com.verygoodsecurity.vgscheckout.config.networking.core.VGSCheckoutHostnamePolicy
+import com.verygoodsecurity.vgscheckout.config.ui.core.VGSCheckoutFormValidationBehaviour
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillingAddressVisibility
 import com.verygoodsecurity.vgscheckout.util.Session
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.LinkedHashMap
 
 internal abstract class Event constructor(type: String) {
 
@@ -35,6 +39,43 @@ internal abstract class Event constructor(type: String) {
             put(KEY_ENVIRONMENT, environment)
         }
     }
+
+    protected fun generateContent(config: CheckoutConfig): List<String> {
+        return mutableListOf<String>().apply {
+            with(config) {
+                add(mapValidationBehaviour(formConfig.validationBehaviour))
+                add(mapBillingAddressVisibility(formConfig.addressOptions.visibility))
+                add(routeConfig.requestOptions.mergePolicy.name.lowercase())
+                if (routeConfig.hostnamePolicy is VGSCheckoutHostnamePolicy.CustomHostname) {
+                    add(CUSTOM_HOSTNAME)
+                }
+                if (routeConfig.requestOptions.hasExtraHeaders) {
+                    add(CUSTOM_HEADER)
+                }
+                if (routeConfig.requestOptions.extraData.isNotEmpty()) {
+                    add(CUSTOM_DATA)
+                }
+                if (formConfig.addressOptions.countryOptions.validCountries.isNotEmpty()) {
+                    add(VALID_COUNTRIES)
+                }
+                if (this@with is VGSCheckoutAddCardConfig && formConfig.saveCardOptionEnabled) {
+                    add(SAVE_CARD_CHECKBOX_ENABLED)
+                }
+            }
+        }
+    }
+
+    private fun mapValidationBehaviour(behaviour: VGSCheckoutFormValidationBehaviour) =
+        when (behaviour) {
+            VGSCheckoutFormValidationBehaviour.ON_FOCUS -> ON_FOCUS_VALIDATION
+            VGSCheckoutFormValidationBehaviour.ON_SUBMIT -> ON_SUBMIT_VALIDATION
+        }
+
+    private fun mapBillingAddressVisibility(visibility: VGSCheckoutBillingAddressVisibility) =
+        when (visibility) {
+            VGSCheckoutBillingAddressVisibility.VISIBLE -> BILLING_ADDRESS_VISIBLE
+            VGSCheckoutBillingAddressVisibility.HIDDEN -> BILLING_ADDRESS_HIDDEN
+        }
 
     private fun getClientTime(): String {
         return SimpleDateFormat(ISO_8601, Locale.US).format(System.currentTimeMillis())
@@ -67,5 +108,15 @@ internal abstract class Event constructor(type: String) {
         private const val PLATFORM = "android"
         internal const val STATUS_OK = "Ok"
         internal const val STATUS_FAILED = "Failed"
+
+        private const val CUSTOM_HOSTNAME = "custom_hostname"
+        private const val CUSTOM_DATA = "custom_data"
+        private const val CUSTOM_HEADER = "custom_header"
+        private const val VALID_COUNTRIES = "valid_countries"
+        private const val ON_SUBMIT_VALIDATION = "on_submit_validation"
+        private const val ON_FOCUS_VALIDATION = "on_focus_validation"
+        private const val BILLING_ADDRESS_VISIBLE = "billing_address_visible"
+        private const val BILLING_ADDRESS_HIDDEN = "billing_address_hidden"
+        private const val SAVE_CARD_CHECKBOX_ENABLED = "save_card_checkbox"
     }
 }
