@@ -377,7 +377,7 @@ class EventsTest {
     @Test
     fun getData_addPaymentMethod_customDataAdded() {
         // Arrange
-        val event = AddCardPaymentMethodEvent(
+        val event = PaymentMethodSelectedEvent(
             isPreSavedCard = true,
             isCustomConfig = true,
         )

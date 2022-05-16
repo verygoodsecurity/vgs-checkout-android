@@ -6,7 +6,7 @@ import android.os.Bundle
 import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
 import com.verygoodsecurity.vgscheckout.R
-import com.verygoodsecurity.vgscheckout.analytic.event.AddCardPaymentMethodEvent
+import com.verygoodsecurity.vgscheckout.analytic.event.PaymentMethodSelectedEvent
 import com.verygoodsecurity.vgscheckout.analytic.event.CancelEvent
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
@@ -102,7 +102,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
     private fun logPaymentMethodSelected() {
         if (config is VGSCheckoutAddCardConfig) {
             config.analyticTracker.log(
-                AddCardPaymentMethodEvent(
+                PaymentMethodSelectedEvent(
                     resultBundle.getBoolean(VGSCheckoutResultBundle.IS_PRE_SAVED_CARD) ?: false,
                     config is VGSCheckoutCustomConfig
                 )
