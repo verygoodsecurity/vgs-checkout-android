@@ -7,7 +7,7 @@ internal data class HostnameValidationEvent(
     val hostname: String
 ) : Event(TYPE) {
 
-    override val attributes: Map<String, Any> = LinkedHashMap<String, Any>().apply {
+    override val attributes: Map<String, Any> = mutableMapOf<String, Any>().apply {
         put(KEY_STATUS, if (isSuccessful) STATUS_OK else STATUS_FAILED)
         put(KEY_HOSTNAME, hostname)
     }

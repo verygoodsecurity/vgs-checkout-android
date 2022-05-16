@@ -8,7 +8,7 @@ internal data class ScanEvent(
     val scanId: String?
 ) : Event(TYPE) {
 
-    override val attributes: Map<String, Any> = LinkedHashMap<String, Any>().apply {
+    override val attributes: Map<String, Any> = mutableMapOf<String, Any>().apply {
         put(KEY_STATUS, status)
         put(KEY_SCANNER_TYPE, scannerType)
         scanId?.let { put(KEY_SCAN_ID, scanId) }
