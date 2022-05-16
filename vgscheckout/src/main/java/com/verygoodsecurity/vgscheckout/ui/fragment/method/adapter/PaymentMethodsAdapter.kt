@@ -74,6 +74,17 @@ internal class PaymentMethodsAdapter constructor(
         cards.remove(card)
         selectedPosition = 0
         notifyDataSetChanged()
+        listener.onCardRemoved(cards.isEmpty())
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun removeItem(id: String) {
+        cards.find { it.finId == id }?.let {
+            cards.remove(it)
+            selectedPosition = 0
+            notifyDataSetChanged()
+            listener.onCardRemoved(cards.isEmpty())
+        }
     }
 
     private fun toEnum(viewType: Int): ViewType = when (viewType) {
@@ -131,5 +142,7 @@ internal class PaymentMethodsAdapter constructor(
     interface OnItemClickListener {
 
         fun onNewCardClick()
+
+        fun onCardRemoved(isEmpty: Boolean)
     }
 }
