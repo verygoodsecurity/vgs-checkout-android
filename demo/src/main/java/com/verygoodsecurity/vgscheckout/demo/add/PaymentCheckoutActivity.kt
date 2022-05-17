@@ -61,7 +61,7 @@ class TokenManager {
 
     private val tokenRequest: Request by lazy {
         Request.Builder()
-            .url("https://multiplexing-demo.verygoodsecurity.io/get-auth-token")
+            .url(BuildConfig.CLIENT_HOST + BuildConfig.GET_TOKEN_ENDPOINT)
             .post(EMPTY_REQUEST)
             .build()
     }
