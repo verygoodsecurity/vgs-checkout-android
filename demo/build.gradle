@@ -8,7 +8,7 @@ android {
     compileSdkVersion 31
 
     defaultConfig {
-        applicationId "com.verygoodsecurity.demo.checkout"
+        applicationId "com.verygoodsecurity.vgscheckout.demo"
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 1

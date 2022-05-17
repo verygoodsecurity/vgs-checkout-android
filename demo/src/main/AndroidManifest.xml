@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.verygoodsecurity.demo.checkout">
+    package="com.verygoodsecurity.vgscheckout.demo">
 
     <application
         android:icon="@mipmap/ic_launcher"
@@ -13,7 +13,7 @@
         tools:targetApi="n">
 
         <activity
-            android:name="com.verygoodsecurity.demo.checkout.custom.MainActivity"
+            android:name="com.verygoodsecurity.vgscheckout.demo.custom.MainActivity"
 
             android:exported="true"
             android:label="@string/app_name_custom_add_cards">
@@ -25,7 +25,7 @@
         </activity>
 
         <activity
-            android:name="com.verygoodsecurity.demo.checkout.add.AddCardActivity"
+            android:name="com.verygoodsecurity.vgscheckout.demo.add.AddCardActivity"
 
             android:exported="true"
             android:label="@string/app_name_add_cards">

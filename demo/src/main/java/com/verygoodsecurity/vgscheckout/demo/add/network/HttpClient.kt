@@ -1,7 +1,7 @@
-package com.verygoodsecurity.demo.checkout.add.network
+package com.verygoodsecurity.vgscheckout.demo.add.network
 
 import com.google.gson.JsonParser
-import com.verygoodsecurity.demo.checkout.BuildConfig
+import com.verygoodsecurity.vgscheckout.demo.BuildConfig
 import okhttp3.*
 import java.io.IOException
 import okhttp3.RequestBody.Companion.toRequestBody
