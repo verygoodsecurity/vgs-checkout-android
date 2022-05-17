@@ -13,7 +13,7 @@
         tools:targetApi="n">
 
         <activity
-            android:name="com.verygoodsecurity.vgscheckout.demo.custom.MainActivity"
+            android:name="com.verygoodsecurity.vgscheckout.demo.custom.CustomCheckoutActivity"
 
             android:exported="true"
             android:label="@string/app_name_custom_add_cards">
@@ -25,7 +25,7 @@
         </activity>
 
         <activity
-            android:name="com.verygoodsecurity.vgscheckout.demo.add.AddCardActivity"
+            android:name="com.verygoodsecurity.vgscheckout.demo.add.PaymentCheckoutActivity"
 
             android:exported="true"
             android:label="@string/app_name_add_cards">

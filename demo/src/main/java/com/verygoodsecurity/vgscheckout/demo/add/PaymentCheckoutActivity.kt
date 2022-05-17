@@ -14,7 +14,7 @@ import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResultBundle
 import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutCardResponse
 
-class AddCardActivity : AppCompatActivity(), VGSCheckoutCallback {
+class PaymentCheckoutActivity : AppCompatActivity(), VGSCheckoutCallback {
 
     private val vaultId: String = STORAGE_ID
 
@@ -26,7 +26,7 @@ class AddCardActivity : AppCompatActivity(), VGSCheckoutCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_payment_checkout)
 
         refreshToken()
 

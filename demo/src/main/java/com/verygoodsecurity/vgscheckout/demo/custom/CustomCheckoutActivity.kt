@@ -27,13 +27,13 @@ import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResultBundle
 import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutCardResponse
 
-class MainActivity : AppCompatActivity(), VGSCheckoutCallback {
+class CustomCheckoutActivity : AppCompatActivity(), VGSCheckoutCallback {
 
     private val vaultId = STORAGE_ID
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_custom_checkout)
         val checkout = VGSCheckout(this, this)
         findViewById<MaterialButton>(R.id.mbPay).setOnClickListener {
             checkout.present(getCheckoutConfig())
