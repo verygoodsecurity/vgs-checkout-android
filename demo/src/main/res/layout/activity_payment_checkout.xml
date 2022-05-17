@@ -6,29 +6,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/ivBack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/margin_padding_size_medium"
-        android:src="@drawable/ic_baseline_arrow_back_24"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/sanJuan" />
-
-    <com.google.android.material.textview.MaterialTextView
-        style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:gravity="center|start"
-        android:paddingStart="@dimen/margin_padding_size_medium"
-        android:paddingEnd="0dp"
-        android:text="@string/cart_title"
-        android:textColor="@color/sanJuan"
-        app:layout_constraintBottom_toBottomOf="@id/ivBack"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/ivBack"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cvProducts"
@@ -39,7 +16,7 @@
         app:cardCornerRadius="@dimen/margin_padding_size_medium"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ivBack">
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
