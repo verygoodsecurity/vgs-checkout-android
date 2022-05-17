@@ -34,7 +34,7 @@
         </activity>
 
         <activity
-            android:name="com.verygoodsecurity.vgscheckout.demo.add.PaymentCheckoutActivity"
+            android:name="com.verygoodsecurity.vgscheckout.demo.payment.PaymentCheckoutActivity"
             android:label="@string/payment_flow_title" >
 
             <meta-data

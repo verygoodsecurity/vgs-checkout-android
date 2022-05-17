@@ -4,7 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.button.MaterialButton
-import com.verygoodsecurity.vgscheckout.demo.add.PaymentCheckoutActivity
+import com.verygoodsecurity.vgscheckout.demo.payment.PaymentCheckoutActivity
 import com.verygoodsecurity.vgscheckout.demo.custom.CustomCheckoutActivity
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {

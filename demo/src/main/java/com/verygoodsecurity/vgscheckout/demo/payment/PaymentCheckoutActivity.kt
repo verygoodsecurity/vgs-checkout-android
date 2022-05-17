@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscheckout.demo.add
+package com.verygoodsecurity.vgscheckout.demo.payment
 
 import android.os.Bundle
 import android.util.Log
