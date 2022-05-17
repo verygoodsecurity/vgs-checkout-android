@@ -1,12 +1,12 @@
-package com.verygoodsecurity.add.example
+package com.verygoodsecurity.demo.checkout.add
 
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.button.MaterialButton
-import com.verygoodsecurity.BuildConfig.STORAGE_ID
-import com.verygoodsecurity.R
-import com.verygoodsecurity.add.example.network.HttpClient
+import com.verygoodsecurity.demo.checkout.BuildConfig.STORAGE_ID
+import com.verygoodsecurity.demo.checkout.R
+import com.verygoodsecurity.demo.checkout.add.network.HttpClient
 import com.verygoodsecurity.vgscheckout.VGSCheckout
 import com.verygoodsecurity.vgscheckout.VGSCheckoutCallback
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
