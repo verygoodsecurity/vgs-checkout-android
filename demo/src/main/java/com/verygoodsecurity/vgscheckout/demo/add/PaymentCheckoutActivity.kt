@@ -47,7 +47,6 @@ class PaymentCheckoutActivity : AppCompatActivity(), VGSCheckoutCallback {
                 Log.d(this::class.simpleName, "Token is null.")
                 return@get
             }
-            Log.d(this::class.simpleName, "Token = ${it.value}.")
             checkout.present(createConfig(it.value))
         }
     }
