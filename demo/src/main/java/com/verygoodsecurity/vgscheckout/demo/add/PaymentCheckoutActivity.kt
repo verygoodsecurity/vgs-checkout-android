@@ -22,6 +22,7 @@ class PaymentCheckoutActivity : AppCompatActivity(), VGSCheckoutCallback {
 
     private val tokenManager: TokenManager = TokenManager()
 
+    // Important: Best place to init checkout object is onCreate
     private lateinit var checkout: VGSCheckout
 
     override fun onCreate(savedInstanceState: Bundle?) {
