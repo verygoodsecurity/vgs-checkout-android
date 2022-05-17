@@ -5,12 +5,10 @@ plugins {
 apply from: '../gradle/util.gradle'
 
 android {
-    compileSdkVersion 31
-
     defaultConfig {
         applicationId "com.verygoodsecurity.vgscheckout.demo"
         minSdkVersion 21
-        targetSdkVersion 30
+        targetSdkVersion 32
         versionCode 1
         versionName "1.0"
 
