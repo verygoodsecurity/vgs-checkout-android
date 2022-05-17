@@ -27,6 +27,7 @@ class PaymentCheckoutActivity : AppCompatActivity(), VGSCheckoutCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_payment_checkout)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         checkout = VGSCheckout(this, this)
         findViewById<MaterialButton>(R.id.mbPresent).setOnClickListener { presentCheckout() }
     }

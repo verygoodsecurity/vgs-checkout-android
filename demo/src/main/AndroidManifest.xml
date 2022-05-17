@@ -12,28 +12,34 @@
         tools:replace="android:networkSecurityConfig"
         tools:targetApi="n">
 
-<!--        <activity-->
-<!--            android:name="com.verygoodsecurity.vgscheckout.demo.custom.CustomCheckoutActivity"-->
-
-<!--            android:exported="true"-->
-<!--            android:label="@string/app_name_custom_add_cards">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
-<!--        </activity>-->
-
         <activity
-            android:name="com.verygoodsecurity.vgscheckout.demo.add.PaymentCheckoutActivity"
-
+            android:name="com.verygoodsecurity.vgscheckout.demo.MainActivity"
             android:exported="true"
-            android:label="@string/payment_flow_title">
+            android:label="@string/main_activity_title">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity
+            android:name="com.verygoodsecurity.vgscheckout.demo.custom.CustomCheckoutActivity"
+            android:label="@string/custom_flow_title" >
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+
+        <activity
+            android:name="com.verygoodsecurity.vgscheckout.demo.add.PaymentCheckoutActivity"
+            android:label="@string/payment_flow_title" >
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
         </activity>
     </application>
 </manifest>
