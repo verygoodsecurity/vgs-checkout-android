@@ -111,7 +111,7 @@ internal class SelectPaymentMethodFragment :
     }
 
     private fun initPayButton(view: View) {
-        payButton = view.findViewById(R.id.mbPay)
+        payButton = view.findViewById(R.id.mbPresent)
         payButton.text = title
         payButton.setOnClickListener { handlePayClicked() }
     }

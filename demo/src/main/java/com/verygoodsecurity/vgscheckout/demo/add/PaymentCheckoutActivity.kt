@@ -32,7 +32,7 @@ class PaymentCheckoutActivity : AppCompatActivity(), VGSCheckoutCallback {
 
         checkout = VGSCheckout(this, this)
 
-        findViewById<MaterialButton>(R.id.mbPay).setOnClickListener {
+        findViewById<MaterialButton>(R.id.mbPresent).setOnClickListener {
             config?.let { checkout.present(it) }
         }
     }

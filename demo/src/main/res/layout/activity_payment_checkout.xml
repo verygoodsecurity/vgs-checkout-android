@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/ghostWhite"
     android:orientation="vertical">
 
     <androidx.appcompat.widget.AppCompatImageView
@@ -214,11 +213,11 @@
         tools:ignore="HardcodedText" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/mbPay"
+        android:id="@+id/mbPresent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/margin_padding_size_medium"
-        android:text="@string/buy_title"
+        android:text="@string/custom_checkout_present_btn_title"
         android:textAllCaps="false"
         android:textSize="@dimen/text_size_medium"
         app:cornerRadius="@dimen/margin_padding_size_medium"

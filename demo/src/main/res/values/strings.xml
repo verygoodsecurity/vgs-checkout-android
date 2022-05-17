@@ -3,6 +3,6 @@
     <string name="app_name_add_cards">VGS Add Card Config Demo</string>
 
     <string name="cart_title">Cart</string>
-    <string name="buy_title">Buy</string>
+    <string name="custom_checkout_present_btn_title">Present</string>
     <string name="total_title">Total</string>
 </resources>

@@ -4,8 +4,6 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.button.MaterialButton
-import com.verygoodsecurity.vgscheckout.demo.BuildConfig.STORAGE_ID
-import com.verygoodsecurity.vgscheckout.demo.R
 import com.verygoodsecurity.vgscheckout.VGSCheckout
 import com.verygoodsecurity.vgscheckout.VGSCheckoutCallback
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
@@ -13,87 +11,90 @@ import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutCustomRoute
 import com.verygoodsecurity.vgscheckout.config.networking.request.VGSCheckoutCustomRequestOptions
 import com.verygoodsecurity.vgscheckout.config.networking.request.core.VGSCheckoutDataMergePolicy
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutCustomFormConfig
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutCustomBillingAddressOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.VGSCheckoutCustomAddressOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.city.VGSCheckoutCustomCityOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.code.VGSCheckoutCustomPostalCodeOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.country.VGSCheckoutCustomCountryOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.VGSCheckoutCustomCardOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.VGSCheckoutCustomCardHolderOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.VGSCheckoutCustomCardNumberOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.VGSCheckoutCustomCVCOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.VGSCheckoutCustomExpirationDateOptions
+import com.verygoodsecurity.vgscheckout.demo.BuildConfig
+import com.verygoodsecurity.vgscheckout.demo.R
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResultBundle
 import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutCardResponse
 
 class CustomCheckoutActivity : AppCompatActivity(), VGSCheckoutCallback {
 
-    private val vaultId = STORAGE_ID
+    // Important: Best place to init checkout object is onCreate
+    private lateinit var checkout: VGSCheckout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_custom_checkout)
-        val checkout = VGSCheckout(this, this)
-        findViewById<MaterialButton>(R.id.mbPay).setOnClickListener {
-            checkout.present(getCheckoutConfig())
-        }
+        checkout = VGSCheckout(this, this)
+        findViewById<MaterialButton>(R.id.mbPresent).setOnClickListener { presentCheckout() }
     }
 
     override fun onCheckoutResult(result: VGSCheckoutResult) {
-        val resultData: VGSCheckoutResultBundle? = when (result) {
-            is VGSCheckoutResult.Success -> result.data
-            is VGSCheckoutResult.Failed -> result.data
-            else -> null
-        }
-        val addCardResponse =
-            resultData?.getParcelable<VGSCheckoutCardResponse>(VGSCheckoutResultBundle.ADD_CARD_RESPONSE)
+        // Handle checkout result
         Log.d(
-            "VGSCheckout", """
+            this::class.simpleName, """
             ${result::class.java.simpleName}
-            Add card response = $addCardResponse
+            ${result.data.getParcelable<VGSCheckoutCardResponse>(VGSCheckoutResultBundle.ADD_CARD_RESPONSE)}
         """.trimIndent()
         )
     }
 
-    //region Checkout config
-    private fun getCheckoutConfig() = VGSCheckoutCustomConfig(
-        vaultId = vaultId,
-        routeConfig = getCheckoutRouteConfig(),
-        formConfig = getCheckoutFormConfig()
-    )
+    private fun presentCheckout() {
+        checkout.present(createConfig())
+    }
 
-    private fun getCheckoutRouteConfig() = VGSCheckoutCustomRouteConfig(
-        "post",
-        requestOptions = VGSCheckoutCustomRequestOptions(
-            extraData = linkedMapOf(
-                "data" to mapOf(
-                    "card_data" to arrayOf(
-                        null,
-                        mapOf("cvc" to "333"),
-                        null
-                    )
-                )
-            ),
-            mergePolicy = VGSCheckoutDataMergePolicy.NESTED_JSON_WITH_ARRAYS_MERGE
+    private fun createConfig(): VGSCheckoutCustomConfig {
+        // Create for config, configure UI and setup fieldNames
+        val formConfig = VGSCheckoutCustomFormConfig(
+            VGSCheckoutCustomCardOptions(
+                VGSCheckoutCustomCardNumberOptions(CARD_NUMBER_FIELD_NAME),
+                VGSCheckoutCustomCardHolderOptions(CARD_HOLDER_FIELD_NAME),
+                VGSCheckoutCustomCVCOptions(CVC_FIELD_NAME),
+                VGSCheckoutCustomExpirationDateOptions(EXPIRY_FIELD_NAME)
+            )
         )
-    )
 
-    private fun getCheckoutFormConfig() =
-        VGSCheckoutCustomFormConfig(getCardOptions(), getAddressOptions())
+        // Create route config, specify path, extra data, headers etc.
+        val routeConfig = VGSCheckoutCustomRouteConfig(
+            PATH,
+            requestOptions = VGSCheckoutCustomRequestOptions(
+                extraData = linkedMapOf(
+                    EXTRA_DATA_ROOT to mapOf(
+                        EXTRA_DATA_CARD_DATA to arrayOf(
+                            null,
+                            mapOf(EXTRA_DATA_CVC_KEY to EXTRA_DATA_CVC_VALUE),
+                            null
+                        )
+                    )
+                ),
+                mergePolicy = VGSCheckoutDataMergePolicy.NESTED_JSON_WITH_ARRAYS_MERGE
+            )
+        )
 
-    private fun getCardOptions() = VGSCheckoutCustomCardOptions(
-        VGSCheckoutCustomCardNumberOptions("data.card_data[1]"),
-        VGSCheckoutCustomCardHolderOptions("card_data.card_holder"),
-        VGSCheckoutCustomCVCOptions("card_data.card_cvc"),
-        VGSCheckoutCustomExpirationDateOptions("card_data.exp_date")
-    )
+        // Create config object
+        return VGSCheckoutCustomConfig(
+            vaultId = BuildConfig.STORAGE_ID,
+            routeConfig = routeConfig,
+            formConfig = formConfig
+        )
+    }
 
-    private fun getAddressOptions() = VGSCheckoutCustomBillingAddressOptions(
-        VGSCheckoutCustomCountryOptions("address_info.country"),
-        VGSCheckoutCustomCityOptions("address_info.city"),
-        VGSCheckoutCustomAddressOptions("address_info.address"),
-        postalCodeOptions = VGSCheckoutCustomPostalCodeOptions("address_info.postal_code"),
-    )
-    //endregion
+    companion object {
+
+        private const val CARD_NUMBER_FIELD_NAME = "data.card_data[1]"
+        private const val CARD_HOLDER_FIELD_NAME = "card_data.card_holder"
+        private const val EXPIRY_FIELD_NAME = "card_data.exp_date"
+        private const val CVC_FIELD_NAME = "card_data.card_cvc"
+
+        private const val PATH = "post"
+        private const val EXTRA_DATA_ROOT = "data"
+        private const val EXTRA_DATA_CARD_DATA = "card_data"
+        private const val EXTRA_DATA_CVC_KEY = "cvc"
+        private const val EXTRA_DATA_CVC_VALUE = "333"
+    }
 }

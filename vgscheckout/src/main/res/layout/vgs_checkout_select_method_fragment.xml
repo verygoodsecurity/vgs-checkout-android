@@ -41,10 +41,10 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/mbPay" />
+        app:layout_constraintTop_toTopOf="@id/mbPresent" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/mbPay"
+        android:id="@+id/mbPresent"
         style="@style/VGSCheckout.SaveButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
