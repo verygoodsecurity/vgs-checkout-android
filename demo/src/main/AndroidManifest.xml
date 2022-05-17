@@ -12,23 +12,23 @@
         tools:replace="android:networkSecurityConfig"
         tools:targetApi="n">
 
-        <activity
-            android:name="com.verygoodsecurity.vgscheckout.demo.custom.CustomCheckoutActivity"
+<!--        <activity-->
+<!--            android:name="com.verygoodsecurity.vgscheckout.demo.custom.CustomCheckoutActivity"-->
 
-            android:exported="true"
-            android:label="@string/app_name_custom_add_cards">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+<!--            android:exported="true"-->
+<!--            android:label="@string/app_name_custom_add_cards">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+<!--        </activity>-->
 
         <activity
             android:name="com.verygoodsecurity.vgscheckout.demo.add.PaymentCheckoutActivity"
 
             android:exported="true"
-            android:label="@string/app_name_add_cards">
+            android:label="@string/payment_flow_title">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
