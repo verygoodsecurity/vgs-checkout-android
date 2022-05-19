@@ -106,7 +106,7 @@ class SelectPaymentMethodFragmentTest {
                 cards.forEach { card -> adapter?.removeItem(card) }
             })
             //Assert
-            onView(withId(R.id.mbPay)).perform(doAction<MaterialButton> { assertFalse(it.isEnabled) })
+            onView(withId(R.id.mbPresent)).perform(doAction<MaterialButton> { assertFalse(it.isEnabled) })
         }
     }
 
@@ -118,7 +118,7 @@ class SelectPaymentMethodFragmentTest {
         launch<SaveCardActivity>(intent).use { scenario ->
             checkFragmentCorrect<SelectPaymentMethodFragment>(scenario)
             //Assert
-            onView(withId(R.id.mbPay)).perform(doAction<MaterialButton> { assertTrue(it.isEnabled) })
+            onView(withId(R.id.mbPresent)).perform(doAction<MaterialButton> { assertTrue(it.isEnabled) })
         }
     }
 
@@ -135,7 +135,7 @@ class SelectPaymentMethodFragmentTest {
                 cards.forEach { card -> adapter?.removeItem(card) }
             })
             //Assert
-            onView(withId(R.id.mbPay)).perform(doAction<MaterialButton> { assertFalse(it.isEnabled) })
+            onView(withId(R.id.mbPresent)).perform(doAction<MaterialButton> { assertFalse(it.isEnabled) })
         }
     }
 
@@ -146,7 +146,7 @@ class SelectPaymentMethodFragmentTest {
         // Act
         launch<SaveCardActivity>(intent).use { scenario ->
             checkFragmentCorrect<SelectPaymentMethodFragment>(scenario)
-            onView(withId(R.id.mbPay)).perform(click())
+            onView(withId(R.id.mbPresent)).perform(click())
             //Assert
             assertEquals(Activity.RESULT_OK, scenario.safeResult.resultCode)
         }

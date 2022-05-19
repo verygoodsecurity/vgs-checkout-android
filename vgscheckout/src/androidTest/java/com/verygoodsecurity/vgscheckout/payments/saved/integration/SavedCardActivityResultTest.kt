@@ -113,7 +113,7 @@ class SavedCardActivityResultTest {
         ActivityScenario.launch<SaveCardActivity>(intent).use {
             waitFor(500)
             // Act
-            Espresso.onView(ViewMatchers.withId(R.id.mbPay)).perform(ViewActions.click())
+            Espresso.onView(ViewMatchers.withId(R.id.mbPresent)).perform(ViewActions.click())
             //Assert
             val result = it?.getParcelableSafe<CheckoutResultContract.Result>(EXTRA_KEY_RESULT)
             Assert.assertEquals(Activity.RESULT_OK, it.safeResult.resultCode)
@@ -126,7 +126,7 @@ class SavedCardActivityResultTest {
         ActivityScenario.launch<SaveCardActivity>(intent).use {
             waitFor(500)
             // Act
-            Espresso.onView(ViewMatchers.withId(R.id.mbPay)).perform(ViewActions.click())
+            Espresso.onView(ViewMatchers.withId(R.id.mbPresent)).perform(ViewActions.click())
             //Assert
             val isPreSavedCard =
                 it?.getParcelableSafe<CheckoutResultContract.Result>(EXTRA_KEY_RESULT)

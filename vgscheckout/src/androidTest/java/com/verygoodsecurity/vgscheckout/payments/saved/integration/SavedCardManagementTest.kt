@@ -112,7 +112,7 @@ class SavedCardManagementTest {
                         click()
                     )
                 )
-            onView(withId(R.id.mbPay)).perform(click())
+            onView(withId(R.id.mbPresent)).perform(click())
             //Assert
             val id = it?.getParcelableSafe<CheckoutResultContract.Result>(EXTRA_KEY_RESULT)
                 ?.checkoutResult?.data?.getParcelable<VGSCheckoutCardResponse>(
@@ -236,7 +236,7 @@ class SavedCardManagementTest {
                         click()
                     )
                 )
-            onView(withId(R.id.mbPay)).perform(click())
+            onView(withId(R.id.mbPresent)).perform(click())
             //Assert
             val deletedCards =
                 it?.getParcelableSafe<CheckoutResultContract.Result>(EXTRA_KEY_RESULT)
