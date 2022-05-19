@@ -5,11 +5,12 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.verygoodsecurity.vgscheckout.demo.R
 
-class SettingsActivity: AppCompatActivity(R.layout.activity_settings) {
+class SettingsActivity : AppCompatActivity(R.layout.activity_settings) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        showSettingsFragment()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -18,5 +19,12 @@ class SettingsActivity: AppCompatActivity(R.layout.activity_settings) {
             return true
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun showSettingsFragment() {
+        supportFragmentManager
+            .beginTransaction()
+            .add(R.id.fcvRoot, SettingsFragment())
+            .commit()
     }
 }
