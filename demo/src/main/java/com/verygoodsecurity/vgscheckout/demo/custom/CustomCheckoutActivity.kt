@@ -2,7 +2,6 @@ package com.verygoodsecurity.vgscheckout.demo.custom
 
 import android.os.Bundle
 import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.button.MaterialButton
 import com.verygoodsecurity.vgscheckout.VGSCheckout
 import com.verygoodsecurity.vgscheckout.VGSCheckoutCallback
@@ -16,21 +15,21 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.VGSChecko
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.VGSCheckoutCustomCardNumberOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.VGSCheckoutCustomCVCOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.VGSCheckoutCustomExpirationDateOptions
+import com.verygoodsecurity.vgscheckout.demo.BaseActivity
 import com.verygoodsecurity.vgscheckout.demo.BuildConfig
 import com.verygoodsecurity.vgscheckout.demo.R
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResultBundle
 import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutCardResponse
 
-class CustomCheckoutActivity : AppCompatActivity(), VGSCheckoutCallback {
+class CustomCheckoutActivity : BaseActivity(R.layout.activity_custom_checkout),
+    VGSCheckoutCallback {
 
     // Important: Best place to init checkout object is onCreate
     private lateinit var checkout: VGSCheckout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_custom_checkout)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         checkout = VGSCheckout(this, this)
         findViewById<MaterialButton>(R.id.mbPresent).setOnClickListener { presentCheckout() }
     }

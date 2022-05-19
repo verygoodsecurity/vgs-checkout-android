@@ -2,6 +2,7 @@
     <string name="main_activity_title">VGS Checkout Demo</string>
     <string name="custom_flow_title">VGS Custom Config Demo</string>
     <string name="payment_flow_title">VGS Payment Config Demo</string>
+    <string name="config_title">Config</string>
 
     <string name="present_custom_checkout_btn_title">Custom</string>
     <string name="present_payment_checkout_btn_title">Payment</string>

@@ -2,13 +2,13 @@ package com.verygoodsecurity.vgscheckout.demo.payment
 
 import android.os.Bundle
 import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.button.MaterialButton
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import com.verygoodsecurity.vgscheckout.VGSCheckout
 import com.verygoodsecurity.vgscheckout.VGSCheckoutCallback
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
+import com.verygoodsecurity.vgscheckout.demo.BaseActivity
 import com.verygoodsecurity.vgscheckout.demo.BuildConfig
 import com.verygoodsecurity.vgscheckout.demo.R
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
@@ -18,7 +18,8 @@ import okhttp3.*
 import okhttp3.internal.EMPTY_REQUEST
 import java.io.IOException
 
-class PaymentCheckoutActivity : AppCompatActivity(), VGSCheckoutCallback {
+class PaymentCheckoutActivity : BaseActivity(R.layout.activity_payment_checkout),
+    VGSCheckoutCallback {
 
     private val tokenManager: TokenManager = TokenManager()
 
@@ -27,8 +28,6 @@ class PaymentCheckoutActivity : AppCompatActivity(), VGSCheckoutCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_payment_checkout)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         checkout = VGSCheckout(this, this)
         findViewById<MaterialButton>(R.id.mbPresent).setOnClickListener { presentCheckout() }
     }
