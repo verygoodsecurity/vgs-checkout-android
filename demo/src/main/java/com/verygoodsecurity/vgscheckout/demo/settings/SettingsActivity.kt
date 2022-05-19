@@ -1,11 +1,11 @@
-package com.verygoodsecurity.vgscheckout.demo.config
+package com.verygoodsecurity.vgscheckout.demo.settings
 
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.verygoodsecurity.vgscheckout.demo.R
 
-class ConfigActivity: AppCompatActivity(R.layout.activity_config) {
+class SettingsActivity: AppCompatActivity(R.layout.activity_settings) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -6,7 +6,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
-import com.verygoodsecurity.vgscheckout.demo.config.ConfigActivity
+import com.verygoodsecurity.vgscheckout.demo.settings.SettingsActivity
 
 abstract class BaseActivity constructor(@LayoutRes layoutId: Int) : AppCompatActivity(layoutId) {
 
@@ -27,7 +27,7 @@ abstract class BaseActivity constructor(@LayoutRes layoutId: Int) : AppCompatAct
                 true
             }
             R.id.itemConfig -> {
-                startActivity(Intent(this, ConfigActivity::class.java))
+                startActivity(Intent(this, SettingsActivity::class.java))
                 true
             }
             else -> super.onOptionsItemSelected(item)

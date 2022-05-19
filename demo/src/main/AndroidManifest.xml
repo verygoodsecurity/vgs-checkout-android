@@ -33,7 +33,7 @@
             android:label="@string/payment_flow_title" />
 
         <activity
-            android:name="com.verygoodsecurity.vgscheckout.demo.config.ConfigActivity"
+            android:name="com.verygoodsecurity.vgscheckout.demo.settings.SettingsActivity"
             android:label="@string/config_title" />
     </application>
 </manifest>
