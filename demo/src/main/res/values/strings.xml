@@ -13,6 +13,7 @@
     <string name="setting_key_card_holder_visible">card_holder_visible</string>
     <string name="setting_key_card_number_icon_visible">card_number_icon_visible</string>
     <string name="setting_key_cvc_icon_visible">cvc_icon_visible</string>
+    <string name="setting_key_billing_address_visible">billing_address_visible</string>
     <string name="setting_key_country_visible">country_visible</string>
     <string name="setting_key_address_visible">address_visible</string>
     <string name="setting_key_optional_address_visible">optional_address_visible</string>

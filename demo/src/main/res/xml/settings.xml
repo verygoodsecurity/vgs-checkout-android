@@ -30,6 +30,11 @@
 
         <CheckBoxPreference
             android:defaultValue="true"
+            android:key="@string/setting_key_billing_address_visible"
+            android:title="Visible" />
+
+        <CheckBoxPreference
+            android:defaultValue="true"
             android:key="@string/setting_key_country_visible"
             android:title="Show country" />
 

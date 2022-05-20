@@ -1,6 +1,7 @@
 package com.verygoodsecurity.vgscheckout.demo.settings
 
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.verygoodsecurity.vgscheckout.demo.R
@@ -11,6 +12,7 @@ class CheckoutSettingsActivity : AppCompatActivity(R.layout.activity_settings) {
         super.onCreate(savedInstanceState)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         showSettingsFragment()
+        Log.d("Test", "onCreate")
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
