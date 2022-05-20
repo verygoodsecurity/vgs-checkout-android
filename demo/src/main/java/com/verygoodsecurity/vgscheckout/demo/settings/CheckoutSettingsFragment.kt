@@ -6,7 +6,7 @@ import androidx.preference.ListPreference
 import androidx.preference.PreferenceFragmentCompat
 import com.verygoodsecurity.vgscheckout.demo.R
 
-class SettingsFragment : PreferenceFragmentCompat(),
+class CheckoutSettingsFragment : PreferenceFragmentCompat(),
     SharedPreferences.OnSharedPreferenceChangeListener {
 
     private var lpValidationBehaviour: ListPreference? = null

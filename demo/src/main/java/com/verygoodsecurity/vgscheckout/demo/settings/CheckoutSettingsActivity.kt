@@ -5,7 +5,7 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.verygoodsecurity.vgscheckout.demo.R
 
-class SettingsActivity : AppCompatActivity(R.layout.activity_settings) {
+class CheckoutSettingsActivity : AppCompatActivity(R.layout.activity_settings) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,7 +24,7 @@ class SettingsActivity : AppCompatActivity(R.layout.activity_settings) {
     private fun showSettingsFragment() {
         supportFragmentManager
             .beginTransaction()
-            .add(R.id.fcvRoot, SettingsFragment())
+            .add(R.id.fcvRoot, CheckoutSettingsFragment())
             .commit()
     }
 }
