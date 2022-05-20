@@ -1,7 +1,11 @@
 package com.verygoodsecurity.vgscheckout.demo.payment
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
+import android.view.View
+import android.widget.ProgressBar
 import androidx.preference.PreferenceManager
 import com.google.android.material.button.MaterialButton
 import com.google.gson.Gson
@@ -38,10 +42,13 @@ class PaymentCheckoutActivity : BaseActivity(R.layout.activity_payment_checkout)
     // Important: Best place to init checkout object is onCreate
     private lateinit var checkout: VGSCheckout
 
+    private val progressBar: ProgressBar by lazy { findViewById(R.id.progressBar) }
+    private val mbPresent: MaterialButton by lazy { findViewById(R.id.mbPresent) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         checkout = VGSCheckout(this, this)
-        findViewById<MaterialButton>(R.id.mbPresent).setOnClickListener { presentCheckout() }
+        mbPresent.setOnClickListener { presentCheckout() }
     }
 
     override fun onCheckoutResult(result: VGSCheckoutResult) {
@@ -55,7 +62,9 @@ class PaymentCheckoutActivity : BaseActivity(R.layout.activity_payment_checkout)
     }
 
     private fun presentCheckout() {
+        setLoading(true)
         tokenManager.get {
+            setLoading(false)
             if (it?.value == null) {
                 Log.d(this::class.simpleName, "Token is null.")
                 return@get
@@ -90,11 +99,18 @@ class PaymentCheckoutActivity : BaseActivity(R.layout.activity_payment_checkout)
             formConfig = formConfig
         )
     }
+
+    private fun setLoading(isLoading: Boolean) {
+        mbPresent.isEnabled = !isLoading
+        progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+    }
 }
 
 class TokenManager {
 
     private val client: OkHttpClient = OkHttpClient().newBuilder().build()
+
+    private val mainThreadHandler = Handler(Looper.getMainLooper())
 
     private val tokenRequest: Request by lazy {
         Request.Builder()
@@ -108,11 +124,11 @@ class TokenManager {
             client.newCall(tokenRequest).enqueue(object : Callback {
 
                 override fun onFailure(call: Call, e: IOException) {
-                    onResult?.invoke(null)
+                    mainThreadHandler.post { onResult?.invoke(null) }
                 }
 
                 override fun onResponse(call: Call, response: Response) {
-                    onResult?.invoke(parserResponse(response))
+                    mainThreadHandler.post { onResult?.invoke(parserResponse(response)) }
                 }
             })
         } catch (e: Exception) {
