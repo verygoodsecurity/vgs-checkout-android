@@ -4,14 +4,17 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.preference.CheckBoxPreference
+import androidx.preference.EditTextPreference
 import androidx.preference.ListPreference
 import androidx.preference.PreferenceFragmentCompat
+import com.verygoodsecurity.vgscheckout.demo.BuildConfig
 import com.verygoodsecurity.vgscheckout.demo.CheckoutType
 import com.verygoodsecurity.vgscheckout.demo.R
 
 class CheckoutSettingsFragment : PreferenceFragmentCompat(),
     SharedPreferences.OnSharedPreferenceChangeListener {
 
+    private var etpVaultId: EditTextPreference? = null
     private var cbpBillingAddress: CheckBoxPreference? = null
     private var cbpCountry: CheckBoxPreference? = null
     private var cbpAddress: CheckBoxPreference? = null
@@ -33,6 +36,11 @@ class CheckoutSettingsFragment : PreferenceFragmentCompat(),
                 updateBillingAddressFieldsVisibility(p0.getBoolean(p1, true))
             }
         }
+        etpVaultId?.let {
+            if (p1 == it.key && p0 != null) {
+                etpVaultId?.summary = p0.getString(it.key, BuildConfig.STORAGE_ID)
+            }
+        }
     }
 
     private fun getPreferenceXml(type: CheckoutType) = when (type) {
@@ -41,6 +49,12 @@ class CheckoutSettingsFragment : PreferenceFragmentCompat(),
     }
 
     private fun initPreferences() {
+        val vaultIdKey = getString(R.string.setting_key_vault_id)
+        val vaultIdValue =
+            preferenceScreen.sharedPreferences?.getString(vaultIdKey, BuildConfig.STORAGE_ID)
+        etpVaultId = findPreference(vaultIdKey)
+        etpVaultId?.text = vaultIdValue
+        etpVaultId?.summary = vaultIdValue
         lpValidationBehaviour = findPreference(getString(R.string.setting_key_validation_behaviour))
         updateValidationBehaviourTitle()
         cbpBillingAddress = findPreference(getString(R.string.setting_key_billing_address_visible))

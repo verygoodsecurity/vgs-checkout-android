@@ -93,9 +93,10 @@ class PaymentCheckoutActivity : BaseActivity(R.layout.activity_payment_checkout)
             preferences.getValidationBehaviour(R.string.setting_key_validation_behaviour),
             preferences.getBoolean(R.string.setting_key_save_card_option_enabled)
         )
+        val vaultId = preferences.getString(getString(R.string.setting_key_vault_id), null)
         return VGSCheckoutAddCardConfig(
             accessToken = token,
-            tenantId = BuildConfig.STORAGE_ID,
+            tenantId = vaultId ?: BuildConfig.STORAGE_ID,
             formConfig = formConfig
         )
     }

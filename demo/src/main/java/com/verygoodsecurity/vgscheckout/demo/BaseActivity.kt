@@ -42,7 +42,7 @@ abstract class BaseActivity constructor(@LayoutRes layoutId: Int) : AppCompatAct
     protected fun SharedPreferences.getBoolean(@StringRes key: Int, default: Boolean = true) =
         getBoolean(getString(key), default)
 
-    protected  fun SharedPreferences.getFieldVisibility(
+    protected fun SharedPreferences.getFieldVisibility(
         @StringRes key: Int,
         visibleByDefault: Boolean = true
     ): VGSCheckoutFieldVisibility {
@@ -54,7 +54,7 @@ abstract class BaseActivity constructor(@LayoutRes layoutId: Int) : AppCompatAct
         }
     }
 
-    protected  fun SharedPreferences.getValidationBehaviour(
+    protected fun SharedPreferences.getValidationBehaviour(
         @StringRes key: Int,
         default: String = "on_submit"
     ): VGSCheckoutFormValidationBehaviour {

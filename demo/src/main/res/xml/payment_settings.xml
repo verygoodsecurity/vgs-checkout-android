@@ -2,6 +2,11 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <EditTextPreference
+        android:icon="@drawable/ic_baseline_edit_24"
+        android:key="@string/setting_key_vault_id"
+        android:title="Vault id" />
+
     <CheckBoxPreference
         android:defaultValue="true"
         android:key="@string/setting_key_save_card_option_enabled"

@@ -10,6 +10,7 @@
     <string name="custom_checkout_present_btn_title">Present</string>
 
     // Keys
+    <string name="setting_key_vault_id">vault_id</string>
     <string name="setting_key_card_holder_visible">card_holder_visible</string>
     <string name="setting_key_card_number_icon_visible">card_number_icon_visible</string>
     <string name="setting_key_cvc_icon_visible">cvc_icon_visible</string>
