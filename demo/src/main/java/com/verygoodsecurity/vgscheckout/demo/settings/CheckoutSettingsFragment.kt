@@ -2,10 +2,11 @@ package com.verygoodsecurity.vgscheckout.demo.settings
 
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
+import androidx.fragment.app.Fragment
 import androidx.preference.CheckBoxPreference
 import androidx.preference.ListPreference
 import androidx.preference.PreferenceFragmentCompat
+import com.verygoodsecurity.vgscheckout.demo.CheckoutType
 import com.verygoodsecurity.vgscheckout.demo.R
 
 class CheckoutSettingsFragment : PreferenceFragmentCompat(),
@@ -20,19 +21,23 @@ class CheckoutSettingsFragment : PreferenceFragmentCompat(),
     private var lpValidationBehaviour: ListPreference? = null
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        addPreferencesFromResource(R.xml.settings)
+        addPreferencesFromResource(getPreferenceXml(arguments?.getSerializable(KEY_BUNDLE_TYPE) as CheckoutType))
         preferenceScreen.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
         initPreferences()
     }
 
     override fun onSharedPreferenceChanged(p0: SharedPreferences?, p1: String?) {
-        Log.d("Test", "onSharedPreferenceChanged")
         lpValidationBehaviour?.let { if (p1 == it.key) updateValidationBehaviourTitle() }
         cbpBillingAddress?.let {
             if (p1 == it.key && p0 != null) {
                 updateBillingAddressFieldsVisibility(p0.getBoolean(p1, true))
             }
         }
+    }
+
+    private fun getPreferenceXml(type: CheckoutType) = when (type) {
+        CheckoutType.CUSTOM -> R.xml.custom_settings
+        CheckoutType.PAYMENT -> R.xml.payment_settings
     }
 
     private fun initPreferences() {
@@ -58,5 +63,17 @@ class CheckoutSettingsFragment : PreferenceFragmentCompat(),
         cbpOptionalAddress?.isChecked = isVisible
         cbpCity?.isChecked = isVisible
         cbpPostalCode?.isChecked = isVisible
+    }
+
+    companion object {
+
+        private const val KEY_BUNDLE_TYPE =
+            "com.verygoodsecurity.vgscheckout.demo.settings.key_bundle_type"
+
+        fun create(type: CheckoutType): Fragment = CheckoutSettingsFragment().apply {
+            arguments = Bundle().apply {
+                putSerializable(KEY_BUNDLE_TYPE, type)
+            }
+        }
     }
 }

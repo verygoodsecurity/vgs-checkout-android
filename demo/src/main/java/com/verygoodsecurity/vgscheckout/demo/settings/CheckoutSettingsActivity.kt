@@ -1,9 +1,11 @@
 package com.verygoodsecurity.vgscheckout.demo.settings
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import com.verygoodsecurity.vgscheckout.demo.CheckoutType
 import com.verygoodsecurity.vgscheckout.demo.R
 
 class CheckoutSettingsActivity : AppCompatActivity(R.layout.activity_settings) {
@@ -11,8 +13,7 @@ class CheckoutSettingsActivity : AppCompatActivity(R.layout.activity_settings) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        showSettingsFragment()
-        Log.d("Test", "onCreate")
+        showSettingsFragment(intent.extras?.getSerializable(KEY_BUNDLE_TYPE) as CheckoutType)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -23,10 +24,22 @@ class CheckoutSettingsActivity : AppCompatActivity(R.layout.activity_settings) {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun showSettingsFragment() {
+    private fun showSettingsFragment(type: CheckoutType) {
         supportFragmentManager
             .beginTransaction()
-            .add(R.id.fcvRoot, CheckoutSettingsFragment())
+            .add(R.id.fcvRoot, CheckoutSettingsFragment.create(type))
             .commit()
+    }
+
+    companion object {
+
+        private const val KEY_BUNDLE_TYPE =
+            "com.verygoodsecurity.vgscheckout.demo.settings.key_bundle_type"
+
+        fun start(context: Context, type: CheckoutType) {
+            val intent = Intent(context, CheckoutSettingsActivity::class.java)
+            intent.putExtra(KEY_BUNDLE_TYPE, type)
+            context.startActivity(intent)
+        }
     }
 }

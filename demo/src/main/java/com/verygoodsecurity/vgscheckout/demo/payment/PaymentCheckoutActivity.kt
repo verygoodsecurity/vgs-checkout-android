@@ -10,6 +10,7 @@ import com.verygoodsecurity.vgscheckout.VGSCheckoutCallback
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
 import com.verygoodsecurity.vgscheckout.demo.BaseActivity
 import com.verygoodsecurity.vgscheckout.demo.BuildConfig
+import com.verygoodsecurity.vgscheckout.demo.CheckoutType
 import com.verygoodsecurity.vgscheckout.demo.R
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResultBundle
@@ -20,6 +21,8 @@ import java.io.IOException
 
 class PaymentCheckoutActivity : BaseActivity(R.layout.activity_payment_checkout),
     VGSCheckoutCallback {
+
+    override val type: CheckoutType = CheckoutType.PAYMENT
 
     private val tokenManager: TokenManager = TokenManager()
 

@@ -1,6 +1,5 @@
 package com.verygoodsecurity.vgscheckout.demo
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -9,6 +8,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.verygoodsecurity.vgscheckout.demo.settings.CheckoutSettingsActivity
 
 abstract class BaseActivity constructor(@LayoutRes layoutId: Int) : AppCompatActivity(layoutId) {
+
+    protected abstract val type: CheckoutType
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,7 +28,7 @@ abstract class BaseActivity constructor(@LayoutRes layoutId: Int) : AppCompatAct
                 true
             }
             R.id.itemConfig -> {
-                startActivity(Intent(this, CheckoutSettingsActivity::class.java))
+                CheckoutSettingsActivity.start(this, type)
                 true
             }
             else -> super.onOptionsItemSelected(item)

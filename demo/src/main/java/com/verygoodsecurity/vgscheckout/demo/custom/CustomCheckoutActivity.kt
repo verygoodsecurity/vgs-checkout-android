@@ -29,6 +29,7 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.VGSChecko
 import com.verygoodsecurity.vgscheckout.config.ui.view.core.VGSCheckoutFieldVisibility
 import com.verygoodsecurity.vgscheckout.demo.BaseActivity
 import com.verygoodsecurity.vgscheckout.demo.BuildConfig
+import com.verygoodsecurity.vgscheckout.demo.CheckoutType
 import com.verygoodsecurity.vgscheckout.demo.R
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResultBundle
@@ -36,6 +37,8 @@ import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutCardResponse
 
 class CustomCheckoutActivity : BaseActivity(R.layout.activity_custom_checkout),
     VGSCheckoutCallback {
+
+    override val type: CheckoutType = CheckoutType.CUSTOM
 
     // Important: Best place to init checkout object is onCreate
     private lateinit var checkout: VGSCheckout
