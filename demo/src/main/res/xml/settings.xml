@@ -1,8 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <Preference
-        android:key="test"
-        android:summary="Test"
-        android:title="Test" />
+    <PreferenceCategory
+        android:key="card_category"
+        android:title="Card options"
+        app:icon="@drawable/ic_baseline_credit_card_24">
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="@string/setting_key_card_holder_visible"
+            android:title="Show card holder name" />
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="@string/setting_key_card_number_icon_visible"
+            android:title="Show card number icon" />
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="@string/setting_key_cvc_icon_visible"
+            android:title="Show cvc icon" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="address_category"
+        android:title="Billing address options"
+        app:icon="@drawable/ic_baseline_location_city_24">
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="@string/setting_key_country_visible"
+            android:title="Show country" />
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="@string/setting_key_address_visible"
+            android:title="Show address" />
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="@string/setting_key_optional_address_visible"
+            android:title="Show optional address" />
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="@string/setting_key_city_visible"
+            android:title="Show city" />
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="@string/setting_key_postal_code_visible"
+            android:title="Show postal code" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="address_category"
+        android:title="Validation behaviour"
+        app:icon="@drawable/ic_baseline_checklist_24">
+
+        <ListPreference
+            android:defaultValue="On submit"
+            android:entries="@array/validationBehaviours"
+            android:entryValues="@array/validationBehaviourValues"
+            android:key="@string/setting_key_validation_behaviour"
+            app:defaultValue="On submit"
+            app:entries="@array/validationBehaviours"
+            app:entryValues="@array/validationBehaviourValues" />
+    </PreferenceCategory>
 </PreferenceScreen>

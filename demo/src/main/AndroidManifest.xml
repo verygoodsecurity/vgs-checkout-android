@@ -34,6 +34,6 @@
 
         <activity
             android:name="com.verygoodsecurity.vgscheckout.demo.settings.SettingsActivity"
-            android:label="@string/config_title" />
+            android:label="@string/settings_title" />
     </application>
 </manifest>
