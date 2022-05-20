@@ -134,7 +134,6 @@ class CustomCheckoutActivity : BaseActivity(R.layout.activity_custom_checkout),
         )
 
         val vaultId = preferences.getString(getString(R.string.setting_key_vault_id), null)
-        Log.d("Test", "vault = $vaultId")
         // Create config object
         return VGSCheckoutCustomConfig(
             vaultId = vaultId ?: BuildConfig.STORAGE_ID,
