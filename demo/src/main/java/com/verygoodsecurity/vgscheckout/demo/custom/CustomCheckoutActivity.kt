@@ -1,9 +1,7 @@
 package com.verygoodsecurity.vgscheckout.demo.custom
 
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
-import androidx.annotation.StringRes
 import androidx.preference.PreferenceManager
 import com.google.android.material.button.MaterialButton
 import com.verygoodsecurity.vgscheckout.VGSCheckout
@@ -13,7 +11,6 @@ import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutCustomRoute
 import com.verygoodsecurity.vgscheckout.config.networking.request.VGSCheckoutCustomRequestOptions
 import com.verygoodsecurity.vgscheckout.config.networking.request.core.VGSCheckoutDataMergePolicy
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutCustomFormConfig
-import com.verygoodsecurity.vgscheckout.config.ui.core.VGSCheckoutFormValidationBehaviour
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillingAddressVisibility
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutCustomBillingAddressOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.VGSCheckoutCustomAddressOptions
@@ -26,7 +23,6 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.VGSChecko
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.VGSCheckoutCustomCardNumberOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.VGSCheckoutCustomCVCOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.VGSCheckoutCustomExpirationDateOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.core.VGSCheckoutFieldVisibility
 import com.verygoodsecurity.vgscheckout.demo.BaseActivity
 import com.verygoodsecurity.vgscheckout.demo.BuildConfig
 import com.verygoodsecurity.vgscheckout.demo.CheckoutType
@@ -143,33 +139,6 @@ class CustomCheckoutActivity : BaseActivity(R.layout.activity_custom_checkout),
             routeConfig = routeConfig,
             formConfig = formConfig
         )
-    }
-
-    private fun SharedPreferences.getBoolean(@StringRes key: Int, default: Boolean = true) =
-        getBoolean(getString(key), default)
-
-    private fun SharedPreferences.getFieldVisibility(
-        @StringRes key: Int,
-        visibleByDefault: Boolean = true
-    ): VGSCheckoutFieldVisibility {
-        val value = getBoolean(getString(key), visibleByDefault)
-        return if (value) {
-            VGSCheckoutFieldVisibility.VISIBLE
-        } else {
-            VGSCheckoutFieldVisibility.HIDDEN
-        }
-    }
-
-    private fun SharedPreferences.getValidationBehaviour(
-        @StringRes key: Int,
-        default: String = "on_submit"
-    ): VGSCheckoutFormValidationBehaviour {
-        val value = getString(getString(key), default)
-        return if (value == default) {
-            VGSCheckoutFormValidationBehaviour.ON_SUBMIT
-        } else {
-            VGSCheckoutFormValidationBehaviour.ON_FOCUS
-        }
     }
 
     companion object {

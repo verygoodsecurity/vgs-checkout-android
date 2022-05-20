@@ -1,10 +1,14 @@
 package com.verygoodsecurity.vgscheckout.demo
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.annotation.LayoutRes
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
+import com.verygoodsecurity.vgscheckout.config.ui.core.VGSCheckoutFormValidationBehaviour
+import com.verygoodsecurity.vgscheckout.config.ui.view.core.VGSCheckoutFieldVisibility
 import com.verygoodsecurity.vgscheckout.demo.settings.CheckoutSettingsActivity
 
 abstract class BaseActivity constructor(@LayoutRes layoutId: Int) : AppCompatActivity(layoutId) {
@@ -32,6 +36,33 @@ abstract class BaseActivity constructor(@LayoutRes layoutId: Int) : AppCompatAct
                 true
             }
             else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    protected fun SharedPreferences.getBoolean(@StringRes key: Int, default: Boolean = true) =
+        getBoolean(getString(key), default)
+
+    protected  fun SharedPreferences.getFieldVisibility(
+        @StringRes key: Int,
+        visibleByDefault: Boolean = true
+    ): VGSCheckoutFieldVisibility {
+        val value = getBoolean(getString(key), visibleByDefault)
+        return if (value) {
+            VGSCheckoutFieldVisibility.VISIBLE
+        } else {
+            VGSCheckoutFieldVisibility.HIDDEN
+        }
+    }
+
+    protected  fun SharedPreferences.getValidationBehaviour(
+        @StringRes key: Int,
+        default: String = "on_submit"
+    ): VGSCheckoutFormValidationBehaviour {
+        val value = getString(getString(key), default)
+        return if (value == default) {
+            VGSCheckoutFormValidationBehaviour.ON_SUBMIT
+        } else {
+            VGSCheckoutFormValidationBehaviour.ON_FOCUS
         }
     }
 }
