@@ -2,9 +2,24 @@
     <string name="main_activity_title">VGS Checkout Demo</string>
     <string name="custom_flow_title">VGS Custom Config Demo</string>
     <string name="payment_flow_title">VGS Payment Config Demo</string>
+    <string name="settings_title">Checkout settings</string>
 
     <string name="present_custom_checkout_btn_title">Custom</string>
     <string name="present_payment_checkout_btn_title">Payment</string>
 
     <string name="custom_checkout_present_btn_title">Present</string>
+
+    // Keys
+    <string name="setting_key_vault_id">vault_id</string>
+    <string name="setting_key_card_holder_visible">card_holder_visible</string>
+    <string name="setting_key_card_number_icon_visible">card_number_icon_visible</string>
+    <string name="setting_key_cvc_icon_visible">cvc_icon_visible</string>
+    <string name="setting_key_save_card_option_enabled">save_card_option_enabled</string>
+    <string name="setting_key_billing_address_visible">billing_address_visible</string>
+    <string name="setting_key_country_visible">country_visible</string>
+    <string name="setting_key_address_visible">address_visible</string>
+    <string name="setting_key_optional_address_visible">optional_address_visible</string>
+    <string name="setting_key_city_visible">city_visible</string>
+    <string name="setting_key_postal_code_visible">postal_code_visible</string>
+    <string name="setting_key_validation_behaviour">validation_behaviour</string>
 </resources>
