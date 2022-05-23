@@ -9,7 +9,7 @@ import org.junit.Test
 class CancelEventTest {
 
     @Test
-    fun getData_cancel_customDataAdded() {
+    fun getData() {
         // Arrange
         val event = CancelEvent()
         // Act

@@ -9,7 +9,7 @@ import org.junit.Test
 class HostnameValidationEventTest {
 
     @Test
-    fun getData_hostnameValidationSuccess() {
+    fun getData_successful() {
         // Arrange
         val event = HostnameValidationEvent(true, "test")
         // Act
@@ -21,7 +21,7 @@ class HostnameValidationEventTest {
     }
 
     @Test
-    fun getData_hostnameValidationFailed() {
+    fun getData_failed() {
         // Arrange
         val event = HostnameValidationEvent(false, "test")
         // Act

@@ -10,7 +10,7 @@ import org.junit.Test
 class InitEventTest {
 
     @Test
-    fun getData_initCustom_customDataAdded() {
+    fun getData_custom() {
         // Arrange
         val event = InitEvent(InitEvent.ConfigType.CUSTOM, VGSCheckoutCustomConfig(ID))
         // Act
@@ -21,7 +21,7 @@ class InitEventTest {
     }
 
     @Test
-    fun getData_initPaymentOrchestration_customDataAdded() {
+    fun getData_payout() {
         // Arrange
         val event = InitEvent(InitEvent.ConfigType.PAYOPT, VGSCheckoutCustomConfig(ID))
         // Act

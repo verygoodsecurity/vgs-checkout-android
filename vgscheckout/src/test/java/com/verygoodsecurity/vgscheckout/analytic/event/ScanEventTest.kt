@@ -9,7 +9,7 @@ import org.junit.Test
 class ScanEventTest {
 
     @Test
-    fun getData_scanScanIdNull_customDataAdded() {
+    fun getData_scanIdNull() {
         // Arrange
         val event = ScanEvent("Ok", "Test", null)
         // Act
@@ -22,7 +22,7 @@ class ScanEventTest {
     }
 
     @Test
-    fun getData_scanScanIdNotNull_customDataAdded() {
+    fun getData_scanIdNotNull() {
         // Arrange
         val event = ScanEvent("Ok", "Test", "Test")
         // Act

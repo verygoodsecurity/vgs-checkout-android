@@ -9,7 +9,7 @@ import org.junit.Test
 class PaymentMethodSelectedEventTest {
 
     @Test
-    fun getData_paymentMethodSelected_savedCardWithCustomConfig() {
+    fun getData_savedCardWithCustomConfig() {
         // Arrange
         val event = PaymentMethodSelectedEvent(
             isPreSavedCard = true,
@@ -25,7 +25,7 @@ class PaymentMethodSelectedEventTest {
     }
 
     @Test
-    fun getData_paymentMethodSelected_newCardWithAddCardConfig() {
+    fun getData_newCardWithAddCardConfig() {
         // Arrange
         val event = PaymentMethodSelectedEvent(
             isPreSavedCard = false,

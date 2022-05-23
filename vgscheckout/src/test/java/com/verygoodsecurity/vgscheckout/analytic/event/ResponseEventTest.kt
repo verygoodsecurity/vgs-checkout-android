@@ -9,7 +9,7 @@ import org.junit.Test
 class ResponseEventTest {
 
     @Test
-    fun getData_responseErrorNull_customDataAdded() {
+    fun getData_errorMessageNull() {
         // Arrange
         val event = ResponseEvent(200, null, 400L)
         // Act
@@ -23,7 +23,7 @@ class ResponseEventTest {
     }
 
     @Test
-    fun getData_responseErrorNotNull_customDataAdded() {
+    fun getData__errorMessageNotNull() {
         // Arrange
         val event = ResponseEvent(200, "test", 400L)
         // Act

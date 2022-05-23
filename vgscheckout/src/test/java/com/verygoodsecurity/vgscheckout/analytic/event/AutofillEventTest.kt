@@ -9,7 +9,7 @@ import org.junit.Test
 class AutofillEventTest {
 
     @Test
-    fun getData_autofill_customDataAdded() {
+    fun getData() {
         // Arrange
         val event = AutofillEvent("test_field_name")
         // Act

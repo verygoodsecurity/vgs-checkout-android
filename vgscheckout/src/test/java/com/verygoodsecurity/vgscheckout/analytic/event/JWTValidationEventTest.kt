@@ -9,7 +9,7 @@ import org.junit.Test
 class JWTValidationEventTest {
 
     @Test
-    fun getData_jwtValidationSuccessful() {
+    fun getData_successful() {
         // Arrange
         val event = JWTValidationEvent(true)
         // Act
@@ -21,7 +21,7 @@ class JWTValidationEventTest {
 
 
     @Test
-    fun getData_jwtValidationFailed() {
+    fun getData_failed() {
         // Arrange
         val event = JWTValidationEvent(false)
         // Act
