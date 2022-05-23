@@ -2,26 +2,25 @@ package com.verygoodsecurity.vgscheckout.analytic
 
 import com.verygoodsecurity.vgscheckout.capture
 import com.verygoodsecurity.vgscheckout.analytic.event.InitEvent
+import com.verygoodsecurity.vgscheckout.analytic.event.core.ENVIRONMENT
+import com.verygoodsecurity.vgscheckout.analytic.event.core.FORM_ID
+import com.verygoodsecurity.vgscheckout.analytic.event.core.ID
 import com.verygoodsecurity.vgscheckout.networking.client.okhttp.OkHttpClient
 import com.verygoodsecurity.vgscheckout.collect.util.extension.toBase64
 import com.verygoodsecurity.vgscheckout.collect.util.extension.toJSON
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
 import com.verygoodsecurity.vgscheckout.networking.client.*
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Test
 import org.mockito.ArgumentCaptor
 import org.mockito.Mockito.*
 
-private const val ID = "test_vault_id"
-private const val FORM_ID = "test_form_id"
-private const val ENVIRONMENT = "test_env"
-
 class DefaultAnalyticsTrackerTest {
 
     private val mockHttpClient: HttpClient = mock(OkHttpClient::class.java)
     private val callback: (HttpResponse) -> Unit = {}
-    private var tracker = DefaultAnalyticsTracker(ID, ENVIRONMENT, FORM_ID, mockHttpClient)
 
     @Before
     fun setup() {
@@ -29,43 +28,17 @@ class DefaultAnalyticsTrackerTest {
     }
 
     @Test
-    fun log_analyticsEnabled_apiClientCalled() {
-        // Arrange
-        val event = InitEvent(InitEvent.ConfigType.CUSTOM, VGSCheckoutCustomConfig(ID))
-        val httpRequestCaptor: ArgumentCaptor<HttpRequest> =
-            ArgumentCaptor.forClass(HttpRequest::class.java)
-        val callbackCaptor: ArgumentCaptor<(HttpResponse) -> Unit> =
-            ArgumentCaptor.forClass(callback::class.java)
+    fun constructor_analyticTrackerCreated() {
         // Act
-        tracker.log(event)
+        val tracker = DefaultAnalyticsTracker(ID, ENVIRONMENT, FORM_ID)
         // Assert
-        verify(mockHttpClient, times(1)).enqueue(
-            capture(httpRequestCaptor),
-            capture(callbackCaptor)
-        )
-    }
-
-    @Test
-    fun log_analyticsDisabled_apiClientCalled() {
-        // Arrange
-        VGSCheckoutAnalyticsLogger.isAnalyticsEnabled = false
-        val event = InitEvent(InitEvent.ConfigType.CUSTOM, VGSCheckoutCustomConfig(ID))
-        val httpRequestCaptor: ArgumentCaptor<HttpRequest> =
-            ArgumentCaptor.forClass(HttpRequest::class.java)
-        val callbackCaptor: ArgumentCaptor<(HttpResponse) -> Unit> =
-            ArgumentCaptor.forClass(callback::class.java)
-        // Act
-        tracker.log(event)
-        // Assert
-        verify(mockHttpClient, never()).enqueue(
-            capture(httpRequestCaptor),
-            capture(callbackCaptor)
-        )
+        assertNotNull(tracker)
     }
 
     @Test
     fun log_apiCalledWithCorrectData() {
         // Arrange
+        val tracker = DefaultAnalyticsTracker(ID, ENVIRONMENT, FORM_ID, mockHttpClient)
         val event = InitEvent(InitEvent.ConfigType.CUSTOM, VGSCheckoutCustomConfig(ID))
         val payload = event.getData(ID, FORM_ID, ENVIRONMENT).toJSON().toString().toBase64()
         val expectedNetworkRequest = HttpRequest(
