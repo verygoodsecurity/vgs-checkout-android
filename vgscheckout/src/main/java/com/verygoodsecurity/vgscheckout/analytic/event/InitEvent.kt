@@ -6,19 +6,16 @@ import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 internal data class InitEvent(
     val type: ConfigType,
     val config: CheckoutConfig
-) : Event(TYPE) {
+) : Event(TYPE, config) {
 
-    override val attributes: Map<String, Any> = mutableMapOf<String, Any>().apply {
-        put(KEY_CONFIG_TYPE, type.name.lowercase())
-        put(KEY_CONTENT, generateContent(config))
-    }
+    override val attributes: Map<String, Any> =
+        mutableMapOf(KEY_CONFIG_TYPE to type.name.lowercase())
 
     companion object {
 
         private const val TYPE = "Init"
 
         private const val KEY_CONFIG_TYPE = "config"
-        private const val KEY_CONTENT = "content"
     }
 
     enum class ConfigType {
