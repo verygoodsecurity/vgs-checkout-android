@@ -7,11 +7,10 @@ internal data class RequestEvent(
     val isSuccessFull: Boolean,
     val invalidFieldTypes: List<String>,
     val config: CheckoutConfig
-) : Event(TYPE) {
+) : Event(TYPE, config) {
 
     override val attributes: Map<String, Any> = mutableMapOf<String, Any>().apply {
         put(KEY_STATUS, if (isSuccessFull) STATUS_OK else STATUS_FAILED)
-        put(KEY_CONTENT, generateContent(config))
         if (invalidFieldTypes.isNotEmpty()) put(KEY_INVALID_FIELDS, invalidFieldTypes)
     }
 
@@ -19,7 +18,6 @@ internal data class RequestEvent(
 
         private const val TYPE = "BeforeSubmit"
 
-        private const val KEY_CONTENT = "content"
         private const val KEY_INVALID_FIELDS = "fieldTypes"
     }
 }

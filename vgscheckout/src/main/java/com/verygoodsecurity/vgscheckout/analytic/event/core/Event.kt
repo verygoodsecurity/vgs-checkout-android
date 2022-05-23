@@ -11,25 +11,28 @@ import com.verygoodsecurity.vgscheckout.util.Session
 import java.text.SimpleDateFormat
 import java.util.*
 
-internal abstract class Event constructor(type: String) {
+internal abstract class Event constructor(type: String, config: CheckoutConfig? = null) {
 
     protected abstract val attributes: Map<String, Any>
 
-    private val data: MutableMap<String, Any> = mutableMapOf(
-        KEY_TYPE to type,
-        KEY_TIMESTAMP to System.currentTimeMillis(),
-        KEY_CLIENT_TIMESTAMP to getClientTime(),
-        KEY_SESSION_ID to Session.id,
-        KEY_SOURCE to SOURCE,
-        KEY_VERSION to BuildConfig.VERSION_NAME,
-        KEY_STATUS to STATUS_OK,
-        KEY_USER_AGENT to mapOf<String, Any>(
-            KEY_PLATFORM to PLATFORM,
-            KEY_DEVICE to Build.BRAND,
-            KEY_DEVICE_MODEL to Build.MODEL,
-            KEY_OS to Build.VERSION.SDK_INT.toString()
+    private val data: MutableMap<String, Any> = mutableMapOf<String, Any>().apply {
+        put(KEY_TYPE, type)
+        put(KEY_TIMESTAMP, System.currentTimeMillis())
+        put(KEY_CLIENT_TIMESTAMP, getClientTime())
+        put(KEY_SESSION_ID, Session.id)
+        put(KEY_SOURCE, SOURCE)
+        put(KEY_VERSION, BuildConfig.VERSION_NAME)
+        put(KEY_STATUS, STATUS_OK)
+        put(
+            KEY_USER_AGENT, mapOf<String, Any>(
+                KEY_PLATFORM to PLATFORM,
+                KEY_DEVICE to Build.BRAND,
+                KEY_DEVICE_MODEL to Build.MODEL,
+                KEY_OS to Build.VERSION.SDK_INT.toString()
+            )
         )
-    )
+        config?.let { put(KEY_CONTENT, generateContent(it)) }
+    }
         get() = field + attributes
 
     fun getData(id: String, formId: String, environment: String): Map<String, Any> {
@@ -40,7 +43,7 @@ internal abstract class Event constructor(type: String) {
         }
     }
 
-    protected fun generateContent(config: CheckoutConfig): List<String> {
+    private fun generateContent(config: CheckoutConfig): List<String> {
         return mutableListOf<String>().apply {
             with(config) {
                 add(mapValidationBehaviour(formConfig.validationBehaviour))
@@ -103,6 +106,7 @@ internal abstract class Event constructor(type: String) {
         private const val KEY_ID = "tnt"
         private const val KEY_FORM_ID = "formId"
         private const val KEY_ENVIRONMENT = "env"
+        private const val KEY_CONTENT = "content"
 
         private const val SOURCE = "checkout-android"
         private const val PLATFORM = "android"

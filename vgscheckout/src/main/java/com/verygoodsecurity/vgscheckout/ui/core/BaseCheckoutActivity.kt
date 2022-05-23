@@ -48,7 +48,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
     }
 
     override fun onBackPressed() {
-        config.analyticTracker.log(CancelEvent)
+        config.analyticTracker.log(CancelEvent())
         setResult(Activity.RESULT_CANCELED, VGSCheckoutResult.Canceled(resultBundle))
         super.onBackPressed()
     }
