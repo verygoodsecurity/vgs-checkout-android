@@ -23,6 +23,7 @@ class RequestEventTest {
         Assert.assertEquals("BeforeSubmit", data["type"])
         Assert.assertEquals("Ok", data["status"])
         Assert.assertEquals(null, data["fieldTypes"])
+        Assert.assertNotNull(data["content"])
     }
 
     @Test
@@ -40,5 +41,6 @@ class RequestEventTest {
         Assert.assertEquals("BeforeSubmit", data["type"])
         Assert.assertEquals("Failed", data["status"])
         Assert.assertEquals(expectedInvalidField, data["fieldTypes"])
+        Assert.assertNotNull(data["content"])
     }
 }

@@ -18,6 +18,7 @@ class InitEventTest {
         // Assert
         Assert.assertEquals("Init", data["type"])
         Assert.assertEquals("custom", data["config"])
+        Assert.assertNotNull(data["content"])
     }
 
     @Test
@@ -29,5 +30,6 @@ class InitEventTest {
         // Assert
         Assert.assertEquals("Init", data["type"])
         Assert.assertEquals("payopt", data["config"])
+        Assert.assertNotNull(data["content"])
     }
 }
