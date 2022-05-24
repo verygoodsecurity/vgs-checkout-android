@@ -19,16 +19,19 @@ import com.verygoodsecurity.vgscheckout.util.extension.getColor
  * @since 1.0.0
  */
 internal open class VGSEditText @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
 ) : InputFieldView(context, attrs, defStyleAttr) {
 
     init {
-        setupViewType(FieldType.INFO)
+        setupViewType(FieldType.INFO, attrs)
 
         context.theme.obtainStyledAttributes(
             attrs,
             R.styleable.VGSEditText,
-            0, 0
+            0,
+            0
         ).apply {
 
             try {

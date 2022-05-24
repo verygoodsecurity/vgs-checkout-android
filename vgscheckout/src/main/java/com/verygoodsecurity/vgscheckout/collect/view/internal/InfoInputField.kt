@@ -2,13 +2,17 @@ package com.verygoodsecurity.vgscheckout.collect.view.internal
 
 import android.content.Context
 import android.text.InputType
+import android.util.AttributeSet
 import com.verygoodsecurity.vgscheckout.collect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscheckout.collect.view.card.FieldType
 import com.verygoodsecurity.vgscheckout.collect.view.card.conection.InputInfoConnection
 import com.verygoodsecurity.vgscheckout.collect.view.core.serializers.FieldDataSerializer
 
 /** @suppress */
-internal open class InfoInputField(context: Context) : BaseInputField(context) {
+internal open class InfoInputField(
+    context: Context,
+    attrs: AttributeSet? = null
+) : BaseInputField(context, attrs) {
 
     var serializer: FieldDataSerializer<*, *>? = null
 

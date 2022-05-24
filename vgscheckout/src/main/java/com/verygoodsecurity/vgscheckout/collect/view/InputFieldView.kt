@@ -45,8 +45,8 @@ import com.verygoodsecurity.vgscheckout.collect.widget.ExpirationDateEditText
  * An abstract class that provide displays text user-editable text to the user.
  */
 internal abstract class InputFieldView @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : FrameLayout(context, attrs, defStyleAttr), VGSCollectView {
+    private val cContext: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+) : FrameLayout(cContext, attrs, defStyleAttr), VGSCollectView {
 
     private var isAttachPermitted = true
 
@@ -131,10 +131,10 @@ internal abstract class InputFieldView @JvmOverloads constructor(
 
     private lateinit var inputField: BaseInputField
 
-    protected fun setupViewType(type: FieldType) {
+    protected fun setupViewType(type: FieldType, attrs: AttributeSet? = null) {
         with(type) {
             fieldType = this
-            inputField = BaseInputField.getInputField(context, this@InputFieldView)
+            inputField = BaseInputField.getInputField(cContext, attrs, this@InputFieldView)
 
             syncInputState()
         }

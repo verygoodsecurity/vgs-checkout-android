@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.text.TextWatcher
+import android.util.AttributeSet
 import android.view.View
 import android.view.autofill.AutofillValue
 import android.view.inputmethod.EditorInfo
@@ -31,18 +32,23 @@ import com.verygoodsecurity.vgscheckout.collect.view.card.validation.rules.Valid
 import com.verygoodsecurity.vgscheckout.util.logger.VGSCheckoutLogger
 
 /** @suppress */
-internal abstract class BaseInputField(context: Context) : TextInputEditText(context),
-    DependencyListener, OnVgsViewStateChangeListener {
+internal abstract class BaseInputField(
+    context: Context,
+    attrs: AttributeSet? = null
+) : TextInputEditText(context, attrs), DependencyListener, OnVgsViewStateChangeListener {
 
     companion object {
-        fun getInputField(context: Context, parent: InputFieldView): BaseInputField {
+
+        fun getInputField(context: Context,
+                          attrs: AttributeSet? = null,
+                          parent: InputFieldView): BaseInputField {
             val field = when (parent.getFieldType()) {
                 FieldType.CARD_NUMBER -> CardInputField(context)
                 FieldType.CVC -> CVCInputField(context)
                 FieldType.CARD_EXPIRATION_DATE -> DateInputField(context)
                 FieldType.CARD_HOLDER_NAME -> PersonNameInputField(context)
                 FieldType.SSN -> SSNInputField(context)
-                FieldType.INFO -> InfoInputField(context)
+                FieldType.INFO -> InfoInputField(context, attrs)
                 FieldType.COUNTRY -> CountryInputField(context)
             }
             field.vgsParent = parent

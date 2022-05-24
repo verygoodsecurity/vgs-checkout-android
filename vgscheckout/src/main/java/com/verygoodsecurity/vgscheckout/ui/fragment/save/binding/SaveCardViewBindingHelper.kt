@@ -9,6 +9,7 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.checkbox.MaterialCheckBox
 import com.google.android.material.textview.MaterialTextView
 import com.verygoodsecurity.vgscheckout.R
+import com.verygoodsecurity.vgscheckout.VGSCheckoutTextInputLayout
 import com.verygoodsecurity.vgscheckout.collect.widget.*
 
 // TODO: Remove all unused views
@@ -19,9 +20,9 @@ internal class SaveCardViewBindingHelper(inflater: LayoutInflater, @LayoutRes la
 
     val cardDetailsMtv: MaterialTextView by lazy { rootView.findViewById(R.id.mtvCardDetailsTitle) }
     val cardDetailsLL: LinearLayoutCompat by lazy { rootView.findViewById(R.id.llCardDetails) }
-    val cardHolderTil: VGSTextInputLayout by lazy { rootView.findViewById(R.id.vgsTilCardHolder) }
+    val cardHolderTil: VGSCheckoutTextInputLayout by lazy { rootView.findViewById(R.id.vgsTilCardHolder) }
     val cardHolderEt: PersonNameEditText by lazy { rootView.findViewById(R.id.vgsEtCardHolder) }
-    val cardNumberTil: VGSTextInputLayout by lazy { rootView.findViewById(R.id.vgsTilCardNumber) }
+    val cardNumberTil: VGSCheckoutTextInputLayout by lazy { rootView.findViewById(R.id.vgsTilCardNumber) }
     val cardNumberEt: VGSCardNumberEditText by lazy { rootView.findViewById(R.id.vgsEtCardNumber) }
     val expirationDateTil: VGSTextInputLayout by lazy { rootView.findViewById(R.id.vgsTilExpirationDate) }
     val expirationDateEt: ExpirationDateEditText by lazy { rootView.findViewById(R.id.vgsEtExpirationDate) }
