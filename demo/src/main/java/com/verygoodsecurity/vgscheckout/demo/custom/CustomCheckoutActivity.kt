@@ -66,18 +66,15 @@ class CustomCheckoutActivity : BaseActivity(R.layout.activity_custom_checkout),
         val cardOptions = VGSCheckoutCustomCardOptions(
             VGSCheckoutCustomCardNumberOptions(
                 CARD_NUMBER_FIELD_NAME,
-                preferences.getBoolean(
-                    getString(R.string.setting_key_card_number_icon_visible),
-                    true
-                )
+                !preferences.getBoolean(R.string.setting_key_card_number_icon_visible)
             ),
             VGSCheckoutCustomCardHolderOptions(
                 CARD_HOLDER_FIELD_NAME,
-                preferences.getFieldVisibility(R.string.setting_key_card_number_icon_visible)
+                preferences.getFieldVisibility(R.string.setting_key_card_holder_visible)
             ),
             VGSCheckoutCustomCVCOptions(
                 CVC_FIELD_NAME,
-                preferences.getBoolean(R.string.setting_key_cvc_icon_visible)
+                !preferences.getBoolean(R.string.setting_key_cvc_icon_visible)
             ),
             VGSCheckoutCustomExpirationDateOptions(EXPIRY_FIELD_NAME)
         )
