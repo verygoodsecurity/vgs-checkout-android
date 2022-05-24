@@ -69,8 +69,8 @@ internal class TextInputLayoutWrapper @JvmOverloads constructor(
         return editText != null
     }
 
-    private var state: InputLayoutState? = null
-    fun restoreState(state: InputLayoutState) {
+    private var state: InputLayoutStateImpl? = null
+    fun restoreState(state: InputLayoutStateImpl) {
         this.state = state
     }
 

@@ -15,7 +15,7 @@ import com.verygoodsecurity.vgscheckout.collect.view.internal.BaseInputField
 /** @suppress */
 internal class InputLayoutStateImpl(
     private val textInputLayout: TextInputLayoutWrapper
-) : InputLayoutState {
+) {
 
     internal var helperText: String? = null
         set(value) {
@@ -343,9 +343,9 @@ internal class InputLayoutStateImpl(
             }
         }
 
-    override fun isReady() = textInputLayout.isReady()
+    fun isReady() = textInputLayout.isReady()
 
-    override fun restore(textInputLayoutWrapper: TextInputLayoutWrapper?) {
+    fun restore(textInputLayoutWrapper: TextInputLayoutWrapper?) {
         textInputLayoutWrapper?.apply {
             if(this@InputLayoutStateImpl.typeface != null) {
                 this.typeface = this@InputLayoutStateImpl.typeface
@@ -421,7 +421,7 @@ internal class InputLayoutStateImpl(
         }
     }
 
-    override fun refresh() {
+    fun refresh() {
         textInputLayout.restoreState(this)
     }
 
