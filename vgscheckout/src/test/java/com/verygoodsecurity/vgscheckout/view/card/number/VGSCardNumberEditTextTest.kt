@@ -203,29 +203,12 @@ class VGSCardNumberEditTextTest {
         assertEquals(InputType.TYPE_CLASS_NUMBER, view.getInputType())
     }
 
-
-    @Test
-    fun test_field_state_change_listener_first() {
-        val child = view.statePreparer.getView()
-        assertTrue(child is BaseInputField)
-
-        val listener = mock(OnFieldStateChangeListener::class.java)
-        view.setOnFieldStateChangeListener(listener)
-        verify(listener, times(0)).onStateChange(any())
-
-        (child as BaseInputField).prepareFieldTypeConnection()
-        child.applyInternalFieldStateChangeListener()
-
-        verify(listener, times(1)).onStateChange(any())
-    }
-
     @Test
     fun test_field_state_change_listener_last() {
         val child = view.statePreparer.getView()
         assertTrue(child is BaseInputField)
 
         (child as BaseInputField).prepareFieldTypeConnection()
-        child.applyInternalFieldStateChangeListener()
 
         val listener = mock(OnFieldStateChangeListener::class.java)
         view.setOnFieldStateChangeListener(listener)
@@ -239,7 +222,6 @@ class VGSCardNumberEditTextTest {
         assertTrue(child is BaseInputField)
 
         (child as BaseInputField).prepareFieldTypeConnection()
-        child.applyInternalFieldStateChangeListener()
 
         val listener = mock(View.OnFocusChangeListener::class.java)
         view.onFocusChangeListener = listener
@@ -270,8 +252,6 @@ class VGSCardNumberEditTextTest {
         view.setFieldName("number")
 
         (child as BaseInputField).prepareFieldTypeConnection()
-        child.applyInternalFieldStateChangeListener()
-
 
         val state = view.getState()
         assertNotNull(state)
@@ -295,7 +275,6 @@ class VGSCardNumberEditTextTest {
         assertTrue(child is BaseInputField)
 
         (child as BaseInputField).prepareFieldTypeConnection()
-        child.applyInternalFieldStateChangeListener()
 
         val rule = PaymentCardNumberRule.ValidationBuilder()
             .setAllowableNumberLength(arrayOf(12, 15))
@@ -335,7 +314,6 @@ class VGSCardNumberEditTextTest {
         assertTrue(child is BaseInputField)
 
         (child as BaseInputField).prepareFieldTypeConnection()
-        child.applyInternalFieldStateChangeListener()
 
         val rule = PaymentCardNumberRule.ValidationBuilder()
             .setAllowableMinLength(7)
@@ -378,7 +356,6 @@ class VGSCardNumberEditTextTest {
         assertTrue(child is BaseInputField)
 
         (child as BaseInputField).prepareFieldTypeConnection()
-        child.applyInternalFieldStateChangeListener()
 
         val rule = PaymentCardNumberRule.ValidationBuilder()
             .setAllowableMaxLength(17)
@@ -431,7 +408,6 @@ class VGSCardNumberEditTextTest {
         assertTrue(child is BaseInputField)
 
         (child as BaseInputField).prepareFieldTypeConnection()
-        child.applyInternalFieldStateChangeListener()
 
         val rule = PaymentCardNumberRule.ValidationBuilder()
             .setAllowableMaxLength(17)
@@ -491,7 +467,6 @@ class VGSCardNumberEditTextTest {
         assertTrue(child is BaseInputField)
 
         (child as BaseInputField).prepareFieldTypeConnection()
-        child.applyInternalFieldStateChangeListener()
 
         val rule = PaymentCardNumberRule.ValidationBuilder()
             .setAlgorithm(ChecksumAlgorithm.LUHN)
@@ -533,7 +508,6 @@ class VGSCardNumberEditTextTest {
         assertTrue(child is BaseInputField)
 
         (child as BaseInputField).prepareFieldTypeConnection()
-        child.applyInternalFieldStateChangeListener()
 
         val rule = PaymentCardNumberRule.ValidationBuilder()
             .setRegex("^[0-9]{15}(?:[0-9]{1})?\$")
@@ -583,7 +557,6 @@ class VGSCardNumberEditTextTest {
         assertTrue(child is BaseInputField)
 
         (child as BaseInputField).prepareFieldTypeConnection()
-        child.applyInternalFieldStateChangeListener()
 
         val rule = PaymentCardNumberRule.ValidationBuilder()
             .setAllowableMinLength(12)
@@ -627,7 +600,6 @@ class VGSCardNumberEditTextTest {
         assertTrue(child is BaseInputField)
 
         (child as BaseInputField).prepareFieldTypeConnection()
-        child.applyInternalFieldStateChangeListener()
 
         val rule = PaymentCardNumberRule.ValidationBuilder()
             .setAllowToOverrideDefaultValidation(true)
@@ -668,7 +640,6 @@ class VGSCardNumberEditTextTest {
         assertTrue(child is BaseInputField)
 
         (child as BaseInputField).prepareFieldTypeConnection()
-        child.applyInternalFieldStateChangeListener()
 
         val rule = PaymentCardNumberRule.ValidationBuilder()
             .setAlgorithm(ChecksumAlgorithm.LUHN)
@@ -709,7 +680,6 @@ class VGSCardNumberEditTextTest {
         assertTrue(child is BaseInputField)
 
         (child as BaseInputField).prepareFieldTypeConnection()
-        child.applyInternalFieldStateChangeListener()
 
         val rule = PaymentCardNumberRule.ValidationBuilder()
             .setAlgorithm(ChecksumAlgorithm.LUHN)

@@ -139,7 +139,6 @@ class PersonNameEditTextTest {
         assertTrue(child is BaseInputField)
 
         (child as BaseInputField).prepareFieldTypeConnection()
-        child.applyInternalFieldStateChangeListener()
 
         val listener = mock(View.OnFocusChangeListener::class.java)
         view.onFocusChangeListener = listener
@@ -166,7 +165,6 @@ class PersonNameEditTextTest {
         view.setFieldName("holder")
 
         (child as BaseInputField).prepareFieldTypeConnection()
-        child.applyInternalFieldStateChangeListener()
 
 
         val state = view.getState()
@@ -198,7 +196,6 @@ class PersonNameEditTextTest {
         assertTrue(child is BaseInputField)
 
         (child as BaseInputField).prepareFieldTypeConnection()
-        child.applyInternalFieldStateChangeListener()
 
         val rule = PersonNameRule.ValidationBuilder()
             .setAllowableMinLength(12)
@@ -237,7 +234,6 @@ class PersonNameEditTextTest {
         assertTrue(child is BaseInputField)
 
         (child as BaseInputField).prepareFieldTypeConnection()
-        child.applyInternalFieldStateChangeListener()
 
         val rule = PersonNameRule.ValidationBuilder()
             .setAllowableMinLength(7)
@@ -278,7 +274,6 @@ class PersonNameEditTextTest {
         assertTrue(child is BaseInputField)
 
         (child as BaseInputField).prepareFieldTypeConnection()
-        child.applyInternalFieldStateChangeListener()
 
         val rule = PersonNameRule.ValidationBuilder()
             .setAllowableMaxLength(17)
@@ -337,7 +332,6 @@ class PersonNameEditTextTest {
         assertTrue(child is BaseInputField)
 
         (child as BaseInputField).prepareFieldTypeConnection()
-        child.applyInternalFieldStateChangeListener()
 
         val rule = PersonNameRule.ValidationBuilder()
             .setAllowableMaxLength(17)
@@ -394,7 +388,6 @@ class PersonNameEditTextTest {
         assertTrue(child is BaseInputField)
 
         (child as BaseInputField).prepareFieldTypeConnection()
-        child.applyInternalFieldStateChangeListener()
 
         val rule = PersonNameRule.ValidationBuilder()
             .setRegex("^[0-9]{15}(?:[0-9]{1})?\$")

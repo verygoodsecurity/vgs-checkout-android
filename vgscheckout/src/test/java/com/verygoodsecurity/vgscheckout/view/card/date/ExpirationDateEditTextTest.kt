@@ -233,27 +233,11 @@ class ExpirationDateEditTextTest {
     }
 
     @Test
-    fun test_field_state_change_listener_first() {
-        val child = view.statePreparer.getView()
-        assertTrue(child is BaseInputField)
-
-        val listener = mock(OnFieldStateChangeListener::class.java)
-        view.setOnFieldStateChangeListener(listener)
-        verify(listener, times(0)).onStateChange(any())
-
-        (child as BaseInputField).prepareFieldTypeConnection()
-        child.applyInternalFieldStateChangeListener()
-
-        verify(listener).onStateChange(any())
-    }
-
-    @Test
     fun test_field_state_change_listener_last() {
         val child = view.statePreparer.getView()
         assertTrue(child is BaseInputField)
 
         (child as BaseInputField).prepareFieldTypeConnection()
-        child.applyInternalFieldStateChangeListener()
 
         val listener = mock(OnFieldStateChangeListener::class.java)
         view.setOnFieldStateChangeListener(listener)
@@ -268,7 +252,6 @@ class ExpirationDateEditTextTest {
         assertTrue(child is BaseInputField)
 
         (child as BaseInputField).prepareFieldTypeConnection()
-        child.applyInternalFieldStateChangeListener()
 
         val listener = mock(View.OnFocusChangeListener::class.java)
         view.onFocusChangeListener = listener
@@ -296,7 +279,6 @@ class ExpirationDateEditTextTest {
         view.setFieldName("date")
 
         (child as BaseInputField).prepareFieldTypeConnection()
-        child.applyInternalFieldStateChangeListener()
 
 
         val state = view.getState()
@@ -329,7 +311,6 @@ class ExpirationDateEditTextTest {
         view.setFieldName("date")
 
         (child as BaseInputField).prepareFieldTypeConnection()
-        child.applyInternalFieldStateChangeListener()
 
 
         val state = view.getState()

@@ -155,27 +155,11 @@ class SSNEditTextTest {
     }
 
     @Test
-    fun test_field_state_change_listener_first() {
-        val child = view.statePreparer.getView()
-        assertTrue(child is BaseInputField)
-
-        val listener = mock(OnFieldStateChangeListener::class.java)
-        view.setOnFieldStateChangeListener(listener)
-        verify(listener, times(0)).onStateChange(any())
-
-        (child as BaseInputField).prepareFieldTypeConnection()
-        child.applyInternalFieldStateChangeListener()
-
-        verify(listener, times(1)).onStateChange(any())
-    }
-
-    @Test
     fun test_field_state_change_listener_last() {
         val child = view.statePreparer.getView()
         assertTrue(child is BaseInputField)
 
         (child as BaseInputField).prepareFieldTypeConnection()
-        child.applyInternalFieldStateChangeListener()
 
         val listener = mock(OnFieldStateChangeListener::class.java)
         view.setOnFieldStateChangeListener(listener)
@@ -189,7 +173,6 @@ class SSNEditTextTest {
         assertTrue(child is BaseInputField)
 
         (child as BaseInputField).prepareFieldTypeConnection()
-        child.applyInternalFieldStateChangeListener()
 
         val listener = mock(View.OnFocusChangeListener::class.java)
         view.onFocusChangeListener = listener
@@ -217,7 +200,6 @@ class SSNEditTextTest {
         view.setFieldName("number")
 
         (child as BaseInputField).prepareFieldTypeConnection()
-        child.applyInternalFieldStateChangeListener()
 
 
         val state = view.getState()
@@ -240,7 +222,6 @@ class SSNEditTextTest {
         assertTrue(child is BaseInputField)
 
         (child as BaseInputField).prepareFieldTypeConnection()
-        child.applyInternalFieldStateChangeListener()
 
         child.refreshInternalState()
         view.setText("123 12 3123")
@@ -278,7 +259,6 @@ class SSNEditTextTest {
         assertTrue(child is BaseInputField)
 
         (child as BaseInputField).prepareFieldTypeConnection()
-        child.applyInternalFieldStateChangeListener()
 
         child.refreshInternalState()
         view.setText("123-12-3123")

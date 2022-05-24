@@ -127,6 +127,13 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
             if (!isEdited) isEdited = it != null && it.isNotEmpty()
             updateTextChanged(it.toString())
             vgsParent?.notifyOnTextChanged(it.isNullOrEmpty())
+            notifyStateChangeListeners()
+        }
+    }
+
+    private fun notifyStateChangeListeners() {
+        inputConnection?.getOutput()?.mapToFieldState()?.let {
+            onFieldStateChangeListener?.onStateChange(it)
         }
     }
 
@@ -317,7 +324,9 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
 
     fun setOnFieldStateChangeListener(onFieldStateChangeListener: OnFieldStateChangeListener?) {
         this.onFieldStateChangeListener = onFieldStateChangeListener
-        inputConnection?.run()
+        inputConnection?.getOutput()?.mapToFieldState()?.let {
+            onFieldStateChangeListener?.onStateChange(it)
+        }
     }
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)

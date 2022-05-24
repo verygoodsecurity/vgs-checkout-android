@@ -131,7 +131,6 @@ class CardVerificationCodeEditTextTest {
         assertTrue(child is BaseInputField)
 
         (child as BaseInputField).prepareFieldTypeConnection()
-        child.applyInternalFieldStateChangeListener()
 
         val listener = Mockito.mock(View.OnFocusChangeListener::class.java)
         view.onFocusChangeListener = listener
@@ -159,7 +158,6 @@ class CardVerificationCodeEditTextTest {
         view.setFieldName("cvc")
 
         (child as BaseInputField).prepareFieldTypeConnection()
-        child.applyInternalFieldStateChangeListener()
 
 
         val state = view.getState()

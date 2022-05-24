@@ -132,7 +132,6 @@ class VGSEditTextTest {
         verify(listener, times(0)).onStateChange(any())
 
         (child as BaseInputField).prepareFieldTypeConnection()
-        child.applyInternalFieldStateChangeListener()
 
         verify(listener, times(1)).onStateChange(any())
     }
@@ -143,7 +142,6 @@ class VGSEditTextTest {
         assertTrue(child is BaseInputField)
 
         (child as BaseInputField).prepareFieldTypeConnection()
-        child.applyInternalFieldStateChangeListener()
 
         val listener = mock(OnFieldStateChangeListener::class.java)
         view.setOnFieldStateChangeListener(listener)
@@ -158,7 +156,6 @@ class VGSEditTextTest {
         assertTrue(child is BaseInputField)
 
         (child as BaseInputField).prepareFieldTypeConnection()
-        child.applyInternalFieldStateChangeListener()
 
         val listener = mock(View.OnFocusChangeListener::class.java)
         view.onFocusChangeListener = listener
@@ -186,7 +183,6 @@ class VGSEditTextTest {
         assertTrue(child is BaseInputField)
 
         (child as BaseInputField).prepareFieldTypeConnection()
-        child.applyInternalFieldStateChangeListener()
 
         val rule = VGSInfoRule.ValidationBuilder()
             .setAllowableMinLength(12)
@@ -225,7 +221,6 @@ class VGSEditTextTest {
         assertTrue(child is BaseInputField)
 
         (child as BaseInputField).prepareFieldTypeConnection()
-        child.applyInternalFieldStateChangeListener()
 
         val rule = VGSInfoRule.ValidationBuilder()
             .setAllowableMinLength(7)
@@ -266,7 +261,6 @@ class VGSEditTextTest {
         assertTrue(child is BaseInputField)
 
         (child as BaseInputField).prepareFieldTypeConnection()
-        child.applyInternalFieldStateChangeListener()
 
         val rule = VGSInfoRule.ValidationBuilder()
             .setAllowableMaxLength(17)
@@ -325,7 +319,6 @@ class VGSEditTextTest {
         assertTrue(child is BaseInputField)
 
         (child as BaseInputField).prepareFieldTypeConnection()
-        child.applyInternalFieldStateChangeListener()
 
         val rule = VGSInfoRule.ValidationBuilder()
             .setAllowableMaxLength(17)
@@ -382,7 +375,6 @@ class VGSEditTextTest {
         assertTrue(child is BaseInputField)
 
         (child as BaseInputField).prepareFieldTypeConnection()
-        child.applyInternalFieldStateChangeListener()
 
         val rule = VGSInfoRule.ValidationBuilder()
             .setRegex("^[0-9]{15}(?:[0-9]{1})?\$")
