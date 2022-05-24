@@ -24,9 +24,9 @@ import androidx.annotation.FloatRange
 import androidx.annotation.RequiresApi
 import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgscheckout.R
-import com.verygoodsecurity.vgscheckout.collect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscheckout.analytic.AnalyticTracker
 import com.verygoodsecurity.vgscheckout.collect.core.model.state.FieldState
+import com.verygoodsecurity.vgscheckout.collect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscheckout.collect.core.storage.DependencyListener
 import com.verygoodsecurity.vgscheckout.collect.core.storage.OnFieldStateChangeListener
 import com.verygoodsecurity.vgscheckout.collect.view.card.CardBrand
@@ -156,9 +156,7 @@ internal abstract class InputFieldView @JvmOverloads constructor(
             inputField.tracker = tr
         }
 
-        override fun unsubscribe() {
-            inputField.stateListener = null
-        }
+        override fun unsubscribe() {}
     }
 
     override fun onDetachedFromWindow() {
@@ -392,10 +390,6 @@ internal abstract class InputFieldView @JvmOverloads constructor(
 
     override fun getFieldType(): FieldType {
         return fieldType
-    }
-
-    override fun addStateListener(stateListener: OnVgsViewStateChangeListener) {
-        inputField.stateListener = stateListener
     }
     //endregion
 
@@ -1191,8 +1185,13 @@ internal abstract class InputFieldView @JvmOverloads constructor(
         }
     }
 
-    fun getFieldState(): FieldState? {
-        return inputField.getState()
+    //todo replace all get__State
+    fun getFieldState(): VGSFieldState {
+        return inputField.getFieldState()
+    }
+
+    fun setDependantField(field: InputFieldView) {
+        inputField.dependantField = field.inputField
     }
 
     protected fun getCardNumberState(): FieldState.CardNumberState? {

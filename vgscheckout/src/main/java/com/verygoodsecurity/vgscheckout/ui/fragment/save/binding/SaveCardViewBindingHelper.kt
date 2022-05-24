@@ -1,14 +1,20 @@
 package com.verygoodsecurity.vgscheckout.ui.fragment.save.binding
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Space
 import androidx.annotation.LayoutRes
 import androidx.appcompat.widget.LinearLayoutCompat
+import androidx.core.view.isVisible
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.checkbox.MaterialCheckBox
 import com.google.android.material.textview.MaterialTextView
 import com.verygoodsecurity.vgscheckout.R
+import com.verygoodsecurity.vgscheckout.collect.core.model.state.FieldContent
+import com.verygoodsecurity.vgscheckout.collect.core.model.state.VGSFieldState
+import com.verygoodsecurity.vgscheckout.collect.view.core.serializers.CountryNameToIsoSerializer
+import com.verygoodsecurity.vgscheckout.collect.view.core.serializers.VGSExpDateSeparateSerializer
 import com.verygoodsecurity.vgscheckout.collect.widget.*
 
 // TODO: Remove all unused views
@@ -45,4 +51,22 @@ internal class SaveCardViewBindingHelper(inflater: LayoutInflater, @LayoutRes la
 
     val saveCardCheckbox: MaterialCheckBox by lazy { rootView.findViewById(R.id.mcbSaveCard) }
     val saveCardButton: MaterialButton by lazy { rootView.findViewById(R.id.mbSaveCard) }
+
+    fun getStates(
+        includeInvisibleFields: Boolean = false
+    ): MutableCollection<VGSFieldState> {
+        return with(mutableListOf<VGSFieldState>()) {
+            if (includeInvisibleFields || securityCodeEt.isVisible) add(securityCodeEt.getFieldState())
+            if (includeInvisibleFields || expirationDateEt.isVisible) add(expirationDateEt.getFieldState())
+            if (includeInvisibleFields || cardNumberEt.isVisible) add(cardNumberEt.getFieldState())
+            if (includeInvisibleFields || cardHolderEt.isVisible) add(cardHolderEt.getFieldState())
+
+            if (includeInvisibleFields || addressEt.isVisible) add(addressEt.getFieldState())
+            if (includeInvisibleFields || countryEt.isVisible) add(countryEt.getFieldState())
+            if (includeInvisibleFields || optionalAddressEt.isVisible) add(optionalAddressEt.getFieldState())
+            if (includeInvisibleFields || cityEt.isVisible) add(cityEt.getFieldState())
+            if (includeInvisibleFields || postalCodeEt.isVisible) add(postalCodeEt.getFieldState())
+            this
+        }
+    }
 }

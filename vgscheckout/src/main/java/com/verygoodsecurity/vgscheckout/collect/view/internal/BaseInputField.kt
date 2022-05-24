@@ -12,12 +12,10 @@ import androidx.core.view.ViewCompat
 import androidx.core.widget.addTextChangedListener
 import com.google.android.material.textfield.TextInputEditText
 import com.verygoodsecurity.vgscheckout.R
-import com.verygoodsecurity.vgscheckout.collect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscheckout.analytic.AnalyticTracker
 import com.verygoodsecurity.vgscheckout.analytic.event.AutofillEvent
 import com.verygoodsecurity.vgscheckout.collect.core.model.state.*
 import com.verygoodsecurity.vgscheckout.collect.core.storage.DependencyListener
-import com.verygoodsecurity.vgscheckout.collect.core.storage.DependencyType
 import com.verygoodsecurity.vgscheckout.collect.core.storage.OnFieldStateChangeListener
 import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
 import com.verygoodsecurity.vgscheckout.collect.view.card.FieldType
@@ -32,7 +30,7 @@ import com.verygoodsecurity.vgscheckout.util.logger.VGSCheckoutLogger
 
 /** @suppress */
 internal abstract class BaseInputField(context: Context) : TextInputEditText(context),
-    DependencyListener, OnVgsViewStateChangeListener {
+    DependencyListener {
 
     companion object {
         fun getInputField(context: Context, parent: InputFieldView): BaseInputField {
@@ -50,12 +48,6 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         }
     }
 
-    internal var stateListener: OnVgsViewStateChangeListener? = null
-        set(value) {
-            field = value
-            inputConnection?.setOutputListener(value)
-            inputConnection?.run()
-        }
     internal var isRequired: Boolean = true
         set(value) {
             field = value
@@ -126,7 +118,8 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
     private fun setupViewAttributes() {
         id = ViewCompat.generateViewId()
 
-        compoundDrawablePadding = resources.getDimension(R.dimen.vgs_checkout_margin_padding_size_small).toInt()
+        compoundDrawablePadding =
+            resources.getDimension(R.dimen.vgs_checkout_margin_padding_size_small).toInt()
     }
 
     private fun setupInputConnectionListener() {
@@ -154,7 +147,6 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         applyFieldType()
         inputConnection?.getOutput()?.enableValidation = enableValidation
         super.onAttachedToWindow()
-        applyInternalFieldStateChangeListener()
         isListeningPermitted = false
     }
 
@@ -266,10 +258,12 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
     }
 
     override fun dispatchDependencySetting(dependency: Dependency) {
-        if (dependency.dependencyType == DependencyType.TEXT) {
-            setText(dependency.value.toString())
-        }
+//        if (dependency.dependencyType == DependencyType.TEXT) {
+//            setText(dependency.value.toString())
+//        }
     }
+
+    var dependantField: BaseInputField? = null
 
     private fun requestFocusOnView(id: Int) {
         val nextView = rootView?.findViewById<View>(id)
@@ -321,16 +315,6 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         super.onEditorAction(actionCode)
     }
 
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    internal fun applyInternalFieldStateChangeListener() {
-        inputConnection?.setOutputListener(this)
-    }
-
-    override fun emit(viewId: Int, state: VGSFieldState) {
-        val userState = state.mapToFieldState()
-        onFieldStateChangeListener?.onStateChange(userState)
-    }
-
     fun setOnFieldStateChangeListener(onFieldStateChangeListener: OnFieldStateChangeListener?) {
         this.onFieldStateChangeListener = onFieldStateChangeListener
         inputConnection?.run()
@@ -365,6 +349,12 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
 
     internal open fun getState(): FieldState? {
         return inputConnection?.getOutput()?.mapToFieldState()
+    }
+
+    //todo replace getState
+    //todo make inputConnection not null
+    fun getFieldState(): VGSFieldState {
+        return inputConnection?.getOutput()!!
     }
 
     internal var tracker: AnalyticTracker? = null

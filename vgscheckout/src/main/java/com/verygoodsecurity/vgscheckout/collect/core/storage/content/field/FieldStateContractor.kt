@@ -9,6 +9,7 @@ import com.verygoodsecurity.vgscheckout.util.logger.VGSCheckoutLogger
 /** @suppress */
 internal class FieldStateContractor : StorageContractor<VGSFieldState> {
 
+    //todo move warning to internal fields
     override fun checkState(state: VGSFieldState): Boolean {
         return if (state.fieldName?.trim().isNullOrEmpty()) {
             VGSCheckoutLogger.warn(InputFieldView.TAG, FieldNameNotSetException())

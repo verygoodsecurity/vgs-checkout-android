@@ -87,7 +87,6 @@ internal class CardInputField(context: Context) : BaseInputField(context),
         val state = collectCurrentState(stateContent)
 
         inputConnection?.setOutput(state)
-        inputConnection?.setOutputListener(stateListener)
 
         applyFormatter()
         applyInputType()
@@ -113,15 +112,17 @@ internal class CardInputField(context: Context) : BaseInputField(context),
     }
 
     override fun updateTextChanged(str: String) {
-        inputConnection?.also {
-            with(it.getOutput()) {
-                if (str.isNotEmpty()) {
-                    hasUserInteraction = true
-                }
-                content = createCardNumberContent(str)
-            }
-            it.run()
+        val newContent = createCardNumberContent(str)
+
+        inputConnection?.getOutput()?.apply {
+//            if (str.isNotEmpty()) {         //todo remove it after testing
+//                hasUserInteraction = true
+//            }
+            content = newContent
         }
+        inputConnection?.run()
+
+        dependantField?.dispatchDependencySetting(Dependency.card(newContent))
     }
 
     private fun createCardNumberContent(str: String): FieldContent.CardNumberContent {

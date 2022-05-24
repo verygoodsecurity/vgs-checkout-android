@@ -1,6 +1,5 @@
 package com.verygoodsecurity.vgscheckout.collect.view
 
-import com.verygoodsecurity.vgscheckout.collect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscheckout.collect.view.card.FieldType
 
 internal interface VGSCollectView {
@@ -38,6 +37,4 @@ internal interface VGSCollectView {
      * @param resId the resource identifier of the field name
      */
     fun setFieldName(resId: Int)
-
-    fun addStateListener(stateListener: OnVgsViewStateChangeListener)
 }

@@ -45,7 +45,6 @@ internal class CVCInputField(context: Context) : BaseInputField(context) {
         val state = collectCurrentState(stateContent)
 
         inputConnection?.setOutput(state)
-        inputConnection?.setOutputListener(stateListener)
 
         applyNewTextWatcher(null)
         applyLengthFilter(cardContent.rangeCVV.last())
@@ -86,6 +85,7 @@ internal class CVCInputField(context: Context) : BaseInputField(context) {
             DependencyType.CARD -> handleCardDependency(dependency.value as FieldContent.CardNumberContent)
             else -> super.dispatchDependencySetting(dependency)
         }
+        inputConnection?.run()
     }
 
     override fun updateTextChanged(str: String) {

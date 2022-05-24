@@ -92,7 +92,6 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
         val state = collectCurrentState(stateContent)
 
         inputConnection?.setOutput(state)
-        inputConnection?.setOutputListener(stateListener)
 
         applyFormatter()
         applyInputType()
