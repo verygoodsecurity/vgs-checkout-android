@@ -10,10 +10,9 @@ import android.text.format.DateUtils
 import android.view.View
 import android.view.autofill.AutofillValue
 import android.widget.DatePicker
-import com.verygoodsecurity.vgscheckout.collect.core.model.state.Dependency
 import com.verygoodsecurity.vgscheckout.collect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscheckout.collect.core.model.state.handleOutputFormat
-import com.verygoodsecurity.vgscheckout.collect.core.storage.DependencyType
+import com.verygoodsecurity.vgscheckout.collect.view.Dependency
 import com.verygoodsecurity.vgscheckout.collect.view.card.FieldType
 import com.verygoodsecurity.vgscheckout.collect.view.card.conection.InputCardExpDateConnection
 import com.verygoodsecurity.vgscheckout.collect.view.card.formatter.date.BaseDateFormatter
@@ -32,7 +31,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 /** @suppress */
-internal class DateInputField(context: Context): BaseInputField(context), View.OnClickListener {
+internal class DateInputField(context: Context) : BaseInputField(context), View.OnClickListener {
 
     companion object {
         private const val MM_YYYY = "MM/yyyy"
@@ -41,28 +40,29 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
         private const val SDF = "MM/dd/yyyy"
     }
 
-    private var datePattern:String = MM_YYYY
-    private var outputPattern:String = datePattern
+    private var datePattern: String = MM_YYYY
+    private var outputPattern: String = datePattern
 
     private var formatterMode = FormatMode.STRICT
     private var formatter: DatePickerFormatter? = null
 
     private var charLimit = datePattern.length
 
-    private var minDate:Long = 0
-    private var maxDate:Long = 0
+    private var minDate: Long = 0
+    private var maxDate: Long = 0
 
     private val selectedDate = Calendar.getInstance()
 
     private val dateLimitationFormat = SimpleDateFormat(SDF, Locale.US)
-    private var fieldDateFormat:SimpleDateFormat? = null
-    private var fieldDateOutPutFormat:SimpleDateFormat? = null
+    private var fieldDateFormat: SimpleDateFormat? = null
+    private var fieldDateOutPutFormat: SimpleDateFormat? = null
     private var fieldDataSerializers: List<FieldDataSerializer<*, *>>? = null
 
-    private var datePickerMode:DatePickerMode = DatePickerMode.INPUT
+    private var datePickerMode: DatePickerMode = DatePickerMode.INPUT
     private var isDaysVisible = true
 
-    private var datePickerVisibilityChangeListener:ExpirationDateEditText.OnDatePickerVisibilityChangeListener? = null
+    private var datePickerVisibilityChangeListener: ExpirationDateEditText.OnDatePickerVisibilityChangeListener? =
+        null
 
     override var fieldType: FieldType = FieldType.CARD_EXPIRATION_DATE
 
@@ -77,7 +77,7 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
         inputConnection = InputCardExpDateConnection(id, timeGapsValidator)
 
         val stateContent = FieldContent.CreditCardExpDateContent().apply {
-            if(!text.isNullOrEmpty() && handleInputMode(text.toString())) {
+            if (!text.isNullOrEmpty() && handleInputMode(text.toString())) {
                 handleOutputFormat(
                     selectedDate,
                     fieldDateFormat,
@@ -98,7 +98,7 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
     }
 
     private fun applyFormatter() {
-        val baseFormatter: BaseDateFormatter = when(formatterMode) {
+        val baseFormatter: BaseDateFormatter = when (formatterMode) {
             FormatMode.STRICT -> StrictExpirationDateFormatter(this)
             FormatMode.FLEXIBLE -> FlexibleDateFormatter()
         }
@@ -112,13 +112,13 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
     }
 
     private fun applyInputType() {
-        if(!isValidInputType(inputType)) {
+        if (!isValidInputType(inputType)) {
             inputType = InputType.TYPE_CLASS_DATETIME
         }
         refreshInput()
     }
 
-    private fun isValidInputType(type: Int):Boolean {
+    private fun isValidInputType(type: Int): Boolean {
         return type == InputType.TYPE_CLASS_TEXT ||
                 type == InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD ||
                 type == InputType.TYPE_CLASS_DATETIME
@@ -157,12 +157,15 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
         return c
     }
 
-    private fun handleInputMode(str:String):Boolean {
+    private fun handleInputMode(str: String): Boolean {
         return try {
             val currentDate = fieldDateFormat!!.parse(str)
-            return if(fieldDateFormat!!.format(currentDate) == str) {
+            return if (fieldDateFormat!!.format(currentDate) == str) {
                 selectedDate.time = currentDate
-                selectedDate.set(Calendar.DAY_OF_MONTH, selectedDate.getActualMaximum(Calendar.DATE))
+                selectedDate.set(
+                    Calendar.DAY_OF_MONTH,
+                    selectedDate.getActualMaximum(Calendar.DATE)
+                )
                 selectedDate.set(Calendar.HOUR, 23)
                 selectedDate.set(Calendar.MINUTE, 59)
                 selectedDate.set(Calendar.SECOND, 59)
@@ -184,7 +187,7 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
         dialogMode: DatePickerMode,
         ignoreFieldMode: Boolean
     ) {
-        if(ignoreFieldMode) {
+        if (ignoreFieldMode) {
             showDatePickerDialog(dialogMode)
         } else {
             showDatePickerDialog()
@@ -196,7 +199,7 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
     }
 
     private fun showDatePickerDialog(dialogMode: DatePickerMode) {
-        val mode:DatePickerMode  = when(dialogMode) {
+        val mode: DatePickerMode = when (dialogMode) {
             DatePickerMode.INPUT -> return
             DatePickerMode.DEFAULT -> datePickerMode
             else -> dialogMode
@@ -211,11 +214,11 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
             tempC.set(Calendar.DAY_OF_MONTH, dayOfMonth)
         }
 
-        val pos = DialogInterface.OnClickListener { dialog, which ->
+        val pos = DialogInterface.OnClickListener { _, _ ->
             selectedDate.time = tempC.time
             applyDate()
         }
-        val neg = DialogInterface.OnClickListener { dialog, which -> }
+        val neg = DialogInterface.OnClickListener { _, _ -> }
 
         DatePickerBuilder(context, mode)
             .setMinDate(minDate)
@@ -231,29 +234,32 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
     }
 
     private fun applyDate() {
-        if(!isDaysVisible) {
+        if (!isDaysVisible) {
             val dayLast = selectedDate.getActualMaximum(Calendar.DAY_OF_MONTH)
             selectedDate.set(Calendar.DAY_OF_MONTH, dayLast)
         }
-        val strDate = fieldDateFormat?.format(selectedDate.time)?:""
+        val strDate = fieldDateFormat?.format(selectedDate.time) ?: ""
         setText(strDate)
     }
 
     override fun setText(text: CharSequence?, type: BufferType?) {
-        if(datePickerMode == DatePickerMode.SPINNER ||
-            datePickerMode == DatePickerMode.CALENDAR) {
+        if (datePickerMode == DatePickerMode.SPINNER ||
+            datePickerMode == DatePickerMode.CALENDAR
+        ) {
             try {
                 fieldDateFormat?.parse(text.toString())
                 super.setText(text, type)
-            } catch (e: ParseException) { }
+            } catch (e: ParseException) {
+            }
         } else {
             super.setText(text, type)
         }
     }
 
-    internal fun setOutputPattern(pattern:String?) {
-        outputPattern = if(pattern.isNullOrEmpty() ||
-            (pattern.contains('T') && !pattern.contains("'T'"))) {
+    internal fun setOutputPattern(pattern: String?) {
+        outputPattern = if (pattern.isNullOrEmpty() ||
+            (pattern.contains('T') && !pattern.contains("'T'"))
+        ) {
             datePattern
         } else {
             pattern
@@ -262,10 +268,11 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
         fieldDateOutPutFormat = SimpleDateFormat(outputPattern, Locale.ENGLISH)
     }
 
-    internal fun setDatePattern(pattern:String?) {
+    internal fun setDatePattern(pattern: String?) {
         datePattern = when {
             pattern.isNullOrEmpty() -> MM_YYYY
-            datePickerMode == DatePickerMode.INPUT && pattern.isInputDatePatternValid().not() -> MM_YYYY
+            datePickerMode == DatePickerMode.INPUT && pattern.isInputDatePatternValid()
+                .not() -> MM_YYYY
             else -> pattern
         }
 
@@ -278,12 +285,12 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
         isListeningPermitted = false
     }
 
-    internal fun getDatePattern():String? = datePattern
+    internal fun getDatePattern(): String = datePattern
 
-    internal fun setDatePickerMode(mode:Int) {
+    internal fun setDatePickerMode(mode: Int) {
         val pickerMode = DatePickerMode.values()[mode]
 
-        when(pickerMode) {
+        when (pickerMode) {
             DatePickerMode.CALENDAR -> setupDialogMode(pickerMode)
             DatePickerMode.SPINNER -> setupDialogMode(pickerMode)
             DatePickerMode.DEFAULT -> setupInputMode()
@@ -306,12 +313,12 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
 
     internal fun getDatePickerMode() = datePickerMode
 
-    private fun setIsActive(isActive:Boolean) {
+    private fun setIsActive(isActive: Boolean) {
         isCursorVisible = isActive
         isFocusable = isActive
         isFocusableInTouchMode = isActive
         isListeningPermitted = true
-        if(isActive) {
+        if (isActive) {
             charLimit = datePattern.length
 
             setOnClickListener(null)
@@ -345,8 +352,8 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
         refreshInput()
     }
 
-    private fun validateInputType(type: Int):Int {
-        return when(type) {
+    private fun validateInputType(type: Int): Int {
+        return when (type) {
             InputType.TYPE_CLASS_TEXT -> type
             InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD -> type
             InputType.TYPE_CLASS_DATETIME -> type
@@ -367,10 +374,12 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
 
     override fun setupAutofill() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            setAutofillHints(View.AUTOFILL_HINT_CREDIT_CARD_EXPIRATION_DATE,
+            setAutofillHints(
+                View.AUTOFILL_HINT_CREDIT_CARD_EXPIRATION_DATE,
                 View.AUTOFILL_HINT_CREDIT_CARD_EXPIRATION_MONTH,
                 View.AUTOFILL_HINT_CREDIT_CARD_EXPIRATION_DAY,
-                View.AUTOFILL_HINT_CREDIT_CARD_EXPIRATION_YEAR)
+                View.AUTOFILL_HINT_CREDIT_CARD_EXPIRATION_YEAR
+            )
         }
     }
 
@@ -386,18 +395,18 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
                 else -> {
                     super.autofill(value)
                 }
-             }
+            }
         }
     }
 
     @SuppressLint("NewApi")
-    private fun parseTextDate(value: AutofillValue):AutofillValue {
+    private fun parseTextDate(value: AutofillValue): AutofillValue {
         val str = value.textValue.toString()
-        return if(str.length == datePattern.length) {
+        return if (str.length == datePattern.length) {
             value
         } else {
             val newDateStr = value.textValue.toString().handleDate(MM_YY, datePattern)
-            if(newDateStr.isNullOrEmpty()) {
+            if (newDateStr.isNullOrEmpty()) {
                 value
             } else {
                 AutofillValue.forText(newDateStr)
@@ -405,7 +414,7 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
         }
     }
 
-    private fun String.handleDate(incomePattern: String, outcomePattern: String):String? {
+    private fun String.handleDate(incomePattern: String, outcomePattern: String): String? {
         return try {
             val income = SimpleDateFormat(incomePattern, Locale.US)
             val currentDate = income.parse(this)
@@ -424,7 +433,7 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
     }
 
     override fun dispatchDependencySetting(dependency: Dependency) {
-        if(dependency.dependencyType == DependencyType.TEXT) {
+        if (dependency.dependencyType == Dependency.DependencyType.TEXT) {
             applyTextValue(dependency.value)
         } else {
             super.dispatchDependencySetting(dependency)
@@ -432,17 +441,17 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
     }
 
     private fun applyTextValue(value: Any) {
-        when(value) {
-            is Long -> fieldDateFormat?.let{ setText(it.format(Date(value))) }
+        when (value) {
+            is Long -> fieldDateFormat?.let { setText(it.format(Date(value))) }
             is String -> setText(value)
         }
     }
 
-    internal fun setFormatterMode(mode:Int) {
+    internal fun setFormatterMode(mode: Int) {
         with(FormatMode.values()[mode]) {
             formatterMode = this
         }
     }
 
-    internal fun getFormatterMode():Int = formatterMode.ordinal
+    internal fun getFormatterMode(): Int = formatterMode.ordinal
 }

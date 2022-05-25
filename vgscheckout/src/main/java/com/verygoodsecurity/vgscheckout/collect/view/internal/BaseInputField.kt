@@ -1,8 +1,10 @@
 package com.verygoodsecurity.vgscheckout.collect.view.internal
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.text.TextWatcher
 import android.view.View
 import android.view.autofill.AutofillValue
@@ -15,8 +17,7 @@ import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.analytic.AnalyticTracker
 import com.verygoodsecurity.vgscheckout.analytic.event.AutofillEvent
 import com.verygoodsecurity.vgscheckout.collect.core.model.state.*
-import com.verygoodsecurity.vgscheckout.collect.core.storage.DependencyListener
-import com.verygoodsecurity.vgscheckout.collect.core.storage.OnFieldStateChangeListener
+import com.verygoodsecurity.vgscheckout.collect.view.Dependency
 import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
 import com.verygoodsecurity.vgscheckout.collect.view.card.FieldType
 import com.verygoodsecurity.vgscheckout.collect.view.card.conection.InputRunnable
@@ -30,7 +31,7 @@ import com.verygoodsecurity.vgscheckout.util.logger.VGSCheckoutLogger
 
 /** @suppress */
 internal abstract class BaseInputField(context: Context) : TextInputEditText(context),
-    DependencyListener {
+    Dependency.DependentView {
 
     companion object {
         fun getInputField(context: Context, parent: InputFieldView): BaseInputField {
@@ -97,10 +98,10 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         isListeningPermitted = false
 
         setupViewAttributes()
-        setupAutofill()
+        this.setupAutofill()
     }
 
-    internal open fun setupAutofill() {}
+    protected open fun setupAutofill() {}
 
     private fun setupEditorActionListener() {
         setOnEditorActionListener { _, actionId, event ->
@@ -158,7 +159,7 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
     }
 
     private fun setupOnKeyListener() {
-        setOnKeyListener { view, i, keyEvent ->
+        setOnKeyListener { _, i, keyEvent ->
             userKeyListener?.onKey(vgsParent, i, keyEvent) ?: false
         }
     }
@@ -197,11 +198,12 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         }
     }
 
+    @SuppressLint("InlinedApi")
     protected fun isRTL(): Boolean {
         val direction = getResolvedLayoutDirection()
         return direction == View.LAYOUT_DIRECTION_RTL
                 || direction == View.TEXT_DIRECTION_ANY_RTL
-                || direction == View.TEXT_DIRECTION_FIRST_STRONG_RTL
+                || (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && direction == View.TEXT_DIRECTION_FIRST_STRONG_RTL)
                 || direction == View.TEXT_DIRECTION_RTL
     }
 
@@ -264,18 +266,16 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         }
     }
 
+    internal var dependentField: Dependency.DependentView? = null
+
     override fun dispatchDependencySetting(dependency: Dependency) {
-//        if (dependency.dependencyType == DependencyType.TEXT) {
-//            setText(dependency.value.toString())
-//        }
+        if (dependency.dependencyType == Dependency.DependencyType.TEXT) {
+            setText(dependency.value.toString())
+        }
     }
 
-    var dependantField: BaseInputField? = null
-
     private fun requestFocusOnView(id: Int) {
-        val nextView = rootView?.findViewById<View>(id)
-
-        when (nextView) {
+        when (val nextView = rootView?.findViewById<View>(id)) {
             null -> return
             is InputFieldView -> nextView.statePreparer.getView().requestFocus()
             is BaseInputField -> nextView.requestFocus()
@@ -360,10 +360,8 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         return inputConnection?.getOutput()?.mapToFieldState()
     }
 
-    //todo replace getState
-    //todo make inputConnection not null
     fun getFieldState(): VGSFieldState {
-        return inputConnection?.getOutput()!!
+        return inputConnection?.getOutput() ?: VGSFieldState()
     }
 
     internal var tracker: AnalyticTracker? = null
@@ -401,6 +399,21 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
     }
 
     fun getAnalyticsName(): String = analyticName ?: fieldType.getAnalyticName()
+
+    /**
+     * Interface definition for a callback to be invoked when a view state is changed.
+     *
+     * @version 1.0.0
+     */
+    internal interface OnFieldStateChangeListener {
+
+        /**
+         * Called when new changes is detected
+         *
+         * @param state current state of input field
+         */
+        fun onStateChange(state: FieldState)
+    }
 }
 
 internal val TextInputEditText.localVisibleRect: Rect
