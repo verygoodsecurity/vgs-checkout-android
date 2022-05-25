@@ -35,7 +35,7 @@ class CustomBrandTest {
 
         val regex = "^12333"
         val name = "VG_Search"
-        val resId = R.drawable.vgs_checkout_ic_card_front_preview_dark
+        val resId = R.drawable.vgs_checkout_ic_card_front_preview
 
         val brand = CardBrand(regex, name, resId, params)
 
@@ -79,7 +79,7 @@ class CustomBrandTest {
     fun test_custom_brand_with_res() {
         val regex = "^12333"
         val name = "VG_Search"
-        val resId = R.drawable.vgs_checkout_ic_card_front_preview_dark
+        val resId = R.drawable.vgs_checkout_ic_card_front_preview
 
         val brand = CardBrand(regex, name, resId)
 
