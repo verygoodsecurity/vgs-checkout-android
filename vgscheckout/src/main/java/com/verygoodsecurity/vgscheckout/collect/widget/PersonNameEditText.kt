@@ -8,6 +8,7 @@ import android.view.Gravity
 import android.view.inputmethod.EditorInfo
 import com.verygoodsecurity.vgscheckout.collect.core.model.state.FieldState
 import com.verygoodsecurity.vgscheckout.R
+import com.verygoodsecurity.vgscheckout.collect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
 import com.verygoodsecurity.vgscheckout.collect.view.card.FieldType
 import com.verygoodsecurity.vgscheckout.collect.view.card.validation.rules.PersonNameRule
@@ -79,8 +80,8 @@ internal class PersonNameEditText @JvmOverloads constructor(
      *
      * @return current state.
      */
-    fun getState(): FieldState.CardHolderNameState? {
-        return getCardHolderName()
+    fun getState(): VGSFieldState {
+        return getInnerState()
     }
 
     /**

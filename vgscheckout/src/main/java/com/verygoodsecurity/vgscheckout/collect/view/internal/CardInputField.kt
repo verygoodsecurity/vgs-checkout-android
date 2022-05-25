@@ -11,6 +11,7 @@ import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.core.model.state.*
 import com.verygoodsecurity.vgscheckout.collect.util.extension.formatToMask
 import com.verygoodsecurity.vgscheckout.collect.util.extension.isNumeric
+import com.verygoodsecurity.vgscheckout.collect.view.Dependency
 import com.verygoodsecurity.vgscheckout.collect.view.card.*
 import com.verygoodsecurity.vgscheckout.collect.view.card.conection.InputCardNumberConnection
 import com.verygoodsecurity.vgscheckout.collect.view.card.filter.CardBrandFilter
@@ -87,7 +88,6 @@ internal class CardInputField(context: Context) : BaseInputField(context),
         val state = collectCurrentState(stateContent)
 
         inputConnection?.setOutput(state)
-        inputConnection?.setOutputListener(stateListener)
 
         applyFormatter()
         applyInputType()
@@ -113,15 +113,12 @@ internal class CardInputField(context: Context) : BaseInputField(context),
     }
 
     override fun updateTextChanged(str: String) {
-        inputConnection?.also {
-            with(it.getOutput()) {
-                if (str.isNotEmpty()) {
-                    hasUserInteraction = true
-                }
-                content = createCardNumberContent(str)
-            }
-            it.run()
-        }
+        val newContent = createCardNumberContent(str)
+
+        inputConnection?.getOutput()?.content = newContent
+        inputConnection?.run()
+
+        dependentField?.dispatchDependencySetting(Dependency.card(newContent))
     }
 
     private fun createCardNumberContent(str: String): FieldContent.CardNumberContent {
@@ -204,7 +201,10 @@ internal class CardInputField(context: Context) : BaseInputField(context),
             ).also {
                 this@CardInputField.divider = SPACE
             }
-            divider.isNumeric() -> printWarning(TAG, R.string.vgs_checkout_error_divider_number_field).also {
+            divider.isNumeric() -> printWarning(
+                TAG,
+                R.string.vgs_checkout_error_divider_number_field
+            ).also {
                 this@CardInputField.divider = SPACE
             }
             divider.length > 1 -> printWarning(
@@ -222,7 +222,8 @@ internal class CardInputField(context: Context) : BaseInputField(context),
     }
 
     private fun setupKeyListener() {
-        val digits = resources.getString(R.string.vgs_checkout_card_number_digits) + this@CardInputField.divider
+        val digits =
+            resources.getString(R.string.vgs_checkout_card_number_digits) + this@CardInputField.divider
         keyListener = DigitsKeyListener.getInstance(digits)
     }
 

@@ -1,7 +1,5 @@
 package com.verygoodsecurity.vgscheckout.card.connection
 
-import com.verygoodsecurity.vgscheckout.R
-import com.verygoodsecurity.vgscheckout.collect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscheckout.collect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscheckout.collect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscheckout.collect.view.card.conection.InputCardNumberConnection
@@ -9,9 +7,7 @@ import com.verygoodsecurity.vgscheckout.collect.view.card.conection.InputRunnabl
 import com.verygoodsecurity.vgscheckout.collect.view.card.filter.CardBrandPreview
 import com.verygoodsecurity.vgscheckout.collect.view.card.validation.VGSValidator
 import com.verygoodsecurity.vgscheckout.collect.view.card.CardType
-import com.verygoodsecurity.vgscheckout.collect.view.card.CardBrand
 import com.verygoodsecurity.vgscheckout.collect.view.card.filter.CardBrandFilter
-import com.verygoodsecurity.vgscheckout.collect.view.card.filter.MutableCardFilter
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -22,7 +18,6 @@ import org.mockito.Mockito.mock
 class InputCardNumberConnectionTest {
     private lateinit var connection: InputRunnable
     private lateinit var iCardBrand: InputCardNumberConnection.IDrawCardBrand
-    private lateinit var stateListener:OnVgsViewStateChangeListener
 
     @Before
     fun setupConnection() {
@@ -39,7 +34,6 @@ class InputCardNumberConnectionTest {
             )
 
         setupFilter(connection, divider)
-        setupListener(connection)
     }
 
     @Test
@@ -52,7 +46,6 @@ class InputCardNumberConnectionTest {
             )
 
         setupFilter(connection, null)
-        setupListener(connection)
 
         val state = createFieldStateMastercard("")
         connection.setOutput(state)
@@ -77,7 +70,6 @@ class InputCardNumberConnectionTest {
             )
 
         setupFilter(connection, divider)
-        setupListener(connection)
 
         val state = createFieldStateMastercard(divider)
         connection.setOutput(state)
@@ -93,7 +85,7 @@ class InputCardNumberConnectionTest {
     fun test_draw_card_icon() {
         connection.run()
 
-        Mockito.verify(iCardBrand, Mockito.times(2)).onCardBrandPreview(CardBrandPreview(CardType.UNKNOWN, CardType.UNKNOWN.regex, CardType.UNKNOWN.name, CardType.UNKNOWN.resId))
+        Mockito.verify(iCardBrand).onCardBrandPreview(CardBrandPreview(CardType.UNKNOWN, CardType.UNKNOWN.regex, CardType.UNKNOWN.name, CardType.UNKNOWN.resId))
 
         val state = createFieldStateVisa(" ")
         connection.setOutput(state)
@@ -109,55 +101,6 @@ class InputCardNumberConnectionTest {
             CardType.VISA.rangeNumber,
             CardType.VISA.rangeCVV)
         Mockito.verify(iCardBrand).onCardBrandPreview(c)
-    }
-
-    @Test
-    fun test_set_change_listener() {
-        val listener = mock(OnVgsViewStateChangeListener::class.java)
-        connection.setOutputListener(listener)
-
-        Mockito.verify(listener).emit(0, VGSFieldState(isValid = false))
-    }
-
-    @Test
-    fun test_emit_item() {
-        connection.run()
-        Mockito.verify(stateListener, Mockito.times(2)).emit(0, VGSFieldState(isValid = false))
-    }
-
-    @Test
-    fun test_set_output() {
-        val textItem = createFieldStateVisa("")
-        connection.setOutput(textItem)
-
-        connection.run()
-        Mockito.verify(stateListener).emit(0, textItem)
-    }
-
-    @Test
-    fun test_custom_filter() {
-        val customBrand = CardBrand("^777", "VGS", R.drawable.vgs_checkout_ic_jcb_light)
-        val preview = CardBrandPreview(CardType.UNKNOWN,
-            customBrand.regex,
-            customBrand.cardBrandName,
-            customBrand.drawableResId,
-            customBrand.params.mask)
-
-        val filter = mock(MutableCardFilter::class.java)
-        Mockito.doReturn(preview).`when`(filter).detect(any())
-
-
-        val content = FieldContent.CardNumberContent()
-        content.data = "777111111111111"
-        val state = VGSFieldState(isValid = false,
-            isRequired = false,
-            fieldName = "fieldName",
-            content = content)
-        connection.setOutput(state)
-
-        connection.addFilter(filter)
-        connection.run()
-        Mockito.verify(stateListener).emit(0, state)
     }
 
     private fun getCardBrandPreviewListener(): InputCardNumberConnection.IDrawCardBrand {
@@ -177,11 +120,6 @@ class InputCardNumberConnectionTest {
     ) {
         val filter = CardBrandFilter(divider)
         connection.addFilter(filter)
-    }
-
-    private fun setupListener(connection: InputRunnable) {
-        stateListener = mock(OnVgsViewStateChangeListener::class.java)
-        connection.setOutputListener(stateListener)
     }
 
     private fun createFieldStateMastercard(divider:String):VGSFieldState {

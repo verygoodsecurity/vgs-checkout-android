@@ -4,9 +4,9 @@ import android.content.Context
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.Gravity
-import com.verygoodsecurity.vgscheckout.collect.core.model.state.FieldState
 import android.view.inputmethod.EditorInfo
 import com.verygoodsecurity.vgscheckout.R
+import com.verygoodsecurity.vgscheckout.collect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
 import com.verygoodsecurity.vgscheckout.collect.view.card.FieldType
 import com.verygoodsecurity.vgscheckout.collect.view.card.validation.rules.VGSInfoRule
@@ -81,8 +81,8 @@ internal open class VGSEditText @JvmOverloads constructor(
      *
      * @return current state.
      */
-    fun getState(): FieldState.InfoState? {
-        return getInfoState()
+    fun getState(): VGSFieldState {
+        return getInnerState()
     }
 
     /** The max text length to display. */

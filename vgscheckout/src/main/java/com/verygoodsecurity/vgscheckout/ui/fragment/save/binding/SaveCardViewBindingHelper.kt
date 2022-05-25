@@ -5,10 +5,12 @@ import android.view.View
 import android.widget.Space
 import androidx.annotation.LayoutRes
 import androidx.appcompat.widget.LinearLayoutCompat
+import androidx.core.view.isVisible
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.checkbox.MaterialCheckBox
 import com.google.android.material.textview.MaterialTextView
 import com.verygoodsecurity.vgscheckout.R
+import com.verygoodsecurity.vgscheckout.collect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscheckout.collect.widget.*
 
 // TODO: Remove all unused views
@@ -45,4 +47,22 @@ internal class SaveCardViewBindingHelper(inflater: LayoutInflater, @LayoutRes la
 
     val saveCardCheckbox: MaterialCheckBox by lazy { rootView.findViewById(R.id.mcbSaveCard) }
     val saveCardButton: MaterialButton by lazy { rootView.findViewById(R.id.mbSaveCard) }
+
+    fun getStates(
+        includeInvisibleFields: Boolean = false
+    ): MutableCollection<VGSFieldState> {
+        return with(mutableListOf<VGSFieldState>()) {
+            if (includeInvisibleFields || securityCodeEt.isVisible) add(securityCodeEt.getInnerState())
+            if (includeInvisibleFields || expirationDateEt.isVisible) add(expirationDateEt.getInnerState())
+            if (includeInvisibleFields || cardNumberEt.isVisible) add(cardNumberEt.getInnerState())
+            if (includeInvisibleFields || cardHolderEt.isVisible) add(cardHolderEt.getInnerState())
+
+            if (includeInvisibleFields || addressEt.isVisible) add(addressEt.getInnerState())
+            if (includeInvisibleFields || countryEt.isVisible) add(countryEt.getInnerState())
+            if (includeInvisibleFields || optionalAddressEt.isVisible) add(optionalAddressEt.getInnerState())
+            if (includeInvisibleFields || cityEt.isVisible) add(cityEt.getInnerState())
+            if (includeInvisibleFields || postalCodeEt.isVisible) add(postalCodeEt.getInnerState())
+            this
+        }
+    }
 }

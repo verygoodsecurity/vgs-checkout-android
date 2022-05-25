@@ -40,7 +40,6 @@ internal class SSNInputField(context: Context) : BaseInputField(context) {
         val state = collectCurrentState(stateContent)
 
         inputConnection?.setOutput(state)
-        inputConnection?.setOutputListener(stateListener)
 
         filters = arrayOf()
 

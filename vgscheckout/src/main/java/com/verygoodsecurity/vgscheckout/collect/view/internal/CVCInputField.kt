@@ -7,9 +7,8 @@ import android.text.InputFilter
 import android.text.InputType
 import android.view.View
 import com.google.android.material.textfield.TextInputEditText
-import com.verygoodsecurity.vgscheckout.collect.core.model.state.Dependency
 import com.verygoodsecurity.vgscheckout.collect.core.model.state.FieldContent
-import com.verygoodsecurity.vgscheckout.collect.core.storage.DependencyType
+import com.verygoodsecurity.vgscheckout.collect.view.Dependency
 import com.verygoodsecurity.vgscheckout.collect.view.card.CardType
 import com.verygoodsecurity.vgscheckout.collect.view.card.FieldType
 import com.verygoodsecurity.vgscheckout.collect.view.card.conection.InputCardCVCConnection
@@ -45,7 +44,6 @@ internal class CVCInputField(context: Context) : BaseInputField(context) {
         val state = collectCurrentState(stateContent)
 
         inputConnection?.setOutput(state)
-        inputConnection?.setOutputListener(stateListener)
 
         applyNewTextWatcher(null)
         applyLengthFilter(cardContent.rangeCVV.last())
@@ -83,9 +81,10 @@ internal class CVCInputField(context: Context) : BaseInputField(context) {
 
     override fun dispatchDependencySetting(dependency: Dependency) {
         when (dependency.dependencyType) {
-            DependencyType.CARD -> handleCardDependency(dependency.value as FieldContent.CardNumberContent)
+            Dependency.DependencyType.CARD -> handleCardDependency(dependency.value as FieldContent.CardNumberContent)
             else -> super.dispatchDependencySetting(dependency)
         }
+        inputConnection?.run()
     }
 
     override fun updateTextChanged(str: String) {

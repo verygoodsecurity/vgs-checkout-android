@@ -15,6 +15,7 @@ internal data class VGSFieldState(
 ) {
 
     fun isNotNullOrEmpty() = !fieldName.isNullOrBlank() && !content?.data.isNullOrEmpty()
+    fun isNullOrEmpty() = content?.data.isNullOrEmpty()
 
     override fun toString(): String {
         return "isFocusable: $isFocusable\n" +

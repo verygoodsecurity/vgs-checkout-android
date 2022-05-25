@@ -1,6 +1,5 @@
 package com.verygoodsecurity.vgscheckout.collect.view.card.conection
 
-import com.verygoodsecurity.vgscheckout.collect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscheckout.collect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscheckout.collect.view.card.filter.VGSCardFilter
 import com.verygoodsecurity.vgscheckout.collect.view.card.validation.VGSValidator
@@ -16,13 +15,8 @@ internal class InputSSNConnection(id: Int, validator: VGSValidator?) :
 
     override fun getOutput() = output
 
-    override fun setOutputListener(listener: OnVgsViewStateChangeListener?) {
-        listener?.let { addNewListener(it) } ?: clearAllListeners()
-    }
-
     override fun run() {
         validate()
-        notifyAllListeners(output)
     }
 
     private fun validate() {

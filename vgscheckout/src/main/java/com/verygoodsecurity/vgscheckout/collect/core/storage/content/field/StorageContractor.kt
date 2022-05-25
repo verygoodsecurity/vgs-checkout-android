@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscheckout.collect.core.storage
+package com.verygoodsecurity.vgscheckout.collect.core.storage.content.field
 
 /** @suppress */
 internal interface StorageContractor<T> {

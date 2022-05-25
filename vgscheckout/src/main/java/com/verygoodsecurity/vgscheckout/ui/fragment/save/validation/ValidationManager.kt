@@ -1,6 +1,7 @@
 package com.verygoodsecurity.vgscheckout.ui.fragment.save.validation
 
 import android.content.Context
+import android.util.Log
 import androidx.annotation.StringRes
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
@@ -15,7 +16,7 @@ import com.verygoodsecurity.vgscheckout.util.extension.setMaterialError
 internal abstract class ValidationManager constructor(
     private val context: Context,
     var country: Country?,
-    protected val inputs: List<InputFieldView>
+    val inputs: List<InputFieldView>
 ) {
 
     private val onTextChangeListener = object : InputFieldView.OnTextChangedListener {
@@ -61,6 +62,7 @@ internal abstract class ValidationManager constructor(
         }
         val message = getErrorMessage(input)
         input.setMaterialError(message)
+        Log.e("test1", "${input.getFieldName()}, message: ${message}")
         return message.isNullOrEmpty()
     }
 
