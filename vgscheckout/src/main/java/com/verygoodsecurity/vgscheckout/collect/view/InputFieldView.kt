@@ -24,11 +24,8 @@ import androidx.annotation.FloatRange
 import androidx.annotation.RequiresApi
 import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgscheckout.R
-import com.verygoodsecurity.vgscheckout.collect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscheckout.analytic.AnalyticTracker
-import com.verygoodsecurity.vgscheckout.collect.core.model.state.FieldState
-import com.verygoodsecurity.vgscheckout.collect.core.storage.DependencyListener
-import com.verygoodsecurity.vgscheckout.collect.core.storage.OnFieldStateChangeListener
+import com.verygoodsecurity.vgscheckout.collect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscheckout.collect.view.card.CardBrand
 import com.verygoodsecurity.vgscheckout.collect.view.card.FieldType
 import com.verygoodsecurity.vgscheckout.collect.view.card.formatter.CardMaskAdapter
@@ -49,7 +46,6 @@ internal abstract class InputFieldView @JvmOverloads constructor(
 
     private var isAttachPermitted = true
 
-    private lateinit var notifier: DependencyNotifier
     private var imeOptions: Int = 0
     private var textAppearance: Int = 0
     private var fontFamily: Typeface? = null
@@ -64,8 +60,7 @@ internal abstract class InputFieldView @JvmOverloads constructor(
         ).apply {
             try {
                 for (i in 0 until indexCount) {
-                    val attr = getIndex(i)
-                    when (attr) {
+                    when (getIndex(i)) {
                         R.styleable.InputFieldView_textAppearance -> setupAppearance(this)
                         R.styleable.InputFieldView_imeOptions -> setupImeOptions(this)
                         R.styleable.InputFieldView_enableValidation -> setupEnableValidation(this)
@@ -119,13 +114,6 @@ internal abstract class InputFieldView @JvmOverloads constructor(
         analyticName = attrs.getString(R.styleable.InputFieldView_analyticsName)
     }
 
-    /**
-     * Delegate class that helps deliver new requirements between related input fields.
-     *
-     * @param notifier The listener that emits new dependencies for apply.
-     */
-    internal class DependencyNotifier(notifier: DependencyListener) : DependencyListener by notifier
-
     private lateinit var fieldType: FieldType
 
     private lateinit var inputField: BaseInputField
@@ -149,15 +137,11 @@ internal abstract class InputFieldView @JvmOverloads constructor(
             return inputField
         }
 
-        override fun getDependencyListener(): DependencyListener = notifier
-
         override fun setAnalyticTracker(tr: AnalyticTracker?) {
             inputField.tracker = tr
         }
 
-        override fun unsubscribe() {
-            inputField.stateListener = null
-        }
+        override fun unsubscribe() {}
     }
 
     override fun onDetachedFromWindow() {
@@ -246,7 +230,6 @@ internal abstract class InputFieldView @JvmOverloads constructor(
      *
      * @return the end padding in pixels
      */
-    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     override fun getPaddingEnd(): Int {
         return if (isAttachPermitted) {
             super.getPaddingEnd()
@@ -289,7 +272,6 @@ internal abstract class InputFieldView @JvmOverloads constructor(
      *
      * @return the start padding in pixels
      */
-    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     override fun getPaddingStart(): Int {
         return if (isAttachPermitted) {
             super.getPaddingStart()
@@ -335,16 +317,16 @@ internal abstract class InputFieldView @JvmOverloads constructor(
                 currentGravity = currentGravity or Gravity.TOP
             }
 
-            val LP = LinearLayout.LayoutParams(
+            layoutParams = LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT
-            )
-            LP.weight = 1.0f
-            LP.setMargins(0, 0, 0, 0)
-            if (LP.gravity == -1) {
-                LP.gravity = Gravity.CENTER_VERTICAL
+            ).apply {
+                weight = 1.0f
+                setMargins(0, 0, 0, 0)
+                if (gravity == -1) {
+                    gravity = Gravity.CENTER_VERTICAL
+                }
             }
-            layoutParams = LP
 
             this.gravity = currentGravity
         }
@@ -381,10 +363,6 @@ internal abstract class InputFieldView @JvmOverloads constructor(
 
     override fun getFieldType(): FieldType {
         return fieldType
-    }
-
-    override fun addStateListener(stateListener: OnVgsViewStateChangeListener) {
-        inputField.stateListener = stateListener
     }
     //endregion
 
@@ -727,8 +705,6 @@ internal abstract class InputFieldView @JvmOverloads constructor(
     protected fun hasChildren(): Boolean = childCount > 0
 
     private fun syncInputState() {
-        notifier = DependencyNotifier(inputField)
-
         inputField.nextFocusDownId = nextFocusDownId
         inputField.nextFocusForwardId = nextFocusForwardId
         inputField.nextFocusUpId = nextFocusUpId
@@ -1106,7 +1082,7 @@ internal abstract class InputFieldView @JvmOverloads constructor(
      *
      * @param onFieldStateChangeListener listener which will notify about changes inside input field.
      */
-    fun setOnFieldStateChangeListener(onFieldStateChangeListener: OnFieldStateChangeListener?) {
+    fun setOnFieldStateChangeListener(onFieldStateChangeListener: BaseInputField.OnFieldStateChangeListener?) {
         inputField.setOnFieldStateChangeListener(onFieldStateChangeListener)
     }
 
@@ -1180,58 +1156,18 @@ internal abstract class InputFieldView @JvmOverloads constructor(
         }
     }
 
-    fun getFieldState(): FieldState? {
-        return inputField.getState()
+    fun getInnerState(): VGSFieldState {
+        return inputField.getFieldState()
     }
 
-    protected fun getCardNumberState(): FieldState.CardNumberState? {
-        return if (fieldType == FieldType.CARD_NUMBER) {
-            (inputField as? CardInputField)?.getState() as? FieldState.CardNumberState
-        } else {
-            null
-        }
-    }
-
-    protected fun getSSNState(): FieldState.SSNNumberState? {
-        return if (fieldType == FieldType.SSN) {
-            (inputField as? SSNInputField)?.getState() as? FieldState.SSNNumberState
-        } else {
-            null
-        }
+    fun setDependantField(field: InputFieldView) {
+        inputField.dependentField = field.inputField
     }
 
     protected fun setCVCPreviewIconAdapter(adapter: CVCIconAdapter?) {
         if (fieldType == FieldType.CVC) {
             (inputField as? CVCInputField)?.setPreviewIconAdapter(adapter)
         }
-    }
-
-    protected fun getCVCState(): FieldState.CVCState? {
-        return if (fieldType == FieldType.CVC) {
-            (inputField as? CVCInputField)?.getState() as? FieldState.CVCState
-        } else {
-            null
-        }
-    }
-
-    protected fun getCardHolderName(): FieldState.CardHolderNameState? {
-        return if (fieldType == FieldType.CARD_HOLDER_NAME) {
-            (inputField as? PersonNameInputField)?.getState() as? FieldState.CardHolderNameState
-        } else {
-            null
-        }
-    }
-
-    protected fun getExpirationDate(): FieldState.CardExpirationDateState? {
-        return if (fieldType == FieldType.CARD_EXPIRATION_DATE) {
-            (inputField as? DateInputField)?.getState() as? FieldState.CardExpirationDateState
-        } else {
-            null
-        }
-    }
-
-    protected fun getInfoState(): FieldState.InfoState? {
-        return (inputField as? InfoInputField)?.getState() as? FieldState.InfoState
     }
 
     /**

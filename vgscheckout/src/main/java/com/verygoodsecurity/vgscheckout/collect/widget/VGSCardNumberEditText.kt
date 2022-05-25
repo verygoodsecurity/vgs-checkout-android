@@ -8,6 +8,7 @@ import android.view.inputmethod.EditorInfo
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.util.logger.VGSCheckoutLogger
 import com.verygoodsecurity.vgscheckout.collect.core.model.state.FieldState
+import com.verygoodsecurity.vgscheckout.collect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
 import com.verygoodsecurity.vgscheckout.collect.view.card.BrandParams
 import com.verygoodsecurity.vgscheckout.collect.view.card.CardBrand
@@ -161,7 +162,10 @@ internal class VGSCardNumberEditText @JvmOverloads constructor(
         } else {
             VGSCheckoutLogger.warn(
                 BrandParams::class.qualifiedName.toString(),
-                context.getString(R.string.vgs_checkout_error_custom_brand_mask_length, c.cardBrandName)
+                context.getString(
+                    R.string.vgs_checkout_error_custom_brand_mask_length,
+                    c.cardBrandName
+                )
             )
         }
     }
@@ -239,8 +243,8 @@ internal class VGSCardNumberEditText @JvmOverloads constructor(
      *
      * @return current state.
      */
-    fun getState(): FieldState.CardNumberState? {
-        return getCardNumberState()
+    fun getState(): VGSFieldState {
+        return getInnerState()
     }
 
     /**

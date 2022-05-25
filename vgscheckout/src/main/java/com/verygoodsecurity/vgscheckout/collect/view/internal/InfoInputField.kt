@@ -29,7 +29,6 @@ internal open class InfoInputField(
         val state = collectCurrentState(stateContent)
 
         inputConnection?.setOutput(state)
-        inputConnection?.setOutputListener(stateListener)
 
         applyNewTextWatcher(null)
         applyInputType()

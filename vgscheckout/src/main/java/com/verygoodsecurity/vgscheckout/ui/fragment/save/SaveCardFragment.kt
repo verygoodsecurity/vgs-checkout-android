@@ -14,7 +14,7 @@ import androidx.core.view.isVisible
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.analytic.event.FinInstrumentCrudEvent
 import com.verygoodsecurity.vgscheckout.analytic.event.RequestEvent
-import com.verygoodsecurity.vgscheckout.collect.core.storage.InternalStorage
+import com.verygoodsecurity.vgscheckout.collect.util.extension.mapToAssociatedList
 import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
 import com.verygoodsecurity.vgscheckout.collect.view.card.validation.rules.VGSInfoRule
 import com.verygoodsecurity.vgscheckout.collect.widget.VGSCountryEditText
@@ -46,7 +46,7 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
     private lateinit var binding: SaveCardViewBindingHelper
     private lateinit var validationHelper: ValidationManager
 
-    private val inputFieldsStorage = InternalStorage()
+//    private val inputFieldsStorage = InternalStorage()
     private var addCardCommand: AddCardCommand? = null
 
     /**
@@ -130,14 +130,15 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
             return
         }
         binding.cardHolderEt.setFieldName(options.fieldName)
-        inputFieldsStorage.performSubscription(binding.cardHolderEt)
+//        inputFieldsStorage.performSubscription(binding.cardHolderEt)
     }
 
     private fun initCardNumberView(options: CardNumberOptions) {
         binding.cardNumberEt.setFieldName(options.fieldName)
         binding.cardNumberEt.setValidCardBrands(options.cardBrands)
         binding.cardNumberEt.setIsCardBrandPreviewHidden(options.isIconHidden)
-        inputFieldsStorage.performSubscription(binding.cardNumberEt)
+        binding.cardNumberEt.setDependantField(binding.securityCodeEt)
+//        inputFieldsStorage.performSubscription(binding.cardNumberEt)
     }
 
     private fun initExpirationDateView(options: ExpirationDateOptions) {
@@ -147,13 +148,13 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
         binding.expirationDateEt.setSerializer(
             options.dateSeparateSerializer?.toCollectDateSeparateSerializer()
         )
-        inputFieldsStorage.performSubscription(binding.expirationDateEt)
+//        inputFieldsStorage.performSubscription(binding.expirationDateEt)
     }
 
     private fun initSecurityCodeView(options: CVCOptions) {
         binding.securityCodeEt.setFieldName(options.fieldName)
         binding.securityCodeEt.setIsPreviewIconHidden(options.isIconHidden)
-        inputFieldsStorage.performSubscription(binding.securityCodeEt)
+//        inputFieldsStorage.performSubscription(binding.securityCodeEt)
     }
 
     private fun initBillingAddressViews() {
@@ -186,7 +187,7 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
         }
         binding.countryEt.setFieldName(options.fieldName)
         binding.countryEt.onCountrySelectedListener = this
-        inputFieldsStorage.performSubscription(binding.countryEt)
+//        inputFieldsStorage.performSubscription(binding.countryEt)
     }
 
     private fun initAddressView(options: AddressOptions) {
@@ -196,7 +197,7 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
         }
         binding.addressEt.setFieldName(options.fieldName)
         binding.addressEt.addRule(singleCharValidationRule)
-        inputFieldsStorage.performSubscription(binding.addressEt)
+//        inputFieldsStorage.performSubscription(binding.addressEt)
     }
 
     private fun initOptionalAddressView(options: OptionalAddressOptions) {
@@ -205,7 +206,7 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
             return
         }
         binding.optionalAddressEt.setFieldName(options.fieldName)
-        inputFieldsStorage.performSubscription(binding.optionalAddressEt)
+//        inputFieldsStorage.performSubscription(binding.optionalAddressEt)
     }
 
     private fun initCityView(options: CityOptions) {
@@ -217,7 +218,7 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
         binding.cityEt.setFieldName(options.fieldName)
         binding.cityEt.addRule(singleCharValidationRule)
         binding.cityEt.setOnEditorActionListener(this)
-        inputFieldsStorage.performSubscription(binding.cityEt)
+//        inputFieldsStorage.performSubscription(binding.cityEt)
     }
 
     private fun initPostalCodeView(options: PostalCodeOptions) {
@@ -228,19 +229,19 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
         }
         binding.postalCodeEt.setFieldName(options.fieldName)
         binding.postalCodeEt.setOnEditorActionListener(this)
-        inputFieldsStorage.performSubscription(binding.postalCodeEt)
+//        inputFieldsStorage.performSubscription(binding.postalCodeEt)
         updatePostalCodeView(binding.countryEt.selectedCountry)
     }
 
     private fun updatePostalCodeView(country: Country) {
         if (country.isPostalCodeUndefined()) {
-            inputFieldsStorage.unsubscribe(binding.postalCodeEt)
+//            inputFieldsStorage.unsubscribe(binding.postalCodeEt)
             binding.postalCodeEt.setText(null)
             binding.postalCodeEt.setIsRequired(false)
             binding.postalCodeTil.gone()
             binding.cityPostalAddressSpace.gone()
         } else {
-            inputFieldsStorage.performSubscription(binding.postalCodeEt)
+//            inputFieldsStorage.performSubscription(binding.postalCodeEt)
             binding.postalCodeEt.setIsRequired(true)
             binding.postalCodeEt.addRule(country.toVGSInfoRule())
             binding.postalCodeEt.resetText()
@@ -294,6 +295,9 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
     }
 
     private fun handleSaveClicked() {
+
+        binding.getStates().mapToAssociatedList()
+
         requireActivity().hideSoftKeyboard()
         val invalidFields = validationHelper.validate()
         sendRequestEvent(invalidFields.map { it.getAnalyticsName() })
@@ -322,7 +326,8 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
                 config.getBaseUrl(requireContext()),
                 config.routeConfig.path,
                 config.routeConfig,
-                inputFieldsStorage.getAssociatedList()
+//                inputFieldsStorage.getAssociatedList()
+                binding.getStates().mapToAssociatedList()
             ),
             ::handleSaveCardResult
         )
