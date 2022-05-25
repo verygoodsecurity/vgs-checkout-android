@@ -63,8 +63,6 @@ class SavedCardActivityResultTest {
             token,
             BuildConfig.VAULT_ID,
             VGSCheckoutPaymentMethod.SavedCards(arrayListOf(finID)),
-            //todo remove test after testing
-            //VGSCheckoutPaymentMethod.SavedCards(arrayListOf("FNdUL83yeMt9RWN6uePVD5kj")),
             isScreenshotsAllowed = true,
             callback = object : VGSCheckoutConfigInitCallback<VGSCheckoutAddCardConfig> {
                 override fun onSuccess(config: VGSCheckoutAddCardConfig) {
