@@ -138,7 +138,7 @@ internal enum class CardType(val regex:String,
 
     UNKNOWN(
         "^\$a",
-        R.drawable.vgs_checkout_ic_card_front_preview_light,
+        R.drawable.vgs_checkout_ic_card_front_preview,
         "#### #### #### #### ###",
         ChecksumAlgorithm.NONE,
         (13..19).toList().toTypedArray(),
