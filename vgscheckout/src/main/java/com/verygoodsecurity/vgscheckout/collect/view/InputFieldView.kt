@@ -38,7 +38,6 @@ import com.verygoodsecurity.vgscheckout.collect.view.core.serializers.FieldDataS
 import com.verygoodsecurity.vgscheckout.collect.view.cvc.CVCIconAdapter
 import com.verygoodsecurity.vgscheckout.collect.view.date.DatePickerMode
 import com.verygoodsecurity.vgscheckout.collect.view.internal.*
-import com.verygoodsecurity.vgscheckout.collect.view.material.TextInputFieldLayout
 import com.verygoodsecurity.vgscheckout.collect.widget.ExpirationDateEditText
 
 /**
@@ -320,17 +319,7 @@ internal abstract class InputFieldView @JvmOverloads constructor(
     public override fun onAttachedToWindow() {
         if (isAttachPermitted) {
             super.onAttachedToWindow()
-//            if (parent !is TextInputFieldLayout) {
-//                setAddStatesFromChildren(true)
-//                inputField.setMinimumPaddingLimitations(
-//                    resources.getDimension(R.dimen.vgs_checkout_default_horizontal_field).toInt(),
-//                    resources.getDimension(R.dimen.vgs_checkout_default_vertical_field).toInt()
-//                )
-//                applyLayoutParams(inputField)
-//                addView(inputField)
-//            }
-//            inputField.setPadding(leftP, topP, rightP, bottomP) // TODO: Check if padding needed
-
+            inputField.setPadding(leftP, topP, rightP, bottomP)
             isAttachPermitted = false
         }
     }
