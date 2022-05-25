@@ -51,7 +51,6 @@ internal class VGSCheckoutTextInputLayout @JvmOverloads constructor(
                 )
                 child.statePreparer.getView()
             }
-            is FrameLayout -> child
             else -> child
         }
     }
