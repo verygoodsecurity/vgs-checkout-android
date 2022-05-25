@@ -320,16 +320,16 @@ internal abstract class InputFieldView @JvmOverloads constructor(
     public override fun onAttachedToWindow() {
         if (isAttachPermitted) {
             super.onAttachedToWindow()
-            if (parent !is TextInputFieldLayout) {
-                setAddStatesFromChildren(true)
-                inputField.setMinimumPaddingLimitations(
-                    resources.getDimension(R.dimen.vgs_checkout_default_horizontal_field).toInt(),
-                    resources.getDimension(R.dimen.vgs_checkout_default_vertical_field).toInt()
-                )
-                applyLayoutParams(inputField)
-                addView(inputField)
-            }
-            inputField.setPadding(leftP, topP, rightP, bottomP)
+//            if (parent !is TextInputFieldLayout) {
+//                setAddStatesFromChildren(true)
+//                inputField.setMinimumPaddingLimitations(
+//                    resources.getDimension(R.dimen.vgs_checkout_default_horizontal_field).toInt(),
+//                    resources.getDimension(R.dimen.vgs_checkout_default_vertical_field).toInt()
+//                )
+//                applyLayoutParams(inputField)
+//                addView(inputField)
+//            }
+//            inputField.setPadding(leftP, topP, rightP, bottomP) // TODO: Check if padding needed
 
             isAttachPermitted = false
         }

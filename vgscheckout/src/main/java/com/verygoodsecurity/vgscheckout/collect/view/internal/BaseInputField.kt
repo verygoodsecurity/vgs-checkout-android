@@ -238,7 +238,7 @@ internal abstract class BaseInputField(
     }
 
     override fun addTextChangedListener(watcher: TextWatcher?) {
-        if (isListeningPermitted) {
+        if (isListeningPermitted || watcher?.javaClass?.`package`?.name?.contains("com.google") == true) {
             super.addTextChangedListener(watcher)
         }
     }
