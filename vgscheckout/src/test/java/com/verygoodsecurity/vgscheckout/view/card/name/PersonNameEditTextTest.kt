@@ -45,13 +45,6 @@ class PersonNameEditTextTest {
     }
 
     @Test
-    fun test_attach_view() {
-        view.onAttachedToWindow()
-
-        assertEquals(1, view.childCount)
-    }
-
-    @Test
     fun test_check_internal_view() {
         val internal = view.statePreparer.getView()
         assertNotNull(internal)

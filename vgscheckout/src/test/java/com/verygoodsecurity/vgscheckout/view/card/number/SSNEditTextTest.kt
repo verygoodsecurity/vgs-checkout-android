@@ -99,13 +99,6 @@ class SSNEditTextTest {
     }
 
     @Test
-    fun test_attach_view() {
-        view.onAttachedToWindow()
-
-        assertEquals(1, view.childCount)
-    }
-
-    @Test
     fun test_field_type() {
         val type = view.getFieldType()
         assertEquals(FieldType.SSN, type)
