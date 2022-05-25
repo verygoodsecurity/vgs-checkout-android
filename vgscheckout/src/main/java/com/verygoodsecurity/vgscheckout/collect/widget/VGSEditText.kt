@@ -25,7 +25,7 @@ internal open class VGSEditText @JvmOverloads constructor(
 ) : InputFieldView(context, attrs, defStyleAttr) {
 
     init {
-        setupViewType(FieldType.INFO, attrs)
+        setupViewType(FieldType.INFO)
 
         context.theme.obtainStyledAttributes(
             attrs,

@@ -41,8 +41,8 @@ import com.verygoodsecurity.vgscheckout.collect.widget.ExpirationDateEditText
  * An abstract class that provide displays text user-editable text to the user.
  */
 internal abstract class InputFieldView @JvmOverloads constructor(
-    private val cContext: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : FrameLayout(cContext, attrs, defStyleAttr), VGSCollectView {
+    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+) : FrameLayout(context, attrs, defStyleAttr), VGSCollectView {
 
     private var isAttachPermitted = true
 
@@ -118,10 +118,10 @@ internal abstract class InputFieldView @JvmOverloads constructor(
 
     private lateinit var inputField: BaseInputField
 
-    protected fun setupViewType(type: FieldType, attrs: AttributeSet? = null) {
+    protected fun setupViewType(type: FieldType) {
         with(type) {
             fieldType = this
-            inputField = BaseInputField.getInputField(cContext, attrs, this@InputFieldView)
+            inputField = BaseInputField.getInputField(context, this@InputFieldView)
 
             syncInputState()
         }
@@ -303,32 +303,6 @@ internal abstract class InputFieldView @JvmOverloads constructor(
             super.onAttachedToWindow()
             inputField.setPadding(leftP, topP, rightP, bottomP)
             isAttachPermitted = false
-        }
-    }
-
-    private fun applyLayoutParams(v: TextView?) {
-        v?.apply {
-            var currentGravity = v.gravity
-
-            if (currentGravity and Gravity.RELATIVE_HORIZONTAL_GRAVITY_MASK == 0) {
-                currentGravity = currentGravity or Gravity.START
-            }
-            if (currentGravity and Gravity.VERTICAL_GRAVITY_MASK == 0) {
-                currentGravity = currentGravity or Gravity.TOP
-            }
-
-            layoutParams = LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-            ).apply {
-                weight = 1.0f
-                setMargins(0, 0, 0, 0)
-                if (gravity == -1) {
-                    gravity = Gravity.CENTER_VERTICAL
-                }
-            }
-
-            this.gravity = currentGravity
         }
     }
 
