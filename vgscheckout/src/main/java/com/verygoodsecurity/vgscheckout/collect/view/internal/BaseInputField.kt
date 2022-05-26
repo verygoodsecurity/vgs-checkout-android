@@ -223,7 +223,7 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
     }
 
     override fun addTextChangedListener(watcher: TextWatcher?) {
-        if (isListeningPermitted) {
+        if (isListeningPermitted || watcher?.javaClass?.`package`?.name?.contains("com.google") == true) {
             super.addTextChangedListener(watcher)
         }
     }

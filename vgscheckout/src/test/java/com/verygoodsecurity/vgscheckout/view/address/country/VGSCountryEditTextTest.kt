@@ -40,13 +40,6 @@ class VGSCountryEditTextTest {
     }
 
     @Test
-    fun test_attach_view() {
-        view.onAttachedToWindow()
-
-        Assert.assertEquals(1, view.childCount)
-    }
-
-    @Test
     fun test_check_internal_view() {
         val internal = view.statePreparer.getView()
         Assert.assertNotNull(internal)

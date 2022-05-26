@@ -46,13 +46,6 @@ class InputFieldViewTest {
     }
 
     @Test
-    fun test_attach_view() {
-        view.onAttachedToWindow()
-
-        assertEquals(1, view.childCount)
-    }
-
-    @Test
     fun test_field_name() {
         val child = view.statePreparer.getView()
         assertTrue(child is BaseInputField)
