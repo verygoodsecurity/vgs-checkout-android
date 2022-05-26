@@ -76,8 +76,6 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
 
     private var onFieldStateChangeListener: OnFieldStateChangeListener? = null
 
-    private var userFocusChangeListener: OnFocusChangeListener? = null
-
     private var isBackgroundVisible = true
 
     private var activeTextWatcher: TextWatcher? = null
@@ -271,10 +269,8 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
 
     override fun onFocusChanged(focused: Boolean, direction: Int, previouslyFocusedRect: Rect?) {
         super.onFocusChanged(focused, direction, previouslyFocusedRect)
+
         inputConnection?.getOutput()?.apply {
-
-            userFocusChangeListener?.onFocusChange(vgsParent, focused)
-
             if (focused != isFocusable) {
                 isFocusable = focused
                 hasUserInteraction = true
@@ -309,13 +305,6 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
     internal fun refreshInternalState() {
         inputConnection?.run()
     }
-
-    internal fun setOnFocusChangeListener(l: OnFocusChangeListener?, isUserListener: Boolean) {
-        if (isUserListener) {
-            userFocusChangeListener = l
-        }
-    }
-
 
     internal open fun getState(): FieldState? {
         return inputConnection?.getOutput()?.mapToFieldState()
