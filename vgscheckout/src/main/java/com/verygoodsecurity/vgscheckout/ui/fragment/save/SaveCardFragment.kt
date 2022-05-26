@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.widget.TextView
 import androidx.annotation.StringRes
 import androidx.annotation.VisibleForTesting
 import androidx.core.view.isGone
@@ -41,7 +42,7 @@ import com.verygoodsecurity.vgscheckout.util.extension.*
 import com.verygoodsecurity.vgscheckout.util.logger.VGSCheckoutLogger
 
 internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
-    VGSCountryEditText.OnCountrySelectedListener, InputFieldView.OnEditorActionListener {
+    VGSCountryEditText.OnCountrySelectedListener, TextView.OnEditorActionListener {
 
     private lateinit var binding: SaveCardViewBindingHelper
     private lateinit var validationHelper: ValidationManager
@@ -84,7 +85,7 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
         setImeActionDoneToLastVisibleInput()
     }
 
-    override fun onEditorAction(v: View?, actionId: Int, event: KeyEvent?): Boolean {
+    override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
         if (actionId == EditorInfo.IME_ACTION_DONE) {
             handleSaveClicked()
             return true

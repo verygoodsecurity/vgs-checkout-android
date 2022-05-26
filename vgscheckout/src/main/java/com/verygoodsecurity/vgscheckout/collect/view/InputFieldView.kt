@@ -12,7 +12,6 @@ import android.text.TextPaint
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.Gravity
-import android.view.KeyEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.autofill.AutofillId
@@ -1111,29 +1110,6 @@ internal abstract class InputFieldView @JvmOverloads constructor(
     }
 
     /**
-     * Interface definition for a callback to be invoked when an action is
-     * performed on the editor.
-     */
-    interface OnEditorActionListener {
-        /**
-         * Called when an action is being performed.
-         *
-         * @param v The view that was clicked.
-         * @param actionId Identifier of the action.  This will be either the
-         * identifier you supplied, or [ EditorInfo.IME_NULL][EditorInfo.IME_NULL] if being called due to the enter key
-         * being pressed.
-         * @param event If triggered by an enter key, this is the event;
-         * otherwise, this is null.
-         * @return Return true if you have consumed the action, else false.
-         */
-        fun onEditorAction(
-            v: View?,
-            actionId: Int,
-            event: KeyEvent?
-        ): Boolean
-    }
-
-    /**
      * Set a special listener to be called when an action is performed
      * on the text view.  This will be called when the enter key is pressed,
      * or when an action supplied to the IME is selected by the user.  Setting
@@ -1141,8 +1117,8 @@ internal abstract class InputFieldView @JvmOverloads constructor(
      * into the text view, even if it is multi-line; holding down the ALT
      * modifier will, however, allow the user to insert a newline character.
      */
-    fun setOnEditorActionListener(l: OnEditorActionListener?) {
-        inputField.setEditorActionListener(l)
+    fun setOnEditorActionListener(l: TextView.OnEditorActionListener?) {
+        inputField.setOnEditorActionListener(l)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
