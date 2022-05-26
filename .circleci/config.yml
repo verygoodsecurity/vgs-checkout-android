@@ -6,7 +6,11 @@ aliases:
     docker:
       - image: cimg/android:2021.10.2
     environment:
-      JVM_OPTS: -Xmx8g
+      GRADLE_OPTS: '
+        -Dorg.gradle.jvmargs="-Xmx3g -XX:+HeapDumpOnOutOfMemoryError -XX:MaxPermSize=512m"
+        -Dorg.gradle.daemon=false
+        -Dorg.gradle.workers.max=3
+        -Dkotlin.incremental=false'
 
 jobs:
   "Run_Unit_Test_And_Build":
@@ -40,7 +44,7 @@ jobs:
           command: ./gradlew vgscheckout:testDebugUnitTest
       - run:
           name: Generate apk
-          command: ./gradlew demo:assembleDebug vgscheckout:assembleDebug vgscheckout:assembleAndroidTest --no-daemon --stacktrace
+          command: ./gradlew demo:assembleDebug vgscheckout:assembleDebug vgscheckout:assembleAndroidTest
       - run:
           name: Check if release branch
           command: |
