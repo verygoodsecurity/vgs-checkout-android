@@ -31,7 +31,6 @@ internal class PersonNameInputField(context: Context) : BaseInputField(context) 
 
         inputConnection?.setOutput(state)
 
-        applyNewTextWatcher(null)
         val filterLength = InputFilter.LengthFilter(256)
         filters = arrayOf(filterLength)
         applyInputType()

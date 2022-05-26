@@ -1,14 +1,16 @@
 package com.verygoodsecurity.vgscheckout.ui.fragment.save.validation
 
 import android.content.Context
-import android.util.Log
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.annotation.StringRes
+import androidx.core.view.doOnLayout
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
+import com.verygoodsecurity.vgscheckout.collect.view.internal.BaseInputField
 import com.verygoodsecurity.vgscheckout.config.ui.core.VGSCheckoutFormValidationBehaviour
 import com.verygoodsecurity.vgscheckout.util.country.model.Country
 import com.verygoodsecurity.vgscheckout.util.country.model.PostalCodeType
-import com.verygoodsecurity.vgscheckout.util.extension.addOnTextChangeListenerOnLayout
 import com.verygoodsecurity.vgscheckout.util.extension.isInputEmpty
 import com.verygoodsecurity.vgscheckout.util.extension.isInputValid
 import com.verygoodsecurity.vgscheckout.util.extension.setMaterialError
@@ -19,13 +21,6 @@ internal abstract class ValidationManager constructor(
     val inputs: List<InputFieldView>
 ) {
 
-    private val onTextChangeListener = object : InputFieldView.OnTextChangedListener {
-
-        override fun onTextChange(view: InputFieldView, isEmpty: Boolean) {
-            clearError(view)
-        }
-    }
-
     init {
 
         initTextChangeListener()
@@ -33,7 +28,24 @@ internal abstract class ValidationManager constructor(
 
     private fun initTextChangeListener() {
         inputs.forEach {
-            it.addOnTextChangeListenerOnLayout(onTextChangeListener) // Workaround for restoring error massages after screen rotation
+            with(it) {
+                doOnLayout {
+                    addOnTextChangeListener(object : TextWatcher {
+                        override fun beforeTextChanged(
+                            p0: CharSequence?,
+                            p1: Int,
+                            p2: Int,
+                            p3: Int
+                        ) {
+                        }
+
+                        override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+                        override fun afterTextChanged(p0: Editable?) {
+                            this@with.setMaterialError(null)
+                        }
+                    })
+                }
+            }
         }
     }
 
@@ -45,7 +57,7 @@ internal abstract class ValidationManager constructor(
     fun validate(): List<InputFieldView> {
         val result = mutableListOf<InputFieldView>()
         inputs.filter { it.isShown }.forEach {
-            val isValid = validate(it)
+            val isValid = getValidationResult(it)
             if (!isValid) result.add(it)
         }
         return result
@@ -56,17 +68,20 @@ internal abstract class ValidationManager constructor(
      *
      * @return true if field valid, false otherwise.
      */
-    fun validate(input: InputFieldView): Boolean {
+    fun validate(input: BaseInputField): Boolean {
         if (!input.isShown) {
             return true
         }
+
+        return input.vgsParent?.run {
+            getValidationResult(this)
+        } ?: true
+    }
+
+    private fun getValidationResult(input: InputFieldView): Boolean {
         val message = getErrorMessage(input)
         input.setMaterialError(message)
         return message.isNullOrEmpty()
-    }
-
-    private fun clearError(input: InputFieldView) {
-        input.setMaterialError(null)
     }
 
     private fun getErrorMessage(input: InputFieldView): String? = when {

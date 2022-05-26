@@ -96,7 +96,7 @@ internal class CardInputField(context: Context) : BaseInputField(context),
     private fun applyFormatter() {
         cardNumberFormatter = CardNumberFormatter().also {
             it.setMask(derivedCardNumberMask)
-            applyNewTextWatcher(it)
+            addTextChangedListener(it)
         }
     }
 
@@ -218,7 +218,7 @@ internal class CardInputField(context: Context) : BaseInputField(context),
 
         applyDividerOnMask()
         setupKeyListener()
-        refreshInputConnection()
+        applyFieldType()
     }
 
     private fun setupKeyListener() {

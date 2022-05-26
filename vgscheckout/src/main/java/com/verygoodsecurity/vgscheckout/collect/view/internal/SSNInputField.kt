@@ -57,7 +57,7 @@ internal class SSNInputField(context: Context) : BaseInputField(context) {
     private fun applyFormatter() {
         numberFormatter = SSNumberFormatter().also {
             it.setMask(derivedNumberMask)
-            applyNewTextWatcher(it)
+            addTextChangedListener(it)
         }
     }
 
@@ -195,7 +195,7 @@ internal class SSNInputField(context: Context) : BaseInputField(context) {
 
         applyDividerOnMask()
         setupKeyListener()
-        refreshInputConnection()
+        applyFieldType()
     }
 
     companion object {

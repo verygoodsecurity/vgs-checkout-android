@@ -45,7 +45,6 @@ internal class CVCInputField(context: Context) : BaseInputField(context) {
 
         inputConnection?.setOutput(state)
 
-        applyNewTextWatcher(null)
         applyLengthFilter(cardContent.rangeCVV.last())
         applyInputType()
     }
