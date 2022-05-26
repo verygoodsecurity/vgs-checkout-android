@@ -8,7 +8,7 @@ import com.verygoodsecurity.vgscheckout.collect.view.card.conection.InputInfoCon
 import com.verygoodsecurity.vgscheckout.collect.view.core.serializers.FieldDataSerializer
 
 /** @suppress */
-internal open class InfoInputField(context: Context) : BaseInputField(context) {
+internal open class InfoInputField(context: Context, ) : BaseInputField(context) {
 
     var serializer: FieldDataSerializer<*, *>? = null
 

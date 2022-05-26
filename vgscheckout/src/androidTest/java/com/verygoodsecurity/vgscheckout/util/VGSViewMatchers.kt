@@ -5,7 +5,7 @@ import androidx.annotation.IdRes
 import androidx.test.espresso.matcher.BoundedMatcher
 import androidx.test.espresso.matcher.ViewMatchers
 import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
-import com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout
+import com.verygoodsecurity.vgscheckout.view.VGSCheckoutTextInputLayout
 import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.Description
 import org.hamcrest.Matcher
@@ -18,14 +18,14 @@ internal object VGSViewMatchers {
      * Matcher that matches is VGSTextInputLayout show error message.
      */
     fun withError(error: String?) =
-        object : BoundedMatcher<View, VGSTextInputLayout>(VGSTextInputLayout::class.java) {
+        object : BoundedMatcher<View, VGSCheckoutTextInputLayout>(VGSCheckoutTextInputLayout::class.java) {
 
             override fun describeTo(description: Description?) {
                 description?.appendText(error)
             }
 
-            override fun matchesSafely(item: VGSTextInputLayout?): Boolean {
-                return item?.getError().equals(error)
+            override fun matchesSafely(item: VGSCheckoutTextInputLayout?): Boolean {
+                return item?.error?.equals(error) == true
             }
         }
 
@@ -33,13 +33,13 @@ internal object VGSViewMatchers {
      * Matcher that matches VGSTextInputLayout hint.
      */
     fun withHint(hint: String?) =
-        object : BoundedMatcher<View, VGSTextInputLayout>(VGSTextInputLayout::class.java) {
+        object : BoundedMatcher<View, VGSCheckoutTextInputLayout>(VGSCheckoutTextInputLayout::class.java) {
 
             override fun describeTo(description: Description?) {
                 description?.appendText(hint)
             }
 
-            override fun matchesSafely(item: VGSTextInputLayout?): Boolean {
+            override fun matchesSafely(item: VGSCheckoutTextInputLayout?): Boolean {
                 return item?.getHint()?.toString().equals(hint)
             }
         }

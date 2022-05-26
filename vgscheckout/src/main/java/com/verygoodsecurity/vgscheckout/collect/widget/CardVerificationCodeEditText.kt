@@ -6,7 +6,6 @@ import android.util.TypedValue
 import android.view.Gravity
 import android.view.inputmethod.EditorInfo
 import com.verygoodsecurity.vgscheckout.R
-import com.verygoodsecurity.vgscheckout.collect.core.model.state.FieldState
 import com.verygoodsecurity.vgscheckout.collect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
 import com.verygoodsecurity.vgscheckout.collect.view.card.FieldType

@@ -62,7 +62,6 @@ internal abstract class ValidationManager constructor(
         }
         val message = getErrorMessage(input)
         input.setMaterialError(message)
-        Log.e("test1", "${input.getFieldName()}, message: ${message}")
         return message.isNullOrEmpty()
     }
 

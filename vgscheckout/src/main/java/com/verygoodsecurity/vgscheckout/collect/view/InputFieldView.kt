@@ -34,7 +34,6 @@ import com.verygoodsecurity.vgscheckout.collect.view.core.serializers.FieldDataS
 import com.verygoodsecurity.vgscheckout.collect.view.cvc.CVCIconAdapter
 import com.verygoodsecurity.vgscheckout.collect.view.date.DatePickerMode
 import com.verygoodsecurity.vgscheckout.collect.view.internal.*
-import com.verygoodsecurity.vgscheckout.collect.view.material.TextInputFieldLayout
 import com.verygoodsecurity.vgscheckout.collect.widget.ExpirationDateEditText
 
 /**
@@ -301,44 +300,8 @@ internal abstract class InputFieldView @JvmOverloads constructor(
     public override fun onAttachedToWindow() {
         if (isAttachPermitted) {
             super.onAttachedToWindow()
-            if (parent !is TextInputFieldLayout) {
-                setAddStatesFromChildren(true)
-                inputField.setMinimumPaddingLimitations(
-                    resources.getDimension(R.dimen.vgs_checkout_default_horizontal_field).toInt(),
-                    resources.getDimension(R.dimen.vgs_checkout_default_vertical_field).toInt()
-                )
-                applyLayoutParams(inputField)
-                addView(inputField)
-            }
             inputField.setPadding(leftP, topP, rightP, bottomP)
-
             isAttachPermitted = false
-        }
-    }
-
-    private fun applyLayoutParams(v: TextView?) {
-        v?.apply {
-            var currentGravity = v.gravity
-
-            if (currentGravity and Gravity.RELATIVE_HORIZONTAL_GRAVITY_MASK == 0) {
-                currentGravity = currentGravity or Gravity.START
-            }
-            if (currentGravity and Gravity.VERTICAL_GRAVITY_MASK == 0) {
-                currentGravity = currentGravity or Gravity.TOP
-            }
-
-            layoutParams = LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-            ).apply {
-                weight = 1.0f
-                setMargins(0, 0, 0, 0)
-                if (gravity == -1) {
-                    gravity = Gravity.CENTER_VERTICAL
-                }
-            }
-
-            this.gravity = currentGravity
         }
     }
 
