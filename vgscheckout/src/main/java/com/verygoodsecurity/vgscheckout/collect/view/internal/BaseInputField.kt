@@ -64,7 +64,7 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         }
 
     protected var isListeningPermitted = true
-    private var isEditorActionListenerConfigured = false
+
     private var isKeyListenerConfigured = false
     protected var hasRTL = false
 
@@ -78,7 +78,7 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
     private var onFieldStateChangeListener: OnFieldStateChangeListener? = null
 
     private var userFocusChangeListener: OnFocusChangeListener? = null
-    private var onEditorActionListener: InputFieldView.OnEditorActionListener? = null
+
     private var userKeyListener: OnKeyListener? = null
 
     private var isBackgroundVisible = true
@@ -93,7 +93,6 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
     init {
         isListeningPermitted = true
         setupInputConnectionListener()
-        setupEditorActionListener()
         setupOnKeyListener()
         isListeningPermitted = false
 
@@ -102,15 +101,6 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
     }
 
     protected open fun setupAutofill() {}
-
-    private fun setupEditorActionListener() {
-        setOnEditorActionListener { _, actionId, event ->
-            val consumedAction =
-                onEditorActionListener?.onEditorAction(vgsParent, actionId, event) ?: false
-
-            consumedAction
-        }
-    }
 
     internal fun setIsListeningPermitted(state: Boolean) {
         isListeningPermitted = state
@@ -345,16 +335,6 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         }
     }
 
-    override fun setOnEditorActionListener(l: OnEditorActionListener?) {
-        if (!isEditorActionListenerConfigured) {
-            isEditorActionListenerConfigured = true
-            super.setOnEditorActionListener(l)
-        }
-    }
-
-    fun setEditorActionListener(onEditorActionListener: InputFieldView.OnEditorActionListener?) {
-        this.onEditorActionListener = onEditorActionListener
-    }
 
     internal open fun getState(): FieldState? {
         return inputConnection?.getOutput()?.mapToFieldState()
