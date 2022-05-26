@@ -65,7 +65,6 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
 
     protected var isListeningPermitted = true
 
-    private var isKeyListenerConfigured = false
     protected var hasRTL = false
 
     protected abstract var fieldType: FieldType
@@ -79,8 +78,6 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
 
     private var userFocusChangeListener: OnFocusChangeListener? = null
 
-    private var userKeyListener: OnKeyListener? = null
-
     private var isBackgroundVisible = true
 
     private var activeTextWatcher: TextWatcher? = null
@@ -93,7 +90,6 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
     init {
         isListeningPermitted = true
         setupInputConnectionListener()
-        setupOnKeyListener()
         isListeningPermitted = false
 
         setupViewAttributes()
@@ -146,12 +142,6 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         inputConnection?.getOutput()?.enableValidation = enableValidation
         super.onAttachedToWindow()
         isListeningPermitted = false
-    }
-
-    private fun setupOnKeyListener() {
-        setOnKeyListener { _, i, keyEvent ->
-            userKeyListener?.onKey(vgsParent, i, keyEvent) ?: false
-        }
     }
 
     protected fun refreshInputConnection() {
@@ -270,15 +260,6 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
             is InputFieldView -> nextView.statePreparer.getView().requestFocus()
             is BaseInputField -> nextView.requestFocus()
             else -> nextView.requestFocus()
-        }
-    }
-
-    override fun setOnKeyListener(l: OnKeyListener?) {
-        if (!isKeyListenerConfigured) {
-            isKeyListenerConfigured = true
-            super.setOnKeyListener(l)
-        } else {
-            userKeyListener = l
         }
     }
 
