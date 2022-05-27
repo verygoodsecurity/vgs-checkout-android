@@ -58,7 +58,7 @@ internal enum class CardType(val regex:String,
 
     DANKORT(
         "^5019",
-        R.drawable.vgs_checkout_ic_dankort_dark,
+        R.drawable.vgs_checkout_ic_dankort,
         "#### #### #### ####",
         ChecksumAlgorithm.LUHN,
         arrayOf(16),

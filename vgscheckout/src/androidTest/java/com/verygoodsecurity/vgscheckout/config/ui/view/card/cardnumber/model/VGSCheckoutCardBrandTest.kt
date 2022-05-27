@@ -57,7 +57,7 @@ class VGSCheckoutCardBrandTest {
     @Test
     fun getBrandIcon_dankort_successful() {
         // Arrange
-        val expected = R.drawable.vgs_checkout_ic_dankort_dark
+        val expected = R.drawable.vgs_checkout_ic_dankort
         // Assert
         assertEquals(expected, VGSCheckoutCardBrand.getBrandIcon("dankort"))
         assertEquals(expected, VGSCheckoutCardBrand.getBrandIcon("Dankort"))
