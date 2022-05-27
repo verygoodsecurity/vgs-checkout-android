@@ -8,7 +8,6 @@ import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.view.card.CardType
 import com.verygoodsecurity.vgscheckout.collect.view.card.icon.CardIconAdapter
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -31,7 +30,6 @@ class CardIconAdapterTest {
     @Test
     fun test_get_card_brand() {
         val cardType = CardType.DINCLUB
-        val icon = adapter.getItem(cardType, cardType.name, cardType.resId, Rect())
 
         val cb = adapter.getCardBrand()
 
@@ -65,8 +63,7 @@ class CardIconAdapterTest {
         val item = adapter.getItem(cardType, cardType.name, cardType.resId, Rect())
         val bounds = item.bounds
 
-        val cb = adapter.getCardBrand()
-        assertNotEquals(cardType.resId, cb!!.resId)
+        val cb = adapter.getCardBrand()!!
         assertEquals(R.drawable.vgs_checkout_ic_amex, cb.resId)
         assertEquals(cardType.name, cb.name)
 
@@ -87,8 +84,7 @@ class CardIconAdapterTest {
         val item = adapter.getItem(cardType, cardType.name, cardType.resId, Rect())
         val bounds = item.bounds
 
-        val cb = adapter.getCardBrand()
-        assertNotEquals(cardType.resId, cb!!.resId)
+        val cb = adapter.getCardBrand()!!
         assertEquals(R.drawable.vgs_checkout_ic_visa, cb.resId)
         assertEquals(cardType.name, cb.name)
 
