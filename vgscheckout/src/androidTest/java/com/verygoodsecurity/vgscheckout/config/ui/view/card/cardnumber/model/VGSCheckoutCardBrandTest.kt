@@ -12,7 +12,7 @@ class VGSCheckoutCardBrandTest {
     @Test
     fun getBrandIcon_elo_successful() {
         // Arrange
-        val expected = R.drawable.vgs_checkout_ic_elo_dark
+        val expected = R.drawable.vgs_checkout_ic_elo
         // Assert
         assertEquals(expected, VGSCheckoutCardBrand.getBrandIcon("elo"))
         assertEquals(expected, VGSCheckoutCardBrand.getBrandIcon("Elo"))
@@ -23,7 +23,7 @@ class VGSCheckoutCardBrandTest {
     @Test
     fun getBrandIcon_visa_electron_successful() {
         // Arrange
-        val expected = R.drawable.vgs_checkout_ic_visa_electron_dark
+        val expected = R.drawable.vgs_checkout_ic_visa_electron
         // Assert
         assertEquals(expected, VGSCheckoutCardBrand.getBrandIcon("visa_electron"))
         assertEquals(expected, VGSCheckoutCardBrand.getBrandIcon("Visa_Electron"))
@@ -35,7 +35,7 @@ class VGSCheckoutCardBrandTest {
     @Test
     fun getBrandIcon_maestro_successful() {
         // Arrange
-        val expected = R.drawable.vgs_checkout_ic_maestro_dark
+        val expected = R.drawable.vgs_checkout_ic_maestro
         // Assert
         assertEquals(expected, VGSCheckoutCardBrand.getBrandIcon("maestro"))
         assertEquals(expected, VGSCheckoutCardBrand.getBrandIcon("Maestro"))
@@ -46,7 +46,7 @@ class VGSCheckoutCardBrandTest {
     @Test
     fun getBrandIcon_forbrugsforeningen_successful() {
         // Arrange
-        val expected = R.drawable.vgs_checkout_ic_forbrugsforeningen_dark
+        val expected = R.drawable.vgs_checkout_ic_forbrugsforeningen
         // Assert
         assertEquals(expected, VGSCheckoutCardBrand.getBrandIcon("forbrugsforeningen"))
         assertEquals(expected, VGSCheckoutCardBrand.getBrandIcon("Forbrugsforeningen"))
@@ -57,7 +57,7 @@ class VGSCheckoutCardBrandTest {
     @Test
     fun getBrandIcon_dankort_successful() {
         // Arrange
-        val expected = R.drawable.vgs_checkout_ic_dankort_dark
+        val expected = R.drawable.vgs_checkout_ic_dankort
         // Assert
         assertEquals(expected, VGSCheckoutCardBrand.getBrandIcon("dankort"))
         assertEquals(expected, VGSCheckoutCardBrand.getBrandIcon("Dankort"))
@@ -68,7 +68,7 @@ class VGSCheckoutCardBrandTest {
     @Test
     fun getBrandIcon_visa_successful() {
         // Arrange
-        val expected = R.drawable.vgs_checkout_ic_visa_dark
+        val expected = R.drawable.vgs_checkout_ic_visa
         // Assert
         assertEquals(expected, VGSCheckoutCardBrand.getBrandIcon("visa"))
         assertEquals(expected, VGSCheckoutCardBrand.getBrandIcon("Visa"))
@@ -79,7 +79,7 @@ class VGSCheckoutCardBrandTest {
     @Test
     fun getBrandIcon_mastercard_successful() {
         // Arrange
-        val expected = R.drawable.vgs_checkout_ic_mastercard_dark
+        val expected = R.drawable.vgs_checkout_ic_mastercard
         // Assert
         assertEquals(expected, VGSCheckoutCardBrand.getBrandIcon("mastercard"))
         assertEquals(expected, VGSCheckoutCardBrand.getBrandIcon("Mastercard"))
@@ -90,7 +90,7 @@ class VGSCheckoutCardBrandTest {
     @Test
     fun getBrandIcon_amex_successful() {
         // Arrange
-        val expected = R.drawable.vgs_checkout_ic_amex_dark
+        val expected = R.drawable.vgs_checkout_ic_amex
         // Assert
         assertEquals(expected, VGSCheckoutCardBrand.getBrandIcon("AmEx"))
         assertEquals(expected, VGSCheckoutCardBrand.getBrandIcon("americanexpress"))
@@ -102,7 +102,7 @@ class VGSCheckoutCardBrandTest {
     @Test
     fun getBrandIcon_hipercard_successful() {
         // Arrange
-        val expected = R.drawable.vgs_checkout_ic_hipercard_dark
+        val expected = R.drawable.vgs_checkout_ic_hipercard
         // Assert
         assertEquals(expected, VGSCheckoutCardBrand.getBrandIcon("hipercard"))
         assertEquals(expected, VGSCheckoutCardBrand.getBrandIcon("Hipercard"))
@@ -113,7 +113,7 @@ class VGSCheckoutCardBrandTest {
     @Test
     fun getBrandIcon_dinclub_successful() {
         // Arrange
-        val expected = R.drawable.vgs_checkout_ic_diners_dark
+        val expected = R.drawable.vgs_checkout_ic_diners
         // Assert
         assertEquals(expected, VGSCheckoutCardBrand.getBrandIcon("dinclub"))
         assertEquals(expected, VGSCheckoutCardBrand.getBrandIcon("Dinclub"))
@@ -124,7 +124,7 @@ class VGSCheckoutCardBrandTest {
     @Test
     fun getBrandIcon_discover_successful() {
         // Arrange
-        val expected = R.drawable.vgs_checkout_ic_discover_dark
+        val expected = R.drawable.vgs_checkout_ic_discover
         // Assert
         assertEquals(expected, VGSCheckoutCardBrand.getBrandIcon("discover"))
         assertEquals(expected, VGSCheckoutCardBrand.getBrandIcon("Discover"))
@@ -135,7 +135,7 @@ class VGSCheckoutCardBrandTest {
     @Test
     fun getBrandIcon_unionpay_successful() {
         // Arrange
-        val expected = R.drawable.vgs_checkout_ic_union_pay_dark
+        val expected = R.drawable.vgs_checkout_ic_union_pay
         // Assert
         assertEquals(expected, VGSCheckoutCardBrand.getBrandIcon("unionpay"))
         assertEquals(expected, VGSCheckoutCardBrand.getBrandIcon("Unionpay"))
@@ -146,7 +146,7 @@ class VGSCheckoutCardBrandTest {
     @Test
     fun getBrandIcon_jcb_successful() {
         // Arrange
-        val expected = R.drawable.vgs_checkout_ic_jcb_dark
+        val expected = R.drawable.vgs_checkout_ic_jcb
         // Assert
         assertEquals(expected, VGSCheckoutCardBrand.getBrandIcon("jcb"))
         assertEquals(expected, VGSCheckoutCardBrand.getBrandIcon("Jcb"))
