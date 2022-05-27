@@ -63,8 +63,6 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
             inputConnection?.run()
         }
 
-    protected var isListeningPermitted = true
-
     protected var hasRTL = false
 
     protected abstract var fieldType: FieldType
@@ -72,13 +70,11 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
     protected var inputConnection: InputRunnable? = null
     protected var validator: MutableValidator = CompositeValidator()
 
-    protected var vgsParent: InputFieldView? = null
+    internal var vgsParent: InputFieldView? = null
 
     private var onFieldStateChangeListener: OnFieldStateChangeListener? = null
 
     private var isBackgroundVisible = true
-
-    private var activeTextWatcher: TextWatcher? = null
 
     private var analyticName: String? = null
 
@@ -86,19 +82,12 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         internal set
 
     init {
-        isListeningPermitted = true
         setupInputConnectionListener()
-        isListeningPermitted = false
-
         setupViewAttributes()
         this.setupAutofill()
     }
 
     protected open fun setupAutofill() {}
-
-    internal fun setIsListeningPermitted(state: Boolean) {
-        isListeningPermitted = state
-    }
 
     private fun setupViewAttributes() {
         id = ViewCompat.generateViewId()
@@ -111,14 +100,13 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         addTextChangedListener {
             if (!isEdited) isEdited = it != null && it.isNotEmpty()
             updateTextChanged(it.toString())
-            vgsParent?.notifyOnTextChanged(it.isNullOrEmpty())
             notifyStateChangeListeners()
         }
     }
 
     private fun notifyStateChangeListeners() {
         inputConnection?.getOutput()?.mapToFieldState()?.let {
-            onFieldStateChangeListener?.onStateChange(it)
+            onFieldStateChangeListener?.onStateChange(this, it)
         }
     }
 
@@ -135,26 +123,12 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
     }
 
     override fun onAttachedToWindow() {
-        isListeningPermitted = true
         applyFieldType()
         inputConnection?.getOutput()?.enableValidation = enableValidation
         super.onAttachedToWindow()
-        isListeningPermitted = false
-    }
-
-    protected fun refreshInputConnection() {
-        isListeningPermitted = true
-        applyFieldType()
-        isListeningPermitted = false
     }
 
     protected abstract fun applyFieldType()
-
-    protected fun applyNewTextWatcher(textWatcher: TextWatcher?) {
-        activeTextWatcher?.let { removeTextChangedListener(activeTextWatcher) }
-        textWatcher?.let { addTextChangedListener(textWatcher) }
-        activeTextWatcher = textWatcher
-    }
 
     protected fun collectCurrentState(stateContent: FieldContent): VGSFieldState {
         val state = VGSFieldState().apply {
@@ -207,12 +181,6 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         tag?.run {
             super.setTag(tag)
             inputConnection?.getOutput()?.fieldName = this as String
-        }
-    }
-
-    override fun addTextChangedListener(watcher: TextWatcher?) {
-        if (isListeningPermitted || watcher?.javaClass?.`package`?.name?.contains("com.google") == true) {
-            super.addTextChangedListener(watcher)
         }
     }
 
@@ -277,6 +245,7 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
                 inputConnection?.run()
             }
         }
+        notifyStateChangeListeners()
     }
 
     override fun onEditorAction(actionCode: Int) {
@@ -292,7 +261,7 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
     fun setOnFieldStateChangeListener(onFieldStateChangeListener: OnFieldStateChangeListener?) {
         this.onFieldStateChangeListener = onFieldStateChangeListener
         inputConnection?.getOutput()?.mapToFieldState()?.let {
-            onFieldStateChangeListener?.onStateChange(it)
+            onFieldStateChangeListener?.onStateChange(this, it)
         }
     }
 
@@ -362,7 +331,7 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
          *
          * @param state current state of input field
          */
-        fun onStateChange(state: FieldState)
+        fun onStateChange(inputField: BaseInputField, state: FieldState)
     }
 }
 

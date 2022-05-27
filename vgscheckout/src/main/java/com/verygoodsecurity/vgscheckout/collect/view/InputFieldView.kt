@@ -10,14 +10,13 @@ import android.os.Parcelable
 import android.text.InputFilter
 import android.text.TextPaint
 import android.text.TextUtils
+import android.text.TextWatcher
 import android.util.AttributeSet
-import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.view.autofill.AutofillId
 import android.view.inputmethod.EditorInfo
 import android.widget.FrameLayout
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.FloatRange
 import androidx.annotation.RequiresApi
@@ -1170,40 +1169,19 @@ internal abstract class InputFieldView @JvmOverloads constructor(
     }
 
     /**
-     * When an object of this type is attached to an [InputFieldView], its method will
-     * be called when the text is changed.
-     */
-    interface OnTextChangedListener {
-
-        /**
-         * This method is called to notify you that the text has been changed.
-         *
-         * @param view The view that was clicked.
-         * @param isEmpty If true, then field is have no revealed data.
-         */
-        fun onTextChange(view: InputFieldView, isEmpty: Boolean)
-    }
-
-    private val textChangeListeners = mutableListOf<OnTextChangedListener>()
-
-    internal fun notifyOnTextChanged(isEmpty: Boolean) {
-        textChangeListeners.forEach { it.onTextChange(this, isEmpty) }
-    }
-
-    /**
      * Adds a OnTextChangedListener to the list of those whose methods are called
      * whenever this field text changes.
      */
-    fun addOnTextChangeListener(listener: OnTextChangedListener?) {
-        listener?.let { textChangeListeners.add(listener) }
+    fun addOnTextChangeListener(listener: TextWatcher?) {
+        inputField.addTextChangedListener(listener)
     }
 
     /**
      * Removes the specified OnTextChangedListener from the list of those whose methods are called
      * whenever this field text changes.
      */
-    fun removeTextChangedListener(listener: OnTextChangedListener?) {
-        listener?.let { textChangeListeners.remove(listener) }
+    fun removeTextChangedListener(listener: TextWatcher?) {
+        inputField.removeTextChangedListener(listener)
     }
 
     /**

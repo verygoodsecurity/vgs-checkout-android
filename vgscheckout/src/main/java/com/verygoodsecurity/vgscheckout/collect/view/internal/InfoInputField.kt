@@ -26,7 +26,6 @@ internal open class InfoInputField(context: Context, ) : BaseInputField(context)
 
         inputConnection?.setOutput(state)
 
-        applyNewTextWatcher(null)
         applyInputType()
     }
 

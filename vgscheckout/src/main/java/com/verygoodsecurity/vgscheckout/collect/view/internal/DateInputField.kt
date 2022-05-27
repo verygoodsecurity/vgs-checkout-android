@@ -106,7 +106,7 @@ internal class DateInputField(context: Context) : BaseInputField(context), View.
         this.formatter = with(baseFormatter) {
             setMask(datePattern)
             setMode(datePickerMode)
-            applyNewTextWatcher(this)
+            addTextChangedListener(this)
             this
         }
     }
@@ -279,10 +279,7 @@ internal class DateInputField(context: Context) : BaseInputField(context), View.
         isDaysVisible = datePattern.contains(DD)
         fieldDateFormat = SimpleDateFormat(datePattern, Locale.US)
 
-        isListeningPermitted = true
-
         formatter?.setMask(datePattern)
-        isListeningPermitted = false
     }
 
     internal fun getDatePattern(): String = datePattern
@@ -317,7 +314,6 @@ internal class DateInputField(context: Context) : BaseInputField(context), View.
         isCursorVisible = isActive
         isFocusable = isActive
         isFocusableInTouchMode = isActive
-        isListeningPermitted = true
         if (isActive) {
             charLimit = datePattern.length
 
@@ -331,7 +327,6 @@ internal class DateInputField(context: Context) : BaseInputField(context), View.
             filters = arrayOf()
         }
 
-        isListeningPermitted = false
     }
 
     fun setMaxDate(date: String) {

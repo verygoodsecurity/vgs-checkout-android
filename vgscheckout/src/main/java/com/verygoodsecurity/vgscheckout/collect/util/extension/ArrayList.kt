@@ -43,7 +43,7 @@ internal fun ArrayList<Any?>.deepMerge(
                             add(index, value)
                         }
                     }
-                    value is Map<*, *> -> this.add(index, value)//this.setOrAdd(value, index)
+                    value is Map<*, *> -> this.add(index, value)//fixme this.setOrAdd(value, index)
                     value != null -> add(index, value)
                 }
             }

@@ -1,8 +1,9 @@
 package com.verygoodsecurity.vgscheckout.ui.fragment.save.validation
 
 import android.content.Context
-import android.view.View
+import com.verygoodsecurity.vgscheckout.collect.core.model.state.FieldState
 import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
+import com.verygoodsecurity.vgscheckout.collect.view.internal.BaseInputField
 import com.verygoodsecurity.vgscheckout.util.country.model.Country
 
 internal class DynamicValidationManager constructor(
@@ -11,20 +12,19 @@ internal class DynamicValidationManager constructor(
     inputs: List<InputFieldView>
 ) : ValidationManager(context, country, inputs) {
 
-    private val onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
-        if (v is InputFieldView && hasFocus.not() && v.isEdited()) {
-            validate(v)
+    private val stateListener = object : BaseInputField.OnFieldStateChangeListener {
+        override fun onStateChange(inputField: BaseInputField, state: FieldState) {
+            if (!state.hasFocus && inputField.isEdited) validate(inputField)
         }
     }
 
     init {
-
-        initOnFocusChangeListener()
+        initOnFieldStateChangeListener()
     }
 
-    private fun initOnFocusChangeListener() {
+    private fun initOnFieldStateChangeListener() {
         inputs.forEach {
-            it.onFocusChangeListener = onFocusChangeListener
+            it.setOnFieldStateChangeListener(stateListener)
         }
     }
 }
