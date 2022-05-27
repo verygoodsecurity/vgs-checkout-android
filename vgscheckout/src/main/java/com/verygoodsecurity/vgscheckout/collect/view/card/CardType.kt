@@ -31,7 +31,7 @@ internal enum class CardType(val regex:String,
 
     VISA_ELECTRON(
         "^4(026|17500|405|508|844|91[37])",
-        R.drawable.vgs_checkout_ic_visa_electron_dark,
+        R.drawable.vgs_checkout_ic_visa_electron,
         "#### #### #### ####",
         ChecksumAlgorithm.LUHN,
         arrayOf(16),
