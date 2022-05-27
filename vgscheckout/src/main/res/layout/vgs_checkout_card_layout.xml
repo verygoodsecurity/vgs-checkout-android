@@ -16,7 +16,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:src="@drawable/vgs_checkout_ic_visa_light" />
+        tools:src="@drawable/vgs_checkout_ic_visa" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/mtvCardHolderName"

@@ -89,7 +89,7 @@ class CardIconAdapterTest {
 
         val cb = adapter.getCardBrand()
         assertNotEquals(cardType.resId, cb!!.resId)
-        assertEquals(R.drawable.vgs_checkout_ic_visa_light, cb.resId)
+        assertEquals(R.drawable.vgs_checkout_ic_visa, cb.resId)
         assertEquals(cardType.name, cb.name)
 
         assertEquals(0, bounds.left)
@@ -111,8 +111,8 @@ class CardIconAdapterTest {
                     handleAmex()
                 }
                 CardType.VISA -> {
-                    brand = CardBrand(name, R.drawable.vgs_checkout_ic_visa_light)
-                    getDrawable(R.drawable.vgs_checkout_ic_visa_light)
+                    brand = CardBrand(name, R.drawable.vgs_checkout_ic_visa)
+                    getDrawable(R.drawable.vgs_checkout_ic_visa)
                 }
                 else -> {
                     brand = CardBrand(name, resId)
