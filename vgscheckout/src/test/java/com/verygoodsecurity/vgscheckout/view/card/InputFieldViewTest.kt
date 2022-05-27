@@ -271,25 +271,6 @@ class InputFieldViewTest {
     }
 
     @Test
-    fun test_add_on_text_change_listener() {
-        val listener = mock(InputFieldView.OnTextChangedListener::class.java)
-        view.addOnTextChangeListener(listener)
-        view.setText("test")
-
-        verify(listener).onTextChange(view, false)
-    }
-
-    @Test
-    fun test_remove_on_text_change_listener() {
-        val listener = mock(InputFieldView.OnTextChangedListener::class.java)
-        view.addOnTextChangeListener(listener)
-        view.removeTextChangedListener(listener)
-        view.setText("test")
-
-        verify(listener, times(0)).onTextChange(view, false)
-    }
-
-    @Test
     fun test_set_is_focusable() {
         view.isFocusable = false
 
