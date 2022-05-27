@@ -35,7 +35,7 @@ class VGSCheckoutCardBrandTest {
     @Test
     fun getBrandIcon_maestro_successful() {
         // Arrange
-        val expected = R.drawable.vgs_checkout_ic_maestro_dark
+        val expected = R.drawable.vgs_checkout_ic_maestro
         // Assert
         assertEquals(expected, VGSCheckoutCardBrand.getBrandIcon("maestro"))
         assertEquals(expected, VGSCheckoutCardBrand.getBrandIcon("Maestro"))
