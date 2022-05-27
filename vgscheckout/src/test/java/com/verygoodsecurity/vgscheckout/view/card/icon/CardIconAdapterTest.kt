@@ -30,6 +30,7 @@ class CardIconAdapterTest {
     @Test
     fun test_get_card_brand() {
         val cardType = CardType.DINCLUB
+        val icon = adapter.getItem(cardType, cardType.name, cardType.resId, Rect())
 
         val cb = adapter.getCardBrand()
 
