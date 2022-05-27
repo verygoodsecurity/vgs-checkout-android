@@ -94,7 +94,7 @@ internal enum class CardType(val regex:String,
 
     HIPERCARD(
         "^(384100|384140|384160|606282|637095|637568|60(?!11))",
-        R.drawable.vgs_checkout_ic_hipercard_dark,
+        R.drawable.vgs_checkout_ic_hipercard,
         "#### #### #### #### ###",
         ChecksumAlgorithm.LUHN,
         (14..19).toList().toTypedArray(),

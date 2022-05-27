@@ -102,7 +102,7 @@ class VGSCheckoutCardBrandTest {
     @Test
     fun getBrandIcon_hipercard_successful() {
         // Arrange
-        val expected = R.drawable.vgs_checkout_ic_hipercard_dark
+        val expected = R.drawable.vgs_checkout_ic_hipercard
         // Assert
         assertEquals(expected, VGSCheckoutCardBrand.getBrandIcon("hipercard"))
         assertEquals(expected, VGSCheckoutCardBrand.getBrandIcon("Hipercard"))
