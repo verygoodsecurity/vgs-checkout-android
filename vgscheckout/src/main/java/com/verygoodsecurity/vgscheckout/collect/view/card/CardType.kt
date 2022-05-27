@@ -112,7 +112,7 @@ internal enum class CardType(val regex:String,
 
     DISCOVER(
         "^(6011|65|64[4-9]|622)",
-        R.drawable.vgs_checkout_ic_discover_dark,
+        R.drawable.vgs_checkout_ic_discover,
         "#### #### #### ####",
         ChecksumAlgorithm.LUHN,
         arrayOf(16),
