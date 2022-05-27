@@ -135,7 +135,7 @@ class VGSCheckoutCardBrandTest {
     @Test
     fun getBrandIcon_unionpay_successful() {
         // Arrange
-        val expected = R.drawable.vgs_checkout_ic_union_pay_dark
+        val expected = R.drawable.vgs_checkout_ic_union_pay
         // Assert
         assertEquals(expected, VGSCheckoutCardBrand.getBrandIcon("unionpay"))
         assertEquals(expected, VGSCheckoutCardBrand.getBrandIcon("Unionpay"))

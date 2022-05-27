@@ -120,7 +120,7 @@ internal enum class CardType(val regex:String,
     ),
     UNIONPAY(
         "^(62)",
-        R.drawable.vgs_checkout_ic_union_pay_dark,
+        R.drawable.vgs_checkout_ic_union_pay,
         "#### #### #### #### ###",
         ChecksumAlgorithm.NONE,
         (16..19).toList().toTypedArray(),
