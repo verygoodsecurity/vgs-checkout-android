@@ -56,7 +56,7 @@ abstract class BaseActivity constructor(@LayoutRes layoutId: Int) : AppCompatAct
 
     protected fun SharedPreferences.getValidationBehaviour(
         @StringRes key: Int,
-        default: String = "on_submit"
+        default: String = "On submit"
     ): VGSCheckoutFormValidationBehaviour {
         val value = getString(getString(key), default)
         return if (value == default) {
