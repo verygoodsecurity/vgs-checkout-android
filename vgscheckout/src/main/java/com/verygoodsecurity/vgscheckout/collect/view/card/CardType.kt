@@ -129,7 +129,7 @@ internal enum class CardType(val regex:String,
 
     JCB(
         "^35",
-        R.drawable.vgs_checkout_ic_jcb_dark,
+        R.drawable.vgs_checkout_ic_jcb,
         "#### #### #### #### ###",
         ChecksumAlgorithm.LUHN,
         (16..19).toList().toTypedArray(),

@@ -23,7 +23,7 @@ class CustomCardBrandsFilteringTest {
     @Test
     fun test_detect_custom_brand() {
         val c1 = CardBrand("^123", "VG_Search", drawableResId = R.drawable.vgs_checkout_ic_card_front_preview)
-        val c2 = CardBrand("^777", "VGS", drawableResId = R.drawable.vgs_checkout_ic_jcb_light)
+        val c2 = CardBrand("^777", "VGS", drawableResId = R.drawable.vgs_checkout_ic_jcb)
 
         filter.addCustomCardBrand(c1)
         filter.addCustomCardBrand(c2)
@@ -35,7 +35,7 @@ class CustomCardBrandsFilteringTest {
     @Test
     fun test_detect_custom_brand_2() {
         val c1 = CardBrand("^123", "VG_Search", drawableResId = R.drawable.vgs_checkout_ic_card_front_preview)
-        val c2 = CardBrand("^777", "VGS", drawableResId = R.drawable.vgs_checkout_ic_jcb_light)
+        val c2 = CardBrand("^777", "VGS", drawableResId = R.drawable.vgs_checkout_ic_jcb)
 
         filter.addCustomCardBrand(c1)
         filter.addCustomCardBrand(c2)
@@ -72,7 +72,7 @@ class CustomCardBrandsFilteringTest {
         (filter as CardBrandFilter).setDivider("-")
 
         val c1 = CardBrand("^123", "VG_Search", drawableResId = R.drawable.vgs_checkout_ic_card_front_preview)
-        val c2 = CardBrand("^777", "VGS", drawableResId = R.drawable.vgs_checkout_ic_jcb_light)
+        val c2 = CardBrand("^777", "VGS", drawableResId = R.drawable.vgs_checkout_ic_jcb)
 
         filter.addCustomCardBrand(c1)
         filter.addCustomCardBrand(c2)
