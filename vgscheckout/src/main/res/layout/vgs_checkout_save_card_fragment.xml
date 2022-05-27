@@ -139,7 +139,7 @@
                 android:layout_marginBottom="@dimen/vgs_checkout_margin_padding_size_micro"
                 android:hint="@string/vgs_checkout_address_info_country_hint"
                 app:endIconDrawable="@drawable/vgs_checkout_ic_baseline_arrow_drop_down_white_24"
-                app:endIconModes="custom">
+                app:endIconMode="custom">
 
                 <com.verygoodsecurity.vgscheckout.collect.widget.VGSCountryEditText
                     android:id="@+id/vgsEtCountry"

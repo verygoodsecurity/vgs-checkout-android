@@ -37,7 +37,7 @@
         <item name="endIconDrawable">@drawable/vgs_checkout_ic_round_cancel_white_24</item>
         <item name="errorEnabled">true</item>
         <item name="errorIconDrawable">@drawable/vgs_checkout_ic_error_white_24</item>
-        <item name="errorIconDrawableTint">?colorError</item>
+        <item name="errorIconTint">?colorError</item>
         <item name="boxStrokeColor">@color/vgs_checkout_input_box_stroke_color</item>
     </style>
 
