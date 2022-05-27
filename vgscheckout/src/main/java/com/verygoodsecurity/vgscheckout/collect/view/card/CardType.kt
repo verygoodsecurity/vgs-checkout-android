@@ -49,7 +49,7 @@ internal enum class CardType(val regex:String,
 
     FORBRUGSFORENINGEN(
         "^600",
-        R.drawable.vgs_checkout_ic_forbrugsforeningen_dark,
+        R.drawable.vgs_checkout_ic_forbrugsforeningen,
         "#### #### #### ####",
         ChecksumAlgorithm.LUHN,
         arrayOf(16),
