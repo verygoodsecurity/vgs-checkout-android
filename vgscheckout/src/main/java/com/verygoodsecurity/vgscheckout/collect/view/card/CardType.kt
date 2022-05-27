@@ -103,7 +103,7 @@ internal enum class CardType(val regex:String,
 
     DINCLUB(
         "^3(?:[689]|(?:0[059]+))",
-        R.drawable.vgs_checkout_ic_diners_dark,
+        R.drawable.vgs_checkout_ic_diners,
         "#### ###### ######",
         ChecksumAlgorithm.LUHN,
         arrayOf(14, 16),

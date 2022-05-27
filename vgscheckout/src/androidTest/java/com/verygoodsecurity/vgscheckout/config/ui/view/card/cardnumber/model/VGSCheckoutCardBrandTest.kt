@@ -113,7 +113,7 @@ class VGSCheckoutCardBrandTest {
     @Test
     fun getBrandIcon_dinclub_successful() {
         // Arrange
-        val expected = R.drawable.vgs_checkout_ic_diners_dark
+        val expected = R.drawable.vgs_checkout_ic_diners
         // Assert
         assertEquals(expected, VGSCheckoutCardBrand.getBrandIcon("dinclub"))
         assertEquals(expected, VGSCheckoutCardBrand.getBrandIcon("Dinclub"))
