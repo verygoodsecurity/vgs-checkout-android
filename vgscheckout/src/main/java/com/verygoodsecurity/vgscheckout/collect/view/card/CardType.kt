@@ -85,7 +85,7 @@ internal enum class CardType(val regex:String,
 
     AMERICAN_EXPRESS(
         "^3[47]",
-        R.drawable.vgs_checkout_ic_amex_dark,
+        R.drawable.vgs_checkout_ic_amex,
         "#### ###### #####",
         ChecksumAlgorithm.LUHN,
         arrayOf(15),
