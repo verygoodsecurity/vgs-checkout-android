@@ -6,13 +6,14 @@ import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import android.view.autofill.AutofillValue
 import android.view.inputmethod.EditorInfo
 import androidx.annotation.VisibleForTesting
+import androidx.core.view.ViewCompat
 import androidx.core.widget.addTextChangedListener
 import com.google.android.material.textfield.TextInputEditText
+import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.analytic.AnalyticTracker
 import com.verygoodsecurity.vgscheckout.analytic.event.AutofillEvent
 import com.verygoodsecurity.vgscheckout.collect.core.model.state.*
@@ -91,11 +92,10 @@ internal abstract class BaseInputField @JvmOverloads constructor(
     protected open fun setupAutofill() {}
 
     private fun setupViewAttributes() {
-        Log.d("Test", id.toString())
-//        id = ViewCompat.generateViewId()
-//
-//        compoundDrawablePadding =
-//            resources.getDimension(R.dimen.vgs_checkout_margin_padding_size_small).toInt()
+        if (id != -1) return
+        id = ViewCompat.generateViewId()
+        compoundDrawablePadding =
+            resources.getDimension(R.dimen.vgs_checkout_margin_padding_size_small).toInt()
     }
 
     private fun setupInputConnectionListener() {
