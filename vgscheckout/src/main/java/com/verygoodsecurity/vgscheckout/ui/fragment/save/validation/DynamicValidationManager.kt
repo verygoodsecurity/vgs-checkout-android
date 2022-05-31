@@ -9,7 +9,7 @@ import com.verygoodsecurity.vgscheckout.util.country.model.Country
 internal class DynamicValidationManager constructor(
     context: Context,
     country: Country,
-    inputs: List<InputFieldView>
+    inputs: List<BaseInputField>
 ) : ValidationManager(context, country, inputs) {
 
     private val stateListener = object : BaseInputField.OnFieldStateChangeListener {

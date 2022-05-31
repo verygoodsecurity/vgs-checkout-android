@@ -105,13 +105,13 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
             requireContext(),
             binding.countryEt.selectedCountry,
             mutableListOf(
-                binding.cardHolderEt,
-                binding.cardNumberEt,
-                binding.expirationDateEt,
-                binding.securityCodeEt,
-                binding.addressEt,
-                binding.cityEt,
-                binding.postalCodeEt
+                binding.cardHolderEt.getInputField(),
+                binding.cardNumberEt.getInputField(),
+                binding.expirationDateEt.getInputField(),
+                binding.securityCodeEt.getInputField(),
+                binding.addressEt.getInputField(),
+                binding.cityEt.getInputField(),
+                binding.postalCodeEt.getInputField()
             )
         )
     }

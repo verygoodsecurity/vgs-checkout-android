@@ -5,7 +5,6 @@ import android.content.Context
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.os.Build
-import android.text.TextWatcher
 import android.view.View
 import android.view.autofill.AutofillValue
 import android.view.inputmethod.EditorInfo

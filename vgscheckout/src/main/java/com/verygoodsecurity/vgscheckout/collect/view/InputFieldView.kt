@@ -1105,6 +1105,8 @@ internal abstract class InputFieldView @JvmOverloads constructor(
         }
     }
 
+    fun getInputField() = inputField
+
     fun getInnerState(): VGSFieldState {
         return inputField.getFieldState()
     }
