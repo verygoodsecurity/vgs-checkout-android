@@ -105,7 +105,7 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
             requireContext(),
             binding.countryEt.selectedCountry,
             mutableListOf(
-                binding.cardHolderEt.getInputField(),
+                binding.cardHolderEt,
                 binding.cardNumberEt.getInputField(),
                 binding.expirationDateEt.getInputField(),
                 binding.securityCodeEt.getInputField(),
@@ -128,7 +128,8 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
             binding.cardHolderTil.gone()
             return
         }
-        binding.cardHolderEt.setFieldName(options.fieldName)
+        binding.cardHolderEt.tag = options.fieldName
+        binding.cardHolderEt.setAnalyticsName("cardHolder")
     }
 
     private fun initCardNumberView(options: CardNumberOptions) {

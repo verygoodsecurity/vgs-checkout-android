@@ -11,6 +11,7 @@ import com.google.android.material.checkbox.MaterialCheckBox
 import com.google.android.material.textview.MaterialTextView
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.core.model.state.VGSFieldState
+import com.verygoodsecurity.vgscheckout.collect.view.internal.PersonNameInputField
 import com.verygoodsecurity.vgscheckout.view.VGSCheckoutTextInputLayout
 import com.verygoodsecurity.vgscheckout.collect.widget.*
 
@@ -23,7 +24,7 @@ internal class SaveCardViewBindingHelper(inflater: LayoutInflater, @LayoutRes la
     val cardDetailsMtv: MaterialTextView by lazy { rootView.findViewById(R.id.mtvCardDetailsTitle) }
     val cardDetailsLL: LinearLayoutCompat by lazy { rootView.findViewById(R.id.llCardDetails) }
     val cardHolderTil: VGSCheckoutTextInputLayout by lazy { rootView.findViewById(R.id.vgsTilCardHolder) }
-    val cardHolderEt: PersonNameEditText by lazy { rootView.findViewById(R.id.vgsEtCardHolder) }
+    val cardHolderEt: PersonNameInputField by lazy { rootView.findViewById(R.id.vgsEtCardHolder) }
     val cardNumberEt: VGSCardNumberEditText by lazy { rootView.findViewById(R.id.vgsEtCardNumber) }
     val expirationDateEt: ExpirationDateEditText by lazy { rootView.findViewById(R.id.vgsEtExpirationDate) }
     val securityCodeTil: VGSCheckoutTextInputLayout by lazy { rootView.findViewById(R.id.vgsTilSecurityCode) }
@@ -54,7 +55,7 @@ internal class SaveCardViewBindingHelper(inflater: LayoutInflater, @LayoutRes la
             if (includeInvisibleFields || securityCodeEt.isVisible) add(securityCodeEt.getInnerState())
             if (includeInvisibleFields || expirationDateEt.isVisible) add(expirationDateEt.getInnerState())
             if (includeInvisibleFields || cardNumberEt.isVisible) add(cardNumberEt.getInnerState())
-            if (includeInvisibleFields || cardHolderEt.isVisible) add(cardHolderEt.getInnerState())
+            if (includeInvisibleFields || cardHolderEt.isVisible) add(cardHolderEt.getFieldState())
 
             if (includeInvisibleFields || addressEt.isVisible) add(addressEt.getInnerState())
             if (includeInvisibleFields || countryEt.isVisible) add(countryEt.getInnerState())

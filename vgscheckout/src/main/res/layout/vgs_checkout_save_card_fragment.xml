@@ -27,7 +27,7 @@
                 android:layout_marginBottom="@dimen/vgs_checkout_margin_padding_size_xsmall"
                 android:text="@string/vgs_checkout_form_card_details_title" />
 
-            <com.verygoodsecurity.vgscheckout.view.VGSCheckoutTextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/vgsTilCardHolder"
                 style="@style/VGSCheckout.TextInputLayout"
                 android:layout_width="match_parent"
@@ -36,14 +36,13 @@
                 android:layout_marginBottom="@dimen/vgs_checkout_margin_padding_size_micro"
                 android:hint="@string/vgs_checkout_card_holder_hint">
 
-                <com.verygoodsecurity.vgscheckout.collect.widget.PersonNameEditText
+                <com.verygoodsecurity.vgscheckout.collect.view.internal.PersonNameInputField
                     android:id="@+id/vgsEtCardHolder"
                     style="@style/VGSCheckout.TextInputEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:analyticsName="cardHolder"
                     app:imeOptions="actionNext" />
-            </com.verygoodsecurity.vgscheckout.view.VGSCheckoutTextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
             <com.verygoodsecurity.vgscheckout.view.VGSCheckoutTextInputLayout
                 android:id="@+id/vgsTilCardNumber"
