@@ -41,27 +41,22 @@
                     style="@style/VGSCheckout.TextInputEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:imeOptions="actionNext" />
+                    android:imeOptions="actionNext" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.verygoodsecurity.vgscheckout.view.VGSCheckoutTextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/vgsTilCardNumber"
                 style="@style/VGSCheckout.TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/vgs_checkout_card_number_hint">
 
-                <com.verygoodsecurity.vgscheckout.collect.widget.VGSCardNumberEditText
+                <com.verygoodsecurity.vgscheckout.collect.view.internal.CardInputField
                     android:id="@+id/vgsEtCardNumber"
-                    style="@style/VGSCheckout.TextInputEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:analyticsName="cardNumber"
-                    app:brandIconVisibility="always"
-                    app:cardBrandIconGravity="start"
-                    app:imeOptions="actionNext"
-                    app:numberDivider=" " />
-            </com.verygoodsecurity.vgscheckout.view.VGSCheckoutTextInputLayout>
+                    android:imeOptions="actionNext" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"

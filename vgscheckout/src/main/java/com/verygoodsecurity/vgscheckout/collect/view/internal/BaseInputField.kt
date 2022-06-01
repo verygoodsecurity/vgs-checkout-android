@@ -2,6 +2,7 @@ package com.verygoodsecurity.vgscheckout.collect.view.internal
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.ColorMatrixColorFilter
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.os.Build
@@ -9,6 +10,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.autofill.AutofillValue
 import android.view.inputmethod.EditorInfo
+import androidx.annotation.FloatRange
 import androidx.annotation.VisibleForTesting
 import androidx.core.view.ViewCompat
 import androidx.core.widget.addTextChangedListener
@@ -16,7 +18,10 @@ import com.google.android.material.textfield.TextInputEditText
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.analytic.AnalyticTracker
 import com.verygoodsecurity.vgscheckout.analytic.event.AutofillEvent
-import com.verygoodsecurity.vgscheckout.collect.core.model.state.*
+import com.verygoodsecurity.vgscheckout.collect.core.model.state.FieldContent
+import com.verygoodsecurity.vgscheckout.collect.core.model.state.FieldState
+import com.verygoodsecurity.vgscheckout.collect.core.model.state.VGSFieldState
+import com.verygoodsecurity.vgscheckout.collect.core.model.state.mapToFieldState
 import com.verygoodsecurity.vgscheckout.collect.view.Dependency
 import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
 import com.verygoodsecurity.vgscheckout.collect.view.card.FieldType
@@ -92,10 +97,8 @@ internal abstract class BaseInputField @JvmOverloads constructor(
     protected open fun setupAutofill() {}
 
     private fun setupViewAttributes() {
-        if (id != -1) return
-        id = ViewCompat.generateViewId()
-        compoundDrawablePadding =
-            resources.getDimension(R.dimen.vgs_checkout_margin_padding_size_small).toInt()
+        compoundDrawablePadding = resources.getDimension(R.dimen.vgs_checkout_margin_padding_size_small).toInt()
+        if (id == -1) id = ViewCompat.generateViewId()
     }
 
     private fun setupInputConnectionListener() {
@@ -320,6 +323,18 @@ internal abstract class BaseInputField @JvmOverloads constructor(
     }
 
     fun getAnalyticsName(): String = analyticName ?: fieldType.getAnalyticName()
+
+    fun setDrawablesAlphaColorFilter(@FloatRange(from = 0.0, to = 1.0) alpha: Float) {
+        val matrix = floatArrayOf(
+            1f, 0f, 0f, 0f, 0f,
+            0f, 1f, 0f, 0f, 0f,
+            0f, 0f, 1f, 0f, 0f,
+            0f, 0f, 0f, alpha, 0f
+        )
+        compoundDrawables.forEach {
+            it?.colorFilter = ColorMatrixColorFilter(matrix)
+        }
+    }
 
     /**
      * Interface definition for a callback to be invoked when a view state is changed.

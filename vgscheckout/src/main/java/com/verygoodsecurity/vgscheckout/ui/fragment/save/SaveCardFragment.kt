@@ -2,10 +2,7 @@ package com.verygoodsecurity.vgscheckout.ui.fragment.save
 
 import android.graphics.drawable.Animatable
 import android.os.Bundle
-import android.view.KeyEvent
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import androidx.annotation.StringRes
@@ -106,7 +103,7 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
             binding.countryEt.selectedCountry,
             mutableListOf(
                 binding.cardHolderEt,
-                binding.cardNumberEt.getInputField(),
+                binding.cardNumberEt,
                 binding.expirationDateEt.getInputField(),
                 binding.securityCodeEt.getInputField(),
                 binding.addressEt.getInputField(),
@@ -133,10 +130,13 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
     }
 
     private fun initCardNumberView(options: CardNumberOptions) {
-        binding.cardNumberEt.setFieldName(options.fieldName)
+        binding.cardNumberEt.tag = options.fieldName
+        binding.cardNumberEt.setAnalyticsName("cardNumber")
         binding.cardNumberEt.setValidCardBrands(options.cardBrands)
         binding.cardNumberEt.setIsCardBrandPreviewHidden(options.isIconHidden)
-        binding.cardNumberEt.setDependantField(binding.securityCodeEt)
+        binding.cardNumberEt.setCardPreviewIconGravity(Gravity.START)
+        binding.cardNumberEt.setNumberDivider(" ")
+        binding.cardNumberEt.dependentField = binding.securityCodeEt.getInputField()
     }
 
     private fun initExpirationDateView(options: ExpirationDateOptions) {

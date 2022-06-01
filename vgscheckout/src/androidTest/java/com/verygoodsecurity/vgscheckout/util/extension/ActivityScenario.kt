@@ -15,6 +15,7 @@ import androidx.test.espresso.matcher.ViewMatchers
 import com.verygoodsecurity.vgscheckout.BuildConfig
 import com.verygoodsecurity.vgscheckout.Constants
 import com.verygoodsecurity.vgscheckout.R
+import com.verygoodsecurity.vgscheckout.collect.view.internal.CardInputField
 import com.verygoodsecurity.vgscheckout.collect.view.internal.PersonNameInputField
 import com.verygoodsecurity.vgscheckout.collect.widget.*
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
@@ -62,7 +63,7 @@ fun fillCardFields(
             it.setText(cardHolderName)
         })
     Espresso.onView(ViewMatchers.withId(R.id.vgsEtCardNumber))
-        .perform(ActionHelper.doAction<VGSCardNumberEditText> {
+        .perform(ActionHelper.doAction<CardInputField> {
             it.setText(cardNumber)
         })
     Espresso.onView(ViewMatchers.withId(R.id.vgsEtExpirationDate))
