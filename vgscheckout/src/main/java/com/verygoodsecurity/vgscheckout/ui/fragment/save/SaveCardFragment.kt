@@ -16,6 +16,7 @@ import com.verygoodsecurity.vgscheckout.analytic.event.RequestEvent
 import com.verygoodsecurity.vgscheckout.collect.util.extension.mapToAssociatedList
 import com.verygoodsecurity.vgscheckout.collect.view.card.validation.rules.VGSInfoRule
 import com.verygoodsecurity.vgscheckout.collect.view.date.DatePickerMode
+import com.verygoodsecurity.vgscheckout.collect.view.internal.CVCInputField
 import com.verygoodsecurity.vgscheckout.collect.widget.VGSCountryEditText
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
@@ -107,7 +108,7 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
                 binding.cardHolderEt,
                 binding.cardNumberEt,
                 binding.expirationDateEt,
-                binding.securityCodeEt.getInputField(),
+                binding.securityCodeEt,
                 binding.addressEt.getInputField(),
                 binding.cityEt.getInputField(),
                 binding.postalCodeEt.getInputField()
@@ -138,7 +139,7 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
         binding.cardNumberEt.setIsCardBrandPreviewHidden(options.isIconHidden)
         binding.cardNumberEt.setCardPreviewIconGravity(Gravity.START)
         binding.cardNumberEt.setNumberDivider(" ")
-        binding.cardNumberEt.dependentField = binding.securityCodeEt.getInputField()
+        binding.cardNumberEt.dependentField = binding.securityCodeEt
     }
 
     private fun initExpirationDateView(options: ExpirationDateOptions) {
@@ -153,7 +154,9 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
     }
 
     private fun initSecurityCodeView(options: CVCOptions) {
-        binding.securityCodeEt.setFieldName(options.fieldName)
+        binding.securityCodeEt.tag = options.fieldName
+        binding.securityCodeEt.setAnalyticsName("cvc")
+        binding.securityCodeEt.setPreviewIconGravity(CVCInputField.PreviewIconGravity.START)
         binding.securityCodeEt.setIsPreviewIconHidden(options.isIconHidden)
     }
 

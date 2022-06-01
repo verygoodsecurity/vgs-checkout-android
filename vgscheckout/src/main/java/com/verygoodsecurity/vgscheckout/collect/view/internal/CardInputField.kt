@@ -133,6 +133,11 @@ internal class CardInputField @JvmOverloads constructor(
         return c
     }
 
+    internal fun setPreviewIconMode(mode: PreviewIconMode) {
+        previewIconMode = mode
+        refreshIconPreview()
+    }
+
     internal fun setPreviewIconMode(mode: Int) {
         previewIconMode = PreviewIconMode.values()[mode]
         refreshIconPreview()

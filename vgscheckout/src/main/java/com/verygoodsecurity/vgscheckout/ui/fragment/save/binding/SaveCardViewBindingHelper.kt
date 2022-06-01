@@ -8,9 +8,11 @@ import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.core.view.isVisible
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.checkbox.MaterialCheckBox
+import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.textview.MaterialTextView
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.core.model.state.VGSFieldState
+import com.verygoodsecurity.vgscheckout.collect.view.internal.CVCInputField
 import com.verygoodsecurity.vgscheckout.collect.view.internal.CardInputField
 import com.verygoodsecurity.vgscheckout.collect.view.internal.DateInputField
 import com.verygoodsecurity.vgscheckout.collect.view.internal.PersonNameInputField
@@ -25,12 +27,12 @@ internal class SaveCardViewBindingHelper(inflater: LayoutInflater, @LayoutRes la
 
     val cardDetailsMtv: MaterialTextView by lazy { rootView.findViewById(R.id.mtvCardDetailsTitle) }
     val cardDetailsLL: LinearLayoutCompat by lazy { rootView.findViewById(R.id.llCardDetails) }
-    val cardHolderTil: VGSCheckoutTextInputLayout by lazy { rootView.findViewById(R.id.vgsTilCardHolder) }
+    val cardHolderTil: TextInputLayout by lazy { rootView.findViewById(R.id.vgsTilCardHolder) }
     val cardHolderEt: PersonNameInputField by lazy { rootView.findViewById(R.id.vgsEtCardHolder) }
     val cardNumberEt: CardInputField by lazy { rootView.findViewById(R.id.vgsEtCardNumber) }
     val expirationDateEt: DateInputField by lazy { rootView.findViewById(R.id.vgsEtExpirationDate) }
     val securityCodeTil: VGSCheckoutTextInputLayout by lazy { rootView.findViewById(R.id.vgsTilSecurityCode) }
-    val securityCodeEt: CardVerificationCodeEditText by lazy { rootView.findViewById(R.id.vgsEtSecurityCode) }
+    val securityCodeEt: CVCInputField by lazy { rootView.findViewById(R.id.vgsEtSecurityCode) }
 
     val billingAddressMtv: MaterialTextView by lazy { rootView.findViewById(R.id.mtvBillingAddressTitle) }
     val billingAddressLL: LinearLayoutCompat by lazy { rootView.findViewById(R.id.llBillingAddress) }
@@ -54,7 +56,7 @@ internal class SaveCardViewBindingHelper(inflater: LayoutInflater, @LayoutRes la
         includeInvisibleFields: Boolean = false
     ): MutableCollection<VGSFieldState> {
         return with(mutableListOf<VGSFieldState>()) {
-            if (includeInvisibleFields || securityCodeEt.isVisible) add(securityCodeEt.getInnerState())
+            if (includeInvisibleFields || securityCodeEt.isVisible) add(securityCodeEt.getFieldState())
             if (includeInvisibleFields || expirationDateEt.isVisible) add(expirationDateEt.getFieldState())
             if (includeInvisibleFields || cardNumberEt.isVisible) add(cardNumberEt.getFieldState())
             if (includeInvisibleFields || cardHolderEt.isVisible) add(cardHolderEt.getFieldState())

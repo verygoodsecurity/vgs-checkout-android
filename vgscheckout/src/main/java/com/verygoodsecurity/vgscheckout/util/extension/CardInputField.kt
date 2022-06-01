@@ -10,8 +10,8 @@ internal fun CardInputField.setValidCardBrands(brands: Set<VGSCheckoutCardBrand>
 internal fun CardInputField.setIsCardBrandPreviewHidden(isHidden: Boolean) {
     setPreviewIconMode(
         if (isHidden)
-            CardInputField.PreviewIconMode.NEVER.ordinal
+            CardInputField.PreviewIconMode.NEVER
         else
-            CardInputField.PreviewIconMode.ALWAYS.ordinal
+            CardInputField.PreviewIconMode.ALWAYS
     )
 }

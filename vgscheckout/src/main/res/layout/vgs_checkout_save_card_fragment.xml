@@ -32,9 +32,9 @@
                 style="@style/VGSCheckout.TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:endIconCheckable="false"
                 android:layout_marginBottom="@dimen/vgs_checkout_margin_padding_size_micro"
-                android:hint="@string/vgs_checkout_card_holder_hint">
+                android:hint="@string/vgs_checkout_card_holder_hint"
+                app:endIconCheckable="false">
 
                 <com.verygoodsecurity.vgscheckout.collect.view.internal.PersonNameInputField
                     android:id="@+id/vgsEtCardHolder"
@@ -64,7 +64,7 @@
                 android:layout_marginTop="@dimen/vgs_checkout_margin_padding_size_micro"
                 android:orientation="horizontal">
 
-                <com.verygoodsecurity.vgscheckout.view.VGSCheckoutTextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/vgsTilExpirationDate"
                     style="@style/VGSCheckout.TextInputLayout"
                     android:layout_width="match_parent"
@@ -78,7 +78,7 @@
                         android:layout_height="wrap_content"
                         android:imeOptions="actionNext"
                         app:inputType="date" />
-                </com.verygoodsecurity.vgscheckout.view.VGSCheckoutTextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <Space
                     android:layout_width="@dimen/vgs_checkout_margin_padding_size_medium"
@@ -92,15 +92,11 @@
                     android:layout_weight="1"
                     android:hint="@string/vgs_checkout_security_code_hint">
 
-                    <com.verygoodsecurity.vgscheckout.collect.widget.CardVerificationCodeEditText
+                    <com.verygoodsecurity.vgscheckout.collect.view.internal.CVCInputField
                         android:id="@+id/vgsEtSecurityCode"
-                        style="@style/VGSCheckout.TextInputEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:analyticsName="cvc"
-                        app:imeOptions="actionNext"
-                        app:previewIconGravity="start"
-                        app:previewIconVisibility="always" />
+                        android:imeOptions="actionNext" />
                 </com.verygoodsecurity.vgscheckout.view.VGSCheckoutTextInputLayout>
             </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.appcompat.widget.LinearLayoutCompat>
