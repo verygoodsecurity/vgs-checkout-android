@@ -17,7 +17,7 @@ import com.verygoodsecurity.vgscheckout.collect.util.extension.mapToAssociatedLi
 import com.verygoodsecurity.vgscheckout.collect.view.card.validation.rules.VGSInfoRule
 import com.verygoodsecurity.vgscheckout.collect.view.date.DatePickerMode
 import com.verygoodsecurity.vgscheckout.collect.view.internal.CVCInputField
-import com.verygoodsecurity.vgscheckout.collect.widget.VGSCountryEditText
+import com.verygoodsecurity.vgscheckout.collect.view.internal.CountryInputField
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
@@ -41,7 +41,7 @@ import com.verygoodsecurity.vgscheckout.util.extension.*
 import com.verygoodsecurity.vgscheckout.util.logger.VGSCheckoutLogger
 
 internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
-    VGSCountryEditText.OnCountrySelectedListener, TextView.OnEditorActionListener {
+    CountryInputField.OnCountrySelectedListener, TextView.OnEditorActionListener {
 
     private lateinit var binding: SaveCardViewBindingHelper
     private lateinit var validationHelper: ValidationManager
@@ -188,7 +188,8 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
                 VGSCheckoutLogger.warn(message = "Country field is hidden in billing address. You should provide validCountries array.")
             }
         }
-        binding.countryEt.setFieldName(options.fieldName)
+        binding.countryEt.tag = options.fieldName
+        binding.countryEt.setAnalyticsName("country")
         binding.countryEt.onCountrySelectedListener = this
     }
 

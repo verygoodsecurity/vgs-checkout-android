@@ -14,11 +14,11 @@ import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscheckout.collect.view.internal.CVCInputField
 import com.verygoodsecurity.vgscheckout.collect.view.internal.CardInputField
+import com.verygoodsecurity.vgscheckout.collect.view.internal.CountryInputField
 import com.verygoodsecurity.vgscheckout.collect.view.internal.DateInputField
 import com.verygoodsecurity.vgscheckout.collect.view.internal.InfoInputField
 import com.verygoodsecurity.vgscheckout.collect.view.internal.PersonNameInputField
 import com.verygoodsecurity.vgscheckout.view.VGSCheckoutTextInputLayout
-import com.verygoodsecurity.vgscheckout.collect.widget.*
 
 // TODO: Remove all unused views
 @Suppress("unused")
@@ -38,7 +38,7 @@ internal class SaveCardViewBindingHelper(inflater: LayoutInflater, @LayoutRes la
     val billingAddressMtv: MaterialTextView by lazy { rootView.findViewById(R.id.mtvBillingAddressTitle) }
     val billingAddressLL: LinearLayoutCompat by lazy { rootView.findViewById(R.id.llBillingAddress) }
     val countryTil: VGSCheckoutTextInputLayout by lazy { rootView.findViewById(R.id.vgsTilCountry) }
-    val countryEt: VGSCountryEditText by lazy { rootView.findViewById(R.id.vgsEtCountry) }
+    val countryEt: CountryInputField by lazy { rootView.findViewById(R.id.vgsEtCountry) }
     val addressTil: VGSCheckoutTextInputLayout by lazy { rootView.findViewById(R.id.vgsTilAddress) }
     val addressEt: InfoInputField by lazy { rootView.findViewById(R.id.vgsEtAddress) }
     val optionalAddressTil: VGSCheckoutTextInputLayout by lazy { rootView.findViewById(R.id.vgsTilAddressOptional) }
@@ -63,7 +63,7 @@ internal class SaveCardViewBindingHelper(inflater: LayoutInflater, @LayoutRes la
             if (includeInvisibleFields || cardHolderEt.isVisible) add(cardHolderEt.getFieldState())
 
             if (includeInvisibleFields || addressEt.isVisible) add(addressEt.getFieldState())
-            if (includeInvisibleFields || countryEt.isVisible) add(countryEt.getInnerState())
+            if (includeInvisibleFields || countryEt.isVisible) add(countryEt.getFieldState())
             if (includeInvisibleFields || optionalAddressEt.isVisible) add(optionalAddressEt.getFieldState())
             if (includeInvisibleFields || cityEt.isVisible) add(cityEt.getFieldState())
             if (includeInvisibleFields || postalCodeEt.isVisible) add(postalCodeEt.getFieldState())

@@ -127,14 +127,12 @@
                 app:endIconDrawable="@drawable/vgs_checkout_ic_baseline_arrow_drop_down_white_24"
                 app:endIconMode="custom">
 
-                <com.verygoodsecurity.vgscheckout.collect.widget.VGSCountryEditText
+                <com.verygoodsecurity.vgscheckout.collect.view.internal.CountryInputField
                     android:id="@+id/vgsEtCountry"
-                    style="@style/VGSCheckout.TextInputEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:analyticsName="country"
-                    app:cursorVisible="false"
-                    app:imeOptions="actionNext" />
+                    android:cursorVisible="false"
+                    android:imeOptions="actionNext" />
             </com.verygoodsecurity.vgscheckout.view.VGSCheckoutTextInputLayout>
 
             <com.verygoodsecurity.vgscheckout.view.VGSCheckoutTextInputLayout

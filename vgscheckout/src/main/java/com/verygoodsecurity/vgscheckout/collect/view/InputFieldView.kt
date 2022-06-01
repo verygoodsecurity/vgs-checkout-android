@@ -104,8 +104,6 @@ internal abstract class InputFieldView @JvmOverloads constructor(
         }
     }
 
-    fun getAnalyticsName() = inputField.getAnalyticsName()
-
     private fun setAnalyticsName(attrs: TypedArray) {
         analyticName = attrs.getString(R.styleable.InputFieldView_analyticsName)
     }

@@ -15,7 +15,7 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.verygoodsecurity.vgscheckout.BuildConfig
 import com.verygoodsecurity.vgscheckout.R
-import com.verygoodsecurity.vgscheckout.collect.widget.VGSCountryEditText
+import com.verygoodsecurity.vgscheckout.collect.view.internal.CountryInputField
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutAddCardFormConfig
 import com.verygoodsecurity.vgscheckout.config.ui.core.VGSCheckoutFormValidationBehaviour
@@ -123,7 +123,7 @@ class AddressDialogTest {
         launch<SaveCardActivity>(intent).use {
             // Act
             var countries: List<Country>? = null
-            onView(withId(R.id.vgsEtCountry)).perform(ActionHelper.doAction<VGSCountryEditText> {
+            onView(withId(R.id.vgsEtCountry)).perform(ActionHelper.doAction<CountryInputField> {
                 countries = it.getCountries()
             })
             //Assert
@@ -140,7 +140,7 @@ class AddressDialogTest {
         launch<SaveCardActivity>(intent).use {
             // Act
             var countries: List<Country>? = null
-            onView(withId(R.id.vgsEtCountry)).perform(ActionHelper.doAction<VGSCountryEditText> {
+            onView(withId(R.id.vgsEtCountry)).perform(ActionHelper.doAction<CountryInputField> {
                 countries = it.getCountries()
             })
             //Assert
@@ -157,7 +157,7 @@ class AddressDialogTest {
         launch<SaveCardActivity>(intent).use {
             // Act
             var countries: List<Country>? = null
-            onView(withId(R.id.vgsEtCountry)).perform(ActionHelper.doAction<VGSCountryEditText> {
+            onView(withId(R.id.vgsEtCountry)).perform(ActionHelper.doAction<CountryInputField> {
                 countries = it.getCountries()
             })
             //Assert
@@ -174,7 +174,7 @@ class AddressDialogTest {
         launch<SaveCardActivity>(intent).use {
             // Act
             var countries: List<Country>? = null
-            onView(withId(R.id.vgsEtCountry)).perform(ActionHelper.doAction<VGSCountryEditText> {
+            onView(withId(R.id.vgsEtCountry)).perform(ActionHelper.doAction<CountryInputField> {
                 countries = it.getCountries()
             })
             //Assert
