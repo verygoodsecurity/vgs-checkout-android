@@ -15,11 +15,7 @@ import androidx.test.espresso.matcher.ViewMatchers
 import com.verygoodsecurity.vgscheckout.BuildConfig
 import com.verygoodsecurity.vgscheckout.Constants
 import com.verygoodsecurity.vgscheckout.R
-import com.verygoodsecurity.vgscheckout.collect.view.internal.CVCInputField
-import com.verygoodsecurity.vgscheckout.collect.view.internal.CardInputField
-import com.verygoodsecurity.vgscheckout.collect.view.internal.DateInputField
-import com.verygoodsecurity.vgscheckout.collect.view.internal.PersonNameInputField
-import com.verygoodsecurity.vgscheckout.collect.widget.*
+import com.verygoodsecurity.vgscheckout.collect.view.internal.*
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_ARGS
@@ -84,20 +80,20 @@ fun fillAddressFields(
     postalCode: String = Constants.USA_VALID_ZIP_CODE
 ) {
     Espresso.onView(ViewMatchers.withId(R.id.vgsEtAddress))
-        .perform(ActionHelper.doAction<VGSEditText> {
+        .perform(ActionHelper.doAction<InfoInputField> {
             it.setText(address)
         })
     Espresso.onView(ViewMatchers.withId(R.id.vgsEtAddressOptional))
-        .perform(ActionHelper.doAction<VGSEditText> {
+        .perform(ActionHelper.doAction<InfoInputField> {
             it.setText(Constants.VALID_ADDRESS)
         })
 
     Espresso.onView(ViewMatchers.withId(R.id.vgsEtCity))
-        .perform(ActionHelper.doAction<VGSEditText> {
+        .perform(ActionHelper.doAction<InfoInputField> {
             it.setText(city)
         })
     Espresso.onView(ViewMatchers.withId(R.id.vgsEtPostalCode))
-        .perform(ActionHelper.doAction<VGSEditText> {
+        .perform(ActionHelper.doAction<InfoInputField> {
             it.setText(postalCode)
         })
 }

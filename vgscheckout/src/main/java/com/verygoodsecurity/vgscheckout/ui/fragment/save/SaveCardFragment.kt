@@ -109,9 +109,9 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
                 binding.cardNumberEt,
                 binding.expirationDateEt,
                 binding.securityCodeEt,
-                binding.addressEt.getInputField(),
-                binding.cityEt.getInputField(),
-                binding.postalCodeEt.getInputField()
+                binding.addressEt,
+                binding.cityEt,
+                binding.postalCodeEt
             )
         )
     }
@@ -197,7 +197,8 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
             binding.addressTil.gone()
             return
         }
-        binding.addressEt.setFieldName(options.fieldName)
+        binding.addressEt.tag = options.fieldName
+        binding.addressEt.setAnalyticsName("addressLine1")
         binding.addressEt.addRule(singleCharValidationRule)
     }
 
@@ -206,7 +207,8 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
             binding.optionalAddressTil.gone()
             return
         }
-        binding.optionalAddressEt.setFieldName(options.fieldName)
+        binding.optionalAddressEt.tag = options.fieldName
+        binding.optionalAddressEt.setAnalyticsName("addressLine2")
     }
 
     private fun initCityView(options: CityOptions) {
@@ -215,7 +217,8 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
             binding.cityPostalAddressSpace.gone()
             return
         }
-        binding.cityEt.setFieldName(options.fieldName)
+        binding.cityEt.tag = options.fieldName
+        binding.cityEt.setAnalyticsName("city")
         binding.cityEt.addRule(singleCharValidationRule)
         binding.cityEt.setOnEditorActionListener(this)
     }
@@ -226,14 +229,15 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
             binding.cityPostalAddressSpace.gone()
             return
         }
-        binding.postalCodeEt.setFieldName(options.fieldName)
+        binding.postalCodeEt.tag = options.fieldName
+        binding.postalCodeEt.setAnalyticsName("postalCode")
         binding.postalCodeEt.setOnEditorActionListener(this)
         updatePostalCodeView(binding.countryEt.selectedCountry)
     }
 
     private fun updatePostalCodeView(country: Country) {
         if (country.isPostalCodeUndefined()) {
-            binding.postalCodeEt.setText(null)
+            binding.postalCodeEt.text = null
             binding.postalCodeEt.setIsRequired(false)
             binding.postalCodeTil.gone()
             binding.cityPostalAddressSpace.gone()
@@ -241,8 +245,8 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
             binding.postalCodeEt.setIsRequired(true)
             binding.postalCodeEt.addRule(country.toVGSInfoRule())
             binding.postalCodeEt.resetText()
-            binding.postalCodeTil.setHint(getString(getPostalCodeHint(country)))
-            binding.postalCodeTil.setError(null)
+            binding.postalCodeTil.hint = getString(getPostalCodeHint(country))
+            binding.postalCodeTil.error = null
             binding.postalCodeTil.visible()
             binding.cityPostalAddressSpace.isVisible = binding.cityTil.isVisible
         }

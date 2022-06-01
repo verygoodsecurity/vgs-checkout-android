@@ -15,6 +15,7 @@ import com.verygoodsecurity.vgscheckout.collect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscheckout.collect.view.internal.CVCInputField
 import com.verygoodsecurity.vgscheckout.collect.view.internal.CardInputField
 import com.verygoodsecurity.vgscheckout.collect.view.internal.DateInputField
+import com.verygoodsecurity.vgscheckout.collect.view.internal.InfoInputField
 import com.verygoodsecurity.vgscheckout.collect.view.internal.PersonNameInputField
 import com.verygoodsecurity.vgscheckout.view.VGSCheckoutTextInputLayout
 import com.verygoodsecurity.vgscheckout.collect.widget.*
@@ -39,13 +40,13 @@ internal class SaveCardViewBindingHelper(inflater: LayoutInflater, @LayoutRes la
     val countryTil: VGSCheckoutTextInputLayout by lazy { rootView.findViewById(R.id.vgsTilCountry) }
     val countryEt: VGSCountryEditText by lazy { rootView.findViewById(R.id.vgsEtCountry) }
     val addressTil: VGSCheckoutTextInputLayout by lazy { rootView.findViewById(R.id.vgsTilAddress) }
-    val addressEt: VGSEditText by lazy { rootView.findViewById(R.id.vgsEtAddress) }
+    val addressEt: InfoInputField by lazy { rootView.findViewById(R.id.vgsEtAddress) }
     val optionalAddressTil: VGSCheckoutTextInputLayout by lazy { rootView.findViewById(R.id.vgsTilAddressOptional) }
-    val optionalAddressEt: VGSEditText by lazy { rootView.findViewById(R.id.vgsEtAddressOptional) }
+    val optionalAddressEt: InfoInputField by lazy { rootView.findViewById(R.id.vgsEtAddressOptional) }
     val cityTil: VGSCheckoutTextInputLayout by lazy { rootView.findViewById(R.id.vgsTilCity) }
-    val cityEt: VGSEditText by lazy { rootView.findViewById(R.id.vgsEtCity) }
+    val cityEt: InfoInputField by lazy { rootView.findViewById(R.id.vgsEtCity) }
     val postalCodeTil: VGSCheckoutTextInputLayout by lazy { rootView.findViewById(R.id.vgsTilPostalCode) }
-    val postalCodeEt: VGSEditText by lazy { rootView.findViewById(R.id.vgsEtPostalCode) }
+    val postalCodeEt: InfoInputField by lazy { rootView.findViewById(R.id.vgsEtPostalCode) }
 
     val cityPostalAddressSpace: Space by lazy { rootView.findViewById(R.id.cityPostalAddressSpace) }
 
@@ -61,11 +62,11 @@ internal class SaveCardViewBindingHelper(inflater: LayoutInflater, @LayoutRes la
             if (includeInvisibleFields || cardNumberEt.isVisible) add(cardNumberEt.getFieldState())
             if (includeInvisibleFields || cardHolderEt.isVisible) add(cardHolderEt.getFieldState())
 
-            if (includeInvisibleFields || addressEt.isVisible) add(addressEt.getInnerState())
+            if (includeInvisibleFields || addressEt.isVisible) add(addressEt.getFieldState())
             if (includeInvisibleFields || countryEt.isVisible) add(countryEt.getInnerState())
-            if (includeInvisibleFields || optionalAddressEt.isVisible) add(optionalAddressEt.getInnerState())
-            if (includeInvisibleFields || cityEt.isVisible) add(cityEt.getInnerState())
-            if (includeInvisibleFields || postalCodeEt.isVisible) add(postalCodeEt.getInnerState())
+            if (includeInvisibleFields || optionalAddressEt.isVisible) add(optionalAddressEt.getFieldState())
+            if (includeInvisibleFields || cityEt.isVisible) add(cityEt.getFieldState())
+            if (includeInvisibleFields || postalCodeEt.isVisible) add(postalCodeEt.getFieldState())
             this
         }
     }

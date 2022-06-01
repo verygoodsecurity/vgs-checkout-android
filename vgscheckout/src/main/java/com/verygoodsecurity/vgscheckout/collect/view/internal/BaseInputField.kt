@@ -335,6 +335,15 @@ internal abstract class BaseInputField @JvmOverloads constructor(
         }
     }
 
+    fun setIsRequired(state: Boolean) {
+        isRequired = state
+    }
+
+    fun resetText() {
+        text = text
+        setSelection(text?.length ?: 0)
+    }
+
     /**
      * Interface definition for a callback to be invoked when a view state is changed.
      *
