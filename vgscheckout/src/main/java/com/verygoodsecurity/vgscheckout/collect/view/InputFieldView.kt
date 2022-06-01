@@ -31,9 +31,7 @@ import com.verygoodsecurity.vgscheckout.collect.view.card.icon.CardIconAdapter
 import com.verygoodsecurity.vgscheckout.collect.view.card.validation.rules.ValidationRule
 import com.verygoodsecurity.vgscheckout.collect.view.core.serializers.FieldDataSerializer
 import com.verygoodsecurity.vgscheckout.collect.view.cvc.CVCIconAdapter
-import com.verygoodsecurity.vgscheckout.collect.view.date.DatePickerMode
 import com.verygoodsecurity.vgscheckout.collect.view.internal.*
-import com.verygoodsecurity.vgscheckout.collect.widget.ExpirationDateEditText
 
 /**
  * An abstract class that provide displays text user-editable text to the user.
@@ -853,71 +851,6 @@ internal abstract class InputFieldView @JvmOverloads constructor(
         inputField.isEnabled = enabled
     }
 
-    protected fun setOutputPattern(pattern: String?) {
-        if (fieldType == FieldType.CARD_EXPIRATION_DATE) {
-            (inputField as? DateInputField)?.setOutputPattern(pattern)
-        }
-    }
-
-    protected fun setDatePattern(pattern: String?) {
-        if (fieldType == FieldType.CARD_EXPIRATION_DATE) {
-            (inputField as? DateInputField)?.setDatePattern(pattern)
-        }
-    }
-
-    protected fun getDatePattern(): String? {
-        return (inputField as? DateInputField)?.getDatePattern()
-    }
-
-    protected fun setDatePickerMode(type: Int) {
-        if (fieldType == FieldType.CARD_EXPIRATION_DATE) {
-            (inputField as? DateInputField)?.setDatePickerMode(type)
-        }
-    }
-
-    protected fun getDateMode(): DatePickerMode? {
-        return (inputField as? DateInputField)?.getDatePickerMode()
-    }
-
-    protected fun maxDate(date: String) {
-        if (fieldType == FieldType.CARD_EXPIRATION_DATE) {
-            (inputField as? DateInputField)?.setMaxDate(date)
-        }
-    }
-
-    protected fun minDate(date: String) {
-        if (fieldType == FieldType.CARD_EXPIRATION_DATE) {
-            (inputField as? DateInputField)?.setMinDate(date)
-        }
-    }
-
-    protected fun setMinDate(date: Long) {
-        if (fieldType == FieldType.CARD_EXPIRATION_DATE) {
-            (inputField as? DateInputField)?.setMinDate(date)
-        }
-    }
-
-    protected fun showPickerDialog(
-        dialogMode: DatePickerMode,
-        ignoreFieldMode: Boolean
-    ) {
-        if (fieldType == FieldType.CARD_EXPIRATION_DATE) {
-            (inputField as? DateInputField)?.showDatePickerDialog(dialogMode, ignoreFieldMode)
-        }
-    }
-
-    protected fun setDatePickerVisibilityListener(l: ExpirationDateEditText.OnDatePickerVisibilityChangeListener?) {
-        if (fieldType == FieldType.CARD_EXPIRATION_DATE) {
-            (inputField as? DateInputField)?.setDatePickerVisibilityListener(l)
-        }
-    }
-
-    protected fun setFieldDataSerializers(serializers: List<FieldDataSerializer<*, *>>?) {
-        if (fieldType == FieldType.CARD_EXPIRATION_DATE) {
-            (inputField as? DateInputField)?.setFieldDataSerializers(serializers)
-        }
-    }
-
     protected fun setFieldDataSerializer(serializer: FieldDataSerializer<*, *>?) {
         if (fieldType == FieldType.INFO || fieldType == FieldType.COUNTRY) {
             (inputField as? InfoInputField)?.serializer = serializer
@@ -1147,21 +1080,6 @@ internal abstract class InputFieldView @JvmOverloads constructor(
 
     override fun performClick(): Boolean {
         return inputField.performClick()
-    }
-
-    @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
-    internal fun setFormatterMode(mode: Int) {
-        if (fieldType == FieldType.CARD_EXPIRATION_DATE) {
-            (inputField as? DateInputField)?.setFormatterMode(mode)
-        }
-    }
-
-    internal fun getFormatterMode(): Int {
-        return if (fieldType == FieldType.CARD_EXPIRATION_DATE) {
-            (inputField as? DateInputField)?.getFormatterMode() ?: -1
-        } else {
-            -1
-        }
     }
 
     /**

@@ -72,15 +72,11 @@
                     android:layout_weight="1"
                     android:hint="@string/vgs_checkout_card_expiration_date_hint">
 
-                    <com.verygoodsecurity.vgscheckout.collect.widget.ExpirationDateEditText
+                    <com.verygoodsecurity.vgscheckout.collect.view.internal.DateInputField
                         android:id="@+id/vgsEtExpirationDate"
-                        style="@style/VGSCheckout.TextInputEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:analyticsName="expDate"
-                        app:datePattern="MM/yy"
-                        app:datePickerModes="input"
-                        app:imeOptions="actionNext"
+                        android:imeOptions="actionNext"
                         app:inputType="date" />
                 </com.verygoodsecurity.vgscheckout.view.VGSCheckoutTextInputLayout>
 

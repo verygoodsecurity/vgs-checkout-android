@@ -2,6 +2,7 @@ package com.verygoodsecurity.vgscheckout.ui.fragment.save
 
 import android.graphics.drawable.Animatable
 import android.os.Bundle
+import android.text.InputType
 import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
@@ -14,6 +15,7 @@ import com.verygoodsecurity.vgscheckout.analytic.event.FinInstrumentCrudEvent
 import com.verygoodsecurity.vgscheckout.analytic.event.RequestEvent
 import com.verygoodsecurity.vgscheckout.collect.util.extension.mapToAssociatedList
 import com.verygoodsecurity.vgscheckout.collect.view.card.validation.rules.VGSInfoRule
+import com.verygoodsecurity.vgscheckout.collect.view.date.DatePickerMode
 import com.verygoodsecurity.vgscheckout.collect.widget.VGSCountryEditText
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
@@ -104,7 +106,7 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
             mutableListOf(
                 binding.cardHolderEt,
                 binding.cardNumberEt,
-                binding.expirationDateEt.getInputField(),
+                binding.expirationDateEt,
                 binding.securityCodeEt.getInputField(),
                 binding.addressEt.getInputField(),
                 binding.cityEt.getInputField(),
@@ -140,12 +142,14 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
     }
 
     private fun initExpirationDateView(options: ExpirationDateOptions) {
-        binding.expirationDateEt.setFieldName(options.fieldName)
-        binding.expirationDateEt.setDateRegex(options.inputFormatRegex)
-        binding.expirationDateEt.setOutputRegex(options.outputFormatRegex)
-        binding.expirationDateEt.setSerializer(
-            options.dateSeparateSerializer?.toCollectDateSeparateSerializer()
-        )
+        binding.expirationDateEt.inputType =
+            InputType.TYPE_CLASS_TEXT or InputType.TYPE_DATETIME_VARIATION_DATE
+        binding.expirationDateEt.tag = options.fieldName
+        binding.expirationDateEt.setAnalyticsName("expDate")
+        binding.expirationDateEt.setDatePickerMode(DatePickerMode.INPUT.ordinal)
+        binding.expirationDateEt.setDatePattern(options.inputFormatRegex)
+        binding.expirationDateEt.setOutputPattern(options.outputFormatRegex)
+        binding.expirationDateEt.setFieldDataSerializer(options.dateSeparateSerializer?.toCollectDateSeparateSerializer())
     }
 
     private fun initSecurityCodeView(options: CVCOptions) {

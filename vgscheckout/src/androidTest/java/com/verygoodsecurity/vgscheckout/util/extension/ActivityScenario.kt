@@ -16,6 +16,7 @@ import com.verygoodsecurity.vgscheckout.BuildConfig
 import com.verygoodsecurity.vgscheckout.Constants
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.view.internal.CardInputField
+import com.verygoodsecurity.vgscheckout.collect.view.internal.DateInputField
 import com.verygoodsecurity.vgscheckout.collect.view.internal.PersonNameInputField
 import com.verygoodsecurity.vgscheckout.collect.widget.*
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
@@ -67,7 +68,7 @@ fun fillCardFields(
             it.setText(cardNumber)
         })
     Espresso.onView(ViewMatchers.withId(R.id.vgsEtExpirationDate))
-        .perform(ActionHelper.doAction<ExpirationDateEditText> {
+        .perform(ActionHelper.doAction<DateInputField> {
             it.setText(expirationDate)
         })
     Espresso.onView(ViewMatchers.withId(R.id.vgsEtSecurityCode))

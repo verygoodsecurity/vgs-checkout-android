@@ -12,6 +12,7 @@ import com.google.android.material.textview.MaterialTextView
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscheckout.collect.view.internal.CardInputField
+import com.verygoodsecurity.vgscheckout.collect.view.internal.DateInputField
 import com.verygoodsecurity.vgscheckout.collect.view.internal.PersonNameInputField
 import com.verygoodsecurity.vgscheckout.view.VGSCheckoutTextInputLayout
 import com.verygoodsecurity.vgscheckout.collect.widget.*
@@ -27,7 +28,7 @@ internal class SaveCardViewBindingHelper(inflater: LayoutInflater, @LayoutRes la
     val cardHolderTil: VGSCheckoutTextInputLayout by lazy { rootView.findViewById(R.id.vgsTilCardHolder) }
     val cardHolderEt: PersonNameInputField by lazy { rootView.findViewById(R.id.vgsEtCardHolder) }
     val cardNumberEt: CardInputField by lazy { rootView.findViewById(R.id.vgsEtCardNumber) }
-    val expirationDateEt: ExpirationDateEditText by lazy { rootView.findViewById(R.id.vgsEtExpirationDate) }
+    val expirationDateEt: DateInputField by lazy { rootView.findViewById(R.id.vgsEtExpirationDate) }
     val securityCodeTil: VGSCheckoutTextInputLayout by lazy { rootView.findViewById(R.id.vgsTilSecurityCode) }
     val securityCodeEt: CardVerificationCodeEditText by lazy { rootView.findViewById(R.id.vgsEtSecurityCode) }
 
@@ -54,7 +55,7 @@ internal class SaveCardViewBindingHelper(inflater: LayoutInflater, @LayoutRes la
     ): MutableCollection<VGSFieldState> {
         return with(mutableListOf<VGSFieldState>()) {
             if (includeInvisibleFields || securityCodeEt.isVisible) add(securityCodeEt.getInnerState())
-            if (includeInvisibleFields || expirationDateEt.isVisible) add(expirationDateEt.getInnerState())
+            if (includeInvisibleFields || expirationDateEt.isVisible) add(expirationDateEt.getFieldState())
             if (includeInvisibleFields || cardNumberEt.isVisible) add(cardNumberEt.getFieldState())
             if (includeInvisibleFields || cardHolderEt.isVisible) add(cardHolderEt.getFieldState())
 
