@@ -756,15 +756,12 @@ internal abstract class InputFieldView @JvmOverloads constructor(
     protected fun setNumberDivider(divider: String?) {
         if (fieldType == FieldType.CARD_NUMBER) {
             (inputField as? CardInputField)?.setNumberDivider(divider)
-        } else if (fieldType == FieldType.SSN) {
-            (inputField as? SSNInputField)?.setNumberDivider(divider)
         }
     }
 
     protected fun getNumberDivider(): Char? {
         return when (fieldType) {
             FieldType.CARD_NUMBER -> (inputField as? CardInputField)?.getNumberDivider()
-            FieldType.SSN -> (inputField as? SSNInputField)?.getNumberDivider()
             else -> null
         }
     }
@@ -772,15 +769,12 @@ internal abstract class InputFieldView @JvmOverloads constructor(
     protected fun setOutputNumberDivider(divider: String?) {
         if (fieldType == FieldType.CARD_NUMBER) {
             (inputField as? CardInputField)?.setOutputNumberDivider(divider)
-        } else if (fieldType == FieldType.SSN) {
-            (inputField as? SSNInputField)?.setOutputNumberDivider(divider)
         }
     }
 
     protected fun getOutputNumberDivider(): Char? {
         return when (fieldType) {
             FieldType.CARD_NUMBER -> (inputField as? CardInputField)?.getOutputDivider()
-            FieldType.SSN -> (inputField as? SSNInputField)?.getOutputDivider()
             else -> null
         }
     }

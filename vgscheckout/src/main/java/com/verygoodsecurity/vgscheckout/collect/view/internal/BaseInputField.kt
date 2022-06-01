@@ -47,7 +47,6 @@ internal abstract class BaseInputField @JvmOverloads constructor(
                 FieldType.CVC -> CVCInputField(context)
                 FieldType.CARD_EXPIRATION_DATE -> DateInputField(context)
                 FieldType.CARD_HOLDER_NAME -> PersonNameInputField(context)
-                FieldType.SSN -> SSNInputField(context)
                 FieldType.INFO -> InfoInputField(context)
                 FieldType.COUNTRY -> CountryInputField(context)
             }
