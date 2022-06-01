@@ -23,7 +23,6 @@ import com.verygoodsecurity.vgscheckout.collect.core.model.state.FieldState
 import com.verygoodsecurity.vgscheckout.collect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscheckout.collect.core.model.state.mapToFieldState
 import com.verygoodsecurity.vgscheckout.collect.view.Dependency
-import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
 import com.verygoodsecurity.vgscheckout.collect.view.card.FieldType
 import com.verygoodsecurity.vgscheckout.collect.view.card.conection.InputRunnable
 import com.verygoodsecurity.vgscheckout.collect.view.card.getAnalyticName
@@ -39,21 +38,6 @@ internal abstract class BaseInputField @JvmOverloads constructor(
     context: Context,
     attributeSet: AttributeSet? = null
 ) : TextInputEditText(context, attributeSet), Dependency.DependentView {
-
-    companion object {
-        fun getInputField(context: Context, parent: InputFieldView): BaseInputField {
-            val field = when (parent.getFieldType()) {
-                FieldType.CARD_NUMBER -> CardInputField(context)
-                FieldType.CVC -> CVCInputField(context)
-                FieldType.CARD_EXPIRATION_DATE -> DateInputField(context)
-                FieldType.CARD_HOLDER_NAME -> PersonNameInputField(context)
-                FieldType.INFO -> InfoInputField(context)
-                FieldType.COUNTRY -> CountryInputField(context)
-            }
-            field.vgsParent = parent
-            return field
-        }
-    }
 
     internal var isRequired: Boolean = true
         set(value) {
@@ -75,8 +59,6 @@ internal abstract class BaseInputField @JvmOverloads constructor(
 
     protected var inputConnection: InputRunnable? = null
     protected var validator: MutableValidator = CompositeValidator()
-
-    internal var vgsParent: InputFieldView? = null
 
     private var onFieldStateChangeListener: OnFieldStateChangeListener? = null
 
@@ -227,7 +209,6 @@ internal abstract class BaseInputField @JvmOverloads constructor(
     private fun requestFocusOnView(id: Int) {
         when (val nextView = rootView?.findViewById<View>(id)) {
             null -> return
-            is InputFieldView -> nextView.statePreparer.getView().requestFocus()
             is BaseInputField -> nextView.requestFocus()
             else -> nextView.requestFocus()
         }

@@ -18,7 +18,6 @@ import com.verygoodsecurity.vgscheckout.collect.view.internal.CountryInputField
 import com.verygoodsecurity.vgscheckout.collect.view.internal.DateInputField
 import com.verygoodsecurity.vgscheckout.collect.view.internal.InfoInputField
 import com.verygoodsecurity.vgscheckout.collect.view.internal.PersonNameInputField
-import com.verygoodsecurity.vgscheckout.view.VGSCheckoutTextInputLayout
 
 // TODO: Remove all unused views
 @Suppress("unused")
@@ -32,20 +31,20 @@ internal class SaveCardViewBindingHelper(inflater: LayoutInflater, @LayoutRes la
     val cardHolderEt: PersonNameInputField by lazy { rootView.findViewById(R.id.vgsEtCardHolder) }
     val cardNumberEt: CardInputField by lazy { rootView.findViewById(R.id.vgsEtCardNumber) }
     val expirationDateEt: DateInputField by lazy { rootView.findViewById(R.id.vgsEtExpirationDate) }
-    val securityCodeTil: VGSCheckoutTextInputLayout by lazy { rootView.findViewById(R.id.vgsTilSecurityCode) }
+    val securityCodeTil: TextInputLayout by lazy { rootView.findViewById(R.id.vgsTilSecurityCode) }
     val securityCodeEt: CVCInputField by lazy { rootView.findViewById(R.id.vgsEtSecurityCode) }
 
     val billingAddressMtv: MaterialTextView by lazy { rootView.findViewById(R.id.mtvBillingAddressTitle) }
     val billingAddressLL: LinearLayoutCompat by lazy { rootView.findViewById(R.id.llBillingAddress) }
-    val countryTil: VGSCheckoutTextInputLayout by lazy { rootView.findViewById(R.id.vgsTilCountry) }
+    val countryTil: TextInputLayout by lazy { rootView.findViewById(R.id.vgsTilCountry) }
     val countryEt: CountryInputField by lazy { rootView.findViewById(R.id.vgsEtCountry) }
-    val addressTil: VGSCheckoutTextInputLayout by lazy { rootView.findViewById(R.id.vgsTilAddress) }
+    val addressTil: TextInputLayout by lazy { rootView.findViewById(R.id.vgsTilAddress) }
     val addressEt: InfoInputField by lazy { rootView.findViewById(R.id.vgsEtAddress) }
-    val optionalAddressTil: VGSCheckoutTextInputLayout by lazy { rootView.findViewById(R.id.vgsTilAddressOptional) }
+    val optionalAddressTil: TextInputLayout by lazy { rootView.findViewById(R.id.vgsTilAddressOptional) }
     val optionalAddressEt: InfoInputField by lazy { rootView.findViewById(R.id.vgsEtAddressOptional) }
-    val cityTil: VGSCheckoutTextInputLayout by lazy { rootView.findViewById(R.id.vgsTilCity) }
+    val cityTil: TextInputLayout by lazy { rootView.findViewById(R.id.vgsTilCity) }
     val cityEt: InfoInputField by lazy { rootView.findViewById(R.id.vgsEtCity) }
-    val postalCodeTil: VGSCheckoutTextInputLayout by lazy { rootView.findViewById(R.id.vgsTilPostalCode) }
+    val postalCodeTil: TextInputLayout by lazy { rootView.findViewById(R.id.vgsTilPostalCode) }
     val postalCodeEt: InfoInputField by lazy { rootView.findViewById(R.id.vgsEtPostalCode) }
 
     val cityPostalAddressSpace: Space by lazy { rootView.findViewById(R.id.cityPostalAddressSpace) }

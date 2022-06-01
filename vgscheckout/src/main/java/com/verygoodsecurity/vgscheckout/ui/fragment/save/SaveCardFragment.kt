@@ -286,12 +286,12 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
             binding.postalCodeTil
         ).filter { it.isVisible }
         visitableInputs.forEach {
-            it.inputField?.setOnEditorActionListener(null)
-            it.inputField?.setImeOptions(EditorInfo.IME_ACTION_NEXT)
+            it.editText?.setOnEditorActionListener(null)
+            it.editText?.imeOptions = EditorInfo.IME_ACTION_NEXT
         }
         visitableInputs.lastOrNull()?.let {
-            it.inputField?.setOnEditorActionListener(this@SaveCardFragment)
-            it.inputField?.setImeOptions(EditorInfo.IME_ACTION_DONE)
+            it.editText?.setOnEditorActionListener(this@SaveCardFragment)
+            it.editText?.imeOptions = EditorInfo.IME_ACTION_DONE
         }
     }
 
