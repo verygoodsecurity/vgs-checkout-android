@@ -1,7 +1,7 @@
 buildscript {
     ext.gradle_tools = "7.2.1"
     ext.kotlin_version = "1.6.21"
-    ext.app_compat = "1.4.1"
+    ext.app_compat = "1.4.2"
     ext.core_ktx = "1.7.0"
     ext.material = "1.6.0"
     ext.okHttp = "4.9.3"
