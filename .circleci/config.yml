@@ -45,13 +45,13 @@ jobs:
       - run:
           name: Generate apk
           command: ./gradlew demo:assembleDebug vgscheckout:assembleDebug vgscheckout:assembleAndroidTest
-      - run:
-          name: Check if release branch
-          command: |
-            if [[ $CIRCLE_BRANCH != *"release/"* ]] && [ $CIRCLE_BRANCH != master* ]; then
-              echo "Skipped, reason: UI tests should be running only on release branches or master!"
-              circleci-agent step halt
-            fi
+#      - run:
+#          name: Check if release branch
+#          command: |
+#            if [[ $CIRCLE_BRANCH != *"release/"* ]] && [ $CIRCLE_BRANCH != master* ]; then
+#              echo "Skipped, reason: UI tests should be running only on release branches or master!"
+#              circleci-agent step halt
+#            fi
       - run:
           name: Store Google Service Account
           command: echo $GCLOUD_SERVICE_KEY | base64 -di > ${HOME}/gcloud-service-key.json
