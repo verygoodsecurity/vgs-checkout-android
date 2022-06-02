@@ -25,7 +25,7 @@ internal object VGSViewMatchers {
             }
 
             override fun matchesSafely(item: TextInputLayout?): Boolean {
-                return item?.error?.equals(error) == true
+                return item?.error?.toString().equals(error)
             }
         }
 
