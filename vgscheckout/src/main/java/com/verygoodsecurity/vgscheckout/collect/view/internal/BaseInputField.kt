@@ -2,13 +2,15 @@ package com.verygoodsecurity.vgscheckout.collect.view.internal
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.ColorMatrixColorFilter
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.os.Build
-import android.text.TextWatcher
+import android.util.AttributeSet
 import android.view.View
 import android.view.autofill.AutofillValue
 import android.view.inputmethod.EditorInfo
+import androidx.annotation.FloatRange
 import androidx.annotation.VisibleForTesting
 import androidx.core.view.ViewCompat
 import androidx.core.widget.addTextChangedListener
@@ -16,9 +18,11 @@ import com.google.android.material.textfield.TextInputEditText
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.analytic.AnalyticTracker
 import com.verygoodsecurity.vgscheckout.analytic.event.AutofillEvent
-import com.verygoodsecurity.vgscheckout.collect.core.model.state.*
+import com.verygoodsecurity.vgscheckout.collect.core.model.state.FieldContent
+import com.verygoodsecurity.vgscheckout.collect.core.model.state.FieldState
+import com.verygoodsecurity.vgscheckout.collect.core.model.state.VGSFieldState
+import com.verygoodsecurity.vgscheckout.collect.core.model.state.mapToFieldState
 import com.verygoodsecurity.vgscheckout.collect.view.Dependency
-import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
 import com.verygoodsecurity.vgscheckout.collect.view.card.FieldType
 import com.verygoodsecurity.vgscheckout.collect.view.card.conection.InputRunnable
 import com.verygoodsecurity.vgscheckout.collect.view.card.getAnalyticName
@@ -30,24 +34,10 @@ import com.verygoodsecurity.vgscheckout.collect.view.card.validation.rules.Valid
 import com.verygoodsecurity.vgscheckout.util.logger.VGSCheckoutLogger
 
 /** @suppress */
-internal abstract class BaseInputField(context: Context) : TextInputEditText(context),
-    Dependency.DependentView {
-
-    companion object {
-        fun getInputField(context: Context, parent: InputFieldView): BaseInputField {
-            val field = when (parent.getFieldType()) {
-                FieldType.CARD_NUMBER -> CardInputField(context)
-                FieldType.CVC -> CVCInputField(context)
-                FieldType.CARD_EXPIRATION_DATE -> DateInputField(context)
-                FieldType.CARD_HOLDER_NAME -> PersonNameInputField(context)
-                FieldType.SSN -> SSNInputField(context)
-                FieldType.INFO -> InfoInputField(context)
-                FieldType.COUNTRY -> CountryInputField(context)
-            }
-            field.vgsParent = parent
-            return field
-        }
-    }
+internal abstract class BaseInputField @JvmOverloads constructor(
+    context: Context,
+    attributeSet: AttributeSet? = null
+) : TextInputEditText(context, attributeSet), Dependency.DependentView {
 
     internal var isRequired: Boolean = true
         set(value) {
@@ -70,8 +60,6 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
     protected var inputConnection: InputRunnable? = null
     protected var validator: MutableValidator = CompositeValidator()
 
-    internal var vgsParent: InputFieldView? = null
-
     private var onFieldStateChangeListener: OnFieldStateChangeListener? = null
 
     private var isBackgroundVisible = true
@@ -90,10 +78,8 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
     protected open fun setupAutofill() {}
 
     private fun setupViewAttributes() {
-        id = ViewCompat.generateViewId()
-
-        compoundDrawablePadding =
-            resources.getDimension(R.dimen.vgs_checkout_margin_padding_size_small).toInt()
+        compoundDrawablePadding = resources.getDimension(R.dimen.vgs_checkout_margin_padding_size_small).toInt()
+        if (id == -1) id = ViewCompat.generateViewId()
     }
 
     private fun setupInputConnectionListener() {
@@ -223,7 +209,6 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
     private fun requestFocusOnView(id: Int) {
         when (val nextView = rootView?.findViewById<View>(id)) {
             null -> return
-            is InputFieldView -> nextView.statePreparer.getView().requestFocus()
             is BaseInputField -> nextView.requestFocus()
             else -> nextView.requestFocus()
         }
@@ -318,6 +303,27 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
     }
 
     fun getAnalyticsName(): String = analyticName ?: fieldType.getAnalyticName()
+
+    fun setDrawablesAlphaColorFilter(@FloatRange(from = 0.0, to = 1.0) alpha: Float) {
+        val matrix = floatArrayOf(
+            1f, 0f, 0f, 0f, 0f,
+            0f, 1f, 0f, 0f, 0f,
+            0f, 0f, 1f, 0f, 0f,
+            0f, 0f, 0f, alpha, 0f
+        )
+        compoundDrawables.forEach {
+            it?.colorFilter = ColorMatrixColorFilter(matrix)
+        }
+    }
+
+    fun setIsRequired(state: Boolean) {
+        isRequired = state
+    }
+
+    fun resetText() {
+        text = text
+        setSelection(text?.length ?: 0)
+    }
 
     /**
      * Interface definition for a callback to be invoked when a view state is changed.

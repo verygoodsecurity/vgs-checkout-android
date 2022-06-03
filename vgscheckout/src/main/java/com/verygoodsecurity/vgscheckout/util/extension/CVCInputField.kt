@@ -1,10 +1,9 @@
 package com.verygoodsecurity.vgscheckout.util.extension
 
 import com.verygoodsecurity.vgscheckout.collect.view.internal.CVCInputField
-import com.verygoodsecurity.vgscheckout.collect.widget.CardVerificationCodeEditText
 
-internal fun CardVerificationCodeEditText.setIsPreviewIconHidden(isHidden: Boolean) {
-    setPreviewIconMode(
+internal fun CVCInputField.setIsPreviewIconHidden(isHidden: Boolean) {
+    setPreviewIconVisibility(
         if (isHidden)
             CVCInputField.PreviewIconVisibility.NEVER
         else {

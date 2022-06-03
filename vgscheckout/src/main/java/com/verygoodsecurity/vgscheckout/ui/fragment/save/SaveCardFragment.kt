@@ -2,10 +2,8 @@ package com.verygoodsecurity.vgscheckout.ui.fragment.save
 
 import android.graphics.drawable.Animatable
 import android.os.Bundle
-import android.view.KeyEvent
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.text.InputType
+import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import androidx.annotation.StringRes
@@ -17,7 +15,9 @@ import com.verygoodsecurity.vgscheckout.analytic.event.FinInstrumentCrudEvent
 import com.verygoodsecurity.vgscheckout.analytic.event.RequestEvent
 import com.verygoodsecurity.vgscheckout.collect.util.extension.mapToAssociatedList
 import com.verygoodsecurity.vgscheckout.collect.view.card.validation.rules.VGSInfoRule
-import com.verygoodsecurity.vgscheckout.collect.widget.VGSCountryEditText
+import com.verygoodsecurity.vgscheckout.collect.view.date.DatePickerMode
+import com.verygoodsecurity.vgscheckout.collect.view.internal.CVCInputField
+import com.verygoodsecurity.vgscheckout.collect.view.internal.CountryInputField
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
@@ -41,7 +41,7 @@ import com.verygoodsecurity.vgscheckout.util.extension.*
 import com.verygoodsecurity.vgscheckout.util.logger.VGSCheckoutLogger
 
 internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
-    VGSCountryEditText.OnCountrySelectedListener, TextView.OnEditorActionListener {
+    CountryInputField.OnCountrySelectedListener, TextView.OnEditorActionListener {
 
     private lateinit var binding: SaveCardViewBindingHelper
     private lateinit var validationHelper: ValidationManager
@@ -128,27 +128,35 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
             binding.cardHolderTil.gone()
             return
         }
-        binding.cardHolderEt.setFieldName(options.fieldName)
+        binding.cardHolderEt.tag = options.fieldName
+        binding.cardHolderEt.setAnalyticsName("cardHolder")
     }
 
     private fun initCardNumberView(options: CardNumberOptions) {
-        binding.cardNumberEt.setFieldName(options.fieldName)
+        binding.cardNumberEt.tag = options.fieldName
+        binding.cardNumberEt.setAnalyticsName("cardNumber")
         binding.cardNumberEt.setValidCardBrands(options.cardBrands)
         binding.cardNumberEt.setIsCardBrandPreviewHidden(options.isIconHidden)
-        binding.cardNumberEt.setDependantField(binding.securityCodeEt)
+        binding.cardNumberEt.setCardPreviewIconGravity(Gravity.START)
+        binding.cardNumberEt.setNumberDivider(" ")
+        binding.cardNumberEt.dependentField = binding.securityCodeEt
     }
 
     private fun initExpirationDateView(options: ExpirationDateOptions) {
-        binding.expirationDateEt.setFieldName(options.fieldName)
-        binding.expirationDateEt.setDateRegex(options.inputFormatRegex)
-        binding.expirationDateEt.setOutputRegex(options.outputFormatRegex)
-        binding.expirationDateEt.setSerializer(
-            options.dateSeparateSerializer?.toCollectDateSeparateSerializer()
-        )
+        binding.expirationDateEt.inputType =
+            InputType.TYPE_CLASS_TEXT or InputType.TYPE_DATETIME_VARIATION_DATE
+        binding.expirationDateEt.tag = options.fieldName
+        binding.expirationDateEt.setAnalyticsName("expDate")
+        binding.expirationDateEt.setDatePickerMode(DatePickerMode.INPUT.ordinal)
+        binding.expirationDateEt.setDatePattern(options.inputFormatRegex)
+        binding.expirationDateEt.setOutputPattern(options.outputFormatRegex)
+        binding.expirationDateEt.setFieldDataSerializer(options.dateSeparateSerializer?.toCollectDateSeparateSerializer())
     }
 
     private fun initSecurityCodeView(options: CVCOptions) {
-        binding.securityCodeEt.setFieldName(options.fieldName)
+        binding.securityCodeEt.tag = options.fieldName
+        binding.securityCodeEt.setAnalyticsName("cvc")
+        binding.securityCodeEt.setPreviewIconGravity(CVCInputField.PreviewIconGravity.START)
         binding.securityCodeEt.setIsPreviewIconHidden(options.isIconHidden)
     }
 
@@ -180,7 +188,8 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
                 VGSCheckoutLogger.warn(message = "Country field is hidden in billing address. You should provide validCountries array.")
             }
         }
-        binding.countryEt.setFieldName(options.fieldName)
+        binding.countryEt.tag = options.fieldName
+        binding.countryEt.setAnalyticsName("country")
         binding.countryEt.onCountrySelectedListener = this
     }
 
@@ -189,7 +198,8 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
             binding.addressTil.gone()
             return
         }
-        binding.addressEt.setFieldName(options.fieldName)
+        binding.addressEt.tag = options.fieldName
+        binding.addressEt.setAnalyticsName("addressLine1")
         binding.addressEt.addRule(singleCharValidationRule)
     }
 
@@ -198,7 +208,8 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
             binding.optionalAddressTil.gone()
             return
         }
-        binding.optionalAddressEt.setFieldName(options.fieldName)
+        binding.optionalAddressEt.tag = options.fieldName
+        binding.optionalAddressEt.setAnalyticsName("addressLine2")
     }
 
     private fun initCityView(options: CityOptions) {
@@ -207,7 +218,8 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
             binding.cityPostalAddressSpace.gone()
             return
         }
-        binding.cityEt.setFieldName(options.fieldName)
+        binding.cityEt.tag = options.fieldName
+        binding.cityEt.setAnalyticsName("city")
         binding.cityEt.addRule(singleCharValidationRule)
         binding.cityEt.setOnEditorActionListener(this)
     }
@@ -218,14 +230,15 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
             binding.cityPostalAddressSpace.gone()
             return
         }
-        binding.postalCodeEt.setFieldName(options.fieldName)
+        binding.postalCodeEt.tag = options.fieldName
+        binding.postalCodeEt.setAnalyticsName("postalCode")
         binding.postalCodeEt.setOnEditorActionListener(this)
         updatePostalCodeView(binding.countryEt.selectedCountry)
     }
 
     private fun updatePostalCodeView(country: Country) {
         if (country.isPostalCodeUndefined()) {
-            binding.postalCodeEt.setText(null)
+            binding.postalCodeEt.text = null
             binding.postalCodeEt.setIsRequired(false)
             binding.postalCodeTil.gone()
             binding.cityPostalAddressSpace.gone()
@@ -233,8 +246,8 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
             binding.postalCodeEt.setIsRequired(true)
             binding.postalCodeEt.addRule(country.toVGSInfoRule())
             binding.postalCodeEt.resetText()
-            binding.postalCodeTil.setHint(getString(getPostalCodeHint(country)))
-            binding.postalCodeTil.setError(null)
+            binding.postalCodeTil.hint = getString(getPostalCodeHint(country))
+            binding.postalCodeTil.error = null
             binding.postalCodeTil.visible()
             binding.cityPostalAddressSpace.isVisible = binding.cityTil.isVisible
         }
@@ -273,12 +286,12 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
             binding.postalCodeTil
         ).filter { it.isVisible }
         visitableInputs.forEach {
-            it.inputField?.setOnEditorActionListener(null)
-            it.inputField?.setImeOptions(EditorInfo.IME_ACTION_NEXT)
+            it.editText?.setOnEditorActionListener(null)
+            it.editText?.imeOptions = EditorInfo.IME_ACTION_NEXT
         }
         visitableInputs.lastOrNull()?.let {
-            it.inputField?.setOnEditorActionListener(this@SaveCardFragment)
-            it.inputField?.setImeOptions(EditorInfo.IME_ACTION_DONE)
+            it.editText?.setOnEditorActionListener(this@SaveCardFragment)
+            it.editText?.imeOptions = EditorInfo.IME_ACTION_DONE
         }
     }
 

@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Build
 import android.text.InputFilter
 import android.text.InputType
+import android.util.AttributeSet
 import android.view.View
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.core.model.state.FieldContent
@@ -12,7 +13,10 @@ import com.verygoodsecurity.vgscheckout.collect.view.card.conection.InputCardHol
 import com.verygoodsecurity.vgscheckout.collect.view.card.validation.RegexValidator
 
 /** @suppress */
-internal class PersonNameInputField(context: Context) : BaseInputField(context) {
+internal class PersonNameInputField @JvmOverloads constructor(
+    context: Context,
+    attributeSet: AttributeSet? = null
+) : BaseInputField(context, attributeSet) {
 
     init {
         validator.addRule(RegexValidator(context.getString(R.string.vgs_checkout_validation_regex_person)))

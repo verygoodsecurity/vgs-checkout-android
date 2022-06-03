@@ -15,7 +15,7 @@ import androidx.test.espresso.matcher.ViewMatchers
 import com.verygoodsecurity.vgscheckout.BuildConfig
 import com.verygoodsecurity.vgscheckout.Constants
 import com.verygoodsecurity.vgscheckout.R
-import com.verygoodsecurity.vgscheckout.collect.widget.*
+import com.verygoodsecurity.vgscheckout.collect.view.internal.*
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_ARGS
@@ -57,19 +57,19 @@ fun fillCardFields(
     cvc: String = Constants.VALID_SECURITY_CODE,
 ) {
     Espresso.onView(ViewMatchers.withId(R.id.vgsEtCardHolder))
-        .perform(ActionHelper.doAction<PersonNameEditText> {
+        .perform(ActionHelper.doAction<PersonNameInputField> {
             it.setText(cardHolderName)
         })
     Espresso.onView(ViewMatchers.withId(R.id.vgsEtCardNumber))
-        .perform(ActionHelper.doAction<VGSCardNumberEditText> {
+        .perform(ActionHelper.doAction<CardInputField> {
             it.setText(cardNumber)
         })
     Espresso.onView(ViewMatchers.withId(R.id.vgsEtExpirationDate))
-        .perform(ActionHelper.doAction<ExpirationDateEditText> {
+        .perform(ActionHelper.doAction<DateInputField> {
             it.setText(expirationDate)
         })
     Espresso.onView(ViewMatchers.withId(R.id.vgsEtSecurityCode))
-        .perform(ActionHelper.doAction<CardVerificationCodeEditText> {
+        .perform(ActionHelper.doAction<CVCInputField> {
             it.setText(cvc)
         })
 }
@@ -80,20 +80,20 @@ fun fillAddressFields(
     postalCode: String = Constants.USA_VALID_ZIP_CODE
 ) {
     Espresso.onView(ViewMatchers.withId(R.id.vgsEtAddress))
-        .perform(ActionHelper.doAction<VGSEditText> {
+        .perform(ActionHelper.doAction<InfoInputField> {
             it.setText(address)
         })
     Espresso.onView(ViewMatchers.withId(R.id.vgsEtAddressOptional))
-        .perform(ActionHelper.doAction<VGSEditText> {
+        .perform(ActionHelper.doAction<InfoInputField> {
             it.setText(Constants.VALID_ADDRESS)
         })
 
     Espresso.onView(ViewMatchers.withId(R.id.vgsEtCity))
-        .perform(ActionHelper.doAction<VGSEditText> {
+        .perform(ActionHelper.doAction<InfoInputField> {
             it.setText(city)
         })
     Espresso.onView(ViewMatchers.withId(R.id.vgsEtPostalCode))
-        .perform(ActionHelper.doAction<VGSEditText> {
+        .perform(ActionHelper.doAction<InfoInputField> {
             it.setText(postalCode)
         })
 }

@@ -33,11 +33,6 @@ internal enum class FieldType(val raw: String) {
     /** The input field has no limitations.  */
     INFO("info"),
 
-    /** Represents field with Social Security Number (SSN) consists of nine digits,
-     * commonly written as three fields separated by hyphens: ###-##-####.
-     */
-    SSN("ssn"),
-
     COUNTRY("country"),
 }
 
@@ -47,7 +42,6 @@ internal fun FieldType.getAnalyticName(): String {
         FieldType.CVC -> "card-security-code"
         FieldType.CARD_EXPIRATION_DATE -> "card-expiration-date"
         FieldType.CARD_HOLDER_NAME -> "card-holder-name"
-        FieldType.SSN -> "ssn"
         FieldType.INFO -> "text"
         FieldType.COUNTRY -> "text"
     }

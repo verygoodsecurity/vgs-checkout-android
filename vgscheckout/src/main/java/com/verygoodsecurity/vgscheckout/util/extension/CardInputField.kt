@@ -1,15 +1,14 @@
 package com.verygoodsecurity.vgscheckout.util.extension
 
 import com.verygoodsecurity.vgscheckout.collect.view.internal.CardInputField
-import com.verygoodsecurity.vgscheckout.collect.widget.VGSCardNumberEditText
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.model.VGSCheckoutCardBrand
 
-internal fun VGSCardNumberEditText.setValidCardBrands(brands: Set<VGSCheckoutCardBrand>) {
+internal fun CardInputField.setValidCardBrands(brands: Set<VGSCheckoutCardBrand>) {
     setValidCardBrands(brands.map { it.toCollectCardBrand() })
 }
 
-internal fun VGSCardNumberEditText.setIsCardBrandPreviewHidden(isHidden: Boolean) {
-    setCardBrandPreviewIconMode(
+internal fun CardInputField.setIsCardBrandPreviewHidden(isHidden: Boolean) {
+    setPreviewIconMode(
         if (isHidden)
             CardInputField.PreviewIconMode.NEVER
         else

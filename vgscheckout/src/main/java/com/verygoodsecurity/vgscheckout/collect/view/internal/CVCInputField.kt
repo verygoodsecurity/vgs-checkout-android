@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable
 import android.os.Build
 import android.text.InputFilter
 import android.text.InputType
+import android.util.AttributeSet
 import android.view.View
 import com.google.android.material.textfield.TextInputEditText
 import com.verygoodsecurity.vgscheckout.collect.core.model.state.FieldContent
@@ -20,7 +21,10 @@ import com.verygoodsecurity.vgscheckout.collect.view.internal.CVCInputField.Prev
 import com.verygoodsecurity.vgscheckout.collect.view.internal.CVCInputField.PreviewIconVisibility.*
 
 /** @suppress */
-internal class CVCInputField(context: Context) : BaseInputField(context) {
+internal class CVCInputField(
+    context: Context,
+    attributeSet: AttributeSet? = null
+) : BaseInputField(context, attributeSet) {
 
     override var fieldType: FieldType = FieldType.CVC
     private var cardContent: FieldContent.CardNumberContent = FieldContent.CardNumberContent()
@@ -102,8 +106,16 @@ internal class CVCInputField(context: Context) : BaseInputField(context) {
         }
     }
 
+    internal fun setPreviewIconVisibility(visibility: PreviewIconVisibility) {
+        this.previewIconVisibility = visibility
+    }
+
     internal fun setPreviewIconVisibility(mode: Int) {
         this.previewIconVisibility = PreviewIconVisibility.values()[mode]
+    }
+
+    internal fun setPreviewIconGravity(gravity: PreviewIconGravity) {
+        this.previewIconGravity = gravity
     }
 
     internal fun setPreviewIconGravity(gravity: Int) {

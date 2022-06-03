@@ -5,8 +5,8 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 /**
- * Represents [com.verygoodsecurity.vgscheckout.collect.widget.ExpirationDateEditText] date split serializer.
- * Note: [com.verygoodsecurity.vgscheckout.collect.widget.ExpirationDateEditText] fieldName will be ignored.
+ * Represents [com.verygoodsecurity.vgscheckout.collect.view.internal.DateInputField] date split serializer.
+ * Note: [com.verygoodsecurity.vgscheckout.collect.view.internal.DateInputField] fieldName will be ignored.
  *
  * @constructor primary constructor.
  * @param monthFieldName - this field name will be used for month in request json.

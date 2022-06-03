@@ -8,11 +8,16 @@ import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.core.view.isVisible
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.checkbox.MaterialCheckBox
+import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.textview.MaterialTextView
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.core.model.state.VGSFieldState
-import com.verygoodsecurity.vgscheckout.view.VGSCheckoutTextInputLayout
-import com.verygoodsecurity.vgscheckout.collect.widget.*
+import com.verygoodsecurity.vgscheckout.collect.view.internal.CVCInputField
+import com.verygoodsecurity.vgscheckout.collect.view.internal.CardInputField
+import com.verygoodsecurity.vgscheckout.collect.view.internal.CountryInputField
+import com.verygoodsecurity.vgscheckout.collect.view.internal.DateInputField
+import com.verygoodsecurity.vgscheckout.collect.view.internal.InfoInputField
+import com.verygoodsecurity.vgscheckout.collect.view.internal.PersonNameInputField
 
 // TODO: Remove all unused views
 @Suppress("unused")
@@ -22,25 +27,25 @@ internal class SaveCardViewBindingHelper(inflater: LayoutInflater, @LayoutRes la
 
     val cardDetailsMtv: MaterialTextView by lazy { rootView.findViewById(R.id.mtvCardDetailsTitle) }
     val cardDetailsLL: LinearLayoutCompat by lazy { rootView.findViewById(R.id.llCardDetails) }
-    val cardHolderTil: VGSCheckoutTextInputLayout by lazy { rootView.findViewById(R.id.vgsTilCardHolder) }
-    val cardHolderEt: PersonNameEditText by lazy { rootView.findViewById(R.id.vgsEtCardHolder) }
-    val cardNumberEt: VGSCardNumberEditText by lazy { rootView.findViewById(R.id.vgsEtCardNumber) }
-    val expirationDateEt: ExpirationDateEditText by lazy { rootView.findViewById(R.id.vgsEtExpirationDate) }
-    val securityCodeTil: VGSCheckoutTextInputLayout by lazy { rootView.findViewById(R.id.vgsTilSecurityCode) }
-    val securityCodeEt: CardVerificationCodeEditText by lazy { rootView.findViewById(R.id.vgsEtSecurityCode) }
+    val cardHolderTil: TextInputLayout by lazy { rootView.findViewById(R.id.vgsTilCardHolder) }
+    val cardHolderEt: PersonNameInputField by lazy { rootView.findViewById(R.id.vgsEtCardHolder) }
+    val cardNumberEt: CardInputField by lazy { rootView.findViewById(R.id.vgsEtCardNumber) }
+    val expirationDateEt: DateInputField by lazy { rootView.findViewById(R.id.vgsEtExpirationDate) }
+    val securityCodeTil: TextInputLayout by lazy { rootView.findViewById(R.id.vgsTilSecurityCode) }
+    val securityCodeEt: CVCInputField by lazy { rootView.findViewById(R.id.vgsEtSecurityCode) }
 
     val billingAddressMtv: MaterialTextView by lazy { rootView.findViewById(R.id.mtvBillingAddressTitle) }
     val billingAddressLL: LinearLayoutCompat by lazy { rootView.findViewById(R.id.llBillingAddress) }
-    val countryTil: VGSCheckoutTextInputLayout by lazy { rootView.findViewById(R.id.vgsTilCountry) }
-    val countryEt: VGSCountryEditText by lazy { rootView.findViewById(R.id.vgsEtCountry) }
-    val addressTil: VGSCheckoutTextInputLayout by lazy { rootView.findViewById(R.id.vgsTilAddress) }
-    val addressEt: VGSEditText by lazy { rootView.findViewById(R.id.vgsEtAddress) }
-    val optionalAddressTil: VGSCheckoutTextInputLayout by lazy { rootView.findViewById(R.id.vgsTilAddressOptional) }
-    val optionalAddressEt: VGSEditText by lazy { rootView.findViewById(R.id.vgsEtAddressOptional) }
-    val cityTil: VGSCheckoutTextInputLayout by lazy { rootView.findViewById(R.id.vgsTilCity) }
-    val cityEt: VGSEditText by lazy { rootView.findViewById(R.id.vgsEtCity) }
-    val postalCodeTil: VGSCheckoutTextInputLayout by lazy { rootView.findViewById(R.id.vgsTilPostalCode) }
-    val postalCodeEt: VGSEditText by lazy { rootView.findViewById(R.id.vgsEtPostalCode) }
+    val countryTil: TextInputLayout by lazy { rootView.findViewById(R.id.vgsTilCountry) }
+    val countryEt: CountryInputField by lazy { rootView.findViewById(R.id.vgsEtCountry) }
+    val addressTil: TextInputLayout by lazy { rootView.findViewById(R.id.vgsTilAddress) }
+    val addressEt: InfoInputField by lazy { rootView.findViewById(R.id.vgsEtAddress) }
+    val optionalAddressTil: TextInputLayout by lazy { rootView.findViewById(R.id.vgsTilAddressOptional) }
+    val optionalAddressEt: InfoInputField by lazy { rootView.findViewById(R.id.vgsEtAddressOptional) }
+    val cityTil: TextInputLayout by lazy { rootView.findViewById(R.id.vgsTilCity) }
+    val cityEt: InfoInputField by lazy { rootView.findViewById(R.id.vgsEtCity) }
+    val postalCodeTil: TextInputLayout by lazy { rootView.findViewById(R.id.vgsTilPostalCode) }
+    val postalCodeEt: InfoInputField by lazy { rootView.findViewById(R.id.vgsEtPostalCode) }
 
     val cityPostalAddressSpace: Space by lazy { rootView.findViewById(R.id.cityPostalAddressSpace) }
 
@@ -51,16 +56,16 @@ internal class SaveCardViewBindingHelper(inflater: LayoutInflater, @LayoutRes la
         includeInvisibleFields: Boolean = false
     ): MutableCollection<VGSFieldState> {
         return with(mutableListOf<VGSFieldState>()) {
-            if (includeInvisibleFields || securityCodeEt.isVisible) add(securityCodeEt.getInnerState())
-            if (includeInvisibleFields || expirationDateEt.isVisible) add(expirationDateEt.getInnerState())
-            if (includeInvisibleFields || cardNumberEt.isVisible) add(cardNumberEt.getInnerState())
-            if (includeInvisibleFields || cardHolderEt.isVisible) add(cardHolderEt.getInnerState())
+            if (includeInvisibleFields || securityCodeEt.isVisible) add(securityCodeEt.getFieldState())
+            if (includeInvisibleFields || expirationDateEt.isVisible) add(expirationDateEt.getFieldState())
+            if (includeInvisibleFields || cardNumberEt.isVisible) add(cardNumberEt.getFieldState())
+            if (includeInvisibleFields || cardHolderEt.isVisible) add(cardHolderEt.getFieldState())
 
-            if (includeInvisibleFields || addressEt.isVisible) add(addressEt.getInnerState())
-            if (includeInvisibleFields || countryEt.isVisible) add(countryEt.getInnerState())
-            if (includeInvisibleFields || optionalAddressEt.isVisible) add(optionalAddressEt.getInnerState())
-            if (includeInvisibleFields || cityEt.isVisible) add(cityEt.getInnerState())
-            if (includeInvisibleFields || postalCodeEt.isVisible) add(postalCodeEt.getInnerState())
+            if (includeInvisibleFields || addressEt.isVisible) add(addressEt.getFieldState())
+            if (includeInvisibleFields || countryEt.isVisible) add(countryEt.getFieldState())
+            if (includeInvisibleFields || optionalAddressEt.isVisible) add(optionalAddressEt.getFieldState())
+            if (includeInvisibleFields || cityEt.isVisible) add(cityEt.getFieldState())
+            if (includeInvisibleFields || postalCodeEt.isVisible) add(postalCodeEt.getFieldState())
             this
         }
     }

@@ -7,6 +7,7 @@ import android.os.Build
 import android.text.InputFilter
 import android.text.InputType
 import android.text.format.DateUtils
+import android.util.AttributeSet
 import android.view.View
 import android.view.autofill.AutofillValue
 import android.widget.DatePicker
@@ -25,13 +26,15 @@ import com.verygoodsecurity.vgscheckout.collect.view.date.DatePickerBuilder
 import com.verygoodsecurity.vgscheckout.collect.view.date.DatePickerMode
 import com.verygoodsecurity.vgscheckout.collect.view.date.validation.TimeGapsValidator
 import com.verygoodsecurity.vgscheckout.collect.view.date.validation.isInputDatePatternValid
-import com.verygoodsecurity.vgscheckout.collect.widget.ExpirationDateEditText
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
 /** @suppress */
-internal class DateInputField(context: Context) : BaseInputField(context), View.OnClickListener {
+internal class DateInputField @JvmOverloads constructor(
+    context: Context,
+    attributeSet: AttributeSet? = null
+) : BaseInputField(context, attributeSet), View.OnClickListener {
 
     companion object {
         private const val MM_YYYY = "MM/yyyy"
@@ -61,8 +64,7 @@ internal class DateInputField(context: Context) : BaseInputField(context), View.
     private var datePickerMode: DatePickerMode = DatePickerMode.INPUT
     private var isDaysVisible = true
 
-    private var datePickerVisibilityChangeListener: ExpirationDateEditText.OnDatePickerVisibilityChangeListener? =
-        null
+    private var datePickerVisibilityChangeListener: OnDatePickerVisibilityChangeListener? = null
 
     override var fieldType: FieldType = FieldType.CARD_EXPIRATION_DATE
 
@@ -359,8 +361,16 @@ internal class DateInputField(context: Context) : BaseInputField(context), View.
         }
     }
 
-    internal fun setDatePickerVisibilityListener(listener: ExpirationDateEditText.OnDatePickerVisibilityChangeListener?) {
+    internal fun setDatePickerVisibilityListener(listener: OnDatePickerVisibilityChangeListener?) {
         datePickerVisibilityChangeListener = listener
+    }
+
+    internal fun setFieldDataSerializer(serializer: FieldDataSerializer<*, *>?) {
+        if (serializer == null) {
+            setFieldDataSerializers(null)
+        } else {
+            setFieldDataSerializers(listOf(serializer))
+        }
     }
 
     internal fun setFieldDataSerializers(serializers: List<FieldDataSerializer<*, *>>?) {
@@ -449,4 +459,20 @@ internal class DateInputField(context: Context) : BaseInputField(context), View.
     }
 
     internal fun getFormatterMode(): Int = formatterMode.ordinal
+
+    /**
+     * Interface definition for a callback to be invoked when the DatePicker Dialog changes
+     * visibility.
+     */
+    interface OnDatePickerVisibilityChangeListener {
+        /**
+         * Called when the DatePicker Dialog was shown.
+         */
+        fun onShow()
+
+        /**
+         * Called when the DatePicker Dialog was dismissed.
+         */
+        fun onDismiss()
+    }
 }

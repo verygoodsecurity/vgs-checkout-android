@@ -27,42 +27,37 @@
                 android:layout_marginBottom="@dimen/vgs_checkout_margin_padding_size_xsmall"
                 android:text="@string/vgs_checkout_form_card_details_title" />
 
-            <com.verygoodsecurity.vgscheckout.view.VGSCheckoutTextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/vgsTilCardHolder"
                 style="@style/VGSCheckout.TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:endIconCheckable="false"
                 android:layout_marginBottom="@dimen/vgs_checkout_margin_padding_size_micro"
-                android:hint="@string/vgs_checkout_card_holder_hint">
+                android:hint="@string/vgs_checkout_card_holder_hint"
+                app:endIconCheckable="false">
 
-                <com.verygoodsecurity.vgscheckout.collect.widget.PersonNameEditText
+                <com.verygoodsecurity.vgscheckout.collect.view.internal.PersonNameInputField
                     android:id="@+id/vgsEtCardHolder"
                     style="@style/VGSCheckout.TextInputEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:analyticsName="cardHolder"
-                    app:imeOptions="actionNext" />
-            </com.verygoodsecurity.vgscheckout.view.VGSCheckoutTextInputLayout>
+                    android:imeOptions="actionNext" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <com.verygoodsecurity.vgscheckout.view.VGSCheckoutTextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/vgsTilCardNumber"
                 style="@style/VGSCheckout.TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/vgs_checkout_card_number_hint">
 
-                <com.verygoodsecurity.vgscheckout.collect.widget.VGSCardNumberEditText
+                <com.verygoodsecurity.vgscheckout.collect.view.internal.CardInputField
                     android:id="@+id/vgsEtCardNumber"
                     style="@style/VGSCheckout.TextInputEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:analyticsName="cardNumber"
-                    app:brandIconVisibility="always"
-                    app:cardBrandIconGravity="start"
-                    app:imeOptions="actionNext"
-                    app:numberDivider=" " />
-            </com.verygoodsecurity.vgscheckout.view.VGSCheckoutTextInputLayout>
+                    android:imeOptions="actionNext" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
@@ -70,7 +65,7 @@
                 android:layout_marginTop="@dimen/vgs_checkout_margin_padding_size_micro"
                 android:orientation="horizontal">
 
-                <com.verygoodsecurity.vgscheckout.view.VGSCheckoutTextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/vgsTilExpirationDate"
                     style="@style/VGSCheckout.TextInputLayout"
                     android:layout_width="match_parent"
@@ -78,23 +73,19 @@
                     android:layout_weight="1"
                     android:hint="@string/vgs_checkout_card_expiration_date_hint">
 
-                    <com.verygoodsecurity.vgscheckout.collect.widget.ExpirationDateEditText
+                    <com.verygoodsecurity.vgscheckout.collect.view.internal.DateInputField
                         android:id="@+id/vgsEtExpirationDate"
                         style="@style/VGSCheckout.TextInputEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:analyticsName="expDate"
-                        app:datePattern="MM/yy"
-                        app:datePickerModes="input"
-                        app:imeOptions="actionNext"
-                        app:inputType="date" />
-                </com.verygoodsecurity.vgscheckout.view.VGSCheckoutTextInputLayout>
+                        android:imeOptions="actionNext" />
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <Space
                     android:layout_width="@dimen/vgs_checkout_margin_padding_size_medium"
                     android:layout_height="0dp" />
 
-                <com.verygoodsecurity.vgscheckout.view.VGSCheckoutTextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/vgsTilSecurityCode"
                     style="@style/VGSCheckout.TextInputLayout"
                     android:layout_width="match_parent"
@@ -102,16 +93,13 @@
                     android:layout_weight="1"
                     android:hint="@string/vgs_checkout_security_code_hint">
 
-                    <com.verygoodsecurity.vgscheckout.collect.widget.CardVerificationCodeEditText
+                    <com.verygoodsecurity.vgscheckout.collect.view.internal.CVCInputField
                         android:id="@+id/vgsEtSecurityCode"
                         style="@style/VGSCheckout.TextInputEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:analyticsName="cvc"
-                        app:imeOptions="actionNext"
-                        app:previewIconGravity="start"
-                        app:previewIconVisibility="always" />
-                </com.verygoodsecurity.vgscheckout.view.VGSCheckoutTextInputLayout>
+                        android:imeOptions="actionNext" />
+                </com.google.android.material.textfield.TextInputLayout>
             </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -131,7 +119,7 @@
                 android:layout_marginBottom="@dimen/vgs_checkout_margin_padding_size_xsmall"
                 android:text="@string/vgs_checkout_form_billing_address_title" />
 
-            <com.verygoodsecurity.vgscheckout.view.VGSCheckoutTextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/vgsTilCountry"
                 style="@style/VGSCheckout.TextInputLayout"
                 android:layout_width="match_parent"
@@ -141,17 +129,16 @@
                 app:endIconDrawable="@drawable/vgs_checkout_ic_baseline_arrow_drop_down_white_24"
                 app:endIconMode="custom">
 
-                <com.verygoodsecurity.vgscheckout.collect.widget.VGSCountryEditText
+                <com.verygoodsecurity.vgscheckout.collect.view.internal.CountryInputField
                     android:id="@+id/vgsEtCountry"
                     style="@style/VGSCheckout.TextInputEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:analyticsName="country"
-                    app:cursorVisible="false"
-                    app:imeOptions="actionNext" />
-            </com.verygoodsecurity.vgscheckout.view.VGSCheckoutTextInputLayout>
+                    android:cursorVisible="false"
+                    android:imeOptions="actionNext" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <com.verygoodsecurity.vgscheckout.view.VGSCheckoutTextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/vgsTilAddress"
                 style="@style/VGSCheckout.TextInputLayout"
                 android:layout_width="match_parent"
@@ -159,16 +146,15 @@
                 android:layout_marginTop="@dimen/vgs_checkout_margin_padding_size_micro"
                 android:hint="@string/vgs_checkout_address_info_address_line1_hint">
 
-                <com.verygoodsecurity.vgscheckout.collect.widget.VGSEditText
+                <com.verygoodsecurity.vgscheckout.collect.view.internal.InfoInputField
                     android:id="@+id/vgsEtAddress"
                     style="@style/VGSCheckout.TextInputEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:analyticsName="addressLine1"
-                    app:imeOptions="actionNext" />
-            </com.verygoodsecurity.vgscheckout.view.VGSCheckoutTextInputLayout>
+                    android:imeOptions="actionNext" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <com.verygoodsecurity.vgscheckout.view.VGSCheckoutTextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/vgsTilAddressOptional"
                 style="@style/VGSCheckout.TextInputLayout"
                 android:layout_width="match_parent"
@@ -176,14 +162,13 @@
                 android:layout_marginTop="@dimen/vgs_checkout_margin_padding_size_micro"
                 android:hint="@string/vgs_checkout_address_info_address_line2_hint">
 
-                <com.verygoodsecurity.vgscheckout.collect.widget.VGSEditText
+                <com.verygoodsecurity.vgscheckout.collect.view.internal.InfoInputField
                     android:id="@+id/vgsEtAddressOptional"
                     style="@style/VGSCheckout.TextInputEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:analyticsName="addressLine2"
-                    app:imeOptions="actionNext" />
-            </com.verygoodsecurity.vgscheckout.view.VGSCheckoutTextInputLayout>
+                    android:imeOptions="actionNext" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
@@ -191,7 +176,7 @@
                 android:layout_marginTop="@dimen/vgs_checkout_margin_padding_size_micro"
                 android:orientation="horizontal">
 
-                <com.verygoodsecurity.vgscheckout.view.VGSCheckoutTextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/vgsTilCity"
                     style="@style/VGSCheckout.TextInputLayout"
                     android:layout_width="0dp"
@@ -199,21 +184,20 @@
                     android:layout_weight="1"
                     android:hint="@string/vgs_checkout_address_info_city_subtitle">
 
-                    <com.verygoodsecurity.vgscheckout.collect.widget.VGSEditText
+                    <com.verygoodsecurity.vgscheckout.collect.view.internal.InfoInputField
                         android:id="@+id/vgsEtCity"
                         style="@style/VGSCheckout.TextInputEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:analyticsName="city"
-                        app:imeOptions="actionNext" />
-                </com.verygoodsecurity.vgscheckout.view.VGSCheckoutTextInputLayout>
+                        android:imeOptions="actionNext" />
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <Space
                     android:id="@+id/cityPostalAddressSpace"
                     android:layout_width="@dimen/vgs_checkout_margin_padding_size_medium"
                     android:layout_height="match_parent" />
 
-                <com.verygoodsecurity.vgscheckout.view.VGSCheckoutTextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/vgsTilPostalCode"
                     style="@style/VGSCheckout.TextInputLayout"
                     android:layout_width="0dp"
@@ -221,14 +205,13 @@
                     android:layout_weight="1"
                     android:hint="@string/vgs_checkout_address_info_zip_hint">
 
-                    <com.verygoodsecurity.vgscheckout.collect.widget.VGSEditText
+                    <com.verygoodsecurity.vgscheckout.collect.view.internal.InfoInputField
                         android:id="@+id/vgsEtPostalCode"
                         style="@style/VGSCheckout.TextInputEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:analyticsName="postalCode"
-                        app:imeOptions="actionDone" />
-                </com.verygoodsecurity.vgscheckout.view.VGSCheckoutTextInputLayout>
+                        android:imeOptions="actionDone" />
+                </com.google.android.material.textfield.TextInputLayout>
             </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.appcompat.widget.LinearLayoutCompat>
 
