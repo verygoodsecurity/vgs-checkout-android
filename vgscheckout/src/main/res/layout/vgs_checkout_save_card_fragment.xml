@@ -53,6 +53,7 @@
 
                 <com.verygoodsecurity.vgscheckout.collect.view.internal.CardInputField
                     android:id="@+id/vgsEtCardNumber"
+                    style="@style/VGSCheckout.TextInputEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionNext" />
@@ -74,6 +75,7 @@
 
                     <com.verygoodsecurity.vgscheckout.collect.view.internal.DateInputField
                         android:id="@+id/vgsEtExpirationDate"
+                        style="@style/VGSCheckout.TextInputEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:imeOptions="actionNext"
@@ -94,6 +96,7 @@
 
                     <com.verygoodsecurity.vgscheckout.collect.view.internal.CVCInputField
                         android:id="@+id/vgsEtSecurityCode"
+                        style="@style/VGSCheckout.TextInputEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:imeOptions="actionNext" />
@@ -129,6 +132,7 @@
 
                 <com.verygoodsecurity.vgscheckout.collect.view.internal.CountryInputField
                     android:id="@+id/vgsEtCountry"
+                    style="@style/VGSCheckout.TextInputEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:cursorVisible="false"
@@ -145,6 +149,7 @@
 
                 <com.verygoodsecurity.vgscheckout.collect.view.internal.InfoInputField
                     android:id="@+id/vgsEtAddress"
+                    style="@style/VGSCheckout.TextInputEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionNext" />
@@ -160,6 +165,7 @@
 
                 <com.verygoodsecurity.vgscheckout.collect.view.internal.InfoInputField
                     android:id="@+id/vgsEtAddressOptional"
+                    style="@style/VGSCheckout.TextInputEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionNext"
@@ -203,6 +209,7 @@
 
                     <com.verygoodsecurity.vgscheckout.collect.view.internal.InfoInputField
                         android:id="@+id/vgsEtPostalCode"
+                        style="@style/VGSCheckout.TextInputEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:imeOptions="actionDone" />
