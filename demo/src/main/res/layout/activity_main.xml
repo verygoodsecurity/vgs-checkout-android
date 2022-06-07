@@ -16,6 +16,16 @@
         android:textSize="@dimen/text_size_medium" />
 
     <com.google.android.material.button.MaterialButton
+        android:id="@+id/mbStartAddCard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/margin_padding_size_medium"
+        android:text="@string/present_add_card_checkout_btn_title"
+        android:textAllCaps="false"
+        android:textSize="@dimen/text_size_medium" />
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/mbStartPayment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
