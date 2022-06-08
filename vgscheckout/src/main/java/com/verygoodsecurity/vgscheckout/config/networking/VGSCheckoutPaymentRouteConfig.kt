@@ -23,7 +23,7 @@ class VGSCheckoutPaymentRouteConfig private constructor(
     )
 
     private companion object {
-
+        //todo think if we can remove because we use different api for orders, transfers, etc.
         private const val PATH = "/financial_instruments"
     }
 }
