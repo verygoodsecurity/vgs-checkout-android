@@ -13,11 +13,17 @@ import org.json.JSONObject
 import java.util.concurrent.*
 import kotlin.concurrent.thread
 
-internal class GetSavedCardsCommand constructor(context: Context) :
-    Command<GetSavedCardsCommand.Params, GetSavedCardsCommand.Result>(context) {
+internal class GetSavedCardsCommand constructor(
+    context: Context,
+    private val params: Params
+) : Command<GetSavedCardsCommand.Params, GetSavedCardsCommand.Result>(context) {
 
     private var rootThread: Thread? = null
     private val cardFetchExecutor: ExecutorService = createExecutor()
+
+    fun execute(onResult: (Result) -> Unit) {
+        execute(params, onResult)
+    }
 
     override fun run(params: Params, onResult: (Result) -> Unit) {
         rootThread = thread(start = true) {
