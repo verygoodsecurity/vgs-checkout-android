@@ -12,7 +12,7 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.analytic.event.FinInstrumentCrudEvent
-import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
+import com.verygoodsecurity.vgscheckout.config.core.OrchestrationConfig
 import com.verygoodsecurity.vgscheckout.exception.internal.NoInternetConnectionException
 import com.verygoodsecurity.vgscheckout.model.Card
 import com.verygoodsecurity.vgscheckout.networking.command.DeleteCreditCardCommand
@@ -23,7 +23,7 @@ import com.verygoodsecurity.vgscheckout.util.extension.*
 import com.verygoodsecurity.vgscheckout.util.logger.VGSCheckoutLogger
 
 internal class SelectPaymentMethodFragment :
-    BaseFragment<VGSCheckoutAddCardConfig>(R.layout.vgs_checkout_select_method_fragment),
+    BaseFragment<OrchestrationConfig>(R.layout.vgs_checkout_select_method_fragment),
     PaymentMethodsAdapter.OnItemClickListener {
 
     private lateinit var paymentMethodsRv: RecyclerView

@@ -3,12 +3,12 @@ package com.verygoodsecurity.vgscheckout.ui
 import android.os.Bundle
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.analytic.event.InitEvent
-import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
+import com.verygoodsecurity.vgscheckout.config.VGSCheckoutPaymentConfig
 import com.verygoodsecurity.vgscheckout.ui.core.BaseCheckoutActivity
 import com.verygoodsecurity.vgscheckout.ui.fragment.core.BaseFragment
 import com.verygoodsecurity.vgscheckout.ui.fragment.save.SaveAndPayFragment
 
-internal class PaymentActivity : BaseCheckoutActivity<VGSCheckoutAddCardConfig>() {
+internal class PaymentActivity : BaseCheckoutActivity<VGSCheckoutPaymentConfig>() {
 
     override fun initView(savedInstanceState: Bundle?) {
         super.initView(savedInstanceState)

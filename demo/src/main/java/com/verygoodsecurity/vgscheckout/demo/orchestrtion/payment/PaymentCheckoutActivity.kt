@@ -1,6 +1,5 @@
 package com.verygoodsecurity.vgscheckout.demo.orchestrtion.payment
 
-import android.util.Log
 import androidx.preference.PreferenceManager
 import com.verygoodsecurity.vgscheckout.VGSCheckoutConfigInitCallback
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutPaymentConfig
@@ -60,8 +59,7 @@ class PaymentCheckoutActivity : OrchestrationCheckoutActivity() {
             true,
             object : VGSCheckoutConfigInitCallback<VGSCheckoutPaymentConfig> {
                 override fun onSuccess(config: VGSCheckoutPaymentConfig) {
-                    Log.e(this::class.simpleName, config.toString())
-                    // todo run Activity with callback(config)
+                    callback(config)
                 }
 
                 override fun onFailure(exception: VGSCheckoutException) {
