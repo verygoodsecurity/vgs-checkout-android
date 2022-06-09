@@ -6,11 +6,10 @@ import android.os.Parcelable
 import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgscheckout.VGSCheckoutConfigInitCallback
 import com.verygoodsecurity.vgscheckout.analytic.event.FinInstrumentCrudEvent
-import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
+import com.verygoodsecurity.vgscheckout.config.core.OrchestrationConfig
 import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutPaymentRouteConfig
 import com.verygoodsecurity.vgscheckout.config.payment.OrderDetails
 import com.verygoodsecurity.vgscheckout.config.payment.VGSCheckoutPaymentMethod
-import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutAddCardFormConfig
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutPaymentFormConfig
 import com.verygoodsecurity.vgscheckout.model.Card
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
@@ -21,37 +20,37 @@ import com.verygoodsecurity.vgscheckout.networking.command.core.VGSCheckoutCance
 import com.verygoodsecurity.vgscheckout.util.extension.getBaseUrl
 
 class VGSCheckoutPaymentConfig internal constructor(
-    internal val accessToken: String,
-    internal val tenantId: String,
+    override val accessToken: String,
+    override val tenantId: String,
     override val environment: VGSCheckoutEnvironment,
     override val routeConfig: VGSCheckoutPaymentRouteConfig,
     override val formConfig: VGSCheckoutPaymentFormConfig,
     override val isScreenshotsAllowed: Boolean,
-    private val isRemoveCardOptionEnabled: Boolean,
-    private val createdFromParcel: Boolean,
+    override val isRemoveCardOptionEnabled: Boolean,
+    createdFromParcel: Boolean
+) : OrchestrationConfig(
+    accessToken,
+    tenantId,
+    environment,
+    routeConfig,
+    formConfig,
+    isScreenshotsAllowed,
+    isRemoveCardOptionEnabled,
+    createdFromParcel
+) {
+
     internal var orderDetails: OrderDetails? = null
-) : CheckoutConfig(tenantId) {
-
-    internal var savedCards: List<Card> = emptyList()
         @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE) internal set
-
-    init {
-        //TODO: Uncomment token validation
-        //TODO: Uncomment tests in VGSCheckoutAddCardConfigTest.kt
-//        if (!createdFromParcel) validateToken()
-    }
-
 
     internal constructor(parcel: Parcel) : this(
         parcel.readString()!!,
         parcel.readString()!!,
         parcel.readParcelable(VGSCheckoutEnvironment::class.java.classLoader)!!,
         parcel.readParcelable(VGSCheckoutPaymentRouteConfig::class.java.classLoader)!!,
-        parcel.readParcelable(VGSCheckoutAddCardFormConfig::class.java.classLoader)!!,
+        parcel.readParcelable(VGSCheckoutPaymentFormConfig::class.java.classLoader)!!,
         parcel.readInt() == 1,
         parcel.readInt() == 1,
         true,
-        parcel.readParcelable(VGSCheckoutAddCardFormConfig::class.java.classLoader)!!,
     ) {
         this.savedCards = mutableListOf<Card>().apply {
             parcel.readList(
@@ -59,6 +58,7 @@ class VGSCheckoutPaymentConfig internal constructor(
                 Card::class.java.classLoader
             )
         }
+        this.orderDetails = parcel.readParcelable(OrderDetails::class.java.classLoader)!!
     }
 
     override fun describeContents(): Int = 0
