@@ -62,8 +62,8 @@ internal abstract class BaseFragment<C : CheckoutConfig> : Fragment {
     }
 
     private fun generateButtonTitle(): String = when (config) {
-        is VGSCheckoutAddCardConfig -> getString(R.string.vgs_checkout_button_pay_title)
-        else -> getString(R.string.vgs_checkout_button_save_card_title)
+        is VGSCheckoutAddCardConfig -> getString(R.string.vgs_checkout_button_save_card_title)
+        else -> getString(R.string.vgs_checkout_button_pay_title)
     }
 
     private fun updateToolbarTitle() {
