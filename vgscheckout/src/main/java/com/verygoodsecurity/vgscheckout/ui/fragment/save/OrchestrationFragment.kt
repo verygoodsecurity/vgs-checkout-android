@@ -297,7 +297,6 @@ internal abstract class OrchestrationFragment : BaseFragment<CheckoutConfig>(),
         sendRequestEvent(invalidFields.map { it.getAnalyticsName() })
         if (invalidFields.isEmpty()) {
             onActionButtonClick()
-//            saveCard()
         }
     }
 
@@ -316,28 +315,6 @@ internal abstract class OrchestrationFragment : BaseFragment<CheckoutConfig>(),
     }
 
     protected fun getStates() = binding.getStates().mapToAssociatedList()
-
-//    protected fun handleSaveCardResult(result: AddCardCommand.Result) {
-//        if (!shouldHandleAddCard) {
-//            return
-//        }
-//        logResponseEvent(result)
-//        logCreateFinInstrumentEvent(result)
-//        if (result.code == NoInternetConnectionException.CODE) { // TODO: Refactor error handling
-//            setIsLoading(false)
-//            showRetrySnackBar(getString(R.string.vgs_checkout_no_network_error)) { onRetryButtonClick() }
-//            return
-//        }
-//        with(resultHandler) {
-//            getResultBundle().putAddCardResponse(result.toCardResponse())
-//            if (config is VGSCheckoutAddCardConfig) getResultBundle().putIsPreSavedCard(false)
-//            setResult(result.isSuccessful)
-//        }
-//    }
-
-//    private fun logResponseEvent(result: AddCardCommand.Result) {
-//        config.analyticTracker.log(result.toResponseEvent())
-//    }
 
     protected fun setIsLoading(isLoading: Boolean) {
         setViewsEnabled(!isLoading)
