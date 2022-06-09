@@ -43,7 +43,7 @@ internal class DateInputField @JvmOverloads constructor(
         private const val SDF = "MM/dd/yyyy"
     }
 
-    private var datePattern: String = MM_YYYY
+    private var datePattern: String = MM_YY
     private var outputPattern: String = datePattern
 
     private var formatterMode = FormatMode.STRICT
