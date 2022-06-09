@@ -19,6 +19,9 @@ android {
         buildConfigField "String", "TRANSFERS_ENDPOINT", "\"${getLocalProperty("TRANSFERS_ENDPOINT")}\""
         buildConfigField "String", "STORAGE_ID", "\"${getLocalProperty("VAULT_ID")}\""
 
+        buildConfigField "String", "TEMPORARY_ORDER_ID", "\"${getLocalProperty("TEMPORARY_ORDER_ID")}\""
+        buildConfigField "String", "TEMPORARY_FIN_INSTRUMENT", "\"${getLocalProperty("TEMPORARY_FIN_INSTRUMENT")}\""
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 

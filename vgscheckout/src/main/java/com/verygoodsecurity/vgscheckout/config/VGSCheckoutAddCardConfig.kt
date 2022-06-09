@@ -180,8 +180,8 @@ class VGSCheckoutAddCardConfig internal constructor(
                 accessToken,
                 ids
             )
-            val command = GetSavedCardsCommand(context)
-            command.execute(params) {
+            val command = GetSavedCardsCommand(context, params)
+            command.execute {
                 when (it) {
                     is GetSavedCardsCommand.Result.Success -> {
                         config.analyticTracker.log(
