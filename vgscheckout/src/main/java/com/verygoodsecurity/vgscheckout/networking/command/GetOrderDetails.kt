@@ -13,8 +13,7 @@ import org.json.JSONObject
 internal class GetOrderDetails constructor(
     context: Context,
     params: Params
-) :
-    Command<GetOrderDetails.Params, GetOrderDetails.Result>(context, params) {
+) : Command<GetOrderDetails.Params, GetOrderDetails.Result>(context, params) {
 
     override fun run(params: Params, onResult: (Result) -> Unit) {
         client.enqueue(createRequest(params)) {

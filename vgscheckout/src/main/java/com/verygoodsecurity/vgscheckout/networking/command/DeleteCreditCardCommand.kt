@@ -10,8 +10,7 @@ import com.verygoodsecurity.vgscheckout.networking.command.core.Command
 internal class DeleteCreditCardCommand constructor(
     context: Context,
     params: Params
-) :
-    Command<DeleteCreditCardCommand.Params, DeleteCreditCardCommand.Result>(context, params) {
+) : Command<DeleteCreditCardCommand.Params, DeleteCreditCardCommand.Result>(context, params) {
 
     override fun run(params: Params, onResult: (Result) -> Unit) {
         client.enqueue(createRequest(params)) {

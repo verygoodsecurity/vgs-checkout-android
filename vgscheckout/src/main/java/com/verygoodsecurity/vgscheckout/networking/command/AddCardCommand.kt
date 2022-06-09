@@ -16,8 +16,7 @@ import com.verygoodsecurity.vgscheckout.util.extension.toInternal
 internal class AddCardCommand constructor(
     context: Context,
     params: Params,
-) :
-    Command<AddCardCommand.Params, AddCardCommand.Result>(context, params) {
+) : Command<AddCardCommand.Params, AddCardCommand.Result>(context, params) {
 
     override fun run(
         params: Params,
