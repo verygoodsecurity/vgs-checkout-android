@@ -321,16 +321,16 @@ internal class SaveCardFragment : BaseFragment<CheckoutConfig>(),
 
     private fun saveCard() {
         setIsLoading(true)
-        addCardCommand = AddCardCommand(requireContext())
-        addCardCommand?.execute(
+        addCardCommand = AddCardCommand(
+            requireContext(),
             AddCardCommand.Params(
                 config.getBaseUrl(requireContext()),
                 config.routeConfig.path,
                 config.routeConfig,
                 binding.getStates().mapToAssociatedList()
-            ),
-            ::handleSaveCardResult
+            )
         )
+        addCardCommand?.execute(::handleSaveCardResult)
     }
 
     private fun handleSaveCardResult(result: AddCardCommand.Result) {
