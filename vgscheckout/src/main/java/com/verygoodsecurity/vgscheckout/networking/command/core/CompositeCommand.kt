@@ -2,8 +2,6 @@ package com.verygoodsecurity.vgscheckout.networking.command.core
 
 import android.content.Context
 import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
-import com.verygoodsecurity.vgscheckout.networking.command.GetOrderDetails
-import com.verygoodsecurity.vgscheckout.networking.command.GetSavedCardsCommand
 
 internal class CompositeCommand(
     context: Context,

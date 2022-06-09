@@ -34,6 +34,8 @@ internal fun AddCardCommand.Result.toResponseEvent() = ResponseEvent(code, messa
 internal fun AddCardCommand.Result.toCardResponse() =
     VGSCheckoutCardResponse(isSuccessful, code, body, message)
 
+internal fun AddCardCommand.Result.getSourceId() = ""
+
 internal fun TransferCommand.Result.toTransferResponse() = VGSCheckoutTransferResponse(
     isSuccessful,
     code,
