@@ -76,7 +76,7 @@ internal abstract class BaseFragment<C : CheckoutConfig> : Fragment {
         when {
             config is VGSCheckoutCustomConfig -> R.string.vgs_checkout_add_card_title
             config is VGSCheckoutAddCardConfig || this is SaveCardFragment -> R.string.vgs_checkout_new_card_title
-            config is VGSCheckoutPaymentConfig || this is SaveAndPayFragment -> R.string.vgs_checkout_new_card_title    //todo check title
+            config is VGSCheckoutPaymentConfig || this is SaveAndPayFragment -> R.string.vgs_checkout_pay_with_new_card_title
             else -> throw IllegalArgumentException("Unknown type of config.")
         }
     )
