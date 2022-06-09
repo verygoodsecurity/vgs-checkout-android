@@ -16,10 +16,6 @@ internal class GetOrderDetails constructor(
 ) :
     Command<GetOrderDetails.Params, GetOrderDetails.Result>(context, params) {
 
-//    fun execute(onResult: (Result) -> Unit) {
-//        execute(params, onResult)
-//    }
-
     override fun run(params: Params, onResult: (Result) -> Unit) {
         client.enqueue(createRequest(params)) {
             onResult.invoke(

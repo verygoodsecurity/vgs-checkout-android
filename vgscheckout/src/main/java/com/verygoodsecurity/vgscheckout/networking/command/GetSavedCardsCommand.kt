@@ -21,10 +21,6 @@ internal class GetSavedCardsCommand constructor(
     private var rootThread: Thread? = null
     private val cardFetchExecutor: ExecutorService = createExecutor()
 
-//    fun execute(onResult: (Result) -> Unit) {
-//        execute(params, onResult)
-//    }
-
     override fun run(params: Params, onResult: (Result) -> Unit) {
         rootThread = thread(start = true) {
             try {

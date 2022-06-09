@@ -12,25 +12,12 @@ internal class CompositeCommand(
 
     private var processedCommandsCounter = 0
 
-//    fun execute(onResult: (Result) -> Unit) {
-//        execute(Params(commands), onResult)
-//    }
-
     override fun run(params: Params, onResult: (Result) -> Unit) {
         params.commands.forEach { command ->
             command.execute {
                 processedCommandsCounter++
                 onResult(Result(it, isProcessing()))
             }
-//            when (command) {
-//                is GetSavedCardsCommand -> command.execute {
-//
-//                }
-//                is GetOrderDetails -> command.execute {
-//                    processedCommandsCounter++
-//                    onResult(Result(it, isProcessing()))
-//                }
-//            }
         }
     }
 
