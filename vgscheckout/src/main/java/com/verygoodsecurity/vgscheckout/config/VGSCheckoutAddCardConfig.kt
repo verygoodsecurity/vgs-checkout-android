@@ -5,7 +5,6 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.verygoodsecurity.vgscheckout.VGSCheckoutConfigInitCallback
 import com.verygoodsecurity.vgscheckout.analytic.event.FinInstrumentCrudEvent
-import com.verygoodsecurity.vgscheckout.analytic.event.JWTValidationEvent
 import com.verygoodsecurity.vgscheckout.config.core.OrchestrationConfig
 import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutPaymentRouteConfig
 import com.verygoodsecurity.vgscheckout.config.payment.VGSCheckoutPaymentMethod
@@ -112,16 +111,6 @@ class VGSCheckoutAddCardConfig internal constructor(
 
     override fun describeContents(): Int {
         return 0
-    }
-
-    @Throws(IllegalArgumentException::class)
-    private fun validateToken() {
-        try {
-            CheckoutCredentialsValidator.validateJWT(accessToken)
-            analyticTracker.log(JWTValidationEvent(true))
-        } finally {
-            analyticTracker.log(JWTValidationEvent(false))
-        }
     }
 
     companion object {
