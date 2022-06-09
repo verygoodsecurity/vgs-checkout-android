@@ -3,11 +3,10 @@ package com.verygoodsecurity.vgscheckout.config
 import android.content.Context
 import android.os.Parcel
 import android.os.Parcelable
-import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgscheckout.VGSCheckoutConfigInitCallback
 import com.verygoodsecurity.vgscheckout.analytic.event.FinInstrumentCrudEvent
 import com.verygoodsecurity.vgscheckout.analytic.event.JWTValidationEvent
-import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
+import com.verygoodsecurity.vgscheckout.config.core.OrchestrationConfig
 import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutPaymentRouteConfig
 import com.verygoodsecurity.vgscheckout.config.payment.VGSCheckoutPaymentMethod
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutAddCardFormConfig
@@ -33,24 +32,24 @@ import com.verygoodsecurity.vgscheckout.util.extension.getBaseUrl
  */
 @Suppress("MemberVisibilityCanBePrivate", "CanBeParameter")
 class VGSCheckoutAddCardConfig internal constructor(
-    internal val accessToken: String,
-    val tenantId: String,
+    override val accessToken: String,
+    override val tenantId: String,
     override val environment: VGSCheckoutEnvironment,
     override val routeConfig: VGSCheckoutPaymentRouteConfig,
     override val formConfig: VGSCheckoutAddCardFormConfig,
     override val isScreenshotsAllowed: Boolean,
-    val isRemoveCardOptionEnabled: Boolean,
-    private val createdFromParcel: Boolean
-) : CheckoutConfig(tenantId) {
-
-    internal var savedCards: List<Card> = emptyList()
-        @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE) internal set
-
-    init {
-        //TODO: Uncomment token validation
-        //TODO: Uncomment tests in VGSCheckoutAddCardConfigTest.kt
-//        if (!createdFromParcel) validateToken()
-    }
+    override val isRemoveCardOptionEnabled: Boolean,
+    createdFromParcel: Boolean
+) : OrchestrationConfig(
+    accessToken,
+    tenantId,
+    environment,
+    routeConfig,
+    formConfig,
+    isScreenshotsAllowed,
+    isRemoveCardOptionEnabled,
+    createdFromParcel
+) {
 
     internal constructor(parcel: Parcel) : this(
         parcel.readString()!!,
