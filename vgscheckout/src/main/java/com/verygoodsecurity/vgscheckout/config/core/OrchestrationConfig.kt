@@ -4,7 +4,6 @@ import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgscheckout.analytic.event.JWTValidationEvent
 import com.verygoodsecurity.vgscheckout.config.CheckoutCredentialsValidator
 import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutPaymentRouteConfig
-import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutAddCardFormConfig
 import com.verygoodsecurity.vgscheckout.config.ui.core.CheckoutFormConfig
 import com.verygoodsecurity.vgscheckout.model.Card
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
