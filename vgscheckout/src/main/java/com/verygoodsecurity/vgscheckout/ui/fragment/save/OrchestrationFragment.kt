@@ -11,14 +11,12 @@ import androidx.annotation.VisibleForTesting
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import com.verygoodsecurity.vgscheckout.R
-import com.verygoodsecurity.vgscheckout.analytic.event.FinInstrumentCrudEvent
 import com.verygoodsecurity.vgscheckout.analytic.event.RequestEvent
 import com.verygoodsecurity.vgscheckout.collect.util.extension.mapToAssociatedList
 import com.verygoodsecurity.vgscheckout.collect.view.card.validation.rules.VGSInfoRule
 import com.verygoodsecurity.vgscheckout.collect.view.date.DatePickerMode
 import com.verygoodsecurity.vgscheckout.collect.view.internal.CVCInputField
 import com.verygoodsecurity.vgscheckout.collect.view.internal.CountryInputField
-import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.AddressOptions
@@ -30,8 +28,6 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.CardHolde
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.CardNumberOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.CVCOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.ExpirationDateOptions
-import com.verygoodsecurity.vgscheckout.exception.internal.NoInternetConnectionException
-import com.verygoodsecurity.vgscheckout.networking.command.AddCardCommand
 import com.verygoodsecurity.vgscheckout.ui.fragment.core.BaseFragment
 import com.verygoodsecurity.vgscheckout.ui.fragment.save.binding.SaveCardViewBindingHelper
 import com.verygoodsecurity.vgscheckout.ui.fragment.save.validation.ValidationManager
@@ -47,15 +43,14 @@ import com.verygoodsecurity.vgscheckout.util.logger.VGSCheckoutLogger
 internal abstract class OrchestrationFragment : BaseFragment<CheckoutConfig>(),
     CountryInputField.OnCountrySelectedListener, TextView.OnEditorActionListener {
 
-    private lateinit var binding: SaveCardViewBindingHelper
-    private lateinit var validationHelper: ValidationManager
-
-
     /**
      * TODO: Remove this flag and replace it with mocked view model in tests
      */
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
     internal var shouldHandleAddCard: Boolean = true
+
+    private lateinit var binding: SaveCardViewBindingHelper
+    private lateinit var validationHelper: ValidationManager
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -322,42 +317,27 @@ internal abstract class OrchestrationFragment : BaseFragment<CheckoutConfig>(),
 
     protected fun getStates() = binding.getStates().mapToAssociatedList()
 
-    protected fun handleSaveCardResult(result: AddCardCommand.Result) {
-        if (!shouldHandleAddCard) {
-            return
-        }
-        logResponseEvent(result)
-        logCreateFinInstrumentEvent(result)
-        if (result.code == NoInternetConnectionException.CODE) { // TODO: Refactor error handling
-            setIsLoading(false)
-            showRetrySnackBar(getString(R.string.vgs_checkout_no_network_error)) { onRetryButtonClick() }
-            return
-        }
-        with(resultHandler) {
-            getResultBundle().putAddCardResponse(result.toCardResponse())
-            if (config is VGSCheckoutAddCardConfig) getResultBundle().putIsPreSavedCard(false)
-            setResult(result.isSuccessful)
-        }
-    }
+//    protected fun handleSaveCardResult(result: AddCardCommand.Result) {
+//        if (!shouldHandleAddCard) {
+//            return
+//        }
+//        logResponseEvent(result)
+//        logCreateFinInstrumentEvent(result)
+//        if (result.code == NoInternetConnectionException.CODE) { // TODO: Refactor error handling
+//            setIsLoading(false)
+//            showRetrySnackBar(getString(R.string.vgs_checkout_no_network_error)) { onRetryButtonClick() }
+//            return
+//        }
+//        with(resultHandler) {
+//            getResultBundle().putAddCardResponse(result.toCardResponse())
+//            if (config is VGSCheckoutAddCardConfig) getResultBundle().putIsPreSavedCard(false)
+//            setResult(result.isSuccessful)
+//        }
+//    }
 
-    protected abstract fun onRetryButtonClick()
-
-    private fun logResponseEvent(result: AddCardCommand.Result) {
-        config.analyticTracker.log(result.toResponseEvent())
-    }
-
-    private fun logCreateFinInstrumentEvent(result: AddCardCommand.Result) {
-        if (config is VGSCheckoutAddCardConfig) {
-            config.analyticTracker.log(
-                FinInstrumentCrudEvent.create(
-                    result.code,
-                    result.isSuccessful,
-                    result.message,
-                    config is VGSCheckoutCustomConfig
-                )
-            )
-        }
-    }
+//    private fun logResponseEvent(result: AddCardCommand.Result) {
+//        config.analyticTracker.log(result.toResponseEvent())
+//    }
 
     protected fun setIsLoading(isLoading: Boolean) {
         setViewsEnabled(!isLoading)
