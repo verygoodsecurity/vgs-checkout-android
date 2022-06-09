@@ -124,6 +124,12 @@ internal abstract class PaymentMethodFragment<T : OrchestrationConfig> :
             VGSCheckoutLogger.warn(message = "Selected card is null.")
             return
         }
+
+        with(resultHandler) {
+            getResultBundle().putAddCardResponse(card.toCardResponse())
+            getResultBundle().putIsPreSavedCard(true)
+        }
+
         processSelectedCard(card)
     }
 

@@ -19,6 +19,7 @@ import com.verygoodsecurity.vgscheckout.demo.R
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResultBundle
 import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutCardResponse
+import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutTransferResponse
 import okhttp3.*
 import okhttp3.internal.EMPTY_REQUEST
 import java.io.IOException
@@ -48,6 +49,12 @@ abstract class OrchestrationCheckoutActivity : BaseActivity(R.layout.activity_pa
             this::class.simpleName, """
             ${result::class.java.simpleName}
             ${result.data.getParcelable<VGSCheckoutCardResponse>(VGSCheckoutResultBundle.ADD_CARD_RESPONSE)}
+        """.trimIndent()
+        )
+        Log.d(
+            this::class.simpleName, """
+            ${result::class.java.simpleName}
+            ${result.data.getParcelable<VGSCheckoutTransferResponse>(VGSCheckoutResultBundle.TRANSFER_RESPONSE)}
         """.trimIndent()
         )
     }
