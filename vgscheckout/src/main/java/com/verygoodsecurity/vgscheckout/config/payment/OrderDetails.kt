@@ -5,6 +5,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 internal data class OrderDetails(
+    val id: String,
     val price: Int,
     val currency: String,
     val raw: Raw
