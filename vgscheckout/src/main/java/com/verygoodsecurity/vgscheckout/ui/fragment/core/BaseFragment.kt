@@ -10,11 +10,13 @@ import com.google.android.material.snackbar.Snackbar
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
+import com.verygoodsecurity.vgscheckout.config.VGSCheckoutPaymentConfig
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.networking.command.core.VGSCheckoutCancellable
 import com.verygoodsecurity.vgscheckout.ui.core.NavigationHandler
 import com.verygoodsecurity.vgscheckout.ui.core.ResultHandler
 import com.verygoodsecurity.vgscheckout.ui.core.ToolbarHandler
+import com.verygoodsecurity.vgscheckout.ui.fragment.save.SaveAndPayFragment
 import com.verygoodsecurity.vgscheckout.ui.fragment.save.SaveCardFragment
 import com.verygoodsecurity.vgscheckout.util.extension.requireParcelable
 
@@ -74,6 +76,7 @@ internal abstract class BaseFragment<C : CheckoutConfig> : Fragment {
         when {
             config is VGSCheckoutCustomConfig -> R.string.vgs_checkout_add_card_title
             config is VGSCheckoutAddCardConfig || this is SaveCardFragment -> R.string.vgs_checkout_new_card_title
+            config is VGSCheckoutPaymentConfig || this is SaveAndPayFragment -> R.string.vgs_checkout_pay_with_new_card_title
             else -> throw IllegalArgumentException("Unknown type of config.")
         }
     )

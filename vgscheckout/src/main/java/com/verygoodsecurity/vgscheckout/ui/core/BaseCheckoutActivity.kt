@@ -118,7 +118,7 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
 
     companion object {
 
-        @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+        @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
         internal const val FRAGMENT_TAG = "com.verygoodsecurity.vgscheckout.fragment_tag"
 
         private const val KEY_RESULT_BUNDLE = "com.verygoodsecurity.vgscheckout.result_bundle"

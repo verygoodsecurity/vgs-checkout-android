@@ -10,6 +10,7 @@ import androidx.annotation.VisibleForTesting
 import androidx.core.os.bundleOf
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
+import com.verygoodsecurity.vgscheckout.config.VGSCheckoutPaymentConfig
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.exception.internal.ResultParseException
 import com.verygoodsecurity.vgscheckout.ui.CustomSaveCardActivity
@@ -49,7 +50,7 @@ internal class CheckoutResultContract :
         return when (args?.config) {
             is VGSCheckoutCustomConfig -> CustomSaveCardActivity::class.java
             is VGSCheckoutAddCardConfig -> SaveCardActivity::class.java
-//            is VGSCheckoutPaymentConfig -> PaymentActivity::class.java    //todo uncomment after merge
+            is VGSCheckoutPaymentConfig -> PaymentActivity::class.java
             else -> throw IllegalArgumentException("Invalid checkout config.")
         }
     }
