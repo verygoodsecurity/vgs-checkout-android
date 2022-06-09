@@ -6,6 +6,7 @@ import com.verygoodsecurity.vgscheckout.analytic.event.InitEvent
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutPaymentConfig
 import com.verygoodsecurity.vgscheckout.ui.core.BaseCheckoutActivity
 import com.verygoodsecurity.vgscheckout.ui.fragment.core.BaseFragment
+import com.verygoodsecurity.vgscheckout.ui.fragment.method.TransferPaymentMethodFragment
 import com.verygoodsecurity.vgscheckout.ui.fragment.save.SaveAndPayFragment
 
 internal class PaymentActivity : BaseCheckoutActivity<VGSCheckoutPaymentConfig>() {
@@ -25,6 +26,13 @@ internal class PaymentActivity : BaseCheckoutActivity<VGSCheckoutPaymentConfig>(
 
     override fun navigateToSaveCard() {
         val fragment = BaseFragment.create<SaveAndPayFragment>(config)
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fcvContainer, fragment, FRAGMENT_TAG)
+            .commit()
+    }
+
+    override fun navigateToPaymentMethods() {
+        val fragment = BaseFragment.create<TransferPaymentMethodFragment>(config)
         supportFragmentManager.beginTransaction()
             .replace(R.id.fcvContainer, fragment, FRAGMENT_TAG)
             .commit()

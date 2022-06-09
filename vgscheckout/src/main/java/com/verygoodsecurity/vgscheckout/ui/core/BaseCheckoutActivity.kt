@@ -58,20 +58,6 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
         return true
     }
 
-    override fun navigateToSaveCard() {
-        val fragment = BaseFragment.create<SaveCardFragment>(config)
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fcvContainer, fragment, FRAGMENT_TAG)
-            .commit()
-    }
-
-    override fun navigateToPaymentMethods() {
-        val fragment = BaseFragment.create<SelectPaymentMethodFragment>(config)
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fcvContainer, fragment, FRAGMENT_TAG)
-            .commit()
-    }
-
     override fun setTitle(title: String) {
         supportActionBar?.title = title
     }
