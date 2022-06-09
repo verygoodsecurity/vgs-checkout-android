@@ -13,8 +13,10 @@ import com.verygoodsecurity.vgscheckout.util.extension.toAddCardResult
 import com.verygoodsecurity.vgscheckout.util.extension.toCollectMergePolicy
 import com.verygoodsecurity.vgscheckout.util.extension.toInternal
 
-internal class AddCardCommand constructor(context: Context) :
-    Command<AddCardCommand.Params, AddCardCommand.Result>(context) {
+internal class AddCardCommand constructor(
+    context: Context,
+    params: Params,
+) : Command<AddCardCommand.Params, AddCardCommand.Result>(context, params) {
 
     override fun run(
         params: Params,

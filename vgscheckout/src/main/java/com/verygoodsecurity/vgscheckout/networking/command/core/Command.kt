@@ -11,7 +11,8 @@ import com.verygoodsecurity.vgscheckout.exception.internal.NoInternetPermissionE
 import com.verygoodsecurity.vgscheckout.networking.client.HttpClient
 
 internal abstract class Command<P : Command.Params, R : Command.Result> constructor(
-    private val context: Context
+    private val context: Context,
+    private val params: P
 ) : VGSCheckoutCancellable {
 
     protected val client = HttpClient.create(false)
@@ -21,7 +22,7 @@ internal abstract class Command<P : Command.Params, R : Command.Result> construc
     /**
      * Execute command. Result always returned on main thread.
      */
-    fun execute(params: P, onResult: (result: R) -> Unit) {
+    fun execute(onResult: (result: R) -> Unit) {
         when {
             !context.inetPermissionsGranted() -> post(
                 onResult,
