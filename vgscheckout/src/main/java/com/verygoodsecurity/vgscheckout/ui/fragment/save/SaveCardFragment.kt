@@ -22,15 +22,15 @@ internal class SaveCardFragment : OrchestrationFragment() {
 
     private fun saveCard() {
         setIsLoading(true)
-        addCardCommand = AddCardCommand(requireContext())
-        addCardCommand?.execute(
+        addCardCommand = AddCardCommand(
+            requireContext(),
             AddCardCommand.Params(
                 config.getBaseUrl(requireContext()),
                 config.routeConfig.path,
                 config.routeConfig,
                 getStates()
-            ),
-            ::handleSaveCardResult
+            )
         )
+        addCardCommand?.execute(::handleSaveCardResult)
     }
 }

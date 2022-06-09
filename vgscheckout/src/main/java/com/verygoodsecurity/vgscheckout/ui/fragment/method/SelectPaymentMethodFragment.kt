@@ -150,16 +150,16 @@ internal class SelectPaymentMethodFragment :
             return
         }
         setLoading(true)
-        deleteCardCommand = DeleteCreditCardCommand(requireContext())
-        deleteCardCommand?.execute(
+        deleteCardCommand = DeleteCreditCardCommand(
+            requireContext(),
             DeleteCreditCardCommand.Params(
                 config.getBaseUrl(requireContext()),
                 config.routeConfig.path,
                 config.accessToken,
                 card.finId
-            ),
-            ::handleDeleteCreditCardResponse
+            )
         )
+        deleteCardCommand?.execute(::handleDeleteCreditCardResponse)
     }
 
     private fun handleDeleteCreditCardResponse(result: DeleteCreditCardCommand.Result) {

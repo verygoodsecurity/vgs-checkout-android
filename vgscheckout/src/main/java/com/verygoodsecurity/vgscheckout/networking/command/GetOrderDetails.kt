@@ -12,13 +12,8 @@ import org.json.JSONObject
 
 internal class GetOrderDetails constructor(
     context: Context,
-    private val params: Params
-) :
-    Command<GetOrderDetails.Params, GetOrderDetails.Result>(context) {
-
-    fun execute(onResult: (Result) -> Unit) {
-        execute(params, onResult)
-    }
+    params: Params
+) : Command<GetOrderDetails.Params, GetOrderDetails.Result>(context, params) {
 
     override fun run(params: Params, onResult: (Result) -> Unit) {
         client.enqueue(createRequest(params)) {

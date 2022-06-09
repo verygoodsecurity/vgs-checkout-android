@@ -8,25 +8,15 @@ import com.verygoodsecurity.vgscheckout.networking.command.GetSavedCardsCommand
 internal class CompositeCommand(
     context: Context,
     private val commands: Collection<Command<*, *>>
-) : Command<CompositeCommand.Params, CompositeCommand.Result>(context) {
+) : Command<CompositeCommand.Params, CompositeCommand.Result>(context, Params(commands)) {
 
     private var processedCommandsCounter = 0
 
-    fun execute(onResult: (Result) -> Unit) {
-        execute(Params(commands), onResult)
-    }
-
     override fun run(params: Params, onResult: (Result) -> Unit) {
         params.commands.forEach { command ->
-            when (command) {
-                is GetSavedCardsCommand -> command.execute {
-                    processedCommandsCounter++
-                    onResult(Result(it, isProcessing()))
-                }
-                is GetOrderDetails -> command.execute {
-                    processedCommandsCounter++
-                    onResult(Result(it, isProcessing()))
-                }
+            command.execute {
+                processedCommandsCounter++
+                onResult(Result(it, isProcessing()))
             }
         }
     }
