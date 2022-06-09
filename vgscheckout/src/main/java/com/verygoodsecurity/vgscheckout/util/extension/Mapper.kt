@@ -34,7 +34,10 @@ internal fun AddCardCommand.Result.toResponseEvent() = ResponseEvent(code, messa
 internal fun AddCardCommand.Result.toCardResponse() =
     VGSCheckoutCardResponse(isSuccessful, code, body, message)
 
-internal fun AddCardCommand.Result.getSourceId() = ""
+private const val JSON_KEY_DATA = "data"
+private const val JSON_KEY_ID = "id"
+internal fun AddCardCommand.Result.getSourceId() =
+    body?.toJson()?.getJSONObject(JSON_KEY_DATA)?.getString(JSON_KEY_ID) ?: ""
 
 internal fun TransferCommand.Result.toTransferResponse() = VGSCheckoutTransferResponse(
     isSuccessful,
@@ -42,6 +45,7 @@ internal fun TransferCommand.Result.toTransferResponse() = VGSCheckoutTransferRe
     body,
     message
 )
+
 internal fun DeleteCreditCardCommand.Result.toDeleteCardResponse() = VGSCheckoutDeleteCardResponse(
     id,
     isSuccessful,

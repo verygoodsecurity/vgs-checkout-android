@@ -340,7 +340,7 @@ internal abstract class OrchestrationFragment<T : CheckoutConfig> : BaseFragment
 
         with(resultHandler) {
             getResultBundle().putAddCardResponse(result.toCardResponse())
-            if (config is VGSCheckoutAddCardConfig) getResultBundle().putIsPreSavedCard(false)
+            if (config is OrchestrationConfig) getResultBundle().putIsPreSavedCard(false)
         }
 
         handleSaveCardResult(result)
