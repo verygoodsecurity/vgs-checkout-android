@@ -348,6 +348,7 @@ internal abstract class OrchestrationFragment<T : CheckoutConfig> : BaseFragment
     protected abstract fun handleSaveCardResult(result: AddCardCommand.Result)
 
     private fun logSaveCardResponse(result: AddCardCommand.Result) {
+        //todo: check if we have to send these events with PaymentConfig
         config.analyticTracker.log(result.toResponseEvent())
         config.analyticTracker.log(
             FinInstrumentCrudEvent.create(
