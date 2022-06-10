@@ -62,12 +62,12 @@ abstract class OrchestrationCheckoutActivity : BaseActivity(R.layout.activity_pa
     private fun presentCheckout() {
         setLoading(true)
         tokenManager.get {
-            setLoading(false)
             if (it?.value == null) {
                 Log.d(this::class.simpleName, "Token is null.")
                 return@get
             }
             initializeConfiguration(it.value) { config ->
+                setLoading(false)
                 checkout.present(config)
             }
         }
