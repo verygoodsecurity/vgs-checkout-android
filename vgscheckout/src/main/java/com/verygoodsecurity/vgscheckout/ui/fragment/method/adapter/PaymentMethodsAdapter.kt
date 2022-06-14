@@ -58,8 +58,6 @@ internal class PaymentMethodsAdapter constructor(
         notifyDataSetChanged()
     }
 
-    fun hasSelectedCard(): Boolean = cards.getOrNull(selectedPosition) == null
-
     fun getSelectedPosition() = selectedPosition
 
     fun getSelectedCard(): Card? = cards.getOrNull(selectedPosition)

@@ -19,7 +19,10 @@ import com.verygoodsecurity.vgscheckout.networking.command.DeleteCreditCardComma
 import com.verygoodsecurity.vgscheckout.ui.fragment.core.BaseFragment
 import com.verygoodsecurity.vgscheckout.ui.fragment.method.adapter.PaymentMethodsAdapter
 import com.verygoodsecurity.vgscheckout.ui.fragment.method.decorator.MarginItemDecoration
-import com.verygoodsecurity.vgscheckout.util.extension.*
+import com.verygoodsecurity.vgscheckout.util.extension.getBaseUrl
+import com.verygoodsecurity.vgscheckout.util.extension.getDrawableCompat
+import com.verygoodsecurity.vgscheckout.util.extension.setVisible
+import com.verygoodsecurity.vgscheckout.util.extension.toDeleteCardResponse
 import com.verygoodsecurity.vgscheckout.util.logger.VGSCheckoutLogger
 
 internal abstract class PaymentMethodFragment :
@@ -109,12 +112,15 @@ internal abstract class PaymentMethodFragment :
         payButton = view.findViewById(R.id.mbPresent)
         payButton.text = title
         payButton.setOnClickListener {
-            if (isOnPayButtonClickPermitted()) onPayButtonClick(adapter.getSelectedCard()!!)
+            adapter.getSelectedCard().let { card ->
+                if (card == null) {
+                    VGSCheckoutLogger.warn(message = "Selected card is null.")
+                    return@let
+                }
+                onPayButtonClick(card)
+            }
         }
     }
-
-    private fun isOnPayButtonClickPermitted(): Boolean = adapter.hasSelectedCard()
-        .also { VGSCheckoutLogger.warn(message = "Selected card is null.") }
 
     protected abstract fun onPayButtonClick(card: Card)
 
