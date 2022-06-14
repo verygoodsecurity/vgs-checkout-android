@@ -157,7 +157,7 @@ class VGSCheckoutPaymentConfig internal constructor(
             ).also {
                 it.execute {
                     when (val result = it.intermediateResult) {
-                        is GetSavedCardsCommand.Result -> saveCardsDetails(config, ids, result)
+                        is GetSavedCardsCommand.Result -> saveCardsDetails(config, result)
                         is GetOrderDetails.Result -> saveOrderDetails(config, result)
                     }
 
@@ -177,34 +177,15 @@ class VGSCheckoutPaymentConfig internal constructor(
 
         private fun saveCardsDetails(
             config: VGSCheckoutPaymentConfig,
-            ids: List<String>,
             result: GetSavedCardsCommand.Result
         ) {
             when (result) {
                 is GetSavedCardsCommand.Result.Success -> {
-                    config.analyticTracker.log(
-                        FinInstrumentCrudEvent.load(
-                            FinInstrumentCrudEvent.DEFAULT_CODE,
-                            true,
-                            null,
-                            false,
-                            ids.count(),
-                            ids.count() - result.cards.count()
-                        )
-                    )
+                    //todo: log FinInstrumentCrudEvent.load for transfers. Success
                     config.savedCards = result.cards
                 }
                 is GetSavedCardsCommand.Result.Failure -> {
-                    config.analyticTracker.log(
-                        FinInstrumentCrudEvent.load(
-                            result.exception.code,
-                            false,
-                            result.exception.message,
-                            false,
-                            ids.count(),
-                            ids.count(),
-                        )
-                    )
+                    //todo: log FinInstrumentCrudEvent.load for transfers. Failure
                 }
             }
         }

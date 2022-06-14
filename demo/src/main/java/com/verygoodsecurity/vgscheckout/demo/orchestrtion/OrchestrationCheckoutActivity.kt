@@ -19,6 +19,7 @@ import com.verygoodsecurity.vgscheckout.demo.R
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResultBundle
 import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutCardResponse
+import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutTransferResponse
 import okhttp3.*
 import okhttp3.internal.EMPTY_REQUEST
 import java.io.IOException
@@ -50,17 +51,23 @@ abstract class OrchestrationCheckoutActivity : BaseActivity(R.layout.activity_pa
             ${result.data.getParcelable<VGSCheckoutCardResponse>(VGSCheckoutResultBundle.ADD_CARD_RESPONSE)}
         """.trimIndent()
         )
+        Log.d(
+            this::class.simpleName, """
+            ${result::class.java.simpleName}
+            ${result.data.getParcelable<VGSCheckoutTransferResponse>(VGSCheckoutResultBundle.TRANSFER_RESPONSE)}
+        """.trimIndent()
+        )
     }
 
     private fun presentCheckout() {
         setLoading(true)
         tokenManager.get {
-            setLoading(false)
             if (it?.value == null) {
                 Log.d(this::class.simpleName, "Token is null.")
                 return@get
             }
             initializeConfiguration(it.value) { config ->
+                setLoading(false)
                 checkout.present(config)
             }
         }

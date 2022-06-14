@@ -22,6 +22,8 @@ import com.verygoodsecurity.vgscheckout.networking.client.HttpMethod
 import com.verygoodsecurity.vgscheckout.networking.client.HttpResponse
 import com.verygoodsecurity.vgscheckout.networking.command.AddCardCommand
 import com.verygoodsecurity.vgscheckout.networking.command.DeleteCreditCardCommand
+import com.verygoodsecurity.vgscheckout.networking.command.TransferCommand
+import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutTransferResponse
 
 //region Networking
 internal fun HttpResponse.toAddCardResult() =
@@ -31,6 +33,18 @@ internal fun AddCardCommand.Result.toResponseEvent() = ResponseEvent(code, messa
 
 internal fun AddCardCommand.Result.toCardResponse() =
     VGSCheckoutCardResponse(isSuccessful, code, body, message)
+
+private const val JSON_KEY_DATA = "data"
+private const val JSON_KEY_ID = "id"
+internal fun AddCardCommand.Result.getSourceId() =
+    body?.toJson()?.getJSONObject(JSON_KEY_DATA)?.getString(JSON_KEY_ID) ?: ""
+
+internal fun TransferCommand.Result.toTransferResponse() = VGSCheckoutTransferResponse(
+    isSuccessful,
+    code,
+    body,
+    message
+)
 
 internal fun DeleteCreditCardCommand.Result.toDeleteCardResponse() = VGSCheckoutDeleteCardResponse(
     id,

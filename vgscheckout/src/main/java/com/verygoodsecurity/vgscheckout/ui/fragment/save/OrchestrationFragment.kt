@@ -11,6 +11,7 @@ import androidx.annotation.VisibleForTesting
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import com.verygoodsecurity.vgscheckout.R
+import com.verygoodsecurity.vgscheckout.analytic.event.FinInstrumentCrudEvent
 import com.verygoodsecurity.vgscheckout.analytic.event.RequestEvent
 import com.verygoodsecurity.vgscheckout.collect.util.extension.mapToAssociatedList
 import com.verygoodsecurity.vgscheckout.collect.view.card.validation.rules.VGSInfoRule
@@ -19,6 +20,7 @@ import com.verygoodsecurity.vgscheckout.collect.view.internal.CVCInputField
 import com.verygoodsecurity.vgscheckout.collect.view.internal.CountryInputField
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
+import com.verygoodsecurity.vgscheckout.config.core.OrchestrationConfig
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.AddressOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.OptionalAddressOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.city.CityOptions
@@ -28,6 +30,8 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.CardHolde
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.CardNumberOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.CVCOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.ExpirationDateOptions
+import com.verygoodsecurity.vgscheckout.exception.internal.NoInternetConnectionException
+import com.verygoodsecurity.vgscheckout.networking.command.AddCardCommand
 import com.verygoodsecurity.vgscheckout.ui.fragment.core.BaseFragment
 import com.verygoodsecurity.vgscheckout.ui.fragment.save.binding.SaveCardViewBindingHelper
 import com.verygoodsecurity.vgscheckout.ui.fragment.save.validation.ValidationManager
@@ -40,7 +44,7 @@ import com.verygoodsecurity.vgscheckout.util.extension.expiryOptions
 import com.verygoodsecurity.vgscheckout.util.extension.postalCodeOptions
 import com.verygoodsecurity.vgscheckout.util.logger.VGSCheckoutLogger
 
-internal abstract class OrchestrationFragment : BaseFragment<CheckoutConfig>(),
+internal abstract class OrchestrationFragment<T : CheckoutConfig> : BaseFragment<T>(),
     CountryInputField.OnCountrySelectedListener, TextView.OnEditorActionListener {
 
     /**
@@ -51,6 +55,8 @@ internal abstract class OrchestrationFragment : BaseFragment<CheckoutConfig>(),
 
     private lateinit var binding: SaveCardViewBindingHelper
     private lateinit var validationHelper: ValidationManager
+
+    private var addCardCommand: AddCardCommand? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -69,6 +75,11 @@ internal abstract class OrchestrationFragment : BaseFragment<CheckoutConfig>(),
         super.onViewCreated(view, savedInstanceState)
         initViews()
         initValidationHelper()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        addCardCommand?.cancel()
     }
 
     override fun onCountrySelected(country: Country) {
@@ -289,19 +300,65 @@ internal abstract class OrchestrationFragment : BaseFragment<CheckoutConfig>(),
         }
     }
 
-    private fun handleSaveClicked() {
+    protected fun handleSaveClicked() {
         binding.getStates().mapToAssociatedList()
 
         requireActivity().hideSoftKeyboard()
         val invalidFields = validationHelper.validate()
         sendRequestEvent(invalidFields.map { it.getAnalyticsName() })
         if (invalidFields.isEmpty()) {
-            onActionButtonClick()
-//            saveCard()
+            processUserCard()
         }
     }
 
-    protected abstract fun onActionButtonClick()
+    private fun processUserCard() {
+        setLoading(true)
+        addCardCommand = AddCardCommand(
+            requireContext(),
+            AddCardCommand.Params(
+                config.getBaseUrl(requireContext()),
+                config.routeConfig.path,
+                config.routeConfig,
+                getStates()
+            )
+        )
+        addCardCommand?.execute(::processSaveCardResult)
+    }
+
+    private fun processSaveCardResult(result: AddCardCommand.Result) {
+        if (!shouldHandleAddCard) {
+            return
+        }
+        logSaveCardResponse(result)
+
+        if (result.code == NoInternetConnectionException.CODE) { // TODO: Refactor error handling
+            setLoading(false)
+            showRetrySnackBar(getString(R.string.vgs_checkout_no_network_error)) { handleSaveClicked() }
+            return
+        }
+
+        with(resultHandler) {
+            getResultBundle().putAddCardResponse(result.toCardResponse())
+            if (config is OrchestrationConfig) getResultBundle().putIsPreSavedCard(false)
+        }
+
+        handleSaveCardResult(result)
+    }
+
+    protected abstract fun handleSaveCardResult(result: AddCardCommand.Result)
+
+    private fun logSaveCardResponse(result: AddCardCommand.Result) {
+        //todo: check if we have to send these events with PaymentConfig
+        config.analyticTracker.log(result.toResponseEvent())
+        config.analyticTracker.log(
+            FinInstrumentCrudEvent.create(
+                result.code,
+                result.isSuccessful,
+                result.message,
+                config is VGSCheckoutCustomConfig
+            )
+        )
+    }
 
     private fun sendRequestEvent(invalidFields: List<String> = emptyList()) {
         with(config) {
@@ -317,29 +374,7 @@ internal abstract class OrchestrationFragment : BaseFragment<CheckoutConfig>(),
 
     protected fun getStates() = binding.getStates().mapToAssociatedList()
 
-//    protected fun handleSaveCardResult(result: AddCardCommand.Result) {
-//        if (!shouldHandleAddCard) {
-//            return
-//        }
-//        logResponseEvent(result)
-//        logCreateFinInstrumentEvent(result)
-//        if (result.code == NoInternetConnectionException.CODE) { // TODO: Refactor error handling
-//            setIsLoading(false)
-//            showRetrySnackBar(getString(R.string.vgs_checkout_no_network_error)) { onRetryButtonClick() }
-//            return
-//        }
-//        with(resultHandler) {
-//            getResultBundle().putAddCardResponse(result.toCardResponse())
-//            if (config is VGSCheckoutAddCardConfig) getResultBundle().putIsPreSavedCard(false)
-//            setResult(result.isSuccessful)
-//        }
-//    }
-
-//    private fun logResponseEvent(result: AddCardCommand.Result) {
-//        config.analyticTracker.log(result.toResponseEvent())
-//    }
-
-    protected fun setIsLoading(isLoading: Boolean) {
+    protected fun setLoading(isLoading: Boolean) {
         setViewsEnabled(!isLoading)
         setSaveButtonIsLoading(isLoading)
     }
