@@ -76,7 +76,6 @@ internal class PaymentMethodsAdapter constructor(
         cards.remove(card)
         selectedPosition = 0
         notifyDataSetChanged()
-        listener.onCardRemoved(cards.isEmpty())
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -85,7 +84,6 @@ internal class PaymentMethodsAdapter constructor(
             cards.remove(it)
             selectedPosition = 0
             notifyDataSetChanged()
-            listener.onCardRemoved(cards.isEmpty())
         }
     }
 
@@ -144,7 +142,5 @@ internal class PaymentMethodsAdapter constructor(
     interface OnItemClickListener {
 
         fun onNewCardClick()
-
-        fun onCardRemoved(isEmpty: Boolean)
     }
 }

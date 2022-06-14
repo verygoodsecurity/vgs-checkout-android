@@ -77,11 +77,6 @@ internal abstract class PaymentMethodFragment :
         navigationHandler.navigateToSaveCard()
     }
 
-    override fun onCardRemoved(isEmpty: Boolean) {
-        payButton.isEnabled = !isEmpty
-        requireActivity().invalidateOptionsMenu()
-    }
-
     private fun initView(view: View) {
         initPaymentMethodsList(view)
         initPayButton(view)
@@ -168,10 +163,16 @@ internal abstract class PaymentMethodFragment :
         )
         if (result.isSuccessful) {
             adapter.removeItem(result.id)
+            updateDeleteCardButton()
         } else {
             showSnackBar(getErrorMessage(result.code))
         }
         resultHandler.getResultBundle().putDeleteCardResponse(result.toDeleteCardResponse())
+    }
+
+    private fun updateDeleteCardButton() {
+        payButton.isEnabled = adapter.getItems().isEmpty()
+        requireActivity().invalidateOptionsMenu()
     }
 
     private fun getErrorMessage(code: Int) = if (code == NoInternetConnectionException.CODE) {
