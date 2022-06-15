@@ -50,11 +50,7 @@
         <item name="android:checked">true</item>
     </style>
 
-    <style name="VGSCheckout.SaveButton" parent="Widget.MaterialComponents.Button.UnelevatedButton">
-        <item name="android:paddingTop">@dimen/vgs_checkout_margin_padding_size_medium</item>
-        <item name="android:paddingBottom">@dimen/vgs_checkout_margin_padding_size_medium</item>
-        <item name="android:textAppearance">?attr/textAppearanceBody2</item>
-        <item name="cornerRadius">@dimen/vgs_checkout_margin_padding_size_small</item>
+    <style name="VGSCheckout.PrimaryButton" parent="Widget.MaterialComponents.Button.UnelevatedButton">
         <item name="iconGravity">textStart</item>
         <item name="textAllCaps">false</item>
     </style>

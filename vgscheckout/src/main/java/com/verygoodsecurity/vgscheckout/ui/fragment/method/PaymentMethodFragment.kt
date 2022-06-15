@@ -177,7 +177,7 @@ internal abstract class PaymentMethodFragment :
     }
 
     private fun updateDeleteCardButton() {
-        payButton.isEnabled = adapter.getItems().isEmpty()
+        payButton.isEnabled = adapter.getItems().isNotEmpty()
         requireActivity().invalidateOptionsMenu()
     }
 

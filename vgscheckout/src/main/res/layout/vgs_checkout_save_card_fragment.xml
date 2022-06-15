@@ -226,7 +226,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/mbSaveCard"
-            style="@style/VGSCheckout.SaveButton"
+            style="@style/VGSCheckout.PrimaryButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/vgs_checkout_margin_padding_size_medium"
