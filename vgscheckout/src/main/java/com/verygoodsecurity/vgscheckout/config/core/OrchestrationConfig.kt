@@ -1,6 +1,5 @@
 package com.verygoodsecurity.vgscheckout.config.core
 
-import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgscheckout.analytic.event.JWTValidationEvent
 import com.verygoodsecurity.vgscheckout.config.CheckoutCredentialsValidator
 import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutPaymentRouteConfig
@@ -9,18 +8,17 @@ import com.verygoodsecurity.vgscheckout.model.Card
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
 
 abstract class OrchestrationConfig internal constructor(
-    internal open val accessToken: String,
-    open val tenantId: String,
+    internal val accessToken: String,
+    val tenantId: String,
     override val environment: VGSCheckoutEnvironment,
     override val routeConfig: VGSCheckoutPaymentRouteConfig,
     override val formConfig: CheckoutFormConfig,
     override val isScreenshotsAllowed: Boolean,
-    open val isRemoveCardOptionEnabled: Boolean,
+    val isRemoveCardOptionEnabled: Boolean,
     private val createdFromParcel: Boolean
 ) : CheckoutConfig(tenantId) {
 
     internal var savedCards: List<Card> = emptyList()
-        @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED) internal set
 
     init {
         //TODO: Uncomment token validation

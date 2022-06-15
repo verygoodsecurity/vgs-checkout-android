@@ -32,13 +32,13 @@ import com.verygoodsecurity.vgscheckout.util.extension.getBaseUrl
  */
 @Suppress("MemberVisibilityCanBePrivate", "CanBeParameter")
 class VGSCheckoutAddCardConfig internal constructor(
-    override val accessToken: String,
-    override val tenantId: String,
-    override val environment: VGSCheckoutEnvironment,
-    override val routeConfig: VGSCheckoutPaymentRouteConfig,
-    override val formConfig: VGSCheckoutAddCardFormConfig,
-    override val isScreenshotsAllowed: Boolean,
-    override val isRemoveCardOptionEnabled: Boolean,
+    accessToken: String,
+    tenantId: String,
+    environment: VGSCheckoutEnvironment,
+    routeConfig: VGSCheckoutPaymentRouteConfig,
+    formConfig: VGSCheckoutAddCardFormConfig,
+    isScreenshotsAllowed: Boolean,
+    isRemoveCardOptionEnabled: Boolean,
     createdFromParcel: Boolean
 ) : OrchestrationConfig(
     accessToken,

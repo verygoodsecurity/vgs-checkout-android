@@ -8,10 +8,10 @@ import com.verygoodsecurity.vgscheckout.VGSCheckoutConfigInitCallback
 import com.verygoodsecurity.vgscheckout.analytic.event.FinInstrumentCrudEvent
 import com.verygoodsecurity.vgscheckout.config.core.OrchestrationConfig
 import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutPaymentRouteConfig
-import com.verygoodsecurity.vgscheckout.model.OrderDetails
 import com.verygoodsecurity.vgscheckout.config.payment.VGSCheckoutPaymentMethod
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutPaymentFormConfig
 import com.verygoodsecurity.vgscheckout.model.Card
+import com.verygoodsecurity.vgscheckout.model.OrderDetails
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
 import com.verygoodsecurity.vgscheckout.networking.command.GetOrderDetails
 import com.verygoodsecurity.vgscheckout.networking.command.GetSavedCardsCommand
@@ -20,13 +20,13 @@ import com.verygoodsecurity.vgscheckout.networking.command.core.VGSCheckoutCance
 import com.verygoodsecurity.vgscheckout.util.extension.getBaseUrl
 
 class VGSCheckoutPaymentConfig internal constructor(
-    override val accessToken: String,
-    override val tenantId: String,
-    override val environment: VGSCheckoutEnvironment,
-    override val routeConfig: VGSCheckoutPaymentRouteConfig,
-    override val formConfig: VGSCheckoutPaymentFormConfig,
-    override val isScreenshotsAllowed: Boolean,
-    override val isRemoveCardOptionEnabled: Boolean,
+    accessToken: String,
+    tenantId: String,
+    environment: VGSCheckoutEnvironment,
+    routeConfig: VGSCheckoutPaymentRouteConfig,
+    formConfig: VGSCheckoutPaymentFormConfig,
+    isScreenshotsAllowed: Boolean,
+    isRemoveCardOptionEnabled: Boolean,
     createdFromParcel: Boolean
 ) : OrchestrationConfig(
     accessToken,

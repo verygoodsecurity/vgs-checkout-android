@@ -10,11 +10,6 @@ import com.verygoodsecurity.vgscheckout.util.logger.VGSCheckoutLogger
 sealed class VGSCheckoutPaymentMethod {
 
     /**
-     * Allows user to use only new card(financial instrument).
-     */
-    internal object NewCard : VGSCheckoutPaymentMethod()
-
-    /**
      * Add ability to use previously saved cards or new card.
      *
      * @param cardIds list of cards(financial instruments) ids. Max length [MAX_CARDS_SIZE].
