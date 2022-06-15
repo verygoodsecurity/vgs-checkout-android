@@ -8,7 +8,7 @@ import com.verygoodsecurity.vgscheckout.VGSCheckoutConfigInitCallback
 import com.verygoodsecurity.vgscheckout.analytic.event.FinInstrumentCrudEvent
 import com.verygoodsecurity.vgscheckout.config.core.OrchestrationConfig
 import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutPaymentRouteConfig
-import com.verygoodsecurity.vgscheckout.config.payment.OrderDetails
+import com.verygoodsecurity.vgscheckout.model.OrderDetails
 import com.verygoodsecurity.vgscheckout.config.payment.VGSCheckoutPaymentMethod
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutPaymentFormConfig
 import com.verygoodsecurity.vgscheckout.model.Card

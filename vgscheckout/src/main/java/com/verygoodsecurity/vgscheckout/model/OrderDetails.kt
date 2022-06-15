@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscheckout.config.payment
+package com.verygoodsecurity.vgscheckout.model
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
