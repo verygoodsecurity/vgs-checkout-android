@@ -50,6 +50,8 @@ dependencies {
     implementation "androidx.appcompat:appcompat:$app_compat"
     implementation "androidx.core:core-ktx:$core_ktx"
 
+    implementation 'com.google.android.gms:play-services-wallet:19.1.0'
+
     api "com.google.android.material:material:$material"
     api "com.squareup.okhttp3:okhttp:$okHttp"
 

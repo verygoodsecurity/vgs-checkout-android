@@ -27,7 +27,7 @@ import com.verygoodsecurity.vgscheckout.model.*
 import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutCardResponse
 import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutDeleteCardResponse
 import com.verygoodsecurity.vgscheckout.ui.SaveCardActivity
-import com.verygoodsecurity.vgscheckout.ui.fragment.method.adapter.PaymentMethodsAdapter
+import com.verygoodsecurity.vgscheckout.ui.fragment.method.adapter.CardsAdapter
 import com.verygoodsecurity.vgscheckout.util.AccessTokenHelper
 import com.verygoodsecurity.vgscheckout.util.extension.*
 import com.verygoodsecurity.vgscheckout.util.extension.addCardPaymentInstrument
@@ -105,9 +105,9 @@ class SavedCardManagementTest {
 
         ActivityScenario.launch<SaveCardActivity>(intent).use {
             // Act
-            onView(withId(R.id.rvPaymentMethods))
+            onView(withId(R.id.rvCards))
                 .perform(
-                    RecyclerViewActions.actionOnItemAtPosition<PaymentMethodsAdapter.CardViewHolder>(
+                    RecyclerViewActions.actionOnItemAtPosition<CardsAdapter.CardViewHolder>(
                         amexCardPosition,
                         click()
                     )
@@ -194,7 +194,7 @@ class SavedCardManagementTest {
         ActivityScenario.launch<SaveCardActivity>(wrongSavedCardIntent).use {
             waitFor(500)
             // Act
-            onView(withId(R.id.rvPaymentMethods)).check(doesNotExist())
+            onView(withId(R.id.rvCards)).check(doesNotExist())
         }
     }
 
@@ -216,9 +216,9 @@ class SavedCardManagementTest {
         ActivityScenario.launch<SaveCardActivity>(intent).use {
             waitFor(500)
             // Act
-            onView(withId(R.id.rvPaymentMethods))
+            onView(withId(R.id.rvCards))
                 .perform(
-                    RecyclerViewActions.actionOnItemAtPosition<PaymentMethodsAdapter.CardViewHolder>(
+                    RecyclerViewActions.actionOnItemAtPosition<CardsAdapter.CardViewHolder>(
                         secondCardPosition,
                         click()
                     )
@@ -229,9 +229,9 @@ class SavedCardManagementTest {
             )
             waitFor(5000)
 
-            onView(withId(R.id.rvPaymentMethods))
+            onView(withId(R.id.rvCards))
                 .perform(
-                    RecyclerViewActions.actionOnItemAtPosition<PaymentMethodsAdapter.CardViewHolder>(
+                    RecyclerViewActions.actionOnItemAtPosition<CardsAdapter.CardViewHolder>(
                         secondCardPosition,
                         click()
                     )

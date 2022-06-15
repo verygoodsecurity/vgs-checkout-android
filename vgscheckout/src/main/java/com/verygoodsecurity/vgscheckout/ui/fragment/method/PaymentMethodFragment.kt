@@ -7,6 +7,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -17,26 +18,31 @@ import com.verygoodsecurity.vgscheckout.exception.internal.NoInternetConnectionE
 import com.verygoodsecurity.vgscheckout.model.Card
 import com.verygoodsecurity.vgscheckout.networking.command.DeleteCreditCardCommand
 import com.verygoodsecurity.vgscheckout.ui.fragment.core.BaseFragment
-import com.verygoodsecurity.vgscheckout.ui.fragment.method.adapter.PaymentMethodsAdapter
+import com.verygoodsecurity.vgscheckout.ui.fragment.method.adapter.CardsAdapter
 import com.verygoodsecurity.vgscheckout.ui.fragment.method.decorator.MarginItemDecoration
+import com.verygoodsecurity.vgscheckout.util.extension.*
 import com.verygoodsecurity.vgscheckout.util.extension.getBaseUrl
 import com.verygoodsecurity.vgscheckout.util.extension.getDrawableCompat
 import com.verygoodsecurity.vgscheckout.util.extension.setVisible
 import com.verygoodsecurity.vgscheckout.util.extension.toDeleteCardResponse
+import com.verygoodsecurity.vgscheckout.util.gpay.PaymentUtils
 import com.verygoodsecurity.vgscheckout.util.logger.VGSCheckoutLogger
 
 internal abstract class PaymentMethodFragment :
     BaseFragment<OrchestrationConfig>(R.layout.vgs_checkout_select_method_fragment),
-    PaymentMethodsAdapter.OnItemClickListener {
+    CardsAdapter.OnItemClickListener {
 
-    private lateinit var paymentMethodsRv: RecyclerView
-    private lateinit var adapter: PaymentMethodsAdapter
+    private lateinit var llWallets: LinearLayoutCompat
+    private lateinit var cardsRv: RecyclerView
+    private lateinit var adapter: CardsAdapter
     private lateinit var payButton: MaterialButton
 
     private var isLoading: Boolean = false
 
     private var confirmationDialog: AlertDialog? = null
     private var deleteCardCommand: DeleteCreditCardCommand? = null
+
+    private val paymentUtils: PaymentUtils by lazy { PaymentUtils(requireContext()) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -81,7 +87,8 @@ internal abstract class PaymentMethodFragment :
     }
 
     private fun initView(view: View) {
-        initPaymentMethodsList(view)
+        initWallets(view)
+        initCardsList(view)
         initPayButton(view)
     }
 
@@ -89,16 +96,32 @@ internal abstract class PaymentMethodFragment :
         toolbarHandler.setTitle(getString(R.string.vgs_checkout_title))
     }
 
-    private fun initPaymentMethodsList(view: View) {
-        paymentMethodsRv = view.findViewById(R.id.rvPaymentMethods)
-        adapter = PaymentMethodsAdapter(this)
-        paymentMethodsRv.itemAnimator = null
-        paymentMethodsRv.adapter = adapter
+    private fun initWallets(view: View) {
+        llWallets = view.findViewById(R.id.llWallets)
+        // TODO: Check if google enabled
+        initGooglePay()
+    }
+
+    private fun initGooglePay() {
+        paymentUtils.isReadyToPay {
+            if (it) {
+                llWallets.visible()
+            } else {
+                // TODO: Print warning log
+            }
+        }
+    }
+
+    private fun initCardsList(view: View) {
+        cardsRv = view.findViewById(R.id.rvCards)
+        adapter = CardsAdapter(this)
+        cardsRv.itemAnimator = null
+        cardsRv.adapter = adapter
         val paddingSmall =
             resources.getDimensionPixelSize(R.dimen.vgs_checkout_margin_padding_size_small)
         val paddingMedium =
             resources.getDimensionPixelSize(R.dimen.vgs_checkout_margin_padding_size_medium)
-        paymentMethodsRv.addItemDecoration(
+        cardsRv.addItemDecoration(
             MarginItemDecoration(
                 paddingSmall,
                 paddingMedium,

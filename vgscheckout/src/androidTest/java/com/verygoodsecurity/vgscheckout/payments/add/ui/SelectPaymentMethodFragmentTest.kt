@@ -31,7 +31,7 @@ import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
 import com.verygoodsecurity.vgscheckout.ui.SaveCardActivity
 import com.verygoodsecurity.vgscheckout.ui.core.BaseCheckoutActivity
 import com.verygoodsecurity.vgscheckout.ui.fragment.method.SelectPaymentMethodFragment
-import com.verygoodsecurity.vgscheckout.ui.fragment.method.adapter.PaymentMethodsAdapter
+import com.verygoodsecurity.vgscheckout.ui.fragment.method.adapter.CardsAdapter
 import com.verygoodsecurity.vgscheckout.ui.fragment.save.SaveCardFragment
 import com.verygoodsecurity.vgscheckout.util.ActionHelper.doAction
 import com.verygoodsecurity.vgscheckout.util.extension.safeResult
@@ -63,7 +63,7 @@ class SelectPaymentMethodFragmentTest {
         launch<SaveCardActivity>(intent).use { scenario ->
             checkFragmentCorrect<SelectPaymentMethodFragment>(scenario)
             //Assert
-            onView(withId(R.id.rvPaymentMethods)).perform(doAction<RecyclerView> {
+            onView(withId(R.id.rvCards)).perform(doAction<RecyclerView> {
                 assertEquals(cards.size.inc(), it.adapter?.itemCount)
             })
         }
@@ -101,8 +101,8 @@ class SelectPaymentMethodFragmentTest {
         // Act
         launch<SaveCardActivity>(intent).use { scenario ->
             checkFragmentCorrect<SelectPaymentMethodFragment>(scenario)
-            onView(withId(R.id.rvPaymentMethods)).perform(doAction<RecyclerView> {
-                val adapter = (it.adapter as? PaymentMethodsAdapter)
+            onView(withId(R.id.rvCards)).perform(doAction<RecyclerView> {
+                val adapter = (it.adapter as? CardsAdapter)
                 cards.forEach { card -> adapter?.removeItem(card) }
             })
             //Assert
@@ -130,8 +130,8 @@ class SelectPaymentMethodFragmentTest {
         // Act
         launch<SaveCardActivity>(intent).use { scenario ->
             checkFragmentCorrect<SelectPaymentMethodFragment>(scenario)
-            onView(withId(R.id.rvPaymentMethods)).perform(doAction<RecyclerView> {
-                val adapter = (it.adapter as? PaymentMethodsAdapter)
+            onView(withId(R.id.rvCards)).perform(doAction<RecyclerView> {
+                val adapter = (it.adapter as? CardsAdapter)
                 cards.forEach { card -> adapter?.removeItem(card) }
             })
             //Assert

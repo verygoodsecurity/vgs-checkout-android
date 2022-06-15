@@ -13,7 +13,7 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.model.VGS
 import com.verygoodsecurity.vgscheckout.model.Card
 
 // TODO: Switch to ListAdapter to add delete animation
-internal class PaymentMethodsAdapter constructor(
+internal class CardsAdapter constructor(
     private val listener: OnItemClickListener
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
