@@ -7,17 +7,15 @@ import androidx.annotation.CallSuper
 import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AppCompatActivity
 import com.verygoodsecurity.vgscheckout.R
-import com.verygoodsecurity.vgscheckout.analytic.event.PaymentMethodSelectedEvent
 import com.verygoodsecurity.vgscheckout.analytic.event.CancelEvent
+import com.verygoodsecurity.vgscheckout.analytic.event.PaymentMethodSelectedEvent
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResultBundle
-import com.verygoodsecurity.vgscheckout.ui.fragment.core.BaseFragment
-import com.verygoodsecurity.vgscheckout.ui.fragment.method.SelectPaymentMethodFragment
-import com.verygoodsecurity.vgscheckout.ui.fragment.save.SaveCardFragment
+import com.verygoodsecurity.vgscheckout.ui.fragment.core.ActivityResultHandler
 import com.verygoodsecurity.vgscheckout.util.extension.setScreenshotsAllowed
 import com.verygoodsecurity.vgscheckout.util.extension.toCheckoutResult
 
@@ -27,6 +25,10 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
     protected val config: C by lazy { CheckoutResultContract.Args.fromIntent<C>(intent).config }
 
     private var resultBundle = VGSCheckoutResultBundle()
+
+    private val activityResultHandler: ActivityResultHandler? by lazy {
+        supportFragmentManager.findFragmentByTag(FRAGMENT_TAG) as? ActivityResultHandler
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,6 +58,12 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
+    }
+
+    @Suppress("DEPRECATION", "OVERRIDE_DEPRECATION")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        activityResultHandler?.onResult(requestCode, resultCode, data)
     }
 
     override fun setTitle(title: String) {

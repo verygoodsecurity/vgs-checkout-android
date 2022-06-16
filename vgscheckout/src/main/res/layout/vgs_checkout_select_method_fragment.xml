@@ -104,10 +104,10 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/mbPresent" />
+        app:layout_constraintTop_toTopOf="@id/mbPrimary" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/mbPresent"
+        android:id="@+id/mbPrimary"
         style="@style/VGSCheckout.PrimaryButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

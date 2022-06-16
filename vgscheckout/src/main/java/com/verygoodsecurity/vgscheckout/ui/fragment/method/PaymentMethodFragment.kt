@@ -7,7 +7,6 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -21,33 +20,25 @@ import com.verygoodsecurity.vgscheckout.ui.fragment.core.BaseFragment
 import com.verygoodsecurity.vgscheckout.ui.fragment.method.adapter.CardsAdapter
 import com.verygoodsecurity.vgscheckout.ui.fragment.method.decorator.MarginItemDecoration
 import com.verygoodsecurity.vgscheckout.util.extension.*
-import com.verygoodsecurity.vgscheckout.util.extension.getBaseUrl
-import com.verygoodsecurity.vgscheckout.util.extension.getDrawableCompat
-import com.verygoodsecurity.vgscheckout.util.extension.setVisible
-import com.verygoodsecurity.vgscheckout.util.extension.toDeleteCardResponse
-import com.verygoodsecurity.vgscheckout.util.gpay.PaymentUtils
 import com.verygoodsecurity.vgscheckout.util.logger.VGSCheckoutLogger
 
 internal abstract class PaymentMethodFragment<T : OrchestrationConfig> :
     BaseFragment<T>(R.layout.vgs_checkout_select_method_fragment),
     CardsAdapter.OnItemClickListener {
 
-    private lateinit var llWallets: LinearLayoutCompat
-    private lateinit var cardsRv: RecyclerView
+    private val cardsRv: RecyclerView by lazy { requireView().findViewById(R.id.rvCards) }
+    private val mbPrimaryButton: MaterialButton by lazy { requireView().findViewById(R.id.mbPrimary) }
     private lateinit var adapter: CardsAdapter
-    private lateinit var payButton: MaterialButton
 
     private var isLoading: Boolean = false
 
     private var confirmationDialog: AlertDialog? = null
     private var deleteCardCommand: DeleteCreditCardCommand? = null
 
-    private val paymentUtils: PaymentUtils by lazy { PaymentUtils(requireContext()) }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(config.isRemoveCardOptionEnabled)
-        initView(view)
+        initView()
         initToolbar()
     }
 
@@ -86,34 +77,16 @@ internal abstract class PaymentMethodFragment<T : OrchestrationConfig> :
         navigationHandler.navigateToSaveCard()
     }
 
-    private fun initView(view: View) {
-        initWallets(view)
-        initCardsList(view)
-        initPayButton(view)
+    protected open fun initView() {
+        initCardsList()
+        initPayButton()
     }
 
     private fun initToolbar() {
         toolbarHandler.setTitle(getString(R.string.vgs_checkout_title))
     }
 
-    private fun initWallets(view: View) {
-        llWallets = view.findViewById(R.id.llWallets)
-        // TODO: Check if google enabled
-        initGooglePay()
-    }
-
-    private fun initGooglePay() {
-        paymentUtils.isReadyToPay {
-            if (it) {
-                llWallets.visible()
-            } else {
-                // TODO: Print warning log
-            }
-        }
-    }
-
-    private fun initCardsList(view: View) {
-        cardsRv = view.findViewById(R.id.rvCards)
+    private fun initCardsList() {
         adapter = CardsAdapter(this)
         cardsRv.itemAnimator = null
         cardsRv.adapter = adapter
@@ -131,10 +104,9 @@ internal abstract class PaymentMethodFragment<T : OrchestrationConfig> :
         )
     }
 
-    private fun initPayButton(view: View) {
-        payButton = view.findViewById(R.id.mbPresent)
-        payButton.text = title
-        payButton.setOnClickListener {
+    private fun initPayButton() {
+        mbPrimaryButton.text = title
+        mbPrimaryButton.setOnClickListener {
             processUserChoice()
         }
     }
@@ -209,7 +181,7 @@ internal abstract class PaymentMethodFragment<T : OrchestrationConfig> :
     }
 
     private fun updateDeleteCardButton() {
-        payButton.isEnabled = adapter.getItems().isNotEmpty()
+        mbPrimaryButton.isEnabled = adapter.getItems().isNotEmpty()
         requireActivity().invalidateOptionsMenu()
     }
 
@@ -230,14 +202,15 @@ internal abstract class PaymentMethodFragment<T : OrchestrationConfig> :
     }
 
     private fun setSaveButtonIsLoading(isLoading: Boolean) {
-        payButton.isClickable = !isLoading
+        mbPrimaryButton.isClickable = !isLoading
         if (isLoading) {
-            payButton.text = getString(R.string.vgs_checkout_button_processing_title)
-            payButton.icon = getDrawableCompat(R.drawable.vgs_checkout_ic_loading_animated_white_16)
-            (payButton.icon as? Animatable)?.start()
+            mbPrimaryButton.text = getString(R.string.vgs_checkout_button_processing_title)
+            mbPrimaryButton.icon =
+                getDrawableCompat(R.drawable.vgs_checkout_ic_loading_animated_white_16)
+            (mbPrimaryButton.icon as? Animatable)?.start()
         } else {
-            payButton.text = title
-            payButton.icon = null
+            mbPrimaryButton.text = title
+            mbPrimaryButton.icon = null
         }
     }
 
