@@ -42,17 +42,19 @@ internal class GetOrderDetails constructor(
             return null
         }
         return try {
-            val data = JSONObject(response.body).getJSONObject(JSON_KEY_DATA)
-            OrderDetails(
-                data.getInt(JSON_KEY_AMOUNT),
-                data.getString(JSON_KEY_CURRENCY),
-                OrderDetails.Raw(
-                    response.isSuccessful,
-                    response.code,
-                    response.body,
-                    response.message
+            JSONObject(response.body).getJSONObject(JSON_KEY_DATA).run {
+                OrderDetails(
+                    getString(JSON_KEY_ID),
+                    getInt(JSON_KEY_AMOUNT),
+                    getString(JSON_KEY_CURRENCY),
+                    OrderDetails.Raw(
+                        response.isSuccessful,
+                        response.code,
+                        response.body,
+                        response.message
+                    )
                 )
-            )
+            }
         } catch (e: Exception) {
             null
         }
@@ -70,6 +72,7 @@ internal class GetOrderDetails constructor(
         private const val PATH = "orders"
 
         private const val JSON_KEY_DATA = "data"
+        private const val JSON_KEY_ID = "id"
         private const val JSON_KEY_AMOUNT = "amount"
         private const val JSON_KEY_CURRENCY = "currency"
     }

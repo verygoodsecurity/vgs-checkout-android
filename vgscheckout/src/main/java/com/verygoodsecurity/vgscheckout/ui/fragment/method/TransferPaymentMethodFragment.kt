@@ -1,22 +1,43 @@
 package com.verygoodsecurity.vgscheckout.ui.fragment.method
 
-import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
+import com.verygoodsecurity.vgscheckout.R
+import com.verygoodsecurity.vgscheckout.config.VGSCheckoutPaymentConfig
+import com.verygoodsecurity.vgscheckout.exception.internal.NoInternetConnectionException
 import com.verygoodsecurity.vgscheckout.model.Card
+import com.verygoodsecurity.vgscheckout.networking.command.TransferCommand
+import com.verygoodsecurity.vgscheckout.util.extension.getBaseUrl
+import com.verygoodsecurity.vgscheckout.util.extension.toTransferResponse
 
-internal class TransferPaymentMethodFragment : PaymentMethodFragment() {
+internal class TransferPaymentMethodFragment : PaymentMethodFragment<VGSCheckoutPaymentConfig>() {
 
-    override fun onPayButtonClick(card: Card) {
-        transfer()
+    override fun processSelectedCard(card: Card) {
+        setLoading(true)
+
+        TransferCommand(
+            requireContext(),
+            TransferCommand.Params(
+                config.getBaseUrl(requireContext()),
+                config.orderDetails?.id ?: "",
+                card.finId,
+                config.accessToken
+            )
+        ).execute(::handleTransferResult)
     }
 
-    private fun transfer() {
-        //todo make a transfer
-    }
+    private fun handleTransferResult(result: TransferCommand.Result) {
+        //todo add analytic
+        setLoading(false)
 
-    private fun publishResults() {
-        //todo return results with setResult(_)
+        if (result.code == NoInternetConnectionException.CODE) { // TODO: Refactor error handling
+            setLoading(false)
+            showRetrySnackBar(getString(R.string.vgs_checkout_no_network_error)) { processUserChoice() }
+            return
+        }
+
         with(resultHandler) {
-            if (config is VGSCheckoutAddCardConfig) getResultBundle().putIsPreSavedCard(false)
+            getResultBundle().putTransferResponse(result.toTransferResponse())
+            getResultBundle().putIsPreSavedCard(true)
+            setResult(true)
         }
     }
 }

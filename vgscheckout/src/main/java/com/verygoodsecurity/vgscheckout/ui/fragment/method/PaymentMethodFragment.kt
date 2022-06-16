@@ -28,8 +28,8 @@ import com.verygoodsecurity.vgscheckout.util.extension.toDeleteCardResponse
 import com.verygoodsecurity.vgscheckout.util.gpay.PaymentUtils
 import com.verygoodsecurity.vgscheckout.util.logger.VGSCheckoutLogger
 
-internal abstract class PaymentMethodFragment :
-    BaseFragment<OrchestrationConfig>(R.layout.vgs_checkout_select_method_fragment),
+internal abstract class PaymentMethodFragment<T : OrchestrationConfig> :
+    BaseFragment<T>(R.layout.vgs_checkout_select_method_fragment),
     CardsAdapter.OnItemClickListener {
 
     private lateinit var llWallets: LinearLayoutCompat
@@ -135,17 +135,26 @@ internal abstract class PaymentMethodFragment :
         payButton = view.findViewById(R.id.mbPresent)
         payButton.text = title
         payButton.setOnClickListener {
-            adapter.getSelectedCard().let { card ->
-                if (card == null) {
-                    VGSCheckoutLogger.warn(message = "Selected card is null.")
-                    return@let
-                }
-                onPayButtonClick(card)
-            }
+            processUserChoice()
         }
     }
 
-    protected abstract fun onPayButtonClick(card: Card)
+    protected fun processUserChoice() {
+        val card = adapter.getSelectedCard()
+        if (card == null) {
+            VGSCheckoutLogger.warn(message = "Selected card is null.")
+            return
+        }
+
+        with(resultHandler) {
+            getResultBundle().putAddCardResponse(card.toCardResponse())
+            getResultBundle().putIsPreSavedCard(true)
+        }
+
+        processSelectedCard(card)
+    }
+
+    protected abstract fun processSelectedCard(card: Card)
 
     private fun handleDeleteCardClicked() {
         if (confirmationDialog != null) {
@@ -210,7 +219,7 @@ internal abstract class PaymentMethodFragment :
         getString(R.string.vgs_checkout_general_error)
     }
 
-    private fun setLoading(isLoading: Boolean) {
+    protected fun setLoading(isLoading: Boolean) {
         this.isLoading = isLoading
         setViewsEnabled(!isLoading)
         setSaveButtonIsLoading(isLoading)
