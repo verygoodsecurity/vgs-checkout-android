@@ -8,7 +8,10 @@ import com.verygoodsecurity.vgscheckout.model.OrderDetails
 import org.json.JSONArray
 import org.json.JSONObject
 
-internal class Manager constructor(context: Context) {
+internal class Manager constructor(
+    context: Context,
+    private val merchantId: String
+) {
 
     private val client = Wallet.getPaymentsClient(
         context,
@@ -35,7 +38,7 @@ internal class Manager constructor(context: Context) {
             put("type", "PAYMENT_GATEWAY")
             put("parameters", JSONObject().apply {
                 put("gateway", "verygoodsecurity")
-                put("gatewayMerchantId", "ACgBdfjAGm6EGqvvSyznrhdL")
+                put("gatewayMerchantId", merchantId)
             })
         })
     }
@@ -64,7 +67,11 @@ internal class Manager constructor(context: Context) {
             put("merchantInfo", JSONObject().put("merchantName", "Example Merchant"))
         }
         val paymentDataRequest = PaymentDataRequest.fromJson(test.toString())
-        AutoResolveHelper.resolveTask(client.loadPaymentData(paymentDataRequest), activity, LOAD_PAYMENT_DATA_REQUEST_CODE)
+        AutoResolveHelper.resolveTask(
+            client.loadPaymentData(paymentDataRequest),
+            activity,
+            LOAD_PAYMENT_DATA_REQUEST_CODE
+        )
     }
 
     private fun generateBaseCardPaymentMethod() = JSONObject().apply {

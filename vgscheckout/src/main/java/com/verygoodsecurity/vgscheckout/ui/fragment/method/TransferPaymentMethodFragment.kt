@@ -13,10 +13,12 @@ import com.verygoodsecurity.vgscheckout.model.Card
 import com.verygoodsecurity.vgscheckout.networking.command.TransferCommand
 import com.verygoodsecurity.vgscheckout.ui.fragment.core.ActivityResultHandler
 import com.verygoodsecurity.vgscheckout.util.extension.getBaseUrl
+import com.verygoodsecurity.vgscheckout.util.extension.toStringList
 import com.verygoodsecurity.vgscheckout.util.extension.toTransferResponse
 import com.verygoodsecurity.vgscheckout.util.extension.visible
 import com.verygoodsecurity.vgscheckout.util.googlepay.Manager
 import com.verygoodsecurity.vgscheckout.util.logger.VGSCheckoutLogger
+import org.json.JSONObject
 
 internal class TransferPaymentMethodFragment : PaymentMethodFragment<VGSCheckoutPaymentConfig>(),
     ActivityResultHandler {
@@ -24,7 +26,12 @@ internal class TransferPaymentMethodFragment : PaymentMethodFragment<VGSCheckout
     private val llWallets: LinearLayoutCompat by lazy { requireView().findViewById(R.id.llWallets) }
     private val googlePayButton: RelativeLayout by lazy { requireView().findViewById(R.id.rlGooglePay) }
 
-    private val googlePayManager: Manager by lazy { Manager(requireContext()) }
+    private val googlePayManager: Manager by lazy {
+        Manager(
+            requireContext(),
+            "GATEWAY-MERCHANT-ID"
+        )
+    }
 
     override fun initView() {
         super.initView()
@@ -52,7 +59,60 @@ internal class TransferPaymentMethodFragment : PaymentMethodFragment<VGSCheckout
                     Activity.RESULT_OK ->
                         data?.let { intent ->
                             PaymentData.getFromIntent(intent)?.let {
-                                VGSCheckoutLogger.debug(message = "Google pay flow success, data = ${it.toJson()}")
+
+                                // Root fields
+                                val paymentData = JSONObject(it.toJson())
+                                val paymentMethodDataJson =
+                                    paymentData.getJSONObject("paymentMethodData")
+                                val tokenizationDataJson =
+                                    paymentMethodDataJson.getJSONObject("tokenizationData")
+
+                                // Token
+                                val tokenJson = JSONObject(tokenizationDataJson.getString("token"))
+
+                                val signature = tokenJson.getString("signature")
+
+                                val intermediateSigningKeyJson =
+                                    tokenJson.getJSONObject("intermediateSigningKey")
+
+                                val signedKeyJson =
+                                    JSONObject(intermediateSigningKeyJson.getString("signedKey"))
+                                val keyValue = signedKeyJson.getString("keyValue")
+                                val keyExpiration = signedKeyJson.getString("keyExpiration")
+
+                                val signatures =
+                                    intermediateSigningKeyJson.getJSONArray("signatures")
+                                        .toStringList() ?: emptyList()
+
+                                val protocolVersion = tokenJson.getString("protocolVersion")
+
+                                val signedMessageJson =
+                                    JSONObject(tokenJson.getString("signedMessage"))
+                                val encryptedMessage =
+                                    signedMessageJson.getString("encryptedMessage")
+                                val ephemeralPublicKey =
+                                    signedMessageJson.getString("ephemeralPublicKey")
+                                val tag = signedMessageJson.getString("tag")
+
+                                val token = Token(
+                                    signature,
+                                    Token.IntermediateSigningKey(
+                                        Token.IntermediateSigningKey.SignedKey(
+                                            keyValue,
+                                            keyExpiration
+                                        ),
+                                        signatures
+                                    ),
+                                    protocolVersion,
+                                    Token.SignedMessage(
+                                        encryptedMessage,
+                                        ephemeralPublicKey,
+                                        tag
+                                    )
+                                )
+
+                                VGSCheckoutLogger.debug(message = "token = $token")
+                                // TODO: Use token to create fin instrument
                             }
                         }
                     Activity.RESULT_CANCELED -> VGSCheckoutLogger.debug(message = "Google pay flow canceled.")
@@ -106,4 +166,29 @@ internal class TransferPaymentMethodFragment : PaymentMethodFragment<VGSCheckout
             googlePayManager.loadPaymentData(order, requireActivity())
         }
     }
+}
+
+data class Token constructor(
+    val signature: String,
+    val intermediateSigningKey: IntermediateSigningKey,
+    val protocolVersion: String,
+    val signedMessage: SignedMessage,
+) {
+
+    data class IntermediateSigningKey constructor(
+        val signedKey: SignedKey,
+        val signatures: List<String>
+    ) {
+
+        data class SignedKey constructor(
+            val keyValue: String,
+            val keyExpiration: String
+        )
+    }
+
+    data class SignedMessage constructor(
+        val encryptedMessage: String,
+        val ephemeralPublicKey: String,
+        val tag: String
+    )
 }
