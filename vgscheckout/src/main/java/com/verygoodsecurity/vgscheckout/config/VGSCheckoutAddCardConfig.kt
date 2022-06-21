@@ -47,6 +47,7 @@ class VGSCheckoutAddCardConfig internal constructor(
     formConfig,
     isScreenshotsAllowed,
     isRemoveCardOptionEnabled,
+    false,
     createdFromParcel
 ) {
 

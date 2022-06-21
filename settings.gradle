@@ -1,3 +1,4 @@
 rootProject.name = "VGS Checkout Demo"
 include ':demo'
 include ':vgscheckout'
+include ':vgscheckout-google-pay'

@@ -47,6 +47,8 @@ android {
 }
 
 dependencies {
+    compileOnly project(':vgscheckout-google-pay')
+
     implementation "androidx.appcompat:appcompat:$app_compat"
     implementation "androidx.core:core-ktx:$core_ktx"
 

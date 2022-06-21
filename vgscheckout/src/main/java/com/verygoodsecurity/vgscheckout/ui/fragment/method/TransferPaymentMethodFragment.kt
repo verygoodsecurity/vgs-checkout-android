@@ -1,11 +1,9 @@
 package com.verygoodsecurity.vgscheckout.ui.fragment.method
 
-import android.app.Activity
 import android.content.Intent
+import android.view.ViewStub
 import android.widget.RelativeLayout
 import androidx.appcompat.widget.LinearLayoutCompat
-import com.google.android.gms.wallet.AutoResolveHelper
-import com.google.android.gms.wallet.PaymentData
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutPaymentConfig
 import com.verygoodsecurity.vgscheckout.exception.internal.NoInternetConnectionException
@@ -13,12 +11,13 @@ import com.verygoodsecurity.vgscheckout.model.Card
 import com.verygoodsecurity.vgscheckout.networking.command.TransferCommand
 import com.verygoodsecurity.vgscheckout.ui.fragment.core.ActivityResultHandler
 import com.verygoodsecurity.vgscheckout.util.extension.getBaseUrl
-import com.verygoodsecurity.vgscheckout.util.extension.toStringList
 import com.verygoodsecurity.vgscheckout.util.extension.toTransferResponse
 import com.verygoodsecurity.vgscheckout.util.extension.visible
-import com.verygoodsecurity.vgscheckout.util.googlepay.Manager
 import com.verygoodsecurity.vgscheckout.util.logger.VGSCheckoutLogger
-import org.json.JSONObject
+import com.verygoodsecurity.vgscheckout_google_pay.VGSCheckoutGooglePayException
+import com.verygoodsecurity.vgscheckout_google_pay.VGSCheckoutGooglePayListener
+import com.verygoodsecurity.vgscheckout_google_pay.VGSCheckoutGooglePayManager
+import com.verygoodsecurity.vgscheckout_google_pay.VGSCheckoutGooglePayToken
 
 internal class TransferPaymentMethodFragment : PaymentMethodFragment<VGSCheckoutPaymentConfig>(),
     ActivityResultHandler {
@@ -26,8 +25,8 @@ internal class TransferPaymentMethodFragment : PaymentMethodFragment<VGSCheckout
     private val llWallets: LinearLayoutCompat by lazy { requireView().findViewById(R.id.llWallets) }
     private val googlePayButton: RelativeLayout by lazy { requireView().findViewById(R.id.rlGooglePay) }
 
-    private val googlePayManager: Manager by lazy {
-        Manager(
+    private val googlePayManager: VGSCheckoutGooglePayManager by lazy {
+        VGSCheckoutGooglePayManager(
             requireContext(),
             "GATEWAY-MERCHANT-ID"
         )
@@ -54,74 +53,26 @@ internal class TransferPaymentMethodFragment : PaymentMethodFragment<VGSCheckout
 
     override fun onResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when (requestCode) {
-            Manager.LOAD_PAYMENT_DATA_REQUEST_CODE -> {
-                when (resultCode) {
-                    Activity.RESULT_OK ->
-                        data?.let { intent ->
-                            PaymentData.getFromIntent(intent)?.let {
+            VGSCheckoutGooglePayManager.LOAD_PAYMENT_DATA_REQUEST_CODE -> {
+                googlePayManager.onLoadPaymentDataResult(
+                    requestCode,
+                    resultCode,
+                    data,
+                    object : VGSCheckoutGooglePayListener {
 
-                                // Root fields
-                                val paymentData = JSONObject(it.toJson())
-                                val paymentMethodDataJson =
-                                    paymentData.getJSONObject("paymentMethodData")
-                                val tokenizationDataJson =
-                                    paymentMethodDataJson.getJSONObject("tokenizationData")
-
-                                // Token
-                                val tokenJson = JSONObject(tokenizationDataJson.getString("token"))
-
-                                val signature = tokenJson.getString("signature")
-
-                                val intermediateSigningKeyJson =
-                                    tokenJson.getJSONObject("intermediateSigningKey")
-
-                                val signedKeyJson =
-                                    JSONObject(intermediateSigningKeyJson.getString("signedKey"))
-                                val keyValue = signedKeyJson.getString("keyValue")
-                                val keyExpiration = signedKeyJson.getString("keyExpiration")
-
-                                val signatures =
-                                    intermediateSigningKeyJson.getJSONArray("signatures")
-                                        .toStringList() ?: emptyList()
-
-                                val protocolVersion = tokenJson.getString("protocolVersion")
-
-                                val signedMessageJson =
-                                    JSONObject(tokenJson.getString("signedMessage"))
-                                val encryptedMessage =
-                                    signedMessageJson.getString("encryptedMessage")
-                                val ephemeralPublicKey =
-                                    signedMessageJson.getString("ephemeralPublicKey")
-                                val tag = signedMessageJson.getString("tag")
-
-                                val token = Token(
-                                    signature,
-                                    Token.IntermediateSigningKey(
-                                        Token.IntermediateSigningKey.SignedKey(
-                                            keyValue,
-                                            keyExpiration
-                                        ),
-                                        signatures
-                                    ),
-                                    protocolVersion,
-                                    Token.SignedMessage(
-                                        encryptedMessage,
-                                        ephemeralPublicKey,
-                                        tag
-                                    )
-                                )
-
-                                VGSCheckoutLogger.debug(message = "token = $token")
-                                // TODO: Use token to create fin instrument
-                            }
+                        override fun onSuccess(token: VGSCheckoutGooglePayToken) {
+                            VGSCheckoutLogger.debug(message = "GPay token = $token.")
+                            // TODO: Use token to create fin instrument
                         }
-                    Activity.RESULT_CANCELED -> VGSCheckoutLogger.debug(message = "Google pay flow canceled.")
-                    AutoResolveHelper.RESULT_ERROR -> {
-                        AutoResolveHelper.getStatusFromIntent(data)?.let {
-                            VGSCheckoutLogger.warn(message = "Google pay flow failed, status = $it")
+
+                        override fun onError(e: VGSCheckoutGooglePayException) {
+                            VGSCheckoutLogger.debug(message = "GPay error = ${e.localizedMessage}.")
                         }
-                    }
-                }
+
+                        override fun onCancel() {
+                            VGSCheckoutLogger.debug(message = "GPay canceled by user.")
+                        }
+                    })
                 googlePayButton.isClickable = true
             }
         }
@@ -145,6 +96,9 @@ internal class TransferPaymentMethodFragment : PaymentMethodFragment<VGSCheckout
     }
 
     private fun initWallets() {
+        if (!config.isGooglePayEnabled) {
+            return
+        }
         googlePayManager.isReadyToPay { isReady, error ->
             if (isReady) {
                 llWallets.visible()
@@ -156,6 +110,10 @@ internal class TransferPaymentMethodFragment : PaymentMethodFragment<VGSCheckout
     }
 
     private fun initGooglePayButton() {
+        val googlePayViewStub = requireView().findViewById<ViewStub>(R.id.vsGooglePay)
+        googlePayViewStub.layoutResource = R.layout.vgs_checkout_google_pay_button
+        googlePayViewStub.inflate()
+
         googlePayButton.setOnClickListener {
             val order = config.orderDetails
             if (order == null) {
@@ -163,32 +121,7 @@ internal class TransferPaymentMethodFragment : PaymentMethodFragment<VGSCheckout
                 return@setOnClickListener
             }
             googlePayButton.isClickable = false
-            googlePayManager.loadPaymentData(order, requireActivity())
+            googlePayManager.loadPaymentData(order.price, order.currency, requireActivity())
         }
     }
-}
-
-data class Token constructor(
-    val signature: String,
-    val intermediateSigningKey: IntermediateSigningKey,
-    val protocolVersion: String,
-    val signedMessage: SignedMessage,
-) {
-
-    data class IntermediateSigningKey constructor(
-        val signedKey: SignedKey,
-        val signatures: List<String>
-    ) {
-
-        data class SignedKey constructor(
-            val keyValue: String,
-            val keyExpiration: String
-        )
-    }
-
-    data class SignedMessage constructor(
-        val encryptedMessage: String,
-        val ephemeralPublicKey: String,
-        val tag: String
-    )
 }

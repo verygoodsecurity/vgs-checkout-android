@@ -15,6 +15,7 @@ abstract class OrchestrationConfig internal constructor(
     override val formConfig: CheckoutFormConfig,
     override val isScreenshotsAllowed: Boolean,
     val isRemoveCardOptionEnabled: Boolean,
+    val isGooglePayEnabled: Boolean,
     private val createdFromParcel: Boolean
 ) : CheckoutConfig(tenantId) {
 

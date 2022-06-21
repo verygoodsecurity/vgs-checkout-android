@@ -57,6 +57,7 @@ class PaymentCheckoutActivity : OrchestrationCheckoutActivity() {
             formConfig,
             false,
             true,
+            false,
             object : VGSCheckoutConfigInitCallback<VGSCheckoutPaymentConfig> {
                 override fun onSuccess(config: VGSCheckoutPaymentConfig) {
                     callback(config)

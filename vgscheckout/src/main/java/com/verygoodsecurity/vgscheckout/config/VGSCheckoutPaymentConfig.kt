@@ -5,7 +5,6 @@ import android.os.Parcel
 import android.os.Parcelable
 import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgscheckout.VGSCheckoutConfigInitCallback
-import com.verygoodsecurity.vgscheckout.analytic.event.FinInstrumentCrudEvent
 import com.verygoodsecurity.vgscheckout.config.core.OrchestrationConfig
 import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutPaymentRouteConfig
 import com.verygoodsecurity.vgscheckout.config.payment.VGSCheckoutPaymentMethod
@@ -27,6 +26,7 @@ class VGSCheckoutPaymentConfig internal constructor(
     formConfig: VGSCheckoutPaymentFormConfig,
     isScreenshotsAllowed: Boolean,
     isRemoveCardOptionEnabled: Boolean,
+    isGooglePayEnabled: Boolean,
     createdFromParcel: Boolean
 ) : OrchestrationConfig(
     accessToken,
@@ -36,6 +36,7 @@ class VGSCheckoutPaymentConfig internal constructor(
     formConfig,
     isScreenshotsAllowed,
     isRemoveCardOptionEnabled,
+    isGooglePayEnabled,
     createdFromParcel
 ) {
 
@@ -48,6 +49,7 @@ class VGSCheckoutPaymentConfig internal constructor(
         parcel.readParcelable(VGSCheckoutEnvironment::class.java.classLoader)!!,
         parcel.readParcelable(VGSCheckoutPaymentRouteConfig::class.java.classLoader)!!,
         parcel.readParcelable(VGSCheckoutPaymentFormConfig::class.java.classLoader)!!,
+        parcel.readInt() == 1,
         parcel.readInt() == 1,
         parcel.readInt() == 1,
         true,
@@ -71,6 +73,7 @@ class VGSCheckoutPaymentConfig internal constructor(
         parcel.writeParcelable(formConfig, flags)
         parcel.writeInt(if (isScreenshotsAllowed) 1 else 0)
         parcel.writeInt(if (isRemoveCardOptionEnabled) 1 else 0)
+        parcel.writeInt(if (isGooglePayEnabled) 1 else 0)
         parcel.writeList(savedCards)
         parcel.writeParcelable(orderDetails, flags)
     }
@@ -114,6 +117,7 @@ class VGSCheckoutPaymentConfig internal constructor(
             formConfig: VGSCheckoutPaymentFormConfig = VGSCheckoutPaymentFormConfig(),
             isScreenshotsAllowed: Boolean = false,
             isRemoveCardOptionEnabled: Boolean = true,
+            isGooglePayEnabled: Boolean = false,
             callback: VGSCheckoutConfigInitCallback<VGSCheckoutPaymentConfig>? = null
         ): VGSCheckoutCancellable {
             val config = VGSCheckoutPaymentConfig(
@@ -124,6 +128,7 @@ class VGSCheckoutPaymentConfig internal constructor(
                 formConfig,
                 isScreenshotsAllowed,
                 isRemoveCardOptionEnabled,
+                isGooglePayEnabled,
                 false
             )
             val ids = paymentMethod.getIds()
