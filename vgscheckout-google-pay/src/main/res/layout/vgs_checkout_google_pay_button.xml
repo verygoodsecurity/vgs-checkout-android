@@ -3,7 +3,7 @@
     android:id="@+id/rlGooglePay"
     android:layout_width="match_parent"
     android:layout_height="@dimen/vgs_checkout_button_height"
-    android:background="@drawable/googlepay_button_no_shadow_background"
+    android:background="@drawable/vgs_checkout_googlepay_button_no_shadow_background"
     android:clickable="true"
     android:contentDescription="@string/vgs_checkout_google_pay_button_content_description"
     android:focusable="true">
@@ -22,7 +22,7 @@
             android:layout_weight="1"
             android:duplicateParentState="true"
             android:scaleType="fitCenter"
-            android:src="@drawable/googlepay_button_content" />
+            android:src="@drawable/vgs_checkout_googlepay_button_content" />
     </LinearLayout>
 
     <ImageView
@@ -30,5 +30,5 @@
         android:layout_height="match_parent"
         android:duplicateParentState="true"
         android:scaleType="fitXY"
-        android:src="@drawable/googlepay_button_overlay" />
+        android:src="@drawable/vgs_checkout_googlepay_button_overlay" />
 </RelativeLayout>
