@@ -58,8 +58,6 @@ internal class PaymentMethodsAdapter constructor(
         notifyDataSetChanged()
     }
 
-    fun hasSelectedCard(): Boolean = cards.getOrNull(selectedPosition) == null
-
     fun getSelectedPosition() = selectedPosition
 
     fun getSelectedCard(): Card? = cards.getOrNull(selectedPosition)
@@ -112,7 +110,7 @@ internal class PaymentMethodsAdapter constructor(
         fun bind(card: Card) {
             ivCardBrand?.setImageResource(VGSCheckoutCardBrand.getBrandIcon(card.brand))
             mtvCardHolderName?.text = card.holderName
-            mtvCardNumber?.text = getFormattedCardNumber(card.lastFour)
+            mtvCardNumber?.text = getFormattedCardNumber(card.last4)
             mtvExpiry?.text = getFormattedExpiry(card.expiryMonth, card.twoDigitExpiryYear)
             radioButton?.isChecked = adapterPosition == selectedPosition
         }
