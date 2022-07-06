@@ -20,9 +20,6 @@ abstract class OrchestrationConfig internal constructor(
     private val createdFromParcel: Boolean
 ) : CheckoutConfig(tenantId) {
 
-    @IgnoredOnParcel
-    override val baseUrl: String = generateBaseUrl(true)
-
     internal var savedCards: List<Card> = emptyList()
         @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED) internal set
 

@@ -16,6 +16,7 @@ import com.verygoodsecurity.vgscheckout.networking.command.GetOrderDetails
 import com.verygoodsecurity.vgscheckout.networking.command.GetSavedCardsCommand
 import com.verygoodsecurity.vgscheckout.networking.command.core.CompositeCommand
 import com.verygoodsecurity.vgscheckout.networking.command.core.VGSCheckoutCancellable
+import kotlinx.parcelize.IgnoredOnParcel
 
 class VGSCheckoutPaymentConfig internal constructor(
     override val accessToken: String,
@@ -39,6 +40,8 @@ class VGSCheckoutPaymentConfig internal constructor(
 
     internal var orderDetails: OrderDetails? = null
         @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE) internal set
+
+    override val baseUrl: String = generateBaseUrl(true)
 
     internal constructor(parcel: Parcel) : this(
         parcel.readString()!!,

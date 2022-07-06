@@ -49,6 +49,8 @@ class VGSCheckoutAddCardConfig internal constructor(
     createdFromParcel
 ) {
 
+    override val baseUrl: String = generateBaseUrl(true)
+
     internal constructor(parcel: Parcel) : this(
         parcel.readString()!!,
         parcel.readString()!!,
