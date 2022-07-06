@@ -7,6 +7,7 @@ import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutPaymentRout
 import com.verygoodsecurity.vgscheckout.config.ui.core.CheckoutFormConfig
 import com.verygoodsecurity.vgscheckout.model.Card
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
+import kotlinx.parcelize.IgnoredOnParcel
 
 abstract class OrchestrationConfig internal constructor(
     internal open val accessToken: String,
@@ -18,6 +19,9 @@ abstract class OrchestrationConfig internal constructor(
     open val isRemoveCardOptionEnabled: Boolean,
     private val createdFromParcel: Boolean
 ) : CheckoutConfig(tenantId) {
+
+    @IgnoredOnParcel
+    override val baseUrl: String = generateBaseUrl()
 
     internal var savedCards: List<Card> = emptyList()
         @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED) internal set

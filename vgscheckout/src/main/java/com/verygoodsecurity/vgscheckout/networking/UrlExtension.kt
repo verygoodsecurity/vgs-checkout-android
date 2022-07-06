@@ -6,18 +6,20 @@ import java.net.MalformedURLException
 import java.net.URL
 import java.util.regex.Pattern
 
+private const val HTTP_SCHEME = "http://"
+private const val HTTPS_SCHEME = "https://"
+
 /** @suppress */
 internal fun String.setupLocalhostURL(port: Int?): String {
-    val DIVIDER = ":"
-    val SCHEME = "http://"
+    val divider = ":"
 
     val prt = if (!port.isValidPort()) {
-        VGSCheckoutLogger.warn(message = "Port is not specified")
+        VGSCheckoutLogger.warn(message = "Port is not valid")
         ""
     } else {
-        DIVIDER + port
+        divider + port
     }
-    return StringBuilder(SCHEME)
+    return StringBuilder(HTTP_SCHEME)
         .append(this)
         .append(prt)
         .toString()
@@ -26,7 +28,7 @@ internal fun String.setupLocalhostURL(port: Int?): String {
 /** @suppress */
 internal fun String.setupURL(rawValue: String): String {
     return when {
-        this.isEmpty() || !isTennantIdValid() -> {
+        this.isEmpty() || !isTenantIdValid() -> {
             VGSCheckoutLogger.warn(message = "Vault ID is not valid")
             return ""
         }
@@ -51,7 +53,7 @@ private fun String.buildURL(env: String): String {
     return builder.toString()
 }
 
-internal fun String.isTennantIdValid(): Boolean =
+internal fun String.isTenantIdValid(): Boolean =
     Pattern.compile("^[a-zA-Z0-9]*\$").matcher(this).matches()
 
 internal fun String.isEnvironmentValid(): Boolean =
@@ -98,9 +100,9 @@ internal infix fun String.equalsUrl(name: String?): Boolean {
 
 internal fun String.toHttps(): String {
     return when {
-        startsWith("http://") -> this
-        startsWith("https://") -> this
-        else -> "https://$this"
+        startsWith(HTTP_SCHEME) -> this
+        startsWith(HTTPS_SCHEME) -> this
+        else -> "$HTTPS_SCHEME$this"
     }
 }
 

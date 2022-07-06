@@ -316,7 +316,7 @@ internal abstract class OrchestrationFragment<T : CheckoutConfig> : BaseFragment
         addCardCommand = AddCardCommand(
             requireContext(),
             AddCardCommand.Params(
-                config.getBaseUrl(requireContext()),
+                config.baseUrl,
                 config.routeConfig.path,
                 config.routeConfig,
                 getStates()

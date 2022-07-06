@@ -14,7 +14,6 @@ import com.verygoodsecurity.vgscheckout.model.Card
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
 import com.verygoodsecurity.vgscheckout.networking.command.GetSavedCardsCommand
 import com.verygoodsecurity.vgscheckout.networking.command.core.VGSCheckoutCancellable
-import com.verygoodsecurity.vgscheckout.util.extension.getBaseUrl
 
 /**
  * Holds configuration with predefined setup for work with payment orchestration app.
@@ -163,7 +162,7 @@ class VGSCheckoutAddCardConfig internal constructor(
             )
             val ids = paymentMethod.getIds()
             val params = GetSavedCardsCommand.Params(
-                config.getBaseUrl(context),
+                config.baseUrl,
                 config.routeConfig.path,
                 accessToken,
                 ids

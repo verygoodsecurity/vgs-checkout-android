@@ -5,7 +5,6 @@ import android.os.Parcel
 import android.os.Parcelable
 import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgscheckout.VGSCheckoutConfigInitCallback
-import com.verygoodsecurity.vgscheckout.analytic.event.FinInstrumentCrudEvent
 import com.verygoodsecurity.vgscheckout.config.core.OrchestrationConfig
 import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutPaymentRouteConfig
 import com.verygoodsecurity.vgscheckout.config.payment.OrderDetails
@@ -17,7 +16,6 @@ import com.verygoodsecurity.vgscheckout.networking.command.GetOrderDetails
 import com.verygoodsecurity.vgscheckout.networking.command.GetSavedCardsCommand
 import com.verygoodsecurity.vgscheckout.networking.command.core.CompositeCommand
 import com.verygoodsecurity.vgscheckout.networking.command.core.VGSCheckoutCancellable
-import com.verygoodsecurity.vgscheckout.util.extension.getBaseUrl
 
 class VGSCheckoutPaymentConfig internal constructor(
     override val accessToken: String,
@@ -132,7 +130,7 @@ class VGSCheckoutPaymentConfig internal constructor(
                 GetSavedCardsCommand(
                     context,
                     GetSavedCardsCommand.Params(
-                        getBaseUrl(context),
+                        baseUrl,
                         routeConfig.path,
                         accessToken,
                         ids
@@ -144,7 +142,7 @@ class VGSCheckoutPaymentConfig internal constructor(
                 GetOrderDetails(
                     context,
                     GetOrderDetails.Params(
-                        getBaseUrl(context),
+                        baseUrl,
                         orderId,
                         accessToken
                     )

@@ -2,7 +2,7 @@ package com.verygoodsecurity.vgscheckout
 
 import com.verygoodsecurity.vgscheckout.collect.core.Environment
 import com.verygoodsecurity.vgscheckout.networking.isEnvironmentValid
-import com.verygoodsecurity.vgscheckout.networking.isTennantIdValid
+import com.verygoodsecurity.vgscheckout.networking.isTenantIdValid
 import com.verygoodsecurity.vgscheckout.networking.isUrlValid
 import com.verygoodsecurity.vgscheckout.networking.setupURL
 import org.junit.Assert.assertFalse
@@ -19,32 +19,32 @@ class UrlExtensionTest {
     fun test_is_tennantId_not_valid() {
 
         val testUrl1 = " "
-        assertFalse(testUrl1.isTennantIdValid())
+        assertFalse(testUrl1.isTenantIdValid())
 
         val testUrl2 = "tnt.com"
-        assertFalse(testUrl2.isTennantIdValid())
+        assertFalse(testUrl2.isTenantIdValid())
 
         val testUrl3 = "tnt com"
-        assertFalse(testUrl3.isTennantIdValid())
+        assertFalse(testUrl3.isTenantIdValid())
 
         val testUrl4 = "2tnt/com"
-        assertFalse(testUrl4.isTennantIdValid())
+        assertFalse(testUrl4.isTenantIdValid())
 
         val testUrl5 = "tnt:com"
-        assertFalse(testUrl5.isTennantIdValid())
+        assertFalse(testUrl5.isTenantIdValid())
 
         val testUrl6 = "tnt*com"
-        assertFalse(testUrl6.isTennantIdValid())
+        assertFalse(testUrl6.isTenantIdValid())
 
         val testUrl7 = "tnt?com"
-        assertFalse(testUrl7.isTennantIdValid())
+        assertFalse(testUrl7.isTenantIdValid())
     }
     @Test
     fun test_is_tennantId_valid() {
         val testUrl1 = "tntdldf"
-        assertTrue(testUrl1.isTennantIdValid())
+        assertTrue(testUrl1.isTenantIdValid())
         val testUrl = "123"
-        assertTrue(testUrl.isTennantIdValid())
+        assertTrue(testUrl.isTenantIdValid())
     }
 
     @Test

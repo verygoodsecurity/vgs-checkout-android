@@ -26,7 +26,7 @@ internal class GetOrderDetails constructor(
     }
 
     private fun createRequest(params: Params) = HttpRequest(
-        (params.url concatWithSlash PATH) concatWithSlash params.orderId,
+        "https://tntipgdjdyl-4880868f-d88b-4333-ab70-d9deecdbffc4.sandbox.verygoodproxy.com/orders" concatWithSlash params.orderId,
         null,
         mapOf(
             AUTHORIZATION_HEADER_KEY to String.format(
