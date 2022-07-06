@@ -26,5 +26,5 @@ class VGSCheckoutCustomConfig @JvmOverloads constructor(
 ) : CheckoutConfig(vaultId) {
 
     @IgnoredOnParcel
-    override val baseUrl: String = generateBaseUrl()
+    override val baseUrl: String = generateBaseUrl(false)
 }

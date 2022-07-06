@@ -48,7 +48,7 @@ abstract class CheckoutConfig internal constructor(internal val id: String) : Pa
         DefaultAnalyticsTracker(id, environment.value, UUID.randomUUID().toString())
     }
 
-    protected fun generateBaseUrl(): String {
+    protected fun generateBaseUrl(isPaymentUrl: Boolean): String {
         val port = routeConfig.hostnamePolicy.getNormalizedPort()
         val hostName = routeConfig.hostnamePolicy.getNormalizedHostName()
         val environment = environment.value
@@ -68,21 +68,21 @@ abstract class CheckoutConfig internal constructor(internal val id: String) : Pa
             if (host.isValidIp()) {
                 if (!host.isIpAllowed()) {
                     VGSCheckoutLogger.warn(message = "Current IP is not allowed, use localhost or private network IP")
-                    return id.setupURL(environment)
+                    return id.setupURL(environment, isPaymentUrl)
                 }
                 if (!environment.isSandbox()) {
                     VGSCheckoutLogger.warn(message = ">Custom local IP and PORT can be used only in a sandbox environment.")
-                    return id.setupURL(environment)
+                    return id.setupURL(environment, isPaymentUrl)
                 }
                 return host.setupLocalhostURL(port)
             } else {
                 printPortDenied()
 //fixme            cname = host
-                return id.setupURL(environment)
+                return id.setupURL(environment, isPaymentUrl)
             }
         } else {
             printPortDenied()
-            return id.setupURL(environment)
+            return id.setupURL(environment, isPaymentUrl)
         }
     }
 }

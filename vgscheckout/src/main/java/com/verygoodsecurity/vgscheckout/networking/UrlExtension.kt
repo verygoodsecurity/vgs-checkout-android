@@ -26,7 +26,7 @@ internal fun String.setupLocalhostURL(port: Int?): String {
 }
 
 /** @suppress */
-internal fun String.setupURL(rawValue: String): String {
+internal fun String.setupURL(rawValue: String, isPaymentUrl: Boolean): String {
     return when {
         this.isEmpty() || !isTenantIdValid() -> {
             VGSCheckoutLogger.warn(message = "Vault ID is not valid")
@@ -36,19 +36,24 @@ internal fun String.setupURL(rawValue: String): String {
             VGSCheckoutLogger.warn(message = "Environment is not valid")
             return ""
         }
-        else -> this.buildURL(rawValue)
+        else -> this.buildURL(rawValue, isPaymentUrl)
     }
 }
 
-private fun String.buildURL(env: String): String {
+private val PAYMENT_URL_ROUTE_ID = "4880868f-d88b-4333-ab70-d9deecdbffc4"
+
+private fun String.buildURL(env: String, isPaymentUrl: Boolean): String {
     val DOMEN = "verygoodproxy.com"
     val DIVIDER = "."
     val SCHEME = "https://"
 
     val builder = StringBuilder(SCHEME)
-        .append(this).append(DIVIDER)
-        .append(env).append(DIVIDER)
-        .append(DOMEN)
+    builder.append(this)
+    if (isPaymentUrl) builder.append("-$PAYMENT_URL_ROUTE_ID")
+    builder.append(DIVIDER)
+    builder.append(env)
+    builder.append(DIVIDER)
+    builder.append(DOMEN)
 
     return builder.toString()
 }
