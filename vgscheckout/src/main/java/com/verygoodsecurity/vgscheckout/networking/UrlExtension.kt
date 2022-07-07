@@ -1,5 +1,6 @@
 package com.verygoodsecurity.vgscheckout.networking
 
+import androidx.annotation.VisibleForTesting
 import androidx.core.util.PatternsCompat
 import com.verygoodsecurity.vgscheckout.util.logger.VGSCheckoutLogger
 import java.net.MalformedURLException
@@ -40,7 +41,8 @@ internal fun String.setupURL(rawValue: String, isPaymentUrl: Boolean): String {
     }
 }
 
-private val PAYMENT_URL_ROUTE_ID = "4880868f-d88b-4333-ab70-d9deecdbffc4"
+@VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+internal const val PAYMENT_URL_ROUTE_ID = "4880868f-d88b-4333-ab70-d9deecdbffc4"
 
 private fun String.buildURL(env: String, isPaymentUrl: Boolean): String {
     val DOMEN = "verygoodproxy.com"
