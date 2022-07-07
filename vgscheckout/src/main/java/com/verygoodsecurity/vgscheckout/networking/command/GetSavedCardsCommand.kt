@@ -86,6 +86,7 @@ internal class GetSavedCardsCommand constructor(
                 data.getString(JSON_KEY_ID),
                 card.getString(JSON_KEY_HOLDER_NAME),
                 card.getString(JSON_KEY_NUMBER),
+                card.getString(JSON_KEY_LAST4),
                 card.getInt(JSON_KEY_EXPIRY_MONTH),
                 card.getInt(JSON_KEY_EXPIRY_YEAR),
                 card.getString(JSON_KEY_BRAND),
@@ -106,6 +107,7 @@ internal class GetSavedCardsCommand constructor(
         private const val JSON_KEY_CARD = "card"
         private const val JSON_KEY_HOLDER_NAME = "name"
         private const val JSON_KEY_NUMBER = "number"
+        private const val JSON_KEY_LAST4 = "last4"
         private const val JSON_KEY_EXPIRY_MONTH = "exp_month"
         private const val JSON_KEY_EXPIRY_YEAR = "exp_year"
         private const val JSON_KEY_BRAND = "brand"

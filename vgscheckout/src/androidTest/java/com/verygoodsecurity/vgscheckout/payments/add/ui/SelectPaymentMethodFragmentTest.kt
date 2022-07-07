@@ -219,6 +219,7 @@ class SelectPaymentMethodFragmentTest {
                     id,
                     "Name $it",
                     "111111111111111$it",
+                    "1111",
                     it,
                     it,
                     "VISA",

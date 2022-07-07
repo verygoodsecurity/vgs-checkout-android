@@ -58,7 +58,7 @@ class VGSCheckoutPaymentConfig internal constructor(
                 Card::class.java.classLoader
             )
         }
-        this.orderDetails = parcel.readParcelable(OrderDetails::class.java.classLoader)!!
+        this.orderDetails = parcel.readParcelable(OrderDetails::class.java.classLoader)
     }
 
     override fun describeContents(): Int = 0
