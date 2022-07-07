@@ -7,7 +7,6 @@ import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutPaymentRout
 import com.verygoodsecurity.vgscheckout.config.ui.core.CheckoutFormConfig
 import com.verygoodsecurity.vgscheckout.model.Card
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
-import kotlinx.parcelize.IgnoredOnParcel
 
 abstract class OrchestrationConfig internal constructor(
     internal open val accessToken: String,

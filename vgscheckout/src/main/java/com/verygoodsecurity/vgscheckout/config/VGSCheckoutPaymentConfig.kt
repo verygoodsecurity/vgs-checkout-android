@@ -16,7 +16,6 @@ import com.verygoodsecurity.vgscheckout.networking.command.GetOrderDetails
 import com.verygoodsecurity.vgscheckout.networking.command.GetSavedCardsCommand
 import com.verygoodsecurity.vgscheckout.networking.command.core.CompositeCommand
 import com.verygoodsecurity.vgscheckout.networking.command.core.VGSCheckoutCancellable
-import kotlinx.parcelize.IgnoredOnParcel
 
 class VGSCheckoutPaymentConfig internal constructor(
     override val accessToken: String,
