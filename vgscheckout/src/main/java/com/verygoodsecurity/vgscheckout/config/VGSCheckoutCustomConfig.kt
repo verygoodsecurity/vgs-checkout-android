@@ -4,7 +4,13 @@ import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutCustomRouteConfig
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutCustomFormConfig
 import com.verygoodsecurity.vgscheckout.config.ui.core.VGSCheckoutFormValidationBehaviour
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillingAddressVisibility
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutCustomBillingAddressOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.VGSCheckoutCustomAddressOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.VGSCheckoutCustomOptionalAddressOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.city.VGSCheckoutCustomCityOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.code.VGSCheckoutCustomPostalCodeOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.country.VGSCheckoutCustomCountryOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.VGSCheckoutCustomCardOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.VGSCheckoutCustomCardHolderOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.VGSCheckoutCustomCardNumberOptions
@@ -54,8 +60,27 @@ class VGSCheckoutCustomConfig @JvmOverloads constructor(
         private var cardHolderFieldName = ""
         private var cardHolderFieldVisibility = VGSCheckoutFieldVisibility.VISIBLE
 
-        private var formValidationBehaviour = VGSCheckoutFormValidationBehaviour.ON_SUBMIT
+        private var countryFieldName = ""
+        private var countryFieldVisibility = VGSCheckoutFieldVisibility.VISIBLE
+        private var validCountries: List<String> = emptyList()
 
+        private var cityFieldName = ""
+        private var cityFieldVisibility = VGSCheckoutFieldVisibility.VISIBLE
+
+        private var addressFieldName = ""
+        private var addressFieldVisibility = VGSCheckoutFieldVisibility.VISIBLE
+
+        private var optionalAddressFieldName = ""
+        private var optionalAddressFieldVisibility = VGSCheckoutFieldVisibility.VISIBLE
+
+        private var postalCodeFieldName = ""
+        private var postalCodeFieldVisibility = VGSCheckoutFieldVisibility.VISIBLE
+
+        private var billingAddressVisibility = VGSCheckoutBillingAddressVisibility.HIDDEN
+        private var formValidationBehaviour = VGSCheckoutFormValidationBehaviour.ON_SUBMIT
+        private var saveCardOptionEnabled = false
+
+        // region Card options
         /**
          *  Defines if input field should be visible to user.
          *
@@ -144,13 +169,149 @@ class VGSCheckoutCustomConfig @JvmOverloads constructor(
                 )
             )
         }
+        //endregion
+
+        //region Billing address options
+        /**
+         * Country input field options.
+         *
+         * @param fieldName text to be used for data transfer to VGS proxy.
+         * @param visibility defines if input field should be visible to user.
+         * @param validCountries list of countries in ISO 3166-2 format that will be show in selection dialog.
+         */
+        fun setCountryOptions(
+            fieldName: String,
+            visibility: VGSCheckoutFieldVisibility = VGSCheckoutFieldVisibility.VISIBLE,
+            validCountries: List<String> = emptyList()
+        ): Builder {
+            countryFieldName = fieldName
+            countryFieldVisibility = visibility
+            this.validCountries = validCountries
+            return this
+        }
+
+        /**
+         * City input field options.
+         *
+         * @param fieldName text to be used for data transfer to VGS proxy.
+         * @param visibility defines if input field should be visible to user.
+         */
+        fun setCityOptions(
+            fieldName: String,
+            visibility: VGSCheckoutFieldVisibility = VGSCheckoutFieldVisibility.VISIBLE
+        ): Builder {
+            cityFieldName = fieldName
+            cityFieldVisibility = visibility
+            return this
+        }
+
+        /**
+         * Address input field options.
+         *
+         * @param fieldName text to be used for data transfer to VGS proxy.
+         * @param visibility defines if input field should be visible to user.
+         */
+        fun setAddressOptions(
+            fieldName: String,
+            visibility: VGSCheckoutFieldVisibility = VGSCheckoutFieldVisibility.VISIBLE
+        ): Builder {
+            addressFieldName = fieldName
+            addressFieldVisibility = visibility
+            return this
+        }
+
+        /**
+         * Optional address input field options.
+         *
+         * @param fieldName text to be used for data transfer to VGS proxy.
+         * @param visibility defines if input field should be visible to user.
+         */
+        fun setOptionalAddressOptions(
+            fieldName: String,
+            visibility: VGSCheckoutFieldVisibility = VGSCheckoutFieldVisibility.VISIBLE
+        ): Builder {
+            optionalAddressFieldName = fieldName
+            optionalAddressFieldVisibility = visibility
+            return this
+        }
+
+        /**
+         * Postal code input field options.
+         *
+         * @param fieldName text to be used for data transfer to VGS proxy.
+         * @param visibility defines if input field should be visible to user.
+         */
+        fun setPostalCodeOptions(
+            fieldName: String,
+            visibility: VGSCheckoutFieldVisibility = VGSCheckoutFieldVisibility.VISIBLE
+        ): Builder {
+            postalCodeFieldName = fieldName
+            postalCodeFieldVisibility = visibility
+            return this
+        }
+
+        /**
+         * Defines if address section UI should be visible to user.
+         *
+         * @param visibility Address section visibility.
+         */
+        fun setBillingAddressVisibility(
+            visibility: VGSCheckoutBillingAddressVisibility
+        ): Builder {
+            billingAddressVisibility = visibility
+            return this
+        }
+
+
+        private fun buildBillingAddressOptions(): VGSCheckoutCustomBillingAddressOptions {
+            return VGSCheckoutCustomBillingAddressOptions(
+                VGSCheckoutCustomCountryOptions(
+                    countryFieldName,
+                    validCountries,
+                    countryFieldVisibility
+                ),
+                VGSCheckoutCustomCityOptions(
+                    cityFieldName,
+                    cityFieldVisibility
+                ),
+                VGSCheckoutCustomAddressOptions(
+                    addressFieldName,
+                    addressFieldVisibility
+                ),
+                VGSCheckoutCustomOptionalAddressOptions(
+                    optionalAddressFieldName,
+                    optionalAddressFieldVisibility
+                ),
+                VGSCheckoutCustomPostalCodeOptions(
+                    postalCodeFieldName,
+                    postalCodeFieldVisibility
+                ),
+                billingAddressVisibility
+            )
+        }
+        //endregion
+
+        /**
+         * Defines validation behavior. Default is [VGSCheckoutFormValidationBehaviour.ON_SUBMIT].
+         *
+         * @param validationBehaviour Validation behavior.
+         */
+        fun setFormValidationBehaviour(
+            validationBehaviour: VGSCheckoutFormValidationBehaviour = VGSCheckoutFormValidationBehaviour.ON_SUBMIT
+        ): Builder {
+            formValidationBehaviour = validationBehaviour
+            return this
+        }
 
         private fun buildFormConfig(): VGSCheckoutCustomFormConfig {
             val cardOptions = buildCardOptions()
+            val billingAddressOptions = buildBillingAddressOptions()
+
             return VGSCheckoutCustomFormConfig(
                 cardOptions,
-                VGSCheckoutCustomBillingAddressOptions(),
-                formValidationBehaviour
+                billingAddressOptions,
+                formValidationBehaviour,
+                saveCardOptionEnabled
             )
         }
 
