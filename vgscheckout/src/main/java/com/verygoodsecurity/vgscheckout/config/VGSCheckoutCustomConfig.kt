@@ -2,6 +2,10 @@ package com.verygoodsecurity.vgscheckout.config
 
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutCustomRouteConfig
+import com.verygoodsecurity.vgscheckout.config.networking.core.VGSCheckoutHostnamePolicy
+import com.verygoodsecurity.vgscheckout.config.networking.request.VGSCheckoutCustomRequestOptions
+import com.verygoodsecurity.vgscheckout.config.networking.request.core.VGSCheckoutDataMergePolicy
+import com.verygoodsecurity.vgscheckout.config.networking.request.core.VGSCheckoutHttpMethod
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutCustomFormConfig
 import com.verygoodsecurity.vgscheckout.config.ui.core.VGSCheckoutFormValidationBehaviour
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillingAddressVisibility
@@ -21,6 +25,7 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.core.VGSCheckoutFieldVisi
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
+import kotlinx.parcelize.RawValue
 
 /**
  * Holds configuration for vault payment processing with custom configuration.
@@ -32,7 +37,7 @@ import kotlinx.parcelize.Parcelize
  * @param isScreenshotsAllowed If true, checkout form will allow to make screenshots. Default is false.
  */
 @Parcelize
-class VGSCheckoutCustomConfig @JvmOverloads constructor(
+class VGSCheckoutCustomConfig internal constructor(
     val vaultId: String,
     override val environment: VGSCheckoutEnvironment = VGSCheckoutEnvironment.Sandbox(),
     override val routeConfig: VGSCheckoutCustomRouteConfig = VGSCheckoutCustomRouteConfig(),
@@ -46,6 +51,9 @@ class VGSCheckoutCustomConfig @JvmOverloads constructor(
     class Builder(
         private val vaultId: String
     ) {
+        private var environment: VGSCheckoutEnvironment = VGSCheckoutEnvironment.Sandbox()
+        private var isScreenshotsAllowed = false
+
         private var expirationDateFieldSeparateSerializer: VGSDateSeparateSerializer? = null
         private var expirationDateFieldName = ""
         private var expirationDateFieldInputFormatRegex = DATE_FORMAT
@@ -79,6 +87,34 @@ class VGSCheckoutCustomConfig @JvmOverloads constructor(
         private var billingAddressVisibility = VGSCheckoutBillingAddressVisibility.HIDDEN
         private var formValidationBehaviour = VGSCheckoutFormValidationBehaviour.ON_SUBMIT
         private var saveCardOptionEnabled = false
+
+        private var path = ""
+        private var hostnamePolicy: VGSCheckoutHostnamePolicy = VGSCheckoutHostnamePolicy.Vault
+        private var httpMethod: VGSCheckoutHttpMethod = VGSCheckoutHttpMethod.POST
+        private var extraHeaders: Map<String, String> = emptyMap()
+        private var extraData: Map<String, @RawValue Any> = emptyMap()
+        private var mergePolicy: VGSCheckoutDataMergePolicy =
+            VGSCheckoutDataMergePolicy.NESTED_JSON_WITH_ARRAYS_MERGE
+
+        /**
+         * Defines type of vault.
+         *
+         * @param environment Type of vault.
+         */
+        fun setEnvironment(environment: VGSCheckoutEnvironment): Builder {
+            this.environment = environment
+            return this
+        }
+
+        /**
+         * If true, checkout form will allow to make screenshots. Default is false.
+         *
+         * @param isScreenshotsAllowed Defines is screenshots allowed.
+         */
+        fun setIsScreenshotsAllowed(isScreenshotsAllowed: Boolean): Builder {
+            this.isScreenshotsAllowed = isScreenshotsAllowed
+            return this
+        }
 
         // region Card options
         /**
@@ -297,11 +333,88 @@ class VGSCheckoutCustomConfig @JvmOverloads constructor(
          * @param validationBehaviour Validation behavior.
          */
         fun setFormValidationBehaviour(
-            validationBehaviour: VGSCheckoutFormValidationBehaviour = VGSCheckoutFormValidationBehaviour.ON_SUBMIT
+            validationBehaviour: VGSCheckoutFormValidationBehaviour
         ): Builder {
             formValidationBehaviour = validationBehaviour
             return this
         }
+
+        //region Route config
+        /**
+         * Defines inbound rout path for your organization vault.
+         *
+         * @param path Inbound rout path.
+         */
+        fun setPath(path: String): Builder {
+            this.path = path
+            return this
+        }
+
+        /**
+         * Defines type of base url to send data.
+         *
+         * @param hostnamePolicy type of base url to send data.
+         */
+        fun setHostnamePolicy(hostnamePolicy: VGSCheckoutHostnamePolicy): Builder {
+            this.hostnamePolicy = hostnamePolicy
+            return this
+        }
+
+        /**
+         * Define http method.
+         *
+         * @param method Http method
+         */
+        fun setHttpMethod(method: VGSCheckoutHttpMethod): Builder {
+            httpMethod = method
+            return this
+        }
+
+        /**
+         * Defines request headers.
+         *
+         * @param headers Request headers.
+         */
+        fun setHeaders(headers: Map<String, String>): Builder {
+            extraHeaders = headers
+            return this
+        }
+
+        /**
+         * Defines extra request payload data.
+         *
+         * @param data An extra request payload data.
+         */
+        fun setRequestPayload(data: Map<String, Any>): Builder {
+            extraData = data
+            return this
+        }
+
+        /**
+         * Define field name mapping policy and how fields data and extra data should be.
+         *
+         * @param policy A field name mapping policy.
+         */
+        fun setMergePolicy(policy: VGSCheckoutDataMergePolicy): Builder {
+            mergePolicy = policy
+            return this
+        }
+
+        private fun buildRouteConfig(): VGSCheckoutCustomRouteConfig {
+            val requestOptions = VGSCheckoutCustomRequestOptions(
+                httpMethod,
+                extraHeaders,
+                extraData,
+                mergePolicy
+            )
+
+            return VGSCheckoutCustomRouteConfig(
+                path,
+                hostnamePolicy,
+                requestOptions
+            )
+        }
+        //endregion
 
         private fun buildFormConfig(): VGSCheckoutCustomFormConfig {
             val cardOptions = buildCardOptions()
@@ -315,13 +428,19 @@ class VGSCheckoutCustomConfig @JvmOverloads constructor(
             )
         }
 
+        /**
+         * Creates custom configuration.
+         */
         fun build(): VGSCheckoutCustomConfig {
             val formConfig = buildFormConfig()
+            val routeConfig = buildRouteConfig()
 
             return VGSCheckoutCustomConfig(
-                vaultId = vaultId,
-                routeConfig = VGSCheckoutCustomRouteConfig(),
-                formConfig = formConfig
+                vaultId,
+                environment,
+                routeConfig,
+                formConfig,
+                isScreenshotsAllowed
             )
         }
 
