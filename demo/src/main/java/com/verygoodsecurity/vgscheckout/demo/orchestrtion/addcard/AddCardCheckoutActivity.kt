@@ -13,9 +13,7 @@ class AddCardCheckoutActivity : OrchestrationCheckoutActivity() {
     override fun initializeConfiguration(
         token: String,
         callback: (config: CheckoutConfig) -> Unit
-    ) = callback(createConfig(token))
-
-    private fun createConfig(token: String): VGSCheckoutAddCardConfig {
+    ) {
         val preferences = PreferenceManager.getDefaultSharedPreferences(this)
         val vaultId = preferences.getString(getString(R.string.setting_key_vault_id), null)
             ?: BuildConfig.STORAGE_ID
@@ -47,6 +45,6 @@ class AddCardCheckoutActivity : OrchestrationCheckoutActivity() {
             .setIsSaveCardOptionVisible(preferences.getBoolean(R.string.setting_key_save_card_option_enabled))
 
         // Create config object
-        return builder.build()
+        callback(builder.build())
     }
 }
