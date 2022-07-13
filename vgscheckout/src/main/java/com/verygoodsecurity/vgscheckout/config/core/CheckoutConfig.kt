@@ -52,7 +52,7 @@ abstract class CheckoutConfig : Parcelable {
         DefaultAnalyticsTracker(id, environment.value, UUID.randomUUID().toString())
     }
 
-    protected fun generateBaseUrl(isPaymentUrl: Boolean): String {
+    protected fun generateBaseUrl(): String {
         val port = routeConfig.hostnamePolicy.getNormalizedPort()
         val hostName = routeConfig.hostnamePolicy.getNormalizedHostName()
         val environment = environment.value
@@ -64,29 +64,28 @@ abstract class CheckoutConfig : Parcelable {
         }
 
         if (!hostName.isNullOrBlank() && hostName.isUrlValid()) {
-            val host = hostName.toHost().also {
-                if (it != hostName) {
-                    VGSCheckoutLogger.debug(message = "Hostname will be normalized to the $it")
-                }
+            val host = hostName.toHost()
+            if (host != hostName) {
+                VGSCheckoutLogger.debug(message = "Hostname will be normalized to the $host")
             }
             if (host.isValidIp()) {
                 if (!host.isIpAllowed()) {
                     VGSCheckoutLogger.warn(message = "Current IP is not allowed, use localhost or private network IP")
-                    return id.setupURL(environment, isPaymentUrl)
+                    return id.setupURL(environment, routeId)
                 }
                 if (!environment.isSandbox()) {
                     VGSCheckoutLogger.warn(message = ">Custom local IP and PORT can be used only in a sandbox environment.")
-                    return id.setupURL(environment, isPaymentUrl)
+                    return id.setupURL(environment, routeId)
                 }
                 return host.setupLocalhostURL(port)
             } else {
                 printPortDenied()
 //fixme            cname = host
-                return id.setupURL(environment, isPaymentUrl)
+                return id.setupURL(environment, routeId)
             }
         } else {
             printPortDenied()
-            return id.setupURL(environment, isPaymentUrl)
+            return id.setupURL(environment, routeId)
         }
     }
 }

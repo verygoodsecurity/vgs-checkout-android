@@ -62,7 +62,7 @@ class VGSCheckoutAddCardConfig internal constructor(
     createdFromParcel
 ) {
 
-    override val baseUrl: String = generateBaseUrl(true)
+    override val baseUrl: String = generateBaseUrl()
 
     internal constructor(parcel: Parcel) : this(
         parcel.readString()!!,
@@ -138,7 +138,7 @@ class VGSCheckoutAddCardConfig internal constructor(
         private var environment: VGSCheckoutEnvironment = VGSCheckoutEnvironment.Sandbox()
         private var isScreenshotsAllowed = false
         private var accessToken = ""
-        private var routeId = ""
+        private var routeId = PAYMENT_URL_ROUTE_ID
         private var cardIds: List<String> = arrayListOf()
         private var isRemoveCardOptionEnabled: Boolean = true
 

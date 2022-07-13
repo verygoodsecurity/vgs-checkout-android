@@ -53,7 +53,7 @@ class VGSCheckoutPaymentConfig internal constructor(
     internal var orderDetails: OrderDetails? = null
         @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE) internal set
 
-    override val baseUrl: String = generateBaseUrl(true)
+    override val baseUrl: String = generateBaseUrl()
 
     internal constructor(parcel: Parcel) : this(
         parcel.readString()!!,
@@ -97,7 +97,7 @@ class VGSCheckoutPaymentConfig internal constructor(
         private var isScreenshotsAllowed = false
         private var accessToken = ""
         private var orderId = ""
-        private var routeId = ""
+        private var routeId = PAYMENT_URL_ROUTE_ID
         private var cardIds: List<String> = arrayListOf()
         private var isRemoveCardOptionEnabled: Boolean = true
 
