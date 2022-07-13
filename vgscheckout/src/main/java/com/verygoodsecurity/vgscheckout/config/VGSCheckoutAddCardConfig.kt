@@ -384,8 +384,7 @@ class VGSCheckoutAddCardConfig internal constructor(
          * @param isScreenshotsAllowed If true, checkout form will allow to make screenshots. Default is false.
          * @param isRemoveCardOptionEnabled If true, user will be able to delete saved card.
          */
-        @JvmOverloads
-        internal fun create(
+        private fun create(
             context: Context,
             accessToken: String,
             tenantId: String,
