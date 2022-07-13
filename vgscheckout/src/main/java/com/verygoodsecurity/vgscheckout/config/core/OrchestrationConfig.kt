@@ -10,14 +10,15 @@ import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
 
 abstract class OrchestrationConfig internal constructor(
     internal open val accessToken: String,
-    open val tenantId: String,
+    override val routeId: String,
+    override val id: String,
     override val environment: VGSCheckoutEnvironment,
     override val routeConfig: VGSCheckoutPaymentRouteConfig,
     override val formConfig: CheckoutFormConfig,
     override val isScreenshotsAllowed: Boolean,
     open val isRemoveCardOptionEnabled: Boolean,
     private val createdFromParcel: Boolean
-) : CheckoutConfig(tenantId) {
+) : CheckoutConfig() {
 
     internal var savedCards: List<Card> = emptyList()
         @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED) internal set

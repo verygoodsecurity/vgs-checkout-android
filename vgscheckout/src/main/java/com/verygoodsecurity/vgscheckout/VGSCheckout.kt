@@ -58,11 +58,10 @@ class VGSCheckout internal constructor(
         transitionOptions: VGSCheckoutTransitionOptions? = null,
     ) {
         present(
-            VGSCheckoutAddCardConfig(
-                token,
-                tenantId,
-                environment
-            ),
+            VGSCheckoutAddCardConfig.Builder(tenantId)
+                .setAccessToken(token)
+                .setEnvironment(environment)
+                .build(),
             transitionOptions
         )
     }

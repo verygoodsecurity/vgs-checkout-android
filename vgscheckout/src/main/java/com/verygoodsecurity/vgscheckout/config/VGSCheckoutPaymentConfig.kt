@@ -30,7 +30,8 @@ import com.verygoodsecurity.vgscheckout.networking.command.core.VGSCheckoutCance
 
 class VGSCheckoutPaymentConfig internal constructor(
     override val accessToken: String,
-    override val tenantId: String,
+    override val routeId: String,
+    override val id: String,
     override val environment: VGSCheckoutEnvironment,
     override val routeConfig: VGSCheckoutPaymentRouteConfig,
     override val formConfig: VGSCheckoutPaymentFormConfig,
@@ -39,7 +40,8 @@ class VGSCheckoutPaymentConfig internal constructor(
     createdFromParcel: Boolean
 ) : OrchestrationConfig(
     accessToken,
-    tenantId,
+    routeId,
+    id,
     environment,
     routeConfig,
     formConfig,
@@ -54,6 +56,7 @@ class VGSCheckoutPaymentConfig internal constructor(
     override val baseUrl: String = generateBaseUrl(true)
 
     internal constructor(parcel: Parcel) : this(
+        parcel.readString()!!,
         parcel.readString()!!,
         parcel.readString()!!,
         parcel.readParcelable(VGSCheckoutEnvironment::class.java.classLoader)!!,
@@ -76,7 +79,8 @@ class VGSCheckoutPaymentConfig internal constructor(
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(accessToken)
-        parcel.writeString(tenantId)
+        parcel.writeString(routeId)
+        parcel.writeString(id)
         parcel.writeParcelable(environment, flags)
         parcel.writeParcelable(routeConfig, flags)
         parcel.writeParcelable(formConfig, flags)
@@ -93,6 +97,7 @@ class VGSCheckoutPaymentConfig internal constructor(
         private var isScreenshotsAllowed = false
         private var accessToken = ""
         private var orderId = ""
+        private var routeId = ""
         private var cardIds: List<String> = arrayListOf()
         private var isRemoveCardOptionEnabled: Boolean = true
 
@@ -129,6 +134,16 @@ class VGSCheckoutPaymentConfig internal constructor(
          */
         fun setIsScreenshotsAllowed(isScreenshotsAllowed: Boolean): Builder {
             this.isScreenshotsAllowed = isScreenshotsAllowed
+            return this
+        }
+
+        /**
+         * Defines route id for submitting data.
+         *
+         * @param routeId A route id.
+         */
+        fun setRouteId(routeId: String): Builder {
+            this.routeId = routeId
             return this
         }
 
@@ -307,8 +322,9 @@ class VGSCheckoutPaymentConfig internal constructor(
             return create(
                 context,
                 accessToken,
-                tenantId,
                 orderId,
+                routeId,
+                tenantId,
                 VGSCheckoutPaymentMethod.SavedCards(cardIds),
                 environment,
                 formConfig,
@@ -317,7 +333,6 @@ class VGSCheckoutPaymentConfig internal constructor(
                 callback
             )
         }
-
     }
 
     companion object {
@@ -335,22 +350,11 @@ class VGSCheckoutPaymentConfig internal constructor(
             }
         }
 
-        /**
-         * Function that allows create config with saved cards.
-         *
-         * @param accessToken payment orchestration app access token.
-         * @param orderId id of order.
-         * @param tenantId unique organization id.
-         * @param paymentMethod
-         * @param environment type of vault.
-         * @param formConfig UI configuration.
-         * @param isScreenshotsAllowed If true, checkout form will allow to make screenshots. Default is false.
-         * @param isRemoveCardOptionEnabled If true, user will be able to delete saved card.
-         */
         private fun create(
             context: Context,
             accessToken: String,
             orderId: String,
+            routeId: String,
             tenantId: String,
             paymentMethod: VGSCheckoutPaymentMethod.SavedCards,
             environment: VGSCheckoutEnvironment = VGSCheckoutEnvironment.Sandbox(),
@@ -361,6 +365,7 @@ class VGSCheckoutPaymentConfig internal constructor(
         ): VGSCheckoutCancellable {
             val config = VGSCheckoutPaymentConfig(
                 accessToken,
+                routeId,
                 tenantId,
                 environment,
                 VGSCheckoutPaymentRouteConfig(accessToken),

@@ -30,7 +30,7 @@ import kotlinx.parcelize.RawValue
 /**
  * Holds configuration for vault payment processing with custom configuration.
  *
- * @param vaultId unique organization vault id.
+ * @param id unique organization vault id.
  * @param environment type of vault.
  * @param routeConfig Networking configuration, like http method, request headers etc.
  * @param formConfig UI configuration.
@@ -38,12 +38,13 @@ import kotlinx.parcelize.RawValue
  */
 @Parcelize
 class VGSCheckoutCustomConfig internal constructor(
-    val vaultId: String,
+    override val id: String,
+    override val routeId: String,
     override val environment: VGSCheckoutEnvironment = VGSCheckoutEnvironment.Sandbox(),
     override val routeConfig: VGSCheckoutCustomRouteConfig = VGSCheckoutCustomRouteConfig(),
     override val formConfig: VGSCheckoutCustomFormConfig = VGSCheckoutCustomFormConfig(),
     override val isScreenshotsAllowed: Boolean = false,
-) : CheckoutConfig(vaultId) {
+) : CheckoutConfig() {
 
     @IgnoredOnParcel
     override val baseUrl: String = generateBaseUrl(false)
@@ -51,6 +52,7 @@ class VGSCheckoutCustomConfig internal constructor(
     class Builder(
         private val vaultId: String
     ) {
+        private var routeId: String = ""
         private var environment: VGSCheckoutEnvironment = VGSCheckoutEnvironment.Sandbox()
         private var isScreenshotsAllowed = false
 
@@ -113,6 +115,16 @@ class VGSCheckoutCustomConfig internal constructor(
          */
         fun setIsScreenshotsAllowed(isScreenshotsAllowed: Boolean): Builder {
             this.isScreenshotsAllowed = isScreenshotsAllowed
+            return this
+        }
+
+        /**
+         * Defines route id for submitting data.
+         *
+         * @param routeId A route id.
+         */
+        fun setRouteId(routeId: String): Builder {
+            this.routeId = routeId
             return this
         }
 
@@ -437,6 +449,7 @@ class VGSCheckoutCustomConfig internal constructor(
 
             return VGSCheckoutCustomConfig(
                 vaultId,
+                routeId,
                 environment,
                 routeConfig,
                 formConfig,

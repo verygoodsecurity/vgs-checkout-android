@@ -42,7 +42,8 @@ import com.verygoodsecurity.vgscheckout.networking.command.core.VGSCheckoutCance
 @Suppress("MemberVisibilityCanBePrivate", "CanBeParameter")
 class VGSCheckoutAddCardConfig internal constructor(
     override val accessToken: String,
-    override val tenantId: String,
+    override val routeId: String,
+    override val id: String,
     override val environment: VGSCheckoutEnvironment,
     override val routeConfig: VGSCheckoutPaymentRouteConfig,
     override val formConfig: VGSCheckoutAddCardFormConfig,
@@ -51,7 +52,8 @@ class VGSCheckoutAddCardConfig internal constructor(
     createdFromParcel: Boolean
 ) : OrchestrationConfig(
     accessToken,
-    tenantId,
+    routeId,
+    id,
     environment,
     routeConfig,
     formConfig,
@@ -63,6 +65,7 @@ class VGSCheckoutAddCardConfig internal constructor(
     override val baseUrl: String = generateBaseUrl(true)
 
     internal constructor(parcel: Parcel) : this(
+        parcel.readString()!!,
         parcel.readString()!!,
         parcel.readString()!!,
         parcel.readParcelable(VGSCheckoutEnvironment::class.java.classLoader)!!,
@@ -95,12 +98,14 @@ class VGSCheckoutAddCardConfig internal constructor(
     @Throws(VGSCheckoutException::class)
     internal constructor(
         accessToken: String,
+        routeId: String,
         tenantId: String,
         environment: VGSCheckoutEnvironment = VGSCheckoutEnvironment.Sandbox(),
         formConfig: VGSCheckoutAddCardFormConfig = VGSCheckoutAddCardFormConfig(),
         isScreenshotsAllowed: Boolean = false
     ) : this(
         accessToken,
+        routeId,
         tenantId,
         environment,
         VGSCheckoutPaymentRouteConfig(accessToken),
@@ -112,7 +117,8 @@ class VGSCheckoutAddCardConfig internal constructor(
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(accessToken)
-        parcel.writeString(tenantId)
+        parcel.writeString(routeId)
+        parcel.writeString(id)
         parcel.writeParcelable(environment, flags)
         parcel.writeParcelable(routeConfig, flags)
         parcel.writeParcelable(formConfig, flags)
@@ -132,6 +138,7 @@ class VGSCheckoutAddCardConfig internal constructor(
         private var environment: VGSCheckoutEnvironment = VGSCheckoutEnvironment.Sandbox()
         private var isScreenshotsAllowed = false
         private var accessToken = ""
+        private var routeId = ""
         private var cardIds: List<String> = arrayListOf()
         private var isRemoveCardOptionEnabled: Boolean = true
 
@@ -177,6 +184,16 @@ class VGSCheckoutAddCardConfig internal constructor(
          */
         fun setAccessToken(accessToken: String): Builder {
             this.accessToken = accessToken
+            return this
+        }
+
+        /**
+         * Defines route id for submitting data.
+         *
+         * @param routeId A route id.
+         */
+        fun setRouteId(routeId: String): Builder {
+            this.routeId = routeId
             return this
         }
 
@@ -335,6 +352,7 @@ class VGSCheckoutAddCardConfig internal constructor(
             return create(
                 context,
                 accessToken,
+                routeId,
                 tenantId,
                 VGSCheckoutPaymentMethod.SavedCards(cardIds),
                 environment,
@@ -347,9 +365,9 @@ class VGSCheckoutAddCardConfig internal constructor(
 
         fun build(): VGSCheckoutAddCardConfig {
             val formConfig = buildFormConfig()
-
             return VGSCheckoutAddCardConfig(
                 accessToken,
+                routeId,
                 tenantId,
                 environment,
                 formConfig,
@@ -373,20 +391,10 @@ class VGSCheckoutAddCardConfig internal constructor(
             }
         }
 
-        /**
-         * Function that allows create config with saved cards.
-         *
-         * @param accessToken payment orchestration app access token.
-         * @param tenantId unique organization id.
-         * @param paymentMethod
-         * @param environment type of vault.
-         * @param formConfig UI configuration.
-         * @param isScreenshotsAllowed If true, checkout form will allow to make screenshots. Default is false.
-         * @param isRemoveCardOptionEnabled If true, user will be able to delete saved card.
-         */
         private fun create(
             context: Context,
             accessToken: String,
+            routeId: String,
             tenantId: String,
             paymentMethod: VGSCheckoutPaymentMethod.SavedCards,
             environment: VGSCheckoutEnvironment = VGSCheckoutEnvironment.Sandbox(),
@@ -397,6 +405,7 @@ class VGSCheckoutAddCardConfig internal constructor(
         ): VGSCheckoutCancellable {
             val config = VGSCheckoutAddCardConfig(
                 accessToken,
+                routeId,
                 tenantId,
                 environment,
                 VGSCheckoutPaymentRouteConfig(accessToken),

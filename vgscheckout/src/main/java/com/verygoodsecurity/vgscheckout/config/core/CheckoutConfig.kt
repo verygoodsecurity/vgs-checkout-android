@@ -18,9 +18,13 @@ import java.util.*
  *
  * @property id unique organization vault id.
  */
-abstract class CheckoutConfig internal constructor(internal val id: String) : Parcelable {
+abstract class CheckoutConfig : Parcelable {
 
     internal abstract val baseUrl: String
+
+    internal abstract val routeId: String
+
+    internal abstract val id: String
 
     /**
      * Type of vault.
