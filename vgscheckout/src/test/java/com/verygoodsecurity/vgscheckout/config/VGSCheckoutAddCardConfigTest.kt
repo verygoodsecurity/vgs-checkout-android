@@ -10,7 +10,9 @@ class VGSCheckoutAddCardConfigTest {
     @Test
     fun createAddCardConfig_validJWT_objectCreated() {
         // Act
-        val config = VGSCheckoutAddCardConfig(BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS, "")
+        val config = VGSCheckoutAddCardConfig.Builder("")
+            .setAccessToken(BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS)
+            .build()
         // Assert
         assertNotNull(config)
     }
@@ -18,7 +20,9 @@ class VGSCheckoutAddCardConfigTest {
     @Test
     fun createAddCardConfig_envSandboxEnabledByDefault() {
         // Act
-        val config = VGSCheckoutAddCardConfig(BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS, "")
+        val config = VGSCheckoutAddCardConfig.Builder("")
+            .setAccessToken(BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS)
+            .build()
         // Assert
         assert(config.environment is VGSCheckoutEnvironment.Sandbox)
     }
@@ -26,7 +30,9 @@ class VGSCheckoutAddCardConfigTest {
     @Test
     fun createAddCardConfig_screenshotsDisabledByDefault() {
         // Act
-        val config = VGSCheckoutAddCardConfig(BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS, "")
+        val config = VGSCheckoutAddCardConfig.Builder("")
+            .setAccessToken(BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS)
+            .build()
         // Assert
         assertFalse(config.isScreenshotsAllowed)
     }

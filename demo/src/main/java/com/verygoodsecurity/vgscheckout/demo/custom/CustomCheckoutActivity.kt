@@ -90,7 +90,7 @@ class CustomCheckoutActivity : BaseActivity(R.layout.activity_custom_checkout),
 
         // Create route config, specify path, extra data, headers etc.
         builder.setPath(PATH)
-            .setRequestPayload(
+            .setPayload(
                 linkedMapOf(
                     EXTRA_DATA_ROOT to mapOf(
                         EXTRA_DATA_CARD_DATA to arrayOf(

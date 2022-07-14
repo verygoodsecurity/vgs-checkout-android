@@ -1,6 +1,7 @@
 package com.verygoodsecurity.vgscheckout
 
 import com.verygoodsecurity.vgscheckout.collect.core.Environment
+import com.verygoodsecurity.vgscheckout.config.core.OrchestrationConfig
 import com.verygoodsecurity.vgscheckout.networking.*
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -9,7 +10,8 @@ import java.util.regex.Pattern
 
 class UrlExtensionTest {
     companion object {
-        private const val URL_REGEX = "^(https:\\/\\/)+[a-zA-Z0-9]+[.]+((live|sandbox|LIVE|SANDBOX)+((-)+([a-zA-Z0-9]+)|)+)+[.](verygoodproxy.com)\$"
+        private const val URL_REGEX =
+            "^(https:\\/\\/)+[a-zA-Z0-9]+[.]+((live|sandbox|LIVE|SANDBOX)+((-)+([a-zA-Z0-9]+)|)+)+[.](verygoodproxy.com)\$"
     }
 
     @Test
@@ -36,6 +38,7 @@ class UrlExtensionTest {
         val testUrl7 = "tnt?com"
         assertFalse(testUrl7.isTenantIdValid())
     }
+
     @Test
     fun test_is_tennantId_valid() {
         val testUrl1 = "tntdldf"
@@ -73,20 +76,20 @@ class UrlExtensionTest {
 
     @Test
     fun test_environment_sandbox_by_default() {
-        val url = "abc".setupURL(Environment.SANDBOX.rawValue, false)
+        val url = "abc".setupURL(Environment.SANDBOX.rawValue)
         assertTrue(url.contains("sandbox"))
     }
 
     @Test
     fun test_environment_live_by_default() {
-        val url = "ab2c".setupURL(Environment.LIVE.rawValue, false)
+        val url = "ab2c".setupURL(Environment.LIVE.rawValue)
         assertTrue(url.contains("live"))
     }
 
     @Test
     fun test_url_sandbox() {
         val s = "tnt234mm"
-        val url = s.setupURL(Environment.SANDBOX.rawValue, false)
+        val url = s.setupURL(Environment.SANDBOX.rawValue)
 
         assertTrue(Pattern.compile(URL_REGEX).matcher(url).matches())
     }
@@ -94,7 +97,7 @@ class UrlExtensionTest {
     @Test
     fun test_url_live() {
         val s = "1239f3hf"
-        val url = s.setupURL(Environment.LIVE.rawValue, false)
+        val url = s.setupURL(Environment.LIVE.rawValue)
 
         assertTrue(Pattern.compile(URL_REGEX).matcher(url).matches())
     }
@@ -102,7 +105,7 @@ class UrlExtensionTest {
     @Test
     fun test_setup_url_sandbox() {
         val s = "tnt234mm"
-        val url = s.setupURL(Environment.SANDBOX.rawValue, false)
+        val url = s.setupURL(Environment.SANDBOX.rawValue)
 
         assertTrue(url.isUrlValid())
     }
@@ -110,7 +113,7 @@ class UrlExtensionTest {
     @Test
     fun test_setup_url_live() {
         val s = "123456"
-        val url = s.setupURL(Environment.LIVE.rawValue, false)
+        val url = s.setupURL(Environment.LIVE.rawValue)
 
         assertTrue(url.isUrlValid())
     }
@@ -118,9 +121,12 @@ class UrlExtensionTest {
     @Test
     fun test_setup_url_payment() {
         val s = "tnt234mm"
-        val url = s.setupURL(Environment.LIVE.rawValue, true)
+        val defaultUrl = s.setupURL(Environment.LIVE.rawValue)
+        assertFalse(defaultUrl.contains(OrchestrationConfig.PAYMENT_URL_ROUTE_ID))
 
-        assertTrue(url.contains(PAYMENT_URL_ROUTE_ID))
+        val paymentUrl =
+            s.setupURL(Environment.LIVE.rawValue, OrchestrationConfig.PAYMENT_URL_ROUTE_ID)
+        assertTrue(paymentUrl.contains(OrchestrationConfig.PAYMENT_URL_ROUTE_ID))
     }
 
     @Test
@@ -151,44 +157,44 @@ class UrlExtensionTest {
     @Test
     fun test_full_live_url() {
         val tennant = "acv12das"
-        val url0 = tennant.setupURL("live", false)
+        val url0 = tennant.setupURL("live")
         assertTrue(Pattern.compile(URL_REGEX).matcher(url0).matches())
 
-        val url1 = tennant.setupURL("live-", false)
+        val url1 = tennant.setupURL("live-")
         assertFalse(Pattern.compile(URL_REGEX).matcher(url1).matches())
 
-        val url2 = tennant.setupURL("live-eu", false)
+        val url2 = tennant.setupURL("live-eu")
         assertTrue(Pattern.compile(URL_REGEX).matcher(url2).matches())
 
-        val url3 = tennant.setupURL("live-eu-", false)
+        val url3 = tennant.setupURL("live-eu-")
         assertFalse(Pattern.compile(URL_REGEX).matcher(url3).matches())
 
-        val url4 = tennant.setupURL("live-eu-123", false)
+        val url4 = tennant.setupURL("live-eu-123")
         assertTrue(Pattern.compile(URL_REGEX).matcher(url4).matches())
 
-        val url5 = tennant.setupURL("LIVE-UA-1", false)
+        val url5 = tennant.setupURL("LIVE-UA-1")
         assertTrue(Pattern.compile(URL_REGEX).matcher(url5).matches())
     }
 
     @Test
     fun test_full_sandbox_url() {
         val tennant = "acv12das"
-        val url0 = tennant.setupURL("sandbox", false)
+        val url0 = tennant.setupURL("sandbox")
         assertTrue(Pattern.compile(URL_REGEX).matcher(url0).matches())
 
-        val url1 = tennant.setupURL("sandbox-", false)
+        val url1 = tennant.setupURL("sandbox-")
         assertFalse(Pattern.compile(URL_REGEX).matcher(url1).matches())
 
-        val url2 = tennant.setupURL("sandbox-eu", false)
+        val url2 = tennant.setupURL("sandbox-eu")
         assertTrue(Pattern.compile(URL_REGEX).matcher(url2).matches())
 
-        val url3 = tennant.setupURL("sandbox-eu-", false)
+        val url3 = tennant.setupURL("sandbox-eu-")
         assertFalse(Pattern.compile(URL_REGEX).matcher(url3).matches())
 
-        val url4 = tennant.setupURL("sandbox-eu-123", false)
+        val url4 = tennant.setupURL("sandbox-eu-123")
         assertTrue(Pattern.compile(URL_REGEX).matcher(url4).matches())
 
-        val url5 = tennant.setupURL("SANDBOX-EU-1", false)
+        val url5 = tennant.setupURL("SANDBOX-EU-1")
         assertTrue(Pattern.compile(URL_REGEX).matcher(url5).matches())
     }
 }

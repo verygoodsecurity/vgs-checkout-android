@@ -26,7 +26,7 @@ internal fun String.setupLocalhostURL(port: Int?): String {
 }
 
 /** @suppress */
-internal fun String.setupURL(env: String, routeId: String?): String {
+internal fun String.setupURL(env: String, routeId: String? = null): String {
     return when {
         this.isEmpty() || !isTenantIdValid() -> {
             VGSCheckoutLogger.warn(message = "Vault ID is not valid")

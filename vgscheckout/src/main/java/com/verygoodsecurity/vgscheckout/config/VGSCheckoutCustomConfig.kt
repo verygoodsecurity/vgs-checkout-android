@@ -397,7 +397,7 @@ class VGSCheckoutCustomConfig internal constructor(
          *
          * @param data An extra request payload data.
          */
-        fun setRequestPayload(data: Map<String, Any>): Builder {
+        fun setPayload(data: Map<String, Any>): Builder {
             extraData = data
             return this
         }

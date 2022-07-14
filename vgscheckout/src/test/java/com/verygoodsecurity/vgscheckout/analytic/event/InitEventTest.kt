@@ -12,7 +12,8 @@ class InitEventTest {
     @Test
     fun getData_custom() {
         // Arrange
-        val event = InitEvent(InitEvent.ConfigType.CUSTOM, VGSCheckoutCustomConfig(ID))
+        val config = VGSCheckoutCustomConfig.Builder(ID).build()
+        val event = InitEvent(InitEvent.ConfigType.CUSTOM, config)
         // Act
         val data = event.getData(ID, FORM_ID, ENVIRONMENT)
         // Assert
@@ -24,7 +25,8 @@ class InitEventTest {
     @Test
     fun getData_payout() {
         // Arrange
-        val event = InitEvent(InitEvent.ConfigType.PAYOPT, VGSCheckoutCustomConfig(ID))
+        val config = VGSCheckoutCustomConfig.Builder(ID).build()
+        val event = InitEvent(InitEvent.ConfigType.PAYOPT, config)
         // Act
         val data = event.getData(ID, FORM_ID, ENVIRONMENT)
         // Assert
