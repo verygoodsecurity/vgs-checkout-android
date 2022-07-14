@@ -261,7 +261,7 @@ class VGSCheckoutPaymentConfig internal constructor(
          * @param visibility defines if input field should be visible to user.
          */
         fun setOptionalAddressOptions(
-            visibility: VGSCheckoutFieldVisibility = VGSCheckoutFieldVisibility.VISIBLE
+            visibility: VGSCheckoutFieldVisibility
         ): Builder {
             optionalAddressFieldVisibility = visibility
             return this
@@ -273,7 +273,7 @@ class VGSCheckoutPaymentConfig internal constructor(
          * @param visibility defines if input field should be visible to user.
          */
         fun setPostalCodeOptions(
-            visibility: VGSCheckoutFieldVisibility = VGSCheckoutFieldVisibility.VISIBLE
+            visibility: VGSCheckoutFieldVisibility
         ): Builder {
             postalCodeFieldVisibility = visibility
             return this
@@ -331,6 +331,22 @@ class VGSCheckoutPaymentConfig internal constructor(
                 isScreenshotsAllowed,
                 isRemoveCardOptionEnabled,
                 callback
+            )
+        }
+
+        @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+        internal fun build(): VGSCheckoutPaymentConfig {
+            val formConfig = buildFormConfig()
+            return VGSCheckoutPaymentConfig(
+                accessToken,
+                routeId,
+                tenantId,
+                environment,
+                VGSCheckoutPaymentRouteConfig(accessToken),
+                formConfig,
+                isScreenshotsAllowed,
+                isRemoveCardOptionEnabled,
+                false
             )
         }
     }
