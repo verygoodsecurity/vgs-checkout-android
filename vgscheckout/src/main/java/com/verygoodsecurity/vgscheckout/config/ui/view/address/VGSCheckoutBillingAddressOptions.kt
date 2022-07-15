@@ -6,6 +6,7 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.VGSChecko
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.city.VGSCheckoutCityOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.code.VGSCheckoutPostalCodeOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.country.VGSCheckoutCountryOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.core.VGSCheckoutFieldVisibility
 import kotlinx.parcelize.Parcelize
 
 /**
@@ -26,4 +27,14 @@ class VGSCheckoutBillingAddressOptions internal constructor(
     val optionalAddressOptions: VGSCheckoutOptionalAddressOptions,
     val postalCodeOptions: VGSCheckoutPostalCodeOptions,
     val visibility: VGSCheckoutBillingAddressVisibility
-) : Parcelable
+) : Parcelable {
+
+    fun isVisible(): Boolean {
+        return visibility == VGSCheckoutBillingAddressVisibility.VISIBLE &&
+                (countryOptions.visibility == VGSCheckoutFieldVisibility.VISIBLE ||
+                        cityOptions.visibility == VGSCheckoutFieldVisibility.VISIBLE ||
+                        addressOptions.visibility == VGSCheckoutFieldVisibility.VISIBLE ||
+                        optionalAddressOptions.visibility == VGSCheckoutFieldVisibility.VISIBLE ||
+                        postalCodeOptions.visibility == VGSCheckoutFieldVisibility.VISIBLE)
+    }
+}
