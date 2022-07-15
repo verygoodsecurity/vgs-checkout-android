@@ -7,26 +7,26 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.address.city.CityOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.code.PostalCodeOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.core.CheckoutBillingAddressOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.country.CountryOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.CardHolderOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.CardNumberOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.VGSCheckoutCardHolderOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.VGSCheckoutCardNumberOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.core.CheckoutCardOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.CVCOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.ExpirationDateOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.VGSCheckoutCVCOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.VGSCheckoutExpirationDateOptions
 
 //region Helper val's for quicker access to nested objects
 internal val CheckoutConfig.cardOptions: CheckoutCardOptions
     get() = this.formConfig.cardOptions
 
-internal val CheckoutConfig.cardHolderOptions: CardHolderOptions
+internal val CheckoutConfig.cardHolderOptions: VGSCheckoutCardHolderOptions
     get() = this.formConfig.cardOptions.cardHolderOptions
 
-internal val CheckoutConfig.cardNumberOptions: CardNumberOptions
+internal val CheckoutConfig.cardNumberOptions: VGSCheckoutCardNumberOptions
     get() = this.formConfig.cardOptions.cardNumberOptions
 
-internal val CheckoutConfig.expiryOptions: ExpirationDateOptions
+internal val CheckoutConfig.expiryOptions: VGSCheckoutExpirationDateOptions
     get() = this.formConfig.cardOptions.expirationDateOptions
 
-internal val CheckoutConfig.cvcOptions: CVCOptions
+internal val CheckoutConfig.cvcOptions: VGSCheckoutCVCOptions
     get() = this.formConfig.cardOptions.cvcOptions
 
 internal val CheckoutConfig.billingAddressOptions: CheckoutBillingAddressOptions

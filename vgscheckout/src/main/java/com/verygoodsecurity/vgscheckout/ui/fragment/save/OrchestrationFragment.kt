@@ -26,10 +26,10 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.OptionalA
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.city.CityOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.code.PostalCodeOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.country.CountryOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.CardHolderOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.CardNumberOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.CVCOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.ExpirationDateOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.VGSCheckoutCardHolderOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.VGSCheckoutCardNumberOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.VGSCheckoutCVCOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.VGSCheckoutExpirationDateOptions
 import com.verygoodsecurity.vgscheckout.exception.internal.NoInternetConnectionException
 import com.verygoodsecurity.vgscheckout.networking.command.AddCardCommand
 import com.verygoodsecurity.vgscheckout.ui.fragment.core.BaseFragment
@@ -128,7 +128,7 @@ internal abstract class OrchestrationFragment<T : CheckoutConfig> : BaseFragment
         initSecurityCodeView(config.cvcOptions)
     }
 
-    private fun initCardHolderView(options: CardHolderOptions) {
+    private fun initCardHolderView(options: VGSCheckoutCardHolderOptions) {
         if (!options.isVisible()) {
             binding.cardHolderTil.gone()
             return
@@ -137,7 +137,7 @@ internal abstract class OrchestrationFragment<T : CheckoutConfig> : BaseFragment
         binding.cardHolderEt.setAnalyticsName("cardHolder")
     }
 
-    private fun initCardNumberView(options: CardNumberOptions) {
+    private fun initCardNumberView(options: VGSCheckoutCardNumberOptions) {
         binding.cardNumberEt.tag = options.fieldName
         binding.cardNumberEt.setAnalyticsName("cardNumber")
         binding.cardNumberEt.setValidCardBrands(options.cardBrands)
@@ -147,7 +147,7 @@ internal abstract class OrchestrationFragment<T : CheckoutConfig> : BaseFragment
         binding.cardNumberEt.dependentField = binding.securityCodeEt
     }
 
-    private fun initExpirationDateView(options: ExpirationDateOptions) {
+    private fun initExpirationDateView(options: VGSCheckoutExpirationDateOptions) {
         binding.expirationDateEt.inputType =
             InputType.TYPE_CLASS_TEXT or InputType.TYPE_DATETIME_VARIATION_DATE
         binding.expirationDateEt.tag = options.fieldName
@@ -158,7 +158,7 @@ internal abstract class OrchestrationFragment<T : CheckoutConfig> : BaseFragment
         binding.expirationDateEt.setFieldDataSerializer(options.dateSeparateSerializer?.toCollectDateSeparateSerializer())
     }
 
-    private fun initSecurityCodeView(options: CVCOptions) {
+    private fun initSecurityCodeView(options: VGSCheckoutCVCOptions) {
         binding.securityCodeEt.tag = options.fieldName
         binding.securityCodeEt.setAnalyticsName("cvc")
         binding.securityCodeEt.setPreviewIconGravity(CVCInputField.PreviewIconGravity.START)

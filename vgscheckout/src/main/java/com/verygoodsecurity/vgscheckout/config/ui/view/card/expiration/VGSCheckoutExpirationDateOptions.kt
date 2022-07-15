@@ -2,6 +2,7 @@ package com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration
 
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.model.VGSDateSeparateSerializer
 import com.verygoodsecurity.vgscheckout.config.ui.view.core.VGSCheckoutFieldVisibility
+import com.verygoodsecurity.vgscheckout.config.ui.view.core.ViewOptions
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 
@@ -16,10 +17,10 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 class VGSCheckoutExpirationDateOptions constructor(
     override val fieldName: String,
-    override val dateSeparateSerializer: VGSDateSeparateSerializer?,
-    override val inputFormatRegex: String,
-    override val outputFormatRegex: String
-) : ExpirationDateOptions() {
+    val dateSeparateSerializer: VGSDateSeparateSerializer?,
+    val inputFormatRegex: String,
+    val outputFormatRegex: String
+) : ViewOptions() {
 
     /**
      *  Defines if input field should be visible to user.

@@ -1,6 +1,7 @@
 package com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc
 
 import com.verygoodsecurity.vgscheckout.config.ui.view.core.VGSCheckoutFieldVisibility
+import com.verygoodsecurity.vgscheckout.config.ui.view.core.ViewOptions
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 
@@ -13,8 +14,8 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 class VGSCheckoutCVCOptions constructor(
     override val fieldName: String,
-    override val isIconHidden: Boolean,
-) : CVCOptions() {
+    val isIconHidden: Boolean,
+) : ViewOptions() {
 
     /**
      *  Defines if input field should be visible to user.
