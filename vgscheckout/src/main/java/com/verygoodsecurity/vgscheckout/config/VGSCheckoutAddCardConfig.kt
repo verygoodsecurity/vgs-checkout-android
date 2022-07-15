@@ -10,7 +10,7 @@ import com.verygoodsecurity.vgscheckout.config.core.OrchestrationConfig
 import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutPaymentRouteConfig
 import com.verygoodsecurity.vgscheckout.config.payment.VGSCheckoutPaymentMethod
 import com.verygoodsecurity.vgscheckout.config.payment.VGSCheckoutPaymentMethod.SavedCards.Companion.MAX_CARDS_SIZE
-import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutAddCardFormConfig
+import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutPaymentFormConfig
 import com.verygoodsecurity.vgscheckout.config.ui.core.VGSCheckoutFormValidationBehaviour
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillingAddressVisibility
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutPaymentBillingAddressOptions
@@ -46,7 +46,7 @@ class VGSCheckoutAddCardConfig internal constructor(
     override val id: String,
     override val environment: VGSCheckoutEnvironment,
     override val routeConfig: VGSCheckoutPaymentRouteConfig,
-    override val formConfig: VGSCheckoutAddCardFormConfig,
+    override val formConfig: VGSCheckoutPaymentFormConfig,
     override val isScreenshotsAllowed: Boolean,
     override val isRemoveCardOptionEnabled: Boolean,
     createdFromParcel: Boolean
@@ -70,7 +70,7 @@ class VGSCheckoutAddCardConfig internal constructor(
         parcel.readString()!!,
         parcel.readParcelable(VGSCheckoutEnvironment::class.java.classLoader)!!,
         parcel.readParcelable(VGSCheckoutPaymentRouteConfig::class.java.classLoader)!!,
-        parcel.readParcelable(VGSCheckoutAddCardFormConfig::class.java.classLoader)!!,
+        parcel.readParcelable(VGSCheckoutPaymentFormConfig::class.java.classLoader)!!,
         parcel.readInt() == 1,
         parcel.readInt() == 1,
         true
@@ -101,7 +101,7 @@ class VGSCheckoutAddCardConfig internal constructor(
         routeId: String,
         tenantId: String,
         environment: VGSCheckoutEnvironment = VGSCheckoutEnvironment.Sandbox(),
-        formConfig: VGSCheckoutAddCardFormConfig = VGSCheckoutAddCardFormConfig(),
+        formConfig: VGSCheckoutPaymentFormConfig = VGSCheckoutPaymentFormConfig(),
         isScreenshotsAllowed: Boolean = false
     ) : this(
         accessToken,
@@ -321,8 +321,8 @@ class VGSCheckoutAddCardConfig internal constructor(
             return this
         }
 
-        private fun buildFormConfig(): VGSCheckoutAddCardFormConfig {
-            return VGSCheckoutAddCardFormConfig(
+        private fun buildFormConfig(): VGSCheckoutPaymentFormConfig {
+            return VGSCheckoutPaymentFormConfig(
                 VGSCheckoutPaymentBillingAddressOptions(
                     VGSCheckoutPaymentCountryOptions(
                         validCountries,
@@ -398,7 +398,7 @@ class VGSCheckoutAddCardConfig internal constructor(
             tenantId: String,
             paymentMethod: VGSCheckoutPaymentMethod.SavedCards,
             environment: VGSCheckoutEnvironment = VGSCheckoutEnvironment.Sandbox(),
-            formConfig: VGSCheckoutAddCardFormConfig = VGSCheckoutAddCardFormConfig(),
+            formConfig: VGSCheckoutPaymentFormConfig = VGSCheckoutPaymentFormConfig(),
             isScreenshotsAllowed: Boolean = false,
             isRemoveCardOptionEnabled: Boolean = true,
             callback: VGSCheckoutConfigInitCallback<VGSCheckoutAddCardConfig>? = null
