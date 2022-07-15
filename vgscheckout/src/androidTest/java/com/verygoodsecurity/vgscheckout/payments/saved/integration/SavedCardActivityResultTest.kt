@@ -16,7 +16,6 @@ import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.util.AccessTokenHelper
 import com.verygoodsecurity.vgscheckout.VGSCheckoutConfigInitCallback
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
-import com.verygoodsecurity.vgscheckout.config.payment.VGSCheckoutPaymentMethod
 import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
 import com.verygoodsecurity.vgscheckout.model.*
 import com.verygoodsecurity.vgscheckout.ui.SaveCardActivity
@@ -58,21 +57,20 @@ class SavedCardActivityResultTest {
     private fun initializeSavedCardConfig() = CountDownLatch(1).runCatching {
         val finID = addCardPaymentInstrument(context, token)
         var savedConfig: VGSCheckoutAddCardConfig? = null
-        VGSCheckoutAddCardConfig.create(
-            context,
-            token,
-            BuildConfig.VAULT_ID,
-            VGSCheckoutPaymentMethod.SavedCards(arrayListOf(finID)),
-            isScreenshotsAllowed = true,
-            callback = object : VGSCheckoutConfigInitCallback<VGSCheckoutAddCardConfig> {
+
+        VGSCheckoutAddCardConfig.Builder(BuildConfig.VAULT_ID)
+            .setAccessToken(token)
+            .setSavedCardIds(arrayListOf(finID))
+            .setIsScreenshotsAllowed(true)
+            .build(context, object : VGSCheckoutConfigInitCallback<VGSCheckoutAddCardConfig> {
                 override fun onSuccess(config: VGSCheckoutAddCardConfig) {
                     savedConfig = config
                     countDown()
                 }
 
                 override fun onFailure(exception: VGSCheckoutException) {}
-            }
-        )
+            })
+
         await()
 
         Assert.assertNotNull(savedConfig)
