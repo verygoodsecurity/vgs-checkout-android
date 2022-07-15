@@ -19,11 +19,11 @@ import kotlinx.parcelize.Parcelize
  * @param visibility defines if address section UI should be visible to user.
  */
 @Parcelize
-class VGSCheckoutBillingAddressOptions @JvmOverloads constructor(
-    override val countryOptions: VGSCheckoutCountryOptions = VGSCheckoutCountryOptions(),
-    override val cityOptions: VGSCheckoutCityOptions = VGSCheckoutCityOptions(),
-    override val addressOptions: VGSCheckoutAddressOptions = VGSCheckoutAddressOptions(),
-    override val optionalAddressOptions: VGSCheckoutOptionalAddressOptions = VGSCheckoutOptionalAddressOptions(),
-    override val postalCodeOptions: VGSCheckoutPostalCodeOptions = VGSCheckoutPostalCodeOptions(),
-    override val visibility: VGSCheckoutBillingAddressVisibility = VGSCheckoutBillingAddressVisibility.HIDDEN
+class VGSCheckoutBillingAddressOptions constructor(
+    override val countryOptions: VGSCheckoutCountryOptions,
+    override val cityOptions: VGSCheckoutCityOptions,
+    override val addressOptions: VGSCheckoutAddressOptions,
+    override val optionalAddressOptions: VGSCheckoutOptionalAddressOptions,
+    override val postalCodeOptions: VGSCheckoutPostalCodeOptions,
+    override val visibility: VGSCheckoutBillingAddressVisibility
 ) : CheckoutBillingAddressOptions()

@@ -40,10 +40,10 @@ import kotlinx.parcelize.RawValue
 class VGSCheckoutCustomConfig internal constructor(
     override val id: String,
     override val routeId: String,
-    override val environment: VGSCheckoutEnvironment = VGSCheckoutEnvironment.Sandbox(),
-    override val routeConfig: VGSCheckoutCustomRouteConfig = VGSCheckoutCustomRouteConfig(),
-    override val formConfig: VGSCheckoutFormConfig = VGSCheckoutFormConfig(),
-    override val isScreenshotsAllowed: Boolean = false,
+    override val environment: VGSCheckoutEnvironment,
+    override val routeConfig: VGSCheckoutCustomRouteConfig,
+    override val formConfig: VGSCheckoutFormConfig,
+    override val isScreenshotsAllowed: Boolean,
 ) : CheckoutConfig() {
 
     @IgnoredOnParcel
@@ -56,25 +56,41 @@ class VGSCheckoutCustomConfig internal constructor(
         private var environment: VGSCheckoutEnvironment = VGSCheckoutEnvironment.Sandbox()
         private var isScreenshotsAllowed = false
 
-        private var cardNumberOptions: VGSCheckoutCardNumberOptions = VGSCheckoutCardNumberOptions()
-        private var cardHolderOptions: VGSCheckoutCardHolderOptions = VGSCheckoutCardHolderOptions()
-        private var cvcOptions: VGSCheckoutCVCOptions = VGSCheckoutCVCOptions()
-        private var expirationDateOptions: VGSCheckoutExpirationDateOptions =
-            VGSCheckoutExpirationDateOptions()
+        private var expirationDateFieldName = ""
+        private var expirationDateFieldSeparateSerializer: VGSDateSeparateSerializer? = null
+        private var expirationDateFieldInputFormatRegex = DATE_FORMAT
+        private var expirationDateFieldOutputFormatRegex = DATE_FORMAT
 
-        private var countryOptions: VGSCheckoutCountryOptions = VGSCheckoutCountryOptions()
-        private var cityOptions: VGSCheckoutCityOptions = VGSCheckoutCityOptions()
-        private var addressOptions: VGSCheckoutAddressOptions = VGSCheckoutAddressOptions()
-        private var optionalAddressOptions: VGSCheckoutOptionalAddressOptions =
-            VGSCheckoutOptionalAddressOptions()
-        private var postalCodeOptions: VGSCheckoutPostalCodeOptions = VGSCheckoutPostalCodeOptions()
+        private var cardNumberFieldName = ""
+        private var isIconCardNumberHidden = false
+
+        private var cvcFieldName = ""
+        private var isIconCVCHidden = false
+
+        private var cardHolderFieldName = ""
+        private var cardHolderFieldVisibility = VGSCheckoutFieldVisibility.VISIBLE
+
+        private var countryFieldName = ""
+        private var validCountries: List<String> = emptyList()
+        private var countryFieldVisibility = VGSCheckoutFieldVisibility.VISIBLE
+
+        private var cityFieldName = ""
+        private var cityFieldVisibility = VGSCheckoutFieldVisibility.VISIBLE
+
+        private var addressFieldName = ""
+        private var addressFieldVisibility = VGSCheckoutFieldVisibility.VISIBLE
+
+        private var optionalAddressFieldName = ""
+        private var optionalAddressFieldVisibility = VGSCheckoutFieldVisibility.VISIBLE
+
+        private var postalCodeFieldName = ""
+        private var postalCodeFieldVisibility = VGSCheckoutFieldVisibility.VISIBLE
+
         private var billingAddressVisibility = VGSCheckoutBillingAddressVisibility.HIDDEN
+        private var formValidationBehaviour = VGSCheckoutFormValidationBehaviour.ON_SUBMIT
+        private var saveCardOptionEnabled = false
 
-        private var formValidationBehaviour: VGSCheckoutFormValidationBehaviour =
-            VGSCheckoutFormValidationBehaviour.ON_SUBMIT
-        private var saveCardOptionEnabled: Boolean = false
-
-        private var path: String = ""
+        private var path = ""
         private var hostnamePolicy: VGSCheckoutHostnamePolicy = VGSCheckoutHostnamePolicy.Vault
         private var httpMethod: VGSCheckoutHttpMethod = VGSCheckoutHttpMethod.POST
         private var extraHeaders: Map<String, String> = emptyMap()
@@ -120,7 +136,8 @@ class VGSCheckoutCustomConfig internal constructor(
             fieldName: String,
             isIconHidden: Boolean = false
         ) = this.apply {
-            cardNumberOptions = VGSCheckoutCardNumberOptions(fieldName, isIconHidden)
+            cardNumberFieldName = fieldName
+            isIconCardNumberHidden = isIconHidden
         }
 
         /**
@@ -133,7 +150,8 @@ class VGSCheckoutCustomConfig internal constructor(
             fieldName: String,
             visibility: VGSCheckoutFieldVisibility = VGSCheckoutFieldVisibility.VISIBLE
         ) = this.apply {
-            cardHolderOptions = VGSCheckoutCardHolderOptions(fieldName, visibility)
+            cardHolderFieldName = fieldName
+            cardHolderFieldVisibility = visibility
         }
 
         /**
@@ -146,7 +164,8 @@ class VGSCheckoutCustomConfig internal constructor(
             fieldName: String,
             isIconHidden: Boolean = false
         ) = this.apply {
-            cvcOptions = VGSCheckoutCVCOptions(fieldName, isIconHidden)
+            cvcFieldName = fieldName
+            isIconCVCHidden = isIconHidden
         }
 
         /**
@@ -160,15 +179,13 @@ class VGSCheckoutCustomConfig internal constructor(
         fun setExpirationDateOptions(
             fieldName: String,
             dateSeparateSerializer: VGSDateSeparateSerializer? = null,
-            inputFormatRegex: String = VGSCheckoutExpirationDateOptions.DATE_FORMAT,
-            outputFormatRegex: String = VGSCheckoutExpirationDateOptions.DATE_FORMAT
+            inputFormatRegex: String = DATE_FORMAT,
+            outputFormatRegex: String = DATE_FORMAT
         ) = this.apply {
-            expirationDateOptions = VGSCheckoutExpirationDateOptions(
-                fieldName,
-                dateSeparateSerializer,
-                inputFormatRegex,
-                outputFormatRegex
-            )
+            expirationDateFieldName = fieldName
+            expirationDateFieldSeparateSerializer = dateSeparateSerializer
+            expirationDateFieldInputFormatRegex = inputFormatRegex
+            expirationDateFieldOutputFormatRegex = outputFormatRegex
         }
         //endregion
 
@@ -185,7 +202,9 @@ class VGSCheckoutCustomConfig internal constructor(
             visibility: VGSCheckoutFieldVisibility = VGSCheckoutFieldVisibility.VISIBLE,
             validCountries: List<String> = emptyList()
         ) = this.apply {
-            countryOptions = VGSCheckoutCountryOptions(fieldName, validCountries, visibility)
+            countryFieldName = fieldName
+            countryFieldVisibility = visibility
+            this.validCountries = validCountries
         }
 
         /**
@@ -198,7 +217,8 @@ class VGSCheckoutCustomConfig internal constructor(
             fieldName: String,
             visibility: VGSCheckoutFieldVisibility = VGSCheckoutFieldVisibility.VISIBLE
         ) = this.apply {
-            cityOptions = VGSCheckoutCityOptions(fieldName, visibility)
+            cityFieldName = fieldName
+            cityFieldVisibility = visibility
         }
 
         /**
@@ -211,7 +231,8 @@ class VGSCheckoutCustomConfig internal constructor(
             fieldName: String,
             visibility: VGSCheckoutFieldVisibility = VGSCheckoutFieldVisibility.VISIBLE
         ) = this.apply {
-            addressOptions = VGSCheckoutAddressOptions(fieldName, visibility)
+            addressFieldName = fieldName
+            addressFieldVisibility = visibility
         }
 
         /**
@@ -224,7 +245,8 @@ class VGSCheckoutCustomConfig internal constructor(
             fieldName: String,
             visibility: VGSCheckoutFieldVisibility = VGSCheckoutFieldVisibility.VISIBLE
         ) = this.apply {
-            optionalAddressOptions = VGSCheckoutOptionalAddressOptions(fieldName, visibility)
+            optionalAddressFieldName = fieldName
+            optionalAddressFieldVisibility = visibility
         }
 
         /**
@@ -237,7 +259,8 @@ class VGSCheckoutCustomConfig internal constructor(
             fieldName: String,
             visibility: VGSCheckoutFieldVisibility = VGSCheckoutFieldVisibility.VISIBLE
         ) = this.apply {
-            postalCodeOptions = VGSCheckoutPostalCodeOptions(fieldName, visibility)
+            postalCodeFieldName = fieldName
+            postalCodeFieldVisibility = visibility
         }
 
         /**
@@ -348,22 +371,55 @@ class VGSCheckoutCustomConfig internal constructor(
             )
         }
 
-        private fun buildCardOptions(): VGSCheckoutCardOptions = VGSCheckoutCardOptions(
-            cardNumberOptions,
-            cardHolderOptions,
-            cvcOptions,
-            expirationDateOptions
-        )
+        private fun buildCardOptions(): VGSCheckoutCardOptions {
+            return VGSCheckoutCardOptions(
+                VGSCheckoutCardNumberOptions(
+                    cardNumberFieldName,
+                    isIconCardNumberHidden
+                ),
+                VGSCheckoutCardHolderOptions(
+                    cardHolderFieldName,
+                    cardHolderFieldVisibility
+                ),
+                VGSCheckoutCVCOptions(
+                    cvcFieldName,
+                    isIconCVCHidden
+                ),
+                VGSCheckoutExpirationDateOptions(
+                    expirationDateFieldName,
+                    expirationDateFieldSeparateSerializer,
+                    expirationDateFieldInputFormatRegex,
+                    expirationDateFieldOutputFormatRegex
+                )
+            )
+        }
 
-        private fun buildBillingAddressOptions(): VGSCheckoutBillingAddressOptions =
-            VGSCheckoutBillingAddressOptions(
-                countryOptions,
-                cityOptions,
-                addressOptions,
-                optionalAddressOptions,
-                postalCodeOptions,
+        private fun buildBillingAddressOptions(): VGSCheckoutBillingAddressOptions {
+            return VGSCheckoutBillingAddressOptions(
+                VGSCheckoutCountryOptions(
+                    countryFieldName,
+                    validCountries,
+                    countryFieldVisibility
+                ),
+                VGSCheckoutCityOptions(
+                    cityFieldName,
+                    cityFieldVisibility
+                ),
+                VGSCheckoutAddressOptions(
+                    addressFieldName,
+                    addressFieldVisibility
+                ),
+                VGSCheckoutOptionalAddressOptions(
+                    optionalAddressFieldName,
+                    optionalAddressFieldVisibility
+                ),
+                VGSCheckoutPostalCodeOptions(
+                    postalCodeFieldName,
+                    postalCodeFieldVisibility
+                ),
                 billingAddressVisibility
             )
+        }
 
         private fun buildRouteConfig(): VGSCheckoutCustomRouteConfig {
             val requestOptions = VGSCheckoutCustomRequestOptions(
@@ -378,6 +434,11 @@ class VGSCheckoutCustomConfig internal constructor(
                 hostnamePolicy,
                 requestOptions
             )
+        }
+
+        companion object {
+
+            private const val DATE_FORMAT = "MM/yy"
         }
     }
 }

@@ -31,10 +31,9 @@ class VGSCheckoutCardNumberOptions internal constructor(
      * @param fieldName text to be used for data transfer to VGS proxy.
      * @param isIconHidden defines if card brand icon should be hidden.
      */
-    @JvmOverloads
     constructor(
-        fieldName: String = "",
-        isIconHidden: Boolean = false,
+        fieldName: String,
+        isIconHidden: Boolean,
     ) : this(
         fieldName,
         isIconHidden,

@@ -10,7 +10,7 @@ import kotlinx.parcelize.Parcelize
  * @param visibility defines if input field should be visible to user.
  */
 @Parcelize
-class VGSCheckoutAddressOptions @JvmOverloads constructor(
-    override val fieldName: String = "",
-    override val visibility: VGSCheckoutFieldVisibility = VGSCheckoutFieldVisibility.VISIBLE
+class VGSCheckoutAddressOptions constructor(
+    override val fieldName: String,
+    override val visibility: VGSCheckoutFieldVisibility
 ) : AddressOptions()

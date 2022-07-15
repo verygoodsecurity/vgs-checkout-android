@@ -15,10 +15,10 @@ import kotlinx.parcelize.Parcelize
  */
 @Parcelize
 class VGSCheckoutExpirationDateOptions constructor(
-    override val fieldName: String = "",
-    override val dateSeparateSerializer: VGSDateSeparateSerializer? = null,
-    override val inputFormatRegex: String = DATE_FORMAT,
-    override val outputFormatRegex: String = DATE_FORMAT
+    override val fieldName: String,
+    override val dateSeparateSerializer: VGSDateSeparateSerializer?,
+    override val inputFormatRegex: String,
+    override val outputFormatRegex: String
 ) : ExpirationDateOptions() {
 
     /**
@@ -26,9 +26,4 @@ class VGSCheckoutExpirationDateOptions constructor(
      */
     @IgnoredOnParcel
     override val visibility: VGSCheckoutFieldVisibility = VGSCheckoutFieldVisibility.VISIBLE
-
-    companion object {
-
-        internal const val DATE_FORMAT = "MM/yy"
-    }
 }

@@ -12,8 +12,8 @@ import kotlinx.parcelize.Parcelize
  */
 @Parcelize
 class VGSCheckoutCVCOptions constructor(
-    override val fieldName: String = "",
-    override val isIconHidden: Boolean = false,
+    override val fieldName: String,
+    override val isIconHidden: Boolean,
 ) : CVCOptions() {
 
     /**

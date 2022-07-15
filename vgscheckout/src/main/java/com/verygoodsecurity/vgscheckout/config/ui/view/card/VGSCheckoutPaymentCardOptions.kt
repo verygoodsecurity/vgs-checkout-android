@@ -7,6 +7,7 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.card.core.CheckoutCardOpt
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.VGSCheckoutCVCOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.VGSCheckoutExpirationDateOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.model.VGSDateSeparateSerializer
+import com.verygoodsecurity.vgscheckout.config.ui.view.core.VGSCheckoutFieldVisibility
 import kotlinx.parcelize.Parcelize
 
 /**
@@ -33,8 +34,8 @@ class VGSCheckoutPaymentCardOptions private constructor(
      */
     constructor() : this(
         VGSCheckoutCardNumberOptions(CARD_NUMBER_FIELD_NAME, false, VGSCheckoutCardBrand.BRANDS),
-        VGSCheckoutCardHolderOptions(CARD_HOLDER_FIELD_NAME),
-        VGSCheckoutCVCOptions(CVC_FIELD_NAME),
+        VGSCheckoutCardHolderOptions(CARD_HOLDER_FIELD_NAME, VGSCheckoutFieldVisibility.VISIBLE),
+        VGSCheckoutCVCOptions(CVC_FIELD_NAME, false),
         VGSCheckoutExpirationDateOptions(
             EXPIRY_FIELD_NAME,
             VGSDateSeparateSerializer(

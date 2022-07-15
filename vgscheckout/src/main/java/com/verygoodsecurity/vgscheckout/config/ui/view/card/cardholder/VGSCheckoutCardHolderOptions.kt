@@ -11,6 +11,6 @@ import kotlinx.parcelize.Parcelize
  */
 @Parcelize
 class VGSCheckoutCardHolderOptions constructor(
-    override val fieldName: String = "",
-    override val visibility: VGSCheckoutFieldVisibility = VGSCheckoutFieldVisibility.VISIBLE
+    override val fieldName: String,
+    override val visibility: VGSCheckoutFieldVisibility
 ) : CardHolderOptions()
