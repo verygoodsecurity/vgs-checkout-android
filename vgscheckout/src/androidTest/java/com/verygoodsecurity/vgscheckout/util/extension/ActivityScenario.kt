@@ -130,11 +130,12 @@ internal fun addCardPaymentInstrument(
     cvc: String = Constants.VALID_SECURITY_CODE
 ): String {
     val intent = Intent(context, SaveCardActivity::class.java).apply {
+        val config = VGSCheckoutAddCardConfig.Builder(BuildConfig.VAULT_ID)
+            .setAccessToken(token)
+            .build()
         putExtra(
             EXTRA_KEY_ARGS,
-            CheckoutResultContract.Args(
-                VGSCheckoutAddCardConfig(token, BuildConfig.VAULT_ID)
-            )
+            CheckoutResultContract.Args(config)
         )
     }
     ActivityScenario.launch<SaveCardActivity>(intent).use {

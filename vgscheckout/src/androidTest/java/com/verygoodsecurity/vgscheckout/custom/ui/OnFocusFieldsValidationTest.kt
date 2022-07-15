@@ -19,10 +19,8 @@ import com.verygoodsecurity.vgscheckout.Constants
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.view.internal.*
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
-import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutCustomFormConfig
 import com.verygoodsecurity.vgscheckout.config.ui.core.VGSCheckoutFormValidationBehaviour
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillingAddressVisibility
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutCustomBillingAddressOptions
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_ARGS
 import com.verygoodsecurity.vgscheckout.ui.CustomSaveCardActivity
@@ -43,18 +41,14 @@ class OnFocusFieldsValidationTest {
     private val context: Context = ApplicationProvider.getApplicationContext()
 
     private var intent = Intent(context, CustomSaveCardActivity::class.java).apply {
+        val config = VGSCheckoutCustomConfig.Builder(BuildConfig.VAULT_ID)
+            .setFormValidationBehaviour(VGSCheckoutFormValidationBehaviour.ON_FOCUS)
+            .setBillingAddressVisibility(VGSCheckoutBillingAddressVisibility.VISIBLE)
+            .setIsScreenshotsAllowed(true)
+            .build()
         putExtra(
             EXTRA_KEY_ARGS,
-            CheckoutResultContract.Args(VGSCheckoutCustomConfig(
-                vaultId = BuildConfig.VAULT_ID,
-                formConfig = VGSCheckoutCustomFormConfig(
-                    addressOptions = VGSCheckoutCustomBillingAddressOptions(
-                        visibility = VGSCheckoutBillingAddressVisibility.VISIBLE
-                    ),
-                    validationBehaviour = VGSCheckoutFormValidationBehaviour.ON_FOCUS
-                ),
-                isScreenshotsAllowed = true
-            ))
+            CheckoutResultContract.Args(config)
         )
     }
 

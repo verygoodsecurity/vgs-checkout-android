@@ -12,10 +12,11 @@ class RequestEventTest {
     @Test
     fun getData_successful() {
         // Arrange
+        val config = VGSCheckoutCustomConfig.Builder(ID).build()
         val event = RequestEvent(
             isSuccessFull = true,
             invalidFieldTypes = emptyList(),
-            VGSCheckoutCustomConfig(ID)
+            config
         )
         // Act
         val data = event.getData(ID, FORM_ID, ENVIRONMENT)
@@ -30,10 +31,11 @@ class RequestEventTest {
     fun getData_failed() {
         // Arrange
         val expectedInvalidField = listOf("test")
+        val config = VGSCheckoutCustomConfig.Builder(ID).build()
         val event = RequestEvent(
             isSuccessFull = false,
             invalidFieldTypes = expectedInvalidField,
-            VGSCheckoutCustomConfig(ID)
+            config
         )
         // Act
         val data = event.getData(ID, FORM_ID, ENVIRONMENT)

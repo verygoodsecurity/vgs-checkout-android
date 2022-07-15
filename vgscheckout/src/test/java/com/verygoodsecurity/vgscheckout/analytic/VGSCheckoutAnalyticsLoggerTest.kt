@@ -23,7 +23,8 @@ class VGSCheckoutAnalyticsLoggerTest {
     @Test
     fun log_analyticsEnabled_apiClientCalled() {
         // Arrange
-        val event = InitEvent(InitEvent.ConfigType.CUSTOM, VGSCheckoutCustomConfig(ID))
+        val config = VGSCheckoutCustomConfig.Builder(ID).build()
+        val event = InitEvent(InitEvent.ConfigType.CUSTOM, config)
         val httpRequestCaptor: ArgumentCaptor<HttpRequest> =
             ArgumentCaptor.forClass(HttpRequest::class.java)
         val callbackCaptor: ArgumentCaptor<(HttpResponse) -> Unit> =
@@ -41,7 +42,9 @@ class VGSCheckoutAnalyticsLoggerTest {
     fun log_analyticsDisabled_apiClientNotCalled() {
         // Arrange
         VGSCheckoutAnalyticsLogger.isAnalyticsEnabled = false
-        val event = InitEvent(InitEvent.ConfigType.CUSTOM, VGSCheckoutCustomConfig(ID))
+
+        val config = VGSCheckoutCustomConfig.Builder(ID).build()
+        val event = InitEvent(InitEvent.ConfigType.CUSTOM, config)
         val httpRequestCaptor: ArgumentCaptor<HttpRequest> =
             ArgumentCaptor.forClass(HttpRequest::class.java)
         val callbackCaptor: ArgumentCaptor<(HttpResponse) -> Unit> =

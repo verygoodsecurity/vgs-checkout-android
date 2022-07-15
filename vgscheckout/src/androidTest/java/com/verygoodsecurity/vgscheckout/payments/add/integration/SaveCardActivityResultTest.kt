@@ -17,7 +17,6 @@ import com.verygoodsecurity.vgscheckout.BuildConfig
 import com.verygoodsecurity.vgscheckout.Constants
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
-import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutAddCardFormConfig
 import com.verygoodsecurity.vgscheckout.model.*
 import com.verygoodsecurity.vgscheckout.ui.CustomSaveCardActivity
 import com.verygoodsecurity.vgscheckout.ui.SaveCardActivity
@@ -36,15 +35,13 @@ class SaveCardActivityResultTest {
     private val context: Context = ApplicationProvider.getApplicationContext()
 
     private val defaultIntent = Intent(context, SaveCardActivity::class.java).apply {
+        val config = VGSCheckoutAddCardConfig.Builder(BuildConfig.VAULT_ID)
+            .setAccessToken(BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS)
+            .setIsScreenshotsAllowed(true)
+            .build()
         putExtra(
             EXTRA_KEY_ARGS,
-            CheckoutResultContract.Args(
-                VGSCheckoutAddCardConfig(
-                    BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS,
-                    BuildConfig.VAULT_ID,
-                    isScreenshotsAllowed = true
-                )
-            )
+            CheckoutResultContract.Args(config)
         )
     }
 
@@ -136,15 +133,13 @@ class SaveCardActivityResultTest {
     @Test
     fun performPaymentOrchestration_saveCardOptionEnabled_default() {
         val intent = Intent(context, SaveCardActivity::class.java).apply {
+            val config = VGSCheckoutAddCardConfig.Builder(BuildConfig.VAULT_ID)
+                .setAccessToken(BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS)
+                .setIsScreenshotsAllowed(true)
+                .build()
             putExtra(
                 EXTRA_KEY_ARGS,
-                CheckoutResultContract.Args(
-                    VGSCheckoutAddCardConfig(
-                        BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS,
-                        BuildConfig.VAULT_ID,
-                        isScreenshotsAllowed = true
-                    )
-                )
+                CheckoutResultContract.Args(config)
             )
         }
         // Arrange
@@ -169,18 +164,14 @@ class SaveCardActivityResultTest {
     @Test
     fun performPaymentOrchestration_saveCardOptionEnabled_disable() {
         val intent = Intent(context, SaveCardActivity::class.java).apply {
+            val config = VGSCheckoutAddCardConfig.Builder(BuildConfig.VAULT_ID)
+                .setAccessToken(BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS)
+                .setIsScreenshotsAllowed(true)
+                .setIsSaveCardOptionVisible(true)
+                .build()
             putExtra(
                 EXTRA_KEY_ARGS,
-                CheckoutResultContract.Args(
-                    VGSCheckoutAddCardConfig(
-                        BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS,
-                        BuildConfig.VAULT_ID,
-                        formConfig = VGSCheckoutAddCardFormConfig(
-                            saveCardOptionEnabled = false
-                        ),
-                        isScreenshotsAllowed = true
-                    )
-                )
+                CheckoutResultContract.Args(config)
             )
         }
         // Arrange
@@ -205,15 +196,13 @@ class SaveCardActivityResultTest {
     @Test
     fun performPaymentOrchestration_saveCardOptionEnabled_deselectedByUser() {
         val intent = Intent(context, SaveCardActivity::class.java).apply {
+            val config = VGSCheckoutAddCardConfig.Builder(BuildConfig.VAULT_ID)
+                .setAccessToken(BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS)
+                .setIsScreenshotsAllowed(true)
+                .build()
             putExtra(
                 EXTRA_KEY_ARGS,
-                CheckoutResultContract.Args(
-                    VGSCheckoutAddCardConfig(
-                        BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS,
-                        BuildConfig.VAULT_ID,
-                        isScreenshotsAllowed = true
-                    )
-                )
+                CheckoutResultContract.Args(config)
             )
         }
         // Arrange

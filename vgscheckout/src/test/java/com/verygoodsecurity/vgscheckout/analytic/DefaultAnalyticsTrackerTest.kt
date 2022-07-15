@@ -38,9 +38,11 @@ class DefaultAnalyticsTrackerTest {
     @Test
     fun log_apiCalledWithCorrectData() {
         // Arrange
-        val tracker = DefaultAnalyticsTracker(ID, ENVIRONMENT, FORM_ID, mockHttpClient)
-        val event = InitEvent(InitEvent.ConfigType.CUSTOM, VGSCheckoutCustomConfig(ID))
+        val config = VGSCheckoutCustomConfig.Builder(ID).build()
+        val event = InitEvent(InitEvent.ConfigType.CUSTOM, config)
         val payload = event.getData(ID, FORM_ID, ENVIRONMENT).toJSON().toString().toBase64()
+
+        val tracker = DefaultAnalyticsTracker(ID, ENVIRONMENT, FORM_ID, mockHttpClient)
         val expectedNetworkRequest = HttpRequest(
             method = HttpMethod.POST,
             url = "https://vgs-collect-keeper.apps.verygood.systems/vgs",

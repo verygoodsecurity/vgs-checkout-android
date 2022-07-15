@@ -22,12 +22,9 @@ import com.verygoodsecurity.vgscheckout.BuildConfig
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
-import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutPaymentRouteConfig
-import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutAddCardFormConfig
 import com.verygoodsecurity.vgscheckout.model.Card
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_ARGS
-import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
 import com.verygoodsecurity.vgscheckout.ui.SaveCardActivity
 import com.verygoodsecurity.vgscheckout.ui.core.BaseCheckoutActivity
 import com.verygoodsecurity.vgscheckout.ui.fragment.method.SelectPaymentMethodFragment
@@ -199,16 +196,13 @@ class SelectPaymentMethodFragmentTest {
     private fun getConfigFixture(
         cards: List<Card>,
         isRemoveCardOptionEnabled: Boolean
-    ) = VGSCheckoutAddCardConfig(
-        "",
-        BuildConfig.VAULT_ID,
-        VGSCheckoutEnvironment.Sandbox(),
-        VGSCheckoutPaymentRouteConfig(""),
-        VGSCheckoutAddCardFormConfig(),
-        isScreenshotsAllowed = true,
-        isRemoveCardOptionEnabled = isRemoveCardOptionEnabled,
-        createdFromParcel = false
-    ).apply { savedCards = cards }
+    ) = VGSCheckoutAddCardConfig.Builder(BuildConfig.VAULT_ID)
+        .setAccessToken("")
+        .setIsScreenshotsAllowed(true)
+        .setIsRemoveCardOptionEnabled(isRemoveCardOptionEnabled)
+        .build().apply {
+            savedCards = cards
+        }
 
     private fun getCardsFixtures(): List<Card> {
         val result = mutableListOf<Card>()

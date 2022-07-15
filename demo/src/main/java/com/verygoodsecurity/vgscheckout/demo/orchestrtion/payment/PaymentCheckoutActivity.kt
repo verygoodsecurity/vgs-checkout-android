@@ -2,6 +2,7 @@ package com.verygoodsecurity.vgscheckout.demo.orchestrtion.payment
 
 import androidx.preference.PreferenceManager
 import com.verygoodsecurity.vgscheckout.VGSCheckoutConfigInitCallback
+import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutPaymentConfig
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.config.payment.VGSCheckoutPaymentMethod
@@ -26,37 +27,40 @@ class PaymentCheckoutActivity : OrchestrationCheckoutActivity() {
         callback: (config: CheckoutConfig) -> Unit
     ) {
         val preferences = PreferenceManager.getDefaultSharedPreferences(this)
-        val formConfig = VGSCheckoutPaymentFormConfig(
-            VGSCheckoutPaymentBillingAddressOptions(
-                VGSCheckoutPaymentCountryOptions(
-                    visibility = preferences.getFieldVisibility(R.string.setting_key_country_visible)
-                ),
-                VGSCheckoutPaymentCityOptions(preferences.getFieldVisibility(R.string.setting_key_city_visible)),
-                VGSCheckoutPaymentAddressOptions(preferences.getFieldVisibility(R.string.setting_key_address_visible)),
-                VGSCheckoutPaymentOptionalAddressOptions(preferences.getFieldVisibility(R.string.setting_key_optional_address_visible)),
-                VGSCheckoutPaymentPostalCodeOptions(preferences.getFieldVisibility(R.string.setting_key_postal_code_visible)),
-                if (preferences.getBoolean(R.string.setting_key_billing_address_visible)) {
-                    VGSCheckoutBillingAddressVisibility.VISIBLE
-                } else {
-                    VGSCheckoutBillingAddressVisibility.HIDDEN
-                }
-            ),
-            preferences.getValidationBehaviour(R.string.setting_key_validation_behaviour),
-            preferences.getBoolean(R.string.setting_key_save_card_option_enabled)
-        )
+        val vaultId = preferences.getString(getString(R.string.setting_key_vault_id), null)
+            ?: BuildConfig.STORAGE_ID
 
-        VGSCheckoutPaymentConfig.create(
+
+        val builder = VGSCheckoutPaymentConfig.Builder(vaultId)
+            .setAccessToken(token)
+            .setOrderId(BuildConfig.TEMPORARY_ORDER_ID)
+            .setSavedCardIds(arrayListOf(BuildConfig.TEMPORARY_FIN_INSTRUMENT))
+
+        // Create for config, configure UI and setup fieldNames
+        val billingAddressVisibility =
+            if (preferences.getBoolean(R.string.setting_key_billing_address_visible)) {
+                VGSCheckoutBillingAddressVisibility.VISIBLE
+            } else {
+                VGSCheckoutBillingAddressVisibility.HIDDEN
+            }
+
+        builder.setCountryOptions(
+            preferences.getFieldVisibility(R.string.setting_key_country_visible)
+        ).setCityOptions(
+            preferences.getFieldVisibility(R.string.setting_key_city_visible)
+        ).setAddressOptions(
+            preferences.getFieldVisibility(R.string.setting_key_address_visible)
+        ).setOptionalAddressOptions(
+            preferences.getFieldVisibility(R.string.setting_key_optional_address_visible)
+        ).setPostalCodeOptions(
+            preferences.getFieldVisibility(R.string.setting_key_postal_code_visible)
+        ).setBillingAddressVisibility(billingAddressVisibility)
+            .setFormValidationBehaviour(preferences.getValidationBehaviour(R.string.setting_key_validation_behaviour))
+            .setIsSaveCardOptionVisible(preferences.getBoolean(R.string.setting_key_save_card_option_enabled))
+
+        // Create config object
+        builder.build(
             this,
-            token,
-            BuildConfig.TEMPORARY_ORDER_ID,
-            BuildConfig.STORAGE_ID,
-            VGSCheckoutPaymentMethod.SavedCards(
-                arrayListOf(BuildConfig.TEMPORARY_FIN_INSTRUMENT)
-            ),
-            VGSCheckoutEnvironment.Sandbox(),
-            formConfig,
-            false,
-            true,
             object : VGSCheckoutConfigInitCallback<VGSCheckoutPaymentConfig> {
                 override fun onSuccess(config: VGSCheckoutPaymentConfig) {
                     callback(config)

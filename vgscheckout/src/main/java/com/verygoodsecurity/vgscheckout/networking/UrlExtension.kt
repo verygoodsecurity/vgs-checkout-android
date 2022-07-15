@@ -1,6 +1,5 @@
 package com.verygoodsecurity.vgscheckout.networking
 
-import androidx.annotation.VisibleForTesting
 import androidx.core.util.PatternsCompat
 import com.verygoodsecurity.vgscheckout.util.logger.VGSCheckoutLogger
 import java.net.MalformedURLException
@@ -27,37 +26,35 @@ internal fun String.setupLocalhostURL(port: Int?): String {
 }
 
 /** @suppress */
-internal fun String.setupURL(rawValue: String, isPaymentUrl: Boolean): String {
+internal fun String.setupURL(env: String, routeId: String? = null): String {
     return when {
         this.isEmpty() || !isTenantIdValid() -> {
             VGSCheckoutLogger.warn(message = "Vault ID is not valid")
             return ""
         }
-        rawValue.isEmpty() || !rawValue.isEnvironmentValid() -> {
+        env.isEmpty() || !env.isEnvironmentValid() -> {
             VGSCheckoutLogger.warn(message = "Environment is not valid")
             return ""
         }
-        else -> this.buildURL(rawValue, isPaymentUrl)
+        else -> this.buildURL(env, routeId)
     }
 }
 
-@VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-internal const val PAYMENT_URL_ROUTE_ID = "4880868f-d88b-4333-ab70-d9deecdbffc4"
-
-private fun String.buildURL(env: String, isPaymentUrl: Boolean): String {
+private fun String.buildURL(env: String, routeId: String?): String {
     val DOMEN = "verygoodproxy.com"
     val DIVIDER = "."
     val SCHEME = "https://"
 
     val builder = StringBuilder(SCHEME)
-    builder.append(this)
-    if (isPaymentUrl) builder.append("-$PAYMENT_URL_ROUTE_ID")
-    builder.append(DIVIDER)
-    builder.append(env)
-    builder.append(DIVIDER)
-    builder.append(DOMEN)
+        .append(this)
 
-    return builder.toString()
+    if (!routeId.isNullOrEmpty()) builder.append("-").append(routeId)
+
+    return builder.append(DIVIDER)
+        .append(env)
+        .append(DIVIDER)
+        .append(DOMEN)
+        .toString()
 }
 
 internal fun String.isTenantIdValid(): Boolean =

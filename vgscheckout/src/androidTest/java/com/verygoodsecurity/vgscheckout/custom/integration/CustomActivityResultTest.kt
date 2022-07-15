@@ -17,13 +17,6 @@ import com.verygoodsecurity.vgscheckout.BuildConfig
 import com.verygoodsecurity.vgscheckout.Constants
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
-import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutCustomRouteConfig
-import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutCustomFormConfig
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.VGSCheckoutCustomCardOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.VGSCheckoutCustomCardHolderOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.VGSCheckoutCustomCardNumberOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.VGSCheckoutCustomCVCOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.VGSCheckoutCustomExpirationDateOptions
 import com.verygoodsecurity.vgscheckout.model.*
 import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutCardResponse
 import com.verygoodsecurity.vgscheckout.ui.CustomSaveCardActivity
@@ -41,14 +34,13 @@ class CustomActivityResultTest {
     private val context: Context = ApplicationProvider.getApplicationContext()
 
     private val defaultIntent = Intent(context, CustomSaveCardActivity::class.java).apply {
+        val config = VGSCheckoutCustomConfig.Builder(BuildConfig.VAULT_ID)
+            .setIsScreenshotsAllowed(true)
+            .build()
+
         putExtra(
             EXTRA_KEY_ARGS,
-            CheckoutResultContract.Args(
-                VGSCheckoutCustomConfig(
-                    BuildConfig.VAULT_ID,
-                    isScreenshotsAllowed = true
-                )
-            )
+            CheckoutResultContract.Args(config)
         )
     }
 
@@ -82,24 +74,19 @@ class CustomActivityResultTest {
     @Test
     fun performCheckout_saveCard_successfulResponse_resultSuccess_codeOk() {
         // Arrange
+        val config = VGSCheckoutCustomConfig.Builder(BuildConfig.VAULT_ID)
+            .setEnvironment(VGSCheckoutEnvironment.Sandbox())
+            .setPath("/post")
+            .setIsScreenshotsAllowed(true)
+            .setCardNumberOptions("card.number")
+            .setCardHolderOptions("card.holder")
+            .setCVCOptions("card.cvc")
+            .setExpirationDateOptions("card.expDate")
+            .build()
         val intent = Intent(context, CustomSaveCardActivity::class.java).apply {
             putExtra(
                 EXTRA_KEY_ARGS,
-                CheckoutResultContract.Args(
-                    VGSCheckoutCustomConfig(
-                        vaultId = BuildConfig.VAULT_ID,
-                        VGSCheckoutEnvironment.Sandbox(),
-                        VGSCheckoutCustomRouteConfig("/post"),
-                        VGSCheckoutCustomFormConfig(
-                            cardOptions = VGSCheckoutCustomCardOptions(
-                                VGSCheckoutCustomCardNumberOptions("card.number"),
-                                VGSCheckoutCustomCardHolderOptions("card.holder"),
-                                VGSCheckoutCustomCVCOptions("card.cvc"),
-                                VGSCheckoutCustomExpirationDateOptions("card.expDate")
-                            )
-                        )
-                    )
-                )
+                CheckoutResultContract.Args(config)
             )
         }
         launch<CustomSaveCardActivity>(intent).use {

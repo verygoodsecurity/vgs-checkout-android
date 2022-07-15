@@ -18,14 +18,8 @@ import com.verygoodsecurity.vgscheckout.Constants
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.view.internal.*
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
-import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutAddCardFormConfig
 import com.verygoodsecurity.vgscheckout.config.ui.core.VGSCheckoutFormValidationBehaviour
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillingAddressVisibility
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutPaymentBillingAddressOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.VGSCheckoutPaymentAddressOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.VGSCheckoutPaymentOptionalAddressOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.city.VGSCheckoutPaymentCityOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.country.VGSCheckoutPaymentCountryOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.core.VGSCheckoutFieldVisibility
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_ARGS
@@ -48,38 +42,30 @@ class OnFocusFieldsValidationTest {
     private val context: Context = ApplicationProvider.getApplicationContext()
 
     private val defaultSetupIntent = Intent(context, SaveCardActivity::class.java).apply {
+        val config = VGSCheckoutAddCardConfig.Builder(BuildConfig.VAULT_ID)
+            .setAccessToken(BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS)
+            .setIsScreenshotsAllowed(true)
+            .build()
         putExtra(
             EXTRA_KEY_ARGS,
-            CheckoutResultContract.Args(
-                VGSCheckoutAddCardConfig(
-                    BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS,
-                    BuildConfig.VAULT_ID,
-                    isScreenshotsAllowed = true
-                )
-            )
+            CheckoutResultContract.Args(config)
         )
     }
 
     val zipCodeIntent = Intent(context, SaveCardActivity::class.java).apply {
+        val config = VGSCheckoutAddCardConfig.Builder(BuildConfig.VAULT_ID)
+            .setAccessToken(BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS)
+            .setIsScreenshotsAllowed(true)
+            .setFormValidationBehaviour(VGSCheckoutFormValidationBehaviour.ON_FOCUS)
+            .setBillingAddressVisibility(VGSCheckoutBillingAddressVisibility.VISIBLE)
+            .setOptionalAddressOptions(VGSCheckoutFieldVisibility.HIDDEN)
+            .setAddressOptions(VGSCheckoutFieldVisibility.HIDDEN)
+            .setCityOptions(VGSCheckoutFieldVisibility.HIDDEN)
+            .setCountryOptions(VGSCheckoutFieldVisibility.HIDDEN)
+            .build()
         putExtra(
             EXTRA_KEY_ARGS,
-            CheckoutResultContract.Args(
-                VGSCheckoutAddCardConfig(
-                    BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS,
-                    BuildConfig.VAULT_ID,
-                    formConfig = VGSCheckoutAddCardFormConfig(
-                        VGSCheckoutPaymentBillingAddressOptions(
-                            VGSCheckoutPaymentCountryOptions(visibility = VGSCheckoutFieldVisibility.HIDDEN),
-                            VGSCheckoutPaymentCityOptions(visibility = VGSCheckoutFieldVisibility.HIDDEN),
-                            VGSCheckoutPaymentAddressOptions(visibility = VGSCheckoutFieldVisibility.HIDDEN),
-                            VGSCheckoutPaymentOptionalAddressOptions(visibility = VGSCheckoutFieldVisibility.HIDDEN),
-                            visibility = VGSCheckoutBillingAddressVisibility.VISIBLE
-                        ),
-                        VGSCheckoutFormValidationBehaviour.ON_FOCUS
-                    ),
-                    isScreenshotsAllowed = true
-                )
-            )
+            CheckoutResultContract.Args(config)
         )
     }
 
