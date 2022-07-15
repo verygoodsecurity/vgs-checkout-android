@@ -119,14 +119,14 @@ class OrchestrationCheckoutActivity : BaseActivity(R.layout.activity_payment_che
         // Preload saved cards by id.
         config.loadSavedCard(
             this,
+            arrayListOf(BuildConfig.TEMPORARY_FIN_INSTRUMENT),
             object : VGSCheckoutSavedCardsCallback {
                 override fun onSuccess() {
                     callback(config)
                 }
 
                 override fun onFailure(exception: VGSCheckoutException) {}
-            },
-            arrayListOf(BuildConfig.TEMPORARY_FIN_INSTRUMENT)
+            }
         )
     }
 

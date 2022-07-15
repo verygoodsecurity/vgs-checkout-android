@@ -90,8 +90,8 @@ class VGSCheckoutAddCardConfig internal constructor(
      */
     fun loadSavedCard(
         context: Context,
-        callback: VGSCheckoutSavedCardsCallback,
-        @Size(max = MAX_CARDS_SIZE) cardIds: List<String>
+        @Size(max = MAX_CARDS_SIZE) cardIds: List<String>,
+        callback: VGSCheckoutSavedCardsCallback
     ): VGSCheckoutCancellable {
         return loadSavedCards(
             context,

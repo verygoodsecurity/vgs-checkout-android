@@ -72,6 +72,7 @@ class SavedCardManagementTest {
 
             savedConfig.loadSavedCard(
                 context,
+                arrayListOf,
                 object : VGSCheckoutSavedCardsCallback {
                     override fun onSuccess() {
                         countDown()
@@ -80,8 +81,7 @@ class SavedCardManagementTest {
                     override fun onFailure(exception: VGSCheckoutException) {
                         countDown()
                     }
-                },
-                arrayListOf
+                }
             )
 
             await()

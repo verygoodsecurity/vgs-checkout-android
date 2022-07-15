@@ -65,6 +65,7 @@ class SavedCardActivityResultTest {
 
         savedConfig.loadSavedCard(
             context,
+            arrayListOf(finID),
             object : VGSCheckoutSavedCardsCallback {
                 override fun onSuccess() {
                     countDown()
@@ -73,8 +74,7 @@ class SavedCardActivityResultTest {
                 override fun onFailure(exception: VGSCheckoutException) {
                     countDown()
                 }
-            },
-            arrayListOf(finID)
+            }
         )
         await()
         Assert.assertNotNull(savedConfig)
