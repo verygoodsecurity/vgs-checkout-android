@@ -16,7 +16,7 @@ import kotlinx.parcelize.Parcelize
  * @param expirationDateOptions expiration date input field UI options.
  */
 @Parcelize
-class VGSCheckoutCardOptions constructor(
+class VGSCheckoutCardOptions internal constructor(
     val cardNumberOptions: VGSCheckoutCardNumberOptions,
     val cardHolderOptions: VGSCheckoutCardHolderOptions,
     val cvcOptions: VGSCheckoutCVCOptions,

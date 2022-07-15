@@ -15,7 +15,7 @@ import kotlinx.parcelize.Parcelize
  * @param outputFormatRegex ISO 8601 format in which date will be sent to proxy.
  */
 @Parcelize
-class VGSCheckoutExpirationDateOptions constructor(
+class VGSCheckoutExpirationDateOptions internal constructor(
     override val fieldName: String,
     val dateSeparateSerializer: VGSDateSeparateSerializer?,
     val inputFormatRegex: String,
