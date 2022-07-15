@@ -101,7 +101,7 @@ class VGSCheckoutAddCardConfig internal constructor(
         routeId: String,
         tenantId: String,
         environment: VGSCheckoutEnvironment = VGSCheckoutEnvironment.Sandbox(),
-        formConfig: VGSCheckoutPaymentFormConfig = VGSCheckoutPaymentFormConfig(),
+        formConfig: VGSCheckoutPaymentFormConfig,
         isScreenshotsAllowed: Boolean = false
     ) : this(
         accessToken,
@@ -323,6 +323,7 @@ class VGSCheckoutAddCardConfig internal constructor(
 
         private fun buildFormConfig(): VGSCheckoutPaymentFormConfig {
             return VGSCheckoutPaymentFormConfig(
+                createOrchestrationCardOptions(),
                 VGSCheckoutPaymentBillingAddressOptions(
                     VGSCheckoutPaymentCountryOptions(
                         validCountries,
@@ -398,7 +399,7 @@ class VGSCheckoutAddCardConfig internal constructor(
             tenantId: String,
             paymentMethod: VGSCheckoutPaymentMethod.SavedCards,
             environment: VGSCheckoutEnvironment = VGSCheckoutEnvironment.Sandbox(),
-            formConfig: VGSCheckoutPaymentFormConfig = VGSCheckoutPaymentFormConfig(),
+            formConfig: VGSCheckoutPaymentFormConfig,
             isScreenshotsAllowed: Boolean = false,
             isRemoveCardOptionEnabled: Boolean = true,
             callback: VGSCheckoutConfigInitCallback<VGSCheckoutAddCardConfig>? = null

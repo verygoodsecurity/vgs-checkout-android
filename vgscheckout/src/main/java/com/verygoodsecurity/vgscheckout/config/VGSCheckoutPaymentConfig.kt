@@ -293,6 +293,7 @@ internal class VGSCheckoutPaymentConfig internal constructor(
 
         private fun buildFormConfig(): VGSCheckoutPaymentFormConfig {
             return VGSCheckoutPaymentFormConfig(
+                createOrchestrationCardOptions(),
                 VGSCheckoutPaymentBillingAddressOptions(
                     VGSCheckoutPaymentCountryOptions(
                         validCountries,

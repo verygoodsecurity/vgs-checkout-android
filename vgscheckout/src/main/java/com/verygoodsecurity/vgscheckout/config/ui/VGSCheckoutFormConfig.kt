@@ -18,6 +18,6 @@ import kotlinx.parcelize.Parcelize
 class VGSCheckoutFormConfig internal constructor(
     override val cardOptions: VGSCheckoutCardOptions,
     override val addressOptions: VGSCheckoutBillingAddressOptions,
-    override val validationBehaviour: VGSCheckoutFormValidationBehaviour = VGSCheckoutFormValidationBehaviour.ON_SUBMIT,
-    override val saveCardOptionEnabled: Boolean = false,
+    override val validationBehaviour: VGSCheckoutFormValidationBehaviour,
+    override val saveCardOptionEnabled: Boolean,
 ) : CheckoutFormConfig()

@@ -5,6 +5,14 @@ import com.verygoodsecurity.vgscheckout.analytic.event.JWTValidationEvent
 import com.verygoodsecurity.vgscheckout.config.CheckoutCredentialsValidator
 import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutPaymentRouteConfig
 import com.verygoodsecurity.vgscheckout.config.ui.core.CheckoutFormConfig
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.VGSCheckoutCardOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.VGSCheckoutCardHolderOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.VGSCheckoutCardNumberOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.model.VGSCheckoutCardBrand
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.VGSCheckoutCVCOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.VGSCheckoutExpirationDateOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.model.VGSDateSeparateSerializer
+import com.verygoodsecurity.vgscheckout.config.ui.view.core.VGSCheckoutFieldVisibility
 import com.verygoodsecurity.vgscheckout.model.Card
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
 
@@ -40,6 +48,37 @@ abstract class OrchestrationConfig internal constructor(
     }
 
     companion object {
-         internal const val PAYMENT_URL_ROUTE_ID = "4880868f-d88b-4333-ab70-d9deecdbffc4"
+        internal const val PAYMENT_URL_ROUTE_ID = "4880868f-d88b-4333-ab70-d9deecdbffc4"
+
+        private const val CARD_NUMBER_FIELD_NAME = "card.number"
+        private const val CARD_HOLDER_FIELD_NAME = "card.name"
+        private const val CVC_FIELD_NAME = "card.cvc"
+        private const val EXPIRY_FIELD_NAME = "card.expDate"
+        private const val EXPIRY_MONTH_FIELD_NAME = "card.exp_month"
+        private const val EXPIRY_YEAR_FIELD_NAME = "card.exp_year"
+        private const val EXPIRY_DATE_INPUT_FORMAT = "MM/yy"
+        private const val EXPIRY_DATE_OUTPUT_FORMAT = "MM/yyyy"
+
+        internal fun createOrchestrationCardOptions() = VGSCheckoutCardOptions(
+            VGSCheckoutCardNumberOptions(
+                CARD_NUMBER_FIELD_NAME,
+                false,
+                VGSCheckoutCardBrand.BRANDS
+            ),
+            VGSCheckoutCardHolderOptions(
+                CARD_HOLDER_FIELD_NAME,
+                VGSCheckoutFieldVisibility.VISIBLE
+            ),
+            VGSCheckoutCVCOptions(
+                CVC_FIELD_NAME,
+                false
+            ),
+            VGSCheckoutExpirationDateOptions(
+                EXPIRY_FIELD_NAME,
+                VGSDateSeparateSerializer(EXPIRY_MONTH_FIELD_NAME, EXPIRY_YEAR_FIELD_NAME),
+                EXPIRY_DATE_INPUT_FORMAT,
+                EXPIRY_DATE_OUTPUT_FORMAT
+            )
+        )
     }
 }
