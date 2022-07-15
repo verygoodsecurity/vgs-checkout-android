@@ -7,14 +7,14 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.address.city.CityOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.code.PostalCodeOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.core.CheckoutBillingAddressOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.country.CountryOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.VGSCheckoutCardOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.VGSCheckoutCardHolderOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.VGSCheckoutCardNumberOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.core.CheckoutCardOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.VGSCheckoutCVCOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.VGSCheckoutExpirationDateOptions
 
 //region Helper val's for quicker access to nested objects
-internal val CheckoutConfig.cardOptions: CheckoutCardOptions
+internal val CheckoutConfig.cardOptions: VGSCheckoutCardOptions
     get() = this.formConfig.cardOptions
 
 internal val CheckoutConfig.cardHolderOptions: VGSCheckoutCardHolderOptions

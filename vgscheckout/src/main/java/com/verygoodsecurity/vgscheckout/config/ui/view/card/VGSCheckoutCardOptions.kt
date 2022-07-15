@@ -1,8 +1,8 @@
 package com.verygoodsecurity.vgscheckout.config.ui.view.card
 
+import android.os.Parcelable
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.VGSCheckoutCardHolderOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.VGSCheckoutCardNumberOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.core.CheckoutCardOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.VGSCheckoutCVCOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.VGSCheckoutExpirationDateOptions
 import kotlinx.parcelize.Parcelize
@@ -17,8 +17,8 @@ import kotlinx.parcelize.Parcelize
  */
 @Parcelize
 class VGSCheckoutCardOptions constructor(
-    override val cardNumberOptions: VGSCheckoutCardNumberOptions,
-    override val cardHolderOptions: VGSCheckoutCardHolderOptions,
-    override val cvcOptions: VGSCheckoutCVCOptions,
-    override val expirationDateOptions: VGSCheckoutExpirationDateOptions
-) : CheckoutCardOptions()
+    val cardNumberOptions: VGSCheckoutCardNumberOptions,
+    val cardHolderOptions: VGSCheckoutCardHolderOptions,
+    val cvcOptions: VGSCheckoutCVCOptions,
+    val expirationDateOptions: VGSCheckoutExpirationDateOptions
+) : Parcelable
