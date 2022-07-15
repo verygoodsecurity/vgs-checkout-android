@@ -3,7 +3,11 @@ package com.verygoodsecurity.vgscheckout.config.core
 import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgscheckout.analytic.event.JWTValidationEvent
 import com.verygoodsecurity.vgscheckout.config.CheckoutCredentialsValidator
-import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutPaymentRouteConfig
+import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutRouteConfig
+import com.verygoodsecurity.vgscheckout.config.networking.core.VGSCheckoutHostnamePolicy
+import com.verygoodsecurity.vgscheckout.config.networking.request.VGSCheckoutRequestOptions
+import com.verygoodsecurity.vgscheckout.config.networking.request.core.VGSCheckoutDataMergePolicy
+import com.verygoodsecurity.vgscheckout.config.networking.request.core.VGSCheckoutHttpMethod
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutFormConfig
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.VGSCheckoutCardOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.VGSCheckoutCardHolderOptions
@@ -21,7 +25,7 @@ abstract class OrchestrationConfig internal constructor(
     override val routeId: String = PAYMENT_URL_ROUTE_ID,
     override val id: String,
     override val environment: VGSCheckoutEnvironment,
-    override val routeConfig: VGSCheckoutPaymentRouteConfig,
+    override val routeConfig: VGSCheckoutRouteConfig,
     override val formConfig: VGSCheckoutFormConfig,
     override val isScreenshotsAllowed: Boolean,
     open val isRemoveCardOptionEnabled: Boolean,
@@ -66,7 +70,7 @@ abstract class OrchestrationConfig internal constructor(
         internal const val POSTAL_CODE_FIELD_NAME = "card.billing_address.postal_code"
 
 
-        internal fun createOrchestrationCardOptions() = VGSCheckoutCardOptions(
+        internal fun createCardOptions() = VGSCheckoutCardOptions(
             VGSCheckoutCardNumberOptions(
                 CARD_NUMBER_FIELD_NAME,
                 false,
@@ -85,6 +89,29 @@ abstract class OrchestrationConfig internal constructor(
                 VGSDateSeparateSerializer(EXPIRY_MONTH_FIELD_NAME, EXPIRY_YEAR_FIELD_NAME),
                 EXPIRY_DATE_INPUT_FORMAT,
                 EXPIRY_DATE_OUTPUT_FORMAT
+            )
+        )
+
+        //todo think if we can remove because we use different api for orders, transfers, etc.
+        private const val PATH = "/financial_instruments"
+
+        private const val CONTENT_TYPE_HEADER_NAME = "Content-Type"
+        private const val CONTENT_TYPE = "application/json"
+
+        private const val AUTHORIZATION_HEADER_NAME = "Authorization"
+        private const val BEARER_TOKEN_TYPE = "Bearer"
+
+        internal fun createRouteConfig(accessToken: String) = VGSCheckoutRouteConfig(
+            PATH,
+            VGSCheckoutHostnamePolicy.Vault,
+            VGSCheckoutRequestOptions(
+                VGSCheckoutHttpMethod.POST,
+                mapOf(
+                    CONTENT_TYPE_HEADER_NAME to CONTENT_TYPE,
+                    AUTHORIZATION_HEADER_NAME to "$BEARER_TOKEN_TYPE $accessToken"
+                ),
+                emptyMap(),
+                VGSCheckoutDataMergePolicy.NESTED_JSON
             )
         )
     }

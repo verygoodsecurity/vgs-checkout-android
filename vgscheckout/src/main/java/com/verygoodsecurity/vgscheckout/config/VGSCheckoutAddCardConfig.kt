@@ -7,7 +7,7 @@ import androidx.annotation.Size
 import com.verygoodsecurity.vgscheckout.VGSCheckoutConfigInitCallback
 import com.verygoodsecurity.vgscheckout.analytic.event.FinInstrumentCrudEvent
 import com.verygoodsecurity.vgscheckout.config.core.OrchestrationConfig
-import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutPaymentRouteConfig
+import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutRouteConfig
 import com.verygoodsecurity.vgscheckout.config.payment.VGSCheckoutPaymentMethod
 import com.verygoodsecurity.vgscheckout.config.payment.VGSCheckoutPaymentMethod.SavedCards.Companion.MAX_CARDS_SIZE
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutFormConfig
@@ -45,7 +45,7 @@ class VGSCheckoutAddCardConfig internal constructor(
     override val routeId: String,
     override val id: String,
     override val environment: VGSCheckoutEnvironment,
-    override val routeConfig: VGSCheckoutPaymentRouteConfig,
+    override val routeConfig: VGSCheckoutRouteConfig,
     override val formConfig: VGSCheckoutFormConfig,
     override val isScreenshotsAllowed: Boolean,
     override val isRemoveCardOptionEnabled: Boolean,
@@ -69,7 +69,7 @@ class VGSCheckoutAddCardConfig internal constructor(
         parcel.readString()!!,
         parcel.readString()!!,
         parcel.readParcelable(VGSCheckoutEnvironment::class.java.classLoader)!!,
-        parcel.readParcelable(VGSCheckoutPaymentRouteConfig::class.java.classLoader)!!,
+        parcel.readParcelable(VGSCheckoutRouteConfig::class.java.classLoader)!!,
         parcel.readParcelable(VGSCheckoutFormConfig::class.java.classLoader)!!,
         parcel.readInt() == 1,
         parcel.readInt() == 1,
@@ -108,7 +108,7 @@ class VGSCheckoutAddCardConfig internal constructor(
         routeId,
         tenantId,
         environment,
-        VGSCheckoutPaymentRouteConfig(accessToken),
+        createRouteConfig(accessToken),
         formConfig,
         isScreenshotsAllowed,
         true,
@@ -323,7 +323,7 @@ class VGSCheckoutAddCardConfig internal constructor(
 
         private fun buildFormConfig(): VGSCheckoutFormConfig {
             return VGSCheckoutFormConfig(
-                createOrchestrationCardOptions(),
+                createCardOptions(),
                 VGSCheckoutBillingAddressOptions(
                     VGSCheckoutCountryOptions(
                         COUNTRY_FIELD_NAME,
@@ -422,7 +422,7 @@ class VGSCheckoutAddCardConfig internal constructor(
                 routeId,
                 tenantId,
                 environment,
-                VGSCheckoutPaymentRouteConfig(accessToken),
+                createRouteConfig(accessToken),
                 formConfig,
                 isScreenshotsAllowed,
                 isRemoveCardOptionEnabled,

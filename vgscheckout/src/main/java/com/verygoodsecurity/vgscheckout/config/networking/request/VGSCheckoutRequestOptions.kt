@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgscheckout.config.networking.request
 
-import com.verygoodsecurity.vgscheckout.config.networking.request.core.CheckoutRequestOptions
+import android.os.Parcelable
 import com.verygoodsecurity.vgscheckout.config.networking.request.core.VGSCheckoutDataMergePolicy
 import com.verygoodsecurity.vgscheckout.config.networking.request.core.VGSCheckoutHttpMethod
 import kotlinx.parcelize.IgnoredOnParcel
@@ -18,12 +18,12 @@ import kotlinx.parcelize.RawValue
  */
 @Parcelize
 class VGSCheckoutRequestOptions @JvmOverloads constructor(
-    override val httpMethod: VGSCheckoutHttpMethod = VGSCheckoutHttpMethod.POST,
-    override val extraHeaders: Map<String, String> = emptyMap(),
-    override val extraData: Map<String, @RawValue Any> = emptyMap(),
-    override val mergePolicy: VGSCheckoutDataMergePolicy = VGSCheckoutDataMergePolicy.FLAT_JSON
-) : CheckoutRequestOptions() {
+    val httpMethod: VGSCheckoutHttpMethod = VGSCheckoutHttpMethod.POST,
+    val extraHeaders: Map<String, String> = emptyMap(),
+    val extraData: Map<String, @RawValue Any> = emptyMap(),
+    val mergePolicy: VGSCheckoutDataMergePolicy = VGSCheckoutDataMergePolicy.FLAT_JSON
+) : Parcelable {
 
     @IgnoredOnParcel
-    override val hasExtraHeaders: Boolean = extraHeaders.isNotEmpty()
+    val hasExtraHeaders: Boolean = extraHeaders.isNotEmpty()
 }

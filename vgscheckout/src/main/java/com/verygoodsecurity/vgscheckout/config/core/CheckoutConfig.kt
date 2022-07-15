@@ -4,7 +4,7 @@ import android.os.Parcelable
 import com.verygoodsecurity.vgscheckout.analytic.AnalyticTracker
 import com.verygoodsecurity.vgscheckout.analytic.DefaultAnalyticsTracker
 import com.verygoodsecurity.vgscheckout.collect.core.isSandbox
-import com.verygoodsecurity.vgscheckout.config.networking.core.CheckoutRouteConfig
+import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutRouteConfig
 import com.verygoodsecurity.vgscheckout.config.networking.core.getNormalizedHostName
 import com.verygoodsecurity.vgscheckout.config.networking.core.getNormalizedPort
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutFormConfig
@@ -36,7 +36,7 @@ abstract class CheckoutConfig : Parcelable {
     /**
      *  Networking configuration, like http method, request headers etc.
      */
-    abstract val routeConfig: CheckoutRouteConfig
+    abstract val routeConfig: VGSCheckoutRouteConfig
 
     /**
      * UI configuration.
