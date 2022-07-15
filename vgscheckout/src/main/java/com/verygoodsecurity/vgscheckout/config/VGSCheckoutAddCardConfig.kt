@@ -162,9 +162,8 @@ class VGSCheckoutAddCardConfig internal constructor(
          *
          * @param environment Type of vault.
          */
-        fun setEnvironment(environment: VGSCheckoutEnvironment): Builder {
+        fun setEnvironment(environment: VGSCheckoutEnvironment) = this.apply {
             this.environment = environment
-            return this
         }
 
         /**
@@ -172,9 +171,8 @@ class VGSCheckoutAddCardConfig internal constructor(
          *
          * @param isScreenshotsAllowed Defines is screenshots allowed.
          */
-        fun setIsScreenshotsAllowed(isScreenshotsAllowed: Boolean): Builder {
+        fun setIsScreenshotsAllowed(isScreenshotsAllowed: Boolean) = this.apply {
             this.isScreenshotsAllowed = isScreenshotsAllowed
-            return this
         }
 
         /**
@@ -182,9 +180,8 @@ class VGSCheckoutAddCardConfig internal constructor(
          *
          * @param accessToken A payment orchestration app access token.
          */
-        fun setAccessToken(accessToken: String): Builder {
+        fun setAccessToken(accessToken: String) = this.apply {
             this.accessToken = accessToken
-            return this
         }
 
         /**
@@ -192,9 +189,8 @@ class VGSCheckoutAddCardConfig internal constructor(
          *
          * @param routeId A route id.
          */
-        fun setRouteId(routeId: String): Builder {
+        fun setRouteId(routeId: String) = this.apply {
             this.routeId = routeId
-            return this
         }
 
         /**
@@ -204,9 +200,8 @@ class VGSCheckoutAddCardConfig internal constructor(
          */
         fun setSavedCardIds(
             @Size(max = MAX_CARDS_SIZE) cardIds: List<String>
-        ): Builder {
+        ) = this.apply {
             this.cardIds = cardIds
-            return this
         }
 
         /**
@@ -216,9 +211,8 @@ class VGSCheckoutAddCardConfig internal constructor(
          */
         fun setFormValidationBehaviour(
             validationBehaviour: VGSCheckoutFormValidationBehaviour
-        ): Builder {
+        ) = this.apply {
             formValidationBehaviour = validationBehaviour
-            return this
         }
 
         /**
@@ -228,9 +222,8 @@ class VGSCheckoutAddCardConfig internal constructor(
          */
         fun setIsSaveCardOptionVisible(
             isSaveCardOptionVisible: Boolean
-        ): Builder {
+        ) = this.apply {
             saveCardOptionEnabled = isSaveCardOptionVisible
-            return this
         }
 
         /**
@@ -240,9 +233,8 @@ class VGSCheckoutAddCardConfig internal constructor(
          */
         fun setIsRemoveCardOptionEnabled(
             isRemoveCardOptionEnabled: Boolean
-        ): Builder {
+        ) = this.apply {
             this.isRemoveCardOptionEnabled = isRemoveCardOptionEnabled
-            return this
         }
 
         //region Form config
@@ -255,10 +247,9 @@ class VGSCheckoutAddCardConfig internal constructor(
         fun setCountryOptions(
             visibility: VGSCheckoutFieldVisibility = VGSCheckoutFieldVisibility.VISIBLE,
             validCountries: List<String> = emptyList()
-        ): Builder {
+        ) = this.apply {
             countryFieldVisibility = visibility
             this.validCountries = validCountries
-            return this
         }
 
         /**
@@ -266,11 +257,8 @@ class VGSCheckoutAddCardConfig internal constructor(
          *
          * @param visibility defines if input field should be visible to user.
          */
-        fun setCityOptions(
-            visibility: VGSCheckoutFieldVisibility
-        ): Builder {
+        fun setCityOptions(visibility: VGSCheckoutFieldVisibility) = this.apply {
             cityFieldVisibility = visibility
-            return this
         }
 
         /**
@@ -278,11 +266,8 @@ class VGSCheckoutAddCardConfig internal constructor(
          *
          * @param visibility defines if input field should be visible to user.
          */
-        fun setAddressOptions(
-            visibility: VGSCheckoutFieldVisibility
-        ): Builder {
+        fun setAddressOptions(visibility: VGSCheckoutFieldVisibility) = this.apply {
             addressFieldVisibility = visibility
-            return this
         }
 
         /**
@@ -292,9 +277,8 @@ class VGSCheckoutAddCardConfig internal constructor(
          */
         fun setOptionalAddressOptions(
             visibility: VGSCheckoutFieldVisibility = VGSCheckoutFieldVisibility.VISIBLE
-        ): Builder {
+        ) = this.apply {
             optionalAddressFieldVisibility = visibility
-            return this
         }
 
         /**
@@ -304,9 +288,8 @@ class VGSCheckoutAddCardConfig internal constructor(
          */
         fun setPostalCodeOptions(
             visibility: VGSCheckoutFieldVisibility = VGSCheckoutFieldVisibility.VISIBLE
-        ): Builder {
+        ) = this.apply {
             postalCodeFieldVisibility = visibility
-            return this
         }
 
         /**
@@ -316,9 +299,8 @@ class VGSCheckoutAddCardConfig internal constructor(
          */
         fun setBillingAddressVisibility(
             visibility: VGSCheckoutBillingAddressVisibility
-        ): Builder {
+        ) = this.apply {
             billingAddressVisibility = visibility
-            return this
         }
 
         private fun buildFormConfig(): VGSCheckoutFormConfig {
