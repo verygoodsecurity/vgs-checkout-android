@@ -29,6 +29,7 @@
         android:id="@+id/mbStartPayment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:layout_gravity="center"
         android:text="@string/present_payment_checkout_btn_title"
         android:textAllCaps="false"

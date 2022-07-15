@@ -3,11 +3,8 @@ package com.verygoodsecurity.vgscheckout
 import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
-import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
-import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutTransitionOptions
 
 /**
@@ -38,33 +35,6 @@ class VGSCheckout internal constructor(
     constructor(fragment: Fragment, callback: VGSCheckoutCallback? = null) : this(
         registerActivityLauncher(fragment, callback)
     )
-
-    /**
-     * Start checkout with payment instruments configuration.
-     *
-     * @param token client backend access token.
-     * @param tenantId unique organization id.
-     * @param environment type of vault to communicate with.
-     * @param transitionOptions specifying a custom animation to run when the checkout is displayed.
-     *
-     * @throws com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
-     */
-    @JvmOverloads
-    @Throws(VGSCheckoutException::class)
-    fun present(
-        token: String,
-        tenantId: String,
-        environment: VGSCheckoutEnvironment = VGSCheckoutEnvironment.Sandbox(),
-        transitionOptions: VGSCheckoutTransitionOptions? = null,
-    ) {
-        present(
-            VGSCheckoutAddCardConfig.Builder(tenantId)
-                .setAccessToken(token)
-                .setEnvironment(environment)
-                .build(),
-            transitionOptions
-        )
-    }
 
     /**
      * Start checkout.

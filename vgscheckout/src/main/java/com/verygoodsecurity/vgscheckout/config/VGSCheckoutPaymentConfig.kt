@@ -28,7 +28,7 @@ import com.verygoodsecurity.vgscheckout.networking.command.GetSavedCardsCommand
 import com.verygoodsecurity.vgscheckout.networking.command.core.CompositeCommand
 import com.verygoodsecurity.vgscheckout.networking.command.core.VGSCheckoutCancellable
 
-class VGSCheckoutPaymentConfig internal constructor(
+internal class VGSCheckoutPaymentConfig internal constructor(
     override val accessToken: String,
     override val routeId: String,
     override val id: String,
