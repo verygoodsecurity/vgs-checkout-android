@@ -13,7 +13,7 @@ import kotlinx.parcelize.Parcelize
  * @param cardBrands list of brands that can be detected.
  */
 @Parcelize
-class VGSCheckoutCustomCardNumberOptions private constructor(
+class VGSCheckoutCardNumberOptions private constructor(
     override val fieldName: String,
     override val isIconHidden: Boolean,
     override val cardBrands: Set<VGSCheckoutCardBrand>,
