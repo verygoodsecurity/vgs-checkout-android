@@ -4,7 +4,7 @@ import android.content.Context
 import android.os.Parcel
 import android.os.Parcelable
 import androidx.annotation.Size
-import com.verygoodsecurity.vgscheckout.VGSCheckoutConfigInitCallback
+import com.verygoodsecurity.vgscheckout.VGSCheckoutSavedCardsCallback
 import com.verygoodsecurity.vgscheckout.analytic.event.FinInstrumentCrudEvent
 import com.verygoodsecurity.vgscheckout.config.core.OrchestrationConfig
 import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutPaymentRouteConfig
@@ -30,7 +30,7 @@ import com.verygoodsecurity.vgscheckout.networking.command.core.VGSCheckoutCance
  * Holds configuration with predefined setup for work with payment orchestration app.
  *
  * @param accessToken payment orchestration app access token.
- * @param tenantId unique organization id.
+ * @param id unique organization id.
  * @param environment type of vault.
  * @param routeConfig Networking configuration, like http method, request headers etc.
  * @param formConfig UI configuration.
@@ -81,6 +81,24 @@ class VGSCheckoutAddCardConfig internal constructor(
                 Card::class.java.classLoader
             )
         }
+    }
+
+    /**
+     * Add ability to use previously saved cards or new card.
+     *
+     * @param cardIds list of cards(financial instruments) ids. Max length [MAX_CARDS_SIZE].
+     */
+    fun loadSavedCard(
+        context: Context,
+        @Size(max = MAX_CARDS_SIZE) cardIds: List<String>,
+        callback: VGSCheckoutSavedCardsCallback
+    ): VGSCheckoutCancellable {
+        return loadSavedCards(
+            context,
+            VGSCheckoutPaymentMethod.SavedCards(cardIds),
+            this,
+            callback
+        )
     }
 
     /**
@@ -139,7 +157,6 @@ class VGSCheckoutAddCardConfig internal constructor(
         private var isScreenshotsAllowed = false
         private var accessToken = ""
         private var routeId = PAYMENT_URL_ROUTE_ID
-        private var cardIds: List<String> = arrayListOf()
         private var isRemoveCardOptionEnabled: Boolean = true
 
         private var countryFieldVisibility = VGSCheckoutFieldVisibility.VISIBLE
@@ -194,18 +211,6 @@ class VGSCheckoutAddCardConfig internal constructor(
          */
         fun setRouteId(routeId: String): Builder {
             this.routeId = routeId
-            return this
-        }
-
-        /**
-         * Add ability to use previously saved cards or new card.
-         *
-         * @param cardIds list of cards(financial instruments) ids. Max length [MAX_CARDS_SIZE].
-         */
-        fun setSavedCardIds(
-            @Size(max = MAX_CARDS_SIZE) cardIds: List<String>
-        ): Builder {
-            this.cardIds = cardIds
             return this
         }
 
@@ -340,29 +345,6 @@ class VGSCheckoutAddCardConfig internal constructor(
         }
         //endregion
 
-        /**
-         * Creates VGSCheckoutAddCardConfig configuration.
-         */
-        fun build(
-            context: Context,
-            callback: VGSCheckoutConfigInitCallback<VGSCheckoutAddCardConfig>? = null
-        ): VGSCheckoutCancellable {
-            val formConfig = buildFormConfig()
-
-            return create(
-                context,
-                accessToken,
-                routeId,
-                tenantId,
-                VGSCheckoutPaymentMethod.SavedCards(cardIds),
-                environment,
-                formConfig,
-                isScreenshotsAllowed,
-                isRemoveCardOptionEnabled,
-                callback
-            )
-        }
-
         fun build(): VGSCheckoutAddCardConfig {
             val formConfig = buildFormConfig()
             return VGSCheckoutAddCardConfig(
@@ -391,34 +373,18 @@ class VGSCheckoutAddCardConfig internal constructor(
             }
         }
 
-        private fun create(
+        private fun loadSavedCards(
             context: Context,
-            accessToken: String,
-            routeId: String,
-            tenantId: String,
             paymentMethod: VGSCheckoutPaymentMethod.SavedCards,
-            environment: VGSCheckoutEnvironment = VGSCheckoutEnvironment.Sandbox(),
-            formConfig: VGSCheckoutAddCardFormConfig = VGSCheckoutAddCardFormConfig(),
-            isScreenshotsAllowed: Boolean = false,
-            isRemoveCardOptionEnabled: Boolean = true,
-            callback: VGSCheckoutConfigInitCallback<VGSCheckoutAddCardConfig>? = null
+            config: VGSCheckoutAddCardConfig,
+            callback: VGSCheckoutSavedCardsCallback? = null
         ): VGSCheckoutCancellable {
-            val config = VGSCheckoutAddCardConfig(
-                accessToken,
-                routeId,
-                tenantId,
-                environment,
-                VGSCheckoutPaymentRouteConfig(accessToken),
-                formConfig,
-                isScreenshotsAllowed,
-                isRemoveCardOptionEnabled,
-                false
-            )
+
             val ids = paymentMethod.getIds()
             val params = GetSavedCardsCommand.Params(
                 config.baseUrl,
                 config.routeConfig.path,
-                accessToken,
+                config.accessToken,
                 ids
             )
             val command = GetSavedCardsCommand(context, params)
@@ -436,7 +402,7 @@ class VGSCheckoutAddCardConfig internal constructor(
                             )
                         )
                         config.savedCards = it.cards
-                        callback?.onSuccess(config)
+                        callback?.onSuccess()
                     }
                     is GetSavedCardsCommand.Result.Failure -> {
                         config.analyticTracker.log(

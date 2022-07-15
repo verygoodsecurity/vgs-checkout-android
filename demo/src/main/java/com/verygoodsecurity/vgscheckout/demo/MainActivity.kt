@@ -5,7 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.button.MaterialButton
 import com.verygoodsecurity.vgscheckout.demo.custom.CustomCheckoutActivity
-import com.verygoodsecurity.vgscheckout.demo.orchestrtion.addcard.AddCardCheckoutActivity
+import com.verygoodsecurity.vgscheckout.demo.orchestrtion.OrchestrationCheckoutActivity
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
@@ -15,7 +15,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             startActivity(Intent(this, CustomCheckoutActivity::class.java))
         }
         findViewById<MaterialButton>(R.id.mbStartAddCard).setOnClickListener {
-            startActivity(Intent(this, AddCardCheckoutActivity::class.java))
+            startActivity(Intent(this, OrchestrationCheckoutActivity::class.java))
         }
     }
 }
