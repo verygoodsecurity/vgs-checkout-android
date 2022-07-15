@@ -1,9 +1,9 @@
 package com.verygoodsecurity.vgscheckout.config
 
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
-import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutCustomRouteConfig
+import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutRouteConfig
 import com.verygoodsecurity.vgscheckout.config.networking.core.VGSCheckoutHostnamePolicy
-import com.verygoodsecurity.vgscheckout.config.networking.request.VGSCheckoutCustomRequestOptions
+import com.verygoodsecurity.vgscheckout.config.networking.request.VGSCheckoutRequestOptions
 import com.verygoodsecurity.vgscheckout.config.networking.request.core.VGSCheckoutDataMergePolicy
 import com.verygoodsecurity.vgscheckout.config.networking.request.core.VGSCheckoutHttpMethod
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutFormConfig
@@ -41,7 +41,7 @@ class VGSCheckoutCustomConfig internal constructor(
     override val id: String,
     override val routeId: String,
     override val environment: VGSCheckoutEnvironment,
-    override val routeConfig: VGSCheckoutCustomRouteConfig,
+    override val routeConfig: VGSCheckoutRouteConfig,
     override val formConfig: VGSCheckoutFormConfig,
     override val isScreenshotsAllowed: Boolean,
 ) : CheckoutConfig() {
@@ -421,15 +421,15 @@ class VGSCheckoutCustomConfig internal constructor(
             )
         }
 
-        private fun buildRouteConfig(): VGSCheckoutCustomRouteConfig {
-            val requestOptions = VGSCheckoutCustomRequestOptions(
+        private fun buildRouteConfig(): VGSCheckoutRouteConfig {
+            val requestOptions = VGSCheckoutRequestOptions(
                 httpMethod,
                 extraHeaders,
                 extraData,
                 mergePolicy
             )
 
-            return VGSCheckoutCustomRouteConfig(
+            return VGSCheckoutRouteConfig(
                 path,
                 hostnamePolicy,
                 requestOptions

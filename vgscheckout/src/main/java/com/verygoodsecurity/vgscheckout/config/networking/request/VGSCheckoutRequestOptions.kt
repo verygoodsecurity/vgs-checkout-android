@@ -17,7 +17,7 @@ import kotlinx.parcelize.RawValue
  * merged before send.
  */
 @Parcelize
-class VGSCheckoutCustomRequestOptions @JvmOverloads constructor(
+class VGSCheckoutRequestOptions @JvmOverloads constructor(
     override val httpMethod: VGSCheckoutHttpMethod = VGSCheckoutHttpMethod.POST,
     override val extraHeaders: Map<String, String> = emptyMap(),
     override val extraData: Map<String, @RawValue Any> = emptyMap(),
