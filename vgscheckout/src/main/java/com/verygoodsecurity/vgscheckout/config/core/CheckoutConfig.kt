@@ -7,7 +7,7 @@ import com.verygoodsecurity.vgscheckout.collect.core.isSandbox
 import com.verygoodsecurity.vgscheckout.config.networking.core.CheckoutRouteConfig
 import com.verygoodsecurity.vgscheckout.config.networking.core.getNormalizedHostName
 import com.verygoodsecurity.vgscheckout.config.networking.core.getNormalizedPort
-import com.verygoodsecurity.vgscheckout.config.ui.core.CheckoutFormConfig
+import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutFormConfig
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
 import com.verygoodsecurity.vgscheckout.networking.*
 import com.verygoodsecurity.vgscheckout.util.logger.VGSCheckoutLogger
@@ -41,7 +41,7 @@ abstract class CheckoutConfig : Parcelable {
     /**
      * UI configuration.
      */
-    abstract val formConfig: CheckoutFormConfig
+    abstract val formConfig: VGSCheckoutFormConfig
 
     /**
      * If true, checkout form will allow to make screenshots.

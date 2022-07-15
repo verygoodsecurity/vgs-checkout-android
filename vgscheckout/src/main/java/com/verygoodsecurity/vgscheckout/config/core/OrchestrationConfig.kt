@@ -4,7 +4,7 @@ import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgscheckout.analytic.event.JWTValidationEvent
 import com.verygoodsecurity.vgscheckout.config.CheckoutCredentialsValidator
 import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutPaymentRouteConfig
-import com.verygoodsecurity.vgscheckout.config.ui.core.CheckoutFormConfig
+import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutFormConfig
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.VGSCheckoutCardOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.VGSCheckoutCardHolderOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.VGSCheckoutCardNumberOptions
@@ -22,7 +22,7 @@ abstract class OrchestrationConfig internal constructor(
     override val id: String,
     override val environment: VGSCheckoutEnvironment,
     override val routeConfig: VGSCheckoutPaymentRouteConfig,
-    override val formConfig: CheckoutFormConfig,
+    override val formConfig: VGSCheckoutFormConfig,
     override val isScreenshotsAllowed: Boolean,
     open val isRemoveCardOptionEnabled: Boolean,
     private val createdFromParcel: Boolean
@@ -58,6 +58,13 @@ abstract class OrchestrationConfig internal constructor(
         private const val EXPIRY_YEAR_FIELD_NAME = "card.exp_year"
         private const val EXPIRY_DATE_INPUT_FORMAT = "MM/yy"
         private const val EXPIRY_DATE_OUTPUT_FORMAT = "MM/yyyy"
+
+        internal const val COUNTRY_FIELD_NAME = "card.billing_address.country"
+        internal const val CITY_FIELD_NAME = "card.billing_address.city"
+        internal const val ADDRESS_FIELD_NAME = "card.billing_address.address1"
+        internal const val OPTIONAL_FIELD_NAME = "card.billing_address.address2"
+        internal const val POSTAL_CODE_FIELD_NAME = "card.billing_address.postal_code"
+
 
         internal fun createOrchestrationCardOptions() = VGSCheckoutCardOptions(
             VGSCheckoutCardNumberOptions(

@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgscheckout.config.ui
 
-import com.verygoodsecurity.vgscheckout.config.ui.core.CheckoutFormConfig
+import android.os.Parcelable
 import com.verygoodsecurity.vgscheckout.config.ui.core.VGSCheckoutFormValidationBehaviour
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillingAddressOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.VGSCheckoutCardOptions
@@ -16,8 +16,8 @@ import kotlinx.parcelize.Parcelize
  */
 @Parcelize
 class VGSCheckoutFormConfig internal constructor(
-    override val cardOptions: VGSCheckoutCardOptions,
-    override val addressOptions: VGSCheckoutBillingAddressOptions,
-    override val validationBehaviour: VGSCheckoutFormValidationBehaviour,
-    override val saveCardOptionEnabled: Boolean,
-) : CheckoutFormConfig()
+    val cardOptions: VGSCheckoutCardOptions,
+    val addressOptions: VGSCheckoutBillingAddressOptions,
+    val validationBehaviour: VGSCheckoutFormValidationBehaviour,
+    val saveCardOptionEnabled: Boolean,
+) : Parcelable

@@ -1,6 +1,7 @@
 package com.verygoodsecurity.vgscheckout.config.ui.view.address.city
 
 import com.verygoodsecurity.vgscheckout.config.ui.view.core.VGSCheckoutFieldVisibility
+import com.verygoodsecurity.vgscheckout.config.ui.view.core.ViewOptions
 import kotlinx.parcelize.Parcelize
 
 /**
@@ -10,7 +11,7 @@ import kotlinx.parcelize.Parcelize
  * @param visibility defines if input field should be visible to user.
  */
 @Parcelize
-class VGSCheckoutCityOptions constructor(
+class VGSCheckoutCityOptions internal constructor(
     override val fieldName: String,
     override val visibility: VGSCheckoutFieldVisibility
-) : CityOptions()
+) : ViewOptions()

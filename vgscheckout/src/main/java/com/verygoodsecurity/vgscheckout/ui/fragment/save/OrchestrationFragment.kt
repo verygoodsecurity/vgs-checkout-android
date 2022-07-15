@@ -21,11 +21,11 @@ import com.verygoodsecurity.vgscheckout.collect.view.internal.CountryInputField
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.config.core.OrchestrationConfig
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.AddressOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.OptionalAddressOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.city.CityOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.code.PostalCodeOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.country.CountryOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.VGSCheckoutAddressOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.VGSCheckoutOptionalAddressOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.city.VGSCheckoutCityOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.code.VGSCheckoutPostalCodeOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.country.VGSCheckoutCountryOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.VGSCheckoutCardHolderOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.VGSCheckoutCardNumberOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.VGSCheckoutCVCOptions
@@ -182,7 +182,7 @@ internal abstract class OrchestrationFragment<T : CheckoutConfig> : BaseFragment
         return with(binding) { countryTil.isGone && addressTil.isGone && optionalAddressTil.isGone && cityTil.isGone && postalCodeTil.isGone }
     }
 
-    private fun initCountryView(options: CountryOptions) {
+    private fun initCountryView(options: VGSCheckoutCountryOptions) {
         binding.countryEt.setCountries(options.validCountries)
         val isVisible = options.isVisible()
         binding.countryTil.isVisible = isVisible
@@ -198,7 +198,7 @@ internal abstract class OrchestrationFragment<T : CheckoutConfig> : BaseFragment
         binding.countryEt.onCountrySelectedListener = this
     }
 
-    private fun initAddressView(options: AddressOptions) {
+    private fun initAddressView(options: VGSCheckoutAddressOptions) {
         if (!options.isVisible()) {
             binding.addressTil.gone()
             return
@@ -208,7 +208,7 @@ internal abstract class OrchestrationFragment<T : CheckoutConfig> : BaseFragment
         binding.addressEt.addRule(singleCharValidationRule)
     }
 
-    private fun initOptionalAddressView(options: OptionalAddressOptions) {
+    private fun initOptionalAddressView(options: VGSCheckoutOptionalAddressOptions) {
         if (!options.isVisible()) {
             binding.optionalAddressTil.gone()
             return
@@ -217,7 +217,7 @@ internal abstract class OrchestrationFragment<T : CheckoutConfig> : BaseFragment
         binding.optionalAddressEt.setAnalyticsName("addressLine2")
     }
 
-    private fun initCityView(options: CityOptions) {
+    private fun initCityView(options: VGSCheckoutCityOptions) {
         if (!options.isVisible()) {
             binding.cityTil.gone()
             binding.cityPostalAddressSpace.gone()
@@ -229,7 +229,7 @@ internal abstract class OrchestrationFragment<T : CheckoutConfig> : BaseFragment
         binding.cityEt.setOnEditorActionListener(this)
     }
 
-    private fun initPostalCodeView(options: PostalCodeOptions) {
+    private fun initPostalCodeView(options: VGSCheckoutPostalCodeOptions) {
         if (!options.isVisible()) {
             binding.postalCodeTil.gone()
             binding.cityPostalAddressSpace.gone()
