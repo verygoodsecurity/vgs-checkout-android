@@ -33,10 +33,6 @@
             android:label="@string/add_card_flow_title" />
 
         <activity
-            android:name="com.verygoodsecurity.vgscheckout.demo.orchestrtion.payment.PaymentCheckoutActivity"
-            android:label="@string/payment_flow_title" />
-
-        <activity
             android:name="com.verygoodsecurity.vgscheckout.demo.settings.CheckoutSettingsActivity"
             android:label="@string/settings_title" />
     </application>
