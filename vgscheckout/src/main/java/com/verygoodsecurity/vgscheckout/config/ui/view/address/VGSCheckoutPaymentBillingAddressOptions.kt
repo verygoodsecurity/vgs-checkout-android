@@ -20,10 +20,10 @@ import kotlinx.parcelize.Parcelize
  */
 @Parcelize
 class VGSCheckoutPaymentBillingAddressOptions constructor(
-    override val countryOptions: VGSCheckoutPaymentCountryOptions = VGSCheckoutPaymentCountryOptions(),
-    override val cityOptions: VGSCheckoutPaymentCityOptions = VGSCheckoutPaymentCityOptions(),
-    override val addressOptions: VGSCheckoutPaymentAddressOptions = VGSCheckoutPaymentAddressOptions(),
-    override val optionalAddressOptions: VGSCheckoutPaymentOptionalAddressOptions = VGSCheckoutPaymentOptionalAddressOptions(),
-    override val postalCodeOptions: VGSCheckoutPaymentPostalCodeOptions = VGSCheckoutPaymentPostalCodeOptions(),
-    override val visibility: VGSCheckoutBillingAddressVisibility = VGSCheckoutBillingAddressVisibility.HIDDEN
+    override val countryOptions: VGSCheckoutPaymentCountryOptions,
+    override val cityOptions: VGSCheckoutPaymentCityOptions,
+    override val addressOptions: VGSCheckoutPaymentAddressOptions,
+    override val optionalAddressOptions: VGSCheckoutPaymentOptionalAddressOptions,
+    override val postalCodeOptions: VGSCheckoutPaymentPostalCodeOptions,
+    override val visibility: VGSCheckoutBillingAddressVisibility
 ) : CheckoutBillingAddressOptions()
