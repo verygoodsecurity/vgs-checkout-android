@@ -36,11 +36,10 @@ class VGSCheckoutPaymentFormConfig private constructor(
      * @param validationBehaviour defines validation behavior. Default is [VGSCheckoutFormValidationBehaviour.ON_SUBMIT].
      * @param saveCardOptionEnabled defines if save card checkbox should be visible. Default is true.
      */
-    @JvmOverloads
     constructor(
-        addressOptions: VGSCheckoutPaymentBillingAddressOptions = VGSCheckoutPaymentBillingAddressOptions(),
-        validationBehaviour: VGSCheckoutFormValidationBehaviour = VGSCheckoutFormValidationBehaviour.ON_SUBMIT,
-        saveCardOptionEnabled: Boolean = true
+        addressOptions: VGSCheckoutPaymentBillingAddressOptions,
+        validationBehaviour: VGSCheckoutFormValidationBehaviour,
+        saveCardOptionEnabled: Boolean
     ) : this(
         VGSCheckoutCardOptions(
             VGSCheckoutCardNumberOptions(CARD_NUMBER_FIELD_NAME, false, VGSCheckoutCardBrand.BRANDS),

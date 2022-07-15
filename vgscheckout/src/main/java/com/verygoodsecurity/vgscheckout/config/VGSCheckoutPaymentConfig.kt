@@ -374,7 +374,7 @@ internal class VGSCheckoutPaymentConfig internal constructor(
             tenantId: String,
             paymentMethod: VGSCheckoutPaymentMethod.SavedCards,
             environment: VGSCheckoutEnvironment = VGSCheckoutEnvironment.Sandbox(),
-            formConfig: VGSCheckoutPaymentFormConfig = VGSCheckoutPaymentFormConfig(),
+            formConfig: VGSCheckoutPaymentFormConfig,
             isScreenshotsAllowed: Boolean = false,
             isRemoveCardOptionEnabled: Boolean = true,
             callback: VGSCheckoutConfigInitCallback<VGSCheckoutPaymentConfig>? = null
