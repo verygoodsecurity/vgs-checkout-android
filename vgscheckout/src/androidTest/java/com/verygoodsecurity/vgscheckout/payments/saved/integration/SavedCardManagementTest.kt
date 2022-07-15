@@ -20,6 +20,7 @@ import com.verygoodsecurity.vgscheckout.Constants.VALID_CARD_NUMBER_MASTERCARD
 import com.verygoodsecurity.vgscheckout.Constants.VALID_SECURITY_CODE_AMEX
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.VGSCheckoutConfigInitCallback
+import com.verygoodsecurity.vgscheckout.VGSCheckoutSavedCardsCallback
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
 import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
 import com.verygoodsecurity.vgscheckout.model.*
@@ -64,20 +65,24 @@ class SavedCardManagementTest {
 
     private fun initializeSavedCardConfig(arrayListOf: ArrayList<String>) =
         CountDownLatch(1).runCatching {
-            var savedConfig: VGSCheckoutAddCardConfig? = null
-
-            VGSCheckoutAddCardConfig.Builder(BuildConfig.VAULT_ID)
+            val savedConfig = VGSCheckoutAddCardConfig.Builder(BuildConfig.VAULT_ID)
                 .setAccessToken(token)
-                .setSavedCardIds(arrayListOf)
                 .setIsScreenshotsAllowed(true)
-                .build(context, object : VGSCheckoutConfigInitCallback<VGSCheckoutAddCardConfig> {
-                    override fun onSuccess(config: VGSCheckoutAddCardConfig) {
-                        savedConfig = config
+                .build()
+
+            savedConfig.loadSavedCard(
+                context,
+                object : VGSCheckoutSavedCardsCallback {
+                    override fun onSuccess() {
                         countDown()
                     }
 
-                    override fun onFailure(exception: VGSCheckoutException) {}
-                })
+                    override fun onFailure(exception: VGSCheckoutException) {
+                        countDown()
+                    }
+                },
+                arrayListOf
+            )
 
             await()
 
