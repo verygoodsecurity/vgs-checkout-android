@@ -84,24 +84,6 @@ class VGSCheckoutAddCardConfig internal constructor(
     }
 
     /**
-     * Add ability to use previously saved cards or new card.
-     *
-     * @param cardIds list of cards(financial instruments) ids. Max length [MAX_CARDS_SIZE].
-     */
-    fun loadSavedCard(
-        context: Context,
-        @Size(max = MAX_CARDS_SIZE) cardIds: List<String>,
-        callback: VGSCheckoutSavedCardsCallback
-    ): VGSCheckoutCancellable {
-        return loadSavedCards(
-            context,
-            VGSCheckoutPaymentMethod.SavedCards(cardIds),
-            this,
-            callback
-        )
-    }
-
-    /**
      * Public constructor.
      *
      * @param accessToken payment orchestration app access token.
