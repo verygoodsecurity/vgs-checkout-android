@@ -13,8 +13,6 @@ import com.google.gson.annotations.SerializedName
 import com.verygoodsecurity.vgscheckout.BuildConfig.AUTHENTICATION_HOST
 import com.verygoodsecurity.vgscheckout.VGSCheckout
 import com.verygoodsecurity.vgscheckout.VGSCheckoutCallback
-import com.verygoodsecurity.vgscheckout.VGSCheckoutConfigInitCallback
-import com.verygoodsecurity.vgscheckout.VGSCheckoutSavedCardsCallback
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillingAddressVisibility
@@ -22,7 +20,6 @@ import com.verygoodsecurity.vgscheckout.demo.BaseActivity
 import com.verygoodsecurity.vgscheckout.demo.BuildConfig
 import com.verygoodsecurity.vgscheckout.demo.CheckoutType
 import com.verygoodsecurity.vgscheckout.demo.R
-import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResultBundle
 import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutCardResponse
@@ -114,20 +111,7 @@ class OrchestrationCheckoutActivity : BaseActivity(R.layout.activity_payment_che
             .setIsSaveCardOptionVisible(preferences.getBoolean(R.string.setting_key_save_card_option_enabled))
 
         // Create config object
-        val config = builder.build()
-
-        // Preload saved cards by id.
-        config.loadSavedCard(
-            this,
-            arrayListOf(BuildConfig.TEMPORARY_FIN_INSTRUMENT),
-            object : VGSCheckoutSavedCardsCallback {
-                override fun onSuccess() {
-                    callback(config)
-                }
-
-                override fun onFailure(exception: VGSCheckoutException) {}
-            }
-        )
+        callback(builder.build())
     }
 
     private fun setLoading(isLoading: Boolean) {
