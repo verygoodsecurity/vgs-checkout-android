@@ -21,15 +21,15 @@ import com.verygoodsecurity.vgscheckout.collect.view.internal.CountryInputField
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.config.core.OrchestrationConfig
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.AddressOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.OptionalAddressOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.city.CityOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.code.PostalCodeOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.country.CountryOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.CardHolderOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.CardNumberOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.CVCOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.ExpirationDateOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.VGSCheckoutAddressOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.VGSCheckoutOptionalAddressOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.city.VGSCheckoutCityOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.code.VGSCheckoutPostalCodeOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.country.VGSCheckoutCountryOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.VGSCheckoutCardHolderOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.VGSCheckoutCardNumberOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.VGSCheckoutCVCOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.VGSCheckoutExpirationDateOptions
 import com.verygoodsecurity.vgscheckout.exception.internal.NoInternetConnectionException
 import com.verygoodsecurity.vgscheckout.networking.command.AddCardCommand
 import com.verygoodsecurity.vgscheckout.ui.fragment.core.BaseFragment
@@ -128,7 +128,7 @@ internal abstract class OrchestrationFragment<T : CheckoutConfig> : BaseFragment
         initSecurityCodeView(config.cvcOptions)
     }
 
-    private fun initCardHolderView(options: CardHolderOptions) {
+    private fun initCardHolderView(options: VGSCheckoutCardHolderOptions) {
         if (!options.isVisible()) {
             binding.cardHolderTil.gone()
             return
@@ -137,7 +137,7 @@ internal abstract class OrchestrationFragment<T : CheckoutConfig> : BaseFragment
         binding.cardHolderEt.setAnalyticsName("cardHolder")
     }
 
-    private fun initCardNumberView(options: CardNumberOptions) {
+    private fun initCardNumberView(options: VGSCheckoutCardNumberOptions) {
         binding.cardNumberEt.tag = options.fieldName
         binding.cardNumberEt.setAnalyticsName("cardNumber")
         binding.cardNumberEt.setValidCardBrands(options.cardBrands)
@@ -147,7 +147,7 @@ internal abstract class OrchestrationFragment<T : CheckoutConfig> : BaseFragment
         binding.cardNumberEt.dependentField = binding.securityCodeEt
     }
 
-    private fun initExpirationDateView(options: ExpirationDateOptions) {
+    private fun initExpirationDateView(options: VGSCheckoutExpirationDateOptions) {
         binding.expirationDateEt.inputType =
             InputType.TYPE_CLASS_TEXT or InputType.TYPE_DATETIME_VARIATION_DATE
         binding.expirationDateEt.tag = options.fieldName
@@ -158,7 +158,7 @@ internal abstract class OrchestrationFragment<T : CheckoutConfig> : BaseFragment
         binding.expirationDateEt.setFieldDataSerializer(options.dateSeparateSerializer?.toCollectDateSeparateSerializer())
     }
 
-    private fun initSecurityCodeView(options: CVCOptions) {
+    private fun initSecurityCodeView(options: VGSCheckoutCVCOptions) {
         binding.securityCodeEt.tag = options.fieldName
         binding.securityCodeEt.setAnalyticsName("cvc")
         binding.securityCodeEt.setPreviewIconGravity(CVCInputField.PreviewIconGravity.START)
@@ -182,7 +182,7 @@ internal abstract class OrchestrationFragment<T : CheckoutConfig> : BaseFragment
         return with(binding) { countryTil.isGone && addressTil.isGone && optionalAddressTil.isGone && cityTil.isGone && postalCodeTil.isGone }
     }
 
-    private fun initCountryView(options: CountryOptions) {
+    private fun initCountryView(options: VGSCheckoutCountryOptions) {
         binding.countryEt.setCountries(options.validCountries)
         val isVisible = options.isVisible()
         binding.countryTil.isVisible = isVisible
@@ -198,7 +198,7 @@ internal abstract class OrchestrationFragment<T : CheckoutConfig> : BaseFragment
         binding.countryEt.onCountrySelectedListener = this
     }
 
-    private fun initAddressView(options: AddressOptions) {
+    private fun initAddressView(options: VGSCheckoutAddressOptions) {
         if (!options.isVisible()) {
             binding.addressTil.gone()
             return
@@ -208,7 +208,7 @@ internal abstract class OrchestrationFragment<T : CheckoutConfig> : BaseFragment
         binding.addressEt.addRule(singleCharValidationRule)
     }
 
-    private fun initOptionalAddressView(options: OptionalAddressOptions) {
+    private fun initOptionalAddressView(options: VGSCheckoutOptionalAddressOptions) {
         if (!options.isVisible()) {
             binding.optionalAddressTil.gone()
             return
@@ -217,7 +217,7 @@ internal abstract class OrchestrationFragment<T : CheckoutConfig> : BaseFragment
         binding.optionalAddressEt.setAnalyticsName("addressLine2")
     }
 
-    private fun initCityView(options: CityOptions) {
+    private fun initCityView(options: VGSCheckoutCityOptions) {
         if (!options.isVisible()) {
             binding.cityTil.gone()
             binding.cityPostalAddressSpace.gone()
@@ -229,7 +229,7 @@ internal abstract class OrchestrationFragment<T : CheckoutConfig> : BaseFragment
         binding.cityEt.setOnEditorActionListener(this)
     }
 
-    private fun initPostalCodeView(options: PostalCodeOptions) {
+    private fun initPostalCodeView(options: VGSCheckoutPostalCodeOptions) {
         if (!options.isVisible()) {
             binding.postalCodeTil.gone()
             binding.cityPostalAddressSpace.gone()

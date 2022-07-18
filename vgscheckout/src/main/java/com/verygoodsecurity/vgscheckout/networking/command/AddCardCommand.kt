@@ -5,7 +5,7 @@ import com.verygoodsecurity.vgscheckout.collect.util.extension.concatWithSlash
 import com.verygoodsecurity.vgscheckout.collect.util.extension.deepMerge
 import com.verygoodsecurity.vgscheckout.collect.util.extension.toFlatMap
 import com.verygoodsecurity.vgscheckout.collect.util.extension.toJSON
-import com.verygoodsecurity.vgscheckout.config.networking.core.CheckoutRouteConfig
+import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutRouteConfig
 import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
 import com.verygoodsecurity.vgscheckout.networking.client.HttpRequest
 import com.verygoodsecurity.vgscheckout.networking.command.core.Command
@@ -52,7 +52,7 @@ internal class AddCardCommand constructor(
     internal data class Params(
         val url: String,
         val path: String,
-        val config: CheckoutRouteConfig,
+        val config: VGSCheckoutRouteConfig,
         val data: MutableCollection<Pair<String, String>>,
     ) : Command.Params()
 

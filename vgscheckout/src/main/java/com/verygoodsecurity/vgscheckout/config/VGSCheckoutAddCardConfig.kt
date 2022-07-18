@@ -7,18 +7,18 @@ import androidx.annotation.Size
 import com.verygoodsecurity.vgscheckout.VGSCheckoutSavedCardsCallback
 import com.verygoodsecurity.vgscheckout.analytic.event.FinInstrumentCrudEvent
 import com.verygoodsecurity.vgscheckout.config.core.OrchestrationConfig
-import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutPaymentRouteConfig
+import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutRouteConfig
 import com.verygoodsecurity.vgscheckout.config.payment.VGSCheckoutPaymentMethod
 import com.verygoodsecurity.vgscheckout.config.payment.VGSCheckoutPaymentMethod.SavedCards.Companion.MAX_CARDS_SIZE
-import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutAddCardFormConfig
+import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutFormConfig
 import com.verygoodsecurity.vgscheckout.config.ui.core.VGSCheckoutFormValidationBehaviour
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillingAddressOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillingAddressVisibility
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutPaymentBillingAddressOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.VGSCheckoutPaymentAddressOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.VGSCheckoutPaymentOptionalAddressOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.city.VGSCheckoutPaymentCityOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.code.VGSCheckoutPaymentPostalCodeOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.country.VGSCheckoutPaymentCountryOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.VGSCheckoutAddressOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.VGSCheckoutOptionalAddressOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.city.VGSCheckoutCityOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.code.VGSCheckoutPostalCodeOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.country.VGSCheckoutCountryOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.core.VGSCheckoutFieldVisibility
 import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
 import com.verygoodsecurity.vgscheckout.model.Card
@@ -45,8 +45,8 @@ class VGSCheckoutAddCardConfig internal constructor(
     override val routeId: String,
     override val id: String,
     override val environment: VGSCheckoutEnvironment,
-    override val routeConfig: VGSCheckoutPaymentRouteConfig,
-    override val formConfig: VGSCheckoutAddCardFormConfig,
+    override val routeConfig: VGSCheckoutRouteConfig,
+    override val formConfig: VGSCheckoutFormConfig,
     override val isScreenshotsAllowed: Boolean,
     override val isRemoveCardOptionEnabled: Boolean,
     createdFromParcel: Boolean
@@ -69,8 +69,8 @@ class VGSCheckoutAddCardConfig internal constructor(
         parcel.readString()!!,
         parcel.readString()!!,
         parcel.readParcelable(VGSCheckoutEnvironment::class.java.classLoader)!!,
-        parcel.readParcelable(VGSCheckoutPaymentRouteConfig::class.java.classLoader)!!,
-        parcel.readParcelable(VGSCheckoutAddCardFormConfig::class.java.classLoader)!!,
+        parcel.readParcelable(VGSCheckoutRouteConfig::class.java.classLoader)!!,
+        parcel.readParcelable(VGSCheckoutFormConfig::class.java.classLoader)!!,
         parcel.readInt() == 1,
         parcel.readInt() == 1,
         true
@@ -119,14 +119,14 @@ class VGSCheckoutAddCardConfig internal constructor(
         routeId: String,
         tenantId: String,
         environment: VGSCheckoutEnvironment = VGSCheckoutEnvironment.Sandbox(),
-        formConfig: VGSCheckoutAddCardFormConfig = VGSCheckoutAddCardFormConfig(),
+        formConfig: VGSCheckoutFormConfig,
         isScreenshotsAllowed: Boolean = false
     ) : this(
         accessToken,
         routeId,
         tenantId,
         environment,
-        VGSCheckoutPaymentRouteConfig(accessToken),
+        createRouteConfig(accessToken),
         formConfig,
         isScreenshotsAllowed,
         true,
@@ -179,9 +179,8 @@ class VGSCheckoutAddCardConfig internal constructor(
          *
          * @param environment Type of vault.
          */
-        fun setEnvironment(environment: VGSCheckoutEnvironment): Builder {
+        fun setEnvironment(environment: VGSCheckoutEnvironment) = this.apply {
             this.environment = environment
-            return this
         }
 
         /**
@@ -189,9 +188,8 @@ class VGSCheckoutAddCardConfig internal constructor(
          *
          * @param isScreenshotsAllowed Defines is screenshots allowed.
          */
-        fun setIsScreenshotsAllowed(isScreenshotsAllowed: Boolean): Builder {
+        fun setIsScreenshotsAllowed(isScreenshotsAllowed: Boolean) = this.apply {
             this.isScreenshotsAllowed = isScreenshotsAllowed
-            return this
         }
 
         /**
@@ -199,9 +197,8 @@ class VGSCheckoutAddCardConfig internal constructor(
          *
          * @param accessToken A payment orchestration app access token.
          */
-        fun setAccessToken(accessToken: String): Builder {
+        fun setAccessToken(accessToken: String) = this.apply {
             this.accessToken = accessToken
-            return this
         }
 
         /**
@@ -209,9 +206,8 @@ class VGSCheckoutAddCardConfig internal constructor(
          *
          * @param routeId A route id.
          */
-        fun setRouteId(routeId: String): Builder {
+        fun setRouteId(routeId: String) = this.apply {
             this.routeId = routeId
-            return this
         }
 
         /**
@@ -221,9 +217,8 @@ class VGSCheckoutAddCardConfig internal constructor(
          */
         fun setFormValidationBehaviour(
             validationBehaviour: VGSCheckoutFormValidationBehaviour
-        ): Builder {
+        ) = this.apply {
             formValidationBehaviour = validationBehaviour
-            return this
         }
 
         /**
@@ -233,9 +228,8 @@ class VGSCheckoutAddCardConfig internal constructor(
          */
         fun setIsSaveCardOptionVisible(
             isSaveCardOptionVisible: Boolean
-        ): Builder {
+        ) = this.apply {
             saveCardOptionEnabled = isSaveCardOptionVisible
-            return this
         }
 
         /**
@@ -245,9 +239,8 @@ class VGSCheckoutAddCardConfig internal constructor(
          */
         fun setIsRemoveCardOptionEnabled(
             isRemoveCardOptionEnabled: Boolean
-        ): Builder {
+        ) = this.apply {
             this.isRemoveCardOptionEnabled = isRemoveCardOptionEnabled
-            return this
         }
 
         //region Form config
@@ -260,10 +253,9 @@ class VGSCheckoutAddCardConfig internal constructor(
         fun setCountryOptions(
             visibility: VGSCheckoutFieldVisibility = VGSCheckoutFieldVisibility.VISIBLE,
             validCountries: List<String> = emptyList()
-        ): Builder {
+        ) = this.apply {
             countryFieldVisibility = visibility
             this.validCountries = validCountries
-            return this
         }
 
         /**
@@ -271,11 +263,8 @@ class VGSCheckoutAddCardConfig internal constructor(
          *
          * @param visibility defines if input field should be visible to user.
          */
-        fun setCityOptions(
-            visibility: VGSCheckoutFieldVisibility
-        ): Builder {
+        fun setCityOptions(visibility: VGSCheckoutFieldVisibility) = this.apply {
             cityFieldVisibility = visibility
-            return this
         }
 
         /**
@@ -283,11 +272,8 @@ class VGSCheckoutAddCardConfig internal constructor(
          *
          * @param visibility defines if input field should be visible to user.
          */
-        fun setAddressOptions(
-            visibility: VGSCheckoutFieldVisibility
-        ): Builder {
+        fun setAddressOptions(visibility: VGSCheckoutFieldVisibility) = this.apply {
             addressFieldVisibility = visibility
-            return this
         }
 
         /**
@@ -297,9 +283,8 @@ class VGSCheckoutAddCardConfig internal constructor(
          */
         fun setOptionalAddressOptions(
             visibility: VGSCheckoutFieldVisibility = VGSCheckoutFieldVisibility.VISIBLE
-        ): Builder {
+        ) = this.apply {
             optionalAddressFieldVisibility = visibility
-            return this
         }
 
         /**
@@ -309,9 +294,8 @@ class VGSCheckoutAddCardConfig internal constructor(
          */
         fun setPostalCodeOptions(
             visibility: VGSCheckoutFieldVisibility = VGSCheckoutFieldVisibility.VISIBLE
-        ): Builder {
+        ) = this.apply {
             postalCodeFieldVisibility = visibility
-            return this
         }
 
         /**
@@ -321,22 +305,35 @@ class VGSCheckoutAddCardConfig internal constructor(
          */
         fun setBillingAddressVisibility(
             visibility: VGSCheckoutBillingAddressVisibility
-        ): Builder {
+        ) = this.apply {
             billingAddressVisibility = visibility
-            return this
         }
 
-        private fun buildFormConfig(): VGSCheckoutAddCardFormConfig {
-            return VGSCheckoutAddCardFormConfig(
-                VGSCheckoutPaymentBillingAddressOptions(
-                    VGSCheckoutPaymentCountryOptions(
+        private fun buildFormConfig(): VGSCheckoutFormConfig {
+            return VGSCheckoutFormConfig(
+                createCardOptions(),
+                VGSCheckoutBillingAddressOptions(
+                    VGSCheckoutCountryOptions(
+                        COUNTRY_FIELD_NAME,
                         validCountries,
                         countryFieldVisibility
                     ),
-                    VGSCheckoutPaymentCityOptions(cityFieldVisibility),
-                    VGSCheckoutPaymentAddressOptions(addressFieldVisibility),
-                    VGSCheckoutPaymentOptionalAddressOptions(optionalAddressFieldVisibility),
-                    VGSCheckoutPaymentPostalCodeOptions(postalCodeFieldVisibility),
+                    VGSCheckoutCityOptions(
+                        CITY_FIELD_NAME,
+                        cityFieldVisibility
+                    ),
+                    VGSCheckoutAddressOptions(
+                        ADDRESS_FIELD_NAME,
+                        addressFieldVisibility
+                    ),
+                    VGSCheckoutOptionalAddressOptions(
+                        OPTIONAL_FIELD_NAME,
+                        optionalAddressFieldVisibility
+                    ),
+                    VGSCheckoutPostalCodeOptions(
+                        POSTAL_CODE_FIELD_NAME,
+                        postalCodeFieldVisibility
+                    ),
                     billingAddressVisibility
                 ),
                 formValidationBehaviour,

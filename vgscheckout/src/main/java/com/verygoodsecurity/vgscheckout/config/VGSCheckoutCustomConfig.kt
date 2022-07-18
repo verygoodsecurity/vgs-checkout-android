@@ -1,25 +1,25 @@
 package com.verygoodsecurity.vgscheckout.config
 
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
-import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutCustomRouteConfig
+import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutRouteConfig
 import com.verygoodsecurity.vgscheckout.config.networking.core.VGSCheckoutHostnamePolicy
-import com.verygoodsecurity.vgscheckout.config.networking.request.VGSCheckoutCustomRequestOptions
+import com.verygoodsecurity.vgscheckout.config.networking.request.VGSCheckoutRequestOptions
 import com.verygoodsecurity.vgscheckout.config.networking.request.core.VGSCheckoutDataMergePolicy
 import com.verygoodsecurity.vgscheckout.config.networking.request.core.VGSCheckoutHttpMethod
-import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutCustomFormConfig
+import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutFormConfig
 import com.verygoodsecurity.vgscheckout.config.ui.core.VGSCheckoutFormValidationBehaviour
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillingAddressOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillingAddressVisibility
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutCustomBillingAddressOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.VGSCheckoutCustomAddressOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.VGSCheckoutCustomOptionalAddressOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.city.VGSCheckoutCustomCityOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.code.VGSCheckoutCustomPostalCodeOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.country.VGSCheckoutCustomCountryOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.VGSCheckoutCustomCardOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.VGSCheckoutCustomCardHolderOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.VGSCheckoutCustomCardNumberOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.VGSCheckoutCustomCVCOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.VGSCheckoutCustomExpirationDateOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.VGSCheckoutAddressOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.VGSCheckoutOptionalAddressOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.city.VGSCheckoutCityOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.code.VGSCheckoutPostalCodeOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.country.VGSCheckoutCountryOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.VGSCheckoutCardOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.VGSCheckoutCardHolderOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.VGSCheckoutCardNumberOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.VGSCheckoutCVCOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.VGSCheckoutExpirationDateOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.model.VGSDateSeparateSerializer
 import com.verygoodsecurity.vgscheckout.config.ui.view.core.VGSCheckoutFieldVisibility
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
@@ -40,10 +40,10 @@ import kotlinx.parcelize.RawValue
 class VGSCheckoutCustomConfig internal constructor(
     override val id: String,
     override val routeId: String,
-    override val environment: VGSCheckoutEnvironment = VGSCheckoutEnvironment.Sandbox(),
-    override val routeConfig: VGSCheckoutCustomRouteConfig = VGSCheckoutCustomRouteConfig(),
-    override val formConfig: VGSCheckoutCustomFormConfig = VGSCheckoutCustomFormConfig(),
-    override val isScreenshotsAllowed: Boolean = false,
+    override val environment: VGSCheckoutEnvironment,
+    override val routeConfig: VGSCheckoutRouteConfig,
+    override val formConfig: VGSCheckoutFormConfig,
+    override val isScreenshotsAllowed: Boolean,
 ) : CheckoutConfig() {
 
     @IgnoredOnParcel
@@ -56,8 +56,8 @@ class VGSCheckoutCustomConfig internal constructor(
         private var environment: VGSCheckoutEnvironment = VGSCheckoutEnvironment.Sandbox()
         private var isScreenshotsAllowed = false
 
-        private var expirationDateFieldSeparateSerializer: VGSDateSeparateSerializer? = null
         private var expirationDateFieldName = ""
+        private var expirationDateFieldSeparateSerializer: VGSDateSeparateSerializer? = null
         private var expirationDateFieldInputFormatRegex = DATE_FORMAT
         private var expirationDateFieldOutputFormatRegex = DATE_FORMAT
 
@@ -71,8 +71,8 @@ class VGSCheckoutCustomConfig internal constructor(
         private var cardHolderFieldVisibility = VGSCheckoutFieldVisibility.VISIBLE
 
         private var countryFieldName = ""
-        private var countryFieldVisibility = VGSCheckoutFieldVisibility.VISIBLE
         private var validCountries: List<String> = emptyList()
+        private var countryFieldVisibility = VGSCheckoutFieldVisibility.VISIBLE
 
         private var cityFieldName = ""
         private var cityFieldVisibility = VGSCheckoutFieldVisibility.VISIBLE
@@ -103,9 +103,8 @@ class VGSCheckoutCustomConfig internal constructor(
          *
          * @param environment Type of vault.
          */
-        fun setEnvironment(environment: VGSCheckoutEnvironment): Builder {
+        fun setEnvironment(environment: VGSCheckoutEnvironment) = this.apply {
             this.environment = environment
-            return this
         }
 
         /**
@@ -113,9 +112,8 @@ class VGSCheckoutCustomConfig internal constructor(
          *
          * @param isScreenshotsAllowed Defines is screenshots allowed.
          */
-        fun setIsScreenshotsAllowed(isScreenshotsAllowed: Boolean): Builder {
+        fun setIsScreenshotsAllowed(isScreenshotsAllowed: Boolean) = this.apply {
             this.isScreenshotsAllowed = isScreenshotsAllowed
-            return this
         }
 
         /**
@@ -123,9 +121,8 @@ class VGSCheckoutCustomConfig internal constructor(
          *
          * @param routeId A route id.
          */
-        fun setRouteId(routeId: String): Builder {
+        fun setRouteId(routeId: String) = this.apply {
             this.routeId = routeId
-            return this
         }
 
         // region Card options
@@ -138,10 +135,9 @@ class VGSCheckoutCustomConfig internal constructor(
         fun setCardNumberOptions(
             fieldName: String,
             isIconHidden: Boolean = false
-        ): Builder {
+        ) = this.apply {
             cardNumberFieldName = fieldName
             isIconCardNumberHidden = isIconHidden
-            return this
         }
 
         /**
@@ -153,10 +149,9 @@ class VGSCheckoutCustomConfig internal constructor(
         fun setCardHolderOptions(
             fieldName: String,
             visibility: VGSCheckoutFieldVisibility = VGSCheckoutFieldVisibility.VISIBLE
-        ): Builder {
+        ) = this.apply {
             cardHolderFieldName = fieldName
             cardHolderFieldVisibility = visibility
-            return this
         }
 
         /**
@@ -168,10 +163,9 @@ class VGSCheckoutCustomConfig internal constructor(
         fun setCVCOptions(
             fieldName: String,
             isIconHidden: Boolean = false
-        ): Builder {
+        ) = this.apply {
             cvcFieldName = fieldName
             isIconCVCHidden = isIconHidden
-            return this
         }
 
         /**
@@ -187,35 +181,11 @@ class VGSCheckoutCustomConfig internal constructor(
             dateSeparateSerializer: VGSDateSeparateSerializer? = null,
             inputFormatRegex: String = DATE_FORMAT,
             outputFormatRegex: String = DATE_FORMAT
-        ): Builder {
+        ) = this.apply {
             expirationDateFieldName = fieldName
             expirationDateFieldSeparateSerializer = dateSeparateSerializer
             expirationDateFieldInputFormatRegex = inputFormatRegex
             expirationDateFieldOutputFormatRegex = outputFormatRegex
-            return this
-        }
-
-        private fun buildCardOptions(): VGSCheckoutCustomCardOptions {
-            return VGSCheckoutCustomCardOptions(
-                VGSCheckoutCustomCardNumberOptions(
-                    cardNumberFieldName,
-                    isIconCardNumberHidden
-                ),
-                VGSCheckoutCustomCardHolderOptions(
-                    cardHolderFieldName,
-                    cardHolderFieldVisibility
-                ),
-                VGSCheckoutCustomCVCOptions(
-                    cvcFieldName,
-                    isIconCVCHidden
-                ),
-                VGSCheckoutCustomExpirationDateOptions(
-                    expirationDateFieldName,
-                    expirationDateFieldSeparateSerializer,
-                    expirationDateFieldInputFormatRegex,
-                    expirationDateFieldOutputFormatRegex
-                )
-            )
         }
         //endregion
 
@@ -231,11 +201,10 @@ class VGSCheckoutCustomConfig internal constructor(
             fieldName: String,
             visibility: VGSCheckoutFieldVisibility = VGSCheckoutFieldVisibility.VISIBLE,
             validCountries: List<String> = emptyList()
-        ): Builder {
+        ) = this.apply {
             countryFieldName = fieldName
             countryFieldVisibility = visibility
             this.validCountries = validCountries
-            return this
         }
 
         /**
@@ -247,10 +216,9 @@ class VGSCheckoutCustomConfig internal constructor(
         fun setCityOptions(
             fieldName: String,
             visibility: VGSCheckoutFieldVisibility = VGSCheckoutFieldVisibility.VISIBLE
-        ): Builder {
+        ) = this.apply {
             cityFieldName = fieldName
             cityFieldVisibility = visibility
-            return this
         }
 
         /**
@@ -262,10 +230,9 @@ class VGSCheckoutCustomConfig internal constructor(
         fun setAddressOptions(
             fieldName: String,
             visibility: VGSCheckoutFieldVisibility = VGSCheckoutFieldVisibility.VISIBLE
-        ): Builder {
+        ) = this.apply {
             addressFieldName = fieldName
             addressFieldVisibility = visibility
-            return this
         }
 
         /**
@@ -277,10 +244,9 @@ class VGSCheckoutCustomConfig internal constructor(
         fun setOptionalAddressOptions(
             fieldName: String,
             visibility: VGSCheckoutFieldVisibility = VGSCheckoutFieldVisibility.VISIBLE
-        ): Builder {
+        ) = this.apply {
             optionalAddressFieldName = fieldName
             optionalAddressFieldVisibility = visibility
-            return this
         }
 
         /**
@@ -292,10 +258,9 @@ class VGSCheckoutCustomConfig internal constructor(
         fun setPostalCodeOptions(
             fieldName: String,
             visibility: VGSCheckoutFieldVisibility = VGSCheckoutFieldVisibility.VISIBLE
-        ): Builder {
+        ) = this.apply {
             postalCodeFieldName = fieldName
             postalCodeFieldVisibility = visibility
-            return this
         }
 
         /**
@@ -305,37 +270,8 @@ class VGSCheckoutCustomConfig internal constructor(
          */
         fun setBillingAddressVisibility(
             visibility: VGSCheckoutBillingAddressVisibility
-        ): Builder {
+        ) = this.apply {
             billingAddressVisibility = visibility
-            return this
-        }
-
-
-        private fun buildBillingAddressOptions(): VGSCheckoutCustomBillingAddressOptions {
-            return VGSCheckoutCustomBillingAddressOptions(
-                VGSCheckoutCustomCountryOptions(
-                    countryFieldName,
-                    validCountries,
-                    countryFieldVisibility
-                ),
-                VGSCheckoutCustomCityOptions(
-                    cityFieldName,
-                    cityFieldVisibility
-                ),
-                VGSCheckoutCustomAddressOptions(
-                    addressFieldName,
-                    addressFieldVisibility
-                ),
-                VGSCheckoutCustomOptionalAddressOptions(
-                    optionalAddressFieldName,
-                    optionalAddressFieldVisibility
-                ),
-                VGSCheckoutCustomPostalCodeOptions(
-                    postalCodeFieldName,
-                    postalCodeFieldVisibility
-                ),
-                billingAddressVisibility
-            )
         }
         //endregion
 
@@ -346,9 +282,8 @@ class VGSCheckoutCustomConfig internal constructor(
          */
         fun setFormValidationBehaviour(
             validationBehaviour: VGSCheckoutFormValidationBehaviour
-        ): Builder {
+        ) = this.apply {
             formValidationBehaviour = validationBehaviour
-            return this
         }
 
         //region Route config
@@ -357,9 +292,8 @@ class VGSCheckoutCustomConfig internal constructor(
          *
          * @param path Inbound rout path.
          */
-        fun setPath(path: String): Builder {
+        fun setPath(path: String) = this.apply {
             this.path = path
-            return this
         }
 
         /**
@@ -367,9 +301,8 @@ class VGSCheckoutCustomConfig internal constructor(
          *
          * @param hostnamePolicy type of base url to send data.
          */
-        fun setHostnamePolicy(hostnamePolicy: VGSCheckoutHostnamePolicy): Builder {
+        fun setHostnamePolicy(hostnamePolicy: VGSCheckoutHostnamePolicy) = this.apply {
             this.hostnamePolicy = hostnamePolicy
-            return this
         }
 
         /**
@@ -377,9 +310,8 @@ class VGSCheckoutCustomConfig internal constructor(
          *
          * @param method Http method
          */
-        fun setHttpMethod(method: VGSCheckoutHttpMethod): Builder {
+        fun setHttpMethod(method: VGSCheckoutHttpMethod) = this.apply {
             httpMethod = method
-            return this
         }
 
         /**
@@ -387,9 +319,8 @@ class VGSCheckoutCustomConfig internal constructor(
          *
          * @param headers Request headers.
          */
-        fun setHeaders(headers: Map<String, String>): Builder {
+        fun setHeaders(headers: Map<String, String>) = this.apply {
             extraHeaders = headers
-            return this
         }
 
         /**
@@ -397,9 +328,8 @@ class VGSCheckoutCustomConfig internal constructor(
          *
          * @param data An extra request payload data.
          */
-        fun setPayload(data: Map<String, Any>): Builder {
+        fun setPayload(data: Map<String, Any>) = this.apply {
             extraData = data
-            return this
         }
 
         /**
@@ -407,38 +337,10 @@ class VGSCheckoutCustomConfig internal constructor(
          *
          * @param policy A field name mapping policy.
          */
-        fun setMergePolicy(policy: VGSCheckoutDataMergePolicy): Builder {
+        fun setMergePolicy(policy: VGSCheckoutDataMergePolicy) = this.apply {
             mergePolicy = policy
-            return this
-        }
-
-        private fun buildRouteConfig(): VGSCheckoutCustomRouteConfig {
-            val requestOptions = VGSCheckoutCustomRequestOptions(
-                httpMethod,
-                extraHeaders,
-                extraData,
-                mergePolicy
-            )
-
-            return VGSCheckoutCustomRouteConfig(
-                path,
-                hostnamePolicy,
-                requestOptions
-            )
         }
         //endregion
-
-        private fun buildFormConfig(): VGSCheckoutCustomFormConfig {
-            val cardOptions = buildCardOptions()
-            val billingAddressOptions = buildBillingAddressOptions()
-
-            return VGSCheckoutCustomFormConfig(
-                cardOptions,
-                billingAddressOptions,
-                formValidationBehaviour,
-                saveCardOptionEnabled
-            )
-        }
 
         /**
          * Creates custom configuration.
@@ -454,6 +356,83 @@ class VGSCheckoutCustomConfig internal constructor(
                 routeConfig,
                 formConfig,
                 isScreenshotsAllowed
+            )
+        }
+
+        private fun buildFormConfig(): VGSCheckoutFormConfig {
+            val cardOptions = buildCardOptions()
+            val billingAddressOptions = buildBillingAddressOptions()
+
+            return VGSCheckoutFormConfig(
+                cardOptions,
+                billingAddressOptions,
+                formValidationBehaviour,
+                saveCardOptionEnabled
+            )
+        }
+
+        private fun buildCardOptions(): VGSCheckoutCardOptions {
+            return VGSCheckoutCardOptions(
+                VGSCheckoutCardNumberOptions(
+                    cardNumberFieldName,
+                    isIconCardNumberHidden
+                ),
+                VGSCheckoutCardHolderOptions(
+                    cardHolderFieldName,
+                    cardHolderFieldVisibility
+                ),
+                VGSCheckoutCVCOptions(
+                    cvcFieldName,
+                    isIconCVCHidden
+                ),
+                VGSCheckoutExpirationDateOptions(
+                    expirationDateFieldName,
+                    expirationDateFieldSeparateSerializer,
+                    expirationDateFieldInputFormatRegex,
+                    expirationDateFieldOutputFormatRegex
+                )
+            )
+        }
+
+        private fun buildBillingAddressOptions(): VGSCheckoutBillingAddressOptions {
+            return VGSCheckoutBillingAddressOptions(
+                VGSCheckoutCountryOptions(
+                    countryFieldName,
+                    validCountries,
+                    countryFieldVisibility
+                ),
+                VGSCheckoutCityOptions(
+                    cityFieldName,
+                    cityFieldVisibility
+                ),
+                VGSCheckoutAddressOptions(
+                    addressFieldName,
+                    addressFieldVisibility
+                ),
+                VGSCheckoutOptionalAddressOptions(
+                    optionalAddressFieldName,
+                    optionalAddressFieldVisibility
+                ),
+                VGSCheckoutPostalCodeOptions(
+                    postalCodeFieldName,
+                    postalCodeFieldVisibility
+                ),
+                billingAddressVisibility
+            )
+        }
+
+        private fun buildRouteConfig(): VGSCheckoutRouteConfig {
+            val requestOptions = VGSCheckoutRequestOptions(
+                httpMethod,
+                extraHeaders,
+                extraData,
+                mergePolicy
+            )
+
+            return VGSCheckoutRouteConfig(
+                path,
+                hostnamePolicy,
+                requestOptions
             )
         }
 
