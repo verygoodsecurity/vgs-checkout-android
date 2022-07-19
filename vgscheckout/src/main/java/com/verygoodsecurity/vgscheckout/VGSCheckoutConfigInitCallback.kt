@@ -6,7 +6,7 @@ import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
 /**
  * Checkout config creating callback interface definition.
  */
-internal interface VGSCheckoutConfigInitCallback<T : CheckoutConfig> {
+interface VGSCheckoutConfigInitCallback<T : CheckoutConfig> {
 
     /**
      * Invoked when checkout config creation successfully complete.

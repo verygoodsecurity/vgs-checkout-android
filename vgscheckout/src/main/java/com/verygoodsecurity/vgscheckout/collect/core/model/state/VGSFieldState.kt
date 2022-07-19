@@ -16,6 +16,8 @@ internal data class VGSFieldState(
 
     fun isNotNullOrEmpty() = !fieldName.isNullOrBlank() && !content?.data.isNullOrEmpty()
 
+    fun isNullOrEmpty() = content?.data.isNullOrEmpty()
+
     override fun toString(): String {
         return "isFocusable: $isFocusable\n" +
                 "isRequired: $isRequired\n" +
@@ -34,10 +36,7 @@ internal fun VGSFieldState.mapToFieldState(): FieldState {
         FieldType.CVC -> FieldState.CVCState()
         FieldType.CARD_HOLDER_NAME -> FieldState.CardHolderNameState()
         FieldType.CARD_EXPIRATION_DATE -> FieldState.CardExpirationDateState()
-        FieldType.CARD_NUMBER -> prepareCardNumberState(
-            isValid, content as? FieldContent.CardNumberContent
-        )
-        FieldType.SSN -> prepareSSNState(isValid, content as? FieldContent.SSNContent)
+        FieldType.CARD_NUMBER -> prepareCardNumberState(isValid, content as? FieldContent.CardNumberContent)
     }
 
     f.fieldType = type
@@ -50,18 +49,6 @@ internal fun VGSFieldState.mapToFieldState(): FieldState {
     f.fieldName = fieldName ?: ""
     f.hasFocus = isFocusable
     return f
-}
-
-internal fun prepareSSNState(
-    isValid: Boolean,
-    content: FieldContent.SSNContent?
-): FieldState.SSNNumberState {
-    return FieldState.SSNNumberState().apply {
-        if (isValid) {
-            last = content?.parseCardLast4Digits()
-        }
-        contentLengthRaw = content?.rawData?.length ?: 0
-    }
 }
 
 private fun prepareCardNumberState(
@@ -79,9 +66,3 @@ private fun prepareCardNumberState(
         drawableBrandResId = content?.iconResId ?: 0
     }
 }
-
-/** @suppress */
-internal fun VGSFieldState.isCardNumberType() = type == FieldType.CARD_NUMBER
-
-/** @suppress */
-internal fun VGSFieldState.isCardCVCType() = type == FieldType.CVC

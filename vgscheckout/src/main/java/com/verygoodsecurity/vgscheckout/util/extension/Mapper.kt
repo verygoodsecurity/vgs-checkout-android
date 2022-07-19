@@ -1,9 +1,7 @@
 package com.verygoodsecurity.vgscheckout.util.extension
 
-import com.verygoodsecurity.vgscheckout.collect.core.HTTPMethod
+import com.verygoodsecurity.vgscheckout.analytic.event.ResponseEvent
 import com.verygoodsecurity.vgscheckout.collect.core.model.VGSCollectFieldNameMappingPolicy
-import com.verygoodsecurity.vgscheckout.collect.core.model.network.NetworkResponse
-import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscheckout.collect.util.extension.toCardBrand
 import com.verygoodsecurity.vgscheckout.collect.view.card.BrandParams
 import com.verygoodsecurity.vgscheckout.collect.view.card.CardBrand
@@ -11,34 +9,66 @@ import com.verygoodsecurity.vgscheckout.collect.view.card.CardType
 import com.verygoodsecurity.vgscheckout.collect.view.card.validation.payment.ChecksumAlgorithm
 import com.verygoodsecurity.vgscheckout.collect.view.core.serializers.VGSExpDateSeparateSerializer
 import com.verygoodsecurity.vgscheckout.config.networking.request.core.VGSCheckoutDataMergePolicy
-import com.verygoodsecurity.vgscheckout.config.networking.request.core.VGSCheckoutHTTPMethod
+import com.verygoodsecurity.vgscheckout.config.networking.request.core.VGSCheckoutHttpMethod
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.model.VGSCheckoutCardBrand
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.model.VGSCheckoutChecksumAlgorithm
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.model.VGSDateSeparateSerializer
-import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutAddCardResponse
-import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutTransactionResponse
+import com.verygoodsecurity.vgscheckout.model.Card
+import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
+import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResultBundle
+import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutCardResponse
+import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutDeleteCardResponse
+import com.verygoodsecurity.vgscheckout.networking.client.HttpMethod
+import com.verygoodsecurity.vgscheckout.networking.client.HttpResponse
+import com.verygoodsecurity.vgscheckout.networking.command.AddCardCommand
+import com.verygoodsecurity.vgscheckout.networking.command.DeleteCreditCardCommand
+import com.verygoodsecurity.vgscheckout.networking.command.TransferCommand
+import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutTransferResponse
 
 //region Networking
-internal fun VGSResponse.toAddCardResponse() = VGSCheckoutAddCardResponse(
-    this is VGSResponse.SuccessResponse,
-    code,
-    body,
-    (this as? VGSResponse.ErrorResponse)?.message
-)
+internal fun HttpResponse.toAddCardResult() =
+    AddCardCommand.Result(isSuccessful, code, message, body, latency)
 
-internal fun NetworkResponse.toTransactionResponse() = VGSCheckoutTransactionResponse(
+internal fun AddCardCommand.Result.toResponseEvent() = ResponseEvent(code, message, latency)
+
+internal fun AddCardCommand.Result.toCardResponse() =
+    VGSCheckoutCardResponse(isSuccessful, code, body, message)
+
+private const val JSON_KEY_DATA = "data"
+private const val JSON_KEY_ID = "id"
+internal fun AddCardCommand.Result.getSourceId() =
+    body?.toJson()?.getJSONObject(JSON_KEY_DATA)?.getString(JSON_KEY_ID) ?: ""
+
+internal fun TransferCommand.Result.toTransferResponse() = VGSCheckoutTransferResponse(
     isSuccessful,
     code,
     body,
     message
 )
 
-internal fun VGSCheckoutHTTPMethod.toCollectHTTPMethod() = when (this) {
-    VGSCheckoutHTTPMethod.POST -> HTTPMethod.POST
-    VGSCheckoutHTTPMethod.DELETE -> HTTPMethod.DELETE
-    VGSCheckoutHTTPMethod.GET -> HTTPMethod.GET
-    VGSCheckoutHTTPMethod.PATCH -> HTTPMethod.PATCH
-    VGSCheckoutHTTPMethod.PUT -> HTTPMethod.PUT
+internal fun DeleteCreditCardCommand.Result.toDeleteCardResponse() = VGSCheckoutDeleteCardResponse(
+    id,
+    isSuccessful,
+    code,
+    body,
+    message
+)
+
+internal fun Card.toCardResponse() =
+    VGSCheckoutCardResponse(raw.isSuccessful, raw.code, raw.body, raw.message)
+
+internal fun VGSCheckoutResultBundle.toCheckoutResult(isSuccessful: Boolean) = if (isSuccessful) {
+    VGSCheckoutResult.Success(this)
+} else {
+    VGSCheckoutResult.Failed(this)
+}
+
+internal fun VGSCheckoutHttpMethod.toInternal() = when (this) {
+    VGSCheckoutHttpMethod.POST -> HttpMethod.POST
+    VGSCheckoutHttpMethod.DELETE -> HttpMethod.DELETE
+    VGSCheckoutHttpMethod.GET -> HttpMethod.GET
+    VGSCheckoutHttpMethod.PATCH -> HttpMethod.PATCH
+    VGSCheckoutHttpMethod.PUT -> HttpMethod.PUT
 }
 
 internal fun VGSCheckoutDataMergePolicy.toCollectMergePolicy() = when (this) {

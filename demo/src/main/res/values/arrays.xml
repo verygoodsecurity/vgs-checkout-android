@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="validationBehaviours">
+        <item>On submit</item>
+        <item>On focus</item>
+    </string-array>
+
+    <string-array name="validationBehaviourValues">
+        <item>On submit</item>
+        <item>On focus</item>
+    </string-array>
+</resources>

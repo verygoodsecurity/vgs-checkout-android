@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/vgs_checkout_payment_methods_item_background">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivCardBrand"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/vgs_checkout_margin_padding_size_medium"
+        android:layout_marginTop="@dimen/vgs_checkout_margin_padding_size_xmedium"
+        android:layout_marginBottom="@dimen/vgs_checkout_margin_padding_size_xmedium"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/vgs_checkout_ic_visa" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/mtvCardHolderName"
+        style="@style/VGSCheckout.SavedCard.Name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/vgs_checkout_margin_padding_size_medium"
+        android:layout_marginEnd="@dimen/vgs_checkout_margin_padding_size_medium"
+        android:layout_marginBottom="@dimen/vgs_checkout_margin_padding_size_micro"
+        app:layout_constraintBottom_toTopOf="@+id/llNumberAndExpiry"
+        app:layout_constraintEnd_toStartOf="@+id/radioButton"
+        app:layout_constraintStart_toEndOf="@+id/ivCardBrand"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="John Doe" />
+
+    <LinearLayout
+        android:id="@+id/llNumberAndExpiry"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/vgs_checkout_margin_padding_size_medium"
+        android:layout_marginEnd="@dimen/vgs_checkout_margin_padding_size_medium"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/radioButton"
+        app:layout_constraintStart_toEndOf="@+id/ivCardBrand"
+        app:layout_constraintTop_toBottomOf="@+id/mtvCardHolderName">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/mtvCardNumber"
+            style="@style/VGSCheckout.SavedCard.Number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="**** 4111" />
+
+        <View
+            android:layout_width="@dimen/vgs_checkout_border_width"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/vgs_checkout_margin_padding_size_small"
+            android:layout_marginEnd="@dimen/vgs_checkout_margin_padding_size_small"
+            android:background="@color/vgs_checkout_nobel" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/mtvExpiry"
+            style="@style/VGSCheckout.SavedCard.Expiry"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            tools:text="19/24" />
+    </LinearLayout>
+
+    <androidx.appcompat.widget.AppCompatRadioButton
+        android:id="@+id/radioButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/vgs_checkout_margin_padding_size_medium"
+        android:background="@null"
+        android:clickable="false"
+        android:focusable="false"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

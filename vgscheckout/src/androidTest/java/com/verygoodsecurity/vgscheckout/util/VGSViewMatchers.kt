@@ -4,8 +4,8 @@ import android.view.View
 import androidx.annotation.IdRes
 import androidx.test.espresso.matcher.BoundedMatcher
 import androidx.test.espresso.matcher.ViewMatchers
-import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
-import com.verygoodsecurity.vgscheckout.collect.widget.VGSTextInputLayout
+import com.google.android.material.textfield.TextInputLayout
+import com.verygoodsecurity.vgscheckout.collect.view.internal.BaseInputField
 import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.Description
 import org.hamcrest.Matcher
@@ -18,14 +18,14 @@ internal object VGSViewMatchers {
      * Matcher that matches is VGSTextInputLayout show error message.
      */
     fun withError(error: String?) =
-        object : BoundedMatcher<View, VGSTextInputLayout>(VGSTextInputLayout::class.java) {
+        object : BoundedMatcher<View, TextInputLayout>(TextInputLayout::class.java) {
 
             override fun describeTo(description: Description?) {
                 description?.appendText(error)
             }
 
-            override fun matchesSafely(item: VGSTextInputLayout?): Boolean {
-                return item?.getError().equals(error)
+            override fun matchesSafely(item: TextInputLayout?): Boolean {
+                return item?.error?.toString().equals(error)
             }
         }
 
@@ -33,14 +33,14 @@ internal object VGSViewMatchers {
      * Matcher that matches VGSTextInputLayout hint.
      */
     fun withHint(hint: String?) =
-        object : BoundedMatcher<View, VGSTextInputLayout>(VGSTextInputLayout::class.java) {
+        object : BoundedMatcher<View, TextInputLayout>(TextInputLayout::class.java) {
 
             override fun describeTo(description: Description?) {
                 description?.appendText(hint)
             }
 
-            override fun matchesSafely(item: VGSTextInputLayout?): Boolean {
-                return item?.getHint()?.toString().equals(hint)
+            override fun matchesSafely(item: TextInputLayout?): Boolean {
+                return item?.hint?.toString().equals(hint)
             }
         }
 
@@ -48,14 +48,14 @@ internal object VGSViewMatchers {
      * Matcher that matches InputField text.
      */
     fun withText(text: String?) =
-        object : BoundedMatcher<View, InputFieldView>(InputFieldView::class.java) {
+        object : BoundedMatcher<View, BaseInputField>(BaseInputField::class.java) {
 
             override fun describeTo(description: Description?) {
                 description?.appendText(text)
             }
 
-            override fun matchesSafely(item: InputFieldView?): Boolean {
-                return item?.getText()?.toString().equals(text)
+            override fun matchesSafely(item: BaseInputField?): Boolean {
+                return item?.text?.toString().equals(text)
             }
         }
 

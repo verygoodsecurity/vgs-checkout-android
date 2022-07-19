@@ -247,9 +247,9 @@ $dokka.location:com.verygoodsecurity.vgscheckout.model/VGSCheckoutTransitionOpti
 $dokka.location:com.verygoodsecurity.vgscheckout.ui.fragment.core////PointingToDeclaration/vgscheckout/com.verygoodsecurity.vgscheckout.ui.fragment.core/index.html
 $dokka.location:com.verygoodsecurity.vgscheckout.ui.fragment.core/LoadingHandler///PointingToDeclaration/vgscheckout/com.verygoodsecurity.vgscheckout.ui.fragment.core/-loading-handler/index.html
 $dokka.location:com.verygoodsecurity.vgscheckout.ui.fragment.core/LoadingHandler/setIsLoading/#kotlin.Boolean/PointingToDeclaration/vgscheckout/com.verygoodsecurity.vgscheckout.ui.fragment.core/-loading-handler/set-is-loading.html
-$dokka.location:com.verygoodsecurity.vgscheckout.util.command////PointingToDeclaration/vgscheckout/com.verygoodsecurity.vgscheckout.util.command/index.html
-$dokka.location:com.verygoodsecurity.vgscheckout.util.command/VGSCheckoutCancellable///PointingToDeclaration/vgscheckout/com.verygoodsecurity.vgscheckout.util.command/-v-g-s-checkout-cancellable/index.html
-$dokka.location:com.verygoodsecurity.vgscheckout.util.command/VGSCheckoutCancellable/cancel/#/PointingToDeclaration/vgscheckout/com.verygoodsecurity.vgscheckout.util.command/-v-g-s-checkout-cancellable/cancel.html
+$dokka.location:com.verygoodsecurity.vgscheckout.networking.command////PointingToDeclaration/vgscheckout/com.verygoodsecurity.vgscheckout.networking.command/index.html
+$dokka.location:com.verygoodsecurity.vgscheckout.networking.command/VGSCheckoutCancellable///PointingToDeclaration/vgscheckout/com.verygoodsecurity.vgscheckout.networking.command/-v-g-s-checkout-cancellable/index.html
+$dokka.location:com.verygoodsecurity.vgscheckout.networking.command/VGSCheckoutCancellable/cancel/#/PointingToDeclaration/vgscheckout/com.verygoodsecurity.vgscheckout.networking.command/-v-g-s-checkout-cancellable/cancel.html
 $dokka.location:com.verygoodsecurity.vgscheckout.util.logger////PointingToDeclaration/vgscheckout/com.verygoodsecurity.vgscheckout.util.logger/index.html
 $dokka.location:com.verygoodsecurity.vgscheckout.util.logger/VGSCheckoutLogger.Level.DEBUG///PointingToDeclaration/vgscheckout/com.verygoodsecurity.vgscheckout.util.logger/-v-g-s-checkout-logger/-level/-d-e-b-u-g/index.html
 $dokka.location:com.verygoodsecurity.vgscheckout.util.logger/VGSCheckoutLogger.Level.NONE///PointingToDeclaration/vgscheckout/com.verygoodsecurity.vgscheckout.util.logger/-v-g-s-checkout-logger/-level/-n-o-n-e/index.html
@@ -297,6 +297,6 @@ com.verygoodsecurity.vgscheckout.model
 com.verygoodsecurity.vgscheckout.model.response
 com.verygoodsecurity.vgscheckout.model.response.core
 com.verygoodsecurity.vgscheckout.ui.fragment.core
-com.verygoodsecurity.vgscheckout.util.command
+com.verygoodsecurity.vgscheckout.networking.command
 com.verygoodsecurity.vgscheckout.util.logger
 
