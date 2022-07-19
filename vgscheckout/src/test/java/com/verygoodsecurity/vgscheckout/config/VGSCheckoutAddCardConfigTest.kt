@@ -1,7 +1,7 @@
 package com.verygoodsecurity.vgscheckout.config
 
 import com.verygoodsecurity.vgscheckout.BuildConfig
-import com.verygoodsecurity.vgscheckout.analytic.event.core.ID
+import com.verygoodsecurity.vgscheckout.analytic.event.core.ID_KEY
 import com.verygoodsecurity.vgscheckout.config.networking.core.VGSCheckoutHostnamePolicy
 import com.verygoodsecurity.vgscheckout.config.networking.request.core.VGSCheckoutDataMergePolicy
 import com.verygoodsecurity.vgscheckout.config.networking.request.core.VGSCheckoutHttpMethod
@@ -13,17 +13,17 @@ import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
 import org.junit.Assert.*
 import org.junit.Test
 
-const val ROUTE_ID = "4880868f-d88b-4333-ab70-d9deecdbffc4"
+internal const val ROUTE_ID_VALUE = "4880868f-d88b-4333-ab70-d9deecdbffc4"
 
 class VGSCheckoutAddCardConfigTest {
 
     @Test
     fun createDefaultCustomConfig() {
-        val config = VGSCheckoutAddCardConfig.Builder(ID)
+        val config = VGSCheckoutAddCardConfig.Builder(ID_KEY)
             .build()
 
-        assertEquals(ID, config.id)
-        assertEquals(ROUTE_ID, config.routeId)
+        assertEquals(ID_KEY, config.id)
+        assertEquals(ROUTE_ID_VALUE, config.routeId)
         assertEquals(VGSCheckoutEnvironment.Sandbox(), config.environment)
         assertEquals(false, config.isScreenshotsAllowed)
 
@@ -126,17 +126,17 @@ class VGSCheckoutAddCardConfigTest {
     @Test
     fun setRouteId() {
         // Act
-        val config = VGSCheckoutAddCardConfig.Builder(ID)
-            .setRouteId(ID)
+        val config = VGSCheckoutAddCardConfig.Builder(ID_KEY)
+            .setRouteId(ID_KEY)
             .build()
         // Assert
-        assertEquals(ID, config.routeId)
+        assertEquals(ID_KEY, config.routeId)
     }
 
     @Test
     fun setEnvironment() {
         // Act
-        val config = VGSCheckoutAddCardConfig.Builder(ID)
+        val config = VGSCheckoutAddCardConfig.Builder(ID_KEY)
             .setEnvironment(VGSCheckoutEnvironment.Live())
             .build()
         // Assert
@@ -146,7 +146,7 @@ class VGSCheckoutAddCardConfigTest {
     @Test
     fun setIsScreenshotsAllowed() {
         // Act
-        val config = VGSCheckoutAddCardConfig.Builder(ID)
+        val config = VGSCheckoutAddCardConfig.Builder(ID_KEY)
             .setIsScreenshotsAllowed(true)
             .build()
         // Assert
@@ -156,7 +156,7 @@ class VGSCheckoutAddCardConfigTest {
     @Test
     fun setValidationBehaviour() {
         // Act
-        val config = VGSCheckoutAddCardConfig.Builder(ID)
+        val config = VGSCheckoutAddCardConfig.Builder(ID_KEY)
             .setFormValidationBehaviour(VGSCheckoutFormValidationBehaviour.ON_FOCUS)
             .build()
         // Assert
@@ -166,7 +166,7 @@ class VGSCheckoutAddCardConfigTest {
     @Test
     fun configureBillingAddressSettings() {
         // Act
-        val config = VGSCheckoutAddCardConfig.Builder(ID)
+        val config = VGSCheckoutAddCardConfig.Builder(ID_KEY)
             .setAddressOptions(VGSCheckoutFieldVisibility.HIDDEN)
             .setPostalCodeOptions(VGSCheckoutFieldVisibility.HIDDEN)
             .setOptionalAddressOptions(VGSCheckoutFieldVisibility.HIDDEN)

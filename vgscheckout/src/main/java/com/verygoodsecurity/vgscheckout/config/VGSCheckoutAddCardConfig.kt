@@ -138,7 +138,7 @@ class VGSCheckoutAddCardConfig internal constructor(
         private var environment: VGSCheckoutEnvironment = VGSCheckoutEnvironment.Sandbox()
         private var isScreenshotsAllowed = false
         private var accessToken = ""
-        private var routeId = PAYMENT_URL_ROUTE_ID
+        private var routeId = ORCHESTRATION_URL_ROUTE_ID
         private var isRemoveCardOptionEnabled: Boolean = true
 
         private var countryFieldVisibility = VGSCheckoutFieldVisibility.VISIBLE

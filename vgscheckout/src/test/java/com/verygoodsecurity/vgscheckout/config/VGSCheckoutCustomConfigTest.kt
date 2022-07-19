@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgscheckout.config
 
-import com.verygoodsecurity.vgscheckout.analytic.event.core.ID
+import com.verygoodsecurity.vgscheckout.analytic.event.core.ID_KEY
 import com.verygoodsecurity.vgscheckout.config.networking.core.VGSCheckoutHostnamePolicy
 import com.verygoodsecurity.vgscheckout.config.networking.request.core.VGSCheckoutDataMergePolicy
 import com.verygoodsecurity.vgscheckout.config.networking.request.core.VGSCheckoutHttpMethod
@@ -16,10 +16,10 @@ class VGSCheckoutCustomConfigTest {
 
     @Test
     fun createDefaultCustomConfig() {
-        val config = VGSCheckoutCustomConfig.Builder(ID)
+        val config = VGSCheckoutCustomConfig.Builder(ID_KEY)
             .build()
 
-        assertEquals(ID, config.id)
+        assertEquals(ID_KEY, config.id)
         assertEquals("", config.routeId)
         assertEquals(VGSCheckoutEnvironment.Sandbox(), config.environment)
         assertEquals(false, config.isScreenshotsAllowed)
@@ -117,17 +117,17 @@ class VGSCheckoutCustomConfigTest {
     @Test
     fun setRouteId() {
         // Act
-        val config = VGSCheckoutCustomConfig.Builder(ID)
-            .setRouteId(ID)
+        val config = VGSCheckoutCustomConfig.Builder(ID_KEY)
+            .setRouteId(ID_KEY)
             .build()
         // Assert
-        assertEquals(ID, config.routeId)
+        assertEquals(ID_KEY, config.routeId)
     }
 
     @Test
     fun setEnvironment() {
         // Act
-        val config = VGSCheckoutCustomConfig.Builder(ID)
+        val config = VGSCheckoutCustomConfig.Builder(ID_KEY)
             .setEnvironment(VGSCheckoutEnvironment.Live())
             .build()
         // Assert
@@ -137,7 +137,7 @@ class VGSCheckoutCustomConfigTest {
     @Test
     fun setIsScreenshotsAllowed() {
         // Act
-        val config = VGSCheckoutCustomConfig.Builder(ID)
+        val config = VGSCheckoutCustomConfig.Builder(ID_KEY)
             .setIsScreenshotsAllowed(true)
             .build()
         // Assert
@@ -147,7 +147,7 @@ class VGSCheckoutCustomConfigTest {
     @Test
     fun setValidationBehaviour() {
         // Act
-        val config = VGSCheckoutCustomConfig.Builder(ID)
+        val config = VGSCheckoutCustomConfig.Builder(ID_KEY)
             .setFormValidationBehaviour(VGSCheckoutFormValidationBehaviour.ON_FOCUS)
             .build()
         // Assert
@@ -157,7 +157,7 @@ class VGSCheckoutCustomConfigTest {
     @Test
     fun configureBillingAddressSettings() {
         // Act
-        val config = VGSCheckoutCustomConfig.Builder(ID)
+        val config = VGSCheckoutCustomConfig.Builder(ID_KEY)
             .setAddressOptions(FIELD_NAME, VGSCheckoutFieldVisibility.HIDDEN)
             .setOptionalAddressOptions(FIELD_NAME,VGSCheckoutFieldVisibility.HIDDEN)
             .setPostalCodeOptions(FIELD_NAME,VGSCheckoutFieldVisibility.HIDDEN)
@@ -189,7 +189,7 @@ class VGSCheckoutCustomConfigTest {
             "month",
             "year"
         )
-        val config = VGSCheckoutCustomConfig.Builder(ID)
+        val config = VGSCheckoutCustomConfig.Builder(ID_KEY)
             .setCardNumberOptions(FIELD_NAME, false)
             .setCardHolderOptions(FIELD_NAME,VGSCheckoutFieldVisibility.HIDDEN)
             .setCVCOptions(FIELD_NAME, false)

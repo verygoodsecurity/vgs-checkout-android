@@ -97,7 +97,7 @@ internal class VGSCheckoutPaymentConfig internal constructor(
         private var isScreenshotsAllowed = false
         private var accessToken = ""
         private var orderId = ""
-        private var routeId = PAYMENT_URL_ROUTE_ID
+        private var routeId = ORCHESTRATION_URL_ROUTE_ID
         private var cardIds: List<String> = arrayListOf()
         private var isRemoveCardOptionEnabled: Boolean = true
 

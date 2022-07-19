@@ -49,7 +49,7 @@ abstract class CheckoutConfig : Parcelable {
     abstract val isScreenshotsAllowed: Boolean
 
     internal val analyticTracker: AnalyticTracker by lazy {
-        DefaultAnalyticsTracker(id, environment.value, UUID.randomUUID().toString())
+        DefaultAnalyticsTracker(id, environment.value, UUID.randomUUID().toString(), routeId)
     }
 
     protected fun generateBaseUrl(): String {

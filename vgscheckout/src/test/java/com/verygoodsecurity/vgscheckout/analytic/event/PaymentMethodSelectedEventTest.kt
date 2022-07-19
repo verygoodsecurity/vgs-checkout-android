@@ -1,8 +1,9 @@
 package com.verygoodsecurity.vgscheckout.analytic.event
 
-import com.verygoodsecurity.vgscheckout.analytic.event.core.ENVIRONMENT
-import com.verygoodsecurity.vgscheckout.analytic.event.core.FORM_ID
-import com.verygoodsecurity.vgscheckout.analytic.event.core.ID
+import com.verygoodsecurity.vgscheckout.analytic.event.core.ENVIRONMENT_KEY
+import com.verygoodsecurity.vgscheckout.analytic.event.core.FORM_ID_KEY
+import com.verygoodsecurity.vgscheckout.analytic.event.core.ID_KEY
+import com.verygoodsecurity.vgscheckout.analytic.event.core.ROUTE_ID_KEY
 import org.junit.Assert
 import org.junit.Test
 
@@ -16,7 +17,7 @@ class PaymentMethodSelectedEventTest {
             isCustomConfig = true,
         )
         //Act
-        val data = event.getData(ID, FORM_ID, ENVIRONMENT)
+        val data = event.getData(ID_KEY, ENVIRONMENT_KEY, FORM_ID_KEY, ROUTE_ID_KEY)
         //Assert
         Assert.assertEquals("PaymentMethodSelected", data["type"])
         Assert.assertEquals("savedCard", data["paymentMethod"])
@@ -32,7 +33,7 @@ class PaymentMethodSelectedEventTest {
             isCustomConfig = false,
         )
         //Act
-        val data = event.getData(ID, FORM_ID, ENVIRONMENT)
+        val data = event.getData(ID_KEY, ENVIRONMENT_KEY, FORM_ID_KEY, ROUTE_ID_KEY)
         //Assert
         Assert.assertEquals("PaymentMethodSelected", data["type"])
         Assert.assertEquals("newCard", data["paymentMethod"])
