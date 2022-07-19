@@ -29,12 +29,8 @@
             android:label="@string/custom_flow_title" />
 
         <activity
-            android:name="com.verygoodsecurity.vgscheckout.demo.orchestrtion.addcard.AddCardCheckoutActivity"
+            android:name="com.verygoodsecurity.vgscheckout.demo.orchestrtion.OrchestrationCheckoutActivity"
             android:label="@string/add_card_flow_title" />
-
-        <activity
-            android:name="com.verygoodsecurity.vgscheckout.demo.orchestrtion.payment.PaymentCheckoutActivity"
-            android:label="@string/payment_flow_title" />
 
         <activity
             android:name="com.verygoodsecurity.vgscheckout.demo.settings.CheckoutSettingsActivity"

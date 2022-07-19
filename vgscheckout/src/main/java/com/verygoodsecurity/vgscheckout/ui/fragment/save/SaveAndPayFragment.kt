@@ -5,7 +5,6 @@ import com.verygoodsecurity.vgscheckout.config.VGSCheckoutPaymentConfig
 import com.verygoodsecurity.vgscheckout.exception.internal.NoInternetConnectionException
 import com.verygoodsecurity.vgscheckout.networking.command.AddCardCommand
 import com.verygoodsecurity.vgscheckout.networking.command.TransferCommand
-import com.verygoodsecurity.vgscheckout.util.extension.getBaseUrl
 import com.verygoodsecurity.vgscheckout.util.extension.getSourceId
 import com.verygoodsecurity.vgscheckout.util.extension.toTransferResponse
 
@@ -20,7 +19,7 @@ internal class SaveAndPayFragment : OrchestrationFragment<VGSCheckoutPaymentConf
         TransferCommand(
             requireContext(),
             TransferCommand.Params(
-                config.getBaseUrl(requireContext()),
+                config.baseUrl,
                 config.orderDetails?.id ?: "",
                 source,
                 config.accessToken

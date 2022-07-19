@@ -11,21 +11,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.verygoodsecurity.vgscheckout.BuildConfig
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
-import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
-import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutAddCardFormConfig
-import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutCustomFormConfig
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillingAddressVisibility
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutCustomBillingAddressOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutPaymentBillingAddressOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.VGSCheckoutCustomAddressOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.VGSCheckoutCustomOptionalAddressOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.VGSCheckoutPaymentAddressOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.VGSCheckoutPaymentOptionalAddressOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.city.VGSCheckoutCustomCityOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.city.VGSCheckoutPaymentCityOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.code.VGSCheckoutPaymentPostalCodeOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.country.VGSCheckoutCustomCountryOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.country.VGSCheckoutPaymentCountryOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.core.VGSCheckoutFieldVisibility
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_ARGS
@@ -44,14 +30,12 @@ class HideComponentTest {
     fun performCheckout_addressBlockHiddenByDefault() {
         // Arrange
         val intent = Intent(context, SaveCardActivity::class.java).apply {
+            val config = VGSCheckoutAddCardConfig.Builder(BuildConfig.VAULT_ID)
+                .setAccessToken(BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS)
+                .build()
             putExtra(
                 EXTRA_KEY_ARGS,
-                CheckoutResultContract.Args(
-                    VGSCheckoutAddCardConfig(
-                        BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS,
-                        BuildConfig.VAULT_ID
-                    )
-                )
+                CheckoutResultContract.Args(config)
             )
         }
         ActivityScenario.launch<SaveCardActivity>(intent).use {
@@ -65,21 +49,13 @@ class HideComponentTest {
     fun performCheckout_hideCountryField() {
         // Arrange
         val intent = Intent(context, SaveCardActivity::class.java).apply {
+            val config = VGSCheckoutAddCardConfig.Builder(BuildConfig.VAULT_ID)
+                .setAccessToken(BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS)
+                .setCountryOptions(VGSCheckoutFieldVisibility.HIDDEN)
+                .build()
             putExtra(
                 EXTRA_KEY_ARGS,
-                CheckoutResultContract.Args(
-                    VGSCheckoutAddCardConfig(
-                        BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS,
-                        BuildConfig.VAULT_ID,
-                        formConfig = VGSCheckoutAddCardFormConfig(
-                            addressOptions = VGSCheckoutPaymentBillingAddressOptions(
-                                countryOptions = VGSCheckoutPaymentCountryOptions(
-                                    visibility = VGSCheckoutFieldVisibility.HIDDEN
-                                )
-                            )
-                        )
-                    )
-                )
+                CheckoutResultContract.Args(config)
             )
         }
         ActivityScenario.launch<SaveCardActivity>(intent).use {
@@ -93,21 +69,13 @@ class HideComponentTest {
     fun performCheckout_hideAddressField() {
         // Arrange
         val intent = Intent(context, SaveCardActivity::class.java).apply {
+            val config = VGSCheckoutAddCardConfig.Builder(BuildConfig.VAULT_ID)
+                .setAccessToken(BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS)
+                .setAddressOptions(VGSCheckoutFieldVisibility.HIDDEN)
+                .build()
             putExtra(
                 EXTRA_KEY_ARGS,
-                CheckoutResultContract.Args(
-                    VGSCheckoutAddCardConfig(
-                        BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS,
-                        BuildConfig.VAULT_ID,
-                        formConfig = VGSCheckoutAddCardFormConfig(
-                            addressOptions = VGSCheckoutPaymentBillingAddressOptions(
-                                addressOptions = VGSCheckoutPaymentAddressOptions(
-                                    visibility = VGSCheckoutFieldVisibility.HIDDEN
-                                )
-                            )
-                        )
-                    )
-                )
+                CheckoutResultContract.Args(config)
             )
         }
         ActivityScenario.launch<SaveCardActivity>(intent).use {
@@ -121,21 +89,13 @@ class HideComponentTest {
     fun performCheckout_hideOptionalAddressField() {
         // Arrange
         val intent = Intent(context, SaveCardActivity::class.java).apply {
+            val config = VGSCheckoutAddCardConfig.Builder(BuildConfig.VAULT_ID)
+                .setAccessToken(BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS)
+                .setOptionalAddressOptions(VGSCheckoutFieldVisibility.HIDDEN)
+                .build()
             putExtra(
                 EXTRA_KEY_ARGS,
-                CheckoutResultContract.Args(
-                    VGSCheckoutAddCardConfig(
-                        BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS,
-                        BuildConfig.VAULT_ID,
-                        formConfig = VGSCheckoutAddCardFormConfig(
-                            addressOptions = VGSCheckoutPaymentBillingAddressOptions(
-                                optionalAddressOptions = VGSCheckoutPaymentOptionalAddressOptions(
-                                    visibility = VGSCheckoutFieldVisibility.HIDDEN
-                                )
-                            )
-                        )
-                    )
-                )
+                CheckoutResultContract.Args(config)
             )
         }
         ActivityScenario.launch<SaveCardActivity>(intent).use {
@@ -149,21 +109,13 @@ class HideComponentTest {
     fun performCheckout_hideCityField() {
         // Arrange
         val intent = Intent(context, SaveCardActivity::class.java).apply {
+            val config = VGSCheckoutAddCardConfig.Builder(BuildConfig.VAULT_ID)
+                .setAccessToken(BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS)
+                .setCityOptions(VGSCheckoutFieldVisibility.HIDDEN)
+                .build()
             putExtra(
                 EXTRA_KEY_ARGS,
-                CheckoutResultContract.Args(
-                    VGSCheckoutAddCardConfig(
-                        BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS,
-                        BuildConfig.VAULT_ID,
-                        formConfig = VGSCheckoutAddCardFormConfig(
-                            addressOptions = VGSCheckoutPaymentBillingAddressOptions(
-                                cityOptions = VGSCheckoutPaymentCityOptions(
-                                    visibility = VGSCheckoutFieldVisibility.HIDDEN
-                                )
-                            )
-                        )
-                    )
-                )
+                CheckoutResultContract.Args(config)
             )
         }
         ActivityScenario.launch<SaveCardActivity>(intent).use {
@@ -177,21 +129,13 @@ class HideComponentTest {
     fun performCheckout_hidePostalAddressField() {
         // Arrange
         val intent = Intent(context, SaveCardActivity::class.java).apply {
+            val config = VGSCheckoutAddCardConfig.Builder(BuildConfig.VAULT_ID)
+                .setAccessToken(BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS)
+                .setPostalCodeOptions(VGSCheckoutFieldVisibility.HIDDEN)
+                .build()
             putExtra(
                 EXTRA_KEY_ARGS,
-                CheckoutResultContract.Args(
-                    VGSCheckoutAddCardConfig(
-                        BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS,
-                        BuildConfig.VAULT_ID,
-                        formConfig = VGSCheckoutAddCardFormConfig(
-                            addressOptions = VGSCheckoutPaymentBillingAddressOptions(
-                                postalCodeOptions = VGSCheckoutPaymentPostalCodeOptions(
-                                    visibility = VGSCheckoutFieldVisibility.HIDDEN
-                                )
-                            )
-                        )
-                    )
-                )
+                CheckoutResultContract.Args(config)
             )
         }
         ActivityScenario.launch<SaveCardActivity>(intent).use {
@@ -205,28 +149,17 @@ class HideComponentTest {
     fun performCheckout_hideAllField_addressBlockHidden() {
         // Arrange
         val intent = Intent(context, SaveCardActivity::class.java).apply {
+            val config = VGSCheckoutAddCardConfig.Builder(BuildConfig.VAULT_ID)
+                .setAccessToken(BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS)
+                .setBillingAddressVisibility(VGSCheckoutBillingAddressVisibility.VISIBLE)
+                .setCityOptions(VGSCheckoutFieldVisibility.HIDDEN)
+                .setOptionalAddressOptions(VGSCheckoutFieldVisibility.HIDDEN)
+                .setAddressOptions(VGSCheckoutFieldVisibility.HIDDEN)
+                .setCountryOptions(VGSCheckoutFieldVisibility.HIDDEN, listOf("YE"))
+                .build()
             putExtra(
                 EXTRA_KEY_ARGS,
-                CheckoutResultContract.Args(
-                    VGSCheckoutAddCardConfig(
-                        BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS,
-                        BuildConfig.VAULT_ID,
-                        formConfig = VGSCheckoutAddCardFormConfig(
-                            addressOptions = VGSCheckoutPaymentBillingAddressOptions(
-                                countryOptions = VGSCheckoutPaymentCountryOptions(
-                                    visibility = VGSCheckoutFieldVisibility.HIDDEN,
-                                    validCountries = listOf("YE")
-                                ),
-                                addressOptions = VGSCheckoutPaymentAddressOptions(visibility = VGSCheckoutFieldVisibility.HIDDEN),
-                                optionalAddressOptions = VGSCheckoutPaymentOptionalAddressOptions(
-                                    visibility = VGSCheckoutFieldVisibility.HIDDEN
-                                ),
-                                cityOptions = VGSCheckoutPaymentCityOptions(visibility = VGSCheckoutFieldVisibility.HIDDEN),
-                                visibility = VGSCheckoutBillingAddressVisibility.VISIBLE
-                            )
-                        )
-                    )
-                )
+                CheckoutResultContract.Args(config)
             )
         }
         ActivityScenario.launch<SaveCardActivity>(intent).use {
@@ -240,28 +173,16 @@ class HideComponentTest {
     fun performCheckout_countryWithoutPostalCode_addressBlockHidden() {
         // Arrange
         val intent = Intent(context, CustomSaveCardActivity::class.java).apply {
+            val config = VGSCheckoutAddCardConfig.Builder(BuildConfig.VAULT_ID)
+                .setBillingAddressVisibility(VGSCheckoutBillingAddressVisibility.VISIBLE)
+                .setCountryOptions(VGSCheckoutFieldVisibility.HIDDEN, listOf("YE"))
+                .setCityOptions(VGSCheckoutFieldVisibility.HIDDEN)
+                .setOptionalAddressOptions(VGSCheckoutFieldVisibility.HIDDEN)
+                .setAddressOptions(VGSCheckoutFieldVisibility.HIDDEN)
+                .build()
             putExtra(
                 EXTRA_KEY_ARGS,
-                CheckoutResultContract.Args(
-                    VGSCheckoutCustomConfig(
-                        vaultId = BuildConfig.VAULT_ID,
-                        formConfig = VGSCheckoutCustomFormConfig(
-                            addressOptions =
-                            VGSCheckoutCustomBillingAddressOptions(
-                                countryOptions = VGSCheckoutCustomCountryOptions(
-                                    visibility = VGSCheckoutFieldVisibility.HIDDEN,
-                                    validCountries = listOf("YE")
-                                ),
-                                addressOptions = VGSCheckoutCustomAddressOptions(visibility = VGSCheckoutFieldVisibility.HIDDEN),
-                                optionalAddressOptions = VGSCheckoutCustomOptionalAddressOptions(
-                                    visibility = VGSCheckoutFieldVisibility.HIDDEN
-                                ),
-                                cityOptions = VGSCheckoutCustomCityOptions(visibility = VGSCheckoutFieldVisibility.HIDDEN),
-                                visibility = VGSCheckoutBillingAddressVisibility.VISIBLE
-                            )
-                        )
-                    )
-                )
+                CheckoutResultContract.Args(config)
             )
         }
         ActivityScenario.launch<CustomSaveCardActivity>(intent).use {

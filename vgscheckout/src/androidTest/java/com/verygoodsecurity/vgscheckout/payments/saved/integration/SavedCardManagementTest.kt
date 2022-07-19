@@ -20,8 +20,8 @@ import com.verygoodsecurity.vgscheckout.Constants.VALID_CARD_NUMBER_MASTERCARD
 import com.verygoodsecurity.vgscheckout.Constants.VALID_SECURITY_CODE_AMEX
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.VGSCheckoutConfigInitCallback
+import com.verygoodsecurity.vgscheckout.VGSCheckoutSavedCardsCallback
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
-import com.verygoodsecurity.vgscheckout.config.payment.VGSCheckoutPaymentMethod
 import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
 import com.verygoodsecurity.vgscheckout.model.*
 import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutCardResponse
@@ -65,23 +65,25 @@ class SavedCardManagementTest {
 
     private fun initializeSavedCardConfig(arrayListOf: ArrayList<String>) =
         CountDownLatch(1).runCatching {
-            var savedConfig: VGSCheckoutAddCardConfig? = null
-            VGSCheckoutAddCardConfig.create(
-                context,
-                token,
-                BuildConfig.VAULT_ID,
-                VGSCheckoutPaymentMethod.SavedCards(arrayListOf),
-                isScreenshotsAllowed = true,
-                callback = object : VGSCheckoutConfigInitCallback<VGSCheckoutAddCardConfig> {
-                    override fun onSuccess(config: VGSCheckoutAddCardConfig) {
-                        savedConfig = config
-                        countDown()
-                    }
+            val savedConfig = VGSCheckoutAddCardConfig.Builder(BuildConfig.VAULT_ID)
+                .setAccessToken(token)
+                .setIsScreenshotsAllowed(true)
+                .build()
+//todo update enable loadSavedCards function
+//            savedConfig.loadSavedCard(
+//                context,
+//                arrayListOf,
+//                object : VGSCheckoutSavedCardsCallback {
+//                    override fun onSuccess() {
+//                        countDown()
+//                    }
+//                    override fun onFailure(exception: VGSCheckoutException) {
+//                        countDown()
+//                    }
+//                }
+//            )
 
-                    override fun onFailure(exception: VGSCheckoutException) {}
-                }
-            )
-            await()
+//            await()
 
             Assert.assertNotNull(savedConfig)
 

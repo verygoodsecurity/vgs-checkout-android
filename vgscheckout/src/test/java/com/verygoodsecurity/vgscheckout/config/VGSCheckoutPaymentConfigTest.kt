@@ -10,16 +10,15 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillin
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.model.VGSDateSeparateSerializer
 import com.verygoodsecurity.vgscheckout.config.ui.view.core.VGSCheckoutFieldVisibility
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
-import org.junit.Assert.*
+import org.junit.Assert
+import org.junit.Assert.assertEquals
 import org.junit.Test
 
-const val ROUTE_ID = "4880868f-d88b-4333-ab70-d9deecdbffc4"
-
-class VGSCheckoutAddCardConfigTest {
+class VGSCheckoutPaymentConfigTest {
 
     @Test
     fun createDefaultCustomConfig() {
-        val config = VGSCheckoutAddCardConfig.Builder(ID)
+        val config = VGSCheckoutPaymentConfig.Builder(ID)
             .build()
 
         assertEquals(ID, config.id)
@@ -34,7 +33,10 @@ class VGSCheckoutAddCardConfigTest {
             ),
             config.formConfig.cardOptions.expirationDateOptions.dateSeparateSerializer
         )
-        assertEquals(EXP_FIELD_NAME, config.formConfig.cardOptions.expirationDateOptions.fieldName)
+        assertEquals(
+            EXP_FIELD_NAME,
+            config.formConfig.cardOptions.expirationDateOptions.fieldName
+        )
         assertEquals(
             VGSCheckoutFieldVisibility.VISIBLE,
             config.formConfig.cardOptions.expirationDateOptions.visibility
@@ -48,44 +50,68 @@ class VGSCheckoutAddCardConfigTest {
             config.formConfig.cardOptions.expirationDateOptions.outputFormatRegex
         )
 
-        assertEquals(CARD_HOLDER_FIELD_NAME, config.formConfig.cardOptions.cardHolderOptions.fieldName)
+        assertEquals(
+            CARD_HOLDER_FIELD_NAME,
+            config.formConfig.cardOptions.cardHolderOptions.fieldName
+        )
         assertEquals(
             VGSCheckoutFieldVisibility.VISIBLE,
             config.formConfig.cardOptions.cardHolderOptions.visibility
         )
 
-        assertEquals(CVC_FIELD_NAME, config.formConfig.cardOptions.cvcOptions.fieldName)
+        assertEquals(
+            CVC_FIELD_NAME,
+            config.formConfig.cardOptions.cvcOptions.fieldName
+        )
         assertEquals(false, config.formConfig.cardOptions.cvcOptions.isIconHidden)
 
-        assertEquals(CARD_NUMBER_FIELD_NAME, config.formConfig.cardOptions.cardNumberOptions.fieldName)
+        assertEquals(
+            CARD_NUMBER_FIELD_NAME,
+            config.formConfig.cardOptions.cardNumberOptions.fieldName
+        )
         assertEquals(false, config.formConfig.cardOptions.cardNumberOptions.isIconHidden)
 
-        assertEquals(COUNTRY_FIELD_NAME, config.formConfig.addressOptions.countryOptions.fieldName)
+        assertEquals(
+            COUNTRY_FIELD_NAME,
+            config.formConfig.addressOptions.countryOptions.fieldName
+        )
         assertEquals(
             VGSCheckoutFieldVisibility.VISIBLE,
             config.formConfig.addressOptions.countryOptions.visibility
         )
-        assertTrue(config.formConfig.addressOptions.countryOptions.validCountries.isEmpty())
+        Assert.assertTrue(config.formConfig.addressOptions.countryOptions.validCountries.isEmpty())
 
-        assertEquals(CITY_FIELD_NAME, config.formConfig.addressOptions.cityOptions.fieldName)
+        assertEquals(
+            CITY_FIELD_NAME,
+            config.formConfig.addressOptions.cityOptions.fieldName
+        )
         assertEquals(
             VGSCheckoutFieldVisibility.VISIBLE,
             config.formConfig.addressOptions.cityOptions.visibility
         )
 
-        assertEquals(ADDRESS1_FIELD_NAME, config.formConfig.addressOptions.addressOptions.fieldName)
+        assertEquals(
+            ADDRESS1_FIELD_NAME,
+            config.formConfig.addressOptions.addressOptions.fieldName
+        )
         assertEquals(
             VGSCheckoutFieldVisibility.VISIBLE,
             config.formConfig.addressOptions.addressOptions.visibility
         )
 
-        assertEquals(ADDRESS2_FIELD_NAME, config.formConfig.addressOptions.optionalAddressOptions.fieldName)
+        assertEquals(
+            ADDRESS2_FIELD_NAME,
+            config.formConfig.addressOptions.optionalAddressOptions.fieldName
+        )
         assertEquals(
             VGSCheckoutFieldVisibility.VISIBLE,
             config.formConfig.addressOptions.optionalAddressOptions.visibility
         )
 
-        assertEquals(POSTAL_CODE_FIELD_NAME, config.formConfig.addressOptions.postalCodeOptions.fieldName)
+        assertEquals(
+            POSTAL_CODE_FIELD_NAME,
+            config.formConfig.addressOptions.postalCodeOptions.fieldName
+        )
         assertEquals(
             VGSCheckoutFieldVisibility.VISIBLE,
             config.formConfig.addressOptions.postalCodeOptions.visibility
@@ -113,10 +139,16 @@ class VGSCheckoutAddCardConfigTest {
             config.routeConfig.requestOptions.httpMethod
         )
         assertEquals(2, config.routeConfig.requestOptions.extraHeaders.size)
-        assertEquals(APPLICATION_JSON, config.routeConfig.requestOptions.extraHeaders[CONTENT_TYPE])
-        assertEquals(BEARER, config.routeConfig.requestOptions.extraHeaders[AUTHORIZATION])
+        assertEquals(
+            APPLICATION_JSON,
+            config.routeConfig.requestOptions.extraHeaders[CONTENT_TYPE]
+        )
+        assertEquals(
+            BEARER,
+            config.routeConfig.requestOptions.extraHeaders[AUTHORIZATION]
+        )
 
-        assertTrue(config.routeConfig.requestOptions.extraData.isEmpty())
+        Assert.assertTrue(config.routeConfig.requestOptions.extraData.isEmpty())
         assertEquals(
             VGSCheckoutDataMergePolicy.NESTED_JSON,
             config.routeConfig.requestOptions.mergePolicy
@@ -126,7 +158,7 @@ class VGSCheckoutAddCardConfigTest {
     @Test
     fun setRouteId() {
         // Act
-        val config = VGSCheckoutAddCardConfig.Builder(ID)
+        val config = VGSCheckoutPaymentConfig.Builder(ID)
             .setRouteId(ID)
             .build()
         // Assert
@@ -136,7 +168,7 @@ class VGSCheckoutAddCardConfigTest {
     @Test
     fun setEnvironment() {
         // Act
-        val config = VGSCheckoutAddCardConfig.Builder(ID)
+        val config = VGSCheckoutPaymentConfig.Builder(ID)
             .setEnvironment(VGSCheckoutEnvironment.Live())
             .build()
         // Assert
@@ -146,7 +178,7 @@ class VGSCheckoutAddCardConfigTest {
     @Test
     fun setIsScreenshotsAllowed() {
         // Act
-        val config = VGSCheckoutAddCardConfig.Builder(ID)
+        val config = VGSCheckoutPaymentConfig.Builder(ID)
             .setIsScreenshotsAllowed(true)
             .build()
         // Assert
@@ -156,7 +188,7 @@ class VGSCheckoutAddCardConfigTest {
     @Test
     fun setValidationBehaviour() {
         // Act
-        val config = VGSCheckoutAddCardConfig.Builder(ID)
+        val config = VGSCheckoutPaymentConfig.Builder(ID)
             .setFormValidationBehaviour(VGSCheckoutFormValidationBehaviour.ON_FOCUS)
             .build()
         // Assert
@@ -166,7 +198,7 @@ class VGSCheckoutAddCardConfigTest {
     @Test
     fun configureBillingAddressSettings() {
         // Act
-        val config = VGSCheckoutAddCardConfig.Builder(ID)
+        val config = VGSCheckoutPaymentConfig.Builder(ID)
             .setAddressOptions(VGSCheckoutFieldVisibility.HIDDEN)
             .setPostalCodeOptions(VGSCheckoutFieldVisibility.HIDDEN)
             .setOptionalAddressOptions(VGSCheckoutFieldVisibility.HIDDEN)
@@ -189,17 +221,17 @@ class VGSCheckoutAddCardConfigTest {
     @Test
     fun createAddCardConfig_validJWT_objectCreated() {
         // Act
-        val config = VGSCheckoutAddCardConfig.Builder("")
+        val config = VGSCheckoutPaymentConfig.Builder("")
             .setAccessToken(BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS)
             .build()
         // Assert
-        assertNotNull(config)
+        Assert.assertNotNull(config)
     }
 
     @Test
     fun createAddCardConfig_envSandboxEnabledByDefault() {
         // Act
-        val config = VGSCheckoutAddCardConfig.Builder("")
+        val config = VGSCheckoutPaymentConfig.Builder("")
             .setAccessToken(BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS)
             .build()
         // Assert
@@ -209,11 +241,11 @@ class VGSCheckoutAddCardConfigTest {
     @Test
     fun createAddCardConfig_screenshotsDisabledByDefault() {
         // Act
-        val config = VGSCheckoutAddCardConfig.Builder("")
+        val config = VGSCheckoutPaymentConfig.Builder("")
             .setAccessToken(BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS)
             .build()
         // Assert
-        assertFalse(config.isScreenshotsAllowed)
+        Assert.assertFalse(config.isScreenshotsAllowed)
     }
 
 //    @Test(expected = JWTParseException::class)

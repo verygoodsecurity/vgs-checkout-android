@@ -34,7 +34,7 @@ sealed class VGSCheckoutPaymentMethod {
 
         companion object {
 
-            private const val MAX_CARDS_SIZE = 10L
+            internal const val MAX_CARDS_SIZE = 10L
         }
     }
 }

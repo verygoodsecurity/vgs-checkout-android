@@ -159,7 +159,7 @@ internal abstract class PaymentMethodFragment<T : OrchestrationConfig> :
         deleteCardCommand = DeleteCreditCardCommand(
             requireContext(),
             DeleteCreditCardCommand.Params(
-                config.getBaseUrl(requireContext()),
+                config.baseUrl,
                 config.routeConfig.path,
                 config.accessToken,
                 card.finId

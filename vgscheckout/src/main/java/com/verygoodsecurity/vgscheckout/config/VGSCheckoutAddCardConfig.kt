@@ -3,24 +3,34 @@ package com.verygoodsecurity.vgscheckout.config
 import android.content.Context
 import android.os.Parcel
 import android.os.Parcelable
-import com.verygoodsecurity.vgscheckout.VGSCheckoutConfigInitCallback
+import androidx.annotation.Size
+import com.verygoodsecurity.vgscheckout.VGSCheckoutSavedCardsCallback
 import com.verygoodsecurity.vgscheckout.analytic.event.FinInstrumentCrudEvent
 import com.verygoodsecurity.vgscheckout.config.core.OrchestrationConfig
-import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutPaymentRouteConfig
+import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutRouteConfig
 import com.verygoodsecurity.vgscheckout.config.payment.VGSCheckoutPaymentMethod
-import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutAddCardFormConfig
+import com.verygoodsecurity.vgscheckout.config.payment.VGSCheckoutPaymentMethod.SavedCards.Companion.MAX_CARDS_SIZE
+import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutFormConfig
+import com.verygoodsecurity.vgscheckout.config.ui.core.VGSCheckoutFormValidationBehaviour
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillingAddressOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillingAddressVisibility
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.VGSCheckoutAddressOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.VGSCheckoutOptionalAddressOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.city.VGSCheckoutCityOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.code.VGSCheckoutPostalCodeOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.country.VGSCheckoutCountryOptions
+import com.verygoodsecurity.vgscheckout.config.ui.view.core.VGSCheckoutFieldVisibility
 import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
 import com.verygoodsecurity.vgscheckout.model.Card
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
 import com.verygoodsecurity.vgscheckout.networking.command.GetSavedCardsCommand
 import com.verygoodsecurity.vgscheckout.networking.command.core.VGSCheckoutCancellable
-import com.verygoodsecurity.vgscheckout.util.extension.getBaseUrl
 
 /**
  * Holds configuration with predefined setup for work with payment orchestration app.
  *
  * @param accessToken payment orchestration app access token.
- * @param tenantId unique organization id.
+ * @param id unique organization id.
  * @param environment type of vault.
  * @param routeConfig Networking configuration, like http method, request headers etc.
  * @param formConfig UI configuration.
@@ -32,16 +42,18 @@ import com.verygoodsecurity.vgscheckout.util.extension.getBaseUrl
 @Suppress("MemberVisibilityCanBePrivate", "CanBeParameter")
 class VGSCheckoutAddCardConfig internal constructor(
     override val accessToken: String,
-    override val tenantId: String,
+    override val routeId: String,
+    override val id: String,
     override val environment: VGSCheckoutEnvironment,
-    override val routeConfig: VGSCheckoutPaymentRouteConfig,
-    override val formConfig: VGSCheckoutAddCardFormConfig,
+    override val routeConfig: VGSCheckoutRouteConfig,
+    override val formConfig: VGSCheckoutFormConfig,
     override val isScreenshotsAllowed: Boolean,
     override val isRemoveCardOptionEnabled: Boolean,
     createdFromParcel: Boolean
 ) : OrchestrationConfig(
     accessToken,
-    tenantId,
+    routeId,
+    id,
     environment,
     routeConfig,
     formConfig,
@@ -50,12 +62,15 @@ class VGSCheckoutAddCardConfig internal constructor(
     createdFromParcel
 ) {
 
+    override val baseUrl: String = generateBaseUrl()
+
     internal constructor(parcel: Parcel) : this(
         parcel.readString()!!,
         parcel.readString()!!,
+        parcel.readString()!!,
         parcel.readParcelable(VGSCheckoutEnvironment::class.java.classLoader)!!,
-        parcel.readParcelable(VGSCheckoutPaymentRouteConfig::class.java.classLoader)!!,
-        parcel.readParcelable(VGSCheckoutAddCardFormConfig::class.java.classLoader)!!,
+        parcel.readParcelable(VGSCheckoutRouteConfig::class.java.classLoader)!!,
+        parcel.readParcelable(VGSCheckoutFormConfig::class.java.classLoader)!!,
         parcel.readInt() == 1,
         parcel.readInt() == 1,
         true
@@ -81,17 +96,19 @@ class VGSCheckoutAddCardConfig internal constructor(
      */
     @JvmOverloads
     @Throws(VGSCheckoutException::class)
-    constructor(
+    internal constructor(
         accessToken: String,
+        routeId: String,
         tenantId: String,
         environment: VGSCheckoutEnvironment = VGSCheckoutEnvironment.Sandbox(),
-        formConfig: VGSCheckoutAddCardFormConfig = VGSCheckoutAddCardFormConfig(),
+        formConfig: VGSCheckoutFormConfig,
         isScreenshotsAllowed: Boolean = false
     ) : this(
         accessToken,
+        routeId,
         tenantId,
         environment,
-        VGSCheckoutPaymentRouteConfig(accessToken),
+        createRouteConfig(accessToken),
         formConfig,
         isScreenshotsAllowed,
         true,
@@ -100,7 +117,8 @@ class VGSCheckoutAddCardConfig internal constructor(
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(accessToken)
-        parcel.writeString(tenantId)
+        parcel.writeString(routeId)
+        parcel.writeString(id)
         parcel.writeParcelable(environment, flags)
         parcel.writeParcelable(routeConfig, flags)
         parcel.writeParcelable(formConfig, flags)
@@ -111,6 +129,212 @@ class VGSCheckoutAddCardConfig internal constructor(
 
     override fun describeContents(): Int {
         return 0
+    }
+
+    class Builder(
+        private val tenantId: String
+    ) {
+
+        private var environment: VGSCheckoutEnvironment = VGSCheckoutEnvironment.Sandbox()
+        private var isScreenshotsAllowed = false
+        private var accessToken = ""
+        private var routeId = PAYMENT_URL_ROUTE_ID
+        private var isRemoveCardOptionEnabled: Boolean = true
+
+        private var countryFieldVisibility = VGSCheckoutFieldVisibility.VISIBLE
+        private var validCountries: List<String> = emptyList()
+
+        private var cityFieldVisibility = VGSCheckoutFieldVisibility.VISIBLE
+
+        private var addressFieldVisibility = VGSCheckoutFieldVisibility.VISIBLE
+
+        private var optionalAddressFieldVisibility = VGSCheckoutFieldVisibility.VISIBLE
+
+        private var postalCodeFieldVisibility = VGSCheckoutFieldVisibility.VISIBLE
+
+        private var billingAddressVisibility = VGSCheckoutBillingAddressVisibility.HIDDEN
+        private var formValidationBehaviour = VGSCheckoutFormValidationBehaviour.ON_SUBMIT
+        private var saveCardOptionEnabled = false
+
+        /**
+         * Defines type of vault.
+         *
+         * @param environment Type of vault.
+         */
+        fun setEnvironment(environment: VGSCheckoutEnvironment) = this.apply {
+            this.environment = environment
+        }
+
+        /**
+         * If true, checkout form will allow to make screenshots. Default is false.
+         *
+         * @param isScreenshotsAllowed Defines is screenshots allowed.
+         */
+        fun setIsScreenshotsAllowed(isScreenshotsAllowed: Boolean) = this.apply {
+            this.isScreenshotsAllowed = isScreenshotsAllowed
+        }
+
+        /**
+         * Defines payment orchestration app access token.
+         *
+         * @param accessToken A payment orchestration app access token.
+         */
+        fun setAccessToken(accessToken: String) = this.apply {
+            this.accessToken = accessToken
+        }
+
+        /**
+         * Defines route id for submitting data.
+         *
+         * @param routeId A route id.
+         */
+        fun setRouteId(routeId: String) = this.apply {
+            this.routeId = routeId
+        }
+
+        /**
+         * Defines validation behavior. Default is [VGSCheckoutFormValidationBehaviour.ON_SUBMIT].
+         *
+         * @param validationBehaviour Validation behavior.
+         */
+        fun setFormValidationBehaviour(
+            validationBehaviour: VGSCheckoutFormValidationBehaviour
+        ) = this.apply {
+            formValidationBehaviour = validationBehaviour
+        }
+
+        /**
+         * Defines if save card checkbox should be visible.
+         *
+         * @param isSaveCardOptionVisible save card checkbox visibility.
+         */
+        fun setIsSaveCardOptionVisible(
+            isSaveCardOptionVisible: Boolean
+        ) = this.apply {
+            saveCardOptionEnabled = isSaveCardOptionVisible
+        }
+
+        /**
+         * Defines if saved cards could be removed by user.
+         *
+         * @param isRemoveCardOptionEnabled Possibility to remove cards.
+         */
+        fun setIsRemoveCardOptionEnabled(
+            isRemoveCardOptionEnabled: Boolean
+        ) = this.apply {
+            this.isRemoveCardOptionEnabled = isRemoveCardOptionEnabled
+        }
+
+        //region Form config
+        /**
+         * Country input field options.
+         *
+         * @param visibility defines if input field should be visible to user.
+         * @param validCountries list of countries in ISO 3166-2 format that will be show in selection dialog.
+         */
+        fun setCountryOptions(
+            visibility: VGSCheckoutFieldVisibility = VGSCheckoutFieldVisibility.VISIBLE,
+            validCountries: List<String> = emptyList()
+        ) = this.apply {
+            countryFieldVisibility = visibility
+            this.validCountries = validCountries
+        }
+
+        /**
+         * City input field options.
+         *
+         * @param visibility defines if input field should be visible to user.
+         */
+        fun setCityOptions(visibility: VGSCheckoutFieldVisibility) = this.apply {
+            cityFieldVisibility = visibility
+        }
+
+        /**
+         * Address input field options.
+         *
+         * @param visibility defines if input field should be visible to user.
+         */
+        fun setAddressOptions(visibility: VGSCheckoutFieldVisibility) = this.apply {
+            addressFieldVisibility = visibility
+        }
+
+        /**
+         * Optional address input field options.
+         *
+         * @param visibility defines if input field should be visible to user.
+         */
+        fun setOptionalAddressOptions(
+            visibility: VGSCheckoutFieldVisibility = VGSCheckoutFieldVisibility.VISIBLE
+        ) = this.apply {
+            optionalAddressFieldVisibility = visibility
+        }
+
+        /**
+         * Postal code input field options.
+         *
+         * @param visibility defines if input field should be visible to user.
+         */
+        fun setPostalCodeOptions(
+            visibility: VGSCheckoutFieldVisibility = VGSCheckoutFieldVisibility.VISIBLE
+        ) = this.apply {
+            postalCodeFieldVisibility = visibility
+        }
+
+        /**
+         * Defines if address section UI should be visible to user.
+         *
+         * @param visibility Address section visibility.
+         */
+        fun setBillingAddressVisibility(
+            visibility: VGSCheckoutBillingAddressVisibility
+        ) = this.apply {
+            billingAddressVisibility = visibility
+        }
+
+        private fun buildFormConfig(): VGSCheckoutFormConfig {
+            return VGSCheckoutFormConfig(
+                createCardOptions(),
+                VGSCheckoutBillingAddressOptions(
+                    VGSCheckoutCountryOptions(
+                        COUNTRY_FIELD_NAME,
+                        validCountries,
+                        countryFieldVisibility
+                    ),
+                    VGSCheckoutCityOptions(
+                        CITY_FIELD_NAME,
+                        cityFieldVisibility
+                    ),
+                    VGSCheckoutAddressOptions(
+                        ADDRESS_FIELD_NAME,
+                        addressFieldVisibility
+                    ),
+                    VGSCheckoutOptionalAddressOptions(
+                        OPTIONAL_FIELD_NAME,
+                        optionalAddressFieldVisibility
+                    ),
+                    VGSCheckoutPostalCodeOptions(
+                        POSTAL_CODE_FIELD_NAME,
+                        postalCodeFieldVisibility
+                    ),
+                    billingAddressVisibility
+                ),
+                formValidationBehaviour,
+                saveCardOptionEnabled
+            )
+        }
+        //endregion
+
+        fun build(): VGSCheckoutAddCardConfig {
+            val formConfig = buildFormConfig()
+            return VGSCheckoutAddCardConfig(
+                accessToken,
+                routeId,
+                tenantId,
+                environment,
+                formConfig,
+                isScreenshotsAllowed
+            )
+        }
     }
 
     companion object {
@@ -128,44 +352,18 @@ class VGSCheckoutAddCardConfig internal constructor(
             }
         }
 
-        /**
-         * Function that allows create config with saved cards.
-         *
-         * @param accessToken payment orchestration app access token.
-         * @param tenantId unique organization id.
-         * @param paymentMethod
-         * @param environment type of vault.
-         * @param formConfig UI configuration.
-         * @param isScreenshotsAllowed If true, checkout form will allow to make screenshots. Default is false.
-         * @param isRemoveCardOptionEnabled If true, user will be able to delete saved card.
-         */
-        @JvmOverloads
-        fun create(
+        private fun loadSavedCards(
             context: Context,
-            accessToken: String,
-            tenantId: String,
             paymentMethod: VGSCheckoutPaymentMethod.SavedCards,
-            environment: VGSCheckoutEnvironment = VGSCheckoutEnvironment.Sandbox(),
-            formConfig: VGSCheckoutAddCardFormConfig = VGSCheckoutAddCardFormConfig(),
-            isScreenshotsAllowed: Boolean = false,
-            isRemoveCardOptionEnabled: Boolean = true,
-            callback: VGSCheckoutConfigInitCallback<VGSCheckoutAddCardConfig>? = null
+            config: VGSCheckoutAddCardConfig,
+            callback: VGSCheckoutSavedCardsCallback? = null
         ): VGSCheckoutCancellable {
-            val config = VGSCheckoutAddCardConfig(
-                accessToken,
-                tenantId,
-                environment,
-                VGSCheckoutPaymentRouteConfig(accessToken),
-                formConfig,
-                isScreenshotsAllowed,
-                isRemoveCardOptionEnabled,
-                false
-            )
+
             val ids = paymentMethod.getIds()
             val params = GetSavedCardsCommand.Params(
-                config.getBaseUrl(context),
+                config.baseUrl,
                 config.routeConfig.path,
-                accessToken,
+                config.accessToken,
                 ids
             )
             val command = GetSavedCardsCommand(context, params)
@@ -183,7 +381,7 @@ class VGSCheckoutAddCardConfig internal constructor(
                             )
                         )
                         config.savedCards = it.cards
-                        callback?.onSuccess(config)
+                        callback?.onSuccess()
                     }
                     is GetSavedCardsCommand.Result.Failure -> {
                         config.analyticTracker.log(

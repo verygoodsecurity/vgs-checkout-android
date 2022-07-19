@@ -1,10 +1,8 @@
 package com.verygoodsecurity.vgscheckout
 
 import com.verygoodsecurity.vgscheckout.collect.core.Environment
-import com.verygoodsecurity.vgscheckout.networking.isEnvironmentValid
-import com.verygoodsecurity.vgscheckout.networking.isTennantIdValid
-import com.verygoodsecurity.vgscheckout.networking.isUrlValid
-import com.verygoodsecurity.vgscheckout.networking.setupURL
+import com.verygoodsecurity.vgscheckout.config.core.OrchestrationConfig
+import com.verygoodsecurity.vgscheckout.networking.*
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -12,39 +10,41 @@ import java.util.regex.Pattern
 
 class UrlExtensionTest {
     companion object {
-        private const val URL_REGEX = "^(https:\\/\\/)+[a-zA-Z0-9]+[.]+((live|sandbox|LIVE|SANDBOX)+((-)+([a-zA-Z0-9]+)|)+)+[.](verygoodproxy.com)\$"
+        private const val URL_REGEX =
+            "^(https:\\/\\/)+[a-zA-Z0-9]+[.]+((live|sandbox|LIVE|SANDBOX)+((-)+([a-zA-Z0-9]+)|)+)+[.](verygoodproxy.com)\$"
     }
 
     @Test
     fun test_is_tennantId_not_valid() {
 
         val testUrl1 = " "
-        assertFalse(testUrl1.isTennantIdValid())
+        assertFalse(testUrl1.isTenantIdValid())
 
         val testUrl2 = "tnt.com"
-        assertFalse(testUrl2.isTennantIdValid())
+        assertFalse(testUrl2.isTenantIdValid())
 
         val testUrl3 = "tnt com"
-        assertFalse(testUrl3.isTennantIdValid())
+        assertFalse(testUrl3.isTenantIdValid())
 
         val testUrl4 = "2tnt/com"
-        assertFalse(testUrl4.isTennantIdValid())
+        assertFalse(testUrl4.isTenantIdValid())
 
         val testUrl5 = "tnt:com"
-        assertFalse(testUrl5.isTennantIdValid())
+        assertFalse(testUrl5.isTenantIdValid())
 
         val testUrl6 = "tnt*com"
-        assertFalse(testUrl6.isTennantIdValid())
+        assertFalse(testUrl6.isTenantIdValid())
 
         val testUrl7 = "tnt?com"
-        assertFalse(testUrl7.isTennantIdValid())
+        assertFalse(testUrl7.isTenantIdValid())
     }
+
     @Test
     fun test_is_tennantId_valid() {
         val testUrl1 = "tntdldf"
-        assertTrue(testUrl1.isTennantIdValid())
+        assertTrue(testUrl1.isTenantIdValid())
         val testUrl = "123"
-        assertTrue(testUrl.isTennantIdValid())
+        assertTrue(testUrl.isTenantIdValid())
     }
 
     @Test
@@ -116,6 +116,17 @@ class UrlExtensionTest {
         val url = s.setupURL(Environment.LIVE.rawValue)
 
         assertTrue(url.isUrlValid())
+    }
+
+    @Test
+    fun test_setup_url_payment() {
+        val s = "tnt234mm"
+        val defaultUrl = s.setupURL(Environment.LIVE.rawValue)
+        assertFalse(defaultUrl.contains(OrchestrationConfig.PAYMENT_URL_ROUTE_ID))
+
+        val paymentUrl =
+            s.setupURL(Environment.LIVE.rawValue, OrchestrationConfig.PAYMENT_URL_ROUTE_ID)
+        assertTrue(paymentUrl.contains(OrchestrationConfig.PAYMENT_URL_ROUTE_ID))
     }
 
     @Test

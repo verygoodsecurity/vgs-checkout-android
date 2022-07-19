@@ -17,11 +17,8 @@ import com.verygoodsecurity.vgscheckout.BuildConfig
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.view.internal.CountryInputField
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
-import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutAddCardFormConfig
 import com.verygoodsecurity.vgscheckout.config.ui.core.VGSCheckoutFormValidationBehaviour
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillingAddressVisibility
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutPaymentBillingAddressOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.country.VGSCheckoutPaymentCountryOptions
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_ARGS
 import com.verygoodsecurity.vgscheckout.ui.SaveCardActivity
@@ -42,21 +39,15 @@ class AddressDialogTest {
     private val context: Context = ApplicationProvider.getApplicationContext()
 
     val addressIntent = Intent(context, SaveCardActivity::class.java).apply {
+        val config = VGSCheckoutAddCardConfig.Builder(BuildConfig.VAULT_ID)
+            .setAccessToken(BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS)
+            .setIsScreenshotsAllowed(true)
+            .setFormValidationBehaviour(VGSCheckoutFormValidationBehaviour.ON_FOCUS)
+            .setBillingAddressVisibility(VGSCheckoutBillingAddressVisibility.VISIBLE)
+            .build()
         putExtra(
             EXTRA_KEY_ARGS,
-            CheckoutResultContract.Args(
-                VGSCheckoutAddCardConfig(
-                    BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS,
-                    BuildConfig.VAULT_ID,
-                    formConfig = VGSCheckoutAddCardFormConfig(
-                        VGSCheckoutPaymentBillingAddressOptions(
-                            visibility = VGSCheckoutBillingAddressVisibility.VISIBLE
-                        ),
-                        VGSCheckoutFormValidationBehaviour.ON_FOCUS
-                    ),
-                    isScreenshotsAllowed = true
-                )
-            )
+            CheckoutResultContract.Args(config)
         )
     }
 
@@ -184,23 +175,16 @@ class AddressDialogTest {
 
     private fun getLimitCountriesIntent(countries: List<String>): Intent =
         Intent(context, SaveCardActivity::class.java).apply {
+            val config = VGSCheckoutAddCardConfig.Builder(BuildConfig.VAULT_ID)
+                .setAccessToken(BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS)
+                .setIsScreenshotsAllowed(true)
+                .setFormValidationBehaviour(VGSCheckoutFormValidationBehaviour.ON_FOCUS)
+                .setBillingAddressVisibility(VGSCheckoutBillingAddressVisibility.VISIBLE)
+                .setCountryOptions(validCountries = countries)
+                .build()
             putExtra(
                 EXTRA_KEY_ARGS,
-                CheckoutResultContract.Args(
-                    VGSCheckoutAddCardConfig(
-                        BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS,
-                        BuildConfig.VAULT_ID,
-                        formConfig = VGSCheckoutAddCardFormConfig(
-                            VGSCheckoutPaymentBillingAddressOptions(
-                                countryOptions = VGSCheckoutPaymentCountryOptions(
-                                    validCountries = countries
-                                ),
-                                visibility = VGSCheckoutBillingAddressVisibility.VISIBLE
-                            ),
-                            VGSCheckoutFormValidationBehaviour.ON_FOCUS
-                        ),
-                    )
-                )
+                CheckoutResultContract.Args(config)
             )
         }
 }

@@ -6,14 +6,18 @@ import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
+import androidx.preference.PreferenceManager
 import com.google.android.material.button.MaterialButton
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import com.verygoodsecurity.vgscheckout.BuildConfig.AUTHENTICATION_HOST
 import com.verygoodsecurity.vgscheckout.VGSCheckout
 import com.verygoodsecurity.vgscheckout.VGSCheckoutCallback
+import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillingAddressVisibility
 import com.verygoodsecurity.vgscheckout.demo.BaseActivity
+import com.verygoodsecurity.vgscheckout.demo.BuildConfig
 import com.verygoodsecurity.vgscheckout.demo.CheckoutType
 import com.verygoodsecurity.vgscheckout.demo.R
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
@@ -24,7 +28,7 @@ import okhttp3.*
 import okhttp3.internal.EMPTY_REQUEST
 import java.io.IOException
 
-abstract class OrchestrationCheckoutActivity : BaseActivity(R.layout.activity_payment_checkout),
+class OrchestrationCheckoutActivity : BaseActivity(R.layout.activity_payment_checkout),
     VGSCheckoutCallback {
 
     override val type: CheckoutType = CheckoutType.PAYMENT
@@ -73,10 +77,42 @@ abstract class OrchestrationCheckoutActivity : BaseActivity(R.layout.activity_pa
         }
     }
 
-    internal abstract fun initializeConfiguration(
+    private fun initializeConfiguration(
         token: String,
         callback: (config: CheckoutConfig) -> Unit
-    )
+    ) {
+        val preferences = PreferenceManager.getDefaultSharedPreferences(this)
+        val vaultId = preferences.getString(getString(R.string.setting_key_vault_id), null)
+            ?: BuildConfig.STORAGE_ID
+
+        val builder = VGSCheckoutAddCardConfig.Builder(vaultId)
+            .setAccessToken(token)
+
+        // Create for config, configure UI and setup fieldNames
+        val billingAddressVisibility =
+            if (preferences.getBoolean(R.string.setting_key_billing_address_visible)) {
+                VGSCheckoutBillingAddressVisibility.VISIBLE
+            } else {
+                VGSCheckoutBillingAddressVisibility.HIDDEN
+            }
+
+        builder.setCountryOptions(
+            preferences.getFieldVisibility(R.string.setting_key_country_visible)
+        ).setCityOptions(
+            preferences.getFieldVisibility(R.string.setting_key_city_visible)
+        ).setAddressOptions(
+            preferences.getFieldVisibility(R.string.setting_key_address_visible)
+        ).setOptionalAddressOptions(
+            preferences.getFieldVisibility(R.string.setting_key_optional_address_visible)
+        ).setPostalCodeOptions(
+            preferences.getFieldVisibility(R.string.setting_key_postal_code_visible)
+        ).setBillingAddressVisibility(billingAddressVisibility)
+            .setFormValidationBehaviour(preferences.getValidationBehaviour(R.string.setting_key_validation_behaviour))
+            .setIsSaveCardOptionVisible(preferences.getBoolean(R.string.setting_key_save_card_option_enabled))
+
+        // Create config object
+        callback(builder.build())
+    }
 
     private fun setLoading(isLoading: Boolean) {
         mbPresent.isEnabled = !isLoading

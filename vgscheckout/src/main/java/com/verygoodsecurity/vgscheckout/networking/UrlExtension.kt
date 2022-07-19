@@ -6,52 +6,58 @@ import java.net.MalformedURLException
 import java.net.URL
 import java.util.regex.Pattern
 
+private const val HTTP_SCHEME = "http://"
+private const val HTTPS_SCHEME = "https://"
+
 /** @suppress */
 internal fun String.setupLocalhostURL(port: Int?): String {
-    val DIVIDER = ":"
-    val SCHEME = "http://"
+    val divider = ":"
 
     val prt = if (!port.isValidPort()) {
-        VGSCheckoutLogger.warn(message = "Port is not specified")
+        VGSCheckoutLogger.warn(message = "Port is not valid")
         ""
     } else {
-        DIVIDER + port
+        divider + port
     }
-    return StringBuilder(SCHEME)
+    return StringBuilder(HTTP_SCHEME)
         .append(this)
         .append(prt)
         .toString()
 }
 
 /** @suppress */
-internal fun String.setupURL(rawValue: String): String {
+internal fun String.setupURL(env: String, routeId: String? = null): String {
     return when {
-        this.isEmpty() || !isTennantIdValid() -> {
+        this.isEmpty() || !isTenantIdValid() -> {
             VGSCheckoutLogger.warn(message = "Vault ID is not valid")
             return ""
         }
-        rawValue.isEmpty() || !rawValue.isEnvironmentValid() -> {
+        env.isEmpty() || !env.isEnvironmentValid() -> {
             VGSCheckoutLogger.warn(message = "Environment is not valid")
             return ""
         }
-        else -> this.buildURL(rawValue)
+        else -> this.buildURL(env, routeId)
     }
 }
 
-private fun String.buildURL(env: String): String {
+private fun String.buildURL(env: String, routeId: String?): String {
     val DOMEN = "verygoodproxy.com"
     val DIVIDER = "."
     val SCHEME = "https://"
 
     val builder = StringBuilder(SCHEME)
-        .append(this).append(DIVIDER)
-        .append(env).append(DIVIDER)
-        .append(DOMEN)
+        .append(this)
 
-    return builder.toString()
+    if (!routeId.isNullOrEmpty()) builder.append("-").append(routeId)
+
+    return builder.append(DIVIDER)
+        .append(env)
+        .append(DIVIDER)
+        .append(DOMEN)
+        .toString()
 }
 
-internal fun String.isTennantIdValid(): Boolean =
+internal fun String.isTenantIdValid(): Boolean =
     Pattern.compile("^[a-zA-Z0-9]*\$").matcher(this).matches()
 
 internal fun String.isEnvironmentValid(): Boolean =
@@ -98,9 +104,9 @@ internal infix fun String.equalsUrl(name: String?): Boolean {
 
 internal fun String.toHttps(): String {
     return when {
-        startsWith("http://") -> this
-        startsWith("https://") -> this
-        else -> "https://$this"
+        startsWith(HTTP_SCHEME) -> this
+        startsWith(HTTPS_SCHEME) -> this
+        else -> "$HTTPS_SCHEME$this"
     }
 }
 

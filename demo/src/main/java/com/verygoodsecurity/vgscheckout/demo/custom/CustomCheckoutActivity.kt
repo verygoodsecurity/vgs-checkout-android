@@ -7,22 +7,8 @@ import com.google.android.material.button.MaterialButton
 import com.verygoodsecurity.vgscheckout.VGSCheckout
 import com.verygoodsecurity.vgscheckout.VGSCheckoutCallback
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
-import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutCustomRouteConfig
-import com.verygoodsecurity.vgscheckout.config.networking.request.VGSCheckoutCustomRequestOptions
 import com.verygoodsecurity.vgscheckout.config.networking.request.core.VGSCheckoutDataMergePolicy
-import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutCustomFormConfig
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillingAddressVisibility
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutCustomBillingAddressOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.VGSCheckoutCustomAddressOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.address.VGSCheckoutCustomOptionalAddressOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.city.VGSCheckoutCustomCityOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.code.VGSCheckoutCustomPostalCodeOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.country.VGSCheckoutCustomCountryOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.VGSCheckoutCustomCardOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.VGSCheckoutCustomCardHolderOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.VGSCheckoutCustomCardNumberOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.VGSCheckoutCustomCVCOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.VGSCheckoutCustomExpirationDateOptions
 import com.verygoodsecurity.vgscheckout.demo.BaseActivity
 import com.verygoodsecurity.vgscheckout.demo.BuildConfig
 import com.verygoodsecurity.vgscheckout.demo.CheckoutType
@@ -61,63 +47,51 @@ class CustomCheckoutActivity : BaseActivity(R.layout.activity_custom_checkout),
 
     private fun createConfig(): VGSCheckoutCustomConfig {
         val preferences = PreferenceManager.getDefaultSharedPreferences(this)
+        val vaultId = preferences.getString(getString(R.string.setting_key_vault_id), null)
+            ?: BuildConfig.STORAGE_ID
+
+        val builder = VGSCheckoutCustomConfig.Builder(vaultId)
 
         // Create for config, configure UI and setup fieldNames
-        val cardOptions = VGSCheckoutCustomCardOptions(
-            VGSCheckoutCustomCardNumberOptions(
-                CARD_NUMBER_FIELD_NAME,
-                !preferences.getBoolean(R.string.setting_key_card_number_icon_visible)
-            ),
-            VGSCheckoutCustomCardHolderOptions(
-                CARD_HOLDER_FIELD_NAME,
-                preferences.getFieldVisibility(R.string.setting_key_card_holder_visible)
-            ),
-            VGSCheckoutCustomCVCOptions(
-                CVC_FIELD_NAME,
-                !preferences.getBoolean(R.string.setting_key_cvc_icon_visible)
-            ),
-            VGSCheckoutCustomExpirationDateOptions(EXPIRY_FIELD_NAME)
-        )
-
-        val billingAddressOptions = VGSCheckoutCustomBillingAddressOptions(
-            VGSCheckoutCustomCountryOptions(
-                COUNTRY_FIELD_NAME,
-                visibility = preferences.getFieldVisibility(R.string.setting_key_country_visible)
-            ),
-            VGSCheckoutCustomCityOptions(
-                CITY_FIELD_NAME,
-                preferences.getFieldVisibility(R.string.setting_key_city_visible)
-            ),
-            VGSCheckoutCustomAddressOptions(
-                ADDRESS_FIELD_NAME,
-                preferences.getFieldVisibility(R.string.setting_key_address_visible)
-            ),
-            VGSCheckoutCustomOptionalAddressOptions(
-                OPTIONAL_ADDRESS_FIELD_NAME,
-                preferences.getFieldVisibility(R.string.setting_key_optional_address_visible)
-            ),
-            VGSCheckoutCustomPostalCodeOptions(
-                POSTAL_CODE_FIELD_NAME,
-                preferences.getFieldVisibility(R.string.setting_key_postal_code_visible)
-            ),
+        val billingAddressVisibility =
             if (preferences.getBoolean(R.string.setting_key_billing_address_visible)) {
                 VGSCheckoutBillingAddressVisibility.VISIBLE
             } else {
                 VGSCheckoutBillingAddressVisibility.HIDDEN
             }
-        )
-
-        val formConfig = VGSCheckoutCustomFormConfig(
-            cardOptions,
-            billingAddressOptions,
-            preferences.getValidationBehaviour(R.string.setting_key_validation_behaviour)
-        )
+        builder.setCardNumberOptions(
+            CARD_NUMBER_FIELD_NAME,
+            !preferences.getBoolean(R.string.setting_key_card_number_icon_visible)
+        ).setCardHolderOptions(
+            CARD_HOLDER_FIELD_NAME,
+            preferences.getFieldVisibility(R.string.setting_key_card_holder_visible)
+        ).setCVCOptions(
+            CVC_FIELD_NAME,
+            !preferences.getBoolean(R.string.setting_key_cvc_icon_visible)
+        ).setExpirationDateOptions(
+            EXPIRY_FIELD_NAME
+        ).setCountryOptions(
+            COUNTRY_FIELD_NAME,
+            visibility = preferences.getFieldVisibility(R.string.setting_key_country_visible)
+        ).setCityOptions(
+            CITY_FIELD_NAME,
+            preferences.getFieldVisibility(R.string.setting_key_city_visible)
+        ).setAddressOptions(
+            ADDRESS_FIELD_NAME,
+            preferences.getFieldVisibility(R.string.setting_key_address_visible)
+        ).setOptionalAddressOptions(
+            OPTIONAL_ADDRESS_FIELD_NAME,
+            preferences.getFieldVisibility(R.string.setting_key_optional_address_visible)
+        ).setPostalCodeOptions(
+            POSTAL_CODE_FIELD_NAME,
+            preferences.getFieldVisibility(R.string.setting_key_postal_code_visible)
+        ).setBillingAddressVisibility(billingAddressVisibility)
+            .setFormValidationBehaviour(preferences.getValidationBehaviour(R.string.setting_key_validation_behaviour))
 
         // Create route config, specify path, extra data, headers etc.
-        val routeConfig = VGSCheckoutCustomRouteConfig(
-            PATH,
-            requestOptions = VGSCheckoutCustomRequestOptions(
-                extraData = linkedMapOf(
+        builder.setPath(PATH)
+            .setPayload(
+                linkedMapOf(
                     EXTRA_DATA_ROOT to mapOf(
                         EXTRA_DATA_CARD_DATA to arrayOf(
                             null,
@@ -125,18 +99,11 @@ class CustomCheckoutActivity : BaseActivity(R.layout.activity_custom_checkout),
                             null
                         )
                     )
-                ),
-                mergePolicy = VGSCheckoutDataMergePolicy.NESTED_JSON_WITH_ARRAYS_MERGE
-            )
-        )
+                )
+            ).setMergePolicy(VGSCheckoutDataMergePolicy.NESTED_JSON_WITH_ARRAYS_MERGE)
 
-        val vaultId = preferences.getString(getString(R.string.setting_key_vault_id), null)
         // Create config object
-        return VGSCheckoutCustomConfig(
-            vaultId = vaultId ?: BuildConfig.STORAGE_ID,
-            routeConfig = routeConfig,
-            formConfig = formConfig
-        )
+        return builder.build()
     }
 
     companion object {

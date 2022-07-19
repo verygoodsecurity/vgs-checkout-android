@@ -29,15 +29,13 @@ class DefaultCheckoutSetupTest {
     private val context: Context = ApplicationProvider.getApplicationContext()
 
     private val defaultIntent = Intent(context, SaveCardActivity::class.java).apply {
+        val config = VGSCheckoutAddCardConfig.Builder(BuildConfig.VAULT_ID)
+            .setAccessToken(BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS)
+            .setIsScreenshotsAllowed(true)
+            .build()
         putExtra(
             EXTRA_KEY_ARGS,
-            CheckoutResultContract.Args(
-                VGSCheckoutAddCardConfig(
-                    BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS,
-                    BuildConfig.VAULT_ID,
-                    isScreenshotsAllowed = true
-                )
-            )
+            CheckoutResultContract.Args(config)
         )
     }
 

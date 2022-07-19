@@ -2,15 +2,9 @@ package com.verygoodsecurity.vgscheckout.analytic.event.core
 
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
-import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutCustomRouteConfig
 import com.verygoodsecurity.vgscheckout.config.networking.core.VGSCheckoutHostnamePolicy
-import com.verygoodsecurity.vgscheckout.config.networking.request.VGSCheckoutCustomRequestOptions
-import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutAddCardFormConfig
-import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutCustomFormConfig
 import com.verygoodsecurity.vgscheckout.config.ui.core.VGSCheckoutFormValidationBehaviour
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillingAddressVisibility
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutCustomBillingAddressOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.country.VGSCheckoutCustomCountryOptions
 import org.junit.Assert.*
 import org.junit.Test
 
@@ -91,11 +85,9 @@ class EventsTest {
     @Test
     fun getData_customHostnameAddedToContent() {
         // Arrange
-        val config = VGSCheckoutCustomConfig(
-            ID, routeConfig = VGSCheckoutCustomRouteConfig(
-                hostnamePolicy = VGSCheckoutHostnamePolicy.CustomHostname("")
-            )
-        )
+        val config = VGSCheckoutCustomConfig.Builder(ID)
+            .setHostnamePolicy(VGSCheckoutHostnamePolicy.CustomHostname(""))
+            .build()
         val event = object : Event(TEST_TYPE, config) {
 
             override val attributes: Map<String, Any> = emptyMap()
@@ -110,14 +102,11 @@ class EventsTest {
     @Test
     fun getData_customDataAddedToContent() {
         // Arrange
-        val config = VGSCheckoutCustomConfig(
-            ID, routeConfig = VGSCheckoutCustomRouteConfig(
-                hostnamePolicy = VGSCheckoutHostnamePolicy.CustomHostname(""),
-                requestOptions = VGSCheckoutCustomRequestOptions(
-                    extraData = mapOf("test" to "test")
-                )
-            )
-        )
+        val config = VGSCheckoutCustomConfig.Builder(ID)
+            .setHostnamePolicy(VGSCheckoutHostnamePolicy.CustomHostname(""))
+            .setPayload(mapOf("test" to "test"))
+            .build()
+
         val event = object : Event(TEST_TYPE, config) {
 
             override val attributes: Map<String, Any> = emptyMap()
@@ -132,14 +121,11 @@ class EventsTest {
     @Test
     fun getData_customHeaderAddedToContent() {
         // Arrange
-        val config = VGSCheckoutCustomConfig(
-            ID, routeConfig = VGSCheckoutCustomRouteConfig(
-                hostnamePolicy = VGSCheckoutHostnamePolicy.CustomHostname(""),
-                requestOptions = VGSCheckoutCustomRequestOptions(
-                    extraHeaders = mapOf("test" to "test")
-                )
-            )
-        )
+        val config = VGSCheckoutCustomConfig.Builder(ID)
+            .setHostnamePolicy(VGSCheckoutHostnamePolicy.CustomHostname(""))
+            .setHeaders(mapOf("test" to "test"))
+            .build()
+
         val event = object : Event(TEST_TYPE, config) {
 
             override val attributes: Map<String, Any> = emptyMap()
@@ -154,16 +140,10 @@ class EventsTest {
     @Test
     fun getData_validCountriesAddedToContent() {
         // Arrange
-        val config = VGSCheckoutCustomConfig(
-            ID,
-            formConfig = VGSCheckoutCustomFormConfig(
-                addressOptions = VGSCheckoutCustomBillingAddressOptions(
-                    countryOptions = VGSCheckoutCustomCountryOptions(
-                        validCountries = listOf("Test")
-                    )
-                )
-            )
-        )
+        val config = VGSCheckoutCustomConfig.Builder(ID)
+            .setCountryOptions(fieldName = "", validCountries = listOf("Test"))
+            .build()
+
         val event = object : Event(TEST_TYPE, config) {
 
             override val attributes: Map<String, Any> = emptyMap()
@@ -178,12 +158,10 @@ class EventsTest {
     @Test
     fun getData_onSubmitValidationAddedToContent() {
         // Arrange
-        val config = VGSCheckoutCustomConfig(
-            ID,
-            formConfig = VGSCheckoutCustomFormConfig(
-                validationBehaviour = VGSCheckoutFormValidationBehaviour.ON_SUBMIT
-            )
-        )
+        val config = VGSCheckoutCustomConfig.Builder(ID)
+            .setFormValidationBehaviour(VGSCheckoutFormValidationBehaviour.ON_SUBMIT)
+            .build()
+
         val event = object : Event(TEST_TYPE, config) {
 
             override val attributes: Map<String, Any> = emptyMap()
@@ -198,12 +176,9 @@ class EventsTest {
     @Test
     fun getData_onFocusValidationAddedToContent() {
         // Arrange
-        val config = VGSCheckoutCustomConfig(
-            ID,
-            formConfig = VGSCheckoutCustomFormConfig(
-                validationBehaviour = VGSCheckoutFormValidationBehaviour.ON_FOCUS
-            )
-        )
+        val config = VGSCheckoutCustomConfig.Builder(ID)
+            .setFormValidationBehaviour(VGSCheckoutFormValidationBehaviour.ON_FOCUS)
+            .build()
         val event = object : Event(TEST_TYPE, config) {
 
             override val attributes: Map<String, Any> = emptyMap()
@@ -218,14 +193,9 @@ class EventsTest {
     @Test
     fun getData_billingAddressVisibleAddedToContent() {
         // Arrange
-        val config = VGSCheckoutCustomConfig(
-            ID,
-            formConfig = VGSCheckoutCustomFormConfig(
-                addressOptions = VGSCheckoutCustomBillingAddressOptions(
-                    visibility = VGSCheckoutBillingAddressVisibility.VISIBLE
-                )
-            )
-        )
+        val config = VGSCheckoutCustomConfig.Builder(ID)
+            .setBillingAddressVisibility(VGSCheckoutBillingAddressVisibility.VISIBLE)
+            .build()
         val event = object : Event(TEST_TYPE, config) {
 
             override val attributes: Map<String, Any> = emptyMap()
@@ -240,14 +210,10 @@ class EventsTest {
     @Test
     fun getData_billingAddressHiddenAddedToContent() {
         // Arrange
-        val config = VGSCheckoutCustomConfig(
-            ID,
-            formConfig = VGSCheckoutCustomFormConfig(
-                addressOptions = VGSCheckoutCustomBillingAddressOptions(
-                    visibility = VGSCheckoutBillingAddressVisibility.HIDDEN
-                )
-            )
-        )
+        val config = VGSCheckoutCustomConfig.Builder(ID)
+            .setBillingAddressVisibility(VGSCheckoutBillingAddressVisibility.HIDDEN)
+            .build()
+
         val event = object : Event(TEST_TYPE, config) {
 
             override val attributes: Map<String, Any> = emptyMap()
@@ -262,13 +228,11 @@ class EventsTest {
     @Test
     fun getData_saveCardCheckboxToContent() {
         // Arrange
-        val config = VGSCheckoutAddCardConfig(
-            "",
-            ID,
-            formConfig = VGSCheckoutAddCardFormConfig(
-               saveCardOptionEnabled = true
-            )
-        )
+        val config = VGSCheckoutAddCardConfig.Builder(ID)
+            .setAccessToken("")
+            .setIsSaveCardOptionVisible(true)
+            .build()
+
         val event = object : Event(TEST_TYPE, config) {
 
             override val attributes: Map<String, Any> = emptyMap()
