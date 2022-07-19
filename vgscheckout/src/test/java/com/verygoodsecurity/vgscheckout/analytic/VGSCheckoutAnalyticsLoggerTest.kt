@@ -4,6 +4,7 @@ import com.verygoodsecurity.vgscheckout.analytic.event.InitEvent
 import com.verygoodsecurity.vgscheckout.analytic.event.core.ENVIRONMENT
 import com.verygoodsecurity.vgscheckout.analytic.event.core.FORM_ID
 import com.verygoodsecurity.vgscheckout.analytic.event.core.ID
+import com.verygoodsecurity.vgscheckout.analytic.event.core.ROUTE_ID
 import com.verygoodsecurity.vgscheckout.capture
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
 import com.verygoodsecurity.vgscheckout.networking.client.HttpClient
@@ -18,7 +19,7 @@ class VGSCheckoutAnalyticsLoggerTest {
 
     private val mockHttpClient: HttpClient = Mockito.mock(OkHttpClient::class.java)
     private val callback: (HttpResponse) -> Unit = {}
-    private var tracker = DefaultAnalyticsTracker(ID, ENVIRONMENT, FORM_ID, mockHttpClient)
+    private var tracker = DefaultAnalyticsTracker(ID, ENVIRONMENT, FORM_ID, ROUTE_ID, mockHttpClient)
 
     @Test
     fun log_analyticsEnabled_apiClientCalled() {

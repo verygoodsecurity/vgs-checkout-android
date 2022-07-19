@@ -3,6 +3,7 @@ package com.verygoodsecurity.vgscheckout.analytic.event
 import com.verygoodsecurity.vgscheckout.analytic.event.core.ENVIRONMENT
 import com.verygoodsecurity.vgscheckout.analytic.event.core.FORM_ID
 import com.verygoodsecurity.vgscheckout.analytic.event.core.ID
+import com.verygoodsecurity.vgscheckout.analytic.event.core.ROUTE_ID
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
 import org.junit.Assert
 import org.junit.Test
@@ -15,7 +16,7 @@ class InitEventTest {
         val config = VGSCheckoutCustomConfig.Builder(ID).build()
         val event = InitEvent(InitEvent.ConfigType.CUSTOM, config)
         // Act
-        val data = event.getData(ID, FORM_ID, ENVIRONMENT)
+        val data = event.getData(ID, ENVIRONMENT, FORM_ID, ROUTE_ID)
         // Assert
         Assert.assertEquals("Init", data["type"])
         Assert.assertEquals("custom", data["config"])
@@ -28,7 +29,7 @@ class InitEventTest {
         val config = VGSCheckoutCustomConfig.Builder(ID).build()
         val event = InitEvent(InitEvent.ConfigType.PAYOPT, config)
         // Act
-        val data = event.getData(ID, FORM_ID, ENVIRONMENT)
+        val data = event.getData(ID, ENVIRONMENT, FORM_ID, ROUTE_ID)
         // Assert
         Assert.assertEquals("Init", data["type"])
         Assert.assertEquals("payopt", data["config"])

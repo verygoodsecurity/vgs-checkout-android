@@ -3,6 +3,7 @@ package com.verygoodsecurity.vgscheckout.analytic.event
 import com.verygoodsecurity.vgscheckout.analytic.event.core.ENVIRONMENT
 import com.verygoodsecurity.vgscheckout.analytic.event.core.FORM_ID
 import com.verygoodsecurity.vgscheckout.analytic.event.core.ID
+import com.verygoodsecurity.vgscheckout.analytic.event.core.ROUTE_ID
 import org.junit.Assert
 import org.junit.Test
 
@@ -13,7 +14,7 @@ class ResponseEventTest {
         // Arrange
         val event = ResponseEvent(200, null, 400L)
         // Act
-        val data = event.getData(ID, FORM_ID, ENVIRONMENT)
+        val data = event.getData(ID, ENVIRONMENT, FORM_ID, ROUTE_ID)
         // Assert
         Assert.assertEquals("Submit", data["type"])
         Assert.assertEquals("Ok", data["status"])
@@ -27,7 +28,7 @@ class ResponseEventTest {
         // Arrange
         val event = ResponseEvent(200, "test", 400L)
         // Act
-        val data = event.getData(ID, FORM_ID, ENVIRONMENT)
+        val data = event.getData(ID, ENVIRONMENT, FORM_ID, ROUTE_ID)
         // Assert
         Assert.assertEquals("Submit", data["type"])
         Assert.assertEquals(data["status"], "Ok")

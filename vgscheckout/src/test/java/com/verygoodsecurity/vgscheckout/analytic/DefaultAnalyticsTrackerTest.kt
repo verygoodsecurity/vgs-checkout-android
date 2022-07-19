@@ -5,6 +5,7 @@ import com.verygoodsecurity.vgscheckout.analytic.event.InitEvent
 import com.verygoodsecurity.vgscheckout.analytic.event.core.ENVIRONMENT
 import com.verygoodsecurity.vgscheckout.analytic.event.core.FORM_ID
 import com.verygoodsecurity.vgscheckout.analytic.event.core.ID
+import com.verygoodsecurity.vgscheckout.analytic.event.core.ROUTE_ID
 import com.verygoodsecurity.vgscheckout.networking.client.okhttp.OkHttpClient
 import com.verygoodsecurity.vgscheckout.collect.util.extension.toBase64
 import com.verygoodsecurity.vgscheckout.collect.util.extension.toJSON
@@ -30,7 +31,7 @@ class DefaultAnalyticsTrackerTest {
     @Test
     fun constructor_analyticTrackerCreated() {
         // Act
-        val tracker = DefaultAnalyticsTracker(ID, ENVIRONMENT, FORM_ID)
+        val tracker = DefaultAnalyticsTracker(ID, ENVIRONMENT, FORM_ID, ROUTE_ID)
         // Assert
         assertNotNull(tracker)
     }
@@ -40,9 +41,9 @@ class DefaultAnalyticsTrackerTest {
         // Arrange
         val config = VGSCheckoutCustomConfig.Builder(ID).build()
         val event = InitEvent(InitEvent.ConfigType.CUSTOM, config)
-        val payload = event.getData(ID, FORM_ID, ENVIRONMENT).toJSON().toString().toBase64()
+        val payload = event.getData(ID, ENVIRONMENT, FORM_ID, ROUTE_ID).toJSON().toString().toBase64()
 
-        val tracker = DefaultAnalyticsTracker(ID, ENVIRONMENT, FORM_ID, mockHttpClient)
+        val tracker = DefaultAnalyticsTracker(ID, ENVIRONMENT, FORM_ID, ROUTE_ID, mockHttpClient)
         val expectedNetworkRequest = HttpRequest(
             method = HttpMethod.POST,
             url = "https://vgs-collect-keeper.apps.verygood.systems/vgs",

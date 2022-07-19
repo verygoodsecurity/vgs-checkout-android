@@ -10,6 +10,7 @@ import org.junit.Test
 
 const val ID = "test_vault_id"
 const val FORM_ID = "test_form_id"
+const val ROUTE_ID = "test_route_id"
 const val ENVIRONMENT = "test_env"
 
 private const val TEST_TYPE = "Test"
@@ -24,11 +25,12 @@ class EventsTest {
             override val attributes: Map<String, Any> = emptyMap()
         }
         // Act
-        val data = event.getData(ID, FORM_ID, ENVIRONMENT)
+        val data = event.getData(ID, ENVIRONMENT, FORM_ID, ROUTE_ID)
         // Assert
         assertEquals(TEST_TYPE, data["type"])
         assertEquals(ID, data["tnt"])
         assertEquals(FORM_ID, data["formId"])
+        assertEquals(ROUTE_ID, data["routeId"])
         assertEquals(ENVIRONMENT, data["env"])
         assertNotNull(data["status"])
         assertNotNull(data["type"])
@@ -51,7 +53,7 @@ class EventsTest {
             override val attributes: Map<String, Any> = emptyMap()
         }
         // Act
-        val data = event.getData(ID, FORM_ID, ENVIRONMENT)
+        val data = event.getData(ID, ENVIRONMENT, FORM_ID, ROUTE_ID)
         // Assert
         assertEquals("Ok", data["status"])
     }
@@ -64,7 +66,7 @@ class EventsTest {
             override val attributes: Map<String, Any> = mapOf("status" to "Test_failed")
         }
         // Act
-        val data = event.getData(ID, FORM_ID, ENVIRONMENT)
+        val data = event.getData(ID, ENVIRONMENT, FORM_ID, ROUTE_ID)
         // Assert
         assertEquals("Test_failed", data["status"])
     }
@@ -77,7 +79,7 @@ class EventsTest {
             override val attributes: Map<String, Any> = mapOf("test_key" to "test_value")
         }
         // Act
-        val data = event.getData(ID, FORM_ID, ENVIRONMENT)
+        val data = event.getData(ID, ENVIRONMENT, FORM_ID, ROUTE_ID)
         // Assert
         assertEquals("test_value", data["test_key"])
     }
@@ -93,7 +95,7 @@ class EventsTest {
             override val attributes: Map<String, Any> = emptyMap()
         }
         // Act
-        val data = event.getData(ID, FORM_ID, ENVIRONMENT)
+        val data = event.getData(ID, ENVIRONMENT, FORM_ID, ROUTE_ID)
         val content = data["content"] as List<*>
         // Assert
         assertTrue(content.contains("custom_hostname"))
@@ -112,7 +114,7 @@ class EventsTest {
             override val attributes: Map<String, Any> = emptyMap()
         }
         // Act
-        val data = event.getData(ID, FORM_ID, ENVIRONMENT)
+        val data = event.getData(ID, ENVIRONMENT, FORM_ID, ROUTE_ID)
         val content = data["content"] as List<*>
         // Assert
         assertTrue(content.contains("custom_data"))
@@ -131,7 +133,7 @@ class EventsTest {
             override val attributes: Map<String, Any> = emptyMap()
         }
         // Act
-        val data = event.getData(ID, FORM_ID, ENVIRONMENT)
+        val data = event.getData(ID, ENVIRONMENT, FORM_ID, ROUTE_ID)
         val content = data["content"] as List<*>
         // Assert
         assertTrue(content.contains("custom_header"))
@@ -149,7 +151,7 @@ class EventsTest {
             override val attributes: Map<String, Any> = emptyMap()
         }
         // Act
-        val data = event.getData(ID, FORM_ID, ENVIRONMENT)
+        val data = event.getData(ID, ENVIRONMENT, FORM_ID, ROUTE_ID)
         val content = data["content"] as List<*>
         // Assert
         assertTrue(content.contains("valid_countries"))
@@ -167,7 +169,7 @@ class EventsTest {
             override val attributes: Map<String, Any> = emptyMap()
         }
         // Act
-        val data = event.getData(ID, FORM_ID, ENVIRONMENT)
+        val data = event.getData(ID, ENVIRONMENT, FORM_ID, ROUTE_ID)
         val content = data["content"] as List<*>
         // Assert
         assertTrue(content.contains("on_submit_validation"))
@@ -184,7 +186,7 @@ class EventsTest {
             override val attributes: Map<String, Any> = emptyMap()
         }
         // Act
-        val data = event.getData(ID, FORM_ID, ENVIRONMENT)
+        val data = event.getData(ID, ENVIRONMENT, FORM_ID, ROUTE_ID)
         val content = data["content"] as List<*>
         // Assert
         assertTrue(content.contains("on_focus_validation"))
@@ -201,7 +203,7 @@ class EventsTest {
             override val attributes: Map<String, Any> = emptyMap()
         }
         // Act
-        val data = event.getData(ID, FORM_ID, ENVIRONMENT)
+        val data = event.getData(ID, ENVIRONMENT, FORM_ID, ROUTE_ID)
         val content = data["content"] as List<*>
         // Assert
         assertTrue(content.contains("billing_address_visible"))
@@ -219,7 +221,7 @@ class EventsTest {
             override val attributes: Map<String, Any> = emptyMap()
         }
         // Act
-        val data = event.getData(ID, FORM_ID, ENVIRONMENT)
+        val data = event.getData(ID, ENVIRONMENT, FORM_ID, ROUTE_ID)
         val content = data["content"] as List<*>
         // Assert
         assertTrue(content.contains("billing_address_hidden"))
@@ -238,7 +240,7 @@ class EventsTest {
             override val attributes: Map<String, Any> = emptyMap()
         }
         // Act
-        val data = event.getData(ID, FORM_ID, ENVIRONMENT)
+        val data = event.getData(ID, ENVIRONMENT, FORM_ID, ROUTE_ID)
         val content = data["content"] as List<*>
         // Assert
         assertTrue(content.contains("save_card_checkbox"))
