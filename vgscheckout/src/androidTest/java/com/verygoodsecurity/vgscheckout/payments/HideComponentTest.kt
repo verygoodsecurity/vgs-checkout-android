@@ -15,7 +15,6 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillin
 import com.verygoodsecurity.vgscheckout.config.ui.view.core.VGSCheckoutFieldVisibility
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_ARGS
-import com.verygoodsecurity.vgscheckout.ui.CustomSaveCardActivity
 import com.verygoodsecurity.vgscheckout.ui.SaveCardActivity
 import org.hamcrest.CoreMatchers
 import org.junit.Test
@@ -172,7 +171,7 @@ class HideComponentTest {
     @Test
     fun performCheckout_countryWithoutPostalCode_addressBlockHidden() {
         // Arrange
-        val intent = Intent(context, CustomSaveCardActivity::class.java).apply {
+        val intent = Intent(context, SaveCardActivity::class.java).apply {
             val config = VGSCheckoutAddCardConfig.Builder(BuildConfig.VAULT_ID)
                 .setBillingAddressVisibility(VGSCheckoutBillingAddressVisibility.VISIBLE)
                 .setCountryOptions(VGSCheckoutFieldVisibility.HIDDEN, listOf("YE"))
@@ -185,7 +184,7 @@ class HideComponentTest {
                 CheckoutResultContract.Args(config)
             )
         }
-        ActivityScenario.launch<CustomSaveCardActivity>(intent).use {
+        ActivityScenario.launch<SaveCardActivity>(intent).use {
             //Assert
             Espresso.onView(ViewMatchers.withId(R.id.llBillingAddress))
                 .check(ViewAssertions.matches(CoreMatchers.not(ViewMatchers.isDisplayed())))
