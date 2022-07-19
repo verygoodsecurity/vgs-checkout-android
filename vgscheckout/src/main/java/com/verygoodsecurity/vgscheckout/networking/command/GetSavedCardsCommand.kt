@@ -25,7 +25,16 @@ internal class GetSavedCardsCommand constructor(
         rootThread = thread(start = true) {
             try {
                 val tasks = startRequests(params, createHeaders(params))
-                onResult.invoke(Result.Success(tasks.mapNotNull { it.get() }))
+                onResult.invoke(
+                    Result(
+                        true,
+                        200,
+                        null,
+                        null,
+                        0,
+                        tasks.mapNotNull { it.get() }
+                    )
+                )
             } catch (e: InterruptedException) {
                 VGSCheckoutLogger.warn(message = "GetSavedCardsCommand was canceled.")
             } catch (e: ExecutionException) {
@@ -34,7 +43,14 @@ internal class GetSavedCardsCommand constructor(
         }
     }
 
-    override fun map(params: Params, exception: VGSCheckoutException) = Result.Failure(exception)
+    override fun map(params: Params, exception: VGSCheckoutException) = Result(
+        false,
+        exception.code,
+        null,
+        exception.message,
+        0,
+        null
+    )
 
     override fun cancel() {
         client.cancelAll()
@@ -120,10 +136,12 @@ internal class GetSavedCardsCommand constructor(
         val ids: List<String>
     ) : Command.Params()
 
-    internal sealed class Result : Command.Result() {
-
-        data class Success(val cards: List<Card>) : Result()
-
-        data class Failure(val exception: VGSCheckoutException) : Result()
-    }
+    internal data class Result(
+        val isSuccessful: Boolean,
+        val code: Int,
+        val body: String?,
+        val message: String?,
+        val latency: Long,
+        val cards: List<Card>?
+    ) : Command.Result()
 }

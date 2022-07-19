@@ -2,7 +2,7 @@ package com.verygoodsecurity.vgscheckout.networking.command
 
 import android.content.Context
 import com.verygoodsecurity.vgscheckout.collect.util.extension.concatWithSlash
-import com.verygoodsecurity.vgscheckout.config.payment.OrderDetails
+import com.verygoodsecurity.vgscheckout.config.payment.Order
 import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
 import com.verygoodsecurity.vgscheckout.networking.client.HttpMethod
 import com.verygoodsecurity.vgscheckout.networking.client.HttpRequest
@@ -19,6 +19,11 @@ internal class GetOrderDetails constructor(
         client.enqueue(createRequest(params)) {
             onResult.invoke(
                 Result(
+                    it.isSuccessful,
+                    it.code,
+                    it.body,
+                    it.message,
+                    it.latency,
                     parseResponse(it)
                 )
             )
@@ -37,22 +42,16 @@ internal class GetOrderDetails constructor(
         HttpMethod.GET
     )
 
-    private fun parseResponse(response: HttpResponse): OrderDetails? {
+    private fun parseResponse(response: HttpResponse): Order? {
         if (response.body.isNullOrEmpty()) {
             return null
         }
         return try {
             JSONObject(response.body).getJSONObject(JSON_KEY_DATA).run {
-                OrderDetails(
+                Order(
                     getString(JSON_KEY_ID),
                     getInt(JSON_KEY_AMOUNT),
                     getString(JSON_KEY_CURRENCY),
-                    OrderDetails.Raw(
-                        response.isSuccessful,
-                        response.code,
-                        response.body,
-                        response.message
-                    )
                 )
             }
         } catch (e: Exception) {
@@ -60,9 +59,14 @@ internal class GetOrderDetails constructor(
         }
     }
 
-
-    override fun map(params: Params, exception: VGSCheckoutException) = Result(null)
-
+    override fun map(params: Params, exception: VGSCheckoutException) = Result(
+        false,
+        exception.code,
+        null,
+        exception.message,
+        0,
+        null
+    )
 
     companion object {
 
@@ -84,6 +88,11 @@ internal class GetOrderDetails constructor(
     ) : Command.Params()
 
     internal data class Result(
-        val orderDetails: OrderDetails?
+        val isSuccessful: Boolean,
+        val code: Int,
+        val body: String?,
+        val message: String?,
+        val latency: Long,
+        val order: Order?
     ) : Command.Result()
 }
