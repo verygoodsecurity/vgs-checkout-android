@@ -1,7 +1,7 @@
 package com.verygoodsecurity.vgscheckout
 
 import com.verygoodsecurity.vgscheckout.collect.core.Environment
-import com.verygoodsecurity.vgscheckout.config.core.OrchestrationConfig
+import com.verygoodsecurity.vgscheckout.config.ROUTE_ID_VALUE
 import com.verygoodsecurity.vgscheckout.networking.*
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -122,11 +122,11 @@ class UrlExtensionTest {
     fun test_setup_url_payment() {
         val s = "tnt234mm"
         val defaultUrl = s.setupURL(Environment.LIVE.rawValue)
-        assertFalse(defaultUrl.contains(OrchestrationConfig.PAYMENT_URL_ROUTE_ID))
+        assertFalse(defaultUrl.contains(ROUTE_ID_VALUE))
 
         val paymentUrl =
-            s.setupURL(Environment.LIVE.rawValue, OrchestrationConfig.PAYMENT_URL_ROUTE_ID)
-        assertTrue(paymentUrl.contains(OrchestrationConfig.PAYMENT_URL_ROUTE_ID))
+            s.setupURL(Environment.LIVE.rawValue, ROUTE_ID_VALUE)
+        assertTrue(paymentUrl.contains(ROUTE_ID_VALUE))
     }
 
     @Test

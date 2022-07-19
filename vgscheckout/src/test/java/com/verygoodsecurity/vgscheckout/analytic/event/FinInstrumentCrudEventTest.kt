@@ -1,9 +1,9 @@
 package com.verygoodsecurity.vgscheckout.analytic.event
 
-import com.verygoodsecurity.vgscheckout.analytic.event.core.ENVIRONMENT
-import com.verygoodsecurity.vgscheckout.analytic.event.core.FORM_ID
-import com.verygoodsecurity.vgscheckout.analytic.event.core.ID
-import com.verygoodsecurity.vgscheckout.analytic.event.core.ROUTE_ID
+import com.verygoodsecurity.vgscheckout.analytic.event.core.ENVIRONMENT_KEY
+import com.verygoodsecurity.vgscheckout.analytic.event.core.FORM_ID_KEY
+import com.verygoodsecurity.vgscheckout.analytic.event.core.ID_KEY
+import com.verygoodsecurity.vgscheckout.analytic.event.core.ROUTE_ID_KEY
 import org.junit.Assert
 import org.junit.Test
 
@@ -21,7 +21,7 @@ class FinInstrumentCrudEventTest {
             5
         )
         //Act
-        val data = event.getData(ID, ENVIRONMENT, FORM_ID, ROUTE_ID)
+        val data = event.getData(ID_KEY, ENVIRONMENT_KEY, FORM_ID_KEY, ROUTE_ID_KEY)
         //Assert
         Assert.assertEquals("FinInstrument", data["type"])
         Assert.assertEquals("LoadFinInstruments", data["method"])
@@ -45,7 +45,7 @@ class FinInstrumentCrudEventTest {
             5
         )
         //Act
-        val data = event.getData(ID, ENVIRONMENT, FORM_ID, ROUTE_ID)
+        val data = event.getData(ID_KEY, ENVIRONMENT_KEY, FORM_ID_KEY, ROUTE_ID_KEY)
         //Assert
         Assert.assertEquals("FinInstrument", data["type"])
         Assert.assertEquals("LoadFinInstruments", data["method"])
@@ -67,7 +67,7 @@ class FinInstrumentCrudEventTest {
             true
         )
         //Act
-        val data = event.getData(ID, ENVIRONMENT, FORM_ID, ROUTE_ID)
+        val data = event.getData(ID_KEY, ENVIRONMENT_KEY, FORM_ID_KEY, ROUTE_ID_KEY)
         //Assert
         Assert.assertEquals("FinInstrument", data["type"])
         Assert.assertEquals("DeleteFinInstrument", data["method"])
@@ -87,7 +87,7 @@ class FinInstrumentCrudEventTest {
             false
         )
         //Act
-        val data = event.getData(ID, ENVIRONMENT, FORM_ID, ROUTE_ID)
+        val data = event.getData(ID_KEY, ENVIRONMENT_KEY, FORM_ID_KEY, ROUTE_ID_KEY)
         //Assert
         Assert.assertEquals("FinInstrument", data["type"])
         Assert.assertEquals("DeleteFinInstrument", data["method"])
@@ -107,7 +107,7 @@ class FinInstrumentCrudEventTest {
             true
         )
         //Act
-        val data = event.getData(ID, ENVIRONMENT, FORM_ID, ROUTE_ID)
+        val data = event.getData(ID_KEY, ENVIRONMENT_KEY, FORM_ID_KEY, ROUTE_ID_KEY)
         //Assert
         Assert.assertEquals("FinInstrument", data["type"])
         Assert.assertEquals("CreateFinInstrument", data["method"])
@@ -127,7 +127,7 @@ class FinInstrumentCrudEventTest {
             false
         )
         //Act
-        val data = event.getData(ID, ENVIRONMENT, FORM_ID, ROUTE_ID)
+        val data = event.getData(ID_KEY, ENVIRONMENT_KEY, FORM_ID_KEY, ROUTE_ID_KEY)
         //Assert
         Assert.assertEquals("FinInstrument", data["type"])
         Assert.assertEquals("CreateFinInstrument", data["method"])

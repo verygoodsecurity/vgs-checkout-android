@@ -1,9 +1,9 @@
 package com.verygoodsecurity.vgscheckout.analytic.event
 
-import com.verygoodsecurity.vgscheckout.analytic.event.core.ENVIRONMENT
-import com.verygoodsecurity.vgscheckout.analytic.event.core.FORM_ID
-import com.verygoodsecurity.vgscheckout.analytic.event.core.ID
-import com.verygoodsecurity.vgscheckout.analytic.event.core.ROUTE_ID
+import com.verygoodsecurity.vgscheckout.analytic.event.core.ENVIRONMENT_KEY
+import com.verygoodsecurity.vgscheckout.analytic.event.core.FORM_ID_KEY
+import com.verygoodsecurity.vgscheckout.analytic.event.core.ID_KEY
+import com.verygoodsecurity.vgscheckout.analytic.event.core.ROUTE_ID_KEY
 import org.junit.Assert
 import org.junit.Test
 
@@ -14,7 +14,7 @@ class HostnameValidationEventTest {
         // Arrange
         val event = HostnameValidationEvent(true, "test")
         // Act
-        val data = event.getData(ID, ENVIRONMENT, FORM_ID, ROUTE_ID)
+        val data = event.getData(ID_KEY, ENVIRONMENT_KEY, FORM_ID_KEY, ROUTE_ID_KEY)
         // Assert
         Assert.assertEquals("HostNameValidation", data["type"])
         Assert.assertEquals("test", data["hostname"])
@@ -26,7 +26,7 @@ class HostnameValidationEventTest {
         // Arrange
         val event = HostnameValidationEvent(false, "test")
         // Act
-        val data = event.getData(ID, ENVIRONMENT, FORM_ID, ROUTE_ID)
+        val data = event.getData(ID_KEY, ENVIRONMENT_KEY, FORM_ID_KEY, ROUTE_ID_KEY)
         // Assert
         Assert.assertEquals("HostNameValidation", data["type"])
         Assert.assertEquals("test", data["hostname"])

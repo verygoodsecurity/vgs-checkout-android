@@ -8,10 +8,10 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillin
 import org.junit.Assert.*
 import org.junit.Test
 
-const val ID = "test_vault_id"
-const val FORM_ID = "test_form_id"
-const val ROUTE_ID = "test_route_id"
-const val ENVIRONMENT = "test_env"
+const val ID_KEY = "test_vault_id"
+const val FORM_ID_KEY = "test_form_id"
+const val ROUTE_ID_KEY = "test_route_id"
+const val ENVIRONMENT_KEY = "test_env"
 
 private const val TEST_TYPE = "Test"
 
@@ -25,13 +25,13 @@ class EventsTest {
             override val attributes: Map<String, Any> = emptyMap()
         }
         // Act
-        val data = event.getData(ID, ENVIRONMENT, FORM_ID, ROUTE_ID)
+        val data = event.getData(ID_KEY, ENVIRONMENT_KEY, FORM_ID_KEY, ROUTE_ID_KEY)
         // Assert
         assertEquals(TEST_TYPE, data["type"])
-        assertEquals(ID, data["tnt"])
-        assertEquals(FORM_ID, data["formId"])
-        assertEquals(ROUTE_ID, data["routeId"])
-        assertEquals(ENVIRONMENT, data["env"])
+        assertEquals(ID_KEY, data["tnt"])
+        assertEquals(FORM_ID_KEY, data["formId"])
+        assertEquals(ROUTE_ID_KEY, data["routeId"])
+        assertEquals(ENVIRONMENT_KEY, data["env"])
         assertNotNull(data["status"])
         assertNotNull(data["type"])
         assertNotNull(data["localTimestamp"])
@@ -53,7 +53,7 @@ class EventsTest {
             override val attributes: Map<String, Any> = emptyMap()
         }
         // Act
-        val data = event.getData(ID, ENVIRONMENT, FORM_ID, ROUTE_ID)
+        val data = event.getData(ID_KEY, ENVIRONMENT_KEY, FORM_ID_KEY, ROUTE_ID_KEY)
         // Assert
         assertEquals("Ok", data["status"])
     }
@@ -66,7 +66,7 @@ class EventsTest {
             override val attributes: Map<String, Any> = mapOf("status" to "Test_failed")
         }
         // Act
-        val data = event.getData(ID, ENVIRONMENT, FORM_ID, ROUTE_ID)
+        val data = event.getData(ID_KEY, ENVIRONMENT_KEY, FORM_ID_KEY, ROUTE_ID_KEY)
         // Assert
         assertEquals("Test_failed", data["status"])
     }
@@ -79,7 +79,7 @@ class EventsTest {
             override val attributes: Map<String, Any> = mapOf("test_key" to "test_value")
         }
         // Act
-        val data = event.getData(ID, ENVIRONMENT, FORM_ID, ROUTE_ID)
+        val data = event.getData(ID_KEY, ENVIRONMENT_KEY, FORM_ID_KEY, ROUTE_ID_KEY)
         // Assert
         assertEquals("test_value", data["test_key"])
     }
@@ -87,7 +87,7 @@ class EventsTest {
     @Test
     fun getData_customHostnameAddedToContent() {
         // Arrange
-        val config = VGSCheckoutCustomConfig.Builder(ID)
+        val config = VGSCheckoutCustomConfig.Builder(ID_KEY)
             .setHostnamePolicy(VGSCheckoutHostnamePolicy.CustomHostname(""))
             .build()
         val event = object : Event(TEST_TYPE, config) {
@@ -95,7 +95,7 @@ class EventsTest {
             override val attributes: Map<String, Any> = emptyMap()
         }
         // Act
-        val data = event.getData(ID, ENVIRONMENT, FORM_ID, ROUTE_ID)
+        val data = event.getData(ID_KEY, ENVIRONMENT_KEY, FORM_ID_KEY, ROUTE_ID_KEY)
         val content = data["content"] as List<*>
         // Assert
         assertTrue(content.contains("custom_hostname"))
@@ -104,7 +104,7 @@ class EventsTest {
     @Test
     fun getData_customDataAddedToContent() {
         // Arrange
-        val config = VGSCheckoutCustomConfig.Builder(ID)
+        val config = VGSCheckoutCustomConfig.Builder(ID_KEY)
             .setHostnamePolicy(VGSCheckoutHostnamePolicy.CustomHostname(""))
             .setPayload(mapOf("test" to "test"))
             .build()
@@ -114,7 +114,7 @@ class EventsTest {
             override val attributes: Map<String, Any> = emptyMap()
         }
         // Act
-        val data = event.getData(ID, ENVIRONMENT, FORM_ID, ROUTE_ID)
+        val data = event.getData(ID_KEY, ENVIRONMENT_KEY, FORM_ID_KEY, ROUTE_ID_KEY)
         val content = data["content"] as List<*>
         // Assert
         assertTrue(content.contains("custom_data"))
@@ -123,7 +123,7 @@ class EventsTest {
     @Test
     fun getData_customHeaderAddedToContent() {
         // Arrange
-        val config = VGSCheckoutCustomConfig.Builder(ID)
+        val config = VGSCheckoutCustomConfig.Builder(ID_KEY)
             .setHostnamePolicy(VGSCheckoutHostnamePolicy.CustomHostname(""))
             .setHeaders(mapOf("test" to "test"))
             .build()
@@ -133,7 +133,7 @@ class EventsTest {
             override val attributes: Map<String, Any> = emptyMap()
         }
         // Act
-        val data = event.getData(ID, ENVIRONMENT, FORM_ID, ROUTE_ID)
+        val data = event.getData(ID_KEY, ENVIRONMENT_KEY, FORM_ID_KEY, ROUTE_ID_KEY)
         val content = data["content"] as List<*>
         // Assert
         assertTrue(content.contains("custom_header"))
@@ -142,7 +142,7 @@ class EventsTest {
     @Test
     fun getData_validCountriesAddedToContent() {
         // Arrange
-        val config = VGSCheckoutCustomConfig.Builder(ID)
+        val config = VGSCheckoutCustomConfig.Builder(ID_KEY)
             .setCountryOptions(fieldName = "", validCountries = listOf("Test"))
             .build()
 
@@ -151,7 +151,7 @@ class EventsTest {
             override val attributes: Map<String, Any> = emptyMap()
         }
         // Act
-        val data = event.getData(ID, ENVIRONMENT, FORM_ID, ROUTE_ID)
+        val data = event.getData(ID_KEY, ENVIRONMENT_KEY, FORM_ID_KEY, ROUTE_ID_KEY)
         val content = data["content"] as List<*>
         // Assert
         assertTrue(content.contains("valid_countries"))
@@ -160,7 +160,7 @@ class EventsTest {
     @Test
     fun getData_onSubmitValidationAddedToContent() {
         // Arrange
-        val config = VGSCheckoutCustomConfig.Builder(ID)
+        val config = VGSCheckoutCustomConfig.Builder(ID_KEY)
             .setFormValidationBehaviour(VGSCheckoutFormValidationBehaviour.ON_SUBMIT)
             .build()
 
@@ -169,7 +169,7 @@ class EventsTest {
             override val attributes: Map<String, Any> = emptyMap()
         }
         // Act
-        val data = event.getData(ID, ENVIRONMENT, FORM_ID, ROUTE_ID)
+        val data = event.getData(ID_KEY, ENVIRONMENT_KEY, FORM_ID_KEY, ROUTE_ID_KEY)
         val content = data["content"] as List<*>
         // Assert
         assertTrue(content.contains("on_submit_validation"))
@@ -178,7 +178,7 @@ class EventsTest {
     @Test
     fun getData_onFocusValidationAddedToContent() {
         // Arrange
-        val config = VGSCheckoutCustomConfig.Builder(ID)
+        val config = VGSCheckoutCustomConfig.Builder(ID_KEY)
             .setFormValidationBehaviour(VGSCheckoutFormValidationBehaviour.ON_FOCUS)
             .build()
         val event = object : Event(TEST_TYPE, config) {
@@ -186,7 +186,7 @@ class EventsTest {
             override val attributes: Map<String, Any> = emptyMap()
         }
         // Act
-        val data = event.getData(ID, ENVIRONMENT, FORM_ID, ROUTE_ID)
+        val data = event.getData(ID_KEY, ENVIRONMENT_KEY, FORM_ID_KEY, ROUTE_ID_KEY)
         val content = data["content"] as List<*>
         // Assert
         assertTrue(content.contains("on_focus_validation"))
@@ -195,7 +195,7 @@ class EventsTest {
     @Test
     fun getData_billingAddressVisibleAddedToContent() {
         // Arrange
-        val config = VGSCheckoutCustomConfig.Builder(ID)
+        val config = VGSCheckoutCustomConfig.Builder(ID_KEY)
             .setBillingAddressVisibility(VGSCheckoutBillingAddressVisibility.VISIBLE)
             .build()
         val event = object : Event(TEST_TYPE, config) {
@@ -203,7 +203,7 @@ class EventsTest {
             override val attributes: Map<String, Any> = emptyMap()
         }
         // Act
-        val data = event.getData(ID, ENVIRONMENT, FORM_ID, ROUTE_ID)
+        val data = event.getData(ID_KEY, ENVIRONMENT_KEY, FORM_ID_KEY, ROUTE_ID_KEY)
         val content = data["content"] as List<*>
         // Assert
         assertTrue(content.contains("billing_address_visible"))
@@ -212,7 +212,7 @@ class EventsTest {
     @Test
     fun getData_billingAddressHiddenAddedToContent() {
         // Arrange
-        val config = VGSCheckoutCustomConfig.Builder(ID)
+        val config = VGSCheckoutCustomConfig.Builder(ID_KEY)
             .setBillingAddressVisibility(VGSCheckoutBillingAddressVisibility.HIDDEN)
             .build()
 
@@ -221,7 +221,7 @@ class EventsTest {
             override val attributes: Map<String, Any> = emptyMap()
         }
         // Act
-        val data = event.getData(ID, ENVIRONMENT, FORM_ID, ROUTE_ID)
+        val data = event.getData(ID_KEY, ENVIRONMENT_KEY, FORM_ID_KEY, ROUTE_ID_KEY)
         val content = data["content"] as List<*>
         // Assert
         assertTrue(content.contains("billing_address_hidden"))
@@ -230,7 +230,7 @@ class EventsTest {
     @Test
     fun getData_saveCardCheckboxToContent() {
         // Arrange
-        val config = VGSCheckoutAddCardConfig.Builder(ID)
+        val config = VGSCheckoutAddCardConfig.Builder(ID_KEY)
             .setAccessToken("")
             .setIsSaveCardOptionVisible(true)
             .build()
@@ -240,7 +240,7 @@ class EventsTest {
             override val attributes: Map<String, Any> = emptyMap()
         }
         // Act
-        val data = event.getData(ID, ENVIRONMENT, FORM_ID, ROUTE_ID)
+        val data = event.getData(ID_KEY, ENVIRONMENT_KEY, FORM_ID_KEY, ROUTE_ID_KEY)
         val content = data["content"] as List<*>
         // Assert
         assertTrue(content.contains("save_card_checkbox"))

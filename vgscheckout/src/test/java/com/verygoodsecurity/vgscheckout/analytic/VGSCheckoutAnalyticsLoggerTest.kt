@@ -1,10 +1,10 @@
 package com.verygoodsecurity.vgscheckout.analytic
 
 import com.verygoodsecurity.vgscheckout.analytic.event.InitEvent
-import com.verygoodsecurity.vgscheckout.analytic.event.core.ENVIRONMENT
-import com.verygoodsecurity.vgscheckout.analytic.event.core.FORM_ID
-import com.verygoodsecurity.vgscheckout.analytic.event.core.ID
-import com.verygoodsecurity.vgscheckout.analytic.event.core.ROUTE_ID
+import com.verygoodsecurity.vgscheckout.analytic.event.core.ENVIRONMENT_KEY
+import com.verygoodsecurity.vgscheckout.analytic.event.core.FORM_ID_KEY
+import com.verygoodsecurity.vgscheckout.analytic.event.core.ID_KEY
+import com.verygoodsecurity.vgscheckout.analytic.event.core.ROUTE_ID_KEY
 import com.verygoodsecurity.vgscheckout.capture
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
 import com.verygoodsecurity.vgscheckout.networking.client.HttpClient
@@ -19,12 +19,12 @@ class VGSCheckoutAnalyticsLoggerTest {
 
     private val mockHttpClient: HttpClient = Mockito.mock(OkHttpClient::class.java)
     private val callback: (HttpResponse) -> Unit = {}
-    private var tracker = DefaultAnalyticsTracker(ID, ENVIRONMENT, FORM_ID, ROUTE_ID, mockHttpClient)
+    private var tracker = DefaultAnalyticsTracker(ID_KEY, ENVIRONMENT_KEY, FORM_ID_KEY, ROUTE_ID_KEY, mockHttpClient)
 
     @Test
     fun log_analyticsEnabled_apiClientCalled() {
         // Arrange
-        val config = VGSCheckoutCustomConfig.Builder(ID).build()
+        val config = VGSCheckoutCustomConfig.Builder(ID_KEY).build()
         val event = InitEvent(InitEvent.ConfigType.CUSTOM, config)
         val httpRequestCaptor: ArgumentCaptor<HttpRequest> =
             ArgumentCaptor.forClass(HttpRequest::class.java)
@@ -44,7 +44,7 @@ class VGSCheckoutAnalyticsLoggerTest {
         // Arrange
         VGSCheckoutAnalyticsLogger.isAnalyticsEnabled = false
 
-        val config = VGSCheckoutCustomConfig.Builder(ID).build()
+        val config = VGSCheckoutCustomConfig.Builder(ID_KEY).build()
         val event = InitEvent(InitEvent.ConfigType.CUSTOM, config)
         val httpRequestCaptor: ArgumentCaptor<HttpRequest> =
             ArgumentCaptor.forClass(HttpRequest::class.java)

@@ -22,7 +22,7 @@ import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
 
 abstract class OrchestrationConfig internal constructor(
     internal open val accessToken: String,
-    override val routeId: String = PAYMENT_URL_ROUTE_ID,
+    override val routeId: String = ORCHESTRATION_URL_ROUTE_ID,
     override val id: String,
     override val environment: VGSCheckoutEnvironment,
     override val routeConfig: VGSCheckoutRouteConfig,
@@ -52,7 +52,7 @@ abstract class OrchestrationConfig internal constructor(
     }
 
     companion object {
-        internal const val PAYMENT_URL_ROUTE_ID = "4880868f-d88b-4333-ab70-d9deecdbffc4"
+        internal const val ORCHESTRATION_URL_ROUTE_ID = "4880868f-d88b-4333-ab70-d9deecdbffc4"
 
         private const val CARD_NUMBER_FIELD_NAME = "card.number"
         private const val CARD_HOLDER_FIELD_NAME = "card.name"
