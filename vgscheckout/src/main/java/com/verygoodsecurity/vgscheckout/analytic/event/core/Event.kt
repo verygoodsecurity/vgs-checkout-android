@@ -35,11 +35,12 @@ internal abstract class Event constructor(type: String, config: CheckoutConfig? 
     }
         get() = field + attributes
 
-    fun getData(id: String, formId: String, environment: String): Map<String, Any> {
+    fun getData(id: String, environment: String, formId: String, routeId: String): Map<String, Any> {
         return data.apply {
             put(KEY_ID, id)
-            put(KEY_FORM_ID, formId)
             put(KEY_ENVIRONMENT, environment)
+            put(KEY_FORM_ID, formId)
+            put(KEY_ROUTE_ID, routeId)
         }
     }
 
@@ -105,6 +106,7 @@ internal abstract class Event constructor(type: String, config: CheckoutConfig? 
         private const val KEY_OS = "osVersion"
         private const val KEY_ID = "tnt"
         private const val KEY_FORM_ID = "formId"
+        private const val KEY_ROUTE_ID = "routeId"
         private const val KEY_ENVIRONMENT = "env"
         private const val KEY_CONTENT = "content"
 

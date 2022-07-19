@@ -15,13 +15,15 @@ internal class DefaultAnalyticsTracker @VisibleForTesting(otherwise = VisibleFor
     private val id: String,
     private val environment: String,
     private val formId: String,
+    private val routeId: String,
     private val client: HttpClient
 ) : AnalyticTracker {
 
-    constructor(id: String, environment: String, formId: String) : this(
+    constructor(id: String, environment: String, formId: String, routeId: String) : this(
         id,
         environment,
         formId,
+        routeId,
         HttpClient.create(false, getExecutor())
     )
 
@@ -29,7 +31,7 @@ internal class DefaultAnalyticsTracker @VisibleForTesting(otherwise = VisibleFor
         if (VGSCheckoutAnalyticsLogger.isAnalyticsEnabled.not()) {
             return
         }
-        val payload = event.getData(id, formId, environment).toJSON().toString().toBase64()
+        val payload = event.getData(id, environment, formId, routeId).toJSON().toString().toBase64()
         client.enqueue(
             HttpRequest(
                 url = API_URL,
