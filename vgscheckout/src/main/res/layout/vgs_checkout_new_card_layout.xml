@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.textview.MaterialTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tvPayWithNewCard"
+    style="@style/VGSCheckout.PayWithNewCardTitle"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/vgs_checkout_payment_methods_item_background"
+    android:clickable="true"
+    android:focusable="true"
+    android:text="@string/vgs_checkout_pay_with_new_card" />

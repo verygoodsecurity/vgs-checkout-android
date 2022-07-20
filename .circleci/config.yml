@@ -6,7 +6,11 @@ aliases:
     docker:
       - image: cimg/android:2021.10.2
     environment:
-      JVM_OPTS: -Xmx8g
+      GRADLE_OPTS: '
+        -Dorg.gradle.jvmargs="-Xmx3g -XX:+HeapDumpOnOutOfMemoryError -XX:MaxPermSize=512m"
+        -Dorg.gradle.daemon=false
+        -Dorg.gradle.workers.max=3
+        -Dkotlin.incremental=false'
 
 jobs:
   "Run_Unit_Test_And_Build":
@@ -20,8 +24,9 @@ jobs:
             echo "JWT_TOKEN_WITHOUT_TRANSFERS=$JWT_TOKEN_WITHOUT_TRANSFERS" >> local.properties
             echo "JWT_TOKEN_WITH_TRANSFERS_WRITE=$JWT_TOKEN_WITH_TRANSFERS_WRITE" >> local.properties
             echo "JWT_TOKEN_WITH_TRANSFERS_ANY=$JWT_TOKEN_WITH_TRANSFERS_ANY" >> local.properties
+            echo "AUTHENTICATION_HOST=AUTHENTICATION_HOST" >> local.properties
       - restore_cache:
-          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "add-cards-example/build.gradle" }}
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "demo/build.gradle" }}
       - run:
           name: Download Dependencies
           command: |
@@ -30,7 +35,7 @@ jobs:
       - save_cache:
           paths:
             - ~/.gradle
-          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "add-cards-example/build.gradle" }}
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "demo/build.gradle" }}
       - run:
           name: Run Lint
           command: ./gradlew vgscheckout:lintDebug
@@ -39,7 +44,7 @@ jobs:
           command: ./gradlew vgscheckout:testDebugUnitTest
       - run:
           name: Generate apk
-          command: ./gradlew add-cards-example:assembleDebug vgscheckout:assembleDebug vgscheckout:assembleAndroidTest
+          command: ./gradlew demo:assembleDebug vgscheckout:assembleDebug vgscheckout:assembleAndroidTest
       - run:
           name: Check if release branch
           command: |
@@ -59,7 +64,7 @@ jobs:
           name: Test with Firebase Test Lab
           command: >
             sudo gcloud firebase test android run \
-              --app add-cards-example/build/outputs/apk/debug/add-cards-example-debug.apk \
+              --app demo/build/outputs/apk/debug/demo-debug.apk \
               --test vgscheckout/build/outputs/apk/androidTest/debug/vgscheckout-debug-androidTest.apk \
               --device model=redfin,version=30,locale=en,orientation=portrait \
 workflows:

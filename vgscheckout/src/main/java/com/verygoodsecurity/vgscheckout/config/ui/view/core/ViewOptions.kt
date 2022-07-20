@@ -12,4 +12,12 @@ abstract class ViewOptions : Parcelable {
      * in JSON path in your inbound route filters.
      */
     abstract val fieldName: String
+
+    /**
+     * Defines if input field should be visible to user. If input field is invisible then it will not
+     * be added to payload.
+     */
+    abstract val visibility: VGSCheckoutFieldVisibility
+
+    fun isVisible() = visibility == VGSCheckoutFieldVisibility.VISIBLE
 }

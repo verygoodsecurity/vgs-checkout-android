@@ -2,6 +2,7 @@ package com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.model
 
 import android.os.Parcelable
 import androidx.annotation.DrawableRes
+import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgscheckout.collect.view.card.CardType
 import com.verygoodsecurity.vgscheckout.util.extension.toCheckoutChecksumAlgorithm
 import kotlinx.parcelize.Parcelize
@@ -64,6 +65,18 @@ internal sealed class VGSCheckoutCardBrand : Parcelable {
             Unionpay(),
             JCB()
         )
+
+        @DrawableRes
+        fun getBrandIcon(brand: String): Int {
+            return BRANDS.find { normalizedBrandName(it.name) == normalizedBrandName(brand) }?.icon
+                ?: CardType.UNKNOWN.resId
+        }
+
+        @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+        internal fun normalizedBrandName(brand: String) = when (brand) {
+            "AmEx" -> "americanexpress"
+            else -> brand.replace("((?![a-zA-Z0-9]).)".toRegex(), "").lowercase()
+        }
     }
 
     @Parcelize

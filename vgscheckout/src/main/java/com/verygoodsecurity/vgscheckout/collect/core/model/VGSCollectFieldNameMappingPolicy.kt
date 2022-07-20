@@ -1,9 +1,11 @@
 package com.verygoodsecurity.vgscheckout.collect.core.model
 
+import com.verygoodsecurity.vgscheckout.collect.util.extension.ArrayMergePolicy
+
 /**
  * Defines fieldName mapping policy.
  */
-internal enum class VGSCollectFieldNameMappingPolicy constructor(internal val analyticsName: String) {
+internal enum class VGSCollectFieldNameMappingPolicy constructor(@Suppress("unused") internal val analyticsName: String) {
 
     /**
      * Map fieldName to JSON. A value uses in JSON without any changes before submitting.
@@ -31,5 +33,19 @@ internal enum class VGSCollectFieldNameMappingPolicy constructor(internal val an
      * Map fieldName to JSON with arrays if index is specified. Completely overwrite extra data
      * array with collect array data.
      */
-    NESTED_JSON_WITH_ARRAYS_OVERWRITE("nested_json_array_overwrite")
+    NESTED_JSON_WITH_ARRAYS_OVERWRITE("nested_json_array_overwrite");
+
+    fun isArraysAllowed() = when (this) {
+        FLAT_JSON -> false
+        NESTED_JSON -> false
+        NESTED_JSON_WITH_ARRAYS_MERGE -> true
+        NESTED_JSON_WITH_ARRAYS_OVERWRITE -> true
+    }
+
+    fun getMergeArraysPolicy() = when (this) {
+        FLAT_JSON -> ArrayMergePolicy.OVERWRITE
+        NESTED_JSON -> ArrayMergePolicy.OVERWRITE
+        NESTED_JSON_WITH_ARRAYS_MERGE -> ArrayMergePolicy.MERGE
+        NESTED_JSON_WITH_ARRAYS_OVERWRITE -> ArrayMergePolicy.OVERWRITE
+    }
 }

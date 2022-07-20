@@ -14,12 +14,9 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.verygoodsecurity.vgscheckout.BuildConfig
 import com.verygoodsecurity.vgscheckout.R
-import com.verygoodsecurity.vgscheckout.collect.widget.VGSCountryEditText
+import com.verygoodsecurity.vgscheckout.collect.view.internal.CountryInputField
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
-import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutCustomFormConfig
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillingAddressVisibility
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutCustomBillingAddressOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.country.VGSCheckoutCustomCountryOptions
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_ARGS
 import com.verygoodsecurity.vgscheckout.ui.CustomSaveCardActivity
@@ -39,18 +36,12 @@ class AddressDialogTest {
     private val context: Context = ApplicationProvider.getApplicationContext()
 
     private val defaultIntent = Intent(context, CustomSaveCardActivity::class.java).apply {
+        val config = VGSCheckoutCustomConfig.Builder(BuildConfig.VAULT_ID)
+            .setBillingAddressVisibility(VGSCheckoutBillingAddressVisibility.VISIBLE)
+            .build()
         putExtra(
             EXTRA_KEY_ARGS,
-            CheckoutResultContract.Args(
-                VGSCheckoutCustomConfig(
-                    BuildConfig.VAULT_ID,
-                    formConfig = VGSCheckoutCustomFormConfig(
-                        addressOptions = VGSCheckoutCustomBillingAddressOptions(
-                            visibility = VGSCheckoutBillingAddressVisibility.VISIBLE
-                        )
-                    )
-                )
-            )
+            CheckoutResultContract.Args(config)
         )
     }
 
@@ -112,7 +103,7 @@ class AddressDialogTest {
         launch<CustomSaveCardActivity>(intent).use {
             // Act
             var countries: List<Country>? = null
-            onView(withId(R.id.vgsEtCountry)).perform(ActionHelper.doAction<VGSCountryEditText> {
+            onView(withId(R.id.vgsEtCountry)).perform(ActionHelper.doAction<CountryInputField> {
                 countries = it.getCountries()
             })
             //Assert
@@ -129,7 +120,7 @@ class AddressDialogTest {
         launch<CustomSaveCardActivity>(intent).use {
             // Act
             var countries: List<Country>? = null
-            onView(withId(R.id.vgsEtCountry)).perform(ActionHelper.doAction<VGSCountryEditText> {
+            onView(withId(R.id.vgsEtCountry)).perform(ActionHelper.doAction<CountryInputField> {
                 countries = it.getCountries()
             })
             //Assert
@@ -146,7 +137,7 @@ class AddressDialogTest {
         launch<CustomSaveCardActivity>(intent).use {
             // Act
             var countries: List<Country>? = null
-            onView(withId(R.id.vgsEtCountry)).perform(ActionHelper.doAction<VGSCountryEditText> {
+            onView(withId(R.id.vgsEtCountry)).perform(ActionHelper.doAction<CountryInputField> {
                 countries = it.getCountries()
             })
             //Assert
@@ -163,7 +154,7 @@ class AddressDialogTest {
         launch<CustomSaveCardActivity>(intent).use {
             // Act
             var countries: List<Country>? = null
-            onView(withId(R.id.vgsEtCountry)).perform(ActionHelper.doAction<VGSCountryEditText> {
+            onView(withId(R.id.vgsEtCountry)).perform(ActionHelper.doAction<CountryInputField> {
                 countries = it.getCountries()
             })
             //Assert
@@ -173,21 +164,13 @@ class AddressDialogTest {
 
     private fun getLimitCountriesIntent(countries: List<String>): Intent =
         Intent(context, CustomSaveCardActivity::class.java).apply {
+            val config = VGSCheckoutCustomConfig.Builder(BuildConfig.VAULT_ID)
+                .setBillingAddressVisibility(VGSCheckoutBillingAddressVisibility.VISIBLE)
+                .setCountryOptions("", validCountries = countries)
+                .build()
             putExtra(
                 EXTRA_KEY_ARGS,
-                CheckoutResultContract.Args(
-                    VGSCheckoutCustomConfig(
-                        BuildConfig.VAULT_ID,
-                        formConfig = VGSCheckoutCustomFormConfig(
-                            addressOptions = VGSCheckoutCustomBillingAddressOptions(
-                                countryOptions = VGSCheckoutCustomCountryOptions(
-                                    validCountries = countries
-                                ),
-                                visibility = VGSCheckoutBillingAddressVisibility.VISIBLE
-                            )
-                        )
-                    )
-                )
+                CheckoutResultContract.Args(config)
             )
         }
 }

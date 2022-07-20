@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/mbStartCustom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/margin_padding_size_medium"
+        android:text="@string/present_custom_checkout_btn_title"
+        android:textAllCaps="false"
+        android:textSize="@dimen/text_size_medium" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/mbStartAddCard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/margin_padding_size_medium"
+        android:text="@string/present_add_card_checkout_btn_title"
+        android:textAllCaps="false"
+        android:textSize="@dimen/text_size_medium" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/mbStartPayment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_gravity="center"
+        android:text="@string/present_payment_checkout_btn_title"
+        android:textAllCaps="false"
+        android:textSize="@dimen/text_size_medium" />
+</androidx.appcompat.widget.LinearLayoutCompat>

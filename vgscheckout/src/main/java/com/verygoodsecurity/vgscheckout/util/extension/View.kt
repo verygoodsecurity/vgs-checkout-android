@@ -10,7 +10,7 @@ import androidx.core.content.ContextCompat
 internal fun ViewGroup.setEnabled(
     enabled: Boolean,
     recursively: Boolean,
-    vararg excluded: View = arrayOf()
+    vararg excluded: View? = arrayOf()
 ) {
     isEnabled = enabled
     if (recursively) {

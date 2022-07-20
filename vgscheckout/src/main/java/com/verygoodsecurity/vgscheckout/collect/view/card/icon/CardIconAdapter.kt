@@ -8,7 +8,7 @@ import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.view.card.CardType
 
 /**
- * You can use this class to create custom Drawables as a preview image for the [VGSCardNumberEditText].
+ * You can use this class to create custom Drawables as a preview image for the [com.verygoodsecurity.vgscheckout.collect.view.internal.CardInputField].
  */
 internal open class CardIconAdapter(
     private val context: Context
@@ -53,7 +53,7 @@ internal open class CardIconAdapter(
     }
 
     /**
-     * Returns prepared Drawable to display in [VGSCardNumberEditText]
+     * Returns prepared Drawable to display in [com.verygoodsecurity.vgscheckout.collect.view.internal.CardInputField]
      * This method trigger when field detect new cardBrand.
      *
      * @param cardType detected card brand type

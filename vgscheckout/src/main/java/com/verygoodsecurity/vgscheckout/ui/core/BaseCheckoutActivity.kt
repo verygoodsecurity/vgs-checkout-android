@@ -6,64 +6,50 @@ import android.os.Bundle
 import androidx.annotation.CallSuper
 import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentOnAttachListener
-import com.google.android.material.snackbar.Snackbar
 import com.verygoodsecurity.vgscheckout.R
-import com.verygoodsecurity.vgscheckout.collect.core.VGSCollect
-import com.verygoodsecurity.vgscheckout.collect.core.VgsCollectResponseListener
-import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.CancelEvent
-import com.verygoodsecurity.vgscheckout.collect.core.api.analityc.event.RequestEvent
-import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSError
-import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSRequest
-import com.verygoodsecurity.vgscheckout.collect.core.model.network.VGSResponse
-import com.verygoodsecurity.vgscheckout.collect.view.InputFieldView
-import com.verygoodsecurity.vgscheckout.collect.widget.*
-import com.verygoodsecurity.vgscheckout.config.VGSCheckoutPaymentConfig
+import com.verygoodsecurity.vgscheckout.analytic.event.PaymentMethodSelectedEvent
+import com.verygoodsecurity.vgscheckout.analytic.event.CancelEvent
+import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
+import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
-import com.verygoodsecurity.vgscheckout.config.networking.core.VGSCheckoutHostnamePolicy
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResultBundle
-import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutAddCardResponse
-import com.verygoodsecurity.vgscheckout.ui.fragment.core.LoadingHandler
-import com.verygoodsecurity.vgscheckout.ui.fragment.save.core.BaseSaveCardFragment
-import com.verygoodsecurity.vgscheckout.ui.fragment.save.core.BaseSaveCardFragment.Companion.TAG
-import com.verygoodsecurity.vgscheckout.util.CollectProvider
-import com.verygoodsecurity.vgscheckout.util.extension.*
+import com.verygoodsecurity.vgscheckout.ui.fragment.core.BaseFragment
+import com.verygoodsecurity.vgscheckout.ui.fragment.method.SelectPaymentMethodFragment
+import com.verygoodsecurity.vgscheckout.ui.fragment.save.SaveCardFragment
+import com.verygoodsecurity.vgscheckout.util.extension.setScreenshotsAllowed
+import com.verygoodsecurity.vgscheckout.util.extension.toCheckoutResult
 
 internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActivity(),
-    FragmentOnAttachListener, InputViewBinder, ValidationResultListener,
-    VgsCollectResponseListener {
+    NavigationHandler, ToolbarHandler, ResultHandler {
 
-    protected val config: C by lazy { resolveConfig(intent) }
+    protected val config: C by lazy { CheckoutResultContract.Args.fromIntent<C>(intent).config }
 
-    protected val collect: VGSCollect by lazy {
-        CollectProvider().get(this, config).apply {
-            addOnResponseListeners(this@BaseCheckoutActivity)
-        }
-    }
-
-    protected lateinit var loadingHandler: LoadingHandler
-
-    protected val resultBundle = VGSCheckoutResultBundle()
-
-    abstract fun resolveConfig(intent: Intent): C
-
-    abstract fun hasCustomHeaders(): Boolean
+    private var resultBundle = VGSCheckoutResultBundle()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setScreenshotsAllowed(config.isScreenshotsAllowed)
         setContentView(R.layout.vgs_checkout_activity)
-        supportFragmentManager.addFragmentOnAttachListener(this)
         initView(savedInstanceState)
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putParcelable(KEY_RESULT_BUNDLE, resultBundle)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        savedInstanceState.getParcelable<VGSCheckoutResultBundle>(KEY_RESULT_BUNDLE)?.let {
+            resultBundle = it
+        }
+    }
+
     override fun onBackPressed() {
-        config.analyticTracker.log(CancelEvent)
-        setResult(Activity.RESULT_CANCELED)
+        config.analyticTracker.log(CancelEvent())
+        setResult(Activity.RESULT_CANCELED, VGSCheckoutResult.Canceled(resultBundle))
         super.onBackPressed()
     }
 
@@ -72,135 +58,55 @@ internal abstract class BaseCheckoutActivity<C : CheckoutConfig> : AppCompatActi
         return true
     }
 
-    override fun onAttachFragment(fragmentManager: FragmentManager, fragment: Fragment) {
-        loadingHandler = fragment as LoadingHandler
-        updateToolbarTitle(fragment)
+    override fun setTitle(title: String) {
+        supportActionBar?.title = title
     }
 
-    override fun bind(vararg view: InputFieldView) {
-        collect.bindView(*view)
-    }
+    override fun getResultBundle(): VGSCheckoutResultBundle = resultBundle
 
-    override fun unbind(vararg view: InputFieldView) {
-        collect.unbindView(*view)
-    }
-
-    override fun onFailed(invalidFieldsAnalyticsNames: List<String>) {
-        sendRequestEvent(invalidFieldsAnalyticsNames)
-    }
-
-    override fun onSuccess(shouldSaveCard: Boolean?) {
-        shouldSaveCard?.let { resultBundle.putShouldSaveCard(it) }
-        saveCard()
-    }
-
-    override fun onResponse(response: VGSResponse) {
-        if (isNetworkConnectionError(response)) {
-            loadingHandler.setIsLoading(false)
-            showNetworkConnectionErrorSnackBar()
-            return
-        }
-        val addCardResponse = response.toAddCardResponse()
-        resultBundle.putAddCardResponse(addCardResponse)
-        if (addCardResponse.isSuccessful) {
-            handleSuccessfulAddCardResponse(addCardResponse)
-        } else {
-            sendResult(VGSCheckoutResult.Failed(resultBundle))
-        }
-    }
-
-    protected open fun handleSuccessfulAddCardResponse(response: VGSCheckoutAddCardResponse) {
-        sendResult(VGSCheckoutResult.Success(resultBundle))
-    }
-
-    protected fun sendResult(response: VGSCheckoutResult) {
-        val resultBundle = CheckoutResultContract.Result(response).toBundle()
-        setResult(Activity.RESULT_OK, Intent().putExtras(resultBundle))
+    override fun setResult(isSuccessful: Boolean) {
+        logPaymentMethodSelected()
+        setResult(Activity.RESULT_OK, resultBundle.toCheckoutResult(isSuccessful))
         finish()
     }
-
-    protected open fun getButtonTitle() = getString(R.string.vgs_checkout_button_save_card_title)
 
     @CallSuper
     protected open fun initView(savedInstanceState: Bundle?) {
         initToolbar()
         if (savedInstanceState == null) {
-            showSaveCardFragment()
-        } else {
-            loadingHandler = supportFragmentManager.findFragmentByTag(TAG) as LoadingHandler
+            initFragment()
         }
+    }
+
+    protected open fun initFragment() {
+        navigateToSaveCard()
     }
 
     private fun initToolbar() {
         setSupportActionBar(findViewById(R.id.mtToolbar))
-        updateToolbarTitle(supportFragmentManager.findFragmentByTag(TAG))
     }
 
-    private fun updateToolbarTitle(fragment: Fragment?) {
-        supportActionBar?.title = getString(
-            if (config is VGSCheckoutPaymentConfig) {
-                if (fragment is BaseSaveCardFragment) {
-                    R.string.vgs_checkout_new_card_title
-                } else {
-                    R.string.vgs_checkout_title
-                }
-            } else {
-                R.string.vgs_checkout_add_card_title
-            }
-        )
-    }
-
-    private fun showSaveCardFragment() {
-        val fragment = BaseSaveCardFragment.create(config.formConfig, getButtonTitle())
-        supportFragmentManager.beginTransaction()
-            .add(R.id.fcvContainer, fragment, TAG)
-            .commit()
-    }
-
-    private fun saveCard() {
-        loadingHandler.setIsLoading(true)
-        sendRequestEvent()
-        with(config.routeConfig) {
-            collect.asyncSubmit(
-                VGSRequest.VGSRequestBuilder()
-                    .setPath(path)
-                    .setMethod(requestOptions.httpMethod.toCollectHTTPMethod())
-                    .setCustomData(requestOptions.extraData)
-                    .setCustomHeader(requestOptions.extraHeaders)
-                    .setFieldNameMappingPolicy(requestOptions.mergePolicy.toCollectMergePolicy())
-                    .build()
-            )
-        }
-    }
-
-    private fun sendRequestEvent(invalidFields: List<String> = emptyList()) {
-        with(config) {
-            analyticTracker.log(
-                RequestEvent(
-                    invalidFields.isEmpty(),
-                    routeConfig.hostnamePolicy is VGSCheckoutHostnamePolicy.CustomHostname,
-                    routeConfig.requestOptions.extraData.isNotEmpty(),
-                    hasCustomHeaders(),
-                    formConfig.addressOptions.countryOptions.validCountries.isNotEmpty(),
-                    routeConfig.requestOptions.mergePolicy,
-                    invalidFields
+    private fun logPaymentMethodSelected() {
+        if (config is VGSCheckoutAddCardConfig) {
+            config.analyticTracker.log(
+                PaymentMethodSelectedEvent(
+                    resultBundle.getBoolean(VGSCheckoutResultBundle.IS_PRE_SAVED_CARD) ?: false,
+                    config is VGSCheckoutCustomConfig
                 )
             )
         }
     }
 
-    private fun isNetworkConnectionError(response: VGSResponse): Boolean =
-        (response as? VGSResponse.ErrorResponse)?.code == VGSError.NO_NETWORK_CONNECTIONS.code
-
-    private fun showNetworkConnectionErrorSnackBar() {
-        val message = getString(R.string.vgs_checkout_no_network_error)
-        Snackbar.make(findViewById(R.id.llRootView), message, Snackbar.LENGTH_LONG)
-            .setAction(getString(R.string.vgs_checkout_no_network_retry)) { saveCard() }
-            .show()
+    private fun setResult(resultCode: Int, result: VGSCheckoutResult) {
+        val checkoutResultBundle = CheckoutResultContract.Result(result).toBundle()
+        setResult(resultCode, Intent().putExtras(checkoutResultBundle))
     }
 
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    internal fun validateFields() {
-        collect.validateFields()
+    companion object {
+
+        @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
+        internal const val FRAGMENT_TAG = "com.verygoodsecurity.vgscheckout.fragment_tag"
+
+        private const val KEY_RESULT_BUNDLE = "com.verygoodsecurity.vgscheckout.result_bundle"
     }
 }

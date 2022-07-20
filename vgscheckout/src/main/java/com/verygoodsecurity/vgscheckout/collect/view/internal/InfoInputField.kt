@@ -2,13 +2,18 @@ package com.verygoodsecurity.vgscheckout.collect.view.internal
 
 import android.content.Context
 import android.text.InputType
+import android.util.AttributeSet
 import com.verygoodsecurity.vgscheckout.collect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscheckout.collect.view.card.FieldType
 import com.verygoodsecurity.vgscheckout.collect.view.card.conection.InputInfoConnection
+import com.verygoodsecurity.vgscheckout.collect.view.card.validation.rules.VGSInfoRule
 import com.verygoodsecurity.vgscheckout.collect.view.core.serializers.FieldDataSerializer
 
 /** @suppress */
-internal open class InfoInputField(context: Context) : BaseInputField(context) {
+internal open class InfoInputField @JvmOverloads constructor(
+    context: Context,
+    attributeSet: AttributeSet? = null
+) : BaseInputField(context, attributeSet) {
 
     var serializer: FieldDataSerializer<*, *>? = null
 
@@ -25,14 +30,16 @@ internal open class InfoInputField(context: Context) : BaseInputField(context) {
         val state = collectCurrentState(stateContent)
 
         inputConnection?.setOutput(state)
-        inputConnection?.setOutputListener(stateListener)
 
-        applyNewTextWatcher(null)
         applyInputType()
     }
 
     override fun setText(text: CharSequence?, type: BufferType?) {
         super.setText(text, type)
+    }
+
+    fun addRule(rule: VGSInfoRule) {
+        applyValidationRule(rule)
     }
 
     private fun applyInputType() {
@@ -52,5 +59,4 @@ internal open class InfoInputField(context: Context) : BaseInputField(context) {
 
         refreshInput()
     }
-
 }

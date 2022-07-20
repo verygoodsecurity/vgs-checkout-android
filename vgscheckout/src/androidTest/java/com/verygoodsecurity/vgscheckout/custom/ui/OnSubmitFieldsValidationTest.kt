@@ -29,12 +29,12 @@ import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.view.internal.CardInputField
 import com.verygoodsecurity.vgscheckout.collect.view.internal.PersonNameInputField
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
-import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutCustomFormConfig
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillingAddressVisibility
-import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutCustomBillingAddressOptions
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_ARGS
 import com.verygoodsecurity.vgscheckout.ui.CustomSaveCardActivity
+import com.verygoodsecurity.vgscheckout.ui.core.BaseCheckoutActivity
+import com.verygoodsecurity.vgscheckout.ui.fragment.save.SaveCardFragment
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers.withError
 import com.verygoodsecurity.vgscheckout.util.VGSViewMatchers.withParent
 import com.verygoodsecurity.vgscheckout.util.ViewInteraction.onViewWithScrollTo
@@ -52,17 +52,13 @@ class OnSubmitFieldsValidationTest {
     private val context: Context = ApplicationProvider.getApplicationContext()
 
     private var intent = Intent(context, CustomSaveCardActivity::class.java).apply {
+        val config = VGSCheckoutCustomConfig.Builder(BuildConfig.VAULT_ID)
+            .setIsScreenshotsAllowed(true)
+            .setBillingAddressVisibility(VGSCheckoutBillingAddressVisibility.VISIBLE)
+            .build()
         putExtra(
             EXTRA_KEY_ARGS,
-            CheckoutResultContract.Args(VGSCheckoutCustomConfig(
-                BuildConfig.VAULT_ID,
-                formConfig = VGSCheckoutCustomFormConfig(
-                    addressOptions = VGSCheckoutCustomBillingAddressOptions(
-                        visibility = VGSCheckoutBillingAddressVisibility.VISIBLE
-                    )
-                ),
-                isScreenshotsAllowed = true
-            ))
+            CheckoutResultContract.Args(config)
         )
     }
 
@@ -215,8 +211,8 @@ class OnSubmitFieldsValidationTest {
             )
             // Act
             onView(isRoot()).perform(closeSoftKeyboard())
-            it.onActivity {
-                it.validateFields()
+            it.onActivity { activity ->
+                (activity.findFragmentByTag(BaseCheckoutActivity.FRAGMENT_TAG) as? SaveCardFragment)?.shouldHandleAddCard = false
             }
 
             // Assert
