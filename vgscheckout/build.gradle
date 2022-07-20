@@ -8,11 +8,11 @@ plugins {
 apply from: '../gradle/util.gradle'
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion 32
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 31
+        targetSdkVersion 32
         versionCode VERSION_CODE.toInteger()
         versionName VERSION_NAME
 
@@ -56,22 +56,25 @@ dependencies {
     testImplementation "junit:junit:$junit"
     testImplementation "androidx.test.ext:junit-ktx:$junit_extension"
     testImplementation "androidx.test:core-ktx:1.4.0"
-    testImplementation "org.robolectric:robolectric:4.7.3"
-    testImplementation "org.mockito:mockito-core:4.3.1"
-    testImplementation "org.mockito:mockito-inline:4.3.1"
-    testImplementation "org.json:json:20211205"
-    testImplementation "io.mockk:mockk:1.12.2"
-    testImplementation "org.skyscreamer:jsonassert:1.5.0"
+    testImplementation "org.robolectric:robolectric:4.8.1"
+    testImplementation "org.mockito:mockito-core:4.6.1"
+    testImplementation "org.mockito:mockito-inline:4.6.1"
+    testImplementation "org.json:json:20220320"
+    testImplementation "io.mockk:mockk:1.12.4"
+    testImplementation "org.skyscreamer:jsonassert:1.5.1"
     androidTestImplementation "androidx.test.ext:junit:$junit_extension"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_core"
-    androidTestImplementation "org.mockito:mockito-android:4.3.1"
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:$espresso_core"
+    androidTestImplementation "org.mockito:mockito-android:4.6.1"
     androidTestImplementation "androidx.test.ext:junit:$junit_extension"
     androidTestImplementation "androidx.test.ext:junit-ktx:$junit_extension"
     androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.2.0'
+    androidTestImplementation 'com.google.code.gson:gson:2.9.0'
 }
 
 def createBuildConfigFields(buildConfig) {
     def properties = getLocalProperties()
+    buildConfig.buildConfigField "String", "AUTHENTICATION_HOST", "\"${properties['AUTHENTICATION_HOST']}\""
     buildConfig.buildConfigField "String", "PAYMENT_ORCHESTRATION_URL", "\"${properties['PAYMENT_ORCHESTRATION_URL']}\""
     buildConfig.buildConfigField "String", "VAULT_ID", "\"${properties['VAULT_ID']}\""
     buildConfig.buildConfigField "String", "JWT_TOKEN_WITHOUT_TRANSFERS", "\"${properties['JWT_TOKEN_WITHOUT_TRANSFERS']}\""

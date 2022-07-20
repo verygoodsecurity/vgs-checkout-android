@@ -1,13 +1,12 @@
 package com.verygoodsecurity.vgscheckout.collect.view.core.serializers
 
 import com.verygoodsecurity.vgscheckout.util.logger.VGSCheckoutLogger
-import com.verygoodsecurity.vgscheckout.collect.core.api.client.extension.logException
 import java.text.SimpleDateFormat
 import java.util.*
 
 /**
- * Represents [com.verygoodsecurity.vgscheckout.collect.widget.ExpirationDateEditText] date split serializer.
- * Note: [com.verygoodsecurity.vgscheckout.collect.widget.ExpirationDateEditText] fieldName will be ignored.
+ * Represents [com.verygoodsecurity.vgscheckout.collect.view.internal.DateInputField] date split serializer.
+ * Note: [com.verygoodsecurity.vgscheckout.collect.view.internal.DateInputField] fieldName will be ignored.
  *
  * @constructor primary constructor.
  * @param monthFieldName - this field name will be used for month in request json.
@@ -36,7 +35,7 @@ internal class VGSExpDateSeparateSerializer constructor(
                 yearFieldName to getYearFormat(params.dateFormat).format(date)
             )
         } catch (e: Exception) {
-            logException(e)
+            VGSCheckoutLogger.warn(this::class.java.simpleName, e)
             emptyList()
         }
     }
@@ -55,7 +54,7 @@ internal class VGSExpDateSeparateSerializer constructor(
                 }
                 SimpleDateFormat(monthFormat, Locale.US)
             } catch (e: Exception) {
-                logException(e)
+                VGSCheckoutLogger.warn(this::class.java.simpleName, e)
                 SimpleDateFormat(DEFAULT_MONTH_FORMAT, Locale.US)
             }
         }
@@ -73,7 +72,7 @@ internal class VGSExpDateSeparateSerializer constructor(
                 }
                 SimpleDateFormat(yearFormat, Locale.US)
             } catch (e: Exception) {
-                logException(e)
+                VGSCheckoutLogger.warn(this::class.java.simpleName, e)
                 SimpleDateFormat(DEFAULT_YEAR_FORMAT, Locale.US)
             }
         }

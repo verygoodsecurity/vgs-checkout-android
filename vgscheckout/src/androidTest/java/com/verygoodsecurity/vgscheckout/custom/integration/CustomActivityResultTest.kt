@@ -17,15 +17,8 @@ import com.verygoodsecurity.vgscheckout.BuildConfig
 import com.verygoodsecurity.vgscheckout.Constants
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
-import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutCustomRouteConfig
-import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutCustomFormConfig
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.VGSCheckoutCustomCardOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardholder.VGSCheckoutCustomCardHolderOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.cardnumber.VGSCheckoutCustomCardNumberOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.cvc.VGSCheckoutCustomCVCOptions
-import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.VGSCheckoutCustomExpirationDateOptions
 import com.verygoodsecurity.vgscheckout.model.*
-import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutAddCardResponse
+import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutCardResponse
 import com.verygoodsecurity.vgscheckout.ui.CustomSaveCardActivity
 import com.verygoodsecurity.vgscheckout.util.ViewInteraction.onViewWithScrollTo
 import com.verygoodsecurity.vgscheckout.util.extension.*
@@ -41,12 +34,13 @@ class CustomActivityResultTest {
     private val context: Context = ApplicationProvider.getApplicationContext()
 
     private val defaultIntent = Intent(context, CustomSaveCardActivity::class.java).apply {
+        val config = VGSCheckoutCustomConfig.Builder(BuildConfig.VAULT_ID)
+            .setIsScreenshotsAllowed(true)
+            .build()
+
         putExtra(
             EXTRA_KEY_ARGS,
-            CheckoutResultContract.Args(VGSCheckoutCustomConfig(
-                BuildConfig.VAULT_ID,
-                isScreenshotsAllowed = true
-            ))
+            CheckoutResultContract.Args(config)
         )
     }
 
@@ -68,11 +62,6 @@ class CustomActivityResultTest {
                 Constants.VALID_EXP_DATE,
                 Constants.VALID_SECURITY_CODE
             )
-            fillAddressFields(
-                Constants.VALID_ADDRESS,
-                Constants.VALID_CITY,
-                Constants.USA_VALID_ZIP_CODE
-            )
             // Act
             onViewWithScrollTo(R.id.mbSaveCard).perform(click())
             //Assert
@@ -85,24 +74,19 @@ class CustomActivityResultTest {
     @Test
     fun performCheckout_saveCard_successfulResponse_resultSuccess_codeOk() {
         // Arrange
+        val config = VGSCheckoutCustomConfig.Builder(BuildConfig.VAULT_ID)
+            .setEnvironment(VGSCheckoutEnvironment.Sandbox())
+            .setPath("/post")
+            .setIsScreenshotsAllowed(true)
+            .setCardNumberOptions("card.number")
+            .setCardHolderOptions("card.holder")
+            .setCVCOptions("card.cvc")
+            .setExpirationDateOptions("card.expDate")
+            .build()
         val intent = Intent(context, CustomSaveCardActivity::class.java).apply {
             putExtra(
                 EXTRA_KEY_ARGS,
-                CheckoutResultContract.Args(
-                    VGSCheckoutCustomConfig(
-                        vaultId = BuildConfig.VAULT_ID,
-                        VGSCheckoutEnvironment.Sandbox(),
-                        VGSCheckoutCustomRouteConfig("/post"),
-                        VGSCheckoutCustomFormConfig(
-                            cardOptions = VGSCheckoutCustomCardOptions(
-                                VGSCheckoutCustomCardNumberOptions("card.number"),
-                                VGSCheckoutCustomCardHolderOptions("card.holder"),
-                                VGSCheckoutCustomCVCOptions("card.cvc"),
-                                VGSCheckoutCustomExpirationDateOptions("card.expDate")
-                            )
-                        )
-                    )
-                )
+                CheckoutResultContract.Args(config)
             )
         }
         launch<CustomSaveCardActivity>(intent).use {
@@ -112,16 +96,12 @@ class CustomActivityResultTest {
                 Constants.VALID_EXP_DATE,
                 Constants.VALID_SECURITY_CODE
             )
-            fillAddressFields(
-                Constants.VALID_ADDRESS,
-                Constants.VALID_CITY,
-                Constants.USA_VALID_ZIP_CODE
-            )
             // Act
             onViewWithScrollTo(R.id.mbSaveCard).perform(click())
             //Assert
             val result = it?.getParcelableSafe<CheckoutResultContract.Result>(EXTRA_KEY_RESULT)
-            val response = (result?.checkoutResult as? VGSCheckoutResult.Success)?.data?.getParcelable<VGSCheckoutAddCardResponse>(VGSCheckoutResultBundle.ADD_CARD_RESPONSE)
+            val response = result?.checkoutResult?.data
+                ?.getParcelable<VGSCheckoutCardResponse>(VGSCheckoutResultBundle.ADD_CARD_RESPONSE)
             assertEquals(Activity.RESULT_OK, it.result.resultCode)
             assertTrue(result?.checkoutResult is VGSCheckoutResult.Success)
             assertEquals(Constants.SUCCESS_RESPONSE_CODE, response?.code)
@@ -136,7 +116,7 @@ class CustomActivityResultTest {
             //Assert
             val result = it.getParcelableSafe<CheckoutResultContract.Result>(EXTRA_KEY_RESULT)
             assertEquals(Activity.RESULT_CANCELED, it.result.resultCode)
-            assertNull(result?.checkoutResult)
+            assertTrue(result?.checkoutResult is VGSCheckoutResult.Canceled)
         }
     }
 
@@ -149,7 +129,28 @@ class CustomActivityResultTest {
             //Assert
             val result = it?.getParcelableSafe<CheckoutResultContract.Result>(EXTRA_KEY_RESULT)
             assertEquals(Activity.RESULT_CANCELED, it.result.resultCode)
-            assertNull(result?.checkoutResult)
+            assertTrue(result?.checkoutResult is VGSCheckoutResult.Canceled)
+        }
+    }
+
+    @Test
+    fun performCheckout_custom_saveCard_isPreSavedCard() {
+        // Arrange
+        launch<CustomSaveCardActivity>(defaultIntent).use {
+            fillCardFields(
+                Constants.VALID_CARD_HOLDER,
+                Constants.VALID_CARD_NUMBER,
+                Constants.VALID_EXP_DATE,
+                Constants.VALID_SECURITY_CODE
+            )
+            // Act
+            onViewWithScrollTo(R.id.mbSaveCard).perform(click())
+            //Assert
+            val isPreSavedCard =
+                it?.getParcelableSafe<CheckoutResultContract.Result>(EXTRA_KEY_RESULT)
+                    ?.checkoutResult?.data?.getBoolean(VGSCheckoutResultBundle.Keys.IS_PRE_SAVED_CARD)
+                    ?: false
+            assertFalse(isPreSavedCard)
         }
     }
 }

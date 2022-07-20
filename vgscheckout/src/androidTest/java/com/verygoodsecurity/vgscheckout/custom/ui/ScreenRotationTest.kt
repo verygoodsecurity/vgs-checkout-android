@@ -31,9 +31,11 @@ class ScreenRotationTest {
     private val context: Context = ApplicationProvider.getApplicationContext()
 
     private val defaultIntent = Intent(context, CustomSaveCardActivity::class.java).apply {
+        val config = VGSCheckoutCustomConfig.Builder(BuildConfig.VAULT_ID)
+            .build()
         putExtra(
             EXTRA_KEY_ARGS,
-            CheckoutResultContract.Args(VGSCheckoutCustomConfig(BuildConfig.VAULT_ID))
+            CheckoutResultContract.Args(config)
         )
     }
 

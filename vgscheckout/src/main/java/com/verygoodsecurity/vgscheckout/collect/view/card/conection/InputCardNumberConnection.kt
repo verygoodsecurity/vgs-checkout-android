@@ -1,6 +1,5 @@
 package com.verygoodsecurity.vgscheckout.collect.view.card.conection
 
-import com.verygoodsecurity.vgscheckout.collect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscheckout.collect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscheckout.collect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscheckout.collect.view.card.filter.CardBrandPreview
@@ -29,12 +28,6 @@ internal class InputCardNumberConnection(
 
     override fun getOutput() = output
 
-    override fun setOutputListener(listener: OnVgsViewStateChangeListener?) {
-        listener?.let {
-            addNewListener(it)
-        } ?: clearAllListeners()
-    }
-
     override fun clearFilters() {
         cardFilters.clear()
     }
@@ -52,8 +45,6 @@ internal class InputCardNumberConnection(
         IcardBrand?.onCardBrandPreview(brand)
 
         validate(brand)
-
-        notifyAllListeners(output)
     }
 
     private fun validate(brand: CardBrandPreview) {

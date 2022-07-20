@@ -3,7 +3,7 @@ package com.verygoodsecurity.vgscheckout.exception
 /**
  * Throws to indicate that something get wrong. Check error code explanation in our doc TODO: Add link
  */
-abstract class VGSCheckoutException internal constructor(
+open class VGSCheckoutException internal constructor(
     val code: Int,
     message: String?,
     cause: Throwable?,

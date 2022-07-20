@@ -36,3 +36,20 @@ sealed class VGSCheckoutHostnamePolicy : Parcelable {
     @Parcelize
     data class Local constructor(val localhost: String, val port: Int) : VGSCheckoutHostnamePolicy()
 }
+
+//fixme remove collect
+internal fun VGSCheckoutHostnamePolicy.getNormalizedHostName(): String? {
+    return when (this) {
+        is VGSCheckoutHostnamePolicy.Vault -> null
+        is VGSCheckoutHostnamePolicy.CustomHostname -> this.hostname
+        is VGSCheckoutHostnamePolicy.Local -> this.localhost
+    }
+}
+
+internal fun VGSCheckoutHostnamePolicy.getNormalizedPort(): Int? {
+    return when (this) {
+        is VGSCheckoutHostnamePolicy.Vault -> null
+        is VGSCheckoutHostnamePolicy.CustomHostname -> null
+        is VGSCheckoutHostnamePolicy.Local -> this.port
+    }
+}

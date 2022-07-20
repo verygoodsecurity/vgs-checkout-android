@@ -1,10 +1,8 @@
 package com.verygoodsecurity.vgscheckout
 
 import com.verygoodsecurity.vgscheckout.collect.core.Environment
-import com.verygoodsecurity.vgscheckout.collect.core.api.isEnvironmentValid
-import com.verygoodsecurity.vgscheckout.collect.core.api.isTennantIdValid
-import com.verygoodsecurity.vgscheckout.collect.core.api.isURLValid
-import com.verygoodsecurity.vgscheckout.collect.core.api.setupURL
+import com.verygoodsecurity.vgscheckout.config.ROUTE_ID_VALUE
+import com.verygoodsecurity.vgscheckout.networking.*
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -12,66 +10,68 @@ import java.util.regex.Pattern
 
 class UrlExtensionTest {
     companion object {
-        private const val URL_REGEX = "^(https:\\/\\/)+[a-zA-Z0-9]+[.]+((live|sandbox|LIVE|SANDBOX)+((-)+([a-zA-Z0-9]+)|)+)+[.](verygoodproxy.com)\$"
+        private const val URL_REGEX =
+            "^(https:\\/\\/)+[a-zA-Z0-9]+[.]+((live|sandbox|LIVE|SANDBOX)+((-)+([a-zA-Z0-9]+)|)+)+[.](verygoodproxy.com)\$"
     }
 
     @Test
     fun test_is_tennantId_not_valid() {
 
         val testUrl1 = " "
-        assertFalse(testUrl1.isTennantIdValid())
+        assertFalse(testUrl1.isTenantIdValid())
 
         val testUrl2 = "tnt.com"
-        assertFalse(testUrl2.isTennantIdValid())
+        assertFalse(testUrl2.isTenantIdValid())
 
         val testUrl3 = "tnt com"
-        assertFalse(testUrl3.isTennantIdValid())
+        assertFalse(testUrl3.isTenantIdValid())
 
         val testUrl4 = "2tnt/com"
-        assertFalse(testUrl4.isTennantIdValid())
+        assertFalse(testUrl4.isTenantIdValid())
 
         val testUrl5 = "tnt:com"
-        assertFalse(testUrl5.isTennantIdValid())
+        assertFalse(testUrl5.isTenantIdValid())
 
         val testUrl6 = "tnt*com"
-        assertFalse(testUrl6.isTennantIdValid())
+        assertFalse(testUrl6.isTenantIdValid())
 
         val testUrl7 = "tnt?com"
-        assertFalse(testUrl7.isTennantIdValid())
+        assertFalse(testUrl7.isTenantIdValid())
     }
+
     @Test
     fun test_is_tennantId_valid() {
         val testUrl1 = "tntdldf"
-        assertTrue(testUrl1.isTennantIdValid())
+        assertTrue(testUrl1.isTenantIdValid())
         val testUrl = "123"
-        assertTrue(testUrl.isTennantIdValid())
+        assertTrue(testUrl.isTenantIdValid())
     }
 
     @Test
     fun test_is_URL_valid() {
         val url1 = "google.com"
-        assertTrue(url1.isURLValid())
+        assertTrue(url1.isUrlValid())
 
         val url2 = "https://www.bla"
-        assertTrue(url2.isURLValid())
+        assertTrue(url2.isUrlValid())
 
         val url3 = "https://www.bla-one.com"
-        assertTrue(url3.isURLValid())
+        assertTrue(url3.isUrlValid())
 
         val url4 = "https://www.bla-one.com/post"
-        assertTrue(url4.isURLValid())
+        assertTrue(url4.isUrlValid())
     }
 
     @Test
     fun test_is_url_not_valid() {
         val url1 = "htt://www.bla"
-        assertFalse(url1.isURLValid())
+        assertFalse(url1.isUrlValid())
 
         val url2 = "http:/www.bla"
-        assertFalse(url2.isURLValid())
+        assertFalse(url2.isUrlValid())
 
         val url3 = "http://www.ex ample.com:8800"
-        assertFalse(url3.isURLValid())
+        assertFalse(url3.isUrlValid())
     }
 
     @Test
@@ -107,7 +107,7 @@ class UrlExtensionTest {
         val s = "tnt234mm"
         val url = s.setupURL(Environment.SANDBOX.rawValue)
 
-        assertTrue(url.isURLValid())
+        assertTrue(url.isUrlValid())
     }
 
     @Test
@@ -115,7 +115,18 @@ class UrlExtensionTest {
         val s = "123456"
         val url = s.setupURL(Environment.LIVE.rawValue)
 
-        assertTrue(url.isURLValid())
+        assertTrue(url.isUrlValid())
+    }
+
+    @Test
+    fun test_setup_url_payment() {
+        val s = "tnt234mm"
+        val defaultUrl = s.setupURL(Environment.LIVE.rawValue)
+        assertFalse(defaultUrl.contains(ROUTE_ID_VALUE))
+
+        val paymentUrl =
+            s.setupURL(Environment.LIVE.rawValue, ROUTE_ID_VALUE)
+        assertTrue(paymentUrl.contains(ROUTE_ID_VALUE))
     }
 
     @Test

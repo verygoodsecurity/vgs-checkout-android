@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="32dp"
+    android:height="20dp"
+    android:viewportWidth="32"
+    android:viewportHeight="20">
+
+    <path
+        android:fillAlpha="0.54"
+        android:pathData="M3,0.25 L29,0.25 Q31.75,0.25,31.75,3 L31.75,17 Q31.75,19.75,29,19.75 L3,19.75
+Q0.25,19.75,0.25,17 L0.25,3 Q0.25,0.25,3,0.25 Z"
+        android:strokeWidth="0.5"
+        android:strokeAlpha="0.54"
+        android:strokeColor="#1565C0" />
+
+    <path
+        android:fillAlpha="0.54"
+        android:fillColor="#1565C0"
+        android:pathData="M3,3 L7,3 Q8,3,8,4 L8,7 Q8,8,7,8 L3,8 Q2,8,2,7 L2,4 Q2,3,3,3 Z"
+        android:strokeWidth="1"
+        android:strokeAlpha="0.54" />
+
+    <path
+        android:fillAlpha="0.54"
+        android:fillColor="#1565C0"
+        android:pathData="M25,13 L29,13 Q30,13,30,14 L30,16 Q30,17,29,17 L25,17 Q24,17,24,16 L24,14
+Q24,13,25,13 Z"
+        android:strokeWidth="1"
+        android:strokeAlpha="0.54" />
+
+    <path
+        android:fillAlpha="0.54"
+        android:fillColor="#1565C0"
+        android:pathData="M3,10 L29,10 Q30,10,30,11 L30,11 Q30,12,29,12 L3,12 Q2,12,2,11 L2,11 Q2,10,3,10
+Z"
+        android:strokeWidth="1"
+        android:strokeAlpha="0.54" />
+
+    <path
+        android:fillAlpha="0.54"
+        android:fillColor="#1565C0"
+        android:pathData="M3,14 L8,14 Q9,14,9,15 L9,15 Q9,16,8,16 L3,16 Q2,16,2,15 L2,15 Q2,14,3,14 Z"
+        android:strokeWidth="1"
+        android:strokeAlpha="0.54" />
+
+    <path
+        android:fillAlpha="0.54"
+        android:fillColor="#1565C0"
+        android:pathData="M12,14 L17,14 Q18,14,18,15 L18,15 Q18,16,17,16 L12,16 Q11,16,11,15 L11,15
+Q11,14,12,14 Z"
+        android:strokeWidth="1"
+        android:strokeAlpha="0.54" />
+</vector>

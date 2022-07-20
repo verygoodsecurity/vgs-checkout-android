@@ -5,11 +5,11 @@ import android.graphics.drawable.Drawable
 import android.os.Build
 import android.text.InputFilter
 import android.text.InputType
+import android.util.AttributeSet
 import android.view.View
 import com.google.android.material.textfield.TextInputEditText
-import com.verygoodsecurity.vgscheckout.collect.core.model.state.Dependency
 import com.verygoodsecurity.vgscheckout.collect.core.model.state.FieldContent
-import com.verygoodsecurity.vgscheckout.collect.core.storage.DependencyType
+import com.verygoodsecurity.vgscheckout.collect.view.Dependency
 import com.verygoodsecurity.vgscheckout.collect.view.card.CardType
 import com.verygoodsecurity.vgscheckout.collect.view.card.FieldType
 import com.verygoodsecurity.vgscheckout.collect.view.card.conection.InputCardCVCConnection
@@ -21,7 +21,10 @@ import com.verygoodsecurity.vgscheckout.collect.view.internal.CVCInputField.Prev
 import com.verygoodsecurity.vgscheckout.collect.view.internal.CVCInputField.PreviewIconVisibility.*
 
 /** @suppress */
-internal class CVCInputField(context: Context) : BaseInputField(context) {
+internal class CVCInputField(
+    context: Context,
+    attributeSet: AttributeSet? = null
+) : BaseInputField(context, attributeSet) {
 
     override var fieldType: FieldType = FieldType.CVC
     private var cardContent: FieldContent.CardNumberContent = FieldContent.CardNumberContent()
@@ -45,9 +48,7 @@ internal class CVCInputField(context: Context) : BaseInputField(context) {
         val state = collectCurrentState(stateContent)
 
         inputConnection?.setOutput(state)
-        inputConnection?.setOutputListener(stateListener)
 
-        applyNewTextWatcher(null)
         applyLengthFilter(cardContent.rangeCVV.last())
         applyInputType()
     }
@@ -83,9 +84,10 @@ internal class CVCInputField(context: Context) : BaseInputField(context) {
 
     override fun dispatchDependencySetting(dependency: Dependency) {
         when (dependency.dependencyType) {
-            DependencyType.CARD -> handleCardDependency(dependency.value as FieldContent.CardNumberContent)
+            Dependency.DependencyType.CARD -> handleCardDependency(dependency.value as FieldContent.CardNumberContent)
             else -> super.dispatchDependencySetting(dependency)
         }
+        inputConnection?.run()
     }
 
     override fun updateTextChanged(str: String) {
@@ -104,8 +106,16 @@ internal class CVCInputField(context: Context) : BaseInputField(context) {
         }
     }
 
+    internal fun setPreviewIconVisibility(visibility: PreviewIconVisibility) {
+        this.previewIconVisibility = visibility
+    }
+
     internal fun setPreviewIconVisibility(mode: Int) {
         this.previewIconVisibility = PreviewIconVisibility.values()[mode]
+    }
+
+    internal fun setPreviewIconGravity(gravity: PreviewIconGravity) {
+        this.previewIconGravity = gravity
     }
 
     internal fun setPreviewIconGravity(gravity: Int) {
