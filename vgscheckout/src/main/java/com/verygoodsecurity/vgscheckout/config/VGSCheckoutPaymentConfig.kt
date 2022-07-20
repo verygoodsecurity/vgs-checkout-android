@@ -51,7 +51,7 @@ internal class VGSCheckoutPaymentConfig internal constructor(
     createdFromParcel
 ) {
 
-    // TODO: Order details can't be null in production
+    //TODO: Order details can't be null in production
     internal var order: Order? = null
         @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE) internal set
 
