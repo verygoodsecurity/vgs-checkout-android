@@ -1,11 +1,18 @@
 package com.verygoodsecurity.vgscheckout
 
+import android.app.Activity
 import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
+import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
+import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
+import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
+import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResultBundle
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutTransitionOptions
+import com.verygoodsecurity.vgscheckout.networking.command.core.VGSCheckoutCancellable
 
 /**
  *  A drop-in class that presents a checkout form.
@@ -13,6 +20,11 @@ import com.verygoodsecurity.vgscheckout.model.VGSCheckoutTransitionOptions
 class VGSCheckout internal constructor(
     private val activityResultLauncher: ActivityResultLauncher<CheckoutResultContract.Args<CheckoutConfig>>
 ) {
+
+    var onCheckoutInitListener: VGSCheckoutOnInitListener? = null
+
+    private lateinit var activity: Activity
+    private var callback: VGSCheckoutCallback? = null
 
     /**
      *  Constructor to be used when launching the checkout from activity.
@@ -23,7 +35,10 @@ class VGSCheckout internal constructor(
     @JvmOverloads
     constructor(activity: AppCompatActivity, callback: VGSCheckoutCallback? = null) : this(
         registerActivityLauncher(activity, callback)
-    )
+    ) {
+        this.activity = activity
+        this.callback = callback
+    }
 
     /**
      *  Constructor to be used when launching the checkout from fragment.
@@ -34,7 +49,10 @@ class VGSCheckout internal constructor(
     @JvmOverloads
     constructor(fragment: Fragment, callback: VGSCheckoutCallback? = null) : this(
         registerActivityLauncher(fragment, callback)
-    )
+    ) {
+        this.activity = fragment.requireActivity()
+        this.callback = callback
+    }
 
     /**
      * Start checkout.
@@ -44,6 +62,55 @@ class VGSCheckout internal constructor(
      */
     @JvmOverloads
     fun present(
+        config: CheckoutConfig,
+        transitionOptions: VGSCheckoutTransitionOptions? = null
+    ): VGSCheckoutCancellable? {
+        return when (config) {
+            is VGSCheckoutAddCardConfig -> initializeAddCardCheckout(config, transitionOptions)
+            is VGSCheckoutCustomConfig -> initializeCustomCheckout(config, transitionOptions)
+            else -> null
+        }
+    }
+
+    private fun initializeCustomCheckout(
+        config: VGSCheckoutCustomConfig,
+        transitionOptions: VGSCheckoutTransitionOptions?
+    ): VGSCheckoutCancellable? {
+        if (onCheckoutInitListener?.onCheckoutInit() != false) startCheckoutForm(
+            config,
+            transitionOptions
+        )
+        return null
+    }
+
+    private fun initializeAddCardCheckout(
+        config: VGSCheckoutAddCardConfig,
+        transitionOptions: VGSCheckoutTransitionOptions? = null
+    ): VGSCheckoutCancellable {
+        return VGSCheckoutAddCardConfig.loadSavedCards(
+            activity,
+            config,
+            object : VGSCheckoutSavedCardsCallback {
+                override fun onSuccess() {
+                    if (onCheckoutInitListener?.onCheckoutInit() != false) startCheckoutForm(
+                        config,
+                        transitionOptions
+                    )
+                }
+
+                override fun onFailure(exception: VGSCheckoutException) {
+                    callback?.onCheckoutResult(
+                        VGSCheckoutResult.Failed(
+                            VGSCheckoutResultBundle(),
+                            exception
+                        )
+                    )
+                }
+            }
+        )
+    }
+
+    private fun startCheckoutForm(
         config: CheckoutConfig,
         transitionOptions: VGSCheckoutTransitionOptions? = null
     ) {

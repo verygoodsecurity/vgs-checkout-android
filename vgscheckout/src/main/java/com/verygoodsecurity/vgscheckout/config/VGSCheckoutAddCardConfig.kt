@@ -8,7 +8,6 @@ import com.verygoodsecurity.vgscheckout.VGSCheckoutSavedCardsCallback
 import com.verygoodsecurity.vgscheckout.analytic.event.FinInstrumentCrudEvent
 import com.verygoodsecurity.vgscheckout.config.core.OrchestrationConfig
 import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutRouteConfig
-import com.verygoodsecurity.vgscheckout.config.payment.VGSCheckoutPaymentMethod
 import com.verygoodsecurity.vgscheckout.config.payment.VGSCheckoutPaymentMethod.SavedCards.Companion.MAX_CARDS_SIZE
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutFormConfig
 import com.verygoodsecurity.vgscheckout.config.ui.core.VGSCheckoutFormValidationBehaviour
@@ -61,6 +60,7 @@ class VGSCheckoutAddCardConfig internal constructor(
     isRemoveCardOptionEnabled,
     createdFromParcel
 ) {
+    internal var cardIds = emptyList<String>()
 
     override val baseUrl: String = generateBaseUrl()
 
@@ -324,6 +324,14 @@ class VGSCheckoutAddCardConfig internal constructor(
         }
         //endregion
 
+        private var cardIds: List<String> = emptyList()
+        fun setCardsIds(
+            @Size(max = MAX_CARDS_SIZE) cardIds: List<String>
+        ): Builder {
+            this.cardIds = cardIds
+            return this
+        }
+
         fun build(): VGSCheckoutAddCardConfig {
             val formConfig = buildFormConfig()
             return VGSCheckoutAddCardConfig(
@@ -333,7 +341,9 @@ class VGSCheckoutAddCardConfig internal constructor(
                 environment,
                 formConfig,
                 isScreenshotsAllowed
-            )
+            ).apply {
+                this.cardIds = this@Builder.cardIds
+            }
         }
     }
 
@@ -352,14 +362,13 @@ class VGSCheckoutAddCardConfig internal constructor(
             }
         }
 
-        private fun loadSavedCards(
+        internal fun loadSavedCards(
             context: Context,
-            paymentMethod: VGSCheckoutPaymentMethod.SavedCards,
             config: VGSCheckoutAddCardConfig,
             callback: VGSCheckoutSavedCardsCallback? = null
         ): VGSCheckoutCancellable {
 
-            val ids = paymentMethod.getIds()
+            val ids = config.cardIds
             val params = GetSavedCardsCommand.Params(
                 config.baseUrl,
                 config.routeConfig.path,

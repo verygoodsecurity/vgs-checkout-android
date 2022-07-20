@@ -13,6 +13,7 @@ import com.google.gson.annotations.SerializedName
 import com.verygoodsecurity.vgscheckout.BuildConfig.AUTHENTICATION_HOST
 import com.verygoodsecurity.vgscheckout.VGSCheckout
 import com.verygoodsecurity.vgscheckout.VGSCheckoutCallback
+import com.verygoodsecurity.vgscheckout.VGSCheckoutOnInitListener
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillingAddressVisibility
@@ -29,7 +30,7 @@ import okhttp3.internal.EMPTY_REQUEST
 import java.io.IOException
 
 class OrchestrationCheckoutActivity : BaseActivity(R.layout.activity_payment_checkout),
-    VGSCheckoutCallback {
+    VGSCheckoutCallback, VGSCheckoutOnInitListener {
 
     override val type: CheckoutType = CheckoutType.PAYMENT
 
@@ -44,7 +45,14 @@ class OrchestrationCheckoutActivity : BaseActivity(R.layout.activity_payment_che
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         checkout = VGSCheckout(this, this)
+        checkout.onCheckoutInitListener = this
+
         mbPresent.setOnClickListener { presentCheckout() }
+    }
+
+    override fun onCheckoutInit(): Boolean {
+        setLoading(false)
+        return true
     }
 
     override fun onCheckoutResult(result: VGSCheckoutResult) {
@@ -71,7 +79,6 @@ class OrchestrationCheckoutActivity : BaseActivity(R.layout.activity_payment_che
                 return@get
             }
             initializeConfiguration(it.value) { config ->
-                setLoading(false)
                 checkout.present(config)
             }
         }
@@ -109,6 +116,10 @@ class OrchestrationCheckoutActivity : BaseActivity(R.layout.activity_payment_che
         ).setBillingAddressVisibility(billingAddressVisibility)
             .setFormValidationBehaviour(preferences.getValidationBehaviour(R.string.setting_key_validation_behaviour))
             .setIsSaveCardOptionVisible(preferences.getBoolean(R.string.setting_key_save_card_option_enabled))
+
+
+            .setCardsIds(arrayListOf(BuildConfig.TEMPORARY_FIN_INSTRUMENT))
+
 
         // Create config object
         callback(builder.build())
