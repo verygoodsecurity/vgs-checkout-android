@@ -366,34 +366,32 @@ class VGSCheckoutAddCardConfig internal constructor(
             )
             val command = GetSavedCardsCommand(context, params)
             command.execute {
-                when (it) {
-                    is GetSavedCardsCommand.Result.Success -> {
-                        config.analyticTracker.log(
-                            FinInstrumentCrudEvent.load(
-                                FinInstrumentCrudEvent.DEFAULT_CODE,
-                                true,
-                                null,
-                                false,
-                                ids.count(),
-                                ids.count() - it.cards.count()
-                            )
+                val cards = it.cards ?: emptyList()
+                if (it.isSuccessful) {
+                    config.analyticTracker.log(
+                        FinInstrumentCrudEvent.load(
+                            FinInstrumentCrudEvent.DEFAULT_CODE,
+                            true,
+                            null,
+                            false,
+                            ids.count(),
+                            ids.count() - cards.count()
                         )
-                        config.savedCards = it.cards
-                        callback?.onSuccess()
-                    }
-                    is GetSavedCardsCommand.Result.Failure -> {
-                        config.analyticTracker.log(
-                            FinInstrumentCrudEvent.load(
-                                it.exception.code,
-                                false,
-                                it.exception.message,
-                                false,
-                                ids.count(),
-                                ids.count(),
-                            )
+                    )
+                    config.savedCards = cards
+                    callback?.onSuccess()
+                } else {
+                    config.analyticTracker.log(
+                        FinInstrumentCrudEvent.load(
+                            it.code,
+                            false,
+                            it.message,
+                            false,
+                            ids.count(),
+                            ids.count(),
                         )
-                        callback?.onFailure(it.exception)
-                    }
+                    )
+                    callback?.onFailure(VGSCheckoutException(it.code, it.message, null))
                 }
             }
             return command
