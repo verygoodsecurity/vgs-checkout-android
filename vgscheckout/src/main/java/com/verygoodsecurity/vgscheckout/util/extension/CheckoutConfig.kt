@@ -53,7 +53,6 @@ internal val CheckoutConfig.postalCodeOptions: VGSCheckoutPostalCodeOptions
     get() = this.formConfig.addressOptions.postalCodeOptions
 //endregion
 
-
 internal fun CheckoutConfig.generateBaseUrl(): String {
     val port = routeConfig.hostnamePolicy.getNormalizedPort()
     val hostName = routeConfig.hostnamePolicy.getNormalizedHostName()

@@ -172,7 +172,7 @@ class HideComponentTest {
     @Test
     fun performCheckout_countryWithoutPostalCode_addressBlockHidden() {
         // Arrange
-        val intent = Intent(context, CustomSaveCardActivity::class.java).apply {
+        val intent = Intent(context, SaveCardActivity::class.java).apply {
             val config = VGSCheckoutAddCardConfig.Builder(BuildConfig.VAULT_ID)
                 .setBillingAddressVisibility(VGSCheckoutBillingAddressVisibility.VISIBLE)
                 .setCountryOptions(VGSCheckoutFieldVisibility.HIDDEN, listOf("YE"))
@@ -185,7 +185,7 @@ class HideComponentTest {
                 CheckoutResultContract.Args(config)
             )
         }
-        ActivityScenario.launch<CustomSaveCardActivity>(intent).use {
+        ActivityScenario.launch<SaveCardActivity>(intent).use {
             //Assert
             Espresso.onView(ViewMatchers.withId(R.id.llBillingAddress))
                 .check(ViewAssertions.matches(CoreMatchers.not(ViewMatchers.isDisplayed())))
