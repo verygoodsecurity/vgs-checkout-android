@@ -51,7 +51,7 @@ class SelectPaymentMethodFragmentTest {
         intent = Intent(context, SaveCardActivity::class.java)
     }
 
-    @Test
+    //todo: add after saved cards release
     fun selectPaymentMethodFragmentShowed_cardsAndAddNewCardShowed() {
         // Arrange
         val cards = getCardsFixtures()
@@ -78,7 +78,7 @@ class SelectPaymentMethodFragmentTest {
         }
     }
 
-    @Test
+    //todo: add after saved cards release
     fun selectPaymentMethodFragmentShowed_deleteDoesNotExist() {
         // Arrange
         putConfig(getConfigFixture(getCardsFixtures(), false))
@@ -90,7 +90,7 @@ class SelectPaymentMethodFragmentTest {
         }
     }
 
-    @Test
+    //todo: add after saved cards release
     fun selectPaymentMethodFragmentShowed_deleteDoesNotExistAfterAllCardsDeleted() {
         // Arrange
         val cards = getCardsFixtures()
@@ -107,7 +107,7 @@ class SelectPaymentMethodFragmentTest {
         }
     }
 
-    @Test
+    //todo: add after saved cards release
     fun selectPaymentMethodFragmentShowed_payEnabled() {
         // Arrange
         putConfig(getConfigFixture(getCardsFixtures(), false))
@@ -119,7 +119,7 @@ class SelectPaymentMethodFragmentTest {
         }
     }
 
-    @Test
+    //todo: add after saved cards release
     fun selectPaymentMethodFragmentShowed_payDisabledAfterAllCardsDeleted() {
         // Arrange
         val cards = getCardsFixtures()
@@ -136,7 +136,7 @@ class SelectPaymentMethodFragmentTest {
         }
     }
 
-    @Test
+    //todo: add after saved cards release
     fun selectPaymentMethodFragmentShowed_screenClosedWithOkOnPayClick() {
         // Arrange
         putConfig(getConfigFixture(getCardsFixtures(), false))

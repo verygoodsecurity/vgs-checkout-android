@@ -30,7 +30,6 @@ import org.junit.runner.RunWith
 import java.util.concurrent.CountDownLatch
 
 @Suppress("SameParameterValue")
-@RunWith(AndroidJUnit4::class)
 class SavedCardActivityResultTest {
 
     private val context: Context = ApplicationProvider.getApplicationContext()
@@ -83,7 +82,7 @@ class SavedCardActivityResultTest {
         savedConfig
     }.getOrNull()
 
-    @Test
+    //todo: add after saved cards release
     fun performPaymentOrchestration_cancelActivityResult_withBackPress_codeCanceled() {
         ActivityScenario.launch<SaveCardActivity>(intent).use {
             // Act
@@ -95,7 +94,7 @@ class SavedCardActivityResultTest {
         }
     }
 
-    @Test
+    //todo: add after saved cards release
     fun performPaymentOrchestration_cancelActivityResult_withNavigationUp_codeCanceled() {
         ActivityScenario.launch<SaveCardActivity>(intent).use {
             waitFor(500)
@@ -109,7 +108,7 @@ class SavedCardActivityResultTest {
         }
     }
 
-    @Test
+    //todo: add after saved cards release
     fun performPaymentOrchestration_savedCard_successfulResponse_codeOk() {
         ActivityScenario.launch<SaveCardActivity>(intent).use {
             waitFor(500)
@@ -122,7 +121,7 @@ class SavedCardActivityResultTest {
         }
     }
 
-    @Test
+    //todo: add after saved cards release
     fun performPaymentOrchestration_isPreSavedCard_true() {
         ActivityScenario.launch<SaveCardActivity>(intent).use {
             waitFor(500)
