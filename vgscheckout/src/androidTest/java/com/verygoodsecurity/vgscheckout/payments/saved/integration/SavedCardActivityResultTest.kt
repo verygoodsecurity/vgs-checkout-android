@@ -13,8 +13,10 @@ import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
 import com.verygoodsecurity.vgscheckout.BuildConfig
 import com.verygoodsecurity.vgscheckout.R
+import com.verygoodsecurity.vgscheckout.VGSCheckoutSavedCardsCallback
 import com.verygoodsecurity.vgscheckout.util.AccessTokenHelper
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
+import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
 import com.verygoodsecurity.vgscheckout.model.*
 import com.verygoodsecurity.vgscheckout.ui.SaveCardActivity
 import com.verygoodsecurity.vgscheckout.util.extension.*
@@ -60,13 +62,29 @@ class SavedCardActivityResultTest {
             .setIsScreenshotsAllowed(true)
             .setSavedCardsIds(arrayListOf(finID))
             .build()
+            .also {
+                VGSCheckoutAddCardConfig.loadSavedCards(
+                    context,
+                    it,
+                    object : VGSCheckoutSavedCardsCallback {
+                        override fun onSuccess() {
+                            countDown()
+                        }
+
+                        override fun onFailure(exception: VGSCheckoutException) {
+                            countDown()
+                        }
+                    }
+                )
+            }
+        await()
 
         Assert.assertNotNull(savedConfig)
 
         savedConfig
     }.getOrNull()
 
-    //todo: add after saved cards release
+    @Test
     fun performPaymentOrchestration_cancelActivityResult_withBackPress_codeCanceled() {
         ActivityScenario.launch<SaveCardActivity>(intent).use {
             // Act
@@ -78,7 +96,7 @@ class SavedCardActivityResultTest {
         }
     }
 
-    //todo: add after saved cards release
+    @Test
     fun performPaymentOrchestration_cancelActivityResult_withNavigationUp_codeCanceled() {
         ActivityScenario.launch<SaveCardActivity>(intent).use {
             waitFor(500)
@@ -92,7 +110,7 @@ class SavedCardActivityResultTest {
         }
     }
 
-    //todo: add after saved cards release
+    @Test
     fun performPaymentOrchestration_savedCard_successfulResponse_codeOk() {
         ActivityScenario.launch<SaveCardActivity>(intent).use {
             waitFor(500)
@@ -105,7 +123,7 @@ class SavedCardActivityResultTest {
         }
     }
 
-    //todo: add after saved cards release
+    @Test
     fun performPaymentOrchestration_isPreSavedCard_true() {
         ActivityScenario.launch<SaveCardActivity>(intent).use {
             waitFor(500)

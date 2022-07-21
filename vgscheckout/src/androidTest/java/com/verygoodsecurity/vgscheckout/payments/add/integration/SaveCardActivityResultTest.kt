@@ -77,7 +77,7 @@ class SaveCardActivityResultTest {
         }
     }
 
-    //todo: add after saved cards release
+    @Test
     fun performPaymentOrchestration_cancelActivityResult_withNavigationUp_codeCanceled() {
         launch<SaveCardActivity>(defaultIntent).use {
             waitFor(500)
@@ -130,7 +130,7 @@ class SaveCardActivityResultTest {
     }
 
 
-    //todo: add after saved cards release
+    @Test
     fun performPaymentOrchestration_saveCardOptionEnabled_default() {
         val intent = Intent(context, SaveCardActivity::class.java).apply {
             val config = VGSCheckoutAddCardConfig.Builder(BuildConfig.VAULT_ID)
@@ -161,7 +161,7 @@ class SaveCardActivityResultTest {
         }
     }
 
-    //todo: add after saved cards release
+    @Test
     fun performPaymentOrchestration_saveCardOptionEnabled_disable() {
         val intent = Intent(context, SaveCardActivity::class.java).apply {
             val config = VGSCheckoutAddCardConfig.Builder(BuildConfig.VAULT_ID)
@@ -193,7 +193,7 @@ class SaveCardActivityResultTest {
         }
     }
 
-    //todo: add after saved cards release
+    @Test
     fun performPaymentOrchestration_saveCardOptionEnabled_deselectedByUser() {
         val intent = Intent(context, SaveCardActivity::class.java).apply {
             val config = VGSCheckoutAddCardConfig.Builder(BuildConfig.VAULT_ID)

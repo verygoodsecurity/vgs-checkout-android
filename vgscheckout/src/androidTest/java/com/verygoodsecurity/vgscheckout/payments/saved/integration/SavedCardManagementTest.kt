@@ -15,11 +15,12 @@ import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
 import com.verygoodsecurity.vgscheckout.BuildConfig
 import com.verygoodsecurity.vgscheckout.Constants.VALID_CARD_NUMBER
-import com.verygoodsecurity.vgscheckout.Constants.VALID_CARD_NUMBER_AMEX
 import com.verygoodsecurity.vgscheckout.Constants.VALID_CARD_NUMBER_MASTERCARD
-import com.verygoodsecurity.vgscheckout.Constants.VALID_SECURITY_CODE_AMEX
+import com.verygoodsecurity.vgscheckout.Constants.VALID_CARD_NUMBER_VISA
 import com.verygoodsecurity.vgscheckout.R
+import com.verygoodsecurity.vgscheckout.VGSCheckoutSavedCardsCallback
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
+import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
 import com.verygoodsecurity.vgscheckout.model.*
 import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutCardResponse
 import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutDeleteCardResponse
@@ -67,22 +68,34 @@ class SavedCardManagementTest {
                 .setIsScreenshotsAllowed(true)
                 .setSavedCardsIds(arrayListOf)
                 .build()
+                .also {
+                    VGSCheckoutAddCardConfig.loadSavedCards(
+                        context,
+                        it,
+                        object : VGSCheckoutSavedCardsCallback {
+                            override fun onSuccess() {
+                                countDown()
+                            }
+
+                            override fun onFailure(exception: VGSCheckoutException) {
+                                countDown()
+                            }
+                        }
+                    )
+                }
+            await()
             Assert.assertNotNull(savedConfig)
 
             savedConfig
         }.getOrNull()
 
-    //todo: add after saved cards release
+    @Test
     fun performPaymentOrchestration_presaved3Card_selected2Card() {
         val amexCardPosition = 2
         val finID0 = addCardPaymentInstrument(context, token, VALID_CARD_NUMBER)
         val finID1 = addCardPaymentInstrument(context, token, VALID_CARD_NUMBER_MASTERCARD)
-        val finID2 = addCardPaymentInstrument(
-            context,
-            token,
-            VALID_CARD_NUMBER_AMEX,
-            cvc = VALID_SECURITY_CODE_AMEX
-        )
+        val finID2 = addCardPaymentInstrument(context, token, VALID_CARD_NUMBER_VISA)
+
         val intent = initializeSavedCardConfig(arrayListOf(finID0, finID1, finID2)).run {
             createIntent(this!!)
         }
@@ -107,17 +120,14 @@ class SavedCardManagementTest {
         }
     }
 
-    //todo: add after saved cards release
+    //here
+    @Test
     fun performPaymentOrchestration_presaved3Card_delete3Cards() {
         val removedCardSize = 3
         val finID0 = addCardPaymentInstrument(context, token, VALID_CARD_NUMBER)
         val finID1 = addCardPaymentInstrument(context, token, VALID_CARD_NUMBER_MASTERCARD)
-        val finID2 = addCardPaymentInstrument(
-            context,
-            token,
-            VALID_CARD_NUMBER_AMEX,
-            cvc = VALID_SECURITY_CODE_AMEX
-        )
+        val finID2 = addCardPaymentInstrument(context, token, VALID_CARD_NUMBER_VISA)
+
         val intent = initializeSavedCardConfig(arrayListOf(finID0, finID1, finID2)).run {
             createIntent(this!!)
         }
@@ -146,7 +156,7 @@ class SavedCardManagementTest {
         }
     }
 
-    //todo: add after saved cards release
+    @Test
     fun performPaymentOrchestration_loadDeletedCard() {
         val finID0 = addCardPaymentInstrument(context, token, VALID_CARD_NUMBER)
         val intent = initializeSavedCardConfig(arrayListOf(finID0)).run {
@@ -182,17 +192,13 @@ class SavedCardManagementTest {
         }
     }
 
-    //todo: add after saved cards release
+    @Test
     fun performPaymentOrchestration_presaved3Card_deleteSecondCard_submitThirdCard() {
         val secondCardPosition = 1
         val finID0 = addCardPaymentInstrument(context, token, VALID_CARD_NUMBER)
         val finID1 = addCardPaymentInstrument(context, token, VALID_CARD_NUMBER_MASTERCARD)
-        val finID2 = addCardPaymentInstrument(
-            context,
-            token,
-            VALID_CARD_NUMBER_AMEX,
-            cvc = VALID_SECURITY_CODE_AMEX
-        )
+        val finID2 = addCardPaymentInstrument(context, token, VALID_CARD_NUMBER_VISA)
+
         val intent = initializeSavedCardConfig(arrayListOf(finID0, finID1, finID2)).run {
             createIntent(this!!)
         }
