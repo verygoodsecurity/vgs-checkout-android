@@ -16,7 +16,7 @@ import androidx.test.uiautomator.UiDevice
 import com.verygoodsecurity.vgscheckout.BuildConfig
 import com.verygoodsecurity.vgscheckout.Constants.VALID_CARD_NUMBER
 import com.verygoodsecurity.vgscheckout.Constants.VALID_CARD_NUMBER_MASTERCARD
-import com.verygoodsecurity.vgscheckout.Constants.VALID_CARD_NUMBER_VISA
+import com.verygoodsecurity.vgscheckout.Constants.VALID_CARD_NUMBER_AMEX
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.VGSCheckoutSavedCardsCallback
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
@@ -94,7 +94,12 @@ class SavedCardManagementTest {
         val amexCardPosition = 2
         val finID0 = addCardPaymentInstrument(context, token, VALID_CARD_NUMBER)
         val finID1 = addCardPaymentInstrument(context, token, VALID_CARD_NUMBER_MASTERCARD)
-        val finID2 = addCardPaymentInstrument(context, token, VALID_CARD_NUMBER_VISA)
+        val finID2 = addCardPaymentInstrument(
+            context,
+            token,
+            VALID_CARD_NUMBER_AMEX,
+            cvc = VALID_CARD_NUMBER_AMEX
+        )
 
         val intent = initializeSavedCardConfig(arrayListOf(finID0, finID1, finID2)).run {
             createIntent(this!!)
@@ -126,7 +131,12 @@ class SavedCardManagementTest {
         val removedCardSize = 3
         val finID0 = addCardPaymentInstrument(context, token, VALID_CARD_NUMBER)
         val finID1 = addCardPaymentInstrument(context, token, VALID_CARD_NUMBER_MASTERCARD)
-        val finID2 = addCardPaymentInstrument(context, token, VALID_CARD_NUMBER_VISA)
+        val finID2 = addCardPaymentInstrument(
+            context,
+            token,
+            VALID_CARD_NUMBER_AMEX,
+            cvc = VALID_CARD_NUMBER_AMEX
+        )
 
         val intent = initializeSavedCardConfig(arrayListOf(finID0, finID1, finID2)).run {
             createIntent(this!!)
@@ -197,7 +207,12 @@ class SavedCardManagementTest {
         val secondCardPosition = 1
         val finID0 = addCardPaymentInstrument(context, token, VALID_CARD_NUMBER)
         val finID1 = addCardPaymentInstrument(context, token, VALID_CARD_NUMBER_MASTERCARD)
-        val finID2 = addCardPaymentInstrument(context, token, VALID_CARD_NUMBER_VISA)
+        val finID2 = addCardPaymentInstrument(
+            context,
+            token,
+            VALID_CARD_NUMBER_AMEX,
+            cvc = VALID_CARD_NUMBER_AMEX
+        )
 
         val intent = initializeSavedCardConfig(arrayListOf(finID0, finID1, finID2)).run {
             createIntent(this!!)
