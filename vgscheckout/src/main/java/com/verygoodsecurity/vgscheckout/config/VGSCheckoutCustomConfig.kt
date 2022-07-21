@@ -23,6 +23,7 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.VGSChecko
 import com.verygoodsecurity.vgscheckout.config.ui.view.card.expiration.model.VGSDateSeparateSerializer
 import com.verygoodsecurity.vgscheckout.config.ui.view.core.VGSCheckoutFieldVisibility
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
+import com.verygoodsecurity.vgscheckout.util.extension.generateBaseUrl
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue

@@ -24,6 +24,7 @@ import com.verygoodsecurity.vgscheckout.model.Card
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
 import com.verygoodsecurity.vgscheckout.networking.command.GetSavedCardsCommand
 import com.verygoodsecurity.vgscheckout.networking.command.core.VGSCheckoutCancellable
+import com.verygoodsecurity.vgscheckout.util.extension.generateBaseUrl
 
 /**
  * Holds configuration with predefined setup for work with payment orchestration app.
@@ -140,6 +141,7 @@ class VGSCheckoutAddCardConfig internal constructor(
         private var accessToken = ""
         private var routeId = ORCHESTRATION_URL_ROUTE_ID
         private var isRemoveCardOptionEnabled: Boolean = true
+        private var cardIds: List<String> = emptyList()
 
         private var countryFieldVisibility = VGSCheckoutFieldVisibility.VISIBLE
         private var validCountries: List<String> = emptyList()
@@ -324,8 +326,7 @@ class VGSCheckoutAddCardConfig internal constructor(
         }
         //endregion
 
-        private var cardIds: List<String> = emptyList()
-        fun setCardsIds(
+        fun setSavedCardsIds(
             @Size(max = MAX_CARDS_SIZE) cardIds: List<String>
         ): Builder {
             this.cardIds = cardIds
