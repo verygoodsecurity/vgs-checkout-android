@@ -16,7 +16,7 @@ internal class TransferPaymentMethodFragment : PaymentMethodFragment<VGSCheckout
             requireContext(),
             TransferCommand.Params(
                 config.baseUrl,
-                config.orderDetails?.id ?: "",
+                config.order?.id ?: "",
                 card.finId,
                 config.accessToken
             )

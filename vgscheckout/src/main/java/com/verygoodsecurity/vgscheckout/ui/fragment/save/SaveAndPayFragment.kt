@@ -20,7 +20,7 @@ internal class SaveAndPayFragment : OrchestrationFragment<VGSCheckoutPaymentConf
             requireContext(),
             TransferCommand.Params(
                 config.baseUrl,
-                config.orderDetails?.id ?: "",
+                config.order?.id ?: "",
                 source,
                 config.accessToken
             )

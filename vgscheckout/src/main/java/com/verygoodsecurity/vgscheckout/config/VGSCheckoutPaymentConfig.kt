@@ -7,7 +7,7 @@ import androidx.annotation.Size
 import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgscheckout.config.core.OrchestrationConfig
 import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutRouteConfig
-import com.verygoodsecurity.vgscheckout.config.payment.OrderDetails
+import com.verygoodsecurity.vgscheckout.config.payment.Order
 import com.verygoodsecurity.vgscheckout.config.payment.VGSCheckoutPaymentMethod
 import com.verygoodsecurity.vgscheckout.config.payment.VGSCheckoutPaymentMethod.SavedCards.Companion.MAX_CARDS_SIZE
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutFormConfig
@@ -20,6 +20,7 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.address.city.VGSCheckoutC
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.code.VGSCheckoutPostalCodeOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.country.VGSCheckoutCountryOptions
 import com.verygoodsecurity.vgscheckout.config.ui.view.core.VGSCheckoutFieldVisibility
+import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
 import com.verygoodsecurity.vgscheckout.model.Card
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
 import com.verygoodsecurity.vgscheckout.networking.command.GetOrderDetails
@@ -50,7 +51,8 @@ internal class VGSCheckoutPaymentConfig internal constructor(
     createdFromParcel
 ) {
 
-    internal var orderDetails: OrderDetails? = null
+    //TODO: Order details can't be null in production
+    internal var order: Order? = null
         @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE) internal set
 
     override val baseUrl: String = generateBaseUrl()
@@ -72,7 +74,7 @@ internal class VGSCheckoutPaymentConfig internal constructor(
                 Card::class.java.classLoader
             )
         }
-        this.orderDetails = parcel.readParcelable(OrderDetails::class.java.classLoader)
+        this.order = parcel.readParcelable(Order::class.java.classLoader)
     }
 
     override fun describeContents(): Int = 0
@@ -87,7 +89,7 @@ internal class VGSCheckoutPaymentConfig internal constructor(
         parcel.writeInt(if (isScreenshotsAllowed) 1 else 0)
         parcel.writeInt(if (isRemoveCardOptionEnabled) 1 else 0)
         parcel.writeList(savedCards)
-        parcel.writeParcelable(orderDetails, flags)
+        parcel.writeParcelable(order, flags)
     }
 
     class Builder(
@@ -411,42 +413,40 @@ internal class VGSCheckoutPaymentConfig internal constructor(
                 )
             }
 
-            return CompositeCommand(
-                context,
-                mutableListOf(orderCommand, saveCardCommand)
-            ).also {
-                it.execute {
-                    when (val result = it.intermediateResult) {
-                        is GetSavedCardsCommand.Result -> saveCardsDetails(config, result)
-                        is GetOrderDetails.Result -> saveOrderDetails(config, result)
+            return CompositeCommand(listOf(orderCommand, saveCardCommand)).also { command ->
+                command.execute { result ->
+                    result.forEach {
+                        when (it) {
+                            is GetSavedCardsCommand.Result -> saveCardsDetails(config, it)
+                            is GetOrderDetails.Result -> {
+                                if (it.order == null) {
+                                    callback?.onFailure(
+                                        VGSCheckoutException(
+                                            it.code,
+                                            it.message,
+                                            null
+                                        )
+                                    )
+                                    return@execute
+                                }
+                                config.order = it.order
+                            }
+                        }
                     }
-
-//                    if (it.isProcessing.not()) callback?.onSuccess(config)
-                    //todo Think if we need this callback because here we have orders, payment initialization in future too.
-//                    callback?.onFailure(result.exception)
+                    callback?.onSuccess(config)
                 }
             }
-        }
-
-        private fun saveOrderDetails(
-            config: VGSCheckoutPaymentConfig,
-            result: GetOrderDetails.Result
-        ) {
-            config.orderDetails = result.orderDetails
         }
 
         private fun saveCardsDetails(
             config: VGSCheckoutPaymentConfig,
             result: GetSavedCardsCommand.Result
         ) {
-            when (result) {
-                is GetSavedCardsCommand.Result.Success -> {
-                    //todo: log FinInstrumentCrudEvent.load for transfers. Success
-                    config.savedCards = result.cards
-                }
-                is GetSavedCardsCommand.Result.Failure -> {
-                    //todo: log FinInstrumentCrudEvent.load for transfers. Failure
-                }
+            if (result.isSuccessful) {
+                //todo: log FinInstrumentCrudEvent.load for transfers. Success
+                config.savedCards = result.cards ?: emptyList()
+            } else {
+                //todo: log FinInstrumentCrudEvent.load for transfers. Failure
             }
         }
     }
