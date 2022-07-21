@@ -14,10 +14,7 @@ import androidx.test.uiautomator.UiDevice
 import com.verygoodsecurity.vgscheckout.BuildConfig
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.util.AccessTokenHelper
-import com.verygoodsecurity.vgscheckout.VGSCheckoutConfigInitCallback
-import com.verygoodsecurity.vgscheckout.VGSCheckoutSavedCardsCallback
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
-import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
 import com.verygoodsecurity.vgscheckout.model.*
 import com.verygoodsecurity.vgscheckout.ui.SaveCardActivity
 import com.verygoodsecurity.vgscheckout.util.extension.*
@@ -61,23 +58,9 @@ class SavedCardActivityResultTest {
         val savedConfig = VGSCheckoutAddCardConfig.Builder(BuildConfig.VAULT_ID)
             .setAccessToken(token)
             .setIsScreenshotsAllowed(true)
+            .setSavedCardsIds(arrayListOf(finID))
             .build()
 
-        //todo update enable loadSavedCards function
-//        savedConfig.loadSavedCards(
-//            context,
-//            arrayListOf(finID),
-//            object : VGSCheckoutSavedCardsCallback {
-//                override fun onSuccess() {
-//                    countDown()
-//                }
-//
-//                override fun onFailure(exception: VGSCheckoutException) {
-//                    countDown()
-//                }
-//            }
-//        )
-//        await()
         Assert.assertNotNull(savedConfig)
 
         savedConfig

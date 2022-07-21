@@ -19,10 +19,7 @@ import com.verygoodsecurity.vgscheckout.Constants.VALID_CARD_NUMBER_AMEX
 import com.verygoodsecurity.vgscheckout.Constants.VALID_CARD_NUMBER_MASTERCARD
 import com.verygoodsecurity.vgscheckout.Constants.VALID_SECURITY_CODE_AMEX
 import com.verygoodsecurity.vgscheckout.R
-import com.verygoodsecurity.vgscheckout.VGSCheckoutConfigInitCallback
-import com.verygoodsecurity.vgscheckout.VGSCheckoutSavedCardsCallback
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
-import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
 import com.verygoodsecurity.vgscheckout.model.*
 import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutCardResponse
 import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutDeleteCardResponse
@@ -68,23 +65,8 @@ class SavedCardManagementTest {
             val savedConfig = VGSCheckoutAddCardConfig.Builder(BuildConfig.VAULT_ID)
                 .setAccessToken(token)
                 .setIsScreenshotsAllowed(true)
+                .setSavedCardsIds(arrayListOf)
                 .build()
-//todo update enable loadSavedCards function
-//            savedConfig.loadSavedCard(
-//                context,
-//                arrayListOf,
-//                object : VGSCheckoutSavedCardsCallback {
-//                    override fun onSuccess() {
-//                        countDown()
-//                    }
-//                    override fun onFailure(exception: VGSCheckoutException) {
-//                        countDown()
-//                    }
-//                }
-//            )
-
-//            await()
-
             Assert.assertNotNull(savedConfig)
 
             savedConfig
