@@ -1,12 +1,11 @@
 package com.verygoodsecurity.vgscheckout
 
-import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
 
 /**
  * Checkout config creating callback interface definition.
  */
-interface VGSCheckoutSavedCardsCallback {
+internal interface VGSCheckoutConfigInitCallback {
 
     /**
      * Invoked when checkout config creation successfully complete.

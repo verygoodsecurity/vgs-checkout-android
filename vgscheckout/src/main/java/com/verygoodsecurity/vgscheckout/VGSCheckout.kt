@@ -85,7 +85,7 @@ class VGSCheckout internal constructor(
         return VGSCheckoutAddCardConfig.loadSavedCards(
             activity,
             config,
-            object : VGSCheckoutSavedCardsCallback {
+            object : VGSCheckoutConfigInitCallback {
                 override fun onSuccess() {
                     startCheckoutForm(config, transitionOptions)
                 }

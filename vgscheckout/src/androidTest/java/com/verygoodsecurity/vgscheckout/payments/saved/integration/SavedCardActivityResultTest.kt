@@ -13,7 +13,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
 import com.verygoodsecurity.vgscheckout.BuildConfig
 import com.verygoodsecurity.vgscheckout.R
-import com.verygoodsecurity.vgscheckout.VGSCheckoutSavedCardsCallback
+import com.verygoodsecurity.vgscheckout.VGSCheckoutConfigInitCallback
 import com.verygoodsecurity.vgscheckout.util.AccessTokenHelper
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
 import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
@@ -66,7 +66,7 @@ class SavedCardActivityResultTest {
                 VGSCheckoutAddCardConfig.loadSavedCards(
                     context,
                     it,
-                    object : VGSCheckoutSavedCardsCallback {
+                    object : VGSCheckoutConfigInitCallback {
                         override fun onSuccess() {
                             countDown()
                         }

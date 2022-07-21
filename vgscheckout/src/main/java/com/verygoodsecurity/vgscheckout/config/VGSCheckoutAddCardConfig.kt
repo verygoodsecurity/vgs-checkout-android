@@ -4,7 +4,7 @@ import android.content.Context
 import android.os.Parcel
 import android.os.Parcelable
 import androidx.annotation.Size
-import com.verygoodsecurity.vgscheckout.VGSCheckoutSavedCardsCallback
+import com.verygoodsecurity.vgscheckout.VGSCheckoutConfigInitCallback
 import com.verygoodsecurity.vgscheckout.analytic.event.FinInstrumentCrudEvent
 import com.verygoodsecurity.vgscheckout.config.core.OrchestrationConfig
 import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutRouteConfig
@@ -366,7 +366,7 @@ class VGSCheckoutAddCardConfig internal constructor(
         internal fun loadSavedCards(
             context: Context,
             config: VGSCheckoutAddCardConfig,
-            callback: VGSCheckoutSavedCardsCallback? = null
+            callback: VGSCheckoutConfigInitCallback? = null
         ): VGSCheckoutCancellable {
 
             val ids = config.cardIds

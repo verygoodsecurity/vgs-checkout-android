@@ -18,7 +18,7 @@ import com.verygoodsecurity.vgscheckout.Constants.VALID_CARD_NUMBER
 import com.verygoodsecurity.vgscheckout.Constants.VALID_CARD_NUMBER_MASTERCARD
 import com.verygoodsecurity.vgscheckout.Constants.VALID_CARD_NUMBER_AMEX
 import com.verygoodsecurity.vgscheckout.R
-import com.verygoodsecurity.vgscheckout.VGSCheckoutSavedCardsCallback
+import com.verygoodsecurity.vgscheckout.VGSCheckoutConfigInitCallback
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
 import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
 import com.verygoodsecurity.vgscheckout.model.*
@@ -72,7 +72,7 @@ class SavedCardManagementTest {
                     VGSCheckoutAddCardConfig.loadSavedCards(
                         context,
                         it,
-                        object : VGSCheckoutSavedCardsCallback {
+                        object : VGSCheckoutConfigInitCallback {
                             override fun onSuccess() {
                                 countDown()
                             }

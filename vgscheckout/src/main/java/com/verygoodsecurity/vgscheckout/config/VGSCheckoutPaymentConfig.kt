@@ -5,6 +5,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import androidx.annotation.Size
 import androidx.annotation.VisibleForTesting
+import com.verygoodsecurity.vgscheckout.VGSCheckoutConfigInitCallback
 import com.verygoodsecurity.vgscheckout.config.core.OrchestrationConfig
 import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutRouteConfig
 import com.verygoodsecurity.vgscheckout.config.payment.Order
@@ -376,6 +377,7 @@ internal class VGSCheckoutPaymentConfig internal constructor(
             formConfig: VGSCheckoutFormConfig,
             isScreenshotsAllowed: Boolean = false,
             isRemoveCardOptionEnabled: Boolean = true,
+            callback: VGSCheckoutConfigInitCallback? = null
         ): VGSCheckoutCancellable {
             val config = VGSCheckoutPaymentConfig(
                 accessToken,
@@ -433,7 +435,7 @@ internal class VGSCheckoutPaymentConfig internal constructor(
                             }
                         }
                     }
-                    callback?.onSuccess(config)
+                    callback?.onSuccess()
                 }
             }
         }
