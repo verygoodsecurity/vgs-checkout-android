@@ -5,7 +5,6 @@ import android.os.Parcel
 import android.os.Parcelable
 import androidx.annotation.Size
 import androidx.annotation.VisibleForTesting
-import com.verygoodsecurity.vgscheckout.VGSCheckoutConfigInitCallback
 import com.verygoodsecurity.vgscheckout.config.core.OrchestrationConfig
 import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutRouteConfig
 import com.verygoodsecurity.vgscheckout.config.payment.OrderDetails
@@ -27,6 +26,7 @@ import com.verygoodsecurity.vgscheckout.networking.command.GetOrderDetails
 import com.verygoodsecurity.vgscheckout.networking.command.GetSavedCardsCommand
 import com.verygoodsecurity.vgscheckout.networking.command.core.CompositeCommand
 import com.verygoodsecurity.vgscheckout.networking.command.core.VGSCheckoutCancellable
+import com.verygoodsecurity.vgscheckout.util.extension.generateBaseUrl
 
 internal class VGSCheckoutPaymentConfig internal constructor(
     override val accessToken: String,
@@ -314,7 +314,6 @@ internal class VGSCheckoutPaymentConfig internal constructor(
          */
         fun build(
             context: Context,
-            callback: VGSCheckoutConfigInitCallback<VGSCheckoutPaymentConfig>? = null
         ): VGSCheckoutCancellable {
             val formConfig = buildFormConfig()
 
@@ -329,7 +328,6 @@ internal class VGSCheckoutPaymentConfig internal constructor(
                 formConfig,
                 isScreenshotsAllowed,
                 isRemoveCardOptionEnabled,
-                callback
             )
         }
 
@@ -376,7 +374,6 @@ internal class VGSCheckoutPaymentConfig internal constructor(
             formConfig: VGSCheckoutFormConfig,
             isScreenshotsAllowed: Boolean = false,
             isRemoveCardOptionEnabled: Boolean = true,
-            callback: VGSCheckoutConfigInitCallback<VGSCheckoutPaymentConfig>? = null
         ): VGSCheckoutCancellable {
             val config = VGSCheckoutPaymentConfig(
                 accessToken,
@@ -424,7 +421,7 @@ internal class VGSCheckoutPaymentConfig internal constructor(
                         is GetOrderDetails.Result -> saveOrderDetails(config, result)
                     }
 
-                    if (it.isProcessing.not()) callback?.onSuccess(config)
+//                    if (it.isProcessing.not()) callback?.onSuccess(config)
                     //todo Think if we need this callback because here we have orders, payment initialization in future too.
 //                    callback?.onFailure(result.exception)
                 }
