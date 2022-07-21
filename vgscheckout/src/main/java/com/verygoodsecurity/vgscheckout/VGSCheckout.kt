@@ -101,7 +101,7 @@ class VGSCheckout internal constructor(
         config: CheckoutConfig,
         transitionOptions: VGSCheckoutTransitionOptions? = null
     ) {
-        if (onCheckoutInitListener?.onCheckoutInitializationSuccess() != false) activityResultLauncher.launch(
+        activityResultLauncher.launch(
             CheckoutResultContract.Args(config),
             transitionOptions?.options
         )
