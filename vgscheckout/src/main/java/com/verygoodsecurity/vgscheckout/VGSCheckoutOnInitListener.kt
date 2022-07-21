@@ -9,10 +9,8 @@ interface VGSCheckoutOnInitListener {
 
     /**
      * Called when initialization of the player succeeds.
-     *
-     * @return True if the VGS Checkout should start the payment form, false otherwise.
      */
-    fun onCheckoutInitializationSuccess(): Boolean
+    fun onCheckoutInitializationSuccess()
 
     /**
      * Called when initialization of the player fails.

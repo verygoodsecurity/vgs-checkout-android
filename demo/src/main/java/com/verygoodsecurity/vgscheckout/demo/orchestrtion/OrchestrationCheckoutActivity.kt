@@ -52,9 +52,8 @@ class OrchestrationCheckoutActivity : BaseActivity(R.layout.activity_payment_che
     }
 
 
-    override fun onCheckoutInitializationSuccess(): Boolean {
+    override fun onCheckoutInitializationSuccess() {
         setLoading(false)
-        return true
     }
 
     override fun onCheckoutInitializationFailure(exception: VGSCheckoutException) {
