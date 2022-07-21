@@ -9,8 +9,6 @@ import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
-import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
-import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResultBundle
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutTransitionOptions
 import com.verygoodsecurity.vgscheckout.networking.command.core.VGSCheckoutCancellable
 
@@ -66,8 +64,8 @@ class VGSCheckout internal constructor(
         transitionOptions: VGSCheckoutTransitionOptions? = null
     ): VGSCheckoutCancellable? {
         return when (config) {
-            is VGSCheckoutAddCardConfig -> initializeAddCardCheckout(config, transitionOptions)
             is VGSCheckoutCustomConfig -> initializeCustomCheckout(config, transitionOptions)
+            is VGSCheckoutAddCardConfig -> initializeAddCardCheckout(config, transitionOptions)
             else -> null
         }
     }
@@ -76,10 +74,7 @@ class VGSCheckout internal constructor(
         config: VGSCheckoutCustomConfig,
         transitionOptions: VGSCheckoutTransitionOptions?
     ): VGSCheckoutCancellable? {
-        if (onCheckoutInitListener?.onCheckoutInit() != false) startCheckoutForm(
-            config,
-            transitionOptions
-        )
+        startCheckoutForm(config, transitionOptions)
         return null
     }
 
@@ -92,19 +87,11 @@ class VGSCheckout internal constructor(
             config,
             object : VGSCheckoutSavedCardsCallback {
                 override fun onSuccess() {
-                    if (onCheckoutInitListener?.onCheckoutInit() != false) startCheckoutForm(
-                        config,
-                        transitionOptions
-                    )
+                    startCheckoutForm(config, transitionOptions)
                 }
 
                 override fun onFailure(exception: VGSCheckoutException) {
-                    callback?.onCheckoutResult(
-                        VGSCheckoutResult.Failed(
-                            VGSCheckoutResultBundle(),
-                            exception
-                        )
-                    )
+                    onCheckoutInitListener?.onCheckoutInitializationFailure(exception)
                 }
             }
         )
@@ -114,7 +101,7 @@ class VGSCheckout internal constructor(
         config: CheckoutConfig,
         transitionOptions: VGSCheckoutTransitionOptions? = null
     ) {
-        activityResultLauncher.launch(
+        if (onCheckoutInitListener?.onCheckoutInitializationSuccess() != false) activityResultLauncher.launch(
             CheckoutResultContract.Args(config),
             transitionOptions?.options
         )

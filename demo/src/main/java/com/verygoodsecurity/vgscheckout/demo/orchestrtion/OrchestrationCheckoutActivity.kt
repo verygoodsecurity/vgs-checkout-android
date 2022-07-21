@@ -21,6 +21,7 @@ import com.verygoodsecurity.vgscheckout.demo.BaseActivity
 import com.verygoodsecurity.vgscheckout.demo.BuildConfig
 import com.verygoodsecurity.vgscheckout.demo.CheckoutType
 import com.verygoodsecurity.vgscheckout.demo.R
+import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResultBundle
 import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutCardResponse
@@ -50,9 +51,14 @@ class OrchestrationCheckoutActivity : BaseActivity(R.layout.activity_payment_che
         mbPresent.setOnClickListener { presentCheckout() }
     }
 
-    override fun onCheckoutInit(): Boolean {
+
+    override fun onCheckoutInitializationSuccess(): Boolean {
         setLoading(false)
         return true
+    }
+
+    override fun onCheckoutInitializationFailure(exception: VGSCheckoutException) {
+        setLoading(false)
     }
 
     override fun onCheckoutResult(result: VGSCheckoutResult) {
@@ -118,7 +124,7 @@ class OrchestrationCheckoutActivity : BaseActivity(R.layout.activity_payment_che
             .setIsSaveCardOptionVisible(preferences.getBoolean(R.string.setting_key_save_card_option_enabled))
 
 
-            .setCardsIds(arrayListOf(BuildConfig.TEMPORARY_FIN_INSTRUMENT))
+            .setSavedCardsIds(arrayListOf(BuildConfig.TEMPORARY_FIN_INSTRUMENT))
 
 
         // Create config object
