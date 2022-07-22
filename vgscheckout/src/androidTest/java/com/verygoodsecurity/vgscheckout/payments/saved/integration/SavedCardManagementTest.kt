@@ -61,33 +61,32 @@ class SavedCardManagementTest {
             )
         }
 
-    private fun initializeSavedCardConfig(arrayListOf: ArrayList<String>) =
+    private fun initializeSavedCardConfig(arrayListOf: ArrayList<String>): VGSCheckoutAddCardConfig {
+        val config = VGSCheckoutAddCardConfig.Builder(BuildConfig.VAULT_ID)
+            .setAccessToken(token)
+            .setIsScreenshotsAllowed(true)
+            .setSavedCardsIds(arrayListOf)
+            .build()
+
         CountDownLatch(1).runCatching {
-            val savedConfig = VGSCheckoutAddCardConfig.Builder(BuildConfig.VAULT_ID)
-                .setAccessToken(token)
-                .setIsScreenshotsAllowed(true)
-                .setSavedCardsIds(arrayListOf)
-                .build()
-                .also {
-                    VGSCheckoutAddCardConfig.loadSavedCards(
-                        context,
-                        it,
-                        object : VGSCheckoutConfigInitCallback {
-                            override fun onSuccess() {
-                                countDown()
-                            }
+            VGSCheckoutAddCardConfig.loadSavedCards(
+                context,
+                config,
+                object : VGSCheckoutConfigInitCallback {
+                    override fun onSuccess() {
+                        countDown()
+                    }
 
-                            override fun onFailure(exception: VGSCheckoutException) {
-                                countDown()
-                            }
-                        }
-                    )
+                    override fun onFailure(exception: VGSCheckoutException) {
+                        countDown()
+                    }
                 }
+            )
             await()
-            Assert.assertNotNull(savedConfig)
+        }
 
-            savedConfig
-        }.getOrNull()
+        return config
+    }
 
     @Test
     fun performPaymentOrchestration_presaved3Card_selected2Card() {
@@ -102,7 +101,7 @@ class SavedCardManagementTest {
         )
 
         val intent = initializeSavedCardConfig(arrayListOf(finID0, finID1, finID2)).run {
-            createIntent(this!!)
+            createIntent(this)
         }
 
         ActivityScenario.launch<SaveCardActivity>(intent).use {
@@ -139,7 +138,7 @@ class SavedCardManagementTest {
         )
 
         val intent = initializeSavedCardConfig(arrayListOf(finID0, finID1, finID2)).run {
-            createIntent(this!!)
+            createIntent(this)
         }
 
         ActivityScenario.launch<SaveCardActivity>(intent).use {
@@ -170,7 +169,7 @@ class SavedCardManagementTest {
     fun performPaymentOrchestration_loadDeletedCard() {
         val finID0 = addCardPaymentInstrument(context, token, VALID_CARD_NUMBER)
         val intent = initializeSavedCardConfig(arrayListOf(finID0)).run {
-            createIntent(this!!)
+            createIntent(this)
         }
 
         ActivityScenario.launch<SaveCardActivity>(intent).use {
@@ -192,7 +191,7 @@ class SavedCardManagementTest {
         }
 
         val wrongSavedCardIntent = initializeSavedCardConfig(arrayListOf(finID0)).run {
-            createIntent(this!!)
+            createIntent(this)
         }
 
         ActivityScenario.launch<SaveCardActivity>(wrongSavedCardIntent).use {
@@ -215,7 +214,7 @@ class SavedCardManagementTest {
         )
 
         val intent = initializeSavedCardConfig(arrayListOf(finID0, finID1, finID2)).run {
-            createIntent(this!!)
+            createIntent(this)
         }
 
         ActivityScenario.launch<SaveCardActivity>(intent).use {
