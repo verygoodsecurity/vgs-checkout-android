@@ -82,6 +82,12 @@ class VGSCheckoutAddCardConfig internal constructor(
                 Card::class.java.classLoader
             )
         }
+        this.cardIds = mutableListOf<String>().apply {
+            parcel.readList(
+                this,
+                Card::class.java.classLoader
+            )
+        }
     }
 
     /**
@@ -127,6 +133,7 @@ class VGSCheckoutAddCardConfig internal constructor(
         parcel.writeInt(if (isScreenshotsAllowed) 1 else 0)
         parcel.writeInt(if (isRemoveCardOptionEnabled) 1 else 0)
         parcel.writeList(savedCards)
+        parcel.writeList(cardIds)
     }
 
     override fun describeContents(): Int {
