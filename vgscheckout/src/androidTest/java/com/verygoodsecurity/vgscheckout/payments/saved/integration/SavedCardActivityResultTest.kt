@@ -87,7 +87,7 @@ class SavedCardActivityResultTest {
     @Test
     fun performPaymentOrchestration_cancelActivityResult_withBackPress_codeCanceled() {
         val finID = addCardPaymentInstrument(context, token)
-        Assert.assertTrue(finID.isEmpty())
+        Assert.assertTrue(finID.isNotEmpty())
 
         val config = VGSCheckoutAddCardConfig.Builder(BuildConfig.VAULT_ID)
             .setAccessToken(token)
@@ -111,7 +111,7 @@ class SavedCardActivityResultTest {
             )
 
             await()
-        }.getOrNull()
+        }
         Assert.assertTrue(config.savedCards.isNotEmpty())
 
         val intent = createIntent(config)
