@@ -131,7 +131,6 @@ internal fun addCardPaymentInstrument(
     expDate: String = Constants.VALID_EXP_DATE,
     cvc: String = Constants.VALID_SECURITY_CODE
 ): String {
-    VGSCheckoutLogger.warn("VGSCheckout", "VAULT_ID: ${BuildConfig.VAULT_ID}")
     val intent = Intent(context, SaveCardActivity::class.java).apply {
         val config = VGSCheckoutAddCardConfig.Builder(BuildConfig.VAULT_ID)
             .setAccessToken(token)
@@ -153,10 +152,11 @@ internal fun addCardPaymentInstrument(
         // Act
         ViewInteraction.onViewWithScrollTo(R.id.mbSaveCard).perform(ViewActions.click())
         //Assert
-        val id = it?.getParcelableSafe<CheckoutResultContract.Result>(EXTRA_KEY_RESULT)
+        val body = it?.getParcelableSafe<CheckoutResultContract.Result>(EXTRA_KEY_RESULT)
             ?.checkoutResult?.data?.getParcelable<VGSCheckoutCardResponse>(
                 VGSCheckoutResultBundle.Keys.ADD_CARD_RESPONSE
-            )?.getId() ?: ""
+            )
+        val id = body?.getId() ?: ""
 
         Assert.assertTrue(id.isNotEmpty())
 
