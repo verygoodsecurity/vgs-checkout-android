@@ -1,18 +1,15 @@
 package com.verygoodsecurity.vgscheckout.util.extension
 
-import com.google.gson.Gson
+import com.google.gson.JsonParser
 import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutCardResponse
-import com.verygoodsecurity.vgscheckout.util.logger.VGSCheckoutLogger
 
 internal fun VGSCheckoutCardResponse.getId(): String {
-    VGSCheckoutLogger.warn("VGSCheckout", "body:$body")
-    return Gson().fromJson(body, CardResponse::class.java).data.id
+    return JsonParser
+        .parseString(body)
+        .asJsonObject
+        .run {
+            takeIf { it.has("data") }?.run { get("data").asJsonObject }
+                ?.takeIf { it.has("id") }?.run { get("id").asString }
+                ?: ""
+        }
 }
-
-private data class CardResponse(
-    val data: CardDataResponse
-)
-
-private data class CardDataResponse(
-    val id: String
-)
