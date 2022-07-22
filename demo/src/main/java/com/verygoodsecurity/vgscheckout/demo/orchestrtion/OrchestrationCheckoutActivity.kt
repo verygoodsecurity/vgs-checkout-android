@@ -26,6 +26,7 @@ import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResultBundle
 import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutCardResponse
 import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutTransferResponse
+import com.verygoodsecurity.vgscheckout.networking.command.core.VGSCheckoutCancellable
 import okhttp3.*
 import okhttp3.internal.EMPTY_REQUEST
 import java.io.IOException
@@ -39,6 +40,7 @@ class OrchestrationCheckoutActivity : BaseActivity(R.layout.activity_payment_che
 
     // Important: Best place to init checkout object is onCreate
     private lateinit var checkout: VGSCheckout
+    private var vgsCheckoutCancellable: VGSCheckoutCancellable? = null
 
     private val progressBar: ProgressBar by lazy { findViewById(R.id.progressBar) }
     private val mbPresent: MaterialButton by lazy { findViewById(R.id.mbPresent) }
@@ -50,7 +52,6 @@ class OrchestrationCheckoutActivity : BaseActivity(R.layout.activity_payment_che
 
         mbPresent.setOnClickListener { presentCheckout() }
     }
-
 
     override fun onCheckoutInitializationSuccess() {
         setLoading(false)
@@ -84,7 +85,7 @@ class OrchestrationCheckoutActivity : BaseActivity(R.layout.activity_payment_che
                 return@get
             }
             initializeConfiguration(it.value) { config ->
-                checkout.present(config)
+                vgsCheckoutCancellable = checkout.present(config)
             }
         }
     }
@@ -122,9 +123,7 @@ class OrchestrationCheckoutActivity : BaseActivity(R.layout.activity_payment_che
             .setFormValidationBehaviour(preferences.getValidationBehaviour(R.string.setting_key_validation_behaviour))
             .setIsSaveCardOptionVisible(preferences.getBoolean(R.string.setting_key_save_card_option_enabled))
 
-
-            .setSavedCardsIds(arrayListOf(BuildConfig.TEMPORARY_FIN_INSTRUMENT))
-
+            .setSavedCardsIds(arrayListOf(BuildConfig.TEST_FIN_INSTRUMENT))
 
         // Create config object
         callback(builder.build())

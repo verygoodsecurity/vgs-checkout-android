@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
-import com.verygoodsecurity.vgscheckout.config.VGSCheckoutPaymentConfig
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
@@ -24,6 +23,7 @@ class VGSCheckout internal constructor(
 
     private lateinit var activity: Activity
     private var callback: VGSCheckoutCallback? = null
+    private var checkoutCancellable: VGSCheckoutCancellable? = null
 
     /**
      *  Constructor to be used when launching the checkout from activity.
@@ -64,34 +64,43 @@ class VGSCheckout internal constructor(
         config: CheckoutConfig,
         transitionOptions: VGSCheckoutTransitionOptions? = null
     ): VGSCheckoutCancellable? {
-        return when (config) {
+        when (config) {
             is VGSCheckoutCustomConfig -> initializeCustomCheckout(config, transitionOptions)
             is VGSCheckoutAddCardConfig -> initializeAddCardCheckout(config, transitionOptions)
-            else -> null
         }
+        return checkoutCancellable
     }
 
     private fun initializeCustomCheckout(
         config: VGSCheckoutCustomConfig,
         transitionOptions: VGSCheckoutTransitionOptions?
-    ): VGSCheckoutCancellable? {
+    ) {
         startCheckoutForm(config, transitionOptions)
-        return null
     }
 
     private fun initializeAddCardCheckout(
         config: VGSCheckoutAddCardConfig,
         transitionOptions: VGSCheckoutTransitionOptions? = null
-    ): VGSCheckoutCancellable {
-        return VGSCheckoutAddCardConfig.loadSavedCards(
+    ) {
+        if (config.cardIds.isEmpty()) {
+            startCheckoutForm(config, transitionOptions)
+            return
+        }
+
+        checkoutCancellable = VGSCheckoutAddCardConfig.loadSavedCards(
             activity,
             config,
             object : VGSCheckoutConfigInitCallback {
                 override fun onSuccess() {
+                    if (checkoutCancellable?.isCancelled == true) {
+                        return
+                    }
+                    checkoutCancellable = null
                     startCheckoutForm(config, transitionOptions)
                 }
 
                 override fun onFailure(exception: VGSCheckoutException) {
+                    checkoutCancellable = null
                     onCheckoutInitListener?.onCheckoutInitializationFailure(exception)
                 }
             }

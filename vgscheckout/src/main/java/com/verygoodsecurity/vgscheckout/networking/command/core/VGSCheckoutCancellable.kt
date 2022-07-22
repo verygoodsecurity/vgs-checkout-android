@@ -3,10 +3,15 @@ package com.verygoodsecurity.vgscheckout.networking.command.core
 /**
  * A {@code VGSCancellable} is a action that can be canceled.
  */
-interface VGSCheckoutCancellable {
+abstract class VGSCheckoutCancellable {
+
+    internal var isCancelled: Boolean = false
+        private set
 
     /**
      * Cancel action.
      */
-    fun cancel()
+    open fun cancel() {
+        isCancelled = true
+    }
 }
