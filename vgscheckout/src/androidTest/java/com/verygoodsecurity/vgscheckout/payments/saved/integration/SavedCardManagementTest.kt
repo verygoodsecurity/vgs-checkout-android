@@ -37,6 +37,7 @@ import org.junit.runner.RunWith
 import java.util.concurrent.CountDownLatch
 
 @Suppress("SameParameterValue")
+@RunWith(AndroidJUnit4::class)
 class SavedCardManagementTest {
 
     private val context: Context = ApplicationProvider.getApplicationContext()
