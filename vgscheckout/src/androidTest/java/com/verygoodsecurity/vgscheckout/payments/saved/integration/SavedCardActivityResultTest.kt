@@ -86,9 +86,39 @@ class SavedCardActivityResultTest {
 
     @Test
     fun performPaymentOrchestration_cancelActivityResult_withBackPress_codeCanceled() {
-        val intent = initializeSavedCardConfig().run {
-            createIntent(this!!)
-        }
+        val config = CountDownLatch(1).runCatching {
+            val finID = addCardPaymentInstrument(context, token)
+            Assert.assertTrue(finID.isEmpty())
+
+            val savedConfig = VGSCheckoutAddCardConfig.Builder(BuildConfig.VAULT_ID)
+                .setAccessToken(token)
+                .setIsScreenshotsAllowed(true)
+                .setSavedCardsIds(arrayListOf(finID))
+                .build()
+
+            VGSCheckoutAddCardConfig.loadSavedCards(
+                context,
+                savedConfig,
+                object : VGSCheckoutConfigInitCallback {
+                    override fun onSuccess() {
+                        countDown()
+                    }
+
+                    override fun onFailure(exception: VGSCheckoutException) {
+                        countDown()
+                    }
+                }
+            )
+
+            await()
+
+            savedConfig
+        }.getOrNull()
+
+        Assert.assertNotNull(config)
+        Assert.assertTrue(config!!.savedCards.isNotEmpty())
+
+        val intent = createIntent(config)
 
         ActivityScenario.launch<SaveCardActivity>(intent).use {
             // Act
