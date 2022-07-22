@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutCustomConfig
+import com.verygoodsecurity.vgscheckout.config.VGSCheckoutPaymentConfig
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
@@ -101,6 +102,7 @@ class VGSCheckout internal constructor(
         config: CheckoutConfig,
         transitionOptions: VGSCheckoutTransitionOptions? = null
     ) {
+        onCheckoutInitListener?.onCheckoutInitializationSuccess()
         activityResultLauncher.launch(
             CheckoutResultContract.Args(config),
             transitionOptions?.options
