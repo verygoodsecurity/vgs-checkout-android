@@ -17,6 +17,7 @@ import com.verygoodsecurity.vgscheckout.Constants
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.view.internal.*
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillingAddressVisibility
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_ARGS
 import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_RESULT
@@ -25,6 +26,7 @@ import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutCardResponse
 import com.verygoodsecurity.vgscheckout.ui.SaveCardActivity
 import com.verygoodsecurity.vgscheckout.util.ActionHelper
 import com.verygoodsecurity.vgscheckout.util.ViewInteraction
+import com.verygoodsecurity.vgscheckout.util.logger.VGSCheckoutLogger
 import org.hamcrest.Matcher
 import org.junit.Assert
 
@@ -129,9 +131,12 @@ internal fun addCardPaymentInstrument(
     expDate: String = Constants.VALID_EXP_DATE,
     cvc: String = Constants.VALID_SECURITY_CODE
 ): String {
+    VGSCheckoutLogger.warn("VGSCheckout", "VAULT_ID: ${BuildConfig.VAULT_ID}")
     val intent = Intent(context, SaveCardActivity::class.java).apply {
         val config = VGSCheckoutAddCardConfig.Builder(BuildConfig.VAULT_ID)
             .setAccessToken(token)
+            .setIsScreenshotsAllowed(true)
+            .setBillingAddressVisibility(VGSCheckoutBillingAddressVisibility.HIDDEN)
             .build()
         putExtra(
             EXTRA_KEY_ARGS,
@@ -153,7 +158,7 @@ internal fun addCardPaymentInstrument(
                 VGSCheckoutResultBundle.Keys.ADD_CARD_RESPONSE
             )?.getId() ?: ""
 
-        Assert.assertNotEquals(id, "")
+        Assert.assertTrue(id.isNotEmpty())
 
         return id
     }
