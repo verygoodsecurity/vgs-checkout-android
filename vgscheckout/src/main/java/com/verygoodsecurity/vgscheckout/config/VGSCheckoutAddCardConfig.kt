@@ -326,6 +326,11 @@ class VGSCheckoutAddCardConfig internal constructor(
         }
         //endregion
 
+        /**
+         * Defines previously saved user card.
+         *
+         * @param cardIds saved cards Ids.
+         */
         fun setSavedCardsIds(
             @Size(max = MAX_CARDS_SIZE) cardIds: List<String>
         ): Builder {
@@ -333,6 +338,9 @@ class VGSCheckoutAddCardConfig internal constructor(
             return this
         }
 
+        /**
+         * Creates payment orchestration configuration.
+         */
         fun build(): VGSCheckoutAddCardConfig {
             val formConfig = buildFormConfig()
             return VGSCheckoutAddCardConfig(
