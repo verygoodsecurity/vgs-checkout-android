@@ -28,6 +28,7 @@ import com.verygoodsecurity.vgscheckout.networking.command.GetOrderDetails
 import com.verygoodsecurity.vgscheckout.networking.command.GetSavedCardsCommand
 import com.verygoodsecurity.vgscheckout.networking.command.core.CompositeCommand
 import com.verygoodsecurity.vgscheckout.networking.command.core.VGSCheckoutCancellable
+import com.verygoodsecurity.vgscheckout.util.extension.generateBaseUrl
 
 internal class VGSCheckoutPaymentConfig internal constructor(
     override val accessToken: String,
@@ -316,7 +317,6 @@ internal class VGSCheckoutPaymentConfig internal constructor(
          */
         fun build(
             context: Context,
-            callback: VGSCheckoutConfigInitCallback<VGSCheckoutPaymentConfig>? = null
         ): VGSCheckoutCancellable {
             val formConfig = buildFormConfig()
 
@@ -331,7 +331,6 @@ internal class VGSCheckoutPaymentConfig internal constructor(
                 formConfig,
                 isScreenshotsAllowed,
                 isRemoveCardOptionEnabled,
-                callback
             )
         }
 
@@ -378,7 +377,7 @@ internal class VGSCheckoutPaymentConfig internal constructor(
             formConfig: VGSCheckoutFormConfig,
             isScreenshotsAllowed: Boolean = false,
             isRemoveCardOptionEnabled: Boolean = true,
-            callback: VGSCheckoutConfigInitCallback<VGSCheckoutPaymentConfig>? = null
+            callback: VGSCheckoutConfigInitCallback? = null
         ): VGSCheckoutCancellable {
             val config = VGSCheckoutPaymentConfig(
                 accessToken,
@@ -436,7 +435,7 @@ internal class VGSCheckoutPaymentConfig internal constructor(
                             }
                         }
                     }
-                    callback?.onSuccess(config)
+                    callback?.onSuccess()
                 }
             }
         }

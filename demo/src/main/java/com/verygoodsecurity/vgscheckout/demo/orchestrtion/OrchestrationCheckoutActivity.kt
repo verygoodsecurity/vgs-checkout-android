@@ -13,6 +13,7 @@ import com.google.gson.annotations.SerializedName
 import com.verygoodsecurity.vgscheckout.BuildConfig.AUTHENTICATION_HOST
 import com.verygoodsecurity.vgscheckout.VGSCheckout
 import com.verygoodsecurity.vgscheckout.VGSCheckoutCallback
+import com.verygoodsecurity.vgscheckout.VGSCheckoutOnInitListener
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
 import com.verygoodsecurity.vgscheckout.config.core.CheckoutConfig
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillingAddressVisibility
@@ -20,16 +21,18 @@ import com.verygoodsecurity.vgscheckout.demo.BaseActivity
 import com.verygoodsecurity.vgscheckout.demo.BuildConfig
 import com.verygoodsecurity.vgscheckout.demo.CheckoutType
 import com.verygoodsecurity.vgscheckout.demo.R
+import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResult
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutResultBundle
 import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutCardResponse
 import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutTransferResponse
+import com.verygoodsecurity.vgscheckout.networking.command.core.VGSCheckoutCancellable
 import okhttp3.*
 import okhttp3.internal.EMPTY_REQUEST
 import java.io.IOException
 
 class OrchestrationCheckoutActivity : BaseActivity(R.layout.activity_payment_checkout),
-    VGSCheckoutCallback {
+    VGSCheckoutCallback, VGSCheckoutOnInitListener {
 
     override val type: CheckoutType = CheckoutType.PAYMENT
 
@@ -37,6 +40,7 @@ class OrchestrationCheckoutActivity : BaseActivity(R.layout.activity_payment_che
 
     // Important: Best place to init checkout object is onCreate
     private lateinit var checkout: VGSCheckout
+    private var vgsCheckoutCancellable: VGSCheckoutCancellable? = null
 
     private val progressBar: ProgressBar by lazy { findViewById(R.id.progressBar) }
     private val mbPresent: MaterialButton by lazy { findViewById(R.id.mbPresent) }
@@ -44,7 +48,17 @@ class OrchestrationCheckoutActivity : BaseActivity(R.layout.activity_payment_che
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         checkout = VGSCheckout(this, this)
+        checkout.onCheckoutInitListener = this
+
         mbPresent.setOnClickListener { presentCheckout() }
+    }
+
+    override fun onCheckoutInitializationSuccess() {
+        setLoading(false)
+    }
+
+    override fun onCheckoutInitializationFailure(exception: VGSCheckoutException) {
+        setLoading(false)
     }
 
     override fun onCheckoutResult(result: VGSCheckoutResult) {
@@ -71,8 +85,7 @@ class OrchestrationCheckoutActivity : BaseActivity(R.layout.activity_payment_che
                 return@get
             }
             initializeConfiguration(it.value) { config ->
-                setLoading(false)
-                checkout.present(config)
+                vgsCheckoutCancellable = checkout.present(config)
             }
         }
     }
@@ -109,6 +122,8 @@ class OrchestrationCheckoutActivity : BaseActivity(R.layout.activity_payment_che
         ).setBillingAddressVisibility(billingAddressVisibility)
             .setFormValidationBehaviour(preferences.getValidationBehaviour(R.string.setting_key_validation_behaviour))
             .setIsSaveCardOptionVisible(preferences.getBoolean(R.string.setting_key_save_card_option_enabled))
+
+            .setSavedCardsIds(arrayListOf(BuildConfig.TEST_FIN_INSTRUMENT))
 
         // Create config object
         callback(builder.build())

@@ -3,11 +3,12 @@ package com.verygoodsecurity.vgscheckout.config
 import android.content.Context
 import android.os.Parcel
 import android.os.Parcelable
-import com.verygoodsecurity.vgscheckout.VGSCheckoutSavedCardsCallback
+import androidx.annotation.Size
+import com.verygoodsecurity.vgscheckout.VGSCheckoutConfigInitCallback
 import com.verygoodsecurity.vgscheckout.analytic.event.FinInstrumentCrudEvent
 import com.verygoodsecurity.vgscheckout.config.core.OrchestrationConfig
 import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutRouteConfig
-import com.verygoodsecurity.vgscheckout.config.payment.VGSCheckoutPaymentMethod
+import com.verygoodsecurity.vgscheckout.config.payment.VGSCheckoutPaymentMethod.SavedCards.Companion.MAX_CARDS_SIZE
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutFormConfig
 import com.verygoodsecurity.vgscheckout.config.ui.core.VGSCheckoutFormValidationBehaviour
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillingAddressOptions
@@ -23,6 +24,7 @@ import com.verygoodsecurity.vgscheckout.model.Card
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
 import com.verygoodsecurity.vgscheckout.networking.command.GetSavedCardsCommand
 import com.verygoodsecurity.vgscheckout.networking.command.core.VGSCheckoutCancellable
+import com.verygoodsecurity.vgscheckout.util.extension.generateBaseUrl
 
 /**
  * Holds configuration with predefined setup for work with payment orchestration app.
@@ -59,6 +61,7 @@ class VGSCheckoutAddCardConfig internal constructor(
     isRemoveCardOptionEnabled,
     createdFromParcel
 ) {
+    internal var cardIds = emptyList<String>()
 
     override val baseUrl: String = generateBaseUrl()
 
@@ -138,6 +141,7 @@ class VGSCheckoutAddCardConfig internal constructor(
         private var accessToken = ""
         private var routeId = ORCHESTRATION_URL_ROUTE_ID
         private var isRemoveCardOptionEnabled: Boolean = true
+        private var cardIds: List<String> = emptyList()
 
         private var countryFieldVisibility = VGSCheckoutFieldVisibility.VISIBLE
         private var validCountries: List<String> = emptyList()
@@ -322,6 +326,13 @@ class VGSCheckoutAddCardConfig internal constructor(
         }
         //endregion
 
+        fun setSavedCardsIds(
+            @Size(max = MAX_CARDS_SIZE) cardIds: List<String>
+        ): Builder {
+            this.cardIds = cardIds
+            return this
+        }
+
         fun build(): VGSCheckoutAddCardConfig {
             val formConfig = buildFormConfig()
             return VGSCheckoutAddCardConfig(
@@ -331,7 +342,9 @@ class VGSCheckoutAddCardConfig internal constructor(
                 environment,
                 formConfig,
                 isScreenshotsAllowed
-            )
+            ).apply {
+                this.cardIds = this@Builder.cardIds
+            }
         }
     }
 
@@ -350,14 +363,13 @@ class VGSCheckoutAddCardConfig internal constructor(
             }
         }
 
-        private fun loadSavedCards(
+        internal fun loadSavedCards(
             context: Context,
-            paymentMethod: VGSCheckoutPaymentMethod.SavedCards,
             config: VGSCheckoutAddCardConfig,
-            callback: VGSCheckoutSavedCardsCallback? = null
+            callback: VGSCheckoutConfigInitCallback? = null
         ): VGSCheckoutCancellable {
 
-            val ids = paymentMethod.getIds()
+            val ids = config.cardIds
             val params = GetSavedCardsCommand.Params(
                 config.baseUrl,
                 config.routeConfig.path,

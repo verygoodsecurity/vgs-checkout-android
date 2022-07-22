@@ -2,7 +2,7 @@ package com.verygoodsecurity.vgscheckout.networking.command.core
 
 internal class CompositeCommand(
     private val commands: Collection<Command<*, *>>
-) : VGSCheckoutCancellable {
+) : VGSCheckoutCancellable() {
 
     fun execute(onResult: (List<Command.Result>) -> Unit) {
         val results = mutableListOf<Command.Result>()
@@ -15,6 +15,7 @@ internal class CompositeCommand(
     }
 
     override fun cancel() {
+        super.cancel()
         commands.forEach { it.cancel() }
     }
 }

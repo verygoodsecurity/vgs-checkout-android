@@ -15,12 +15,10 @@ import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
 import com.verygoodsecurity.vgscheckout.BuildConfig
 import com.verygoodsecurity.vgscheckout.Constants.VALID_CARD_NUMBER
-import com.verygoodsecurity.vgscheckout.Constants.VALID_CARD_NUMBER_AMEX
 import com.verygoodsecurity.vgscheckout.Constants.VALID_CARD_NUMBER_MASTERCARD
-import com.verygoodsecurity.vgscheckout.Constants.VALID_SECURITY_CODE_AMEX
+import com.verygoodsecurity.vgscheckout.Constants.VALID_CARD_NUMBER_AMEX
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.VGSCheckoutConfigInitCallback
-import com.verygoodsecurity.vgscheckout.VGSCheckoutSavedCardsCallback
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
 import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
 import com.verygoodsecurity.vgscheckout.model.*
@@ -39,6 +37,7 @@ import org.junit.runner.RunWith
 import java.util.concurrent.CountDownLatch
 
 @Suppress("SameParameterValue")
+@RunWith(AndroidJUnit4::class)
 class SavedCardManagementTest {
 
     private val context: Context = ApplicationProvider.getApplicationContext()
@@ -67,29 +66,30 @@ class SavedCardManagementTest {
             val savedConfig = VGSCheckoutAddCardConfig.Builder(BuildConfig.VAULT_ID)
                 .setAccessToken(token)
                 .setIsScreenshotsAllowed(true)
+                .setSavedCardsIds(arrayListOf)
                 .build()
-//todo update enable loadSavedCards function
-//            savedConfig.loadSavedCard(
-//                context,
-//                arrayListOf,
-//                object : VGSCheckoutSavedCardsCallback {
-//                    override fun onSuccess() {
-//                        countDown()
-//                    }
-//                    override fun onFailure(exception: VGSCheckoutException) {
-//                        countDown()
-//                    }
-//                }
-//            )
+                .also {
+                    VGSCheckoutAddCardConfig.loadSavedCards(
+                        context,
+                        it,
+                        object : VGSCheckoutConfigInitCallback {
+                            override fun onSuccess() {
+                                countDown()
+                            }
 
-//            await()
-
+                            override fun onFailure(exception: VGSCheckoutException) {
+                                countDown()
+                            }
+                        }
+                    )
+                }
+            await()
             Assert.assertNotNull(savedConfig)
 
             savedConfig
         }.getOrNull()
 
-    //todo: add after saved cards release
+    @Test
     fun performPaymentOrchestration_presaved3Card_selected2Card() {
         val amexCardPosition = 2
         val finID0 = addCardPaymentInstrument(context, token, VALID_CARD_NUMBER)
@@ -98,8 +98,9 @@ class SavedCardManagementTest {
             context,
             token,
             VALID_CARD_NUMBER_AMEX,
-            cvc = VALID_SECURITY_CODE_AMEX
+            cvc = VALID_CARD_NUMBER_AMEX
         )
+
         val intent = initializeSavedCardConfig(arrayListOf(finID0, finID1, finID2)).run {
             createIntent(this!!)
         }
@@ -124,7 +125,8 @@ class SavedCardManagementTest {
         }
     }
 
-    //todo: add after saved cards release
+    //here
+    @Test
     fun performPaymentOrchestration_presaved3Card_delete3Cards() {
         val removedCardSize = 3
         val finID0 = addCardPaymentInstrument(context, token, VALID_CARD_NUMBER)
@@ -133,8 +135,9 @@ class SavedCardManagementTest {
             context,
             token,
             VALID_CARD_NUMBER_AMEX,
-            cvc = VALID_SECURITY_CODE_AMEX
+            cvc = VALID_CARD_NUMBER_AMEX
         )
+
         val intent = initializeSavedCardConfig(arrayListOf(finID0, finID1, finID2)).run {
             createIntent(this!!)
         }
@@ -163,7 +166,7 @@ class SavedCardManagementTest {
         }
     }
 
-    //todo: add after saved cards release
+    @Test
     fun performPaymentOrchestration_loadDeletedCard() {
         val finID0 = addCardPaymentInstrument(context, token, VALID_CARD_NUMBER)
         val intent = initializeSavedCardConfig(arrayListOf(finID0)).run {
@@ -199,7 +202,7 @@ class SavedCardManagementTest {
         }
     }
 
-    //todo: add after saved cards release
+    @Test
     fun performPaymentOrchestration_presaved3Card_deleteSecondCard_submitThirdCard() {
         val secondCardPosition = 1
         val finID0 = addCardPaymentInstrument(context, token, VALID_CARD_NUMBER)
@@ -208,8 +211,9 @@ class SavedCardManagementTest {
             context,
             token,
             VALID_CARD_NUMBER_AMEX,
-            cvc = VALID_SECURITY_CODE_AMEX
+            cvc = VALID_CARD_NUMBER_AMEX
         )
+
         val intent = initializeSavedCardConfig(arrayListOf(finID0, finID1, finID2)).run {
             createIntent(this!!)
         }

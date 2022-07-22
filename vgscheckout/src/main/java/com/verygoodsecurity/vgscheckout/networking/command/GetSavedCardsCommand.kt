@@ -53,6 +53,7 @@ internal class GetSavedCardsCommand constructor(
     )
 
     override fun cancel() {
+        super.cancel()
         client.cancelAll()
         rootThread?.interrupt()
         cardFetchExecutor.shutdownNow()
