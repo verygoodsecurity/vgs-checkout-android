@@ -15,6 +15,7 @@ import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillin
 import com.verygoodsecurity.vgscheckout.config.ui.view.core.VGSCheckoutFieldVisibility
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_ARGS
+import com.verygoodsecurity.vgscheckout.ui.CustomSaveCardActivity
 import com.verygoodsecurity.vgscheckout.ui.SaveCardActivity
 import org.hamcrest.CoreMatchers
 import org.junit.Test

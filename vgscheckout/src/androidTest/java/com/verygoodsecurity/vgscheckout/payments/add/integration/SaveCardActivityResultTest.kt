@@ -77,7 +77,7 @@ class SaveCardActivityResultTest {
         }
     }
 
-    //todo: add after saved cards release
+    @Test
     fun performPaymentOrchestration_cancelActivityResult_withNavigationUp_codeCanceled() {
         launch<SaveCardActivity>(defaultIntent).use {
             waitFor(500)
@@ -130,7 +130,7 @@ class SaveCardActivityResultTest {
     }
 
 
-    //todo: add after saved cards release
+    @Test
     fun performPaymentOrchestration_saveCardOptionEnabled_default() {
         val intent = Intent(context, SaveCardActivity::class.java).apply {
             val config = VGSCheckoutAddCardConfig.Builder(BuildConfig.VAULT_ID)
@@ -161,13 +161,13 @@ class SaveCardActivityResultTest {
         }
     }
 
-    //todo: add after saved cards release
+    @Test
     fun performPaymentOrchestration_saveCardOptionEnabled_disable() {
         val intent = Intent(context, SaveCardActivity::class.java).apply {
             val config = VGSCheckoutAddCardConfig.Builder(BuildConfig.VAULT_ID)
                 .setAccessToken(BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS)
                 .setIsScreenshotsAllowed(true)
-                .setIsSaveCardOptionVisible(true)
+                .setIsSaveCardOptionVisible(false)
                 .build()
             putExtra(
                 EXTRA_KEY_ARGS,
@@ -193,12 +193,13 @@ class SaveCardActivityResultTest {
         }
     }
 
-    //todo: add after saved cards release
+    @Test
     fun performPaymentOrchestration_saveCardOptionEnabled_deselectedByUser() {
         val intent = Intent(context, SaveCardActivity::class.java).apply {
             val config = VGSCheckoutAddCardConfig.Builder(BuildConfig.VAULT_ID)
                 .setAccessToken(BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS)
                 .setIsScreenshotsAllowed(true)
+                .setIsSaveCardOptionVisible(true)
                 .build()
             putExtra(
                 EXTRA_KEY_ARGS,

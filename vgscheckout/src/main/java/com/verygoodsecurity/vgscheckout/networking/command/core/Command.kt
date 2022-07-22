@@ -13,7 +13,7 @@ import com.verygoodsecurity.vgscheckout.networking.client.HttpClient
 internal abstract class Command<P : Command.Params, R : Command.Result> constructor(
     private val context: Context,
     private val params: P
-) : VGSCheckoutCancellable {
+) : VGSCheckoutCancellable() {
 
     protected val client = HttpClient.create(false)
 
@@ -41,6 +41,7 @@ internal abstract class Command<P : Command.Params, R : Command.Result> construc
     protected abstract fun map(params: P, exception: VGSCheckoutException): R
 
     override fun cancel() {
+        super.cancel()
         client.cancelAll()
     }
 

@@ -5,6 +5,7 @@ import android.graphics.Rect
 import android.os.Build
 import android.graphics.drawable.Drawable
 import android.text.InputType
+import android.text.TextWatcher
 import android.text.method.DigitsKeyListener
 import android.util.AttributeSet
 import android.view.Gravity
@@ -96,6 +97,8 @@ internal class CardInputField @JvmOverloads constructor(
     }
 
     private fun applyFormatter() {
+        if (cardNumberFormatter != null) removeTextChangedListener(cardNumberFormatter as TextWatcher)
+
         cardNumberFormatter = CardNumberFormatter().also {
             it.setMask(derivedCardNumberMask)
             addTextChangedListener(it)

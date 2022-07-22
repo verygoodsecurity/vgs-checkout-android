@@ -5,12 +5,10 @@ import android.content.Context
 import android.content.Intent
 import androidx.test.core.app.ActivityScenario.launch
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.espresso.Espresso
-import androidx.test.espresso.action.ViewActions
-import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.action.ViewActions.typeText
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers
+import androidx.test.espresso.matcher.ViewMatchers.isRoot
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
@@ -66,20 +64,28 @@ class OnFocusFieldsValidationTest {
             // Act
             onViewWithScrollTo(withParent(R.id.vgsTilCardHolder, PersonNameInputField::class))
                 .perform(click())
+            onView(isRoot()).perform(closeSoftKeyboard())
             onViewWithScrollTo(withParent(R.id.vgsTilCardNumber, CardInputField::class))
                 .perform(click())
+            onView(isRoot()).perform(closeSoftKeyboard())
             onViewWithScrollTo(withParent(R.id.vgsTilExpirationDate, DateInputField::class))
                 .perform(click())
+            onView(isRoot()).perform(closeSoftKeyboard())
             onViewWithScrollTo(withParent(R.id.vgsTilSecurityCode, CVCInputField::class))
                 .perform(click())
+            onView(isRoot()).perform(closeSoftKeyboard())
             onViewWithScrollTo(withParent(R.id.vgsTilAddress, InfoInputField::class))
                 .perform(click())
+            onView(isRoot()).perform(closeSoftKeyboard())
             onViewWithScrollTo(withParent(R.id.vgsTilCity, InfoInputField::class))
                 .perform(click())
+            onView(isRoot()).perform(closeSoftKeyboard())
             onViewWithScrollTo(withParent(R.id.vgsTilPostalCode, InfoInputField::class))
                 .perform(click())
+            onView(isRoot()).perform(closeSoftKeyboard())
             onViewWithScrollTo(withParent(R.id.vgsTilCardHolder, PersonNameInputField::class))
                 .perform(click())
+            onView(isRoot()).perform(closeSoftKeyboard())
             // Assert
             onViewWithScrollTo(R.id.vgsTilCardHolder).check(matches(withError(null)))
             onViewWithScrollTo(R.id.vgsTilCardNumber).check(matches(withError(null)))
@@ -90,7 +96,7 @@ class OnFocusFieldsValidationTest {
             onViewWithScrollTo(R.id.vgsTilPostalCode).check(matches(withError(null)))
 
             // Act
-            Espresso.onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard())
+            onView(isRoot()).perform(closeSoftKeyboard())
             waitFor(500)
             device.pressBack()
 

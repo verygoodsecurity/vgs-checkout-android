@@ -3,11 +3,12 @@ package com.verygoodsecurity.vgscheckout.config
 import android.content.Context
 import android.os.Parcel
 import android.os.Parcelable
-import com.verygoodsecurity.vgscheckout.VGSCheckoutSavedCardsCallback
+import androidx.annotation.Size
+import com.verygoodsecurity.vgscheckout.VGSCheckoutConfigInitCallback
 import com.verygoodsecurity.vgscheckout.analytic.event.FinInstrumentCrudEvent
 import com.verygoodsecurity.vgscheckout.config.core.OrchestrationConfig
 import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutRouteConfig
-import com.verygoodsecurity.vgscheckout.config.payment.VGSCheckoutPaymentMethod
+import com.verygoodsecurity.vgscheckout.config.payment.VGSCheckoutPaymentMethod.SavedCards.Companion.MAX_CARDS_SIZE
 import com.verygoodsecurity.vgscheckout.config.ui.VGSCheckoutFormConfig
 import com.verygoodsecurity.vgscheckout.config.ui.core.VGSCheckoutFormValidationBehaviour
 import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillingAddressOptions
@@ -23,6 +24,7 @@ import com.verygoodsecurity.vgscheckout.model.Card
 import com.verygoodsecurity.vgscheckout.model.VGSCheckoutEnvironment
 import com.verygoodsecurity.vgscheckout.networking.command.GetSavedCardsCommand
 import com.verygoodsecurity.vgscheckout.networking.command.core.VGSCheckoutCancellable
+import com.verygoodsecurity.vgscheckout.util.extension.generateBaseUrl
 
 /**
  * Holds configuration with predefined setup for work with payment orchestration app.
@@ -59,6 +61,7 @@ class VGSCheckoutAddCardConfig internal constructor(
     isRemoveCardOptionEnabled,
     createdFromParcel
 ) {
+    internal var cardIds = emptyList<String>()
 
     override val baseUrl: String = generateBaseUrl()
 
@@ -74,6 +77,12 @@ class VGSCheckoutAddCardConfig internal constructor(
         true
     ) {
         this.savedCards = mutableListOf<Card>().apply {
+            parcel.readList(
+                this,
+                Card::class.java.classLoader
+            )
+        }
+        this.cardIds = mutableListOf<String>().apply {
             parcel.readList(
                 this,
                 Card::class.java.classLoader
@@ -100,7 +109,8 @@ class VGSCheckoutAddCardConfig internal constructor(
         tenantId: String,
         environment: VGSCheckoutEnvironment = VGSCheckoutEnvironment.Sandbox(),
         formConfig: VGSCheckoutFormConfig,
-        isScreenshotsAllowed: Boolean = false
+        isScreenshotsAllowed: Boolean = false,
+        isRemoveCardOptionEnabled: Boolean = true
     ) : this(
         accessToken,
         routeId,
@@ -109,7 +119,7 @@ class VGSCheckoutAddCardConfig internal constructor(
         createRouteConfig(accessToken),
         formConfig,
         isScreenshotsAllowed,
-        true,
+        isRemoveCardOptionEnabled,
         false
     )
 
@@ -123,6 +133,7 @@ class VGSCheckoutAddCardConfig internal constructor(
         parcel.writeInt(if (isScreenshotsAllowed) 1 else 0)
         parcel.writeInt(if (isRemoveCardOptionEnabled) 1 else 0)
         parcel.writeList(savedCards)
+        parcel.writeList(cardIds)
     }
 
     override fun describeContents(): Int {
@@ -138,6 +149,7 @@ class VGSCheckoutAddCardConfig internal constructor(
         private var accessToken = ""
         private var routeId = ORCHESTRATION_URL_ROUTE_ID
         private var isRemoveCardOptionEnabled: Boolean = true
+        private var cardIds: List<String> = emptyList()
 
         private var countryFieldVisibility = VGSCheckoutFieldVisibility.VISIBLE
         private var validCountries: List<String> = emptyList()
@@ -152,7 +164,7 @@ class VGSCheckoutAddCardConfig internal constructor(
 
         private var billingAddressVisibility = VGSCheckoutBillingAddressVisibility.HIDDEN
         private var formValidationBehaviour = VGSCheckoutFormValidationBehaviour.ON_SUBMIT
-        private var saveCardOptionEnabled = false
+        private var saveCardOptionEnabled = true
 
         /**
          * Defines type of vault.
@@ -322,6 +334,21 @@ class VGSCheckoutAddCardConfig internal constructor(
         }
         //endregion
 
+        /**
+         * Defines previously saved user card.
+         *
+         * @param cardIds saved cards Ids.
+         */
+        fun setSavedCardsIds(
+            @Size(max = MAX_CARDS_SIZE) cardIds: List<String>
+        ): Builder {
+            this.cardIds = cardIds
+            return this
+        }
+
+        /**
+         * Creates payment orchestration configuration.
+         */
         fun build(): VGSCheckoutAddCardConfig {
             val formConfig = buildFormConfig()
             return VGSCheckoutAddCardConfig(
@@ -330,8 +357,11 @@ class VGSCheckoutAddCardConfig internal constructor(
                 tenantId,
                 environment,
                 formConfig,
-                isScreenshotsAllowed
-            )
+                isScreenshotsAllowed,
+                isRemoveCardOptionEnabled
+            ).apply {
+                this.cardIds = this@Builder.cardIds
+            }
         }
     }
 
@@ -350,14 +380,13 @@ class VGSCheckoutAddCardConfig internal constructor(
             }
         }
 
-        private fun loadSavedCards(
+        internal fun loadSavedCards(
             context: Context,
-            paymentMethod: VGSCheckoutPaymentMethod.SavedCards,
             config: VGSCheckoutAddCardConfig,
-            callback: VGSCheckoutSavedCardsCallback? = null
+            callback: VGSCheckoutConfigInitCallback? = null
         ): VGSCheckoutCancellable {
 
-            val ids = paymentMethod.getIds()
+            val ids = config.cardIds
             val params = GetSavedCardsCommand.Params(
                 config.baseUrl,
                 config.routeConfig.path,
@@ -366,34 +395,32 @@ class VGSCheckoutAddCardConfig internal constructor(
             )
             val command = GetSavedCardsCommand(context, params)
             command.execute {
-                when (it) {
-                    is GetSavedCardsCommand.Result.Success -> {
-                        config.analyticTracker.log(
-                            FinInstrumentCrudEvent.load(
-                                FinInstrumentCrudEvent.DEFAULT_CODE,
-                                true,
-                                null,
-                                false,
-                                ids.count(),
-                                ids.count() - it.cards.count()
-                            )
+                val cards = it.cards ?: emptyList()
+                if (it.isSuccessful) {
+                    config.analyticTracker.log(
+                        FinInstrumentCrudEvent.load(
+                            FinInstrumentCrudEvent.DEFAULT_CODE,
+                            true,
+                            null,
+                            false,
+                            ids.count(),
+                            ids.count() - cards.count()
                         )
-                        config.savedCards = it.cards
-                        callback?.onSuccess()
-                    }
-                    is GetSavedCardsCommand.Result.Failure -> {
-                        config.analyticTracker.log(
-                            FinInstrumentCrudEvent.load(
-                                it.exception.code,
-                                false,
-                                it.exception.message,
-                                false,
-                                ids.count(),
-                                ids.count(),
-                            )
+                    )
+                    config.savedCards = cards
+                    callback?.onSuccess()
+                } else {
+                    config.analyticTracker.log(
+                        FinInstrumentCrudEvent.load(
+                            it.code,
+                            false,
+                            it.message,
+                            false,
+                            ids.count(),
+                            ids.count(),
                         )
-                        callback?.onFailure(it.exception)
-                    }
+                    )
+                    callback?.onFailure(VGSCheckoutException(it.code, it.message, null))
                 }
             }
             return command
