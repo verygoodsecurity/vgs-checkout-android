@@ -103,7 +103,8 @@ class VGSCheckoutAddCardConfig internal constructor(
         tenantId: String,
         environment: VGSCheckoutEnvironment = VGSCheckoutEnvironment.Sandbox(),
         formConfig: VGSCheckoutFormConfig,
-        isScreenshotsAllowed: Boolean = false
+        isScreenshotsAllowed: Boolean = false,
+        isRemoveCardOptionEnabled: Boolean = true
     ) : this(
         accessToken,
         routeId,
@@ -112,7 +113,7 @@ class VGSCheckoutAddCardConfig internal constructor(
         createRouteConfig(accessToken),
         formConfig,
         isScreenshotsAllowed,
-        true,
+        isRemoveCardOptionEnabled,
         false
     )
 
@@ -156,7 +157,7 @@ class VGSCheckoutAddCardConfig internal constructor(
 
         private var billingAddressVisibility = VGSCheckoutBillingAddressVisibility.HIDDEN
         private var formValidationBehaviour = VGSCheckoutFormValidationBehaviour.ON_SUBMIT
-        private var saveCardOptionEnabled = false
+        private var saveCardOptionEnabled = true
 
         /**
          * Defines type of vault.
@@ -349,7 +350,8 @@ class VGSCheckoutAddCardConfig internal constructor(
                 tenantId,
                 environment,
                 formConfig,
-                isScreenshotsAllowed
+                isScreenshotsAllowed,
+                isRemoveCardOptionEnabled
             ).apply {
                 this.cardIds = this@Builder.cardIds
             }
