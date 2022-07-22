@@ -7,7 +7,7 @@ aliases:
       - image: cimg/android:2021.10.2
     environment:
       GRADLE_OPTS: '
-        -Dorg.gradle.jvmargs="-Xmx3g -XX:+HeapDumpOnOutOfMemoryError -XX:MaxPermSize=512m"
+        -Dorg.gradle.jvmargs="-Xmx4g -XX:+HeapDumpOnOutOfMemoryError -XX:MaxPermSize=512m"
         -Dorg.gradle.daemon=false
         -Dorg.gradle.workers.max=3
         -Dkotlin.incremental=false'
