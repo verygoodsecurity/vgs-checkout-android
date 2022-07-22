@@ -80,6 +80,7 @@ class SavedCardActivityResultTest {
         await()
 
         Assert.assertNotNull(savedConfig)
+        Assert.assertTrue(savedConfig.savedCards.isNotEmpty())
 
         savedConfig
     }.getOrNull()
