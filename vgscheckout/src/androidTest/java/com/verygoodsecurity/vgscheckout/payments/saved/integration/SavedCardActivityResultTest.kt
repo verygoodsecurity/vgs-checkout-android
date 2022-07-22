@@ -62,21 +62,21 @@ class SavedCardActivityResultTest {
             .setIsScreenshotsAllowed(true)
             .setSavedCardsIds(arrayListOf(finID))
             .build()
-            .also {
-                VGSCheckoutAddCardConfig.loadSavedCards(
-                    context,
-                    it,
-                    object : VGSCheckoutConfigInitCallback {
-                        override fun onSuccess() {
-                            countDown()
-                        }
 
-                        override fun onFailure(exception: VGSCheckoutException) {
-                            countDown()
-                        }
-                    }
-                )
+        VGSCheckoutAddCardConfig.loadSavedCards(
+            context,
+            savedConfig,
+            object : VGSCheckoutConfigInitCallback {
+                override fun onSuccess() {
+                    countDown()
+                }
+
+                override fun onFailure(exception: VGSCheckoutException) {
+                    countDown()
+                }
             }
+        )
+
         await()
 
         Assert.assertNotNull(savedConfig)
