@@ -37,6 +37,12 @@ jobs:
             - ~/.gradle
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "demo/build.gradle" }}
       - run:
+          name: Run Lint
+          command: ./gradlew vgscheckout:lintDebug
+      - run:
+          name: Run Unit tests
+          command: ./gradlew vgscheckout:testDebugUnitTest
+      - run:
           name: Generate apk
           command: ./gradlew demo:assembleDebug vgscheckout:assembleDebug vgscheckout:assembleAndroidTest
       - run:
