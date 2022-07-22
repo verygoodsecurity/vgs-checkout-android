@@ -5,7 +5,7 @@ import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutCardResponse
 
 internal fun VGSCheckoutCardResponse.getId(): String {
     return JsonParser
-        .parseString(body)
+        .parseString(body?.trim())
         .asJsonObject
         .run {
             takeIf { it.has("data") }?.run { get("data").asJsonObject }
