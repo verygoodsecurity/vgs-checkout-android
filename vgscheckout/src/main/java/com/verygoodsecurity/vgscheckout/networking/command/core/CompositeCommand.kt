@@ -15,6 +15,7 @@ internal class CompositeCommand(
     }
 
     override fun cancel() {
+        super.cancel()
         commands.forEach { it.cancel() }
     }
 }
