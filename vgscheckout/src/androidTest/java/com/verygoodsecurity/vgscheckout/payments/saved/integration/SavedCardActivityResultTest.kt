@@ -45,9 +45,7 @@ class SavedCardActivityResultTest {
         token = AccessTokenHelper.getToken()
     }
 
-    private fun initializeSavedCardConfig(): VGSCheckoutAddCardConfig {
-        val finID = addCardPaymentInstrument(context, token)
-        Assert.assertTrue(finID.isNotEmpty())
+    private fun initializeSavedCardConfig(finID: String): VGSCheckoutAddCardConfig {
 
         val config = VGSCheckoutAddCardConfig.Builder(BuildConfig.VAULT_ID)
             .setAccessToken(token)
@@ -85,7 +83,10 @@ class SavedCardActivityResultTest {
 
     @Test
     fun performPaymentOrchestration_cancelActivityResult_withBackPress_codeCanceled() {
-        val intent = initializeSavedCardConfig().run {
+        val finID = addCardPaymentInstrument(context, token)
+        Assert.assertTrue(finID.isNotEmpty())
+
+        val intent = initializeSavedCardConfig(finID).run {
             createIntent(this)
         }
 
@@ -101,7 +102,9 @@ class SavedCardActivityResultTest {
 
     @Test
     fun performPaymentOrchestration_cancelActivityResult_withNavigationUp_codeCanceled() {
-        val intent = initializeSavedCardConfig().run {
+        val finID = addCardPaymentInstrument(context, token)
+        Assert.assertTrue(finID.isNotEmpty())
+        val intent = initializeSavedCardConfig(finID).run {
             createIntent(this)
         }
 
@@ -119,7 +122,9 @@ class SavedCardActivityResultTest {
 
     @Test
     fun performPaymentOrchestration_savedCard_successfulResponse_codeOk() {
-        val intent = initializeSavedCardConfig().run {
+        val finID = addCardPaymentInstrument(context, token)
+        Assert.assertTrue(finID.isNotEmpty())
+        val intent = initializeSavedCardConfig(finID).run {
             createIntent(this)
         }
         ActivityScenario.launch<SaveCardActivity>(intent).use {
@@ -135,7 +140,9 @@ class SavedCardActivityResultTest {
 
     @Test
     fun performPaymentOrchestration_isPreSavedCard_true() {
-        val intent = initializeSavedCardConfig().run {
+        val finID = addCardPaymentInstrument(context, token)
+        Assert.assertTrue(finID.isNotEmpty())
+        val intent = initializeSavedCardConfig(finID).run {
             createIntent(this)
         }
         ActivityScenario.launch<SaveCardActivity>(intent).use {
