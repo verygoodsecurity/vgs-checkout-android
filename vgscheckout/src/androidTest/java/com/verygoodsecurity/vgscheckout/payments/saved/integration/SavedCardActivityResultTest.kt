@@ -34,7 +34,6 @@ class SavedCardActivityResultTest {
 
     private val context: Context = ApplicationProvider.getApplicationContext()
 
-    private lateinit var intent: Intent
     private lateinit var token: String
     private lateinit var device: UiDevice
 
@@ -44,14 +43,6 @@ class SavedCardActivityResultTest {
         device.setOrientationNatural()
 
         token = AccessTokenHelper.getToken()
-        val config = initializeSavedCardConfig()
-
-        intent = Intent(context, SaveCardActivity::class.java).apply {
-            putExtra(
-                EXTRA_KEY_ARGS,
-                CheckoutResultContract.Args(config!!)
-            )
-        }
     }
 
     private fun initializeSavedCardConfig() = CountDownLatch(1).runCatching {
@@ -85,8 +76,20 @@ class SavedCardActivityResultTest {
         savedConfig
     }.getOrNull()
 
+    private fun createIntent(config: VGSCheckoutAddCardConfig) =
+        Intent(context, SaveCardActivity::class.java).apply {
+            putExtra(
+                EXTRA_KEY_ARGS,
+                CheckoutResultContract.Args(config)
+            )
+        }
+
     @Test
     fun performPaymentOrchestration_cancelActivityResult_withBackPress_codeCanceled() {
+        val intent = initializeSavedCardConfig().run {
+            createIntent(this!!)
+        }
+
         ActivityScenario.launch<SaveCardActivity>(intent).use {
             // Act
             device.pressBack()
@@ -99,6 +102,10 @@ class SavedCardActivityResultTest {
 
     @Test
     fun performPaymentOrchestration_cancelActivityResult_withNavigationUp_codeCanceled() {
+        val intent = initializeSavedCardConfig().run {
+            createIntent(this!!)
+        }
+
         ActivityScenario.launch<SaveCardActivity>(intent).use {
             waitFor(500)
             // Act
@@ -113,6 +120,9 @@ class SavedCardActivityResultTest {
 
     @Test
     fun performPaymentOrchestration_savedCard_successfulResponse_codeOk() {
+        val intent = initializeSavedCardConfig().run {
+            createIntent(this!!)
+        }
         ActivityScenario.launch<SaveCardActivity>(intent).use {
             waitFor(500)
             // Act
@@ -126,6 +136,9 @@ class SavedCardActivityResultTest {
 
     @Test
     fun performPaymentOrchestration_isPreSavedCard_true() {
+        val intent = initializeSavedCardConfig().run {
+            createIntent(this!!)
+        }
         ActivityScenario.launch<SaveCardActivity>(intent).use {
             waitFor(500)
             // Act
