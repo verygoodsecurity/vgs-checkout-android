@@ -29,7 +29,6 @@ import org.junit.runner.RunWith
 import java.util.concurrent.CountDownLatch
 
 @Suppress("SameParameterValue")
-@RunWith(AndroidJUnit4::class)
 class SavedCardActivityResultTest {
 
     private val context: Context = ApplicationProvider.getApplicationContext()
@@ -81,7 +80,6 @@ class SavedCardActivityResultTest {
             )
         }
 
-    @Test
     fun performPaymentOrchestration_cancelActivityResult_withBackPress_codeCanceled() {
         val finID = addCardPaymentInstrument(context, token)
         Assert.assertTrue(finID.isNotEmpty())
@@ -100,7 +98,6 @@ class SavedCardActivityResultTest {
         }
     }
 
-    @Test
     fun performPaymentOrchestration_cancelActivityResult_withNavigationUp_codeCanceled() {
         val finID = addCardPaymentInstrument(context, token)
         Assert.assertTrue(finID.isNotEmpty())
@@ -120,7 +117,6 @@ class SavedCardActivityResultTest {
         }
     }
 
-    @Test
     fun performPaymentOrchestration_savedCard_successfulResponse_codeOk() {
         val finID = addCardPaymentInstrument(context, token)
         Assert.assertTrue(finID.isNotEmpty())
@@ -138,7 +134,6 @@ class SavedCardActivityResultTest {
         }
     }
 
-    @Test
     fun performPaymentOrchestration_isPreSavedCard_true() {
         val finID = addCardPaymentInstrument(context, token)
         Assert.assertTrue(finID.isNotEmpty())

@@ -88,7 +88,6 @@ class SavedCardManagementTest {
         return config
     }
 
-    @Test
     fun performPaymentOrchestration_presaved3Card_selected2Card() {
         val amexCardPosition = 2
         val finID0 = addCardPaymentInstrument(context, token, VALID_CARD_NUMBER)
@@ -124,8 +123,6 @@ class SavedCardManagementTest {
         }
     }
 
-    //here
-    @Test
     fun performPaymentOrchestration_presaved3Card_delete3Cards() {
         val removedCardSize = 3
         val finID0 = addCardPaymentInstrument(context, token, VALID_CARD_NUMBER)
@@ -165,7 +162,6 @@ class SavedCardManagementTest {
         }
     }
 
-    @Test
     fun performPaymentOrchestration_loadDeletedCard() {
         val finID0 = addCardPaymentInstrument(context, token, VALID_CARD_NUMBER)
         val intent = initializeSavedCardConfig(arrayListOf(finID0)).run {
@@ -201,7 +197,6 @@ class SavedCardManagementTest {
         }
     }
 
-    @Test
     fun performPaymentOrchestration_presaved3Card_deleteSecondCard_submitThirdCard() {
         val secondCardPosition = 1
         val finID0 = addCardPaymentInstrument(context, token, VALID_CARD_NUMBER)

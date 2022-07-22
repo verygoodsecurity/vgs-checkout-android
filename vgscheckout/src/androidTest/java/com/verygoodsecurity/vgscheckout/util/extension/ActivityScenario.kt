@@ -26,7 +26,6 @@ import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutCardResponse
 import com.verygoodsecurity.vgscheckout.ui.SaveCardActivity
 import com.verygoodsecurity.vgscheckout.util.ActionHelper
 import com.verygoodsecurity.vgscheckout.util.ViewInteraction
-import com.verygoodsecurity.vgscheckout.util.logger.VGSCheckoutLogger
 import org.hamcrest.Matcher
 import org.junit.Assert
 

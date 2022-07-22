@@ -2,10 +2,8 @@ package com.verygoodsecurity.vgscheckout.util.extension
 
 import com.google.gson.JsonParser
 import com.verygoodsecurity.vgscheckout.model.response.VGSCheckoutCardResponse
-import com.verygoodsecurity.vgscheckout.util.logger.VGSCheckoutLogger
 
 internal fun VGSCheckoutCardResponse.getId(): String {
-    VGSCheckoutLogger.warn("VGSCheckout", "body:$body")
     return JsonParser
         .parseString(body)
         .asJsonObject
