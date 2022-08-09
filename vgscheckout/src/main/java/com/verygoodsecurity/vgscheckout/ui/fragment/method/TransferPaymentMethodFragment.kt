@@ -18,7 +18,8 @@ internal class TransferPaymentMethodFragment : PaymentMethodFragment<VGSCheckout
                 config.baseUrl,
                 config.order?.id ?: "",
                 card.finId,
-                config.accessToken
+                config.routeConfig.requestOptions.extraHeaders,
+                config.routeConfig.requestOptions.extraData
             )
         ).execute(::handleTransferResult)
     }

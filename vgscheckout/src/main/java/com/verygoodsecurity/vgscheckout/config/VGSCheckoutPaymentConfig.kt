@@ -101,6 +101,7 @@ internal class VGSCheckoutPaymentConfig internal constructor(
         private var accessToken = ""
         private var orderId = ""
         private var routeId = ORCHESTRATION_URL_ROUTE_ID
+        private var subAccountId: String? = null
         private var cardIds: List<String> = arrayListOf()
         private var isRemoveCardOptionEnabled: Boolean = true
 
@@ -145,6 +146,15 @@ internal class VGSCheckoutPaymentConfig internal constructor(
          */
         fun setRouteId(routeId: String) = this.apply {
             this.routeId = routeId
+        }
+
+        /**
+         * Defines sub-account id.
+         *
+         * @param id A sub-account id.
+         */
+        fun setSubAccountId(id: String) = this.apply {
+            this.subAccountId = id
         }
 
         /**
@@ -325,6 +335,7 @@ internal class VGSCheckoutPaymentConfig internal constructor(
                 accessToken,
                 orderId,
                 routeId,
+                subAccountId,
                 tenantId,
                 VGSCheckoutPaymentMethod.SavedCards(cardIds),
                 environment,
@@ -371,6 +382,7 @@ internal class VGSCheckoutPaymentConfig internal constructor(
             accessToken: String,
             orderId: String,
             routeId: String,
+            subAccountId: String?,
             tenantId: String,
             paymentMethod: VGSCheckoutPaymentMethod.SavedCards,
             environment: VGSCheckoutEnvironment = VGSCheckoutEnvironment.Sandbox(),
@@ -384,7 +396,7 @@ internal class VGSCheckoutPaymentConfig internal constructor(
                 routeId,
                 tenantId,
                 environment,
-                createRouteConfig(accessToken),
+                createRouteConfig(accessToken, subAccountId),
                 formConfig,
                 isScreenshotsAllowed,
                 isRemoveCardOptionEnabled,

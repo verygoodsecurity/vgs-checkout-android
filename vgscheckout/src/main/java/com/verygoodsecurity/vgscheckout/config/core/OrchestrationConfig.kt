@@ -101,7 +101,12 @@ abstract class OrchestrationConfig internal constructor(
         private const val AUTHORIZATION_HEADER_NAME = "Authorization"
         private const val BEARER_TOKEN_TYPE = "Bearer"
 
-        internal fun createRouteConfig(accessToken: String) = VGSCheckoutRouteConfig(
+        private const val KEY_SUB_ACCOUNT_ID = "sub_account_id"
+
+        internal fun createRouteConfig(
+            accessToken: String,
+            subAccountId: String? = null
+        ) = VGSCheckoutRouteConfig(
             PATH,
             VGSCheckoutHostnamePolicy.Vault,
             VGSCheckoutRequestOptions(
@@ -110,7 +115,7 @@ abstract class OrchestrationConfig internal constructor(
                     CONTENT_TYPE_HEADER_NAME to CONTENT_TYPE,
                     AUTHORIZATION_HEADER_NAME to "$BEARER_TOKEN_TYPE $accessToken"
                 ),
-                emptyMap(),
+                if (subAccountId.isNullOrEmpty()) emptyMap() else mapOf(KEY_SUB_ACCOUNT_ID to subAccountId),
                 VGSCheckoutDataMergePolicy.NESTED_JSON
             )
         )
