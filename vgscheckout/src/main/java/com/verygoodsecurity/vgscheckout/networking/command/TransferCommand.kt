@@ -3,6 +3,7 @@ package com.verygoodsecurity.vgscheckout.networking.command
 import android.content.Context
 import com.verygoodsecurity.vgscheckout.collect.util.extension.concatWithSlash
 import com.verygoodsecurity.vgscheckout.collect.util.extension.toJSON
+import com.verygoodsecurity.vgscheckout.config.networking.VGSCheckoutRouteConfig
 import com.verygoodsecurity.vgscheckout.exception.VGSCheckoutException
 import com.verygoodsecurity.vgscheckout.networking.client.HttpMethod
 import com.verygoodsecurity.vgscheckout.networking.client.HttpRequest
@@ -39,38 +40,29 @@ internal class TransferCommand constructor(
     private fun createRequest(params: Params) = HttpRequest(
         params.url concatWithSlash PATH,
         generatePayload(params),
-        mapOf(
-            AUTHORIZATION_HEADER_KEY to String.format(
-                AUTHORIZATION_HEADER_VALUE,
-                params.accessToken
-            )
-        ),
+        params.config.requestOptions.extraHeaders,
         HttpMethod.POST
     )
 
     private fun generatePayload(params: Params) =
-        mutableMapOf(
+        (mutableMapOf(
             JSON_KEY_ORDER_ID to params.orderId,
             JSON_KEY_SOURCE to params.source
-        ).toJSON().toString()
+        ) + params.config.requestOptions.extraData).toJSON().toString()
 
     companion object {
-
-        private const val AUTHORIZATION_HEADER_KEY = "Authorization"
-        private const val AUTHORIZATION_HEADER_VALUE = "Bearer %s"
 
         private const val PATH = "transfers"
 
         private const val JSON_KEY_ORDER_ID = "order_id"
         private const val JSON_KEY_SOURCE = "source"
-        private const val JSON_KEY_CURRENCY = "currency"
     }
 
     internal data class Params(
         val url: String,
         val orderId: String,
         val source: String,
-        val accessToken: String
+        val config: VGSCheckoutRouteConfig
     ) : Command.Params()
 
     data class Result constructor(

@@ -85,8 +85,6 @@ class VGSCheckoutAddCardConfig internal constructor(
     }
 
     /**
-     * Public constructor.
-     *
      * @param accessToken payment orchestration app access token.
      * @param tenantId unique organization id.
      * @param environment type of vault.
@@ -101,6 +99,7 @@ class VGSCheckoutAddCardConfig internal constructor(
         accessToken: String,
         routeId: String,
         tenantId: String,
+        subAccountId: String?,
         environment: VGSCheckoutEnvironment = VGSCheckoutEnvironment.Sandbox(),
         formConfig: VGSCheckoutFormConfig,
         isScreenshotsAllowed: Boolean = false
@@ -109,7 +108,7 @@ class VGSCheckoutAddCardConfig internal constructor(
         routeId,
         tenantId,
         environment,
-        createRouteConfig(accessToken),
+        createRouteConfig(accessToken, subAccountId),
         formConfig,
         isScreenshotsAllowed,
         true,
@@ -140,6 +139,7 @@ class VGSCheckoutAddCardConfig internal constructor(
         private var isScreenshotsAllowed = false
         private var accessToken = ""
         private var routeId = ORCHESTRATION_URL_ROUTE_ID
+        private var subAccountId: String? = null
         private var isRemoveCardOptionEnabled: Boolean = true
         private var cardIds: List<String> = emptyList()
 
@@ -192,6 +192,15 @@ class VGSCheckoutAddCardConfig internal constructor(
          */
         fun setRouteId(routeId: String) = this.apply {
             this.routeId = routeId
+        }
+
+        /**
+         * Defines sub-account id.
+         *
+         * @param id A sub-account id.
+         */
+        fun setSubAccountId(id: String) = this.apply {
+            this.subAccountId = id
         }
 
         /**
@@ -347,6 +356,7 @@ class VGSCheckoutAddCardConfig internal constructor(
                 accessToken,
                 routeId,
                 tenantId,
+                subAccountId,
                 environment,
                 formConfig,
                 isScreenshotsAllowed
