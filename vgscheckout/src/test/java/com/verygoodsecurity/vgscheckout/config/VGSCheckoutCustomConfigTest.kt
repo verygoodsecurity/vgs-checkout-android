@@ -109,7 +109,7 @@ class VGSCheckoutCustomConfigTest {
         assertTrue(config.routeConfig.requestOptions.extraHeaders.isEmpty())
         assertTrue(config.routeConfig.requestOptions.extraData.isEmpty())
         assertEquals(
-            VGSCheckoutDataMergePolicy.NESTED_JSON_WITH_ARRAYS_MERGE,
+            VGSCheckoutDataMergePolicy.NESTED_JSON,
             config.routeConfig.requestOptions.mergePolicy
         )
     }

@@ -97,7 +97,7 @@ class VGSCheckoutCustomConfig internal constructor(
         private var extraHeaders: Map<String, String> = emptyMap()
         private var extraData: Map<String, @RawValue Any> = emptyMap()
         private var mergePolicy: VGSCheckoutDataMergePolicy =
-            VGSCheckoutDataMergePolicy.NESTED_JSON_WITH_ARRAYS_MERGE
+            VGSCheckoutDataMergePolicy.NESTED_JSON
 
         /**
          * Defines type of vault.
