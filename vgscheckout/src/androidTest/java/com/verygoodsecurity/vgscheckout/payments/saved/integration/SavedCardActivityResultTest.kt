@@ -3,6 +3,7 @@ package com.verygoodsecurity.vgscheckout.payments.saved.integration
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso
@@ -44,6 +45,8 @@ class SavedCardActivityResultTest {
         device.setOrientationNatural()
 
         token = AccessTokenHelper.getToken()
+        Log.d("VGSCheckout", "t:$token")
+
         val config = initializeSavedCardConfig()
 
         intent = Intent(context, SaveCardActivity::class.java).apply {
