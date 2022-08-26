@@ -89,7 +89,7 @@ class VGSCheckoutCustomConfig internal constructor(
 
         private var billingAddressVisibility = VGSCheckoutBillingAddressVisibility.HIDDEN
         private var formValidationBehaviour = VGSCheckoutFormValidationBehaviour.ON_SUBMIT
-        private var saveCardOptionEnabled = false
+        private var saveCardOptionEnabled = true
 
         private var path = ""
         private var hostnamePolicy: VGSCheckoutHostnamePolicy = VGSCheckoutHostnamePolicy.Vault
