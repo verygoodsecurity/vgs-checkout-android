@@ -8,6 +8,7 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.matcher.ViewMatchers
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
 import com.verygoodsecurity.vgscheckout.BuildConfig
@@ -23,13 +24,17 @@ import com.verygoodsecurity.vgscheckout.util.extension.addCardPaymentInstrument
 import com.verygoodsecurity.vgscheckout.util.extension.getParcelableSafe
 import org.junit.Assert
 import org.junit.Before
+import org.junit.Test
+import org.junit.runner.RunWith
 import java.util.concurrent.CountDownLatch
 
 @Suppress("SameParameterValue")
+@RunWith(AndroidJUnit4::class)
 class SavedCardActivityResultTest {
 
     private val context: Context = ApplicationProvider.getApplicationContext()
 
+    private lateinit var intent: Intent
     private lateinit var token: String
     private lateinit var device: UiDevice
 
@@ -39,52 +44,48 @@ class SavedCardActivityResultTest {
         device.setOrientationNatural()
 
         token = AccessTokenHelper.getToken()
+        val config = initializeSavedCardConfig()
+
+        intent = Intent(context, SaveCardActivity::class.java).apply {
+            putExtra(
+                EXTRA_KEY_ARGS,
+                CheckoutResultContract.Args(config!!)
+            )
+        }
     }
 
-    private fun initializeSavedCardConfig(finID: String): VGSCheckoutAddCardConfig {
+    private fun initializeSavedCardConfig() = CountDownLatch(1).runCatching {
+        val finID = addCardPaymentInstrument(context, token)
 
-        val config = VGSCheckoutAddCardConfig.Builder(BuildConfig.VAULT_ID)
+        val savedConfig = VGSCheckoutAddCardConfig.Builder(BuildConfig.VAULT_ID)
             .setAccessToken(token)
             .setIsScreenshotsAllowed(true)
             .setSavedCardsIds(arrayListOf(finID))
             .build()
+            .also {
+                VGSCheckoutAddCardConfig.loadSavedCards(
+                    context,
+                    it,
+                    object : VGSCheckoutConfigInitCallback {
+                        override fun onSuccess() {
+                            countDown()
+                        }
 
-        CountDownLatch(1).runCatching {
-            VGSCheckoutAddCardConfig.loadSavedCards(
-                context,
-                config,
-                object : VGSCheckoutConfigInitCallback {
-                    override fun onSuccess() {
-                        countDown()
+                        override fun onFailure(exception: VGSCheckoutException) {
+                            countDown()
+                        }
                     }
+                )
+            }
+        await()
 
-                    override fun onFailure(exception: VGSCheckoutException) {
-                        countDown()
-                    }
-                }
-            )
-            await()
-        }
+        Assert.assertNotNull(savedConfig)
 
-        return config
-    }
+        savedConfig
+    }.getOrNull()
 
-    private fun createIntent(config: VGSCheckoutAddCardConfig) =
-        Intent(context, SaveCardActivity::class.java).apply {
-            putExtra(
-                EXTRA_KEY_ARGS,
-                CheckoutResultContract.Args(config)
-            )
-        }
-
+    @Test
     fun performPaymentOrchestration_cancelActivityResult_withBackPress_codeCanceled() {
-        val finID = addCardPaymentInstrument(context, token)
-        Assert.assertTrue(finID.isNotEmpty())
-
-        val intent = initializeSavedCardConfig(finID).run {
-            createIntent(this)
-        }
-
         ActivityScenario.launch<SaveCardActivity>(intent).use {
             // Act
             device.pressBack()
@@ -95,13 +96,8 @@ class SavedCardActivityResultTest {
         }
     }
 
+    @Test
     fun performPaymentOrchestration_cancelActivityResult_withNavigationUp_codeCanceled() {
-        val finID = addCardPaymentInstrument(context, token)
-        Assert.assertTrue(finID.isNotEmpty())
-        val intent = initializeSavedCardConfig(finID).run {
-            createIntent(this)
-        }
-
         ActivityScenario.launch<SaveCardActivity>(intent).use {
             waitFor(500)
             // Act
@@ -114,12 +110,8 @@ class SavedCardActivityResultTest {
         }
     }
 
+    @Test
     fun performPaymentOrchestration_savedCard_successfulResponse_codeOk() {
-        val finID = addCardPaymentInstrument(context, token)
-        Assert.assertTrue(finID.isNotEmpty())
-        val intent = initializeSavedCardConfig(finID).run {
-            createIntent(this)
-        }
         ActivityScenario.launch<SaveCardActivity>(intent).use {
             waitFor(500)
             // Act
@@ -131,12 +123,8 @@ class SavedCardActivityResultTest {
         }
     }
 
+    @Test
     fun performPaymentOrchestration_isPreSavedCard_true() {
-        val finID = addCardPaymentInstrument(context, token)
-        Assert.assertTrue(finID.isNotEmpty())
-        val intent = initializeSavedCardConfig(finID).run {
-            createIntent(this)
-        }
         ActivityScenario.launch<SaveCardActivity>(intent).use {
             waitFor(500)
             // Act
