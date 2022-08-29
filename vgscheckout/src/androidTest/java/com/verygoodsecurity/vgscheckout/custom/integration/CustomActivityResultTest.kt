@@ -74,7 +74,7 @@ class CustomActivityResultTest {
     @Test
     fun performCheckout_saveCard_successfulResponse_resultSuccess_codeOk() {
         // Arrange
-        val config = VGSCheckoutCustomConfig.Builder(BuildConfig.VAULT_ID)
+        val config = VGSCheckoutCustomConfig.Builder(Constants.TEST_VAULT_ID)
             .setEnvironment(VGSCheckoutEnvironment.Sandbox())
             .setPath("/post")
             .setIsScreenshotsAllowed(true)

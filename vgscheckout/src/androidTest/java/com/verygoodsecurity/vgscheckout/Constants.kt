@@ -20,4 +20,5 @@ object Constants {
     const val USA_INVALID_ZIP_CODE = "12"
 
     const val SUCCESS_RESPONSE_CODE = 200
+    const val TEST_VAULT_ID = "tntpszqgikn"
 }

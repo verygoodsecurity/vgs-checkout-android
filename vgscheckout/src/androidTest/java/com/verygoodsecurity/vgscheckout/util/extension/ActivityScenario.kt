@@ -17,6 +17,7 @@ import com.verygoodsecurity.vgscheckout.Constants
 import com.verygoodsecurity.vgscheckout.R
 import com.verygoodsecurity.vgscheckout.collect.view.internal.*
 import com.verygoodsecurity.vgscheckout.config.VGSCheckoutAddCardConfig
+import com.verygoodsecurity.vgscheckout.config.ui.view.address.VGSCheckoutBillingAddressVisibility
 import com.verygoodsecurity.vgscheckout.model.CheckoutResultContract
 import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_ARGS
 import com.verygoodsecurity.vgscheckout.model.EXTRA_KEY_RESULT
@@ -132,6 +133,8 @@ internal fun addCardPaymentInstrument(
     val intent = Intent(context, SaveCardActivity::class.java).apply {
         val config = VGSCheckoutAddCardConfig.Builder(BuildConfig.VAULT_ID)
             .setAccessToken(token)
+            .setIsScreenshotsAllowed(true)
+            .setBillingAddressVisibility(VGSCheckoutBillingAddressVisibility.HIDDEN)
             .build()
         putExtra(
             EXTRA_KEY_ARGS,
@@ -148,12 +151,13 @@ internal fun addCardPaymentInstrument(
         // Act
         ViewInteraction.onViewWithScrollTo(R.id.mbSaveCard).perform(ViewActions.click())
         //Assert
-        val id = it?.getParcelableSafe<CheckoutResultContract.Result>(EXTRA_KEY_RESULT)
+        val body = it?.getParcelableSafe<CheckoutResultContract.Result>(EXTRA_KEY_RESULT)
             ?.checkoutResult?.data?.getParcelable<VGSCheckoutCardResponse>(
                 VGSCheckoutResultBundle.Keys.ADD_CARD_RESPONSE
-            )?.getId() ?: ""
+            )
+        val id = body?.getId() ?: ""
 
-        Assert.assertNotEquals(id, "")
+        Assert.assertTrue(id.isNotEmpty())
 
         return id
     }

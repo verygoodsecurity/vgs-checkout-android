@@ -167,7 +167,7 @@ class SaveCardActivityResultTest {
             val config = VGSCheckoutAddCardConfig.Builder(BuildConfig.VAULT_ID)
                 .setAccessToken(BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS)
                 .setIsScreenshotsAllowed(true)
-                .setIsSaveCardOptionVisible(true)
+                .setIsSaveCardOptionVisible(false)
                 .build()
             putExtra(
                 EXTRA_KEY_ARGS,
@@ -199,6 +199,7 @@ class SaveCardActivityResultTest {
             val config = VGSCheckoutAddCardConfig.Builder(BuildConfig.VAULT_ID)
                 .setAccessToken(BuildConfig.JWT_TOKEN_WITHOUT_TRANSFERS)
                 .setIsScreenshotsAllowed(true)
+                .setIsSaveCardOptionVisible(true)
                 .build()
             putExtra(
                 EXTRA_KEY_ARGS,
