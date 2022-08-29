@@ -22,7 +22,7 @@ internal class SaveAndPayFragment : OrchestrationFragment<VGSCheckoutPaymentConf
                 config.baseUrl,
                 config.order?.id ?: "",
                 source,
-                config.accessToken
+                config.routeConfig
             )
         ).execute(::handleTransferResult)
     }

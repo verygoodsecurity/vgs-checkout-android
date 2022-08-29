@@ -24,7 +24,7 @@ jobs:
             echo "JWT_TOKEN_WITHOUT_TRANSFERS=$JWT_TOKEN_WITHOUT_TRANSFERS" >> local.properties
             echo "JWT_TOKEN_WITH_TRANSFERS_WRITE=$JWT_TOKEN_WITH_TRANSFERS_WRITE" >> local.properties
             echo "JWT_TOKEN_WITH_TRANSFERS_ANY=$JWT_TOKEN_WITH_TRANSFERS_ANY" >> local.properties
-            echo "AUTHENTICATION_HOST=AUTHENTICATION_HOST" >> local.properties
+            echo "AUTHENTICATION_HOST=$AUTHENTICATION_HOST" >> local.properties
       - restore_cache:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "demo/build.gradle" }}
       - run:

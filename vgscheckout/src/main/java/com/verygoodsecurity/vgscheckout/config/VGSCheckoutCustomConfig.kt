@@ -89,7 +89,7 @@ class VGSCheckoutCustomConfig internal constructor(
 
         private var billingAddressVisibility = VGSCheckoutBillingAddressVisibility.HIDDEN
         private var formValidationBehaviour = VGSCheckoutFormValidationBehaviour.ON_SUBMIT
-        private var saveCardOptionEnabled = false
+        private var saveCardOptionEnabled = true
 
         private var path = ""
         private var hostnamePolicy: VGSCheckoutHostnamePolicy = VGSCheckoutHostnamePolicy.Vault
@@ -97,7 +97,7 @@ class VGSCheckoutCustomConfig internal constructor(
         private var extraHeaders: Map<String, String> = emptyMap()
         private var extraData: Map<String, @RawValue Any> = emptyMap()
         private var mergePolicy: VGSCheckoutDataMergePolicy =
-            VGSCheckoutDataMergePolicy.NESTED_JSON_WITH_ARRAYS_MERGE
+            VGSCheckoutDataMergePolicy.FLAT_JSON
 
         /**
          * Defines type of vault.
