@@ -6,7 +6,6 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.concurrent.TimeUnit
 
 class TimeGapsValidatorTest {
 
@@ -79,48 +78,80 @@ class TimeGapsValidatorTest {
 
     @Test
     fun test_positive_format_yyyy_MM_dd_minDate() {
-        val validator = TimeGapsValidator("yyyy-MM-dd", System.currentTimeMillis())
+        val dataPattern = "yyyy-MM-dd"
+        val dateFormat = SimpleDateFormat(dataPattern, Locale.US)
+        val calendar = Calendar.getInstance().apply { timeInMillis = System.currentTimeMillis() }
+        val minDate = calendar.timeInMillis
+        val validator = TimeGapsValidator(dataPattern, minDate)
 
-        assertTrue(validator.isValid("2022-09-24"))
-        assertTrue(validator.isValid("2039-12-01"))
+        assertTrue(
+            validator.isValid(
+                dateFormat.format(calendar.apply { add(Calendar.YEAR, 1) }.timeInMillis)
+            )
+        )
     }
 
     @Test
     fun test_negative_format_yyyy_MM_dd_minDate() {
-        val validator = TimeGapsValidator("yyyy-MM-dd", System.currentTimeMillis())
+        val dataPattern = "yyyy-MM-dd"
+        val dateFormat = SimpleDateFormat(dataPattern, Locale.US)
+        val calendar = Calendar.getInstance().apply { timeInMillis = System.currentTimeMillis() }
+        val minDate = calendar.timeInMillis
+        val validator = TimeGapsValidator(dataPattern, minDate)
 
-        assertFalse(validator.isValid("1990-09-24"))
-        assertFalse(validator.isValid("2019-12-01"))
+        assertFalse(
+            validator.isValid(
+                dateFormat.format(calendar.apply { add(Calendar.YEAR, -1) }.timeInMillis)
+            )
+        )
     }
 
     @Test
     fun test_positive_format_yyyy_MM_dd_maxDate() {
-        val validator = TimeGapsValidator("yyyy-MM-dd", maxDate = 2212471406000)
+        val dataPattern = "yyyy-MM-dd"
+        val dateFormat = SimpleDateFormat(dataPattern, Locale.US)
+        val calendar = Calendar.getInstance().apply { timeInMillis = System.currentTimeMillis() }
+        val maxDate = calendar.apply { add(Calendar.YEAR, 1) }.timeInMillis
+        calendar.add(Calendar.YEAR, -1)
+        val validator = TimeGapsValidator(dataPattern, maxDate = maxDate)
 
-        assertTrue(validator.isValid("2021-09-24"))
-        assertTrue(validator.isValid("2039-12-01"))
+        assertTrue(
+            validator.isValid(
+                dateFormat.format(calendar.timeInMillis)
+            )
+        )
     }
 
     @Test
     fun test_negative_format_yyyy_MM_dd_maxDate() {
-        val validator = TimeGapsValidator("yyyy-MM-dd", maxDate = System.currentTimeMillis())
+        val dataPattern = "yyyy-MM-dd"
+        val dateFormat = SimpleDateFormat(dataPattern, Locale.US)
+        val calendar = Calendar.getInstance().apply { timeInMillis = System.currentTimeMillis() }
+        val maxDate = calendar.apply { add(Calendar.YEAR, 1) }.timeInMillis
+        calendar.add(Calendar.YEAR, -1)
+        val validator = TimeGapsValidator(dataPattern, maxDate = maxDate)
 
-        assertFalse(validator.isValid("2031-09-24"))
-        assertFalse(validator.isValid("2027-12-01"))
+        assertFalse(
+            validator.isValid(
+                dateFormat.format(calendar.apply { add(Calendar.YEAR, 2) }.timeInMillis)
+            )
+        )
     }
 
 
     @Test
     fun test_positive_format_yyyy_MM_dd_maxDate_and_minDate() {
         val dataPattern = "yyyy-MM-dd"
-        val maxDate = System.currentTimeMillis() + (TimeUnit.DAYS.toMillis(1) * 31)
-        val validator = TimeGapsValidator(dataPattern, System.currentTimeMillis(), maxDate)
+        val dateFormat = SimpleDateFormat(dataPattern, Locale.US)
+        val calendar = Calendar.getInstance().apply { timeInMillis = System.currentTimeMillis() }
+        val minDate = calendar.timeInMillis
+        val maxDate = calendar.apply { add(Calendar.YEAR, 2) }.timeInMillis
+        calendar.add(Calendar.YEAR, -2)
+        val validator = TimeGapsValidator(dataPattern, minDate, maxDate)
 
         assertTrue(
             validator.isValid(
-                SimpleDateFormat(
-                    dataPattern, Locale.US
-                ).format(System.currentTimeMillis())
+                dateFormat.format(calendar.apply { add(Calendar.YEAR, 1) }.timeInMillis)
             )
         )
     }
@@ -128,12 +159,22 @@ class TimeGapsValidatorTest {
     @Test
     fun test_negative_format_yyyy_MM_dd_maxDate_and_minDate() {
         val dataPattern = "yyyy-MM-dd"
-        val longestMonth =  (TimeUnit.DAYS.toMillis(1) * 31)
-        val minDate = System.currentTimeMillis()
-        val maxDate = minDate + longestMonth
+        val dateFormat = SimpleDateFormat(dataPattern, Locale.US)
+        val calendar = Calendar.getInstance().apply { timeInMillis = System.currentTimeMillis() }
+        val minDate = calendar.timeInMillis
+        val maxDate = calendar.apply { add(Calendar.YEAR, 1) }.timeInMillis
+        calendar.add(Calendar.YEAR, -1)
         val validator = TimeGapsValidator(dataPattern, minDate, maxDate)
 
-        assertFalse(validator.isValid(SimpleDateFormat(dataPattern, Locale.US).format(minDate - longestMonth)))
-        assertFalse(validator.isValid(SimpleDateFormat(dataPattern, Locale.US).format(maxDate + longestMonth)))
+        assertFalse(
+            validator.isValid(
+                dateFormat.format(calendar.apply { add(Calendar.YEAR, 1) }.timeInMillis)
+            )
+        )
+        assertFalse(
+            validator.isValid(
+                dateFormat.format(calendar.apply { add(Calendar.YEAR, -2) }.timeInMillis)
+            )
+        )
     }
 }
