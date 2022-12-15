@@ -4,6 +4,9 @@ import com.verygoodsecurity.vgscheckout.collect.view.date.validation.TimeGapsVal
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import java.text.SimpleDateFormat
+import java.util.*
+import java.util.concurrent.TimeUnit
 
 class TimeGapsValidatorTest {
 
@@ -92,7 +95,7 @@ class TimeGapsValidatorTest {
 
     @Test
     fun test_positive_format_yyyy_MM_dd_maxDate() {
-        val validator = TimeGapsValidator("yyyy-MM-dd",  maxDate = 2212471406000)
+        val validator = TimeGapsValidator("yyyy-MM-dd", maxDate = 2212471406000)
 
         assertTrue(validator.isValid("2021-09-24"))
         assertTrue(validator.isValid("2039-12-01"))
@@ -109,17 +112,28 @@ class TimeGapsValidatorTest {
 
     @Test
     fun test_positive_format_yyyy_MM_dd_maxDate_and_minDate() {
-        val validator = TimeGapsValidator("yyyy-MM-dd",  System.currentTimeMillis(), 2212471406000)
+        val dataPattern = "yyyy-MM-dd"
+        val maxDate = System.currentTimeMillis() + (TimeUnit.DAYS.toMillis(1) * 31)
+        val validator = TimeGapsValidator(dataPattern, System.currentTimeMillis(), maxDate)
 
-        assertTrue(validator.isValid("2022-09-24"))
-        assertTrue(validator.isValid("2039-12-01"))
+        assertTrue(
+            validator.isValid(
+                SimpleDateFormat(
+                    dataPattern, Locale.US
+                ).format(System.currentTimeMillis())
+            )
+        )
     }
 
     @Test
     fun test_negative_format_yyyy_MM_dd_maxDate_and_minDate() {
-        val validator = TimeGapsValidator("yyyy-MM-dd",  System.currentTimeMillis(), 2212471406000)
+        val dataPattern = "yyyy-MM-dd"
+        val longestMonth =  (TimeUnit.DAYS.toMillis(1) * 31)
+        val minDate = System.currentTimeMillis()
+        val maxDate = minDate + longestMonth
+        val validator = TimeGapsValidator(dataPattern, minDate, maxDate)
 
-        assertFalse(validator.isValid("2019-09-24"))
-        assertFalse(validator.isValid("2042-12-01"))
+        assertFalse(validator.isValid(SimpleDateFormat(dataPattern, Locale.US).format(minDate - longestMonth)))
+        assertFalse(validator.isValid(SimpleDateFormat(dataPattern, Locale.US).format(maxDate + longestMonth)))
     }
 }
