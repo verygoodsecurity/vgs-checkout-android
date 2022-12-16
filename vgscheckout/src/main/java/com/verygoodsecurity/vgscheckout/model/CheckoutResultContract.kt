@@ -28,7 +28,7 @@ internal const val EXTRA_KEY_RESULT = "com.verygoodsecurity.vgscheckout.model.ex
 internal class CheckoutResultContract :
     ActivityResultContract<CheckoutResultContract.Args<CheckoutConfig>, VGSCheckoutResult>() {
 
-    override fun createIntent(context: Context, input: Args<CheckoutConfig>?): Intent {
+    override fun createIntent(context: Context, input: Args<CheckoutConfig>): Intent {
         return Intent(context, getIntentTarget(input)).apply {
             putExtra(EXTRA_KEY_ARGS, input)
         }
